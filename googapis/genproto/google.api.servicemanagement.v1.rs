@@ -1,0 +1,1717 @@
+/// The full representation of a Service that is managed by
+/// Google Service Management.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ManagedService {
+    /// The name of the service. See the [overview](/service-management/overview)
+    /// for naming requirements.
+    #[prost(string, tag = "2")]
+    pub service_name: std::string::String,
+    /// ID of the project that produces and owns this service.
+    #[prost(string, tag = "3")]
+    pub producer_project_id: std::string::String,
+}
+/// The metadata associated with a long running operation resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// The full name of the resources that this operation is directly
+    /// associated with.
+    #[prost(string, repeated, tag = "1")]
+    pub resource_names: ::std::vec::Vec<std::string::String>,
+    /// Detailed status information for each step. The order is undetermined.
+    #[prost(message, repeated, tag = "2")]
+    pub steps: ::std::vec::Vec<operation_metadata::Step>,
+    /// Percentage of completion of this operation, ranging from 0 to 100.
+    #[prost(int32, tag = "3")]
+    pub progress_percentage: i32,
+    /// The start time of the operation.
+    #[prost(message, optional, tag = "4")]
+    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+}
+pub mod operation_metadata {
+    /// Represents the status of one operation step.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Step {
+        /// The short description of the step.
+        #[prost(string, tag = "2")]
+        pub description: std::string::String,
+        /// The status code.
+        #[prost(enumeration = "Status", tag = "4")]
+        pub status: i32,
+    }
+    /// Code describes the status of the operation (or one of its steps).
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Status {
+        /// Unspecifed code.
+        Unspecified = 0,
+        /// The operation or step has completed without errors.
+        Done = 1,
+        /// The operation or step has not started yet.
+        NotStarted = 2,
+        /// The operation or step is in progress.
+        InProgress = 3,
+        /// The operation or step has completed with errors. If the operation is
+        /// rollbackable, the rollback completed with errors too.
+        Failed = 4,
+        /// The operation or step has completed with cancellation.
+        Cancelled = 5,
+    }
+}
+/// Represents a diagnostic message (error or warning)
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Diagnostic {
+    /// File name and line number of the error or warning.
+    #[prost(string, tag = "1")]
+    pub location: std::string::String,
+    /// The kind of diagnostic information provided.
+    #[prost(enumeration = "diagnostic::Kind", tag = "2")]
+    pub kind: i32,
+    /// Message describing the error or warning.
+    #[prost(string, tag = "3")]
+    pub message: std::string::String,
+}
+pub mod diagnostic {
+    /// The kind of diagnostic information possible.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Kind {
+        /// Warnings and errors
+        Warning = 0,
+        /// Only errors
+        Error = 1,
+    }
+}
+/// Represents a source file which is used to generate the service configuration
+/// defined by `google.api.Service`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfigSource {
+    /// A unique ID for a specific instance of this message, typically assigned
+    /// by the client for tracking purpose. If empty, the server may choose to
+    /// generate one instead.
+    #[prost(string, tag = "5")]
+    pub id: std::string::String,
+    /// Set of source configuration files that are used to generate a service
+    /// configuration (`google.api.Service`).
+    #[prost(message, repeated, tag = "2")]
+    pub files: ::std::vec::Vec<ConfigFile>,
+}
+/// Generic specification of a source configuration file
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfigFile {
+    /// The file name of the configuration file (full or relative path).
+    #[prost(string, tag = "1")]
+    pub file_path: std::string::String,
+    /// The bytes that constitute the file.
+    #[prost(bytes, tag = "3")]
+    pub file_contents: std::vec::Vec<u8>,
+    /// The type of configuration file this represents.
+    #[prost(enumeration = "config_file::FileType", tag = "4")]
+    pub file_type: i32,
+}
+pub mod config_file {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum FileType {
+        /// Unknown file type.
+        Unspecified = 0,
+        /// YAML-specification of service.
+        ServiceConfigYaml = 1,
+        /// OpenAPI specification, serialized in JSON.
+        OpenApiJson = 2,
+        /// OpenAPI specification, serialized in YAML.
+        OpenApiYaml = 3,
+        /// FileDescriptorSet, generated by protoc.
+        ///
+        /// To generate, use protoc with imports and source info included.
+        /// For an example test.proto file, the following command would put the value
+        /// in a new file named out.pb.
+        ///
+        /// $protoc --include_imports --include_source_info test.proto -o out.pb
+        FileDescriptorSetProto = 4,
+        /// Uncompiled Proto file. Used for storage and display purposes only,
+        /// currently server-side compilation is not supported. Should match the
+        /// inputs to 'protoc' command used to generated FILE_DESCRIPTOR_SET_PROTO. A
+        /// file of this type can only be included if at least one file of type
+        /// FILE_DESCRIPTOR_SET_PROTO is included.
+        ProtoFile = 6,
+    }
+}
+/// Represents a service configuration with its name and id.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfigRef {
+    /// Resource name of a service config. It must have the following
+    /// format: "services/{service name}/configs/{config id}".
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+}
+/// Change report associated with a particular service configuration.
+///
+/// It contains a list of ConfigChanges based on the comparison between
+/// two service configurations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChangeReport {
+    /// List of changes between two service configurations.
+    /// The changes will be alphabetically sorted based on the identifier
+    /// of each change.
+    /// A ConfigChange identifier is a dot separated path to the configuration.
+    /// Example: visibility.rules[selector='LibraryService.CreateBook'].restriction
+    #[prost(message, repeated, tag = "1")]
+    pub config_changes: ::std::vec::Vec<super::super::ConfigChange>,
+}
+/// A rollout resource that defines how service configuration versions are pushed
+/// to control plane systems. Typically, you create a new version of the
+/// service config, and then create a Rollout to push the service config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Rollout {
+    /// Optional. Unique identifier of this Rollout. Must be no longer than 63 characters
+    /// and only lower case letters, digits, '.', '_' and '-' are allowed.
+    ///
+    /// If not specified by client, the server will generate one. The generated id
+    /// will have the form of <date><revision number>, where "date" is the create
+    /// date in ISO 8601 format.  "revision number" is a monotonically increasing
+    /// positive number that is reset every day for each service.
+    /// An example of the generated rollout_id is '2016-02-16r1'
+    #[prost(string, tag = "1")]
+    pub rollout_id: std::string::String,
+    /// Creation time of the rollout. Readonly.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// The user who created the Rollout. Readonly.
+    #[prost(string, tag = "3")]
+    pub created_by: std::string::String,
+    /// The status of this rollout. Readonly. In case of a failed rollout,
+    /// the system will automatically rollback to the current Rollout
+    /// version. Readonly.
+    #[prost(enumeration = "rollout::RolloutStatus", tag = "4")]
+    pub status: i32,
+    /// The name of the service associated with this Rollout.
+    #[prost(string, tag = "8")]
+    pub service_name: std::string::String,
+    /// Strategy that defines which versions of service configurations should be
+    /// pushed
+    /// and how they should be used at runtime.
+    #[prost(oneof = "rollout::Strategy", tags = "5, 200")]
+    pub strategy: ::std::option::Option<rollout::Strategy>,
+}
+pub mod rollout {
+    /// Strategy that specifies how clients of Google Service Controller want to
+    /// send traffic to use different config versions. This is generally
+    /// used by API proxy to split traffic based on your configured percentage for
+    /// each config version.
+    ///
+    /// One example of how to gradually rollout a new service configuration using
+    /// this
+    /// strategy:
+    /// Day 1
+    ///
+    ///     Rollout {
+    ///       id: "example.googleapis.com/rollout_20160206"
+    ///       traffic_percent_strategy {
+    ///         percentages: {
+    ///           "example.googleapis.com/20160201": 70.00
+    ///           "example.googleapis.com/20160206": 30.00
+    ///         }
+    ///       }
+    ///     }
+    ///
+    /// Day 2
+    ///
+    ///     Rollout {
+    ///       id: "example.googleapis.com/rollout_20160207"
+    ///       traffic_percent_strategy: {
+    ///         percentages: {
+    ///           "example.googleapis.com/20160206": 100.00
+    ///         }
+    ///       }
+    ///     }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TrafficPercentStrategy {
+        /// Maps service configuration IDs to their corresponding traffic percentage.
+        /// Key is the service configuration ID, Value is the traffic percentage
+        /// which must be greater than 0.0 and the sum must equal to 100.0.
+        #[prost(map = "string, double", tag = "1")]
+        pub percentages: ::std::collections::HashMap<std::string::String, f64>,
+    }
+    /// Strategy used to delete a service. This strategy is a placeholder only
+    /// used by the system generated rollout to delete a service.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DeleteServiceStrategy {}
+    /// Status of a Rollout.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RolloutStatus {
+        /// No status specified.
+        Unspecified = 0,
+        /// The Rollout is in progress.
+        InProgress = 1,
+        /// The Rollout has completed successfully.
+        Success = 2,
+        /// The Rollout has been cancelled. This can happen if you have overlapping
+        /// Rollout pushes, and the previous ones will be cancelled.
+        Cancelled = 3,
+        /// The Rollout has failed and the rollback attempt has failed too.
+        Failed = 4,
+        /// The Rollout has not started yet and is pending for execution.
+        Pending = 5,
+        /// The Rollout has failed and rolled back to the previous successful
+        /// Rollout.
+        FailedRolledBack = 6,
+    }
+    /// Strategy that defines which versions of service configurations should be
+    /// pushed
+    /// and how they should be used at runtime.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Strategy {
+        /// Google Service Control selects service configurations based on
+        /// traffic percentage.
+        #[prost(message, tag = "5")]
+        TrafficPercentStrategy(TrafficPercentStrategy),
+        /// The strategy associated with a rollout to delete a `ManagedService`.
+        /// Readonly.
+        #[prost(message, tag = "200")]
+        DeleteServiceStrategy(DeleteServiceStrategy),
+    }
+}
+/// Request message for `ListServices` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServicesRequest {
+    /// Include services produced by the specified project.
+    #[prost(string, tag = "1")]
+    pub producer_project_id: std::string::String,
+    /// The max number of items to include in the response list. Page size is 50
+    /// if not specified. Maximum value is 100.
+    #[prost(int32, tag = "5")]
+    pub page_size: i32,
+    /// Token identifying which result to start with; returned by a previous list
+    /// call.
+    #[prost(string, tag = "6")]
+    pub page_token: std::string::String,
+    /// Include services consumed by the specified consumer.
+    ///
+    /// The Google Service Management implementation accepts the following
+    /// forms:
+    /// - project:<project_id>
+    #[prost(string, tag = "7")]
+    pub consumer_id: std::string::String,
+}
+/// Response message for `ListServices` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServicesResponse {
+    /// The returned services will only have the name field set.
+    #[prost(message, repeated, tag = "1")]
+    pub services: ::std::vec::Vec<ManagedService>,
+    /// Token that can be passed to `ListServices` to resume a paginated query.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+}
+/// Request message for `GetService` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceRequest {
+    /// Required. The name of the service.  See the `ServiceManager` overview for naming
+    /// requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+}
+/// Request message for CreateService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateServiceRequest {
+    /// Required. Initial values for the service resource.
+    #[prost(message, optional, tag = "1")]
+    pub service: ::std::option::Option<ManagedService>,
+}
+/// Request message for DeleteService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteServiceRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+}
+/// Request message for UndeleteService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeleteServiceRequest {
+    /// Required. The name of the service. See the [overview](/service-management/overview)
+    /// for naming requirements. For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+}
+/// Response message for UndeleteService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeleteServiceResponse {
+    /// Revived service resource.
+    #[prost(message, optional, tag = "1")]
+    pub service: ::std::option::Option<ManagedService>,
+}
+/// Request message for GetServiceConfig method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceConfigRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// Required. The id of the service configuration resource.
+    ///
+    /// This field must be specified for the server to return all fields, including
+    /// `SourceInfo`.
+    #[prost(string, tag = "2")]
+    pub config_id: std::string::String,
+    /// Specifies which parts of the Service Config should be returned in the
+    /// response.
+    #[prost(enumeration = "get_service_config_request::ConfigView", tag = "3")]
+    pub view: i32,
+}
+pub mod get_service_config_request {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConfigView {
+        /// Server response includes all fields except SourceInfo.
+        Basic = 0,
+        /// Server response includes all fields including SourceInfo.
+        /// SourceFiles are of type 'google.api.servicemanagement.v1.ConfigFile'
+        /// and are only available for configs created using the
+        /// SubmitConfigSource method.
+        Full = 1,
+    }
+}
+/// Request message for ListServiceConfigs method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConfigsRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// The token of the page to retrieve.
+    #[prost(string, tag = "2")]
+    pub page_token: std::string::String,
+    /// The max number of items to include in the response list. Page size is 50
+    /// if not specified. Maximum value is 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+}
+/// Response message for ListServiceConfigs method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConfigsResponse {
+    /// The list of service configuration resources.
+    #[prost(message, repeated, tag = "1")]
+    pub service_configs: ::std::vec::Vec<super::super::Service>,
+    /// The token of the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+}
+/// Request message for CreateServiceConfig method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateServiceConfigRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// Required. The service configuration resource.
+    #[prost(message, optional, tag = "2")]
+    pub service_config: ::std::option::Option<super::super::Service>,
+}
+/// Request message for SubmitConfigSource method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubmitConfigSourceRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// Required. The source configuration for the service.
+    #[prost(message, optional, tag = "2")]
+    pub config_source: ::std::option::Option<ConfigSource>,
+    /// Optional. If set, this will result in the generation of a
+    /// `google.api.Service` configuration based on the `ConfigSource` provided,
+    /// but the generated config and the sources will NOT be persisted.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Response message for SubmitConfigSource method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubmitConfigSourceResponse {
+    /// The generated service configuration.
+    #[prost(message, optional, tag = "1")]
+    pub service_config: ::std::option::Option<super::super::Service>,
+}
+/// Request message for 'CreateServiceRollout'
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateServiceRolloutRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// Required. The rollout resource. The `service_name` field is output only.
+    #[prost(message, optional, tag = "2")]
+    pub rollout: ::std::option::Option<Rollout>,
+}
+/// Request message for 'ListServiceRollouts'
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceRolloutsRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// The token of the page to retrieve.
+    #[prost(string, tag = "2")]
+    pub page_token: std::string::String,
+    /// The max number of items to include in the response list. Page size is 50
+    /// if not specified. Maximum value is 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Required. Use `filter` to return subset of rollouts.
+    /// The following filters are supported:
+    ///   -- To limit the results to only those in
+    ///      [status](google.api.servicemanagement.v1.RolloutStatus) 'SUCCESS',
+    ///      use filter='status=SUCCESS'
+    ///   -- To limit the results to those in
+    ///      [status](google.api.servicemanagement.v1.RolloutStatus) 'CANCELLED'
+    ///      or 'FAILED', use filter='status=CANCELLED OR status=FAILED'
+    #[prost(string, tag = "4")]
+    pub filter: std::string::String,
+}
+/// Response message for ListServiceRollouts method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceRolloutsResponse {
+    /// The list of rollout resources.
+    #[prost(message, repeated, tag = "1")]
+    pub rollouts: ::std::vec::Vec<Rollout>,
+    /// The token of the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+}
+/// Request message for GetServiceRollout method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceRolloutRequest {
+    /// Required. The name of the service.  See the [overview](/service-management/overview)
+    /// for naming requirements.  For example: `example.googleapis.com`.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// Required. The id of the rollout resource.
+    #[prost(string, tag = "2")]
+    pub rollout_id: std::string::String,
+}
+/// Request message for EnableService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableServiceRequest {
+    /// Required. Name of the service to enable. Specifying an unknown service name will
+    /// cause the request to fail.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// Required. The identity of consumer resource which service enablement will be
+    /// applied to.
+    ///
+    /// The Google Service Management implementation accepts the following
+    /// forms:
+    /// - "project:<project_id>"
+    ///
+    /// Note: this is made compatible with
+    /// google.api.servicecontrol.v1.Operation.consumer_id.
+    #[prost(string, tag = "2")]
+    pub consumer_id: std::string::String,
+}
+/// Operation payload for EnableService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableServiceResponse {}
+/// Request message for DisableService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableServiceRequest {
+    /// Required. Name of the service to disable. Specifying an unknown service name
+    /// will cause the request to fail.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// Required. The identity of consumer resource which service disablement will be
+    /// applied to.
+    ///
+    /// The Google Service Management implementation accepts the following
+    /// forms:
+    /// - "project:<project_id>"
+    ///
+    /// Note: this is made compatible with
+    /// google.api.servicecontrol.v1.Operation.consumer_id.
+    #[prost(string, tag = "2")]
+    pub consumer_id: std::string::String,
+}
+/// Operation payload for DisableService method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableServiceResponse {}
+/// Request message for GenerateConfigReport method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateConfigReportRequest {
+    /// Required. Service configuration for which we want to generate the report.
+    /// For this version of API, the supported types are
+    /// [google.api.servicemanagement.v1.ConfigRef][google.api.servicemanagement.v1.ConfigRef],
+    /// [google.api.servicemanagement.v1.ConfigSource][google.api.servicemanagement.v1.ConfigSource],
+    /// and [google.api.Service][google.api.Service]
+    #[prost(message, optional, tag = "1")]
+    pub new_config: ::std::option::Option<::prost_types::Any>,
+    /// Optional. Service configuration against which the comparison will be done.
+    /// For this version of API, the supported types are
+    /// [google.api.servicemanagement.v1.ConfigRef][google.api.servicemanagement.v1.ConfigRef],
+    /// [google.api.servicemanagement.v1.ConfigSource][google.api.servicemanagement.v1.ConfigSource],
+    /// and [google.api.Service][google.api.Service]
+    #[prost(message, optional, tag = "2")]
+    pub old_config: ::std::option::Option<::prost_types::Any>,
+}
+/// Response message for GenerateConfigReport method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateConfigReportResponse {
+    /// Name of the service this report belongs to.
+    #[prost(string, tag = "1")]
+    pub service_name: std::string::String,
+    /// ID of the service configuration this report belongs to.
+    #[prost(string, tag = "2")]
+    pub id: std::string::String,
+    /// list of ChangeReport, each corresponding to comparison between two
+    /// service configurations.
+    #[prost(message, repeated, tag = "3")]
+    pub change_reports: ::std::vec::Vec<ChangeReport>,
+    /// Errors / Linter warnings associated with the service definition this
+    /// report
+    /// belongs to.
+    #[prost(message, repeated, tag = "4")]
+    pub diagnostics: ::std::vec::Vec<Diagnostic>,
+}
+#[doc = r" Generated client implementations."]
+pub mod service_manager_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " [Google Service Management API](/service-management/overview)"]
+    pub struct ServiceManagerClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ServiceManagerClient<tonic::transport::Channel> {
+        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ServiceManagerClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Lists managed services."]
+        #[doc = ""]
+        #[doc = " Returns all public services. For authenticated users, also returns all"]
+        #[doc = " services the calling user has \"servicemanagement.services.get\" permission"]
+        #[doc = " for."]
+        #[doc = ""]
+        #[doc = " **BETA:** If the caller specifies the `consumer_id`, it returns only the"]
+        #[doc = " services enabled on the consumer. The `consumer_id` must have the format"]
+        #[doc = " of \"project:{PROJECT-ID}\"."]
+        pub async fn list_services(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServicesRequest>,
+        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/ListServices",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets a managed service. Authentication is required unless the service is"]
+        #[doc = " public."]
+        pub async fn get_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceRequest>,
+        ) -> Result<tonic::Response<super::ManagedService>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/GetService",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new managed service."]
+        #[doc = " Please note one producer project can own no more than 20 services."]
+        #[doc = ""]
+        #[doc = " Operation<response: ManagedService>"]
+        pub async fn create_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/CreateService",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a managed service. This method will change the service to the"]
+        #[doc = " `Soft-Delete` state for 30 days. Within this period, service producers may"]
+        #[doc = " call [UndeleteService][google.api.servicemanagement.v1.ServiceManager.UndeleteService] to restore the service."]
+        #[doc = " After 30 days, the service will be permanently deleted."]
+        #[doc = ""]
+        #[doc = " Operation<response: google.protobuf.Empty>"]
+        pub async fn delete_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/DeleteService",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Revives a previously deleted managed service. The method restores the"]
+        #[doc = " service using the configuration at the time the service was deleted."]
+        #[doc = " The target service must exist and must have been deleted within the"]
+        #[doc = " last 30 days."]
+        #[doc = ""]
+        #[doc = " Operation<response: UndeleteServiceResponse>"]
+        pub async fn undelete_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UndeleteServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/UndeleteService",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists the history of the service configuration for a managed service,"]
+        #[doc = " from the newest to the oldest."]
+        pub async fn list_service_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServiceConfigsRequest>,
+        ) -> Result<tonic::Response<super::ListServiceConfigsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/ListServiceConfigs",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets a service configuration (version) for a managed service."]
+        pub async fn get_service_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceConfigRequest>,
+        ) -> Result<tonic::Response<super::super::super::Service>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/GetServiceConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new service configuration (version) for a managed service."]
+        #[doc = " This method only stores the service configuration. To roll out the service"]
+        #[doc = " configuration to backend systems please call"]
+        #[doc = " [CreateServiceRollout][google.api.servicemanagement.v1.ServiceManager.CreateServiceRollout]."]
+        #[doc = ""]
+        #[doc = " Only the 100 most recent service configurations and ones referenced by"]
+        #[doc = " existing rollouts are kept for each service. The rest will be deleted"]
+        #[doc = " eventually."]
+        pub async fn create_service_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateServiceConfigRequest>,
+        ) -> Result<tonic::Response<super::super::super::Service>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/CreateServiceConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new service configuration (version) for a managed service based"]
+        #[doc = " on"]
+        #[doc = " user-supplied configuration source files (for example: OpenAPI"]
+        #[doc = " Specification). This method stores the source configurations as well as the"]
+        #[doc = " generated service configuration. To rollout the service configuration to"]
+        #[doc = " other services,"]
+        #[doc = " please call [CreateServiceRollout][google.api.servicemanagement.v1.ServiceManager.CreateServiceRollout]."]
+        #[doc = ""]
+        #[doc = " Only the 100 most recent configuration sources and ones referenced by"]
+        #[doc = " existing service configurtions are kept for each service. The rest will be"]
+        #[doc = " deleted eventually."]
+        #[doc = ""]
+        #[doc = " Operation<response: SubmitConfigSourceResponse>"]
+        pub async fn submit_config_source(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SubmitConfigSourceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/SubmitConfigSource",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists the history of the service configuration rollouts for a managed"]
+        #[doc = " service, from the newest to the oldest."]
+        pub async fn list_service_rollouts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServiceRolloutsRequest>,
+        ) -> Result<tonic::Response<super::ListServiceRolloutsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/ListServiceRollouts",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets a service configuration [rollout][google.api.servicemanagement.v1.Rollout]."]
+        pub async fn get_service_rollout(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceRolloutRequest>,
+        ) -> Result<tonic::Response<super::Rollout>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/GetServiceRollout",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new service configuration rollout. Based on rollout, the"]
+        #[doc = " Google Service Management will roll out the service configurations to"]
+        #[doc = " different backend services. For example, the logging configuration will be"]
+        #[doc = " pushed to Google Cloud Logging."]
+        #[doc = ""]
+        #[doc = " Please note that any previous pending and running Rollouts and associated"]
+        #[doc = " Operations will be automatically cancelled so that the latest Rollout will"]
+        #[doc = " not be blocked by previous Rollouts."]
+        #[doc = ""]
+        #[doc = " Only the 100 most recent (in any state) and the last 10 successful (if not"]
+        #[doc = " already part of the set of 100 most recent) rollouts are kept for each"]
+        #[doc = " service. The rest will be deleted eventually."]
+        #[doc = ""]
+        #[doc = " Operation<response: Rollout>"]
+        pub async fn create_service_rollout(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateServiceRolloutRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/CreateServiceRollout",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Generates and returns a report (errors, warnings and changes from"]
+        #[doc = " existing configurations) associated with"]
+        #[doc = " GenerateConfigReportRequest.new_value"]
+        #[doc = ""]
+        #[doc = " If GenerateConfigReportRequest.old_value is specified,"]
+        #[doc = " GenerateConfigReportRequest will contain a single ChangeReport based on the"]
+        #[doc = " comparison between GenerateConfigReportRequest.new_value and"]
+        #[doc = " GenerateConfigReportRequest.old_value."]
+        #[doc = " If GenerateConfigReportRequest.old_value is not specified, this method"]
+        #[doc = " will compare GenerateConfigReportRequest.new_value with the last pushed"]
+        #[doc = " service configuration."]
+        pub async fn generate_config_report(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateConfigReportRequest>,
+        ) -> Result<tonic::Response<super::GenerateConfigReportResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/GenerateConfigReport",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Enables a [service][google.api.servicemanagement.v1.ManagedService] for a project, so it can be used"]
+        #[doc = " for the project. See"]
+        #[doc = " [Cloud Auth Guide](https://cloud.google.com/docs/authentication) for"]
+        #[doc = " more information."]
+        #[doc = ""]
+        #[doc = " Operation<response: EnableServiceResponse>"]
+        pub async fn enable_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnableServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/EnableService",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Disables a [service][google.api.servicemanagement.v1.ManagedService] for a project, so it can no longer be"]
+        #[doc = " be used for the project. It prevents accidental usage that may cause"]
+        #[doc = " unexpected billing charges or security leaks."]
+        #[doc = ""]
+        #[doc = " Operation<response: DisableServiceResponse>"]
+        pub async fn disable_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.api.servicemanagement.v1.ServiceManager/DisableService",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for ServiceManagerClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for ServiceManagerClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "ServiceManagerClient {{ ... }}")
+        }
+    }
+}
+#[doc = r" Generated server implementations."]
+pub mod service_manager_server {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = "Generated trait containing gRPC methods that should be implemented for use with ServiceManagerServer."]
+    #[async_trait]
+    pub trait ServiceManager: Send + Sync + 'static {
+        #[doc = " Lists managed services."]
+        #[doc = ""]
+        #[doc = " Returns all public services. For authenticated users, also returns all"]
+        #[doc = " services the calling user has \"servicemanagement.services.get\" permission"]
+        #[doc = " for."]
+        #[doc = ""]
+        #[doc = " **BETA:** If the caller specifies the `consumer_id`, it returns only the"]
+        #[doc = " services enabled on the consumer. The `consumer_id` must have the format"]
+        #[doc = " of \"project:{PROJECT-ID}\"."]
+        async fn list_services(
+            &self,
+            request: tonic::Request<super::ListServicesRequest>,
+        ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status>;
+        #[doc = " Gets a managed service. Authentication is required unless the service is"]
+        #[doc = " public."]
+        async fn get_service(
+            &self,
+            request: tonic::Request<super::GetServiceRequest>,
+        ) -> Result<tonic::Response<super::ManagedService>, tonic::Status>;
+        #[doc = " Creates a new managed service."]
+        #[doc = " Please note one producer project can own no more than 20 services."]
+        #[doc = ""]
+        #[doc = " Operation<response: ManagedService>"]
+        async fn create_service(
+            &self,
+            request: tonic::Request<super::CreateServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+        #[doc = " Deletes a managed service. This method will change the service to the"]
+        #[doc = " `Soft-Delete` state for 30 days. Within this period, service producers may"]
+        #[doc = " call [UndeleteService][google.api.servicemanagement.v1.ServiceManager.UndeleteService] to restore the service."]
+        #[doc = " After 30 days, the service will be permanently deleted."]
+        #[doc = ""]
+        #[doc = " Operation<response: google.protobuf.Empty>"]
+        async fn delete_service(
+            &self,
+            request: tonic::Request<super::DeleteServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+        #[doc = " Revives a previously deleted managed service. The method restores the"]
+        #[doc = " service using the configuration at the time the service was deleted."]
+        #[doc = " The target service must exist and must have been deleted within the"]
+        #[doc = " last 30 days."]
+        #[doc = ""]
+        #[doc = " Operation<response: UndeleteServiceResponse>"]
+        async fn undelete_service(
+            &self,
+            request: tonic::Request<super::UndeleteServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+        #[doc = " Lists the history of the service configuration for a managed service,"]
+        #[doc = " from the newest to the oldest."]
+        async fn list_service_configs(
+            &self,
+            request: tonic::Request<super::ListServiceConfigsRequest>,
+        ) -> Result<tonic::Response<super::ListServiceConfigsResponse>, tonic::Status>;
+        #[doc = " Gets a service configuration (version) for a managed service."]
+        async fn get_service_config(
+            &self,
+            request: tonic::Request<super::GetServiceConfigRequest>,
+        ) -> Result<tonic::Response<super::super::super::Service>, tonic::Status>;
+        #[doc = " Creates a new service configuration (version) for a managed service."]
+        #[doc = " This method only stores the service configuration. To roll out the service"]
+        #[doc = " configuration to backend systems please call"]
+        #[doc = " [CreateServiceRollout][google.api.servicemanagement.v1.ServiceManager.CreateServiceRollout]."]
+        #[doc = ""]
+        #[doc = " Only the 100 most recent service configurations and ones referenced by"]
+        #[doc = " existing rollouts are kept for each service. The rest will be deleted"]
+        #[doc = " eventually."]
+        async fn create_service_config(
+            &self,
+            request: tonic::Request<super::CreateServiceConfigRequest>,
+        ) -> Result<tonic::Response<super::super::super::Service>, tonic::Status>;
+        #[doc = " Creates a new service configuration (version) for a managed service based"]
+        #[doc = " on"]
+        #[doc = " user-supplied configuration source files (for example: OpenAPI"]
+        #[doc = " Specification). This method stores the source configurations as well as the"]
+        #[doc = " generated service configuration. To rollout the service configuration to"]
+        #[doc = " other services,"]
+        #[doc = " please call [CreateServiceRollout][google.api.servicemanagement.v1.ServiceManager.CreateServiceRollout]."]
+        #[doc = ""]
+        #[doc = " Only the 100 most recent configuration sources and ones referenced by"]
+        #[doc = " existing service configurtions are kept for each service. The rest will be"]
+        #[doc = " deleted eventually."]
+        #[doc = ""]
+        #[doc = " Operation<response: SubmitConfigSourceResponse>"]
+        async fn submit_config_source(
+            &self,
+            request: tonic::Request<super::SubmitConfigSourceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+        #[doc = " Lists the history of the service configuration rollouts for a managed"]
+        #[doc = " service, from the newest to the oldest."]
+        async fn list_service_rollouts(
+            &self,
+            request: tonic::Request<super::ListServiceRolloutsRequest>,
+        ) -> Result<tonic::Response<super::ListServiceRolloutsResponse>, tonic::Status>;
+        #[doc = " Gets a service configuration [rollout][google.api.servicemanagement.v1.Rollout]."]
+        async fn get_service_rollout(
+            &self,
+            request: tonic::Request<super::GetServiceRolloutRequest>,
+        ) -> Result<tonic::Response<super::Rollout>, tonic::Status>;
+        #[doc = " Creates a new service configuration rollout. Based on rollout, the"]
+        #[doc = " Google Service Management will roll out the service configurations to"]
+        #[doc = " different backend services. For example, the logging configuration will be"]
+        #[doc = " pushed to Google Cloud Logging."]
+        #[doc = ""]
+        #[doc = " Please note that any previous pending and running Rollouts and associated"]
+        #[doc = " Operations will be automatically cancelled so that the latest Rollout will"]
+        #[doc = " not be blocked by previous Rollouts."]
+        #[doc = ""]
+        #[doc = " Only the 100 most recent (in any state) and the last 10 successful (if not"]
+        #[doc = " already part of the set of 100 most recent) rollouts are kept for each"]
+        #[doc = " service. The rest will be deleted eventually."]
+        #[doc = ""]
+        #[doc = " Operation<response: Rollout>"]
+        async fn create_service_rollout(
+            &self,
+            request: tonic::Request<super::CreateServiceRolloutRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+        #[doc = " Generates and returns a report (errors, warnings and changes from"]
+        #[doc = " existing configurations) associated with"]
+        #[doc = " GenerateConfigReportRequest.new_value"]
+        #[doc = ""]
+        #[doc = " If GenerateConfigReportRequest.old_value is specified,"]
+        #[doc = " GenerateConfigReportRequest will contain a single ChangeReport based on the"]
+        #[doc = " comparison between GenerateConfigReportRequest.new_value and"]
+        #[doc = " GenerateConfigReportRequest.old_value."]
+        #[doc = " If GenerateConfigReportRequest.old_value is not specified, this method"]
+        #[doc = " will compare GenerateConfigReportRequest.new_value with the last pushed"]
+        #[doc = " service configuration."]
+        async fn generate_config_report(
+            &self,
+            request: tonic::Request<super::GenerateConfigReportRequest>,
+        ) -> Result<tonic::Response<super::GenerateConfigReportResponse>, tonic::Status>;
+        #[doc = " Enables a [service][google.api.servicemanagement.v1.ManagedService] for a project, so it can be used"]
+        #[doc = " for the project. See"]
+        #[doc = " [Cloud Auth Guide](https://cloud.google.com/docs/authentication) for"]
+        #[doc = " more information."]
+        #[doc = ""]
+        #[doc = " Operation<response: EnableServiceResponse>"]
+        async fn enable_service(
+            &self,
+            request: tonic::Request<super::EnableServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+        #[doc = " Disables a [service][google.api.servicemanagement.v1.ManagedService] for a project, so it can no longer be"]
+        #[doc = " be used for the project. It prevents accidental usage that may cause"]
+        #[doc = " unexpected billing charges or security leaks."]
+        #[doc = ""]
+        #[doc = " Operation<response: DisableServiceResponse>"]
+        async fn disable_service(
+            &self,
+            request: tonic::Request<super::DisableServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+    }
+    #[doc = " [Google Service Management API](/service-management/overview)"]
+    #[derive(Debug)]
+    #[doc(hidden)]
+    pub struct ServiceManagerServer<T: ServiceManager> {
+        inner: _Inner<T>,
+    }
+    struct _Inner<T>(Arc<T>, Option<tonic::Interceptor>);
+    impl<T: ServiceManager> ServiceManagerServer<T> {
+        pub fn new(inner: T) -> Self {
+            let inner = Arc::new(inner);
+            let inner = _Inner(inner, None);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = Arc::new(inner);
+            let inner = _Inner(inner, Some(interceptor.into()));
+            Self { inner }
+        }
+    }
+    impl<T, B> Service<http::Request<B>> for ServiceManagerServer<T>
+    where
+        T: ServiceManager,
+        B: HttpBody + Send + Sync + 'static,
+        B::Error: Into<StdError> + Send + 'static,
+    {
+        type Response = http::Response<tonic::body::BoxBody>;
+        type Error = Never;
+        type Future = BoxFuture<Self::Response, Self::Error>;
+        fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+            Poll::Ready(Ok(()))
+        }
+        fn call(&mut self, req: http::Request<B>) -> Self::Future {
+            let inner = self.inner.clone();
+            match req.uri().path() {
+                "/google.api.servicemanagement.v1.ServiceManager/ListServices" => {
+                    #[allow(non_camel_case_types)]
+                    struct ListServicesSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager> tonic::server::UnaryService<super::ListServicesRequest>
+                        for ListServicesSvc<T>
+                    {
+                        type Response = super::ListServicesResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::ListServicesRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.list_services(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = ListServicesSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/GetService" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetServiceSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager> tonic::server::UnaryService<super::GetServiceRequest> for GetServiceSvc<T> {
+                        type Response = super::ManagedService;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::GetServiceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.get_service(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = GetServiceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/CreateService" => {
+                    #[allow(non_camel_case_types)]
+                    struct CreateServiceSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager> tonic::server::UnaryService<super::CreateServiceRequest>
+                        for CreateServiceSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::CreateServiceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.create_service(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = CreateServiceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/DeleteService" => {
+                    #[allow(non_camel_case_types)]
+                    struct DeleteServiceSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager> tonic::server::UnaryService<super::DeleteServiceRequest>
+                        for DeleteServiceSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::DeleteServiceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.delete_service(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = DeleteServiceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/UndeleteService" => {
+                    #[allow(non_camel_case_types)]
+                    struct UndeleteServiceSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::UndeleteServiceRequest>
+                        for UndeleteServiceSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::UndeleteServiceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.undelete_service(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = UndeleteServiceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/ListServiceConfigs" => {
+                    #[allow(non_camel_case_types)]
+                    struct ListServiceConfigsSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::ListServiceConfigsRequest>
+                        for ListServiceConfigsSvc<T>
+                    {
+                        type Response = super::ListServiceConfigsResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::ListServiceConfigsRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.list_service_configs(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = ListServiceConfigsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/GetServiceConfig" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetServiceConfigSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::GetServiceConfigRequest>
+                        for GetServiceConfigSvc<T>
+                    {
+                        type Response = super::super::super::Service;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::GetServiceConfigRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.get_service_config(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = GetServiceConfigSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/CreateServiceConfig" => {
+                    #[allow(non_camel_case_types)]
+                    struct CreateServiceConfigSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::CreateServiceConfigRequest>
+                        for CreateServiceConfigSvc<T>
+                    {
+                        type Response = super::super::super::Service;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::CreateServiceConfigRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.create_service_config(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = CreateServiceConfigSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/SubmitConfigSource" => {
+                    #[allow(non_camel_case_types)]
+                    struct SubmitConfigSourceSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::SubmitConfigSourceRequest>
+                        for SubmitConfigSourceSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::SubmitConfigSourceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.submit_config_source(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = SubmitConfigSourceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/ListServiceRollouts" => {
+                    #[allow(non_camel_case_types)]
+                    struct ListServiceRolloutsSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::ListServiceRolloutsRequest>
+                        for ListServiceRolloutsSvc<T>
+                    {
+                        type Response = super::ListServiceRolloutsResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::ListServiceRolloutsRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.list_service_rollouts(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = ListServiceRolloutsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/GetServiceRollout" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetServiceRolloutSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::GetServiceRolloutRequest>
+                        for GetServiceRolloutSvc<T>
+                    {
+                        type Response = super::Rollout;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::GetServiceRolloutRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.get_service_rollout(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = GetServiceRolloutSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/CreateServiceRollout" => {
+                    #[allow(non_camel_case_types)]
+                    struct CreateServiceRolloutSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::CreateServiceRolloutRequest>
+                        for CreateServiceRolloutSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::CreateServiceRolloutRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.create_service_rollout(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = CreateServiceRolloutSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/GenerateConfigReport" => {
+                    #[allow(non_camel_case_types)]
+                    struct GenerateConfigReportSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::GenerateConfigReportRequest>
+                        for GenerateConfigReportSvc<T>
+                    {
+                        type Response = super::GenerateConfigReportResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::GenerateConfigReportRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.generate_config_report(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = GenerateConfigReportSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/EnableService" => {
+                    #[allow(non_camel_case_types)]
+                    struct EnableServiceSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager> tonic::server::UnaryService<super::EnableServiceRequest>
+                        for EnableServiceSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::EnableServiceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.enable_service(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = EnableServiceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.api.servicemanagement.v1.ServiceManager/DisableService" => {
+                    #[allow(non_camel_case_types)]
+                    struct DisableServiceSvc<T: ServiceManager>(pub Arc<T>);
+                    impl<T: ServiceManager>
+                        tonic::server::UnaryService<super::DisableServiceRequest>
+                        for DisableServiceSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::DisableServiceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.disable_service(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = DisableServiceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .body(tonic::body::BoxBody::empty())
+                        .unwrap())
+                }),
+            }
+        }
+    }
+    impl<T: ServiceManager> Clone for ServiceManagerServer<T> {
+        fn clone(&self) -> Self {
+            let inner = self.inner.clone();
+            Self { inner }
+        }
+    }
+    impl<T: ServiceManager> Clone for _Inner<T> {
+        fn clone(&self) -> Self {
+            Self(self.0.clone(), self.1.clone())
+        }
+    }
+    impl<T: std::fmt::Debug> std::fmt::Debug for _Inner<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "{:?}", self.0)
+        }
+    }
+    impl<T: ServiceManager> tonic::transport::NamedService for ServiceManagerServer<T> {
+        const NAME: &'static str = "google.api.servicemanagement.v1.ServiceManager";
+    }
+}

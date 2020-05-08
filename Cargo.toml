@@ -1,0 +1,6 @@
+[workspace]
+members = [
+  "googapis",
+  "xtask",
+  "examples/spanner-admin",
+]

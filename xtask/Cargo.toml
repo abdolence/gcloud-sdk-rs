@@ -1,0 +1,8 @@
+[package]
+name = "xtask"
+version = "0.1.0"
+authors = ["mechiru <u9053u6d41@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+tonic-build = { version = "0.2" }

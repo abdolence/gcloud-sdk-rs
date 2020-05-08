@@ -1,0 +1,1323 @@
+/// A vertex represents a 2D point in the image.
+/// NOTE: the vertex coordinates are in the same scale as the original image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Vertex {
+    /// X coordinate.
+    #[prost(int32, tag = "1")]
+    pub x: i32,
+    /// Y coordinate.
+    #[prost(int32, tag = "2")]
+    pub y: i32,
+}
+/// A vertex represents a 2D point in the image.
+/// NOTE: the normalized vertex coordinates are relative to the original image
+/// and range from 0 to 1.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NormalizedVertex {
+    /// X coordinate.
+    #[prost(float, tag = "1")]
+    pub x: f32,
+    /// Y coordinate.
+    #[prost(float, tag = "2")]
+    pub y: f32,
+}
+/// A bounding polygon for the detected image annotation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BoundingPoly {
+    /// The bounding polygon vertices.
+    #[prost(message, repeated, tag = "1")]
+    pub vertices: ::std::vec::Vec<Vertex>,
+    /// The bounding polygon normalized vertices.
+    #[prost(message, repeated, tag = "2")]
+    pub normalized_vertices: ::std::vec::Vec<NormalizedVertex>,
+}
+/// A 3D position in the image, used primarily for Face detection landmarks.
+/// A valid Position must have both x and y coordinates.
+/// The position coordinates are in the same scale as the original image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Position {
+    /// X coordinate.
+    #[prost(float, tag = "1")]
+    pub x: f32,
+    /// Y coordinate.
+    #[prost(float, tag = "2")]
+    pub y: f32,
+    /// Z coordinate (or depth).
+    #[prost(float, tag = "3")]
+    pub z: f32,
+}
+/// TextAnnotation contains a structured representation of OCR extracted text.
+/// The hierarchy of an OCR extracted text structure is like this:
+///     TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol
+/// Each structural component, starting from Page, may further have their own
+/// properties. Properties describe detected languages, breaks etc.. Please refer
+/// to the
+/// [TextAnnotation.TextProperty][google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty]
+/// message definition below for more detail.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextAnnotation {
+    /// List of pages detected by OCR.
+    #[prost(message, repeated, tag = "1")]
+    pub pages: ::std::vec::Vec<Page>,
+    /// UTF-8 text detected on the pages.
+    #[prost(string, tag = "2")]
+    pub text: std::string::String,
+}
+pub mod text_annotation {
+    /// Detected language for a structural component.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DetectedLanguage {
+        /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+        /// information, see
+        /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        #[prost(string, tag = "1")]
+        pub language_code: std::string::String,
+        /// Confidence of detected language. Range [0, 1].
+        #[prost(float, tag = "2")]
+        pub confidence: f32,
+    }
+    /// Detected start or end of a structural component.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DetectedBreak {
+        /// Detected break type.
+        #[prost(enumeration = "detected_break::BreakType", tag = "1")]
+        pub r#type: i32,
+        /// True if break prepends the element.
+        #[prost(bool, tag = "2")]
+        pub is_prefix: bool,
+    }
+    pub mod detected_break {
+        /// Enum to denote the type of break found. New line, space etc.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum BreakType {
+            /// Unknown break label type.
+            Unknown = 0,
+            /// Regular space.
+            Space = 1,
+            /// Sure space (very wide).
+            SureSpace = 2,
+            /// Line-wrapping break.
+            EolSureSpace = 3,
+            /// End-line hyphen that is not present in text; does not co-occur with
+            /// `SPACE`, `LEADER_SPACE`, or `LINE_BREAK`.
+            Hyphen = 4,
+            /// Line break that ends a paragraph.
+            LineBreak = 5,
+        }
+    }
+    /// Additional information detected on the structural component.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TextProperty {
+        /// A list of detected languages together with confidence.
+        #[prost(message, repeated, tag = "1")]
+        pub detected_languages: ::std::vec::Vec<DetectedLanguage>,
+        /// Detected start or end of a text segment.
+        #[prost(message, optional, tag = "2")]
+        pub detected_break: ::std::option::Option<DetectedBreak>,
+    }
+}
+/// Detected page from OCR.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Page {
+    /// Additional information detected on the page.
+    #[prost(message, optional, tag = "1")]
+    pub property: ::std::option::Option<text_annotation::TextProperty>,
+    /// Page width. For PDFs the unit is points. For images (including
+    /// TIFFs) the unit is pixels.
+    #[prost(int32, tag = "2")]
+    pub width: i32,
+    /// Page height. For PDFs the unit is points. For images (including
+    /// TIFFs) the unit is pixels.
+    #[prost(int32, tag = "3")]
+    pub height: i32,
+    /// List of blocks of text, images etc on this page.
+    #[prost(message, repeated, tag = "4")]
+    pub blocks: ::std::vec::Vec<Block>,
+    /// Confidence of the OCR results on the page. Range [0, 1].
+    #[prost(float, tag = "5")]
+    pub confidence: f32,
+}
+/// Logical element on the page.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Block {
+    /// Additional information detected for the block.
+    #[prost(message, optional, tag = "1")]
+    pub property: ::std::option::Option<text_annotation::TextProperty>,
+    /// The bounding box for the block.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
+    ///
+    /// * when the text is horizontal it might look like:
+    ///
+    ///         0----1
+    ///         |    |
+    ///         3----2
+    ///
+    /// * when it's rotated 180 degrees around the top-left corner it becomes:
+    ///
+    ///         2----3
+    ///         |    |
+    ///         1----0
+    ///
+    ///   and the vertice order will still be (0, 1, 2, 3).
+    #[prost(message, optional, tag = "2")]
+    pub bounding_box: ::std::option::Option<BoundingPoly>,
+    /// List of paragraphs in this block (if this blocks is of type text).
+    #[prost(message, repeated, tag = "3")]
+    pub paragraphs: ::std::vec::Vec<Paragraph>,
+    /// Detected block type (text, image etc) for this block.
+    #[prost(enumeration = "block::BlockType", tag = "4")]
+    pub block_type: i32,
+    /// Confidence of the OCR results on the block. Range [0, 1].
+    #[prost(float, tag = "5")]
+    pub confidence: f32,
+}
+pub mod block {
+    /// Type of a block (text, image etc) as identified by OCR.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum BlockType {
+        /// Unknown block type.
+        Unknown = 0,
+        /// Regular text block.
+        Text = 1,
+        /// Table block.
+        Table = 2,
+        /// Image block.
+        Picture = 3,
+        /// Horizontal/vertical line box.
+        Ruler = 4,
+        /// Barcode block.
+        Barcode = 5,
+    }
+}
+/// Structural unit of text representing a number of words in certain order.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Paragraph {
+    /// Additional information detected for the paragraph.
+    #[prost(message, optional, tag = "1")]
+    pub property: ::std::option::Option<text_annotation::TextProperty>,
+    /// The bounding box for the paragraph.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
+    ///   * when the text is horizontal it might look like:
+    ///      0----1
+    ///      |    |
+    ///      3----2
+    ///   * when it's rotated 180 degrees around the top-left corner it becomes:
+    ///      2----3
+    ///      |    |
+    ///      1----0
+    ///   and the vertice order will still be (0, 1, 2, 3).
+    #[prost(message, optional, tag = "2")]
+    pub bounding_box: ::std::option::Option<BoundingPoly>,
+    /// List of words in this paragraph.
+    #[prost(message, repeated, tag = "3")]
+    pub words: ::std::vec::Vec<Word>,
+    /// Confidence of the OCR results for the paragraph. Range [0, 1].
+    #[prost(float, tag = "4")]
+    pub confidence: f32,
+}
+/// A word representation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Word {
+    /// Additional information detected for the word.
+    #[prost(message, optional, tag = "1")]
+    pub property: ::std::option::Option<text_annotation::TextProperty>,
+    /// The bounding box for the word.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
+    ///   * when the text is horizontal it might look like:
+    ///      0----1
+    ///      |    |
+    ///      3----2
+    ///   * when it's rotated 180 degrees around the top-left corner it becomes:
+    ///      2----3
+    ///      |    |
+    ///      1----0
+    ///   and the vertice order will still be (0, 1, 2, 3).
+    #[prost(message, optional, tag = "2")]
+    pub bounding_box: ::std::option::Option<BoundingPoly>,
+    /// List of symbols in the word.
+    /// The order of the symbols follows the natural reading order.
+    #[prost(message, repeated, tag = "3")]
+    pub symbols: ::std::vec::Vec<Symbol>,
+    /// Confidence of the OCR results for the word. Range [0, 1].
+    #[prost(float, tag = "4")]
+    pub confidence: f32,
+}
+/// A single symbol representation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Symbol {
+    /// Additional information detected for the symbol.
+    #[prost(message, optional, tag = "1")]
+    pub property: ::std::option::Option<text_annotation::TextProperty>,
+    /// The bounding box for the symbol.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
+    ///   * when the text is horizontal it might look like:
+    ///      0----1
+    ///      |    |
+    ///      3----2
+    ///   * when it's rotated 180 degrees around the top-left corner it becomes:
+    ///      2----3
+    ///      |    |
+    ///      1----0
+    ///   and the vertice order will still be (0, 1, 2, 3).
+    #[prost(message, optional, tag = "2")]
+    pub bounding_box: ::std::option::Option<BoundingPoly>,
+    /// The actual UTF-8 representation of the symbol.
+    #[prost(string, tag = "3")]
+    pub text: std::string::String,
+    /// Confidence of the OCR results for the symbol. Range [0, 1].
+    #[prost(float, tag = "4")]
+    pub confidence: f32,
+}
+/// Relevant information for the image from the Internet.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WebDetection {
+    /// Deduced entities from similar images on the Internet.
+    #[prost(message, repeated, tag = "1")]
+    pub web_entities: ::std::vec::Vec<web_detection::WebEntity>,
+    /// Fully matching images from the Internet.
+    /// Can include resized copies of the query image.
+    #[prost(message, repeated, tag = "2")]
+    pub full_matching_images: ::std::vec::Vec<web_detection::WebImage>,
+    /// Partial matching images from the Internet.
+    /// Those images are similar enough to share some key-point features. For
+    /// example an original image will likely have partial matching for its crops.
+    #[prost(message, repeated, tag = "3")]
+    pub partial_matching_images: ::std::vec::Vec<web_detection::WebImage>,
+    /// Web pages containing the matching images from the Internet.
+    #[prost(message, repeated, tag = "4")]
+    pub pages_with_matching_images: ::std::vec::Vec<web_detection::WebPage>,
+    /// The visually similar image results.
+    #[prost(message, repeated, tag = "6")]
+    pub visually_similar_images: ::std::vec::Vec<web_detection::WebImage>,
+    /// Best guess text labels for the request image.
+    #[prost(message, repeated, tag = "8")]
+    pub best_guess_labels: ::std::vec::Vec<web_detection::WebLabel>,
+}
+pub mod web_detection {
+    /// Entity deduced from similar images on the Internet.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WebEntity {
+        /// Opaque entity ID.
+        #[prost(string, tag = "1")]
+        pub entity_id: std::string::String,
+        /// Overall relevancy score for the entity.
+        /// Not normalized and not comparable across different image queries.
+        #[prost(float, tag = "2")]
+        pub score: f32,
+        /// Canonical description of the entity, in English.
+        #[prost(string, tag = "3")]
+        pub description: std::string::String,
+    }
+    /// Metadata for online images.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WebImage {
+        /// The result image URL.
+        #[prost(string, tag = "1")]
+        pub url: std::string::String,
+        /// (Deprecated) Overall relevancy score for the image.
+        #[prost(float, tag = "2")]
+        pub score: f32,
+    }
+    /// Metadata for web pages.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WebPage {
+        /// The result web page URL.
+        #[prost(string, tag = "1")]
+        pub url: std::string::String,
+        /// (Deprecated) Overall relevancy score for the web page.
+        #[prost(float, tag = "2")]
+        pub score: f32,
+        /// Title for the web page, may contain HTML markups.
+        #[prost(string, tag = "3")]
+        pub page_title: std::string::String,
+        /// Fully matching images on the page.
+        /// Can include resized copies of the query image.
+        #[prost(message, repeated, tag = "4")]
+        pub full_matching_images: ::std::vec::Vec<WebImage>,
+        /// Partial matching images on the page.
+        /// Those images are similar enough to share some key-point features. For
+        /// example an original image will likely have partial matching for its
+        /// crops.
+        #[prost(message, repeated, tag = "5")]
+        pub partial_matching_images: ::std::vec::Vec<WebImage>,
+    }
+    /// Label to provide extra metadata for the web detection.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WebLabel {
+        /// Label for extra metadata.
+        #[prost(string, tag = "1")]
+        pub label: std::string::String,
+        /// The BCP-47 language code for `label`, such as "en-US" or "sr-Latn".
+        /// For more information, see
+        /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        #[prost(string, tag = "2")]
+        pub language_code: std::string::String,
+    }
+}
+/// The type of Google Cloud Vision API detection to perform, and the maximum
+/// number of results to return for that type. Multiple `Feature` objects can
+/// be specified in the `features` list.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Feature {
+    /// The feature type.
+    #[prost(enumeration = "feature::Type", tag = "1")]
+    pub r#type: i32,
+    /// Maximum number of results of this type. Does not apply to
+    /// `TEXT_DETECTION`, `DOCUMENT_TEXT_DETECTION`, or `CROP_HINTS`.
+    #[prost(int32, tag = "2")]
+    pub max_results: i32,
+    /// Model to use for the feature.
+    /// Supported values: "builtin/stable" (the default if unset) and
+    /// "builtin/latest".
+    #[prost(string, tag = "3")]
+    pub model: std::string::String,
+}
+pub mod feature {
+    /// Type of Google Cloud Vision API feature to be extracted.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified feature type.
+        Unspecified = 0,
+        /// Run face detection.
+        FaceDetection = 1,
+        /// Run landmark detection.
+        LandmarkDetection = 2,
+        /// Run logo detection.
+        LogoDetection = 3,
+        /// Run label detection.
+        LabelDetection = 4,
+        /// Run text detection / optical character recognition (OCR). Text detection
+        /// is optimized for areas of text within a larger image; if the image is
+        /// a document, use `DOCUMENT_TEXT_DETECTION` instead.
+        TextDetection = 5,
+        /// Run dense text document OCR. Takes precedence when both
+        /// `DOCUMENT_TEXT_DETECTION` and `TEXT_DETECTION` are present.
+        DocumentTextDetection = 11,
+        /// Run Safe Search to detect potentially unsafe
+        /// or undesirable content.
+        SafeSearchDetection = 6,
+        /// Compute a set of image properties, such as the
+        /// image's dominant colors.
+        ImageProperties = 7,
+        /// Run crop hints.
+        CropHints = 9,
+        /// Run web detection.
+        WebDetection = 10,
+    }
+}
+/// External image source (Google Cloud Storage or web URL image location).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageSource {
+    /// **Use `image_uri` instead.**
+    ///
+    /// The Google Cloud Storage  URI of the form
+    /// `gs://bucket_name/object_name`. Object versioning is not supported. See
+    /// [Google Cloud Storage Request
+    /// URIs](https://cloud.google.com/storage/docs/reference-uris) for more info.
+    #[prost(string, tag = "1")]
+    pub gcs_image_uri: std::string::String,
+    /// The URI of the source image. Can be either:
+    ///
+    /// 1. A Google Cloud Storage URI of the form
+    ///    `gs://bucket_name/object_name`. Object versioning is not supported. See
+    ///    [Google Cloud Storage Request
+    ///    URIs](https://cloud.google.com/storage/docs/reference-uris) for more
+    ///    info.
+    ///
+    /// 2. A publicly-accessible image HTTP/HTTPS URL. When fetching images from
+    ///    HTTP/HTTPS URLs, Google cannot guarantee that the request will be
+    ///    completed. Your request may fail if the specified host denies the
+    ///    request (e.g. due to request throttling or DOS prevention), or if Google
+    ///    throttles requests to the site for abuse prevention. You should not
+    ///    depend on externally-hosted images for production applications.
+    ///
+    /// When both `gcs_image_uri` and `image_uri` are specified, `image_uri` takes
+    /// precedence.
+    #[prost(string, tag = "2")]
+    pub image_uri: std::string::String,
+}
+/// Client image to perform Google Cloud Vision API tasks over.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Image {
+    /// Image content, represented as a stream of bytes.
+    /// Note: As with all `bytes` fields, protobuffers use a pure binary
+    /// representation, whereas JSON representations use base64.
+    #[prost(bytes, tag = "1")]
+    pub content: std::vec::Vec<u8>,
+    /// Google Cloud Storage image location, or publicly-accessible image
+    /// URL. If both `content` and `source` are provided for an image, `content`
+    /// takes precedence and is used to perform the image annotation request.
+    #[prost(message, optional, tag = "2")]
+    pub source: ::std::option::Option<ImageSource>,
+}
+/// A face annotation object contains the results of face detection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FaceAnnotation {
+    /// The bounding polygon around the face. The coordinates of the bounding box
+    /// are in the original image's scale, as returned in `ImageParams`.
+    /// The bounding box is computed to "frame" the face in accordance with human
+    /// expectations. It is based on the landmarker results.
+    /// Note that one or more x and/or y coordinates may not be generated in the
+    /// `BoundingPoly` (the polygon will be unbounded) if only a partial face
+    /// appears in the image to be annotated.
+    #[prost(message, optional, tag = "1")]
+    pub bounding_poly: ::std::option::Option<BoundingPoly>,
+    /// The `fd_bounding_poly` bounding polygon is tighter than the
+    /// `boundingPoly`, and encloses only the skin part of the face. Typically, it
+    /// is used to eliminate the face from any image analysis that detects the
+    /// "amount of skin" visible in an image. It is not based on the
+    /// landmarker results, only on the initial face detection, hence
+    /// the <code>fd</code> (face detection) prefix.
+    #[prost(message, optional, tag = "2")]
+    pub fd_bounding_poly: ::std::option::Option<BoundingPoly>,
+    /// Detected face landmarks.
+    #[prost(message, repeated, tag = "3")]
+    pub landmarks: ::std::vec::Vec<face_annotation::Landmark>,
+    /// Roll angle, which indicates the amount of clockwise/anti-clockwise rotation
+    /// of the face relative to the image vertical about the axis perpendicular to
+    /// the face. Range [-180,180].
+    #[prost(float, tag = "4")]
+    pub roll_angle: f32,
+    /// Yaw angle, which indicates the leftward/rightward angle that the face is
+    /// pointing relative to the vertical plane perpendicular to the image. Range
+    /// [-180,180].
+    #[prost(float, tag = "5")]
+    pub pan_angle: f32,
+    /// Pitch angle, which indicates the upwards/downwards angle that the face is
+    /// pointing relative to the image's horizontal plane. Range [-180,180].
+    #[prost(float, tag = "6")]
+    pub tilt_angle: f32,
+    /// Detection confidence. Range [0, 1].
+    #[prost(float, tag = "7")]
+    pub detection_confidence: f32,
+    /// Face landmarking confidence. Range [0, 1].
+    #[prost(float, tag = "8")]
+    pub landmarking_confidence: f32,
+    /// Joy likelihood.
+    #[prost(enumeration = "Likelihood", tag = "9")]
+    pub joy_likelihood: i32,
+    /// Sorrow likelihood.
+    #[prost(enumeration = "Likelihood", tag = "10")]
+    pub sorrow_likelihood: i32,
+    /// Anger likelihood.
+    #[prost(enumeration = "Likelihood", tag = "11")]
+    pub anger_likelihood: i32,
+    /// Surprise likelihood.
+    #[prost(enumeration = "Likelihood", tag = "12")]
+    pub surprise_likelihood: i32,
+    /// Under-exposed likelihood.
+    #[prost(enumeration = "Likelihood", tag = "13")]
+    pub under_exposed_likelihood: i32,
+    /// Blurred likelihood.
+    #[prost(enumeration = "Likelihood", tag = "14")]
+    pub blurred_likelihood: i32,
+    /// Headwear likelihood.
+    #[prost(enumeration = "Likelihood", tag = "15")]
+    pub headwear_likelihood: i32,
+}
+pub mod face_annotation {
+    /// A face-specific landmark (for example, a face feature).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Landmark {
+        /// Face landmark type.
+        #[prost(enumeration = "landmark::Type", tag = "3")]
+        pub r#type: i32,
+        /// Face landmark position.
+        #[prost(message, optional, tag = "4")]
+        pub position: ::std::option::Option<super::Position>,
+    }
+    pub mod landmark {
+        /// Face landmark (feature) type.
+        /// Left and right are defined from the vantage of the viewer of the image
+        /// without considering mirror projections typical of photos. So, `LEFT_EYE`,
+        /// typically, is the person's right eye.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum Type {
+            /// Unknown face landmark detected. Should not be filled.
+            UnknownLandmark = 0,
+            /// Left eye.
+            LeftEye = 1,
+            /// Right eye.
+            RightEye = 2,
+            /// Left of left eyebrow.
+            LeftOfLeftEyebrow = 3,
+            /// Right of left eyebrow.
+            RightOfLeftEyebrow = 4,
+            /// Left of right eyebrow.
+            LeftOfRightEyebrow = 5,
+            /// Right of right eyebrow.
+            RightOfRightEyebrow = 6,
+            /// Midpoint between eyes.
+            MidpointBetweenEyes = 7,
+            /// Nose tip.
+            NoseTip = 8,
+            /// Upper lip.
+            UpperLip = 9,
+            /// Lower lip.
+            LowerLip = 10,
+            /// Mouth left.
+            MouthLeft = 11,
+            /// Mouth right.
+            MouthRight = 12,
+            /// Mouth center.
+            MouthCenter = 13,
+            /// Nose, bottom right.
+            NoseBottomRight = 14,
+            /// Nose, bottom left.
+            NoseBottomLeft = 15,
+            /// Nose, bottom center.
+            NoseBottomCenter = 16,
+            /// Left eye, top boundary.
+            LeftEyeTopBoundary = 17,
+            /// Left eye, right corner.
+            LeftEyeRightCorner = 18,
+            /// Left eye, bottom boundary.
+            LeftEyeBottomBoundary = 19,
+            /// Left eye, left corner.
+            LeftEyeLeftCorner = 20,
+            /// Right eye, top boundary.
+            RightEyeTopBoundary = 21,
+            /// Right eye, right corner.
+            RightEyeRightCorner = 22,
+            /// Right eye, bottom boundary.
+            RightEyeBottomBoundary = 23,
+            /// Right eye, left corner.
+            RightEyeLeftCorner = 24,
+            /// Left eyebrow, upper midpoint.
+            LeftEyebrowUpperMidpoint = 25,
+            /// Right eyebrow, upper midpoint.
+            RightEyebrowUpperMidpoint = 26,
+            /// Left ear tragion.
+            LeftEarTragion = 27,
+            /// Right ear tragion.
+            RightEarTragion = 28,
+            /// Left eye pupil.
+            LeftEyePupil = 29,
+            /// Right eye pupil.
+            RightEyePupil = 30,
+            /// Forehead glabella.
+            ForeheadGlabella = 31,
+            /// Chin gnathion.
+            ChinGnathion = 32,
+            /// Chin left gonion.
+            ChinLeftGonion = 33,
+            /// Chin right gonion.
+            ChinRightGonion = 34,
+        }
+    }
+}
+/// Detected entity location information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationInfo {
+    /// lat/long location coordinates.
+    #[prost(message, optional, tag = "1")]
+    pub lat_lng: ::std::option::Option<super::super::super::r#type::LatLng>,
+}
+/// A `Property` consists of a user-supplied name/value pair.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Property {
+    /// Name of the property.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Value of the property.
+    #[prost(string, tag = "2")]
+    pub value: std::string::String,
+    /// Value of numeric properties.
+    #[prost(uint64, tag = "3")]
+    pub uint64_value: u64,
+}
+/// Set of detected entity features.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntityAnnotation {
+    /// Opaque entity ID. Some IDs may be available in
+    /// [Google Knowledge Graph Search
+    /// API](https://developers.google.com/knowledge-graph/).
+    #[prost(string, tag = "1")]
+    pub mid: std::string::String,
+    /// The language code for the locale in which the entity textual
+    /// `description` is expressed.
+    #[prost(string, tag = "2")]
+    pub locale: std::string::String,
+    /// Entity textual description, expressed in its `locale` language.
+    #[prost(string, tag = "3")]
+    pub description: std::string::String,
+    /// Overall score of the result. Range [0, 1].
+    #[prost(float, tag = "4")]
+    pub score: f32,
+    /// **Deprecated. Use `score` instead.**
+    /// The accuracy of the entity detection in an image.
+    /// For example, for an image in which the "Eiffel Tower" entity is detected,
+    /// this field represents the confidence that there is a tower in the query
+    /// image. Range [0, 1].
+    #[prost(float, tag = "5")]
+    pub confidence: f32,
+    /// The relevancy of the ICA (Image Content Annotation) label to the
+    /// image. For example, the relevancy of "tower" is likely higher to an image
+    /// containing the detected "Eiffel Tower" than to an image containing a
+    /// detected distant towering building, even though the confidence that
+    /// there is a tower in each image may be the same. Range [0, 1].
+    #[prost(float, tag = "6")]
+    pub topicality: f32,
+    /// Image region to which this entity belongs. Not produced
+    /// for `LABEL_DETECTION` features.
+    #[prost(message, optional, tag = "7")]
+    pub bounding_poly: ::std::option::Option<BoundingPoly>,
+    /// The location information for the detected entity. Multiple
+    /// `LocationInfo` elements can be present because one location may
+    /// indicate the location of the scene in the image, and another location
+    /// may indicate the location of the place where the image was taken.
+    /// Location information is usually present for landmarks.
+    #[prost(message, repeated, tag = "8")]
+    pub locations: ::std::vec::Vec<LocationInfo>,
+    /// Some entities may have optional user-supplied `Property` (name/value)
+    /// fields, such a score or string that qualifies the entity.
+    #[prost(message, repeated, tag = "9")]
+    pub properties: ::std::vec::Vec<Property>,
+}
+/// Set of features pertaining to the image, computed by computer vision
+/// methods over safe-search verticals (for example, adult, spoof, medical,
+/// violence).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafeSearchAnnotation {
+    /// Represents the adult content likelihood for the image. Adult content may
+    /// contain elements such as nudity, pornographic images or cartoons, or
+    /// sexual activities.
+    #[prost(enumeration = "Likelihood", tag = "1")]
+    pub adult: i32,
+    /// Spoof likelihood. The likelihood that an modification
+    /// was made to the image's canonical version to make it appear
+    /// funny or offensive.
+    #[prost(enumeration = "Likelihood", tag = "2")]
+    pub spoof: i32,
+    /// Likelihood that this is a medical image.
+    #[prost(enumeration = "Likelihood", tag = "3")]
+    pub medical: i32,
+    /// Likelihood that this image contains violent content.
+    #[prost(enumeration = "Likelihood", tag = "4")]
+    pub violence: i32,
+    /// Likelihood that the request image contains racy content. Racy content may
+    /// include (but is not limited to) skimpy or sheer clothing, strategically
+    /// covered nudity, lewd or provocative poses, or close-ups of sensitive
+    /// body areas.
+    #[prost(enumeration = "Likelihood", tag = "9")]
+    pub racy: i32,
+}
+/// Rectangle determined by min and max `LatLng` pairs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LatLongRect {
+    /// Min lat/long pair.
+    #[prost(message, optional, tag = "1")]
+    pub min_lat_lng: ::std::option::Option<super::super::super::r#type::LatLng>,
+    /// Max lat/long pair.
+    #[prost(message, optional, tag = "2")]
+    pub max_lat_lng: ::std::option::Option<super::super::super::r#type::LatLng>,
+}
+/// Color information consists of RGB channels, score, and the fraction of
+/// the image that the color occupies in the image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ColorInfo {
+    /// RGB components of the color.
+    #[prost(message, optional, tag = "1")]
+    pub color: ::std::option::Option<super::super::super::r#type::Color>,
+    /// Image-specific score for this color. Value in range [0, 1].
+    #[prost(float, tag = "2")]
+    pub score: f32,
+    /// The fraction of pixels the color occupies in the image.
+    /// Value in range [0, 1].
+    #[prost(float, tag = "3")]
+    pub pixel_fraction: f32,
+}
+/// Set of dominant colors and their corresponding scores.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DominantColorsAnnotation {
+    /// RGB color values with their score and pixel fraction.
+    #[prost(message, repeated, tag = "1")]
+    pub colors: ::std::vec::Vec<ColorInfo>,
+}
+/// Stores image properties, such as dominant colors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageProperties {
+    /// If present, dominant colors completed successfully.
+    #[prost(message, optional, tag = "1")]
+    pub dominant_colors: ::std::option::Option<DominantColorsAnnotation>,
+}
+/// Single crop hint that is used to generate a new crop when serving an image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CropHint {
+    /// The bounding polygon for the crop region. The coordinates of the bounding
+    /// box are in the original image's scale, as returned in `ImageParams`.
+    #[prost(message, optional, tag = "1")]
+    pub bounding_poly: ::std::option::Option<BoundingPoly>,
+    /// Confidence of this being a salient region.  Range [0, 1].
+    #[prost(float, tag = "2")]
+    pub confidence: f32,
+    /// Fraction of importance of this salient region with respect to the original
+    /// image.
+    #[prost(float, tag = "3")]
+    pub importance_fraction: f32,
+}
+/// Set of crop hints that are used to generate new crops when serving images.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CropHintsAnnotation {
+    /// Crop hint results.
+    #[prost(message, repeated, tag = "1")]
+    pub crop_hints: ::std::vec::Vec<CropHint>,
+}
+/// Parameters for crop hints annotation request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CropHintsParams {
+    /// Aspect ratios in floats, representing the ratio of the width to the height
+    /// of the image. For example, if the desired aspect ratio is 4/3, the
+    /// corresponding float value should be 1.33333.  If not specified, the
+    /// best possible crop is returned. The number of provided aspect ratios is
+    /// limited to a maximum of 16; any aspect ratios provided after the 16th are
+    /// ignored.
+    #[prost(float, repeated, tag = "1")]
+    pub aspect_ratios: ::std::vec::Vec<f32>,
+}
+/// Parameters for web detection request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WebDetectionParams {
+    /// Whether to include results derived from the geo information in the image.
+    #[prost(bool, tag = "2")]
+    pub include_geo_results: bool,
+}
+/// Image context and/or feature-specific parameters.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageContext {
+    /// Not used.
+    #[prost(message, optional, tag = "1")]
+    pub lat_long_rect: ::std::option::Option<LatLongRect>,
+    /// List of languages to use for TEXT_DETECTION. In most cases, an empty value
+    /// yields the best results since it enables automatic language detection. For
+    /// languages based on the Latin alphabet, setting `language_hints` is not
+    /// needed. In rare cases, when the language of the text in the image is known,
+    /// setting a hint will help get better results (although it will be a
+    /// significant hindrance if the hint is wrong). Text detection returns an
+    /// error if one or more of the specified languages is not one of the
+    /// [supported languages](https://cloud.google.com/vision/docs/languages).
+    #[prost(string, repeated, tag = "2")]
+    pub language_hints: ::std::vec::Vec<std::string::String>,
+    /// Parameters for crop hints annotation request.
+    #[prost(message, optional, tag = "4")]
+    pub crop_hints_params: ::std::option::Option<CropHintsParams>,
+    /// Parameters for web detection.
+    #[prost(message, optional, tag = "6")]
+    pub web_detection_params: ::std::option::Option<WebDetectionParams>,
+}
+/// Request for performing Google Cloud Vision API tasks over a user-provided
+/// image, with user-requested features.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnnotateImageRequest {
+    /// The image to be processed.
+    #[prost(message, optional, tag = "1")]
+    pub image: ::std::option::Option<Image>,
+    /// Requested features.
+    #[prost(message, repeated, tag = "2")]
+    pub features: ::std::vec::Vec<Feature>,
+    /// Additional context that may accompany the image.
+    #[prost(message, optional, tag = "3")]
+    pub image_context: ::std::option::Option<ImageContext>,
+}
+/// If an image was produced from a file (e.g. a PDF), this message gives
+/// information about the source of that image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageAnnotationContext {
+    /// The URI of the file used to produce the image.
+    #[prost(string, tag = "1")]
+    pub uri: std::string::String,
+    /// If the file was a PDF or TIFF, this field gives the page number within
+    /// the file used to produce the image.
+    #[prost(int32, tag = "2")]
+    pub page_number: i32,
+}
+/// Response to an image annotation request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnnotateImageResponse {
+    /// If present, face detection has completed successfully.
+    #[prost(message, repeated, tag = "1")]
+    pub face_annotations: ::std::vec::Vec<FaceAnnotation>,
+    /// If present, landmark detection has completed successfully.
+    #[prost(message, repeated, tag = "2")]
+    pub landmark_annotations: ::std::vec::Vec<EntityAnnotation>,
+    /// If present, logo detection has completed successfully.
+    #[prost(message, repeated, tag = "3")]
+    pub logo_annotations: ::std::vec::Vec<EntityAnnotation>,
+    /// If present, label detection has completed successfully.
+    #[prost(message, repeated, tag = "4")]
+    pub label_annotations: ::std::vec::Vec<EntityAnnotation>,
+    /// If present, text (OCR) detection has completed successfully.
+    #[prost(message, repeated, tag = "5")]
+    pub text_annotations: ::std::vec::Vec<EntityAnnotation>,
+    /// If present, text (OCR) detection or document (OCR) text detection has
+    /// completed successfully.
+    /// This annotation provides the structural hierarchy for the OCR detected
+    /// text.
+    #[prost(message, optional, tag = "12")]
+    pub full_text_annotation: ::std::option::Option<TextAnnotation>,
+    /// If present, safe-search annotation has completed successfully.
+    #[prost(message, optional, tag = "6")]
+    pub safe_search_annotation: ::std::option::Option<SafeSearchAnnotation>,
+    /// If present, image properties were extracted successfully.
+    #[prost(message, optional, tag = "8")]
+    pub image_properties_annotation: ::std::option::Option<ImageProperties>,
+    /// If present, crop hints have completed successfully.
+    #[prost(message, optional, tag = "11")]
+    pub crop_hints_annotation: ::std::option::Option<CropHintsAnnotation>,
+    /// If present, web detection has completed successfully.
+    #[prost(message, optional, tag = "13")]
+    pub web_detection: ::std::option::Option<WebDetection>,
+    /// If set, represents the error message for the operation.
+    /// Note that filled-in image annotations are guaranteed to be
+    /// correct, even when `error` is set.
+    #[prost(message, optional, tag = "9")]
+    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    /// If present, contextual information is needed to understand where this image
+    /// comes from.
+    #[prost(message, optional, tag = "21")]
+    pub context: ::std::option::Option<ImageAnnotationContext>,
+}
+/// Response to a single file annotation request. A file may contain one or more
+/// images, which individually have their own responses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnnotateFileResponse {
+    /// Information about the file for which this response is generated.
+    #[prost(message, optional, tag = "1")]
+    pub input_config: ::std::option::Option<InputConfig>,
+    /// Individual responses to images found within the file.
+    #[prost(message, repeated, tag = "2")]
+    pub responses: ::std::vec::Vec<AnnotateImageResponse>,
+}
+/// Multiple image annotation requests are batched into a single service call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchAnnotateImagesRequest {
+    /// Required. Individual image annotation requests for this batch.
+    #[prost(message, repeated, tag = "1")]
+    pub requests: ::std::vec::Vec<AnnotateImageRequest>,
+}
+/// Response to a batch image annotation request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchAnnotateImagesResponse {
+    /// Individual responses to image annotation requests within the batch.
+    #[prost(message, repeated, tag = "1")]
+    pub responses: ::std::vec::Vec<AnnotateImageResponse>,
+}
+/// An offline file annotation request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncAnnotateFileRequest {
+    /// Required. Information about the input file.
+    #[prost(message, optional, tag = "1")]
+    pub input_config: ::std::option::Option<InputConfig>,
+    /// Required. Requested features.
+    #[prost(message, repeated, tag = "2")]
+    pub features: ::std::vec::Vec<Feature>,
+    /// Additional context that may accompany the image(s) in the file.
+    #[prost(message, optional, tag = "3")]
+    pub image_context: ::std::option::Option<ImageContext>,
+    /// Required. The desired output location and metadata (e.g. format).
+    #[prost(message, optional, tag = "4")]
+    pub output_config: ::std::option::Option<OutputConfig>,
+}
+/// The response for a single offline file annotation request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncAnnotateFileResponse {
+    /// The output location and metadata from AsyncAnnotateFileRequest.
+    #[prost(message, optional, tag = "1")]
+    pub output_config: ::std::option::Option<OutputConfig>,
+}
+/// Multiple async file annotation requests are batched into a single service
+/// call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncBatchAnnotateFilesRequest {
+    /// Required. Individual async file annotation requests for this batch.
+    #[prost(message, repeated, tag = "1")]
+    pub requests: ::std::vec::Vec<AsyncAnnotateFileRequest>,
+}
+/// Response to an async batch file annotation request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncBatchAnnotateFilesResponse {
+    /// The list of file annotation responses, one for each request in
+    /// AsyncBatchAnnotateFilesRequest.
+    #[prost(message, repeated, tag = "1")]
+    pub responses: ::std::vec::Vec<AsyncAnnotateFileResponse>,
+}
+/// The desired input location and metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InputConfig {
+    /// The Google Cloud Storage location to read the input from.
+    #[prost(message, optional, tag = "1")]
+    pub gcs_source: ::std::option::Option<GcsSource>,
+    /// The type of the file. Currently only "application/pdf" and "image/tiff"
+    /// are supported. Wildcards are not supported.
+    #[prost(string, tag = "2")]
+    pub mime_type: std::string::String,
+}
+/// The desired output location and metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OutputConfig {
+    /// The Google Cloud Storage location to write the output(s) to.
+    #[prost(message, optional, tag = "1")]
+    pub gcs_destination: ::std::option::Option<GcsDestination>,
+    /// The max number of response protos to put into each output JSON file on GCS.
+    /// The valid range is [1, 100]. If not specified, the default value is 20.
+    ///
+    /// For example, for one pdf file with 100 pages, 100 response protos will
+    /// be generated. If `batch_size` = 20, then 5 json files each
+    /// containing 20 response protos will be written under the prefix
+    /// `gcs_destination`.`uri`.
+    ///
+    /// Currently, batch_size only applies to GcsDestination, with potential future
+    /// support for other output configurations.
+    #[prost(int32, tag = "2")]
+    pub batch_size: i32,
+}
+/// The Google Cloud Storage location where the input will be read from.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsSource {
+    /// Google Cloud Storage URI for the input file. This must only be a GCS
+    /// object. Wildcards are not currently supported.
+    #[prost(string, tag = "1")]
+    pub uri: std::string::String,
+}
+/// The Google Cloud Storage location where the output will be written to.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsDestination {
+    /// Google Cloud Storage URI where the results will be stored. Results will
+    /// be in JSON format and preceded by its corresponding input URI. This field
+    /// can either represent a single file, or a prefix for multiple outputs.
+    /// Prefixes must end in a `/`.
+    ///
+    /// Examples:
+    ///
+    /// *    File: gs://bucket-name/filename.json
+    /// *    Prefix: gs://bucket-name/prefix/here/
+    /// *    File: gs://bucket-name/prefix/here
+    ///
+    /// If multiple outputs, each response is still AnnotateFileResponse, each of
+    /// which contains some subset of the full list of AnnotateImageResponse.
+    /// Multiple outputs can happen if, for example, the output JSON is too large
+    /// and overflows into multiple sharded files.
+    #[prost(string, tag = "1")]
+    pub uri: std::string::String,
+}
+/// Contains metadata for the BatchAnnotateImages operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// Current state of the batch operation.
+    #[prost(enumeration = "operation_metadata::State", tag = "1")]
+    pub state: i32,
+    /// The time when the batch request was received.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// The time when the operation result was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+}
+pub mod operation_metadata {
+    /// Batch operation states.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Invalid.
+        Unspecified = 0,
+        /// Request is received.
+        Created = 1,
+        /// Request is actively being processed.
+        Running = 2,
+        /// The batch processing is done.
+        Done = 3,
+        /// The batch processing was cancelled.
+        Cancelled = 4,
+    }
+}
+/// A bucketized representation of likelihood, which is intended to give clients
+/// highly stable results across model upgrades.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Likelihood {
+    /// Unknown likelihood.
+    Unknown = 0,
+    /// It is very unlikely that the image belongs to the specified vertical.
+    VeryUnlikely = 1,
+    /// It is unlikely that the image belongs to the specified vertical.
+    Unlikely = 2,
+    /// It is possible that the image belongs to the specified vertical.
+    Possible = 3,
+    /// It is likely that the image belongs to the specified vertical.
+    Likely = 4,
+    /// It is very likely that the image belongs to the specified vertical.
+    VeryLikely = 5,
+}
+#[doc = r" Generated client implementations."]
+pub mod image_annotator_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service that performs Google Cloud Vision API detection tasks over client"]
+    #[doc = " images, such as face, landmark, logo, label, and text detection. The"]
+    #[doc = " ImageAnnotator service returns detected entities from the images."]
+    pub struct ImageAnnotatorClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ImageAnnotatorClient<tonic::transport::Channel> {
+        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ImageAnnotatorClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Run image detection and annotation for a batch of images."]
+        pub async fn batch_annotate_images(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchAnnotateImagesRequest>,
+        ) -> Result<tonic::Response<super::BatchAnnotateImagesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vision.v1p2beta1.ImageAnnotator/BatchAnnotateImages",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Run async image detection and annotation for a list of generic files (e.g."]
+        #[doc = " PDF) which may contain multiple pages and multiple images per page."]
+        #[doc = " Progress and results can be retrieved through the"]
+        #[doc = " `google.longrunning.Operations` interface."]
+        #[doc = " `Operation.metadata` contains `OperationMetadata` (metadata)."]
+        #[doc = " `Operation.response` contains `AsyncBatchAnnotateFilesResponse` (results)."]
+        pub async fn async_batch_annotate_files(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AsyncBatchAnnotateFilesRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vision.v1p2beta1.ImageAnnotator/AsyncBatchAnnotateFiles",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for ImageAnnotatorClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for ImageAnnotatorClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "ImageAnnotatorClient {{ ... }}")
+        }
+    }
+}
+#[doc = r" Generated server implementations."]
+pub mod image_annotator_server {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = "Generated trait containing gRPC methods that should be implemented for use with ImageAnnotatorServer."]
+    #[async_trait]
+    pub trait ImageAnnotator: Send + Sync + 'static {
+        #[doc = " Run image detection and annotation for a batch of images."]
+        async fn batch_annotate_images(
+            &self,
+            request: tonic::Request<super::BatchAnnotateImagesRequest>,
+        ) -> Result<tonic::Response<super::BatchAnnotateImagesResponse>, tonic::Status>;
+        #[doc = " Run async image detection and annotation for a list of generic files (e.g."]
+        #[doc = " PDF) which may contain multiple pages and multiple images per page."]
+        #[doc = " Progress and results can be retrieved through the"]
+        #[doc = " `google.longrunning.Operations` interface."]
+        #[doc = " `Operation.metadata` contains `OperationMetadata` (metadata)."]
+        #[doc = " `Operation.response` contains `AsyncBatchAnnotateFilesResponse` (results)."]
+        async fn async_batch_annotate_files(
+            &self,
+            request: tonic::Request<super::AsyncBatchAnnotateFilesRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+    }
+    #[doc = " Service that performs Google Cloud Vision API detection tasks over client"]
+    #[doc = " images, such as face, landmark, logo, label, and text detection. The"]
+    #[doc = " ImageAnnotator service returns detected entities from the images."]
+    #[derive(Debug)]
+    #[doc(hidden)]
+    pub struct ImageAnnotatorServer<T: ImageAnnotator> {
+        inner: _Inner<T>,
+    }
+    struct _Inner<T>(Arc<T>, Option<tonic::Interceptor>);
+    impl<T: ImageAnnotator> ImageAnnotatorServer<T> {
+        pub fn new(inner: T) -> Self {
+            let inner = Arc::new(inner);
+            let inner = _Inner(inner, None);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = Arc::new(inner);
+            let inner = _Inner(inner, Some(interceptor.into()));
+            Self { inner }
+        }
+    }
+    impl<T, B> Service<http::Request<B>> for ImageAnnotatorServer<T>
+    where
+        T: ImageAnnotator,
+        B: HttpBody + Send + Sync + 'static,
+        B::Error: Into<StdError> + Send + 'static,
+    {
+        type Response = http::Response<tonic::body::BoxBody>;
+        type Error = Never;
+        type Future = BoxFuture<Self::Response, Self::Error>;
+        fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+            Poll::Ready(Ok(()))
+        }
+        fn call(&mut self, req: http::Request<B>) -> Self::Future {
+            let inner = self.inner.clone();
+            match req.uri().path() {
+                "/google.cloud.vision.v1p2beta1.ImageAnnotator/BatchAnnotateImages" => {
+                    #[allow(non_camel_case_types)]
+                    struct BatchAnnotateImagesSvc<T: ImageAnnotator>(pub Arc<T>);
+                    impl<T: ImageAnnotator>
+                        tonic::server::UnaryService<super::BatchAnnotateImagesRequest>
+                        for BatchAnnotateImagesSvc<T>
+                    {
+                        type Response = super::BatchAnnotateImagesResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::BatchAnnotateImagesRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.batch_annotate_images(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = BatchAnnotateImagesSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.vision.v1p2beta1.ImageAnnotator/AsyncBatchAnnotateFiles" => {
+                    #[allow(non_camel_case_types)]
+                    struct AsyncBatchAnnotateFilesSvc<T: ImageAnnotator>(pub Arc<T>);
+                    impl<T: ImageAnnotator>
+                        tonic::server::UnaryService<super::AsyncBatchAnnotateFilesRequest>
+                        for AsyncBatchAnnotateFilesSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::AsyncBatchAnnotateFilesRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut =
+                                async move { inner.async_batch_annotate_files(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = AsyncBatchAnnotateFilesSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                _ => Box::pin(async move {
+                    Ok(http::Response::builder()
+                        .status(200)
+                        .header("grpc-status", "12")
+                        .body(tonic::body::BoxBody::empty())
+                        .unwrap())
+                }),
+            }
+        }
+    }
+    impl<T: ImageAnnotator> Clone for ImageAnnotatorServer<T> {
+        fn clone(&self) -> Self {
+            let inner = self.inner.clone();
+            Self { inner }
+        }
+    }
+    impl<T: ImageAnnotator> Clone for _Inner<T> {
+        fn clone(&self) -> Self {
+            Self(self.0.clone(), self.1.clone())
+        }
+    }
+    impl<T: std::fmt::Debug> std::fmt::Debug for _Inner<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "{:?}", self.0)
+        }
+    }
+    impl<T: ImageAnnotator> tonic::transport::NamedService for ImageAnnotatorServer<T> {
+        const NAME: &'static str = "google.cloud.vision.v1p2beta1.ImageAnnotator";
+    }
+}
