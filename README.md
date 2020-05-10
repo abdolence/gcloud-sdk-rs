@@ -48,10 +48,10 @@ pub mod google {
 
 In addition, multiple features can be specified.
 
-The list of available features can be found [here](./blob/master/googapis/Cargo.toml#L23-L235).
+The list of available features can be found [here](./googapis/Cargo.toml#L23-L235).
 
 ## Example
-The complete code can be found [here](./tree/master/examples/spanner-admin).
+The complete code can be found [here](./examples/spanner-admin).
 
 Cargo.toml:
 ```toml
