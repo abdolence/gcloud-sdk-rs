@@ -12,8 +12,8 @@ This library contains all the code generated from the Google API.
 When using each product API, you must explicitly include it in your build using a feature flag.
 For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub), write `features = ["google.pubsub.v1"]` to Cargo.toml.
 
-The feature name is the package name of each proto file, but if you want to include Rust's keyword, you need to write it in raw identifier.
-Packages on which the specified package depends are automatically included in the compilation.
+The feature name is the package name of each proto file.
+If you specify a package, it will automatically load the dependent packages and include them in the build.
 It means that `features = ["google.spanner.admin.database.v1"]` is the same as the code below:
 ```rust
 pub mod google {
