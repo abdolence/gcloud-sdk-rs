@@ -13,7 +13,7 @@ pub struct Package {
 
 impl fmt::Debug for Package {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "\"{}\"", self.escaped)
+        write!(f, "\"{}\"", self.raw)
     }
 }
 
@@ -92,9 +92,7 @@ impl Module {
                 .imported_by
                 .iter()
                 .map(|p| p.feature_name())
-                .collect::<HashSet<_>>();
-            attr.insert(self.package.feature_name());
-            let mut attr = attr.into_iter().collect::<Vec<_>>();
+                .collect::<Vec<_>>();
             attr.sort();
             let attr = attr
                 .into_iter()
@@ -324,15 +322,13 @@ fn proto_rec(root: PathBuf, path: PathBuf, map: &mut HashMap<PathBuf, Proto>) ->
 }
 
 fn add_deps_rec(src: &Proto, proto: &Proto, map: &mut HashMap<Package, HashSet<Package>>) {
-    for import in proto.imports.iter() {
-        let e = map
-            .entry(import.package.clone())
-            .or_insert_with(HashSet::new);
-        e.insert(src.package.clone());
+    let e = map
+        .entry(proto.package.clone())
+        .or_insert_with(HashSet::new);
+    e.insert(src.package.clone());
 
-        for import in import.imports.iter() {
-            add_deps_rec(src, &import, map);
-        }
+    for import in proto.imports.iter() {
+        add_deps_rec(src, &import, map);
     }
 }
 
@@ -551,18 +547,21 @@ mod tests {
             map.insert("b".into(), {
                 let mut set = HashSet::new();
                 set.insert("a".into());
+                set.insert("b".into());
                 set
             });
             map.insert("c".into(), {
                 let mut set = HashSet::new();
                 set.insert("a".into());
                 set.insert("b".into());
+                set.insert("c".into());
                 set
             });
             map.insert("d".into(), {
                 let mut set = HashSet::new();
                 set.insert("a".into());
                 set.insert("c".into());
+                set.insert("d".into());
                 set
             });
             map
@@ -596,6 +595,7 @@ mod tests {
                     imported_by: {
                         let mut set = HashSet::new();
                         set.insert("a".into());
+                        set.insert("b".into());
                         set
                     },
                     children: HashMap::new(),
@@ -610,6 +610,7 @@ mod tests {
                         let mut set = HashSet::new();
                         set.insert("a".into());
                         set.insert("b".into());
+                        set.insert("c".into());
                         set
                     },
                     children: HashMap::new(),
@@ -624,6 +625,7 @@ mod tests {
                         let mut set = HashSet::new();
                         set.insert("a".into());
                         set.insert("c".into());
+                        set.insert("d".into());
                         set
                     },
                     children: HashMap::new(),
@@ -659,7 +661,11 @@ include_proto!("d");
         let module = Module {
             package: "mechiru.type".into(),
             include: true,
-            imported_by: HashSet::new(),
+            imported_by: {
+                let mut set = HashSet::new();
+                set.insert("mechiru.type".into());
+                set
+            },
             children: HashMap::new(),
         };
         assert_eq!(

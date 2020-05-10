@@ -1,13 +1,14 @@
 [package]
 name = "googapis"
-version = "0.1.0+20200510"
+version = "0.1.1+20200510"
 authors = ["mechiru <u9053u6d41@gmail.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
 description = "This library generated from Google API using tonic-build."
 repository = "https://github.com/mechiru/googapis"
 documentation = "https://docs.rs/googapis"
-keywords = ["google", "googleapis", "gcloud", "gcp"]
+categories = ["api-bindings"]
+keywords = ["google", "api", "googleapis", "gcloud", "gcp"]
 readme = "./../README.md"
 
 [dependencies]
@@ -224,12 +225,12 @@ google-type = []
 google-watcher-v1 = []
 grafeas-v1 = []
 grafeas-v1beta1 = []
-grafeas-v1beta1-attestation = []
+# grafeas-v1beta1-attestation = []
 grafeas-v1beta1-build = []
 grafeas-v1beta1-deployment = []
-grafeas-v1beta1-discovery = []
+# grafeas-v1beta1-discovery = []
 grafeas-v1beta1-image = []
 grafeas-v1beta1-package = []
 grafeas-v1beta1-provenance = []
 grafeas-v1beta1-source = []
-grafeas-v1beta1-vulnerability = []
+# grafeas-v1beta1-vulnerability = []
