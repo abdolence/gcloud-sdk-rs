@@ -7,12 +7,13 @@ use std::{
 #[derive(Clone, Hash, PartialEq, Eq)]
 pub struct Package {
     raw: String,
-    vec: Vec<String>,
+    escaped: String,
+    escaped_vec: Vec<String>,
 }
 
 impl fmt::Debug for Package {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "\"{}\"", self.raw)
+        write!(f, "\"{}\"", self.escaped)
     }
 }
 
@@ -24,17 +25,30 @@ impl From<&str> for Package {
             .map(ToOwned::to_owned)
             .collect::<Vec<_>>();
         Self {
-            raw: vec.join("."),
-            vec,
+            raw: v.to_owned(),
+            escaped: vec.join("."),
+            escaped_vec: vec,
         }
     }
 }
 
 impl Package {
     fn from_escaped_vec(vec: Vec<String>) -> Self {
+        let raw = vec
+            .iter()
+            .map(|v| {
+                if v.starts_with("r#") {
+                    v.chars().skip(2).collect::<String>()
+                } else {
+                    v.to_owned()
+                }
+            })
+            .collect::<Vec<_>>()
+            .join(".");
         Self {
-            raw: vec.join("."),
-            vec,
+            raw,
+            escaped: vec.join("."),
+            escaped_vec: vec,
         }
     }
 }
@@ -84,7 +98,7 @@ impl Module {
             format!(
                 "{attr}\ninclude_proto!(\"{package}\");\n",
                 attr = attr,
-                package = self.package.raw,
+                package = self.package.escaped,
             )
         } else {
             String::new()
@@ -349,7 +363,7 @@ pub fn from_protos(protos: Vec<Proto>) -> RootModule {
     let resolver = deps_resolver(&protos);
 
     for proto in protos {
-        let mut iter = proto.package.vec.clone().into_iter();
+        let mut iter = proto.package.escaped_vec.clone().into_iter();
 
         let mut package = Vec::new();
         let pkg = iter.next().unwrap();
@@ -389,8 +403,9 @@ mod tests {
         assert_eq!(
             Package::from_escaped_vec(vec.clone()),
             Package {
-                raw: "mechiru.r#type.r#as".into(),
-                vec,
+                raw: "mechiru.type.as".into(),
+                escaped: "mechiru.r#type.r#as".into(),
+                escaped_vec: vec,
             }
         );
     }
@@ -622,6 +637,22 @@ pub mod d { #[cfg(any(feature = "a",feature = "c",feature = "d",))]
 include_proto!("d");
   }
 "###
+        );
+    }
+
+    #[test]
+    fn test_module_gen_code() {
+        let module = Module {
+            package: "mechiru.type".into(),
+            include: true,
+            imported_by: HashSet::new(),
+            children: HashMap::new(),
+        };
+        assert_eq!(
+            module.gen_code(),
+            r###"#[cfg(any(feature = "mechiru.type",))]
+include_proto!("mechiru.r#type");
+ "###
         );
     }
 }
