@@ -51,6 +51,12 @@ impl Package {
             escaped_vec: vec,
         }
     }
+
+    // https://doc.rust-lang.org/cargo/reference/features.html#features
+    // crates.io requires feature names to only contain ASCII letters, digits, _, or -.
+    fn feature_name(&self) -> String {
+        self.raw.split('.').collect::<Vec<_>>().join("-")
+    }
 }
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
@@ -85,9 +91,9 @@ impl Module {
             let mut attr = self
                 .imported_by
                 .iter()
-                .map(|p| p.raw.clone())
+                .map(|p| p.feature_name())
                 .collect::<HashSet<_>>();
-            attr.insert(self.package.raw.clone());
+            attr.insert(self.package.feature_name());
             let mut attr = attr.into_iter().collect::<Vec<_>>();
             attr.sort();
             let attr = attr
@@ -342,12 +348,12 @@ fn deps_resolver(protos: &[Proto]) -> HashMap<Package, HashSet<Package>> {
 pub fn feature_gates(protos: &[Proto]) -> String {
     let pkgs = protos
         .iter()
-        .map(|p| p.package.raw.clone())
+        .map(|p| p.package.feature_name())
         .collect::<HashSet<_>>();
     let mut pkgs = pkgs.into_iter().collect::<Vec<_>>();
     pkgs.sort();
     pkgs.into_iter()
-        .map(|f| format!("'{}' = []", f))
+        .map(|f| format!("{} = []", f))
         .collect::<Vec<_>>()
         .join("\n")
 }
@@ -415,6 +421,14 @@ mod tests {
         assert_eq!(
             Package::from("mechiru.type.as"),
             Package::from_escaped_vec(vec!["mechiru".into(), "r#type".into(), "r#as".into()])
+        );
+    }
+
+    #[test]
+    fn test_feature_name() {
+        assert_eq!(
+            Package::from("mechiru.type.as").feature_name(),
+            "mechiru-type-as".to_owned()
         );
     }
 
