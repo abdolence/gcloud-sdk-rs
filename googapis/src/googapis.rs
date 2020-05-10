@@ -1,7 +1,7 @@
 pub mod google {
     pub mod actions {
         pub mod r#type {
-            #[cfg(any(feature = "google.actions.r#type",))]
+            #[cfg(any(feature = "google.actions.type",))]
             include_proto!("google.actions.r#type");
         }
     }
@@ -312,9 +312,9 @@ pub mod google {
             feature = "google.iam.credentials.v1",
             feature = "google.iam.v1",
             feature = "google.iam.v1.logging",
-            feature = "google.identity.accesscontextmanager.r#type",
+            feature = "google.identity.accesscontextmanager.type",
             feature = "google.identity.accesscontextmanager.v1",
-            feature = "google.logging.r#type",
+            feature = "google.logging.type",
             feature = "google.logging.v2",
             feature = "google.longrunning",
             feature = "google.maps.playablelocations.v3",
@@ -1149,7 +1149,7 @@ pub mod google {
     pub mod geo {
         pub mod r#type {
             #[cfg(any(
-                feature = "google.geo.r#type",
+                feature = "google.geo.type",
                 feature = "google.maps.routes.v1",
                 feature = "google.maps.routes.v1alpha",
             ))]
@@ -1226,7 +1226,7 @@ pub mod google {
             pub mod r#type {
                 #[cfg(any(
                     feature = "google.cloud.asset.v1",
-                    feature = "google.identity.accesscontextmanager.r#type",
+                    feature = "google.identity.accesscontextmanager.type",
                     feature = "google.identity.accesscontextmanager.v1",
                 ))]
                 include_proto!("google.identity.accesscontextmanager.r#type");
@@ -1245,7 +1245,7 @@ pub mod google {
             #[cfg(any(
                 feature = "google.api.servicecontrol.v1",
                 feature = "google.appengine.logging.v1",
-                feature = "google.logging.r#type",
+                feature = "google.logging.type",
                 feature = "google.logging.v2",
             ))]
             include_proto!("google.logging.r#type");
@@ -1394,7 +1394,7 @@ pub mod google {
     }
     pub mod r#type {
         #[cfg(any(
-            feature = "google.actions.r#type",
+            feature = "google.actions.type",
             feature = "google.ads.admob.v1",
             feature = "google.api.servicecontrol.v1",
             feature = "google.appengine.v1",
@@ -1449,7 +1449,7 @@ pub mod google {
             feature = "google.firestore.v1",
             feature = "google.firestore.v1beta1",
             feature = "google.genomics.v1",
-            feature = "google.geo.r#type",
+            feature = "google.geo.type",
             feature = "google.iam.admin.v1",
             feature = "google.iam.v1",
             feature = "google.identity.accesscontextmanager.v1",
@@ -1460,12 +1460,12 @@ pub mod google {
             feature = "google.maps.routes.v1alpha",
             feature = "google.monitoring.v3",
             feature = "google.privacy.dlp.v2",
-            feature = "google.r#type",
             feature = "google.spanner.admin.database.v1",
             feature = "google.spanner.admin.instance.v1",
             feature = "google.storage.v1",
             feature = "google.storagetransfer.v1",
             feature = "google.streetview.publish.v1",
+            feature = "google.type",
         ))]
         include_proto!("google.r#type");
     }
