@@ -10,11 +10,11 @@ This library generated from [Google API](https://github.com/googleapis/googleapi
 This library contains all the code generated from the Google API.
 
 When using each product API, you must explicitly include it in your build using a feature flag.
-For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub), write `features = ["google.pubsub.v1"]` to Cargo.toml.
+For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub), write `features = ["google-pubsub-v1"]` to Cargo.toml.
 
-The feature name is the package name of each proto file.
+The feature name is the period of the package name of each proto file, replaced by a hyphen.
 If you specify a package, it will automatically load the dependent packages and include them in the build.
-It means that `features = ["google.spanner.admin.database.v1"]` is the same as the code below:
+It means that `features = ["google-spanner-admin-database-v1"]` is the same as the code below:
 ```rust
 pub mod google {
     pub mod api {
@@ -56,7 +56,7 @@ The complete code can be found [here](./examples/spanner-admin).
 Cargo.toml:
 ```toml
 [dependencies]
-googapis = { version = "0.1", features = ["google.spanner.admin.database.v1"] }
+googapis = { version = "0.1", features = ["google-spanner-admin-database-v1"] }
 gouth = { version = "0.1" }
 tonic = { version = "0.2", features = ["tls"] }
 prost = { version = "0.6" }

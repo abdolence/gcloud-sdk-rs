@@ -6,7 +6,7 @@
 //! Cargo.toml:
 //! ```toml
 //! [dependencies]
-//! googapis = { version = "0.1", features = ["google.spanner.admin.database.v1"] }
+//! googapis = { version = "0.1", features = ["google-spanner-admin-database-v1"] }
 //! gouth = { version = "0.1" }
 //! tonic = { version = "0.2", features = ["tls"] }
 //! prost = { version = "0.6" }
