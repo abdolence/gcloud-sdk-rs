@@ -664,7 +664,7 @@ include_proto!("d");
         };
         assert_eq!(
             module.gen_code(),
-            r###"#[cfg(any(feature = "mechiru.type",))]
+            r###"#[cfg(any(feature = "mechiru-type",))]
 include_proto!("mechiru.r#type");
  "###
         );
