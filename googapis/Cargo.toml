@@ -11,10 +11,8 @@ categories = ["api-bindings"]
 keywords = ["google", "api", "googleapis", "gcloud", "gcp"]
 readme = "./../README.md"
 
-[dependencies]
-tonic = { version = "0.2" }
-prost = { version = "0.6" }
-prost-types = { version = "0.6" }
+[lib]
+doctest = false
 
 [package.metadata.docs.rs]
 all-features = true
@@ -234,3 +232,8 @@ grafeas-v1beta1-package = []
 grafeas-v1beta1-provenance = []
 grafeas-v1beta1-source = []
 # grafeas-v1beta1-vulnerability = []
+
+[dependencies]
+tonic = { version = "0.2" }
+prost = { version = "0.6" }
+prost-types = { version = "0.6" }
