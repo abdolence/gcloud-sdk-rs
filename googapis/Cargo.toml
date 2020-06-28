@@ -10,6 +10,7 @@ documentation = "https://docs.rs/googapis"
 categories = ["api-bindings"]
 keywords = ["google", "api", "googleapis", "gcloud", "gcp"]
 readme = "./../README.md"
+exclude = ["*.sh"]
 
 [lib]
 doctest = false
