@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "git-submodules": {
+    "enabled": true
+  },
+  "labels": ["B-renovate"],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["before 5am"]
+}
