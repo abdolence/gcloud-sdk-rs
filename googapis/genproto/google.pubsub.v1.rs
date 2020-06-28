@@ -1,3 +1,4 @@
+/// A policy constraining the storage of messages published to the topic.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessageStoragePolicy {
     /// A list of IDs of GCP regions where messages that are published to the topic
@@ -50,7 +51,8 @@ pub struct PubsubMessage {
     #[prost(bytes, tag = "1")]
     pub data: std::vec::Vec<u8>,
     /// Attributes for this message. If this field is empty, the message must
-    /// contain non-empty data.
+    /// contain non-empty data. This can be used to filter messages on the
+    /// subscription.
     #[prost(map = "string, string", tag = "2")]
     pub attributes: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// ID of this message, assigned by the server when the message is published.
@@ -164,7 +166,7 @@ pub struct ListTopicSubscriptionsRequest {
 /// Response for the `ListTopicSubscriptions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicSubscriptionsResponse {
-    /// The names of the subscriptions that match the request.
+    /// The names of subscriptions attached to the topic specified in the request.
     #[prost(string, repeated, tag = "1")]
     pub subscriptions: ::std::vec::Vec<std::string::String>,
     /// If not empty, indicates that there may be more subscriptions that match
@@ -209,6 +211,18 @@ pub struct DeleteTopicRequest {
     #[prost(string, tag = "1")]
     pub topic: std::string::String,
 }
+/// Request for the DetachSubscription method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DetachSubscriptionRequest {
+    /// Required. The subscription to detach.
+    /// Format is `projects/{project}/subscriptions/{subscription}`.
+    #[prost(string, tag = "1")]
+    pub subscription: std::string::String,
+}
+/// Response for the DetachSubscription method.
+/// Reserved for future use.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DetachSubscriptionResponse {}
 /// A subscription resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
@@ -290,13 +304,11 @@ pub struct Subscription {
     /// value for `expiration_policy.ttl` is 1 day.
     #[prost(message, optional, tag = "11")]
     pub expiration_policy: ::std::option::Option<ExpirationPolicy>,
-    /// An expression written in the Cloud Pub/Sub filter language. If non-empty,
+    /// An expression written in the Pub/Sub [filter
+    /// language](https://cloud.google.com/pubsub/docs/filtering). If non-empty,
     /// then only `PubsubMessage`s whose `attributes` field matches the filter are
     /// delivered on this subscription. If empty, then no messages are filtered
     /// out.
-    /// <b>EXPERIMENTAL:</b> This feature is part of a closed alpha release. This
-    /// API might be changed in backward-incompatible ways and is not recommended
-    /// for production use. It is not subject to any SLA or deprecation policy.
     #[prost(string, tag = "12")]
     pub filter: std::string::String,
     /// A policy that specifies the conditions for dead lettering messages in
@@ -309,18 +321,22 @@ pub struct Subscription {
     /// permission to Acknowledge() messages on this subscription.
     #[prost(message, optional, tag = "13")]
     pub dead_letter_policy: ::std::option::Option<DeadLetterPolicy>,
-    /// A policy that specifies how Cloud Pub/Sub retries message delivery for this
+    /// A policy that specifies how Pub/Sub retries message delivery for this
     /// subscription.
     ///
     /// If not set, the default retry policy is applied. This generally implies
     /// that messages will be retried as soon as possible for healthy subscribers.
     /// RetryPolicy will be triggered on NACKs or acknowledgement deadline
     /// exceeded events for a given message.
-    /// <b>EXPERIMENTAL:</b> This API might be changed in backward-incompatible
-    /// ways and is not recommended for production use. It is not subject to any
-    /// SLA or deprecation policy.
     #[prost(message, optional, tag = "14")]
     pub retry_policy: ::std::option::Option<RetryPolicy>,
+    /// Indicates whether the subscription is detached from its topic. Detached
+    /// subscriptions don't receive messages from their topic and don't retain any
+    /// backlog. `Pull` and `StreamingPull` requests will return
+    /// FAILED_PRECONDITION. If the subscription is a push subscription, pushes to
+    /// the endpoint will not be made.
+    #[prost(bool, tag = "15")]
+    pub detached: bool,
 }
 /// A policy that specifies how Cloud Pub/Sub retries message delivery.
 ///
@@ -681,6 +697,28 @@ pub struct StreamingPullRequest {
     /// different client instances.
     #[prost(string, tag = "6")]
     pub client_id: std::string::String,
+    /// Flow control settings for the maximum number of outstanding messages. When
+    /// there are `max_outstanding_messages` or more currently sent to the
+    /// streaming pull client that have not yet been acked or nacked, the server
+    /// stops sending more messages. The sending of messages resumes once the
+    /// number of outstanding messages is less than this value. If the value is
+    /// <= 0, there is no limit to the number of outstanding messages. This
+    /// property can only be set on the initial StreamingPullRequest. If it is set
+    /// on a subsequent request, the stream will be aborted with status
+    /// `INVALID_ARGUMENT`.
+    #[prost(int64, tag = "7")]
+    pub max_outstanding_messages: i64,
+    /// Flow control settings for the maximum number of outstanding bytes. When
+    /// there are `max_outstanding_bytes` or more worth of messages currently sent
+    /// to the streaming pull client that have not yet been acked or nacked, the
+    /// server will stop sending more messages. The sending of messages resumes
+    /// once the number of outstanding bytes is less than this value. If the value
+    /// is <= 0, there is no limit to the number of outstanding bytes. This
+    /// property can only be set on the initial StreamingPullRequest. If it is set
+    /// on a subsequent request, the stream will be aborted with status
+    /// `INVALID_ARGUMENT`.
+    #[prost(int64, tag = "8")]
+    pub max_outstanding_bytes: i64,
 }
 /// Response for the `StreamingPull` method. This response is used to stream
 /// messages from the server to the client.
@@ -954,7 +992,7 @@ pub mod publisher_client {
                 http::uri::PathAndQuery::from_static("/google.pubsub.v1.Publisher/ListTopics");
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists the names of the subscriptions on this topic."]
+        #[doc = " Lists the names of the attached subscriptions on this topic."]
         pub async fn list_topic_subscriptions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTopicSubscriptionsRequest>,
@@ -1011,6 +1049,26 @@ pub mod publisher_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.pubsub.v1.Publisher/DeleteTopic");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Detaches a subscription from this topic. All messages retained in the"]
+        #[doc = " subscription are dropped. Subsequent `Pull` and `StreamingPull` requests"]
+        #[doc = " will return FAILED_PRECONDITION. If the subscription is a push"]
+        #[doc = " subscription, pushes to the endpoint will stop."]
+        pub async fn detach_subscription(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DetachSubscriptionRequest>,
+        ) -> Result<tonic::Response<super::DetachSubscriptionResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.pubsub.v1.Publisher/DetachSubscription",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -1466,7 +1524,7 @@ pub mod publisher_server {
             &self,
             request: tonic::Request<super::ListTopicsRequest>,
         ) -> Result<tonic::Response<super::ListTopicsResponse>, tonic::Status>;
-        #[doc = " Lists the names of the subscriptions on this topic."]
+        #[doc = " Lists the names of the attached subscriptions on this topic."]
         async fn list_topic_subscriptions(
             &self,
             request: tonic::Request<super::ListTopicSubscriptionsRequest>,
@@ -1490,6 +1548,14 @@ pub mod publisher_server {
             &self,
             request: tonic::Request<super::DeleteTopicRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status>;
+        #[doc = " Detaches a subscription from this topic. All messages retained in the"]
+        #[doc = " subscription are dropped. Subsequent `Pull` and `StreamingPull` requests"]
+        #[doc = " will return FAILED_PRECONDITION. If the subscription is a push"]
+        #[doc = " subscription, pushes to the endpoint will stop."]
+        async fn detach_subscription(
+            &self,
+            request: tonic::Request<super::DetachSubscriptionRequest>,
+        ) -> Result<tonic::Response<super::DetachSubscriptionResponse>, tonic::Status>;
     }
     #[doc = " The service that an application uses to manipulate topics, and to send"]
     #[doc = " messages to a topic."]
@@ -1765,6 +1831,39 @@ pub mod publisher_server {
                         let interceptor = inner.1.clone();
                         let inner = inner.0;
                         let method = DeleteTopicSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.pubsub.v1.Publisher/DetachSubscription" => {
+                    #[allow(non_camel_case_types)]
+                    struct DetachSubscriptionSvc<T: Publisher>(pub Arc<T>);
+                    impl<T: Publisher> tonic::server::UnaryService<super::DetachSubscriptionRequest>
+                        for DetachSubscriptionSvc<T>
+                    {
+                        type Response = super::DetachSubscriptionResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::DetachSubscriptionRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.detach_subscription(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = DetachSubscriptionSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = if let Some(interceptor) = interceptor {
                             tonic::server::Grpc::with_interceptor(codec, interceptor)

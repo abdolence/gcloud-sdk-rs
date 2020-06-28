@@ -20,7 +20,7 @@ pub struct Instance {
     #[prost(map = "string, string", tag = "3")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// Optional. The full name of the Google Compute Engine
-    /// [network](/compute/docs/networks-and-firewalls#networks) to which the
+    /// [network](https://cloud.google.com/vpc/docs/vpc) to which the
     /// instance is connected. If left unspecified, the `default` network
     /// will be used.
     #[prost(string, tag = "4")]

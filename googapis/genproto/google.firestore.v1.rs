@@ -337,36 +337,50 @@ pub mod structured_query {
         pub enum Operator {
             /// Unspecified. This value must not be used.
             Unspecified = 0,
-            /// Less than. Requires that the field come first in `order_by`.
+            /// The given `field` is less than the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             LessThan = 1,
-            /// Less than or equal. Requires that the field come first in `order_by`.
+            /// The given `field` is less than or equal to the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             LessThanOrEqual = 2,
-            /// Greater than. Requires that the field come first in `order_by`.
+            /// The given `field` is greater than the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             GreaterThan = 3,
-            /// Greater than or equal. Requires that the field come first in
-            /// `order_by`.
+            /// The given `field` is greater than or equal to the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             GreaterThanOrEqual = 4,
-            /// Equal.
+            /// The given `field` is equal to the given `value`.
             Equal = 5,
-            /// Contains. Requires that the field is an array.
+            /// The given `field` is an array that contains the given `value`.
             ArrayContains = 7,
-            /// In. Requires that `value` is a non-empty ArrayValue with at most 10
-            /// values.
+            /// The given `field` is equal to at least one value in the given array.
+            ///
+            /// Requires:
+            ///
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, or `NOT_IN`.
             In = 8,
-            /// Contains any. Requires that the field is an array and
-            /// `value` is a non-empty ArrayValue with at most 10 values.
+            /// The given `field` is an array that contains any of the values in the
+            /// given array.
+            ///
+            /// Requires:
+            ///
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, or `NOT_IN`.
             ArrayContainsAny = 9,
         }
-    }
-    /// The projection of document's fields to return.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Projection {
-        /// The fields to return.
-        ///
-        /// If empty, all fields are returned. To only return the name
-        /// of the document, use `['__name__']`.
-        #[prost(message, repeated, tag = "2")]
-        pub fields: ::std::vec::Vec<FieldReference>,
     }
     /// A filter with a single operand.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -385,9 +399,9 @@ pub mod structured_query {
         pub enum Operator {
             /// Unspecified. This value must not be used.
             Unspecified = 0,
-            /// Test if a field is equal to NaN.
+            /// The given `field` is equal to `NaN`.
             IsNan = 2,
-            /// Test if an expression evaluates to Null.
+            /// The given `field` is equal to `NULL`.
             IsNull = 3,
         }
         /// The argument to the filter.
@@ -403,6 +417,16 @@ pub mod structured_query {
     pub struct FieldReference {
         #[prost(string, tag = "2")]
         pub field_path: std::string::String,
+    }
+    /// The projection of document's fields to return.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Projection {
+        /// The fields to return.
+        ///
+        /// If empty, all fields are returned. To only return the name
+        /// of the document, use `['__name__']`.
+        #[prost(message, repeated, tag = "2")]
+        pub fields: ::std::vec::Vec<FieldReference>,
     }
     /// An order on a field.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -716,7 +740,7 @@ pub mod get_document_request {
         #[prost(bytes, tag = "3")]
         Transaction(std::vec::Vec<u8>),
         /// Reads the version of the document at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "5")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -774,7 +798,7 @@ pub mod list_documents_request {
         #[prost(bytes, tag = "8")]
         Transaction(std::vec::Vec<u8>),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "10")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -897,7 +921,7 @@ pub mod batch_get_documents_request {
         #[prost(message, tag = "5")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1036,7 +1060,7 @@ pub mod run_query_request {
         #[prost(message, tag = "6")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1067,6 +1091,89 @@ pub struct RunQueryResponse {
     /// the last response and the current response.
     #[prost(int32, tag = "4")]
     pub skipped_results: i32,
+}
+/// The request for [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionQueryRequest {
+    /// Required. The parent resource name. In the format:
+    /// `projects/{project_id}/databases/{database_id}/documents`.
+    /// Document resource names are not supported; only database resource names
+    /// can be specified.
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// The desired maximum number of partition points.
+    /// The partitions may be returned across multiple pages of results.
+    /// The number must be strictly positive. The actual number of partitions
+    /// returned may be fewer.
+    ///
+    /// For example, this may be set to one fewer than the number of parallel
+    /// queries to be run, or in running a data pipeline job, one fewer than the
+    /// number of workers or compute instances available.
+    #[prost(int64, tag = "3")]
+    pub partition_count: i64,
+    /// The `next_page_token` value returned from a previous call to
+    /// PartitionQuery that may be used to get an additional set of results.
+    /// There are no ordering guarantees between sets of results. Thus, using
+    /// multiple sets of results will require merging the different result sets.
+    ///
+    /// For example, two subsequent calls using a page_token may return:
+    ///
+    ///  * cursor B, cursor M, cursor Q
+    ///  * cursor A, cursor U, cursor W
+    ///
+    /// To obtain a complete result set ordered with respect to the results of the
+    /// query supplied to PartitionQuery, the results sets should be merged:
+    /// cursor A, cursor B, cursor M, cursor Q, cursor U, cursor W
+    #[prost(string, tag = "4")]
+    pub page_token: std::string::String,
+    /// The maximum number of partitions to return in this call, subject to
+    /// `partition_count`.
+    ///
+    /// For example, if `partition_count` = 10 and `page_size` = 8, the first call
+    /// to PartitionQuery will return up to 8 partitions and a `next_page_token`
+    /// if more results exist. A second call to PartitionQuery will return up to
+    /// 2 partitions, to complete the total of 10 specified in `partition_count`.
+    #[prost(int32, tag = "5")]
+    pub page_size: i32,
+    /// The query to partition.
+    #[prost(oneof = "partition_query_request::QueryType", tags = "2")]
+    pub query_type: ::std::option::Option<partition_query_request::QueryType>,
+}
+pub mod partition_query_request {
+    /// The query to partition.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum QueryType {
+        /// A structured query.
+        /// Filters, order bys, limits, offsets, and start/end cursors are not
+        /// supported.
+        #[prost(message, tag = "2")]
+        StructuredQuery(super::StructuredQuery),
+    }
+}
+/// The response for [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionQueryResponse {
+    /// Partition results.
+    /// Each partition is a split point that can be used by RunQuery as a starting
+    /// or end point for the query results. The RunQuery requests must be made with
+    /// the same query supplied to this PartitionQuery request. The partition
+    /// cursors will be ordered according to same ordering as the results of the
+    /// query supplied to PartitionQuery.
+    ///
+    /// For example, if a PartitionQuery request returns partition cursors A and B,
+    /// running the following three queries will return the entire result set of
+    /// the original query:
+    ///
+    ///  * query, end_at A
+    ///  * query, start_at A, end_at B
+    ///  * query, start_at B
+    #[prost(message, repeated, tag = "1")]
+    pub partitions: ::std::vec::Vec<Cursor>,
+    /// A page token that may be used to request an additional set of results, up
+    /// to the number specified by `partition_count` in the PartitionQuery request.
+    /// If blank, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
 }
 /// The request for [Firestore.Write][google.firestore.v1.Firestore.Write].
 ///
@@ -1374,6 +1481,40 @@ pub struct ListCollectionIdsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
 }
+/// The request for [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchWriteRequest {
+    /// Required. The database name. In the format:
+    /// `projects/{project_id}/databases/{database_id}`.
+    #[prost(string, tag = "1")]
+    pub database: std::string::String,
+    /// The writes to apply.
+    ///
+    /// Method does not apply writes atomically and does not guarantee ordering.
+    /// Each write succeeds or fails independently. You cannot write to the same
+    /// document more than once per request.
+    #[prost(message, repeated, tag = "2")]
+    pub writes: ::std::vec::Vec<Write>,
+    /// Labels associated with this batch write.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+}
+/// The response from [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchWriteResponse {
+    /// The result of applying the writes.
+    ///
+    /// This i-th write result corresponds to the i-th write in the
+    /// request.
+    #[prost(message, repeated, tag = "1")]
+    pub write_results: ::std::vec::Vec<WriteResult>,
+    /// The status of applying the writes.
+    ///
+    /// This i-th write status corresponds to the i-th write in the
+    /// request.
+    #[prost(message, repeated, tag = "2")]
+    pub status: ::std::vec::Vec<super::super::rpc::Status>,
+}
 #[doc = r" Generated client implementations."]
 pub mod firestore_client {
     #![allow(unused_variables, dead_code, missing_docs)]
@@ -1575,6 +1716,25 @@ pub mod firestore_client {
                 .server_streaming(request.into_request(), path, codec)
                 .await
         }
+        #[doc = " Partitions a query by returning partition cursors that can be used to run"]
+        #[doc = " the query in parallel. The returned partition cursors are split points that"]
+        #[doc = " can be used by RunQuery as starting/end points for the query results."]
+        pub async fn partition_query(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PartitionQueryRequest>,
+        ) -> Result<tonic::Response<super::PartitionQueryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.v1.Firestore/PartitionQuery",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Streams batches of document updates and deletes, in order."]
         pub async fn write(
             &mut self,
@@ -1627,6 +1787,30 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/ListCollectionIds",
             );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Applies a batch of write operations."]
+        #[doc = ""]
+        #[doc = " The BatchWrite method does not apply the write operations atomically"]
+        #[doc = " and can apply them out of order. Method does not allow more than one write"]
+        #[doc = " per document. Each write succeeds or fails independently. See the"]
+        #[doc = " [BatchWriteResponse][google.firestore.v1.BatchWriteResponse] for the success status of each write."]
+        #[doc = ""]
+        #[doc = " If you require an atomically applied set of writes, use"]
+        #[doc = " [Commit][google.firestore.v1.Firestore.Commit] instead."]
+        pub async fn batch_write(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchWriteRequest>,
+        ) -> Result<tonic::Response<super::BatchWriteResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.firestore.v1.Firestore/BatchWrite");
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a new document."]
@@ -1725,6 +1909,13 @@ pub mod firestore_server {
             &self,
             request: tonic::Request<super::RunQueryRequest>,
         ) -> Result<tonic::Response<Self::RunQueryStream>, tonic::Status>;
+        #[doc = " Partitions a query by returning partition cursors that can be used to run"]
+        #[doc = " the query in parallel. The returned partition cursors are split points that"]
+        #[doc = " can be used by RunQuery as starting/end points for the query results."]
+        async fn partition_query(
+            &self,
+            request: tonic::Request<super::PartitionQueryRequest>,
+        ) -> Result<tonic::Response<super::PartitionQueryResponse>, tonic::Status>;
         #[doc = "Server streaming response type for the Write method."]
         type WriteStream: Stream<Item = Result<super::WriteResponse, tonic::Status>>
             + Send
@@ -1750,6 +1941,19 @@ pub mod firestore_server {
             &self,
             request: tonic::Request<super::ListCollectionIdsRequest>,
         ) -> Result<tonic::Response<super::ListCollectionIdsResponse>, tonic::Status>;
+        #[doc = " Applies a batch of write operations."]
+        #[doc = ""]
+        #[doc = " The BatchWrite method does not apply the write operations atomically"]
+        #[doc = " and can apply them out of order. Method does not allow more than one write"]
+        #[doc = " per document. Each write succeeds or fails independently. See the"]
+        #[doc = " [BatchWriteResponse][google.firestore.v1.BatchWriteResponse] for the success status of each write."]
+        #[doc = ""]
+        #[doc = " If you require an atomically applied set of writes, use"]
+        #[doc = " [Commit][google.firestore.v1.Firestore.Commit] instead."]
+        async fn batch_write(
+            &self,
+            request: tonic::Request<super::BatchWriteRequest>,
+        ) -> Result<tonic::Response<super::BatchWriteResponse>, tonic::Status>;
         #[doc = " Creates a new document."]
         async fn create_document(
             &self,
@@ -2093,6 +2297,39 @@ pub mod firestore_server {
                     };
                     Box::pin(fut)
                 }
+                "/google.firestore.v1.Firestore/PartitionQuery" => {
+                    #[allow(non_camel_case_types)]
+                    struct PartitionQuerySvc<T: Firestore>(pub Arc<T>);
+                    impl<T: Firestore> tonic::server::UnaryService<super::PartitionQueryRequest>
+                        for PartitionQuerySvc<T>
+                    {
+                        type Response = super::PartitionQueryResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::PartitionQueryRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.partition_query(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = PartitionQuerySvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
                 "/google.firestore.v1.Firestore/Write" => {
                     #[allow(non_camel_case_types)]
                     struct WriteSvc<T: Firestore>(pub Arc<T>);
@@ -2181,6 +2418,37 @@ pub mod firestore_server {
                         let interceptor = inner.1.clone();
                         let inner = inner.0;
                         let method = ListCollectionIdsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.firestore.v1.Firestore/BatchWrite" => {
+                    #[allow(non_camel_case_types)]
+                    struct BatchWriteSvc<T: Firestore>(pub Arc<T>);
+                    impl<T: Firestore> tonic::server::UnaryService<super::BatchWriteRequest> for BatchWriteSvc<T> {
+                        type Response = super::BatchWriteResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::BatchWriteRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.batch_write(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = BatchWriteSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = if let Some(interceptor) = interceptor {
                             tonic::server::Grpc::with_interceptor(codec, interceptor)

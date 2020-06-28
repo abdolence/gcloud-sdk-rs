@@ -159,6 +159,9 @@ pub struct ReportStateAndNotificationRequest {
     #[prost(string, tag = "2")]
     pub agent_user_id: std::string::String,
     /// Token to maintain state in the follow up notification response.
+    /// Deprecated. See the [notifications
+    /// guide](https://developers.google.com/assistant/smarthome/develop/notifications)
+    /// for details on implementing follow up notifications.
     #[prost(string, tag = "5")]
     pub follow_up_token: std::string::String,
     /// Required. State of devices to update and notification metadata for devices.
@@ -170,7 +173,8 @@ pub struct ReportStateAndNotificationRequest {
 /// call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStateAndNotificationResponse {
-    /// Request ID copied from [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest].
+    /// Request ID copied from
+    /// [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest].
     #[prost(string, tag = "1")]
     pub request_id: std::string::String,
 }
@@ -404,7 +408,8 @@ pub mod home_graph_api_service_client {
         #[doc = ""]
         #[doc = ""]
         #[doc = " The third-party user's identity is passed via the `agent_user_id`"]
-        #[doc = " (see [RequestSyncDevicesRequest][google.home.graph.v1.RequestSyncDevicesRequest])."]
+        #[doc = " (see"]
+        #[doc = " [RequestSyncDevicesRequest][google.home.graph.v1.RequestSyncDevicesRequest])."]
         #[doc = " This request must be authorized using service account credentials from your"]
         #[doc = " Actions console project."]
         pub async fn request_sync_devices(
@@ -436,7 +441,8 @@ pub mod home_graph_api_service_client {
         #[doc = " `INVALID_ARGUMENT` error response."]
         #[doc = ""]
         #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest])."]
+        #[doc = " (see"]
+        #[doc = " [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest])."]
         #[doc = " This request must be authorized using service account credentials from your"]
         #[doc = " Actions console project."]
         pub async fn report_state_and_notification(
@@ -464,7 +470,8 @@ pub mod home_graph_api_service_client {
         #[doc = " authentication](https://developers.google.com/assistant/smarthome/concepts/fulfillment-authentication)."]
         #[doc = ""]
         #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see [DeleteAgentUserRequest][google.home.graph.v1.DeleteAgentUserRequest])."]
+        #[doc = " (see"]
+        #[doc = " [DeleteAgentUserRequest][google.home.graph.v1.DeleteAgentUserRequest])."]
         #[doc = " This request must be authorized using service account credentials from your"]
         #[doc = " Actions console project."]
         pub async fn delete_agent_user(
@@ -555,7 +562,8 @@ pub mod home_graph_api_service_server {
         #[doc = ""]
         #[doc = ""]
         #[doc = " The third-party user's identity is passed via the `agent_user_id`"]
-        #[doc = " (see [RequestSyncDevicesRequest][google.home.graph.v1.RequestSyncDevicesRequest])."]
+        #[doc = " (see"]
+        #[doc = " [RequestSyncDevicesRequest][google.home.graph.v1.RequestSyncDevicesRequest])."]
         #[doc = " This request must be authorized using service account credentials from your"]
         #[doc = " Actions console project."]
         async fn request_sync_devices(
@@ -575,7 +583,8 @@ pub mod home_graph_api_service_server {
         #[doc = " `INVALID_ARGUMENT` error response."]
         #[doc = ""]
         #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest])."]
+        #[doc = " (see"]
+        #[doc = " [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest])."]
         #[doc = " This request must be authorized using service account credentials from your"]
         #[doc = " Actions console project."]
         async fn report_state_and_notification(
@@ -590,7 +599,8 @@ pub mod home_graph_api_service_server {
         #[doc = " authentication](https://developers.google.com/assistant/smarthome/concepts/fulfillment-authentication)."]
         #[doc = ""]
         #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see [DeleteAgentUserRequest][google.home.graph.v1.DeleteAgentUserRequest])."]
+        #[doc = " (see"]
+        #[doc = " [DeleteAgentUserRequest][google.home.graph.v1.DeleteAgentUserRequest])."]
         #[doc = " This request must be authorized using service account credentials from your"]
         #[doc = " Actions console project."]
         async fn delete_agent_user(

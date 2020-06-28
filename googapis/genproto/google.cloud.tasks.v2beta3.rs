@@ -167,10 +167,10 @@ pub struct AppEngineHttpQueue {
 /// delivered to can be set at the queue-level or task-level:
 ///
 /// * If set,
-///    [app_engine_routing_override][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override]
-///    is used for all tasks in the queue, no matter what the setting
-///    is for the
-///    [task-level app_engine_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing].
+///   [app_engine_routing_override][google.cloud.tasks.v2beta3.AppEngineHttpQueue.app_engine_routing_override]
+///   is used for all tasks in the queue, no matter what the setting
+///   is for the
+///   [task-level app_engine_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing].
 ///
 ///
 /// The `url` that the task will be sent to is:
@@ -204,14 +204,11 @@ pub struct AppEngineHttpRequest {
     /// The HTTP method to use for the request. The default is POST.
     ///
     /// The app's request handler for the task's target URL must be able to handle
-    /// HTTP requests with this http_method, otherwise the task attempt will fail
-    /// with error code 405 (Method Not Allowed). See
-    /// [Writing a push task request
+    /// HTTP requests with this http_method, otherwise the task attempt fails with
+    /// error code 405 (Method Not Allowed). See [Writing a push task request
     /// handler](https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler)
-    /// and the documentation for the request handlers in the language your app is
-    /// written in e.g.
-    /// [Python Request
-    /// Handler](https://cloud.google.com/appengine/docs/python/tools/webapp/requesthandlerclass).
+    /// and the App Engine documentation for your runtime on [How Requests are
+    /// Handled](https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled).
     #[prost(enumeration = "HttpMethod", tag = "1")]
     pub http_method: i32,
     /// Task-level setting for App Engine routing.
@@ -513,6 +510,13 @@ pub struct Queue {
     /// field is unset, then no logs are written.
     #[prost(message, optional, tag = "10")]
     pub stackdriver_logging_config: ::std::option::Option<StackdriverLoggingConfig>,
+    /// Immutable. The type of a queue (push or pull).
+    ///
+    /// `Queue.type` is an immutable property of the queue that is set at the queue
+    /// creation time. When left unspecified, the default value of `PUSH` is
+    /// selected.
+    #[prost(enumeration = "queue::Type", tag = "11")]
+    pub r#type: i32,
     #[prost(oneof = "queue::QueueType", tags = "3")]
     pub queue_type: ::std::option::Option<queue::QueueType>,
 }
@@ -551,6 +555,17 @@ pub mod queue {
         /// To permanently delete this queue and all of its tasks, call
         /// [DeleteQueue][google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue].
         Disabled = 3,
+    }
+    /// The type of the queue.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Type {
+        /// Default value.
+        Unspecified = 0,
+        /// A pull queue.
+        Pull = 1,
+        /// A push queue.
+        Push = 2,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum QueueType {
@@ -717,7 +732,7 @@ pub struct RetryConfig {
     /// A task's retry interval starts at
     /// [min_backoff][google.cloud.tasks.v2beta3.RetryConfig.min_backoff], then doubles
     /// `max_doublings` times, then increases linearly, and finally
-    /// retries retries at intervals of
+    /// retries at intervals of
     /// [max_backoff][google.cloud.tasks.v2beta3.RetryConfig.max_backoff] up to
     /// [max_attempts][google.cloud.tasks.v2beta3.RetryConfig.max_attempts] times.
     ///
@@ -794,8 +809,8 @@ pub struct Task {
     /// is marked as a `DEADLINE_EXCEEDED` failure. Cloud Tasks will retry the
     /// task according to the [RetryConfig][google.cloud.tasks.v2beta3.RetryConfig].
     ///
-    /// Note that when the request is cancelled, Cloud Tasks will stop listing for
-    /// the response, but whether the worker stops processing depends on the
+    /// Note that when the request is cancelled, Cloud Tasks will stop listening
+    /// for the response, but whether the worker stops processing depends on the
     /// worker. For example, if the worker is stuck, it may not react to cancelled
     /// requests.
     ///

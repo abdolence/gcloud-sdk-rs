@@ -2278,8 +2278,9 @@ pub struct SparkRJob {
 }
 /// A Dataproc job for running [Presto](https://prestosql.io/) queries.
 /// **IMPORTANT**: The [Dataproc Presto Optional
-/// Component](/dataproc/docs/concepts/components/presto) must be enabled when
-/// the cluster is created to submit a Presto job to the cluster.
+/// Component](https://cloud.google.com/dataproc/docs/concepts/components/presto)
+/// must be enabled when the cluster is created to submit a Presto job to the
+/// cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrestoJob {
     /// Optional. Whether to continue executing queries if a query fails.

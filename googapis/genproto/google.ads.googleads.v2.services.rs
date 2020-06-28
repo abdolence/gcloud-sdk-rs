@@ -9392,7 +9392,7 @@ pub struct UploadConversionAdjustmentsRequest {
     /// Required. The conversion adjustments that are being uploaded.
     #[prost(message, repeated, tag = "2")]
     pub conversion_adjustments: ::std::vec::Vec<ConversionAdjustment>,
-    /// If true, successful operations will be carried out and invalid
+    /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried out
     /// in one transaction if and only if they are all valid. This should always be
     /// set to true.
@@ -9675,7 +9675,7 @@ pub struct UploadClickConversionsRequest {
     /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag = "2")]
     pub conversions: ::std::vec::Vec<ClickConversion>,
-    /// If true, successful operations will be carried out and invalid
+    /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
     /// This should always be set to true.
@@ -9709,7 +9709,7 @@ pub struct UploadCallConversionsRequest {
     /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag = "2")]
     pub conversions: ::std::vec::Vec<CallConversion>,
-    /// If true, successful operations will be carried out and invalid
+    /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
     /// This should always be set to true.
@@ -20569,7 +20569,7 @@ pub struct GenerateForecastMetricsResponse {
 pub struct KeywordPlanCampaignForecast {
     /// The resource name of the Keyword Plan campaign related to the forecast.
     ///
-    /// `customers/{customer_id}/keywordPlanCampaigns/{keyword+plan_campaign_id}`
+    /// `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
     #[prost(message, optional, tag = "1")]
     pub keyword_plan_campaign: ::std::option::Option<::std::string::String>,
     /// The forecast for the Keyword Plan campaign.
@@ -23946,7 +23946,7 @@ pub struct GenerateReachForecastRequest {
     /// This is equivalent to the frequency cap exposed in Google Ads when creating
     /// a campaign, it represents the maximum number of times an ad can be shown to
     /// the same user.
-    /// If not specified no cap is applied.
+    /// If not specified, no cap is applied.
     #[prost(message, optional, tag = "4")]
     pub cookie_frequency_cap: ::std::option::Option<i32>,
     /// Desired minimum effective frequency (the number of times a person was
@@ -23960,16 +23960,14 @@ pub struct GenerateReachForecastRequest {
     /// This is planned targeting: execution details might vary based on the
     /// advertising product, please consult an implementation specialist.
     ///
-    /// If no targeting dimensions are specified, then campaigns will target
-    /// everywhere and everyone.
-    ///
     /// See specific metrics for details on how targeting affects them.
     ///
     /// In some cases, targeting may be overridden using the
     /// PlannedProduct.advanced_product_targeting field.
     #[prost(message, optional, tag = "6")]
     pub targeting: ::std::option::Option<Targeting>,
-    /// Required. The product to be planned.
+    /// Required. The products to be forecast.
+    /// The max number of allowed planned products is 15.
     #[prost(message, repeated, tag = "7")]
     pub planned_products: ::std::vec::Vec<PlannedProduct>,
 }
@@ -23980,17 +23978,20 @@ pub struct Targeting {
     /// Plannable locations ID can be obtained from ListPlannableLocations.
     #[prost(message, optional, tag = "1")]
     pub plannable_location_id: ::std::option::Option<::std::string::String>,
-    /// Required
-    /// Selected age range to be planned on.
+    /// Targeted age range.
+    /// If not specified, targets all age ranges.
     #[prost(
         enumeration = "super::enums::reach_plan_age_range_enum::ReachPlanAgeRange",
         tag = "2"
     )]
     pub age_range: i32,
-    /// Targetable genders for the ad product.
+    /// Targeted genders.
+    /// If not specified, targets all genders.
     #[prost(message, repeated, tag = "3")]
     pub genders: ::std::vec::Vec<super::common::GenderInfo>,
-    /// Targetable devices for the ad product.
+    /// Targeted devices.
+    /// If not specified, targets all applicable devices. Applicable devices vary
+    /// by product and region and can be obtained from ListPlannableProducts.
     #[prost(message, repeated, tag = "4")]
     pub devices: ::std::vec::Vec<super::common::DeviceInfo>,
 }
@@ -24062,7 +24063,7 @@ pub struct Forecast {
     #[prost(message, optional, tag = "3")]
     pub on_target_impressions: ::std::option::Option<i64>,
     /// Total number of ad impressions. This includes impressions that may fall
-    /// outside the specified Targeting, due to insufficent information on
+    /// outside the specified Targeting, due to insufficient information on
     /// signed-in users.
     #[prost(message, optional, tag = "4")]
     pub total_impressions: ::std::option::Option<i64>,

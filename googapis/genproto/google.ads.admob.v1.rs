@@ -87,6 +87,14 @@ pub struct NetworkReportSpec {
     /// 1-100000, inclusive. Any other values are treated as 100000.
     #[prost(int32, tag = "7")]
     pub max_report_rows: i32,
+    /// A report time zone. Accepts an IANA TZ name values, such as
+    /// "America/Los_Angeles."  If no time zone is defined, the account default
+    /// takes effect. Check default value by the get account action.
+    ///
+    /// **Warning:** The "America/Los_Angeles" is the only supported value at
+    /// the moment.
+    #[prost(string, tag = "8")]
+    pub time_zone: std::string::String,
 }
 pub mod network_report_spec {
     /// Describes which report rows to match based on their dimension values.
@@ -155,6 +163,14 @@ pub mod network_report_spec {
         /// The unique ID of the mobile application (for example,
         /// "ca-app-pub-1234~1234").
         App = 5,
+        /// Type of the ad (for example, "text" or "image"), an ad delivery
+        /// dimension.
+        ///
+        /// **Warning:** The dimension is incompatible with
+        /// [AD_REQUESTS](#Metric.ENUM_VALUES.AD_REQUESTS),
+        /// [MATCH_RATE](#Metric.ENUM_VALUES.MATCH_RATE) and
+        /// [IMPRESSION_RPM](#Metric.ENUM_VALUES.IMPRESSION_RPM) metrics.
+        AdType = 6,
         /// CLDR country code of the place where the ad views/clicks occur (for
         /// example, "US" or "FR"). This is a geography dimension.
         Country = 7,
@@ -174,6 +190,9 @@ pub mod network_report_spec {
         /// Default value for an unset field. Do not use.
         Unspecified = 0,
         /// The number of ad requests. The value is an integer.
+        ///
+        /// **Warning:** The metric is incompatible with
+        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         AdRequests = 1,
         /// The number of times a user clicks an ad. The value is an integer.
         Clicks = 2,
@@ -189,12 +208,18 @@ pub mod network_report_spec {
         ImpressionCtr = 5,
         /// The estimated earnings per thousand ad impressions. The value is in
         /// micros. For example, $1.03 would be represented as 1030000.
+        ///
+        /// **Warning:** The metric is incompatible with
+        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         ImpressionRpm = 6,
         /// The number of times ads are returned in response to a request. The value
         /// is an integer.
         MatchedRequests = 7,
         /// The ratio of matched ad requests over the total ad requests. The value is
         /// a double precision (approximate) decimal value.
+        ///
+        /// **Warning:** The metric is incompatible with
+        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         MatchRate = 8,
         /// The ratio of ads that are displayed over ads that are returned, defined
         /// as impressions / matched requests. The value is a double precision
@@ -267,6 +292,14 @@ pub struct MediationReportSpec {
     /// 1-100000, inclusive. Any other values are treated as 100000.
     #[prost(int32, tag = "7")]
     pub max_report_rows: i32,
+    /// A report time zone. Accepts an IANA TZ name values, such as
+    /// "America/Los_Angeles."  If no time zone is defined, the account default
+    /// takes effect. Check default value by the get account action.
+    ///
+    /// **Warning:** The "America/Los_Angeles" is the only supported value at
+    /// the moment.
+    #[prost(string, tag = "8")]
+    pub time_zone: std::string::String,
 }
 pub mod mediation_report_spec {
     /// Describes which report rows to match based on their dimension values.
@@ -334,8 +367,10 @@ pub mod mediation_report_spec {
         AdSource = 4,
         /// The unique ID of the ad source instance (for example,
         /// "ca-app-pub-1234#5678" and "AdMob (default)" as label value).
-        /// Warning: The dimension is incompatible with ESTIMATED_EARNINGS and
-        /// OBSERVED_ECPM metrics.
+        ///
+        /// **Warning:** The dimension is incompatible with
+        /// [ESTIMATED_EARNINGS](#Metric.ENUM_VALUES.ESTIMATED_EARNINGS) and
+        /// [OBSERVED_ECPM](#Metric.ENUM_VALUES.OBSERVED_ECPM) metrics.
         AdSourceInstance = 5,
         /// The unique ID of the ad unit (for example, "ca-app-pub-1234/8790").
         /// If AD_UNIT dimension is specified, then APP is included automatically.
@@ -345,8 +380,10 @@ pub mod mediation_report_spec {
         App = 7,
         /// The unique ID of the mediation group (for example,
         /// "ca-app-pub-1234:mg:1234" and "AdMob (default)" as label value).
-        /// Warning: The dimension is incompatible with ESTIMATED_EARNINGS and
-        /// OBSERVED_ECPM metrics.
+        ///
+        /// **Warning:** The dimension is incompatible with
+        /// [ESTIMATED_EARNINGS](#Metric.ENUM_VALUES.ESTIMATED_EARNINGS) and
+        /// [OBSERVED_ECPM](#Metric.ENUM_VALUES.OBSERVED_ECPM) metrics.
         MediationGroup = 11,
         /// CLDR country code of the place where the ad views/clicks occur (for
         /// example, "US" or "FR"). This is a geography dimension.
@@ -374,8 +411,10 @@ pub mod mediation_report_spec {
         /// EUR, or other) of the earning metrics are determined by the localization
         /// setting for currency. The amount is in micros. For example, $6.50 would
         /// be represented as 6500000.
-        /// Warning: The metric is incompatible with AD_SOURCE_INSTANCE and
-        /// MEDIATION_GROUP dimensions.
+        ///
+        /// **Warning:** The metric is incompatible with
+        /// [AD_SOURCE_INSTANCE](#Dimension.ENUM_VALUES.AD_SOURCE_INSTANCE) and
+        /// [MEDIATION_GROUP](#Dimension.ENUM_VALUES.MEDIATION_GROUP) dimensions.
         EstimatedEarnings = 3,
         /// The total number of ads shown to users. The value is an integer.
         Impressions = 4,
@@ -392,8 +431,10 @@ pub mod mediation_report_spec {
         /// (USD, EUR, or other) of the earning metrics are determined by the
         /// localization setting for currency. The amount is in micros. For example,
         /// $2.30 would be represented as 2300000.
-        /// Warning: The metric is incompatible with AD_SOURCE_INSTANCE and
-        /// MEDIATION_GROUP dimensions.
+        ///
+        /// **Warning:** The metric is incompatible with
+        /// [AD_SOURCE_INSTANCE](#Dimension.ENUM_VALUES.AD_SOURCE_INSTANCE) and
+        /// [MEDIATION_GROUP](#Dimension.ENUM_VALUES.MEDIATION_GROUP) dimensions.
         ObservedEcpm = 8,
     }
 }
@@ -614,8 +655,8 @@ pub struct GenerateMediationReportRequest {
 ///       "header": {
 ///         "date_range": {
 ///           "start_date": {"year": 2018, "month": 9, "day": 1},
-///           "end_date": {"year": 2018, "month": 9, "day": 30}
-///         }
+///           "end_date": {"year": 2018, "month": 9, "day": 1}
+///         },
 ///         "localization_settings": {
 ///           "currency_code": "USD",
 ///           "language_code": "en-US"
@@ -686,8 +727,8 @@ pub struct GenerateNetworkReportRequest {
 ///       "header": {
 ///         "dateRange": {
 ///           "startDate": {"year": 2018, "month": 9, "day": 1},
-///           "endDate": {"year": 2018, "month": 9, "day": 30}
-///         }
+///           "endDate": {"year": 2018, "month": 9, "day": 1}
+///         },
 ///         "localizationSettings": {
 ///           "currencyCode": "USD",
 ///           "languageCode": "en-US"
@@ -708,9 +749,8 @@ pub struct GenerateNetworkReportRequest {
 ///         }
 ///       }
 ///     },
-///     ...
 ///     {
-///       "footer": {"matchingRowCount": 5}
+///       "footer": {"matchingRowCount": 1}
 ///     }]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateNetworkReportResponse {

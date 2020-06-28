@@ -8969,7 +8969,7 @@ pub struct UploadConversionAdjustmentsRequest {
     /// Required. The conversion adjustments that are being uploaded.
     #[prost(message, repeated, tag = "2")]
     pub conversion_adjustments: ::std::vec::Vec<ConversionAdjustment>,
-    /// If true, successful operations will be carried out and invalid
+    /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried out
     /// in one transaction if and only if they are all valid. This should always be
     /// set to true.
@@ -9252,7 +9252,7 @@ pub struct UploadClickConversionsRequest {
     /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag = "2")]
     pub conversions: ::std::vec::Vec<ClickConversion>,
-    /// If true, successful operations will be carried out and invalid
+    /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
     /// This should always be set to true.
@@ -9286,7 +9286,7 @@ pub struct UploadCallConversionsRequest {
     /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag = "2")]
     pub conversions: ::std::vec::Vec<CallConversion>,
-    /// If true, successful operations will be carried out and invalid
+    /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
     /// This should always be set to true.
@@ -19720,7 +19720,7 @@ pub struct GenerateForecastMetricsResponse {
 pub struct KeywordPlanCampaignForecast {
     /// The resource name of the Keyword Plan campaign related to the forecast.
     ///
-    /// `customers/{customer_id}/keywordPlanCampaigns/{keyword+plan_campaign_id}`
+    /// `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
     #[prost(message, optional, tag = "1")]
     pub keyword_plan_campaign: ::std::option::Option<::std::string::String>,
     /// The forecast for the Keyword Plan campaign.

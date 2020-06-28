@@ -60,7 +60,7 @@ pub struct CryptoKey {
     #[prost(message, optional, tag = "11")]
     pub version_template: ::std::option::Option<CryptoKeyVersionTemplate>,
     /// Labels with user-defined metadata. For more information, see
-    /// [Labeling Keys](/kms/docs/labeling-keys).
+    /// [Labeling Keys](https://cloud.google.com/kms/docs/labeling-keys).
     #[prost(map = "string, string", tag = "10")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// Controls the rate of automatic rotation.

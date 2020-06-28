@@ -1,6 +1,6 @@
-/// User specified security marks that are attached to the parent Cloud Security
-/// Command Center (Cloud SCC) resource. Security marks are scoped within a Cloud
-/// SCC organization -- they can be modified and viewed by all users who have
+/// User specified security marks that are attached to the parent Security
+/// Command Center resource. Security marks are scoped within a Security Command
+/// Center organization -- they can be modified and viewed by all users who have
 /// proper permissions on the organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityMarks {
@@ -22,12 +22,13 @@ pub struct SecurityMarks {
     #[prost(map = "string, string", tag = "2")]
     pub marks: ::std::collections::HashMap<std::string::String, std::string::String>,
 }
-/// Cloud Security Command Center's (Cloud SCC) representation of a Google Cloud
-/// Platform (GCP) resource.
+/// Security Command Center representation of a Google Cloud
+/// resource.
 ///
-/// The Asset is a Cloud SCC resource that captures information about a single
-/// GCP resource. All modifications to an Asset are only within the context of
-/// Cloud SCC and don't affect the referenced GCP resource.
+/// The Asset is a Security Command Center resource that captures information
+/// about a single Google Cloud resource. All modifications to an Asset are only
+/// within the context of Security Command Center and don't affect the referenced
+/// Google Cloud resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The relative resource name of this asset. See:
@@ -36,45 +37,46 @@ pub struct Asset {
     /// "organizations/{organization_id}/assets/{asset_id}".
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Cloud SCC managed properties. These properties are managed by
-    /// Cloud SCC and cannot be modified by the user.
+    /// Security Command Center managed properties. These properties are managed by
+    /// Security Command Center and cannot be modified by the user.
     #[prost(message, optional, tag = "2")]
     pub security_center_properties: ::std::option::Option<asset::SecurityCenterProperties>,
     /// Resource managed properties. These properties are managed and defined by
-    /// the GCP resource and cannot be modified by the user.
+    /// the Google Cloud resource and cannot be modified by the user.
     #[prost(map = "string, message", tag = "7")]
     pub resource_properties: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
     /// User specified security marks. These marks are entirely managed by the user
     /// and come from the SecurityMarks resource that belongs to the asset.
     #[prost(message, optional, tag = "8")]
     pub security_marks: ::std::option::Option<SecurityMarks>,
-    /// The time at which the asset was created in Cloud SCC.
+    /// The time at which the asset was created in Security Command Center.
     #[prost(message, optional, tag = "9")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// The time at which the asset was last updated, added, or deleted in Cloud
-    /// SCC.
+    /// The time at which the asset was last updated, added, or deleted in Security
+    /// Command Center.
     #[prost(message, optional, tag = "10")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// IAM Policy information associated with the GCP resource described by the
-    /// Cloud SCC asset. This information is managed and defined by the GCP
-    /// resource and cannot be modified by the user.
+    /// Cloud IAM Policy information associated with the Google Cloud resource
+    /// described by the Security Command Center asset. This information is managed
+    /// and defined by the Google Cloud resource and cannot be modified by the
+    /// user.
     #[prost(message, optional, tag = "11")]
     pub iam_policy: ::std::option::Option<asset::IamPolicy>,
 }
 pub mod asset {
-    /// Cloud SCC managed properties. These properties are managed by Cloud SCC and
-    /// cannot be modified by the user.
+    /// Security Command Center managed properties. These properties are managed by
+    /// Security Command Center and cannot be modified by the user.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SecurityCenterProperties {
-        /// The full resource name of the GCP resource this asset
+        /// The full resource name of the Google Cloud resource this asset
         /// represents. This field is immutable after create time. See:
         /// https://cloud.google.com/apis/design/resource_names#full_resource_name
         #[prost(string, tag = "1")]
         pub resource_name: std::string::String,
-        /// The type of the GCP resource. Examples include: APPLICATION,
+        /// The type of the Google Cloud resource. Examples include: APPLICATION,
         /// PROJECT, and ORGANIZATION. This is a case insensitive field defined by
-        /// Cloud SCC and/or the producer of the resource and is immutable
-        /// after create time.
+        /// Security Command Center and/or the producer of the resource and is
+        /// immutable after create time.
         #[prost(string, tag = "2")]
         pub resource_type: std::string::String,
         /// The full resource name of the immediate parent of the resource. See:
@@ -98,9 +100,10 @@ pub mod asset {
         #[prost(string, tag = "8")]
         pub resource_project_display_name: std::string::String,
     }
-    /// IAM Policy information associated with the GCP resource described by the
-    /// Cloud SCC asset. This information is managed and defined by the GCP
-    /// resource and cannot be modified by the user.
+    /// Cloud IAM Policy information associated with the Google Cloud resource
+    /// described by the Security Command Center asset. This information is managed
+    /// and defined by the Google Cloud resource and cannot be modified by the
+    /// user.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamPolicy {
         /// The JSON representation of the Policy associated with the asset.
@@ -110,11 +113,11 @@ pub mod asset {
         pub policy_blob: std::string::String,
     }
 }
-/// Cloud Security Command Center (Cloud SCC) finding.
+/// Security Command Center finding.
 ///
 /// A finding is a record of assessment data like security, risk, health, or
-/// privacy, that is ingested into Cloud SCC for presentation, notification,
-/// analysis, policy testing, and enforcement. For example, a
+/// privacy, that is ingested into Security Command Center for presentation,
+/// notification, analysis, policy testing, and enforcement. For example, a
 /// cross-site scripting (XSS) vulnerability in an App Engine application is a
 /// finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -132,12 +135,12 @@ pub struct Finding {
     /// "organizations/{organization_id}/sources/{source_id}"
     #[prost(string, tag = "2")]
     pub parent: std::string::String,
-    /// For findings on Google Cloud Platform (GCP) resources, the full resource
-    /// name of the GCP resource this finding is for. See:
+    /// For findings on Google Cloud resources, the full resource
+    /// name of the Google Cloud resource this finding is for. See:
     /// https://cloud.google.com/apis/design/resource_names#full_resource_name
-    /// When the finding is for a non-GCP resource, the resourceName can be a
-    /// customer or partner defined string.
-    /// This field is immutable after creation time.
+    /// When the finding is for a non-Google Cloud resource, the resourceName can
+    /// be a customer or partner defined string. This field is immutable after
+    /// creation time.
     #[prost(string, tag = "3")]
     pub resource_name: std::string::String,
     /// The state of the finding.
@@ -148,9 +151,9 @@ pub struct Finding {
     /// Example: "XSS_FLASH_INJECTION"
     #[prost(string, tag = "5")]
     pub category: std::string::String,
-    /// The URI that, if available, points to a web page outside of Cloud SCC
-    /// where additional information about the finding can be found. This field is
-    /// guaranteed to be either empty or a well formed URL.
+    /// The URI that, if available, points to a web page outside of Security
+    /// Command Center where additional information about the finding can be found.
+    /// This field is guaranteed to be either empty or a well formed URL.
     #[prost(string, tag = "6")]
     pub external_uri: std::string::String,
     /// Source specific properties. These properties are managed by the source
@@ -169,7 +172,7 @@ pub struct Finding {
     /// the firewall became open. The accuracy is determined by the detector.
     #[prost(message, optional, tag = "9")]
     pub event_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// The time at which the finding was created in Cloud SCC.
+    /// The time at which the finding was created in Security Command Center.
     #[prost(message, optional, tag = "10")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
 }
@@ -251,12 +254,35 @@ pub mod notification_config {
         StreamingConfig(StreamingConfig),
     }
 }
+/// Information related to the Google Cloud resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Resource {
+    /// The full resource name of the resource. See:
+    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// The full resource name of project that the resource belongs to.
+    #[prost(string, tag = "2")]
+    pub project: std::string::String,
+    /// The human readable name of project that the resource belongs to.
+    #[prost(string, tag = "3")]
+    pub project_display_name: std::string::String,
+    /// The full resource name of resource's parent.
+    #[prost(string, tag = "4")]
+    pub parent: std::string::String,
+    /// The human readable name of resource's parent.
+    #[prost(string, tag = "5")]
+    pub parent_display_name: std::string::String,
+}
 /// Cloud SCC's Notification
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationMessage {
     /// Name of the notification config that generated current notification.
     #[prost(string, tag = "1")]
     pub notification_config_name: std::string::String,
+    /// The Cloud resource tied to this notification's Finding.
+    #[prost(message, optional, tag = "3")]
+    pub resource: ::std::option::Option<Resource>,
     /// Notification Event.
     #[prost(oneof = "notification_message::Event", tags = "2")]
     pub event: ::std::option::Option<notification_message::Event>,
@@ -271,8 +297,8 @@ pub mod notification_message {
         Finding(super::Finding),
     }
 }
-/// User specified settings that are attached to the Cloud Security Command
-/// Center (Cloud SCC) organization.
+/// User specified settings that are attached to the Security Command
+/// Center organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationSettings {
     /// The relative resource name of the settings. See:
@@ -352,7 +378,7 @@ pub mod run_asset_discovery_response {
         Terminated = 3,
     }
 }
-/// Cloud Security Command Center's (Cloud SCC) finding source. A finding source
+/// Security Command Center finding source. A finding source
 /// is an entity or a mechanism that can produce a finding. A source is like a
 /// container of findings that come from the same scanner, logger, monitor, and
 /// other tools.
@@ -501,15 +527,15 @@ pub struct GroupAssetsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "update_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "update_time = 1560208038000"
+    ///     `update_time = "2019-06-10T16:07:18-07:00"`
+    ///     `update_time = 1560208038000`
     ///
     /// * create_time: `=`, `>`, `<`, `>=`, `<=`
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "create_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "create_time = 1560208038000"
+    ///     `create_time = "2019-06-10T16:07:18-07:00"`
+    ///     `create_time = 1560208038000`
     ///
     /// * iam_policy.policy_blob: `=`, `:`
     /// * resource_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
@@ -524,6 +550,12 @@ pub struct GroupAssetsRequest {
     /// * security_center_properties.resource_owners: `=`, `:`
     ///
     /// For example, `resource_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing:`resource_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-resource_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Required. Expression that defines what assets fields to use for grouping.
@@ -655,13 +687,19 @@ pub struct GroupFindingsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "event_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "event_time = 1560208038000"
+    ///     `event_time = "2019-06-10T16:07:18-07:00"`
+    ///     `event_time = 1560208038000`
     ///
     /// * security_marks.marks: `=`, `:`
     /// * source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
     ///
     /// For example, `source_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing: `source_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-source_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Required. Expression that defines what assets fields to use for grouping
@@ -855,15 +893,15 @@ pub struct ListAssetsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "update_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "update_time = 1560208038000"
+    ///     `update_time = "2019-06-10T16:07:18-07:00"`
+    ///     `update_time = 1560208038000`
     ///
     /// * create_time: `=`, `>`, `<`, `>=`, `<=`
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "create_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "create_time = 1560208038000"
+    ///     `create_time = "2019-06-10T16:07:18-07:00"`
+    ///     `create_time = 1560208038000`
     ///
     /// * iam_policy.policy_blob: `=`, `:`
     /// * resource_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
@@ -878,6 +916,12 @@ pub struct ListAssetsRequest {
     /// * security_center_properties.resource_owners: `=`, `:`
     ///
     /// For example, `resource_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing: `resource_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-resource_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Expression that defines what fields and order to use for sorting. The
@@ -1043,13 +1087,19 @@ pub struct ListFindingsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "event_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "event_time = 1560208038000"
+    ///     `event_time = "2019-06-10T16:07:18-07:00"`
+    ///     `event_time = 1560208038000`
     ///
     /// security_marks.marks: `=`, `:`
     /// source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
     ///
     /// For example, `source_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing: `source_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-source_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Expression that defines what fields and order to use for sorting. The
@@ -1156,7 +1206,7 @@ pub mod list_findings_response {
         pub resource: ::std::option::Option<list_findings_result::Resource>,
     }
     pub mod list_findings_result {
-        /// Information related to the Google Cloud Platform (GCP) resource that is
+        /// Information related to the Google Cloud resource that is
         /// associated with this finding.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Resource {
@@ -1687,8 +1737,8 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = ""]
-        #[doc = " Updates a notification config."]
+        #[doc = " Updates a notification config. The following update"]
+        #[doc = " fields are allowed: description, pubsub_topic, streaming_config.filter"]
         pub async fn update_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNotificationConfigRequest>,
@@ -1893,8 +1943,8 @@ pub mod security_center_server {
             &self,
             request: tonic::Request<super::UpdateFindingRequest>,
         ) -> Result<tonic::Response<super::Finding>, tonic::Status>;
-        #[doc = ""]
-        #[doc = " Updates a notification config."]
+        #[doc = " Updates a notification config. The following update"]
+        #[doc = " fields are allowed: description, pubsub_topic, streaming_config.filter"]
         async fn update_notification_config(
             &self,
             request: tonic::Request<super::UpdateNotificationConfigRequest>,

@@ -1836,7 +1836,6 @@ pub mod customer_client_link_error_enum {
 pub struct CustomerErrorEnum {}
 pub mod customer_error_enum {
     /// Set of errors that are related to requests dealing with Customer.
-    /// Next id: 26
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CustomerError {

@@ -71,6 +71,7 @@ pub mod secret_version {
     }
 }
 /// A policy that defines the replication configuration of data.
+///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Replication {
     /// The replication policy for this secret.
@@ -114,7 +115,7 @@ pub mod replication {
     }
 }
 /// A secret payload resource in the Secret Manager API. This contains the
-/// sensitive secret data that is associated with a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+/// sensitive secret payload that is associated with a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretPayload {
     /// The secret data. Must be no larger than 64KiB.

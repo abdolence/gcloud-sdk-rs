@@ -98,7 +98,7 @@ pub struct Instance {
     #[prost(int32, tag = "18")]
     pub memory_size_gb: i32,
     /// Optional. The full name of the Google Compute Engine
-    /// [network](/compute/docs/networks-and-firewalls#networks) to which the
+    /// [network](https://cloud.google.com/vpc/docs/vpc) to which the
     /// instance is connected. If left unspecified, the `default` network
     /// will be used.
     #[prost(string, tag = "20")]
@@ -495,7 +495,7 @@ pub mod cloud_redis_client {
         #[doc = " Creates a Redis instance based on the specified tier and memory size."]
         #[doc = ""]
         #[doc = " By default, the instance is accessible from the project's"]
-        #[doc = " [default network](/compute/docs/networks-and-firewalls#networks)."]
+        #[doc = " [default network](https://cloud.google.com/vpc/docs/vpc)."]
         #[doc = ""]
         #[doc = " The creation is executed asynchronously and callers may check the returned"]
         #[doc = " operation to track its progress. Once the operation is completed the Redis"]
@@ -704,7 +704,7 @@ pub mod cloud_redis_server {
         #[doc = " Creates a Redis instance based on the specified tier and memory size."]
         #[doc = ""]
         #[doc = " By default, the instance is accessible from the project's"]
-        #[doc = " [default network](/compute/docs/networks-and-firewalls#networks)."]
+        #[doc = " [default network](https://cloud.google.com/vpc/docs/vpc)."]
         #[doc = ""]
         #[doc = " The creation is executed asynchronously and callers may check the returned"]
         #[doc = " operation to track its progress. Once the operation is completed the Redis"]

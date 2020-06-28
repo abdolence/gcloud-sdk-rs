@@ -127,7 +127,8 @@ pub struct ComputeRoutesRequest {
     #[prost(message, optional, tag = "2")]
     pub destination: ::std::option::Option<Waypoint>,
     /// Optional. A set of waypoints along the route (excluding terminal points),
-    /// for either stopping at or passing by.
+    /// for either stopping at or passing by. Up to 25 intermediate waypoints are
+    /// supported.
     #[prost(message, repeated, tag = "3")]
     pub intermediates: ::std::vec::Vec<Waypoint>,
     /// Optional. Specifies the mode of transportation.
@@ -177,20 +178,24 @@ pub struct ComputeRoutesRequest {
 /// routes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteModifiers {
-    /// Specifies whether to avoid toll roads. Applies only to the `DRIVE` and
+    /// Specifies whether to avoid toll roads where reasonable. Preference will be
+    /// given to routes not containing toll roads. Applies only to the `DRIVE` and
     /// `TWO_WHEELER` travel modes.
     #[prost(bool, tag = "1")]
     pub avoid_tolls: bool,
-    /// Specifies whether to avoid highways. Applies only to the `DRIVE` and
+    /// Specifies whether to avoid highways where reasonable. Preference will be
+    /// given to routes not containing highways. Applies only to the `DRIVE` and
     /// `TWO_WHEELER` travel modes.
     #[prost(bool, tag = "2")]
     pub avoid_highways: bool,
-    /// Specifies whether to avoid ferries. Applies only to the `DRIVE` and
-    /// `TWO_WHEELER` travel modes.
+    /// Specifies whether to avoid ferries where reasonable. Preference will be
+    /// given to routes not containing travel by ferries.
+    /// Applies only to the `DRIVE` and`TWO_WHEELER` travel modes.
     #[prost(bool, tag = "3")]
     pub avoid_ferries: bool,
-    /// Specifies whether to avoid navigating indoors. Applies only to the `WALK`
-    /// travel mode.
+    /// Specifies whether to avoid navigating indoors where reasonable. Preference
+    /// will be given to routes not containing indoor navigation.
+    /// Applies only to the `WALK` travel mode.
     #[prost(bool, tag = "4")]
     pub avoid_indoor: bool,
     /// Optional. Specifies the vehicle information.
@@ -410,6 +415,16 @@ pub struct RouteTravelAdvisory {
     /// If this field is not set, then we expect there is no toll on the Route.
     #[prost(message, optional, tag = "2")]
     pub toll_info: ::std::option::Option<TollInfo>,
+    /// Speed reading intervals detailing traffic density. Applicable in case of
+    /// TRAFFIC_AWARE and TRAFFIC_AWARE_OPTIMAL routing preferences.
+    /// The intervals cover the entire polyline of the route without overlaps, i.e.
+    /// the start point of a given interval coincides with the end point of the
+    /// preceding interval.
+    /// Example:
+    ///   polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    ///   speed_reading_intervals: [A,C),  [C,D), [D,G).
+    #[prost(message, repeated, tag = "3")]
+    pub speed_reading_intervals: ::std::vec::Vec<SpeedReadingInterval>,
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc. on a route leg.
@@ -529,6 +544,42 @@ pub struct NavigationInstruction {
     /// Instructions for navigating this step.
     #[prost(string, tag = "2")]
     pub instructions: std::string::String,
+}
+/// Traffic density indicator on a contiguous segment of a polyline.
+/// Given a polyline with polyline points P_0, P_1, ... , P_N
+/// (the indexing is zero-based), the SpeedReadingInterval defines an
+/// interval (including the start, exclusing the end point) and describes the
+/// traffic density on the respective interval using the below style categories.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpeedReadingInterval {
+    /// The index of the starting polyline point of the interval
+    /// in the ordered list of polyline points.
+    /// In JSON, when the index is 0, the field will appear to be unpopulated.
+    #[prost(int32, tag = "1")]
+    pub start_polyline_point_index: i32,
+    /// The index of the ending polyline point of the interval
+    /// (with off-by-one ending) in the ordered list of polyline points.
+    /// In JSON, when the index is 0, the field will appear to be unpopulated.
+    #[prost(int32, tag = "2")]
+    pub end_polyline_point_index: i32,
+    /// Traffic information speed at the interval.
+    #[prost(enumeration = "speed_reading_interval::Speed", tag = "3")]
+    pub speed: i32,
+}
+pub mod speed_reading_interval {
+    /// The classification of polyline speed based on traffic data.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Speed {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Normal speed, no slowdown is detected.
+        Normal = 1,
+        /// Slowdown detected, but no traffic jam formed.
+        Slow = 2,
+        /// Traffic jam detected.
+        TrafficJam = 3,
+    }
 }
 /// A set of values that specify the navigation action to take for the current
 /// step (e.g., turn left, merge, straight, etc.).

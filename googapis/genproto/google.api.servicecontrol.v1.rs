@@ -5,9 +5,22 @@ pub struct CheckError {
     /// The error code.
     #[prost(enumeration = "check_error::Code", tag = "1")]
     pub code: i32,
+    /// Subject to whom this error applies. See the specific code enum for more
+    /// details on this field. For example:
+    ///
+    /// - "project:<project-id or project-number>"
+    /// - "folder:<folder-id>"
+    /// - "organization:<organization-id>"
+    #[prost(string, tag = "4")]
+    pub subject: std::string::String,
     /// Free-form text providing details on the error cause of the error.
     #[prost(string, tag = "2")]
     pub detail: std::string::String,
+    /// Contains public information about the check error. If available,
+    /// `status.code` will be non zero and client can propagate it out as public
+    /// error.
+    #[prost(message, optional, tag = "3")]
+    pub status: ::std::option::Option<super::super::super::rpc::Status>,
 }
 pub mod check_error {
     /// Error codes for Check responses.
@@ -17,15 +30,16 @@ pub mod check_error {
         /// This is never used in `CheckResponse`.
         ErrorCodeUnspecified = 0,
         /// The consumer's project id, network container, or resource container was
-        /// not found. Same as [google.rpc.Code.NOT_FOUND][].
+        /// not found. Same as
+        /// [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND].
         NotFound = 5,
         /// The consumer doesn't have access to the specified resource.
-        /// Same as [google.rpc.Code.PERMISSION_DENIED][].
+        /// Same as
+        /// [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
         PermissionDenied = 7,
-        /// Quota check failed. Same as [google.rpc.Code.RESOURCE_EXHAUSTED][].
+        /// Quota check failed. Same as
+        /// [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
         ResourceExhausted = 8,
-        /// The consumer has been flagged as an abuser.
-        AbuserDetected = 103,
         /// The consumer hasn't activated the service.
         ServiceNotActivated = 104,
         /// The consumer cannot access the service because billing is disabled.
@@ -34,6 +48,9 @@ pub mod check_error {
         ProjectDeleted = 108,
         /// The consumer's project number or id does not represent a valid project.
         ProjectInvalid = 114,
+        /// The input consumer info does not represent a valid consumer folder or
+        /// organization.
+        ConsumerInvalid = 125,
         /// The IP address of the consumer is invalid for the specific consumer
         /// project.
         IpAddressBlocked = 109,
@@ -52,35 +69,16 @@ pub mod check_error {
         ApiKeyExpired = 112,
         /// The consumer's API Key was not found in config record.
         ApiKeyNotFound = 113,
-        /// Request is not allowed as per security policies defined in Org Policy.
-        SecurityPolicyViolated = 121,
         /// The credential in the request can not be verified.
         InvalidCredential = 123,
-        /// Request is not allowed as per location policies defined in Org Policy.
-        LocationPolicyViolated = 124,
-        /// The input consumer info does not represent a valid consumer folder or
-        /// organization.
-        ConsumerInvalid = 125,
-        // NOTE: By convention, all *_UNAVAILABLE codes are required to be in the
-        // 300 - 399 range.
-
-        // NOTE: Unless there are very special business requirements, service
-        // producer should ignore the following errors. These errors should not
-        // cause the rejection of client requests.
         /// The backend server for looking up project id/number is unavailable.
         NamespaceLookupUnavailable = 300,
         /// The backend server for checking service status is unavailable.
         ServiceStatusUnavailable = 301,
         /// The backend server for checking billing status is unavailable.
         BillingStatusUnavailable = 302,
-        /// The backend server for checking quota limits is unavailable.
-        QuotaCheckUnavailable = 303,
         /// Cloud Resource Manager backend server is unavailable.
         CloudResourceManagerBackendUnavailable = 305,
-        /// Backend server for evaluating security policy is unavailable.
-        SecurityPolicyBackendUnavailable = 306,
-        /// Backend server for evaluating location policy is unavailable.
-        LocationPolicyBackendUnavailable = 307,
     }
 }
 /// Distribution represents a frequency distribution of double-valued sample
@@ -304,7 +302,8 @@ pub struct MetricValue {
     /// The labels describing the metric value.
     /// See comments on
     /// [google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels]
-    /// for the overriding relationship.
+    /// for the overriding relationship. Note that this map must not contain
+    /// monitored resource labels.
     #[prost(map = "string, string", tag = "1")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// The start of the time period over which this metric value's measurement
@@ -380,10 +379,13 @@ pub struct Operation {
     /// consumer, but not for service-initiated operations that are
     /// not related to a specific consumer.
     ///
-    /// This can be in one of the following formats:
-    ///   project:<project_id>,
-    ///   project_number:<project_number>,
-    ///   api_key:<api_key>.
+    /// - This can be in one of the following formats:
+    ///     - project:PROJECT_ID,
+    ///     - project`_`number:PROJECT_NUMBER,
+    ///     - projects/PROJECT_ID or PROJECT_NUMBER,
+    ///     - folders/FOLDER_NUMBER,
+    ///     - organizations/ORGANIZATION_NUMBER,
+    ///     - api`_`key:API_KEY.
     #[prost(string, tag = "3")]
     pub consumer_id: std::string::String,
     /// Required. Start time of the operation.
@@ -410,7 +412,8 @@ pub struct Operation {
     ///     - `servicecontrol.googleapis.com/service_agent` describing the service
     ///        used to handle the API request (e.g. ESP),
     ///     - `servicecontrol.googleapis.com/platform` describing the platform
-    ///        where the API is served (e.g. GAE, GCE, GKE).
+    ///        where the API is served, such as App Engine, Compute Engine, or
+    ///        Kubernetes Engine.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// Represents information about this operation. Each MetricValueSet
@@ -472,16 +475,20 @@ pub struct QuotaOperation {
     /// of the service that generated the operation, and guarantees idempotency in
     /// case of retries.
     ///
-    /// UUID version 4 is recommended, though not required. In scenarios where an
-    /// operation is computed from existing information and an idempotent id is
-    /// desirable for deduplication purpose, UUID version 5 is recommended. See
-    /// RFC 4122 for details.
+    /// In order to ensure best performance and latency in the Quota backends,
+    /// operation_ids are optimally associated with time, so that related
+    /// operations can be accessed fast in storage. For this reason, the
+    /// recommended token for services that intend to operate at a high QPS is
+    /// Unix time in nanos + UUID
     #[prost(string, tag = "1")]
     pub operation_id: std::string::String,
     /// Fully qualified name of the API method for which this quota operation is
     /// requested. This name is used for matching quota rules or metric rules and
-    /// billing status rules defined in service configuration. This field is not
-    /// required if the quota operation is performed on non-API resources.
+    /// billing status rules defined in service configuration.
+    ///
+    /// This field should not be set if any of the following is true:
+    /// (1) the quota operation is performed on non-API resources.
+    /// (2) quota_metrics is set because the caller is doing quota override.
     ///
     /// Example of an RPC method name:
     ///     google.example.library.v1.LibraryService.CreateShelf
@@ -508,6 +515,8 @@ pub struct QuotaOperation {
     /// label value combinations. If a request has such duplicated MetricValue
     /// instances, the entire request is rejected with
     /// an invalid argument error.
+    ///
+    /// This field is mutually exclusive with method_name.
     #[prost(message, repeated, tag = "5")]
     pub quota_metrics: ::std::vec::Vec<MetricValueSet>,
     /// Quota mode for this operation.
@@ -525,11 +534,17 @@ pub mod quota_operation {
         /// the service configuration or specified using the quota metrics. If the
         /// amount is higher than the available quota, allocation error will be
         /// returned and no quota will be allocated.
+        /// If multiple quotas are part of the request, and one fails, none of the
+        /// quotas are allocated or released.
         Normal = 1,
         /// The operation allocates quota for the amount specified in the service
         /// configuration or specified using the quota metrics. If the amount is
         /// higher than the available quota, request does not fail but all available
         /// quota will be allocated.
+        /// For rate quota, BEST_EFFORT will continue to deduct from other groups
+        /// even if one does not have enough quota. For allocation, it will find the
+        /// minimum available amount across all groups and deduct that amount from
+        /// all the affected groups.
         BestEffort = 2,
         /// For AllocateQuota request, only checks if there is enough quota
         /// available and does not change the available quota. No lock is placed on
@@ -591,7 +606,8 @@ pub mod quota_error {
         /// This is never used.
         Unspecified = 0,
         /// Quota allocation failed.
-        /// Same as [google.rpc.Code.RESOURCE_EXHAUSTED][].
+        /// Same as
+        /// [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
         ResourceExhausted = 8,
         /// Consumer cannot access the service because the service requires active
         /// billing.
@@ -836,9 +852,6 @@ pub struct CheckResponse {
     /// and diagnostics purposes.
     #[prost(string, tag = "1")]
     pub operation_id: std::string::String,
-    /// The current service rollout id used to process the request.
-    #[prost(string, tag = "11")]
-    pub service_rollout_id: std::string::String,
     /// Indicate the decision of the check.
     ///
     /// If no check errors are present, the service should process the operation.
@@ -849,24 +862,60 @@ pub struct CheckResponse {
     /// The actual config id used to process the request.
     #[prost(string, tag = "5")]
     pub service_config_id: std::string::String,
+    /// The current service rollout id used to process the request.
+    #[prost(string, tag = "11")]
+    pub service_rollout_id: std::string::String,
     /// Feedback data returned from the server during processing a Check request.
     #[prost(message, optional, tag = "6")]
     pub check_info: ::std::option::Option<check_response::CheckInfo>,
 }
 pub mod check_response {
+    /// Contains additional information about the check operation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CheckInfo {
         /// Consumer info of this check.
         #[prost(message, optional, tag = "2")]
         pub consumer_info: ::std::option::Option<ConsumerInfo>,
     }
-    /// `ConsumerInfo` provides information about the consumer project.
+    /// `ConsumerInfo` provides information about the consumer.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConsumerInfo {
         /// The Google cloud project number, e.g. 1234567890. A value of 0 indicates
         /// no project number is found.
+        ///
+        /// NOTE: This field is deprecated after Service Control support flexible
+        /// consumer id. New code should not depend on this field anymore.
         #[prost(int64, tag = "1")]
         pub project_number: i64,
+        /// The type of the consumer which should have been defined in
+        /// [Google Resource Manager](https://cloud.google.com/resource-manager/).
+        #[prost(enumeration = "consumer_info::ConsumerType", tag = "2")]
+        pub r#type: i32,
+        /// The consumer identity number, can be Google cloud project number, folder
+        /// number or organization number e.g. 1234567890. A value of 0 indicates no
+        /// consumer number is found.
+        #[prost(int64, tag = "3")]
+        pub consumer_number: i64,
+    }
+    pub mod consumer_info {
+        /// The type of the consumer as defined in
+        /// [Google Resource Manager](https://cloud.google.com/resource-manager/).
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum ConsumerType {
+            /// This is never used.
+            Unspecified = 0,
+            /// The consumer is a Google Cloud Project.
+            Project = 1,
+            /// The consumer is a Google Cloud Folder.
+            Folder = 2,
+            /// The consumer is a Google Cloud Organization.
+            Organization = 3,
+            /// Service-specific resource container which is defined by the service
+            /// producer to offer their users the ability to manage service control
+            /// functionalities at a finer level of granularity than the PROJECT.
+            ServiceSpecific = 4,
+        }
     }
 }
 /// Request message for the Report method.
@@ -887,8 +936,8 @@ pub struct ReportRequest {
     /// be used only when multiple operations are natually available at the time
     /// of the report.
     ///
-    /// If multiple operations are in a single request, the total request size
-    /// should be no larger than 1MB. See
+    /// There is no limit on the number of operations in the same ReportRequest,
+    /// however the ReportRequest size should be no larger than 1MB. See
     /// [ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors]
     /// for partial failure behavior.
     #[prost(message, repeated, tag = "2")]
@@ -980,20 +1029,23 @@ pub mod service_controller_client {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
         }
-        #[doc = " Checks an operation with Google Service Control to decide whether"]
-        #[doc = " the given operation should proceed. It should be called before the"]
-        #[doc = " operation is executed."]
+        #[doc = " Checks whether an operation on a service should be allowed to proceed"]
+        #[doc = " based on the configuration of the service and related policies. It must be"]
+        #[doc = " called before the operation is executed."]
         #[doc = ""]
         #[doc = " If feasible, the client should cache the check results and reuse them for"]
-        #[doc = " 60 seconds. In case of server errors, the client can rely on the cached"]
-        #[doc = " results for longer time."]
+        #[doc = " 60 seconds. In case of any server errors, the client should rely on the"]
+        #[doc = " cached results for much longer time to avoid outage."]
+        #[doc = " WARNING: There is general 60s delay for the configuration and policy"]
+        #[doc = " propagation, therefore callers MUST NOT depend on the `Check` method having"]
+        #[doc = " the latest policy information."]
         #[doc = ""]
         #[doc = " NOTE: the [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has the"]
         #[doc = " size limit of 64KB."]
         #[doc = ""]
         #[doc = " This method requires the `servicemanagement.services.check` permission"]
         #[doc = " on the specified service. For more information, see"]
-        #[doc = " [Google Cloud IAM](https://cloud.google.com/iam)."]
+        #[doc = " [Cloud IAM](https://cloud.google.com/iam)."]
         pub async fn check(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckRequest>,
@@ -1020,7 +1072,7 @@ pub mod service_controller_client {
         #[doc = " for business and compliance reasons."]
         #[doc = ""]
         #[doc = " NOTE: the [ReportRequest][google.api.servicecontrol.v1.ReportRequest] has"]
-        #[doc = " the size limit of 1MB."]
+        #[doc = " the size limit (wire-format byte size) of 1MB."]
         #[doc = ""]
         #[doc = " This method requires the `servicemanagement.services.report` permission"]
         #[doc = " on the specified service. For more information, see"]
@@ -1062,20 +1114,23 @@ pub mod service_controller_server {
     #[doc = "Generated trait containing gRPC methods that should be implemented for use with ServiceControllerServer."]
     #[async_trait]
     pub trait ServiceController: Send + Sync + 'static {
-        #[doc = " Checks an operation with Google Service Control to decide whether"]
-        #[doc = " the given operation should proceed. It should be called before the"]
-        #[doc = " operation is executed."]
+        #[doc = " Checks whether an operation on a service should be allowed to proceed"]
+        #[doc = " based on the configuration of the service and related policies. It must be"]
+        #[doc = " called before the operation is executed."]
         #[doc = ""]
         #[doc = " If feasible, the client should cache the check results and reuse them for"]
-        #[doc = " 60 seconds. In case of server errors, the client can rely on the cached"]
-        #[doc = " results for longer time."]
+        #[doc = " 60 seconds. In case of any server errors, the client should rely on the"]
+        #[doc = " cached results for much longer time to avoid outage."]
+        #[doc = " WARNING: There is general 60s delay for the configuration and policy"]
+        #[doc = " propagation, therefore callers MUST NOT depend on the `Check` method having"]
+        #[doc = " the latest policy information."]
         #[doc = ""]
         #[doc = " NOTE: the [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has the"]
         #[doc = " size limit of 64KB."]
         #[doc = ""]
         #[doc = " This method requires the `servicemanagement.services.check` permission"]
         #[doc = " on the specified service. For more information, see"]
-        #[doc = " [Google Cloud IAM](https://cloud.google.com/iam)."]
+        #[doc = " [Cloud IAM](https://cloud.google.com/iam)."]
         async fn check(
             &self,
             request: tonic::Request<super::CheckRequest>,
@@ -1090,7 +1145,7 @@ pub mod service_controller_server {
         #[doc = " for business and compliance reasons."]
         #[doc = ""]
         #[doc = " NOTE: the [ReportRequest][google.api.servicecontrol.v1.ReportRequest] has"]
-        #[doc = " the size limit of 1MB."]
+        #[doc = " the size limit (wire-format byte size) of 1MB."]
         #[doc = ""]
         #[doc = " This method requires the `servicemanagement.services.report` permission"]
         #[doc = " on the specified service. For more information, see"]

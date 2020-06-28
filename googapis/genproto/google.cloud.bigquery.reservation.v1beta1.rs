@@ -2,13 +2,15 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reservation {
     /// The resource name of the reservation, e.g.,
-    /// "projects/*/locations/*/reservations/team1-prod".
+    /// `projects/*/locations/*/reservations/team1-prod`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Minimum slots available to this reservation. A slot is a unit of
     /// computational power in BigQuery, and serves as the unit of parallelism.
+    ///
     /// Queries using this reservation might use more slots during runtime if
     /// ignore_idle_slots is set to false.
+    ///
     /// If the new reservation's slot capacity exceed the parent's slot capacity or
     /// if total slot capacity of the new reservation and its siblings exceeds the
     /// parent's slot capacity, the request will fail with
@@ -22,17 +24,19 @@ pub struct Reservation {
     pub ignore_idle_slots: bool,
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
-/// (in the form of slots) with some committed period of usage. Monthly and
-/// annual commitments renew by default. Only flex commitments can be removed. In
-/// order to remove monthly or annual commitments, their plan needs to be changed
-/// to flex first.
+/// (in the form of slots) with some committed period of usage. Annual
+/// commitments renew by default. Commitments can be removed after their
+/// commitment end time passes.
+///
+/// In order to remove annual commitment, its plan needs to be changed
+/// to monthly or flex first.
 ///
 /// A capacity commitment resource exists as a child resource of the admin
 /// project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityCommitment {
     /// Output only. The resource name of the capacity commitment, e.g.,
-    ///    projects/myproject/locations/US/capacityCommitments/123
+    /// `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Number of slots in this commitment.
@@ -53,7 +57,7 @@ pub struct CapacityCommitment {
     pub failure_status: ::std::option::Option<super::super::super::super::rpc::Status>,
     /// The plan this capacity commitment is converted to after commitment_end_time
     /// passes. Once the plan is changed, committed period is extended according to
-    /// commitment plan. Only applicable for MONTHLY and ANNUAL commitments.
+    /// commitment plan. Only applicable for ANNUAL commitments.
     #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "8")]
     pub renewal_plan: i32,
 }
@@ -70,11 +74,18 @@ pub mod capacity_commitment {
         /// After that, they are not in a committed period anymore and can be removed
         /// any time.
         Flex = 3,
+        /// Trial commitments have a committed period of 182 days after becoming
+        /// ACTIVE. After that, they are converted to a new commitment based on the
+        /// `renewal_plan`. Default `renewal_plan` for Trial commitment is Flex so
+        /// that it can be deleted right after committed period ends.
+        Trial = 5,
         /// Monthly commitments have a committed period of 30 days after becoming
-        /// ACTIVE.
+        /// ACTIVE. After that, they are not in a committed period anymore and can be
+        /// removed any time.
         Monthly = 2,
         /// Annual commitments have a committed period of 365 days after becoming
-        /// ACTIVE.
+        /// ACTIVE. After that they are converted to a new commitment based on the
+        /// renewal_plan.
         Annual = 4,
     }
     /// Capacity commitment can either become ACTIVE right away or transition
@@ -99,7 +110,7 @@ pub mod capacity_commitment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReservationRequest {
     /// Required. Project, location. E.g.,
-    ///    projects/myproject/locations/US
+    /// `projects/myproject/locations/US`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The reservation ID. This field must only contain lower case alphanumeric
@@ -115,7 +126,7 @@ pub struct CreateReservationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsRequest {
     /// Required. The parent resource name containing project and location, e.g.:
-    ///   "projects/myproject/locations/US"
+    ///   `projects/myproject/locations/US`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The maximum number of items to return.
@@ -149,7 +160,7 @@ pub struct ListReservationsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
-    ///    projects/myproject/locations/US/reservations/team1-prod
+    ///    `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -158,7 +169,7 @@ pub struct GetReservationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
-    ///    projects/myproject/locations/US/reservations/team1-prod
+    ///    `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -174,11 +185,27 @@ pub struct UpdateReservationRequest {
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
+/// [ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateCapacityCommitment].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCapacityCommitmentRequest {
+    /// Required. Resource name of the parent reservation. E.g.,
+    ///    `projects/myproject/locations/US`
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Content of the capacity commitment to create.
+    #[prost(message, optional, tag = "2")]
+    pub capacity_commitment: ::std::option::Option<CapacityCommitment>,
+    /// If true, fail the request if another project in the organization has a
+    /// capacity commitment.
+    #[prost(bool, tag = "4")]
+    pub enforce_single_admin_project_per_org: bool,
+}
+/// The request for
 /// [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsRequest {
     /// Required. Resource name of the parent reservation. E.g.,
-    ///    projects/myproject/locations/US
+    ///    `projects/myproject/locations/US`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The maximum number of items to return.
@@ -205,7 +232,7 @@ pub struct ListCapacityCommitmentsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to retrieve. E.g.,
-    ///    projects/myproject/locations/US/capacityCommitments/123
+    ///    `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -214,7 +241,7 @@ pub struct GetCapacityCommitmentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to delete. E.g.,
-    ///    projects/myproject/locations/US/capacityCommitments/123
+    ///    `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -234,7 +261,7 @@ pub struct UpdateCapacityCommitmentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentRequest {
     /// Required. The resource name e.g.,:
-    ///   projects/myproject/locations/US/capacityCommitments/123
+    ///  `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Number of slots in the capacity commitment after the split.
@@ -257,7 +284,7 @@ pub struct SplitCapacityCommitmentResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeCapacityCommitmentsRequest {
     /// Parent resource that identifies admin project and location e.g.,
-    /// projects/myproject/locations/us
+    ///  `projects/myproject/locations/us`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Ids of capacity commitments to merge.
@@ -271,11 +298,11 @@ pub struct MergeCapacityCommitmentsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Assignment {
     /// Output only. Name of the resource. E.g.:
-    /// projects/myproject/locations/US/reservations/team1-prod/assignments/123.
+    /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The resource which will use the reservation. E.g.
-    /// projects/myproject, folders/123, organizations/456.
+    /// `projects/myproject`, `folders/123`, or `organizations/456`.
     #[prost(string, tag = "4")]
     pub assignee: std::string::String,
     /// Which type of jobs will use the reservation.
@@ -320,7 +347,7 @@ pub mod assignment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssignmentRequest {
     /// Required. The parent resource name of the assignment
-    /// E.g.: projects/myproject/locations/US/reservations/team1-prod
+    /// E.g. `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Assignment resource to create.
@@ -332,9 +359,12 @@ pub struct CreateAssignmentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsRequest {
     /// Required. The parent resource name e.g.:
-    /// projects/myproject/locations/US/reservations/team1-prod
+    ///
+    /// `projects/myproject/locations/US/reservations/team1-prod`
+    ///
     /// Or:
-    /// projects/myproject/locations/US/reservations/-
+    ///
+    /// `projects/myproject/locations/US/reservations/-`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The maximum number of items to return.
@@ -362,8 +392,8 @@ pub struct ListAssignmentsResponse {
 /// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAssignmentRequest {
-    /// Required. Name of the resource, e.g.:
-    ///   projects/myproject/locations/US/reservations/team1-prod/assignments/123
+    /// Required. Name of the resource, e.g.
+    ///   `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -375,13 +405,16 @@ pub struct DeleteAssignmentRequest {
 pub struct SearchAssignmentsRequest {
     /// Required. The resource name of the admin project(containing project and
     /// location), e.g.:
-    ///   "projects/myproject/locations/US".
+    ///   `projects/myproject/locations/US`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Please specify resource name as assignee in the query.
-    /// e.g., "assignee=projects/myproject"
-    ///       "assignee=folders/123"
-    ///       "assignee=organizations/456"
+    ///
+    /// Examples:
+    ///
+    /// * `assignee=projects/myproject`
+    /// * `assignee=folders/123`
+    /// * `assignee=organizations/456`
     #[prost(string, tag = "2")]
     pub query: std::string::String,
     /// The maximum number of items to return.
@@ -405,19 +438,22 @@ pub struct SearchAssignmentsResponse {
 }
 /// The request for
 /// [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.MoveAssignment].
-/// Note: "bigquery.reservationAssignments.create" permission is required on the
-/// destination_id. Note: "bigquery.reservationAssignments.create" and
-/// "bigquery.reservationAssignments.delete" permission is required on the
+///
+/// **Note**: "bigquery.reservationAssignments.create" permission is required on
+/// the destination_id.
+///
+/// **Note**: "bigquery.reservationAssignments.create" and
+/// "bigquery.reservationAssignments.delete" permission are required on the
 /// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveAssignmentRequest {
     /// Required. The resource name of the assignment,
-    /// e.g.:
-    ///   projects/myproject/locations/US/reservations/team1-prod/assignments/123
+    /// e.g.
+    /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The new reservation ID, e.g.:
-    ///   projects/myotherproject/locations/US/reservations/team2-prod
+    ///   `projects/myotherproject/locations/US/reservations/team2-prod`
     #[prost(string, tag = "3")]
     pub destination_id: std::string::String,
 }
@@ -449,7 +485,7 @@ pub struct GetBiReservationRequest {
 pub struct UpdateBiReservationRequest {
     /// A reservation to update.
     #[prost(message, optional, tag = "1")]
-    pub bi_reservation: ::std::option::Option<BiReservation>,
+    pub reservation: ::std::option::Option<BiReservation>,
     /// A list of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
@@ -466,13 +502,13 @@ pub mod reservation_service_client {
     #[doc = " parallelism. In a scan of a multi-partitioned table, a single slot operates"]
     #[doc = " on a single partition of the table. A reservation resource exists as a child"]
     #[doc = " resource of the admin project and location, e.g.:"]
-    #[doc = "   projects/myproject/locations/US/reservations/reservationName."]
+    #[doc = "   `projects/myproject/locations/US/reservations/reservationName`."]
     #[doc = ""]
     #[doc = " A capacity commitment is a way to purchase compute capacity for BigQuery jobs"]
     #[doc = " (in the form of slots) with some committed period of usage. A capacity"]
     #[doc = " commitment resource exists as a child resource of the admin project and"]
     #[doc = " location, e.g.:"]
-    #[doc = "   projects/myproject/locations/US/capacityCommitments/id."]
+    #[doc = "   `projects/myproject/locations/US/capacityCommitments/id`."]
     pub struct ReservationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -589,6 +625,21 @@ pub mod reservation_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Creates a new capacity commitment resource."]
+        pub async fn create_capacity_commitment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCapacityCommitmentRequest>,
+        ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateCapacityCommitment" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Lists all the capacity commitments for the admin project."]
         pub async fn list_capacity_commitments(
             &mut self,
@@ -639,7 +690,11 @@ pub mod reservation_service_client {
         }
         #[doc = " Updates an existing capacity commitment."]
         #[doc = ""]
-        #[doc = " Only renewal_plan field can be updated."]
+        #[doc = " Only `plan` and `renewal_plan` fields can be updated."]
+        #[doc = ""]
+        #[doc = " Plan can only be changed to a plan of a longer commitment period."]
+        #[doc = " Attempting to change to a plan with shorter commitment period will fail"]
+        #[doc = " with the error code `google.rpc.Code.FAILED_PRECONDITION`."]
         pub async fn update_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCapacityCommitmentRequest>,
@@ -655,10 +710,13 @@ pub mod reservation_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Splits capacity commitment to two commitments of the same plan and"]
-        #[doc = " commitment_end_time. A common use case to do that is to perform a downgrade"]
-        #[doc = " e.g., in order to downgrade from 10000 slots to 8000, one might split 10000"]
-        #[doc = " capacity commitment to 2000 and 8000, change the plan of the first one to"]
-        #[doc = " flex and then delete it."]
+        #[doc = " `commitment_end_time`."]
+        #[doc = ""]
+        #[doc = " A common use case is to enable downgrading commitments."]
+        #[doc = ""]
+        #[doc = " For example, in order to downgrade from 10000 slots to 8000, you might"]
+        #[doc = " split a 10000 capacity commitment into commitments of 2000 and 8000. Then,"]
+        #[doc = " you would change the plan of the first one to `FLEX` and then delete it."]
         pub async fn split_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::SplitCapacityCommitmentRequest>,
@@ -674,10 +732,13 @@ pub mod reservation_service_client {
             let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SplitCapacityCommitment" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Merges capacity commitments of the same plan into one. Resulting capacity"]
-        #[doc = " commitment has the longer commitment_end_time out of the two. Attempting to"]
-        #[doc = " merge capacity commitments of different plan will fail with the error code"]
-        #[doc = " `google.rpc.Code.FAILED_PRECONDITION`."]
+        #[doc = " Merges capacity commitments of the same plan into a single commitment."]
+        #[doc = ""]
+        #[doc = " The resulting capacity commitment has the greater commitment_end_time"]
+        #[doc = " out of the to-be-merged capacity commitments."]
+        #[doc = ""]
+        #[doc = " Attempting to merge capacity commitments of different plan will fail"]
+        #[doc = " with the error code `google.rpc.Code.FAILED_PRECONDITION`."]
         pub async fn merge_capacity_commitments(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeCapacityCommitmentsRequest>,
@@ -692,9 +753,34 @@ pub mod reservation_service_client {
             let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MergeCapacityCommitments" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Creates an assignment object which allows the given project to submit jobs"]
+        #[doc = " of a certain type using slots from the specified reservation."]
+        #[doc = ""]
+        #[doc = " Currently a"]
+        #[doc = " resource (project, folder, organization) can only have one assignment per"]
+        #[doc = " each (job_type, location) combination, and that reservation will be used"]
+        #[doc = " for all jobs of the matching type."]
+        #[doc = ""]
+        #[doc = " Different assignments can be created on different levels of the"]
+        #[doc = " projects, folders or organization hierarchy.  During query execution,"]
+        #[doc = " the assignment is looked up at the project, folder and organization levels"]
+        #[doc = " in that order. The first assignment found is applied to the query."]
+        #[doc = ""]
+        #[doc = " When creating assignments, it does not matter if other assignments exist at"]
+        #[doc = " higher levels."]
+        #[doc = ""]
+        #[doc = " Example:"]
+        #[doc = ""]
+        #[doc = " * The organization `organizationA` contains two projects, `project1`"]
+        #[doc = "   and `project2`."]
+        #[doc = " * Assignments for all three entities (`organizationA`, `project1`, and"]
+        #[doc = "   `project2`) could all be created and mapped to the same or different"]
+        #[doc = "   reservations."]
+        #[doc = ""]
         #[doc = " Returns `google.rpc.Code.PERMISSION_DENIED` if user does not have"]
         #[doc = " 'bigquery.admin' permissions on the project using the reservation"]
         #[doc = " and the project that owns this reservation."]
+        #[doc = ""]
         #[doc = " Returns `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment"]
         #[doc = " does not match location of the reservation."]
         pub async fn create_assignment(
@@ -714,17 +800,26 @@ pub mod reservation_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists assignments."]
-        #[doc = " Only explicitly created assignments will be returned. E.g:"]
-        #[doc = " organizationA contains project1 and project2. Reservation res1 exists."]
-        #[doc = " CreateAssignment was invoked previously and following assignments were"]
-        #[doc = " created explicitly:"]
-        #[doc = "   <organizationA, res1>"]
-        #[doc = "   <project1, res1>"]
-        #[doc = " Then this API will just return the above two assignments for reservation"]
-        #[doc = " res1, and no expansion/merge will happen. Wildcard \"-\" can be used for"]
+        #[doc = ""]
+        #[doc = " Only explicitly created assignments will be returned."]
+        #[doc = ""]
+        #[doc = " Example:"]
+        #[doc = ""]
+        #[doc = " * Organization `organizationA` contains two projects, `project1` and"]
+        #[doc = "   `project2`."]
+        #[doc = " * Reservation `res1` exists and was created previously."]
+        #[doc = " * CreateAssignment was used previously to define the following"]
+        #[doc = "   associations between entities and reservations: `<organizationA, res1>`"]
+        #[doc = "   and `<project1, res1>`"]
+        #[doc = ""]
+        #[doc = " In this example, ListAssignments will just return the above two assignments"]
+        #[doc = " for reservation `res1`, and no expansion/merge will happen."]
+        #[doc = ""]
+        #[doc = " The wildcard \"-\" can be used for"]
         #[doc = " reservations in the request. In that case all assignments belongs to the"]
-        #[doc = " specified project and location will be listed. Note"]
-        #[doc = " \"-\" cannot be used for projects nor locations."]
+        #[doc = " specified project and location will be listed."]
+        #[doc = ""]
+        #[doc = " **Note** \"-\" cannot be used for projects nor locations."]
         pub async fn list_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssignmentsRequest>,
@@ -742,15 +837,20 @@ pub mod reservation_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Deletes a assignment. No expansion will happen."]
-        #[doc = " E.g:"]
-        #[doc = " organizationA contains project1 and project2. Reservation res1 exists."]
-        #[doc = " CreateAssignment was invoked previously and following assignments were"]
-        #[doc = " created explicitly:"]
-        #[doc = "   <organizationA, res1>"]
-        #[doc = "   <project1, res1>"]
-        #[doc = " Then deletion of <organizationA, res1> won't affect <project1, res1>. After"]
-        #[doc = " deletion of <organizationA, res1>, queries from project1 will still use"]
-        #[doc = " res1, while queries from project2 will use on-demand mode."]
+        #[doc = ""]
+        #[doc = " Example:"]
+        #[doc = ""]
+        #[doc = " * Organization `organizationA` contains two projects, `project1` and"]
+        #[doc = "   `project2`."]
+        #[doc = " * Reservation `res1` exists and was created previously."]
+        #[doc = " * CreateAssignment was used previously to define the following"]
+        #[doc = "   associations between entities and reservations: `<organizationA, res1>`"]
+        #[doc = "   and `<project1, res1>`"]
+        #[doc = ""]
+        #[doc = " In this example, deletion of the `<organizationA, res1>` assignment won't"]
+        #[doc = " affect the other assignment `<project1, res1>`. After said deletion,"]
+        #[doc = " queries from `project1` will still use `res1` while queries from"]
+        #[doc = " `project2` will switch to use on-demand mode."]
         pub async fn delete_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAssignmentRequest>,
@@ -769,19 +869,26 @@ pub mod reservation_service_client {
         }
         #[doc = " Looks up assignments for a specified resource for a particular region."]
         #[doc = " If the request is about a project:"]
-        #[doc = "   1) Assignments created on the project will be returned if they exist."]
-        #[doc = "   2) Otherwise assignments created on the closest ancestor will be"]
-        #[doc = "   returned. 3) Assignments for different JobTypes will all be returned."]
-        #[doc = " Same logic applies if the request is about a folder."]
+        #[doc = ""]
+        #[doc = " 1. Assignments created on the project will be returned if they exist."]
+        #[doc = " 2. Otherwise assignments created on the closest ancestor will be"]
+        #[doc = "    returned."]
+        #[doc = " 3. Assignments for different JobTypes will all be returned."]
+        #[doc = ""]
+        #[doc = " The same logic applies if the request is about a folder."]
+        #[doc = ""]
         #[doc = " If the request is about an organization, then assignments created on the"]
         #[doc = " organization will be returned (organization doesn't have ancestors)."]
+        #[doc = ""]
         #[doc = " Comparing to ListAssignments, there are some behavior"]
         #[doc = " differences:"]
-        #[doc = "   1) permission on the assignee will be verified in this API."]
-        #[doc = "   2) Hierarchy lookup (project->folder->organization) happens in this API."]
-        #[doc = "   3) Parent here is projects/*/locations/*, instead of"]
-        #[doc = "   projects/*/locations/*reservations/*."]
-        #[doc = " Note \"-\" cannot be used for projects"]
+        #[doc = ""]
+        #[doc = " 1. permission on the assignee will be verified in this API."]
+        #[doc = " 2. Hierarchy lookup (project->folder->organization) happens in this API."]
+        #[doc = " 3. Parent here is `projects/*/locations/*`, instead of"]
+        #[doc = "    `projects/*/locations/*reservations/*`."]
+        #[doc = ""]
+        #[doc = " **Note** \"-\" cannot be used for projects"]
         #[doc = " nor locations."]
         pub async fn search_assignments(
             &mut self,
@@ -799,12 +906,11 @@ pub mod reservation_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Moves a assignment under a new reservation. Customers can do this by"]
-        #[doc = " deleting the existing assignment followed by creating another assignment"]
-        #[doc = " under the new reservation, but this method provides a transactional way to"]
-        #[doc = " do so, to make sure the assignee always has an associated reservation."]
-        #[doc = " Without the method customers might see some queries run on-demand which"]
-        #[doc = " might be unexpected."]
+        #[doc = " Moves an assignment under a new reservation."]
+        #[doc = ""]
+        #[doc = " This differs from removing an existing assignment and recreating a new one"]
+        #[doc = " by providing a transactional change that ensures an assignee always has an"]
+        #[doc = " associated reservation."]
         pub async fn move_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveAssignmentRequest>,
@@ -839,8 +945,10 @@ pub mod reservation_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates a BI reservation."]
-        #[doc = " Only fields specified in the field_mask are updated."]
-        #[doc = " Singleton BI reservation always exists with default size 0."]
+        #[doc = ""]
+        #[doc = " Only fields specified in the `field_mask` are updated."]
+        #[doc = ""]
+        #[doc = " A singleton BI reservation always exists with default size 0."]
         #[doc = " In order to reserve BI capacity it needs to be updated to an amount"]
         #[doc = " greater than 0. In order to release BI capacity reservation size"]
         #[doc = " must be set to 0."]
@@ -908,6 +1016,11 @@ pub mod reservation_service_server {
             &self,
             request: tonic::Request<super::UpdateReservationRequest>,
         ) -> Result<tonic::Response<super::Reservation>, tonic::Status>;
+        #[doc = " Creates a new capacity commitment resource."]
+        async fn create_capacity_commitment(
+            &self,
+            request: tonic::Request<super::CreateCapacityCommitmentRequest>,
+        ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status>;
         #[doc = " Lists all the capacity commitments for the admin project."]
         async fn list_capacity_commitments(
             &self,
@@ -927,31 +1040,66 @@ pub mod reservation_service_server {
         ) -> Result<tonic::Response<()>, tonic::Status>;
         #[doc = " Updates an existing capacity commitment."]
         #[doc = ""]
-        #[doc = " Only renewal_plan field can be updated."]
+        #[doc = " Only `plan` and `renewal_plan` fields can be updated."]
+        #[doc = ""]
+        #[doc = " Plan can only be changed to a plan of a longer commitment period."]
+        #[doc = " Attempting to change to a plan with shorter commitment period will fail"]
+        #[doc = " with the error code `google.rpc.Code.FAILED_PRECONDITION`."]
         async fn update_capacity_commitment(
             &self,
             request: tonic::Request<super::UpdateCapacityCommitmentRequest>,
         ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status>;
         #[doc = " Splits capacity commitment to two commitments of the same plan and"]
-        #[doc = " commitment_end_time. A common use case to do that is to perform a downgrade"]
-        #[doc = " e.g., in order to downgrade from 10000 slots to 8000, one might split 10000"]
-        #[doc = " capacity commitment to 2000 and 8000, change the plan of the first one to"]
-        #[doc = " flex and then delete it."]
+        #[doc = " `commitment_end_time`."]
+        #[doc = ""]
+        #[doc = " A common use case is to enable downgrading commitments."]
+        #[doc = ""]
+        #[doc = " For example, in order to downgrade from 10000 slots to 8000, you might"]
+        #[doc = " split a 10000 capacity commitment into commitments of 2000 and 8000. Then,"]
+        #[doc = " you would change the plan of the first one to `FLEX` and then delete it."]
         async fn split_capacity_commitment(
             &self,
             request: tonic::Request<super::SplitCapacityCommitmentRequest>,
         ) -> Result<tonic::Response<super::SplitCapacityCommitmentResponse>, tonic::Status>;
-        #[doc = " Merges capacity commitments of the same plan into one. Resulting capacity"]
-        #[doc = " commitment has the longer commitment_end_time out of the two. Attempting to"]
-        #[doc = " merge capacity commitments of different plan will fail with the error code"]
-        #[doc = " `google.rpc.Code.FAILED_PRECONDITION`."]
+        #[doc = " Merges capacity commitments of the same plan into a single commitment."]
+        #[doc = ""]
+        #[doc = " The resulting capacity commitment has the greater commitment_end_time"]
+        #[doc = " out of the to-be-merged capacity commitments."]
+        #[doc = ""]
+        #[doc = " Attempting to merge capacity commitments of different plan will fail"]
+        #[doc = " with the error code `google.rpc.Code.FAILED_PRECONDITION`."]
         async fn merge_capacity_commitments(
             &self,
             request: tonic::Request<super::MergeCapacityCommitmentsRequest>,
         ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status>;
+        #[doc = " Creates an assignment object which allows the given project to submit jobs"]
+        #[doc = " of a certain type using slots from the specified reservation."]
+        #[doc = ""]
+        #[doc = " Currently a"]
+        #[doc = " resource (project, folder, organization) can only have one assignment per"]
+        #[doc = " each (job_type, location) combination, and that reservation will be used"]
+        #[doc = " for all jobs of the matching type."]
+        #[doc = ""]
+        #[doc = " Different assignments can be created on different levels of the"]
+        #[doc = " projects, folders or organization hierarchy.  During query execution,"]
+        #[doc = " the assignment is looked up at the project, folder and organization levels"]
+        #[doc = " in that order. The first assignment found is applied to the query."]
+        #[doc = ""]
+        #[doc = " When creating assignments, it does not matter if other assignments exist at"]
+        #[doc = " higher levels."]
+        #[doc = ""]
+        #[doc = " Example:"]
+        #[doc = ""]
+        #[doc = " * The organization `organizationA` contains two projects, `project1`"]
+        #[doc = "   and `project2`."]
+        #[doc = " * Assignments for all three entities (`organizationA`, `project1`, and"]
+        #[doc = "   `project2`) could all be created and mapped to the same or different"]
+        #[doc = "   reservations."]
+        #[doc = ""]
         #[doc = " Returns `google.rpc.Code.PERMISSION_DENIED` if user does not have"]
         #[doc = " 'bigquery.admin' permissions on the project using the reservation"]
         #[doc = " and the project that owns this reservation."]
+        #[doc = ""]
         #[doc = " Returns `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment"]
         #[doc = " does not match location of the reservation."]
         async fn create_assignment(
@@ -959,61 +1107,81 @@ pub mod reservation_service_server {
             request: tonic::Request<super::CreateAssignmentRequest>,
         ) -> Result<tonic::Response<super::Assignment>, tonic::Status>;
         #[doc = " Lists assignments."]
-        #[doc = " Only explicitly created assignments will be returned. E.g:"]
-        #[doc = " organizationA contains project1 and project2. Reservation res1 exists."]
-        #[doc = " CreateAssignment was invoked previously and following assignments were"]
-        #[doc = " created explicitly:"]
-        #[doc = "   <organizationA, res1>"]
-        #[doc = "   <project1, res1>"]
-        #[doc = " Then this API will just return the above two assignments for reservation"]
-        #[doc = " res1, and no expansion/merge will happen. Wildcard \"-\" can be used for"]
+        #[doc = ""]
+        #[doc = " Only explicitly created assignments will be returned."]
+        #[doc = ""]
+        #[doc = " Example:"]
+        #[doc = ""]
+        #[doc = " * Organization `organizationA` contains two projects, `project1` and"]
+        #[doc = "   `project2`."]
+        #[doc = " * Reservation `res1` exists and was created previously."]
+        #[doc = " * CreateAssignment was used previously to define the following"]
+        #[doc = "   associations between entities and reservations: `<organizationA, res1>`"]
+        #[doc = "   and `<project1, res1>`"]
+        #[doc = ""]
+        #[doc = " In this example, ListAssignments will just return the above two assignments"]
+        #[doc = " for reservation `res1`, and no expansion/merge will happen."]
+        #[doc = ""]
+        #[doc = " The wildcard \"-\" can be used for"]
         #[doc = " reservations in the request. In that case all assignments belongs to the"]
-        #[doc = " specified project and location will be listed. Note"]
-        #[doc = " \"-\" cannot be used for projects nor locations."]
+        #[doc = " specified project and location will be listed."]
+        #[doc = ""]
+        #[doc = " **Note** \"-\" cannot be used for projects nor locations."]
         async fn list_assignments(
             &self,
             request: tonic::Request<super::ListAssignmentsRequest>,
         ) -> Result<tonic::Response<super::ListAssignmentsResponse>, tonic::Status>;
         #[doc = " Deletes a assignment. No expansion will happen."]
-        #[doc = " E.g:"]
-        #[doc = " organizationA contains project1 and project2. Reservation res1 exists."]
-        #[doc = " CreateAssignment was invoked previously and following assignments were"]
-        #[doc = " created explicitly:"]
-        #[doc = "   <organizationA, res1>"]
-        #[doc = "   <project1, res1>"]
-        #[doc = " Then deletion of <organizationA, res1> won't affect <project1, res1>. After"]
-        #[doc = " deletion of <organizationA, res1>, queries from project1 will still use"]
-        #[doc = " res1, while queries from project2 will use on-demand mode."]
+        #[doc = ""]
+        #[doc = " Example:"]
+        #[doc = ""]
+        #[doc = " * Organization `organizationA` contains two projects, `project1` and"]
+        #[doc = "   `project2`."]
+        #[doc = " * Reservation `res1` exists and was created previously."]
+        #[doc = " * CreateAssignment was used previously to define the following"]
+        #[doc = "   associations between entities and reservations: `<organizationA, res1>`"]
+        #[doc = "   and `<project1, res1>`"]
+        #[doc = ""]
+        #[doc = " In this example, deletion of the `<organizationA, res1>` assignment won't"]
+        #[doc = " affect the other assignment `<project1, res1>`. After said deletion,"]
+        #[doc = " queries from `project1` will still use `res1` while queries from"]
+        #[doc = " `project2` will switch to use on-demand mode."]
         async fn delete_assignment(
             &self,
             request: tonic::Request<super::DeleteAssignmentRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status>;
         #[doc = " Looks up assignments for a specified resource for a particular region."]
         #[doc = " If the request is about a project:"]
-        #[doc = "   1) Assignments created on the project will be returned if they exist."]
-        #[doc = "   2) Otherwise assignments created on the closest ancestor will be"]
-        #[doc = "   returned. 3) Assignments for different JobTypes will all be returned."]
-        #[doc = " Same logic applies if the request is about a folder."]
+        #[doc = ""]
+        #[doc = " 1. Assignments created on the project will be returned if they exist."]
+        #[doc = " 2. Otherwise assignments created on the closest ancestor will be"]
+        #[doc = "    returned."]
+        #[doc = " 3. Assignments for different JobTypes will all be returned."]
+        #[doc = ""]
+        #[doc = " The same logic applies if the request is about a folder."]
+        #[doc = ""]
         #[doc = " If the request is about an organization, then assignments created on the"]
         #[doc = " organization will be returned (organization doesn't have ancestors)."]
+        #[doc = ""]
         #[doc = " Comparing to ListAssignments, there are some behavior"]
         #[doc = " differences:"]
-        #[doc = "   1) permission on the assignee will be verified in this API."]
-        #[doc = "   2) Hierarchy lookup (project->folder->organization) happens in this API."]
-        #[doc = "   3) Parent here is projects/*/locations/*, instead of"]
-        #[doc = "   projects/*/locations/*reservations/*."]
-        #[doc = " Note \"-\" cannot be used for projects"]
+        #[doc = ""]
+        #[doc = " 1. permission on the assignee will be verified in this API."]
+        #[doc = " 2. Hierarchy lookup (project->folder->organization) happens in this API."]
+        #[doc = " 3. Parent here is `projects/*/locations/*`, instead of"]
+        #[doc = "    `projects/*/locations/*reservations/*`."]
+        #[doc = ""]
+        #[doc = " **Note** \"-\" cannot be used for projects"]
         #[doc = " nor locations."]
         async fn search_assignments(
             &self,
             request: tonic::Request<super::SearchAssignmentsRequest>,
         ) -> Result<tonic::Response<super::SearchAssignmentsResponse>, tonic::Status>;
-        #[doc = " Moves a assignment under a new reservation. Customers can do this by"]
-        #[doc = " deleting the existing assignment followed by creating another assignment"]
-        #[doc = " under the new reservation, but this method provides a transactional way to"]
-        #[doc = " do so, to make sure the assignee always has an associated reservation."]
-        #[doc = " Without the method customers might see some queries run on-demand which"]
-        #[doc = " might be unexpected."]
+        #[doc = " Moves an assignment under a new reservation."]
+        #[doc = ""]
+        #[doc = " This differs from removing an existing assignment and recreating a new one"]
+        #[doc = " by providing a transactional change that ensures an assignee always has an"]
+        #[doc = " associated reservation."]
         async fn move_assignment(
             &self,
             request: tonic::Request<super::MoveAssignmentRequest>,
@@ -1024,8 +1192,10 @@ pub mod reservation_service_server {
             request: tonic::Request<super::GetBiReservationRequest>,
         ) -> Result<tonic::Response<super::BiReservation>, tonic::Status>;
         #[doc = " Updates a BI reservation."]
-        #[doc = " Only fields specified in the field_mask are updated."]
-        #[doc = " Singleton BI reservation always exists with default size 0."]
+        #[doc = ""]
+        #[doc = " Only fields specified in the `field_mask` are updated."]
+        #[doc = ""]
+        #[doc = " A singleton BI reservation always exists with default size 0."]
         #[doc = " In order to reserve BI capacity it needs to be updated to an amount"]
         #[doc = " greater than 0. In order to release BI capacity reservation size"]
         #[doc = " must be set to 0."]
@@ -1042,13 +1212,13 @@ pub mod reservation_service_server {
     #[doc = " parallelism. In a scan of a multi-partitioned table, a single slot operates"]
     #[doc = " on a single partition of the table. A reservation resource exists as a child"]
     #[doc = " resource of the admin project and location, e.g.:"]
-    #[doc = "   projects/myproject/locations/US/reservations/reservationName."]
+    #[doc = "   `projects/myproject/locations/US/reservations/reservationName`."]
     #[doc = ""]
     #[doc = " A capacity commitment is a way to purchase compute capacity for BigQuery jobs"]
     #[doc = " (in the form of slots) with some committed period of usage. A capacity"]
     #[doc = " commitment resource exists as a child resource of the admin project and"]
     #[doc = " location, e.g.:"]
-    #[doc = "   projects/myproject/locations/US/capacityCommitments/id."]
+    #[doc = "   `projects/myproject/locations/US/capacityCommitments/id`."]
     #[derive(Debug)]
     #[doc(hidden)]
     pub struct ReservationServiceServer<T: ReservationService> {
@@ -1081,7 +1251,7 @@ pub mod reservation_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateReservation" => { # [ allow ( non_camel_case_types ) ] struct CreateReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: CreateReservationRequest > for CreateReservationSvc < T > { type Response = super :: Reservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListReservations" => { # [ allow ( non_camel_case_types ) ] struct ListReservationsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: ListReservationsRequest > for ListReservationsSvc < T > { type Response = super :: ListReservationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListReservationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_reservations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListReservationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetReservation" => { # [ allow ( non_camel_case_types ) ] struct GetReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: GetReservationRequest > for GetReservationSvc < T > { type Response = super :: Reservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteReservation" => { # [ allow ( non_camel_case_types ) ] struct DeleteReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: DeleteReservationRequest > for DeleteReservationSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateReservation" => { # [ allow ( non_camel_case_types ) ] struct UpdateReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: UpdateReservationRequest > for UpdateReservationSvc < T > { type Response = super :: Reservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListCapacityCommitments" => { # [ allow ( non_camel_case_types ) ] struct ListCapacityCommitmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: ListCapacityCommitmentsRequest > for ListCapacityCommitmentsSvc < T > { type Response = super :: ListCapacityCommitmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListCapacityCommitmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_capacity_commitments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListCapacityCommitmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct GetCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: GetCapacityCommitmentRequest > for GetCapacityCommitmentSvc < T > { type Response = super :: CapacityCommitment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct DeleteCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: DeleteCapacityCommitmentRequest > for DeleteCapacityCommitmentSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct UpdateCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: UpdateCapacityCommitmentRequest > for UpdateCapacityCommitmentSvc < T > { type Response = super :: CapacityCommitment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SplitCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct SplitCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: SplitCapacityCommitmentRequest > for SplitCapacityCommitmentSvc < T > { type Response = super :: SplitCapacityCommitmentResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SplitCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . split_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SplitCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MergeCapacityCommitments" => { # [ allow ( non_camel_case_types ) ] struct MergeCapacityCommitmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: MergeCapacityCommitmentsRequest > for MergeCapacityCommitmentsSvc < T > { type Response = super :: CapacityCommitment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MergeCapacityCommitmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . merge_capacity_commitments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MergeCapacityCommitmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateAssignment" => { # [ allow ( non_camel_case_types ) ] struct CreateAssignmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: CreateAssignmentRequest > for CreateAssignmentSvc < T > { type Response = super :: Assignment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateAssignmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_assignment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateAssignmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListAssignments" => { # [ allow ( non_camel_case_types ) ] struct ListAssignmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: ListAssignmentsRequest > for ListAssignmentsSvc < T > { type Response = super :: ListAssignmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListAssignmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_assignments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListAssignmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteAssignment" => { # [ allow ( non_camel_case_types ) ] struct DeleteAssignmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: DeleteAssignmentRequest > for DeleteAssignmentSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteAssignmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_assignment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteAssignmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SearchAssignments" => { # [ allow ( non_camel_case_types ) ] struct SearchAssignmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: SearchAssignmentsRequest > for SearchAssignmentsSvc < T > { type Response = super :: SearchAssignmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SearchAssignmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . search_assignments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SearchAssignmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MoveAssignment" => { # [ allow ( non_camel_case_types ) ] struct MoveAssignmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: MoveAssignmentRequest > for MoveAssignmentSvc < T > { type Response = super :: Assignment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MoveAssignmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . move_assignment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MoveAssignmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetBiReservation" => { # [ allow ( non_camel_case_types ) ] struct GetBiReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: GetBiReservationRequest > for GetBiReservationSvc < T > { type Response = super :: BiReservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetBiReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_bi_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetBiReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateBiReservation" => { # [ allow ( non_camel_case_types ) ] struct UpdateBiReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: UpdateBiReservationRequest > for UpdateBiReservationSvc < T > { type Response = super :: BiReservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateBiReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_bi_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateBiReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateReservation" => { # [ allow ( non_camel_case_types ) ] struct CreateReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: CreateReservationRequest > for CreateReservationSvc < T > { type Response = super :: Reservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListReservations" => { # [ allow ( non_camel_case_types ) ] struct ListReservationsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: ListReservationsRequest > for ListReservationsSvc < T > { type Response = super :: ListReservationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListReservationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_reservations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListReservationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetReservation" => { # [ allow ( non_camel_case_types ) ] struct GetReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: GetReservationRequest > for GetReservationSvc < T > { type Response = super :: Reservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteReservation" => { # [ allow ( non_camel_case_types ) ] struct DeleteReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: DeleteReservationRequest > for DeleteReservationSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateReservation" => { # [ allow ( non_camel_case_types ) ] struct UpdateReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: UpdateReservationRequest > for UpdateReservationSvc < T > { type Response = super :: Reservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct CreateCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: CreateCapacityCommitmentRequest > for CreateCapacityCommitmentSvc < T > { type Response = super :: CapacityCommitment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListCapacityCommitments" => { # [ allow ( non_camel_case_types ) ] struct ListCapacityCommitmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: ListCapacityCommitmentsRequest > for ListCapacityCommitmentsSvc < T > { type Response = super :: ListCapacityCommitmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListCapacityCommitmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_capacity_commitments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListCapacityCommitmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct GetCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: GetCapacityCommitmentRequest > for GetCapacityCommitmentSvc < T > { type Response = super :: CapacityCommitment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct DeleteCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: DeleteCapacityCommitmentRequest > for DeleteCapacityCommitmentSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct UpdateCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: UpdateCapacityCommitmentRequest > for UpdateCapacityCommitmentSvc < T > { type Response = super :: CapacityCommitment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SplitCapacityCommitment" => { # [ allow ( non_camel_case_types ) ] struct SplitCapacityCommitmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: SplitCapacityCommitmentRequest > for SplitCapacityCommitmentSvc < T > { type Response = super :: SplitCapacityCommitmentResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SplitCapacityCommitmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . split_capacity_commitment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SplitCapacityCommitmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MergeCapacityCommitments" => { # [ allow ( non_camel_case_types ) ] struct MergeCapacityCommitmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: MergeCapacityCommitmentsRequest > for MergeCapacityCommitmentsSvc < T > { type Response = super :: CapacityCommitment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MergeCapacityCommitmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . merge_capacity_commitments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MergeCapacityCommitmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateAssignment" => { # [ allow ( non_camel_case_types ) ] struct CreateAssignmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: CreateAssignmentRequest > for CreateAssignmentSvc < T > { type Response = super :: Assignment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateAssignmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_assignment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateAssignmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListAssignments" => { # [ allow ( non_camel_case_types ) ] struct ListAssignmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: ListAssignmentsRequest > for ListAssignmentsSvc < T > { type Response = super :: ListAssignmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListAssignmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_assignments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListAssignmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteAssignment" => { # [ allow ( non_camel_case_types ) ] struct DeleteAssignmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: DeleteAssignmentRequest > for DeleteAssignmentSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteAssignmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_assignment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteAssignmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SearchAssignments" => { # [ allow ( non_camel_case_types ) ] struct SearchAssignmentsSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: SearchAssignmentsRequest > for SearchAssignmentsSvc < T > { type Response = super :: SearchAssignmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SearchAssignmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . search_assignments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SearchAssignmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MoveAssignment" => { # [ allow ( non_camel_case_types ) ] struct MoveAssignmentSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: MoveAssignmentRequest > for MoveAssignmentSvc < T > { type Response = super :: Assignment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MoveAssignmentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . move_assignment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MoveAssignmentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetBiReservation" => { # [ allow ( non_camel_case_types ) ] struct GetBiReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: GetBiReservationRequest > for GetBiReservationSvc < T > { type Response = super :: BiReservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetBiReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_bi_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetBiReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateBiReservation" => { # [ allow ( non_camel_case_types ) ] struct UpdateBiReservationSvc < T : ReservationService > ( pub Arc < T > ) ; impl < T : ReservationService > tonic :: server :: UnaryService < super :: UpdateBiReservationRequest > for UpdateBiReservationSvc < T > { type Response = super :: BiReservation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateBiReservationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_bi_reservation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateBiReservationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ReservationService> Clone for ReservationServiceServer<T> {

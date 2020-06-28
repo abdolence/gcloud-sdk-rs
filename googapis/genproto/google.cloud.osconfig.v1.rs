@@ -595,7 +595,7 @@ pub struct PatchInstanceFilter {
     #[prost(string, repeated, tag = "3")]
     pub zones: ::std::vec::Vec<std::string::String>,
     /// Targets any of the VM instances specified. Instances are specified by their
-    /// URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME],
+    /// URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME]`,
     /// `projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`, or
     /// `https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`
     #[prost(string, repeated, tag = "4")]
@@ -654,7 +654,7 @@ pub struct PatchDeployment {
     #[prost(message, optional, tag = "8")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the patch deployment was last updated. Timestamp is in
-    /// [RFC3339]("https://www.ietf.org/rfc/rfc3339.txt) text format.
+    /// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Output only. The last time a patch job was started by this deployment.

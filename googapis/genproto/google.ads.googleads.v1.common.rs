@@ -790,7 +790,7 @@ pub struct TargetCpm {}
 /// An automated bidding strategy that sets bids so that a certain percentage of
 /// search ads are shown at the top of the first page (or other targeted
 /// location).
-/// Next Id = 4
+/// next tag = 4
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShare {
     /// The targeted location on the search results page.
@@ -2103,10 +2103,14 @@ pub struct FrequencyCapKey {
 }
 // Proto file describing Keyword Planner messages.
 
-/// Historical metrics.
+/// Historical metrics specific to the targeting options selected.
+/// Targeting options include geographies, network, etc.
+/// Refer to https://support.google.com/google-ads/answer/3022575 for more
+/// details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanHistoricalMetrics {
-    /// Average monthly searches for the past 12 months.
+    /// Approximate number of monthly searches on this query averaged
+    /// for the past 12 months.
     #[prost(message, optional, tag = "1")]
     pub avg_monthly_searches: ::std::option::Option<i64>,
     /// The competition level for the query.
@@ -2505,7 +2509,7 @@ pub struct Metrics {
     /// future, other ad types may support engagement metrics.
     #[prost(message, optional, tag = "32")]
     pub engagements: ::std::option::Option<i64>,
-    /// Average lead value of hotel.
+    /// Average lead value based on clicks.
     #[prost(message, optional, tag = "75")]
     pub hotel_average_lead_value_micros: ::std::option::Option<f64>,
     /// The creative historical quality score.

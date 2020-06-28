@@ -288,7 +288,7 @@ pub mod connection_service_client {
         #[doc = " Sets the access control policy on the specified resource. Replaces any"]
         #[doc = " existing policy."]
         #[doc = ""]
-        #[doc = " Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED"]
+        #[doc = " Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors."]
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -312,7 +312,7 @@ pub mod connection_service_client {
         }
         #[doc = " Returns permissions that a caller has on the specified resource."]
         #[doc = " If the resource does not exist, this will return an empty set of"]
-        #[doc = " permissions, not a NOT_FOUND error."]
+        #[doc = " permissions, not a `NOT_FOUND` error."]
         #[doc = ""]
         #[doc = " Note: This operation is designed to be used for building permission-aware"]
         #[doc = " UIs and command-line tools, not for authorization checking. This operation"]
@@ -400,7 +400,7 @@ pub mod connection_service_server {
         #[doc = " Sets the access control policy on the specified resource. Replaces any"]
         #[doc = " existing policy."]
         #[doc = ""]
-        #[doc = " Can return Public Errors: NOT_FOUND, INVALID_ARGUMENT and PERMISSION_DENIED"]
+        #[doc = " Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and `PERMISSION_DENIED` errors."]
         async fn set_iam_policy(
             &self,
             request: tonic::Request<
@@ -412,7 +412,7 @@ pub mod connection_service_server {
         >;
         #[doc = " Returns permissions that a caller has on the specified resource."]
         #[doc = " If the resource does not exist, this will return an empty set of"]
-        #[doc = " permissions, not a NOT_FOUND error."]
+        #[doc = " permissions, not a `NOT_FOUND` error."]
         #[doc = ""]
         #[doc = " Note: This operation is designed to be used for building permission-aware"]
         #[doc = " UIs and command-line tools, not for authorization checking. This operation"]

@@ -48,7 +48,16 @@ pub struct ValidationResult {
     #[prost(message, repeated, tag = "1")]
     pub validation_errors: ::std::vec::Vec<ValidationError>,
 }
-/// Represents a conversational agent.
+/// A Dialogflow agent is a virtual agent that handles conversations with your
+/// end-users. It is a natural language understanding module that understands the
+/// nuances of human language. Dialogflow translates end-user text or audio
+/// during a conversation to structured data that your apps and services can
+/// understand. You design and build a Dialogflow agent to handle the types of
+/// conversations required for your system.
+///
+/// For more information about agents, see the
+/// [Agents
+/// documentation](https://cloud.google.com/dialogflow/docs/agents-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Agent {
     /// Required. The project of this agent.
@@ -313,34 +322,7 @@ pub struct GetValidationResultRequest {
 pub mod agents_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Agents are best described as Natural Language Understanding (NLU) modules"]
-    #[doc = " that transform user requests into actionable data. You can include agents"]
-    #[doc = " in your app, product, or service to determine user intent and respond to the"]
-    #[doc = " user in a natural way."]
-    #[doc = ""]
-    #[doc = " After you create an agent, you can add [Intents][google.cloud.dialogflow.v2.Intents], [Contexts][google.cloud.dialogflow.v2.Contexts],"]
-    #[doc = " [Entity Types][google.cloud.dialogflow.v2.EntityTypes], [Webhooks][google.cloud.dialogflow.v2.WebhookRequest], and so on to"]
-    #[doc = " manage the flow of a conversation and match user input to predefined intents"]
-    #[doc = " and actions."]
-    #[doc = ""]
-    #[doc = " You can create an agent using both Dialogflow Standard Edition and"]
-    #[doc = " Dialogflow Enterprise Edition. For details, see"]
-    #[doc = " [Dialogflow"]
-    #[doc = " Editions](https://cloud.google.com/dialogflow/docs/editions)."]
-    #[doc = ""]
-    #[doc = " You can save your agent for backup or versioning by exporting the agent by"]
-    #[doc = " using the [ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent] method. You can import a saved"]
-    #[doc = " agent by using the [ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent] method."]
-    #[doc = ""]
-    #[doc = " Dialogflow provides several"]
-    #[doc = " [prebuilt"]
-    #[doc = " agents](https://cloud.google.com/dialogflow/docs/agents-prebuilt)"]
-    #[doc = " for common conversation scenarios such as determining a date and time,"]
-    #[doc = " converting currency, and so on."]
-    #[doc = ""]
-    #[doc = " For more information about agents, see the"]
-    #[doc = " [Dialogflow"]
-    #[doc = " documentation](https://cloud.google.com/dialogflow/docs/agents-overview)."]
+    #[doc = " Service for managing [Agents][google.cloud.dialogflow.v2.Agent]."]
     pub struct AgentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -490,9 +472,15 @@ pub mod agents_client {
         #[doc = ""]
         #[doc = " Uploads new intents and entity types without deleting the existing ones."]
         #[doc = " Intents and entity types with the same name are replaced with the new"]
-        #[doc = " versions from ImportAgentRequest."]
+        #[doc = " versions from [ImportAgentRequest][google.cloud.dialogflow.v2.ImportAgentRequest]. After the import, the imported draft"]
+        #[doc = " agent will be trained automatically (unless disabled in agent settings)."]
+        #[doc = " However, once the import is done, training may not be completed yet. Please"]
+        #[doc = " call [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the operation it returns in order to train"]
+        #[doc = " explicitly."]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when importing is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         pub async fn import_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportAgentRequest>,
@@ -515,9 +503,15 @@ pub mod agents_client {
         #[doc = " Restores the specified agent from a ZIP file."]
         #[doc = ""]
         #[doc = " Replaces the current agent version with a new one. All the intents and"]
-        #[doc = " entity types in the older version are deleted."]
+        #[doc = " entity types in the older version are deleted. After the restore, the"]
+        #[doc = " restored draft agent will be trained automatically (unless disabled in"]
+        #[doc = " agent settings). However, once the restore is done, training may not be"]
+        #[doc = " completed yet. Please call [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the operation it"]
+        #[doc = " returns in order to train explicitly."]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when restoring is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         pub async fn restore_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::RestoreAgentRequest>,
@@ -626,9 +620,15 @@ pub mod agents_server {
         #[doc = ""]
         #[doc = " Uploads new intents and entity types without deleting the existing ones."]
         #[doc = " Intents and entity types with the same name are replaced with the new"]
-        #[doc = " versions from ImportAgentRequest."]
+        #[doc = " versions from [ImportAgentRequest][google.cloud.dialogflow.v2.ImportAgentRequest]. After the import, the imported draft"]
+        #[doc = " agent will be trained automatically (unless disabled in agent settings)."]
+        #[doc = " However, once the import is done, training may not be completed yet. Please"]
+        #[doc = " call [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the operation it returns in order to train"]
+        #[doc = " explicitly."]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when importing is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         async fn import_agent(
             &self,
             request: tonic::Request<super::ImportAgentRequest>,
@@ -639,9 +639,15 @@ pub mod agents_server {
         #[doc = " Restores the specified agent from a ZIP file."]
         #[doc = ""]
         #[doc = " Replaces the current agent version with a new one. All the intents and"]
-        #[doc = " entity types in the older version are deleted."]
+        #[doc = " entity types in the older version are deleted. After the restore, the"]
+        #[doc = " restored draft agent will be trained automatically (unless disabled in"]
+        #[doc = " agent settings). However, once the restore is done, training may not be"]
+        #[doc = " completed yet. Please call [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the operation it"]
+        #[doc = " returns in order to train explicitly."]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when restoring is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         async fn restore_agent(
             &self,
             request: tonic::Request<super::RestoreAgentRequest>,
@@ -656,34 +662,7 @@ pub mod agents_server {
             request: tonic::Request<super::GetValidationResultRequest>,
         ) -> Result<tonic::Response<super::ValidationResult>, tonic::Status>;
     }
-    #[doc = " Agents are best described as Natural Language Understanding (NLU) modules"]
-    #[doc = " that transform user requests into actionable data. You can include agents"]
-    #[doc = " in your app, product, or service to determine user intent and respond to the"]
-    #[doc = " user in a natural way."]
-    #[doc = ""]
-    #[doc = " After you create an agent, you can add [Intents][google.cloud.dialogflow.v2.Intents], [Contexts][google.cloud.dialogflow.v2.Contexts],"]
-    #[doc = " [Entity Types][google.cloud.dialogflow.v2.EntityTypes], [Webhooks][google.cloud.dialogflow.v2.WebhookRequest], and so on to"]
-    #[doc = " manage the flow of a conversation and match user input to predefined intents"]
-    #[doc = " and actions."]
-    #[doc = ""]
-    #[doc = " You can create an agent using both Dialogflow Standard Edition and"]
-    #[doc = " Dialogflow Enterprise Edition. For details, see"]
-    #[doc = " [Dialogflow"]
-    #[doc = " Editions](https://cloud.google.com/dialogflow/docs/editions)."]
-    #[doc = ""]
-    #[doc = " You can save your agent for backup or versioning by exporting the agent by"]
-    #[doc = " using the [ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent] method. You can import a saved"]
-    #[doc = " agent by using the [ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent] method."]
-    #[doc = ""]
-    #[doc = " Dialogflow provides several"]
-    #[doc = " [prebuilt"]
-    #[doc = " agents](https://cloud.google.com/dialogflow/docs/agents-prebuilt)"]
-    #[doc = " for common conversation scenarios such as determining a date and time,"]
-    #[doc = " converting currency, and so on."]
-    #[doc = ""]
-    #[doc = " For more information about agents, see the"]
-    #[doc = " [Dialogflow"]
-    #[doc = " documentation](https://cloud.google.com/dialogflow/docs/agents-overview)."]
+    #[doc = " Service for managing [Agents][google.cloud.dialogflow.v2.Agent]."]
     #[derive(Debug)]
     #[doc(hidden)]
     pub struct AgentsServer<T: Agents> {
@@ -3084,7 +3063,7 @@ pub struct Environment {
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
 }
 pub mod environment {
-    /// Represents an environment state. When a environment is pointed to a new
+    /// Represents an environment state. When an environment is pointed to a new
     /// agent version, the environment is temporarily set to the `LOADING` state.
     /// During that time, the environment keeps on serving the previous version of
     /// the agent. After the new agent version is done loading, the environment is
@@ -3497,6 +3476,7 @@ pub mod intent {
         #[prost(string, tag = "2")]
         pub display_name: std::string::String,
         /// Optional. The definition of the parameter value. It can be:
+        ///
         /// - a constant string,
         /// - a parameter value defined as `$parameter_name`,
         /// - an original parameter value defined as `$parameter_name.original`,
@@ -5521,6 +5501,10 @@ pub struct DetectIntentResponse {
     /// multiple default text responses exist, they will be concatenated when
     /// generating audio. If no default platform text responses exist, the
     /// generated audio content will be empty.
+    ///
+    /// In some scenarios, multiple output audio fields may be present in the
+    /// response structure. In these cases, only the top-most-level audio output
+    /// has content.
     #[prost(bytes, tag = "4")]
     pub output_audio: std::vec::Vec<u8>,
     /// The config used by the speech synthesizer to generate the output audio.
@@ -5821,6 +5805,10 @@ pub struct StreamingDetectIntentResponse {
     /// multiple default text responses exist, they will be concatenated when
     /// generating audio. If no default platform text responses exist, the
     /// generated audio content will be empty.
+    ///
+    /// In some scenarios, multiple output audio fields may be present in the
+    /// response structure. In these cases, only the top-most-level audio output
+    /// has content.
     #[prost(bytes, tag = "5")]
     pub output_audio: std::vec::Vec<u8>,
     /// The config used by the speech synthesizer to generate the output audio.

@@ -17,6 +17,7 @@ pub struct SpeechContext {
     #[prost(string, repeated, tag = "1")]
     pub phrases: ::std::vec::Vec<std::string::String>,
     /// Optional. Boost for this context compared to other contexts:
+    ///
     /// * If the boost is positive, Dialogflow will increase the probability that
     ///   the phrases in this context are recognized over similar sounding phrases.
     /// * If the boost is unspecified or non-positive, Dialogflow will not apply
@@ -337,7 +338,7 @@ pub struct Environment {
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
 }
 pub mod environment {
-    /// Represents an environment state. When a environment is pointed to a new
+    /// Represents an environment state. When an environment is pointed to a new
     /// agent version, the environment is temporarily set to the `LOADING` state.
     /// During that time, the environment keeps on serving the previous version of
     /// the agent. After the new agent version is done loading, the environment is
@@ -996,7 +997,6 @@ pub mod agents_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns the list of agents."]
-        #[doc = ""]
         #[doc = " Since there is at most one conversational agent per project, this method is"]
         #[doc = " useful primarily for listing all agents across projects the caller has"]
         #[doc = " access to. One can achieve that with a wildcard project collection id \"-\"."]
@@ -1068,10 +1068,16 @@ pub mod agents_client {
         #[doc = ""]
         #[doc = " Uploads new intents and entity types without deleting the existing ones."]
         #[doc = " Intents and entity types with the same name are replaced with the new"]
-        #[doc = " versions from ImportAgentRequest."]
+        #[doc = " versions from [ImportAgentRequest][google.cloud.dialogflow.v2beta1.ImportAgentRequest]. After the import, the imported draft"]
+        #[doc = " agent will be trained automatically (unless disabled in agent settings)."]
+        #[doc = " However, once the import is done, training may not be completed yet. Please"]
+        #[doc = " call [TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent] and wait for the operation it returns in order to train"]
+        #[doc = " explicitly."]
         #[doc = ""]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when importing is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         pub async fn import_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportAgentRequest>,
@@ -1094,10 +1100,16 @@ pub mod agents_client {
         #[doc = " Restores the specified agent from a ZIP file."]
         #[doc = ""]
         #[doc = " Replaces the current agent version with a new one. All the intents and"]
-        #[doc = " entity types in the older version are deleted."]
+        #[doc = " entity types in the older version are deleted. After the restore, the"]
+        #[doc = " restored draft agent will be trained automatically (unless disabled in"]
+        #[doc = " agent settings). However, once the restore is done, training may not be"]
+        #[doc = " completed yet. Please call [TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent] and wait for the operation it"]
+        #[doc = " returns in order to train explicitly."]
         #[doc = ""]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when restoring is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         pub async fn restore_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::RestoreAgentRequest>,
@@ -1172,7 +1184,6 @@ pub mod agents_server {
             request: tonic::Request<super::DeleteAgentRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status>;
         #[doc = " Returns the list of agents."]
-        #[doc = ""]
         #[doc = " Since there is at most one conversational agent per project, this method is"]
         #[doc = " useful primarily for listing all agents across projects the caller has"]
         #[doc = " access to. One can achieve that with a wildcard project collection id \"-\"."]
@@ -1208,10 +1219,16 @@ pub mod agents_server {
         #[doc = ""]
         #[doc = " Uploads new intents and entity types without deleting the existing ones."]
         #[doc = " Intents and entity types with the same name are replaced with the new"]
-        #[doc = " versions from ImportAgentRequest."]
+        #[doc = " versions from [ImportAgentRequest][google.cloud.dialogflow.v2beta1.ImportAgentRequest]. After the import, the imported draft"]
+        #[doc = " agent will be trained automatically (unless disabled in agent settings)."]
+        #[doc = " However, once the import is done, training may not be completed yet. Please"]
+        #[doc = " call [TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent] and wait for the operation it returns in order to train"]
+        #[doc = " explicitly."]
         #[doc = ""]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when importing is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         async fn import_agent(
             &self,
             request: tonic::Request<super::ImportAgentRequest>,
@@ -1222,10 +1239,16 @@ pub mod agents_server {
         #[doc = " Restores the specified agent from a ZIP file."]
         #[doc = ""]
         #[doc = " Replaces the current agent version with a new one. All the intents and"]
-        #[doc = " entity types in the older version are deleted."]
+        #[doc = " entity types in the older version are deleted. After the restore, the"]
+        #[doc = " restored draft agent will be trained automatically (unless disabled in"]
+        #[doc = " agent settings). However, once the restore is done, training may not be"]
+        #[doc = " completed yet. Please call [TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent] and wait for the operation it"]
+        #[doc = " returns in order to train explicitly."]
         #[doc = ""]
         #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
+        #[doc = " An operation which tracks when restoring is complete. It only tracks"]
+        #[doc = " when the draft agent is updated not when it is done training."]
         async fn restore_agent(
             &self,
             request: tonic::Request<super::RestoreAgentRequest>,
@@ -2243,7 +2266,7 @@ pub struct GcsSource {
 /// only use `projects.knowledgeBases.documents`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
-    /// The document resource name.
+    /// Optional. The document resource name.
     /// The name must be empty when creating a document.
     /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base
     /// ID>/documents/<Document ID>`.
@@ -2257,13 +2280,53 @@ pub struct Document {
     #[prost(string, tag = "3")]
     pub mime_type: std::string::String,
     /// Required. The knowledge type of document content.
-    #[prost(enumeration = "document::KnowledgeType", repeated, tag = "4")]
+    #[prost(
+        enumeration = "document::KnowledgeType",
+        repeated,
+        packed = "false",
+        tag = "4"
+    )]
     pub knowledge_types: ::std::vec::Vec<i32>,
-    /// Required. The source of this document.
+    /// Optional. If true, we try to automatically reload the document every day
+    /// (at a time picked by the system). If false or unspecified, we don't try
+    /// to automatically reload the document.
+    ///
+    /// Currently you can only enable automatic reload for documents sourced from
+    /// a public url, see `source` field for the source types.
+    ///
+    /// Reload status can be tracked in `latest_reload_status`. If a reload
+    /// fails, we will keep the document unchanged.
+    ///
+    /// If a reload fails with internal errors, the system will try to reload the
+    /// document on the next day.
+    /// If a reload fails with non-retriable errors (e.g. PERMISION_DENIED), the
+    /// system will not try to reload the document anymore. You need to manually
+    /// reload the document successfully by calling `ReloadDocument` and clear the
+    /// errors.
+    #[prost(bool, tag = "11")]
+    pub enable_auto_reload: bool,
+    /// Output only. The time and status of the latest reload.
+    /// This reload may have been triggered automatically or manually
+    /// and may not have succeeded.
+    #[prost(message, optional, tag = "12")]
+    pub latest_reload_status: ::std::option::Option<document::ReloadStatus>,
+    /// The source of this document.
     #[prost(oneof = "document::Source", tags = "5, 6, 9")]
     pub source: ::std::option::Option<document::Source>,
 }
 pub mod document {
+    /// The status of a reload attempt.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReloadStatus {
+        /// Output only. The time of a reload attempt.
+        /// This reload may have been triggered automatically or manually and may
+        /// not have succeeded.
+        #[prost(message, optional, tag = "1")]
+        pub time: ::std::option::Option<::prost_types::Timestamp>,
+        /// Output only. The status of a reload attempt or the initial load.
+        #[prost(message, optional, tag = "2")]
+        pub status: ::std::option::Option<super::super::super::super::rpc::Status>,
+    }
     /// The knowledge type of document content.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -2282,7 +2345,7 @@ pub mod document {
         /// question answering.
         ExtractiveQa = 2,
     }
-    /// Required. The source of this document.
+    /// The source of this document.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The URI where the file content is located.
@@ -2307,6 +2370,15 @@ pub mod document {
         #[prost(bytes, tag = "9")]
         RawContent(std::vec::Vec<u8>),
     }
+}
+/// Request message for [Documents.GetDocument][google.cloud.dialogflow.v2beta1.Documents.GetDocument].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDocumentRequest {
+    /// Required. The name of the document to retrieve.
+    /// Format `projects/<Project ID>/knowledgeBases/<Knowledge Base
+    /// ID>/documents/<Document ID>`.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
 }
 /// Request message for [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2334,15 +2406,6 @@ pub struct ListDocumentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
 }
-/// Request message for [Documents.GetDocument][google.cloud.dialogflow.v2beta1.Documents.GetDocument].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetDocumentRequest {
-    /// Required. The name of the document to retrieve.
-    /// Format `projects/<Project ID>/knowledgeBases/<Knowledge Base
-    /// ID>/documents/<Document ID>`.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-}
 /// Request message for [Documents.CreateDocument][google.cloud.dialogflow.v2beta1.Documents.CreateDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
@@ -2357,7 +2420,7 @@ pub struct CreateDocumentRequest {
 /// Request message for [Documents.DeleteDocument][google.cloud.dialogflow.v2beta1.Documents.DeleteDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDocumentRequest {
-    /// The name of the document to delete.
+    /// Required. The name of the document to delete.
     /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base
     /// ID>/documents/<Document ID>`.
     #[prost(string, tag = "1")]
@@ -2378,7 +2441,7 @@ pub struct UpdateDocumentRequest {
 /// Metadata in google::longrunning::Operation for Knowledge operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KnowledgeOperationMetadata {
-    /// Required. The current state of this operation.
+    /// Required. Output only. The current state of this operation.
     #[prost(enumeration = "knowledge_operation_metadata::State", tag = "1")]
     pub state: i32,
 }
@@ -2400,7 +2463,7 @@ pub mod knowledge_operation_metadata {
 /// Request message for [Documents.ReloadDocument][google.cloud.dialogflow.v2beta1.Documents.ReloadDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReloadDocumentRequest {
-    /// The name of the document to reload.
+    /// Required. The name of the document to reload.
     /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base
     /// ID>/documents/<Document ID>`
     #[prost(string, tag = "1")]
@@ -2417,7 +2480,7 @@ pub mod reload_document_request {
     /// and update document in the knowledge base.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Optional. The path for a Cloud Storage source file for reloading document content.
+        /// The path for a Cloud Storage source file for reloading document content.
         /// If not provided, the Document's existing source will be reloaded.
         #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
@@ -3132,7 +3195,7 @@ pub struct BatchUpdateEntityTypesRequest {
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "5")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// Required. The source of the entity type batch.
+    /// The source of the entity type batch.
     ///
     /// For each entity type in the batch:
     ///
@@ -3146,7 +3209,7 @@ pub struct BatchUpdateEntityTypesRequest {
         ::std::option::Option<batch_update_entity_types_request::EntityTypeBatch>,
 }
 pub mod batch_update_entity_types_request {
-    /// Required. The source of the entity type batch.
+    /// The source of the entity type batch.
     ///
     /// For each entity type in the batch:
     ///
@@ -3397,7 +3460,6 @@ pub mod entity_types_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates/Creates multiple entity types in the specified agent."]
-        #[doc = ""]
         #[doc = " Operation <response: [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse]>"]
         pub async fn batch_update_entity_types(
             &mut self,
@@ -3419,7 +3481,6 @@ pub mod entity_types_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Deletes entity types in the specified agent."]
-        #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
         pub async fn batch_delete_entity_types(
             &mut self,
@@ -3555,7 +3616,6 @@ pub mod entity_types_server {
             request: tonic::Request<super::DeleteEntityTypeRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status>;
         #[doc = " Updates/Creates multiple entity types in the specified agent."]
-        #[doc = ""]
         #[doc = " Operation <response: [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2beta1.BatchUpdateEntityTypesResponse]>"]
         async fn batch_update_entity_types(
             &self,
@@ -3565,7 +3625,6 @@ pub mod entity_types_server {
             tonic::Status,
         >;
         #[doc = " Deletes entity types in the specified agent."]
-        #[doc = ""]
         #[doc = " Operation <response: [google.protobuf.Empty][google.protobuf.Empty]>"]
         async fn batch_delete_entity_types(
             &self,
@@ -4038,7 +4097,7 @@ pub mod entity_types_server {
 /// action is an extraction of a user command or sentence semantics.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Intent {
-    /// The unique identifier of this intent.
+    /// Optional. The unique identifier of this intent.
     /// Required for [Intents.UpdateIntent][google.cloud.dialogflow.v2beta1.Intents.UpdateIntent] and [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents]
     /// methods.
     /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
@@ -4050,7 +4109,7 @@ pub struct Intent {
     /// Optional. Indicates whether webhooks are enabled for the intent.
     #[prost(enumeration = "intent::WebhookState", tag = "6")]
     pub webhook_state: i32,
-    /// The priority of this intent. Higher numbers represent higher
+    /// Optional. The priority of this intent. Higher numbers represent higher
     /// priorities.
     ///
     /// - If the supplied value is unspecified or 0, the service
@@ -4126,16 +4185,21 @@ pub struct Intent {
     pub messages: ::std::vec::Vec<intent::Message>,
     /// Optional. The list of platforms for which the first responses will be
     /// copied from the messages in PLATFORM_UNSPECIFIED (i.e. default platform).
-    #[prost(enumeration = "intent::message::Platform", repeated, tag = "15")]
+    #[prost(
+        enumeration = "intent::message::Platform",
+        repeated,
+        packed = "false",
+        tag = "15"
+    )]
     pub default_response_platforms: ::std::vec::Vec<i32>,
-    /// Read-only. The unique identifier of the root intent in the chain of
+    /// Output only. The unique identifier of the root intent in the chain of
     /// followup intents. It identifies the correct followup intents chain for
-    /// this intent. We populate this field only in the output.
+    /// this intent.
     ///
     /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
     #[prost(string, tag = "16")]
     pub root_followup_intent_name: std::string::String,
-    /// Read-only after creation. The unique identifier of the parent intent in the
+    /// Optional. The unique identifier of the parent intent in the
     /// chain of followup intents. You can set this field when creating an intent,
     /// for example with [CreateIntent][google.cloud.dialogflow.v2beta1.Intents.CreateIntent] or
     /// [BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents], in order to make this
@@ -4145,7 +4209,7 @@ pub struct Intent {
     /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
     #[prost(string, tag = "17")]
     pub parent_followup_intent_name: std::string::String,
-    /// Read-only. Information about all followup intents that have this intent as
+    /// Output only. Information about all followup intents that have this intent as
     /// a direct or indirect parent. We populate this field only in the output.
     #[prost(message, repeated, tag = "18")]
     pub followup_intent_info: ::std::vec::Vec<intent::FollowupIntentInfo>,
@@ -4238,6 +4302,7 @@ pub mod intent {
         #[prost(string, tag = "2")]
         pub display_name: std::string::String,
         /// Optional. The definition of the parameter value. It can be:
+        ///
         /// - a constant string,
         /// - a parameter value defined as `$parameter_name`,
         /// - an original parameter value defined as `$parameter_name.original`,
@@ -4571,8 +4636,6 @@ pub mod intent {
         /// Rich cards allow you to respond to users with more vivid content, e.g.
         /// with media and suggestions.
         ///
-        /// For more details about RBM rich cards, please see:
-        /// https://developers.google.com/rcs-business-messaging/rbm/guides/build/send-messages#rich-cards.
         /// If you want to show a single card with more control over the layout,
         /// please use [RbmStandaloneCard][google.cloud.dialogflow.v2beta1.Intent.Message.RbmStandaloneCard] instead.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4605,8 +4668,6 @@ pub mod intent {
         /// Rich cards allow you to respond to users with more vivid content, e.g.
         /// with media and suggestions.
         ///
-        /// For more details about RBM rich cards, please see:
-        /// https://developers.google.com/rcs-business-messaging/rbm/guides/build/send-messages#rich-cards.
         /// You can group multiple rich cards into one using [RbmCarouselCard][google.cloud.dialogflow.v2beta1.Intent.Message.RbmCarouselCard] but
         /// carousel cards will give you less control over the card layout.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4710,7 +4771,7 @@ pub mod intent {
                 #[prost(string, tag = "2")]
                 pub thumbnail_uri: std::string::String,
                 /// Required for cards with vertical orientation. The height of the media
-                /// within a rich card with a vertical layout. (https://goo.gl/NeFCjz).
+                /// within a rich card with a vertical layout.
                 /// For a standalone card with horizontal layout, height is not
                 /// customizable, and this field is ignored.
                 #[prost(enumeration = "rbm_media::Height", tag = "3")]
@@ -4787,7 +4848,7 @@ pub mod intent {
         }
         pub mod rbm_suggested_action {
             /// Opens the user's default dialer app with the specified phone number
-            /// but does not dial automatically (https://goo.gl/ergbB2).
+            /// but does not dial automatically.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct RbmSuggestedActionDial {
                 /// Required. The phone number to fill in the default dialer app.
@@ -4798,7 +4859,7 @@ pub mod intent {
                 pub phone_number: std::string::String,
             }
             /// Opens the user's default web browser app to the specified uri
-            /// (https://goo.gl/6GLJD2). If the user has an app installed that is
+            /// If the user has an app installed that is
             /// registered as the default handler for the URL, then this app will be
             /// opened instead, and its icon will be used in the suggested action UI.
             #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4808,7 +4869,7 @@ pub mod intent {
                 pub uri: std::string::String,
             }
             /// Opens the device's location chooser so the user can pick a location
-            /// to send back to the agent (https://goo.gl/GXotJW).
+            /// to send back to the agent.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct RbmSuggestedActionShareLocation {}
             /// Action that needs to be triggered.
@@ -7147,6 +7208,10 @@ pub struct DetectIntentResponse {
     /// multiple default text responses exist, they will be concatenated when
     /// generating audio. If no default platform text responses exist, the
     /// generated audio content will be empty.
+    ///
+    /// In some scenarios, multiple output audio fields may be present in the
+    /// response structure. In these cases, only the top-most-level audio output
+    /// has content.
     #[prost(bytes, tag = "4")]
     pub output_audio: std::vec::Vec<u8>,
     /// The config used by the speech synthesizer to generate the output audio.
@@ -7551,6 +7616,10 @@ pub struct StreamingDetectIntentResponse {
     /// multiple default text responses exist, they will be concatenated when
     /// generating audio. If no default platform text responses exist, the
     /// generated audio content will be empty.
+    ///
+    /// In some scenarios, multiple output audio fields may be present in the
+    /// response structure. In these cases, only the top-most-level audio output
+    /// has content.
     #[prost(bytes, tag = "5")]
     pub output_audio: std::vec::Vec<u8>,
     /// The config used by the speech synthesizer to generate the output audio.
@@ -7616,6 +7685,7 @@ pub struct StreamingRecognitionResult {
     pub confidence: f32,
     /// An estimate of the likelihood that the speech recognizer will
     /// not change its guess about this interim recognition result:
+    ///
     /// * If the value is unspecified or 0.0, Dialogflow didn't compute the
     ///   stability. In particular, Dialogflow will only provide stability for
     ///   `TRANSCRIPT` results with `is_final = false`.

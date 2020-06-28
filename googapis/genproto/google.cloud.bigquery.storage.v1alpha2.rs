@@ -155,6 +155,11 @@ pub struct AppendRowsRequest {
     /// current end of stream.
     #[prost(message, optional, tag = "2")]
     pub offset: ::std::option::Option<i64>,
+    /// Only initial request setting is respected. If true, drop unknown input
+    /// fields. Otherwise, the extra fields will cause append to fail. Default
+    /// value is false.
+    #[prost(bool, tag = "5")]
+    pub ignore_unknown_fields: bool,
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
     /// requests. Following requests must have data in the same format as the
@@ -185,6 +190,11 @@ pub mod append_rows_request {
 /// Response message for `AppendRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsResponse {
+    /// If backend detects a schema update, pass it to user so that user can
+    /// use it to input new type of message. It will be empty when there is no
+    /// schema updates.
+    #[prost(message, optional, tag = "3")]
+    pub updated_schema: ::std::option::Option<TableSchema>,
     #[prost(oneof = "append_rows_response::Response", tags = "1, 2")]
     pub response: ::std::option::Option<append_rows_response::Response>,
 }
@@ -240,6 +250,24 @@ pub struct FinalizeWriteStreamResponse {
     /// Number of rows in the finalized stream.
     #[prost(int64, tag = "1")]
     pub row_count: i64,
+}
+/// Request message for `FlushRows`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FlushRowsRequest {
+    /// Required. The stream that is the target of the flush operation.
+    #[prost(string, tag = "1")]
+    pub write_stream: std::string::String,
+    /// Ending offset of the flush operation. Rows before this offset(including
+    /// this offset) will be flushed.
+    #[prost(int64, tag = "2")]
+    pub offset: i64,
+}
+/// Respond message for `FlushRows`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FlushRowsResponse {
+    /// The rows before this offset (including this offset) are flushed.
+    #[prost(int64, tag = "1")]
+    pub offset: i64,
 }
 #[doc = r" Generated client implementations."]
 pub mod big_query_write_client {
@@ -391,6 +419,27 @@ pub mod big_query_write_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Flushes rows to a BUFFERED stream."]
+        #[doc = " If users are appending rows to BUFFERED stream, flush operation is"]
+        #[doc = " required in order for the rows to become available for reading. A"]
+        #[doc = " Flush operation flushes up to any previously flushed offset in a BUFFERED"]
+        #[doc = " stream, to the offset specified in the request."]
+        pub async fn flush_rows(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FlushRowsRequest>,
+        ) -> Result<tonic::Response<super::FlushRowsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.storage.v1alpha2.BigQueryWrite/FlushRows",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
     impl<T: Clone> Clone for BigQueryWriteClient<T> {
         fn clone(&self) -> Self {
@@ -465,6 +514,15 @@ pub mod big_query_write_server {
             &self,
             request: tonic::Request<super::BatchCommitWriteStreamsRequest>,
         ) -> Result<tonic::Response<super::BatchCommitWriteStreamsResponse>, tonic::Status>;
+        #[doc = " Flushes rows to a BUFFERED stream."]
+        #[doc = " If users are appending rows to BUFFERED stream, flush operation is"]
+        #[doc = " required in order for the rows to become available for reading. A"]
+        #[doc = " Flush operation flushes up to any previously flushed offset in a BUFFERED"]
+        #[doc = " stream, to the offset specified in the request."]
+        async fn flush_rows(
+            &self,
+            request: tonic::Request<super::FlushRowsRequest>,
+        ) -> Result<tonic::Response<super::FlushRowsResponse>, tonic::Status>;
     }
     #[doc = " BigQuery Write API."]
     #[doc = ""]
@@ -662,6 +720,37 @@ pub mod big_query_write_server {
                         let interceptor = inner.1.clone();
                         let inner = inner.0;
                         let method = BatchCommitWriteStreamsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.bigquery.storage.v1alpha2.BigQueryWrite/FlushRows" => {
+                    #[allow(non_camel_case_types)]
+                    struct FlushRowsSvc<T: BigQueryWrite>(pub Arc<T>);
+                    impl<T: BigQueryWrite> tonic::server::UnaryService<super::FlushRowsRequest> for FlushRowsSvc<T> {
+                        type Response = super::FlushRowsResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::FlushRowsRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.flush_rows(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = FlushRowsSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = if let Some(interceptor) = interceptor {
                             tonic::server::Grpc::with_interceptor(codec, interceptor)

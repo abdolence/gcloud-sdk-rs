@@ -142,6 +142,19 @@ pub struct Filter {
     /// https://cloud.google.com/billing/v1/how-tos/catalog-api.
     #[prost(string, repeated, tag = "3")]
     pub services: ::std::vec::Vec<std::string::String>,
+    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`, specifying
+    /// that usage from only this set of subaccounts should be included in the
+    /// budget. If a subaccount is set to the name of the master account, usage
+    /// from the master account will be included. If omitted, the report will
+    /// include usage from the master account and all subaccounts, if they exist.
+    #[prost(string, repeated, tag = "5")]
+    pub subaccounts: ::std::vec::Vec<std::string::String>,
+    /// Optional. A single label and value pair specifying that usage from only this set of
+    /// labeled resources should be included in the budget. Currently, multiple
+    /// entries or multiple values per entry are not allowed. If omitted, the
+    /// report will include all labeled and unlabeled usage.
+    #[prost(map = "string, message", tag = "6")]
+    pub labels: ::std::collections::HashMap<std::string::String, ::prost_types::ListValue>,
 }
 pub mod filter {
     /// Specifies how credits should be treated when determining spend for

@@ -526,7 +526,7 @@ pub struct Cluster {
     #[prost(string, tag = "2")]
     pub description: std::string::String,
     /// The number of nodes to create in this cluster. You must ensure that your
-    /// Compute Engine <a href="/compute/docs/resource-quotas">resource quota</a>
+    /// Compute Engine [resource quota](https://cloud.google.com/compute/quotas)
     /// is sufficient for this number of instances. You must also have available
     /// firewall and routes quota.
     /// For requests, this field should only be used in lieu of a
@@ -1631,7 +1631,7 @@ pub struct NodePool {
     #[prost(message, optional, tag = "2")]
     pub config: ::std::option::Option<NodeConfig>,
     /// The initial node count for the pool. You must ensure that your
-    /// Compute Engine <a href="/compute/docs/resource-quotas">resource quota</a>
+    /// Compute Engine [resource quota](https://cloud.google.com/compute/quotas)
     /// is sufficient for this number of instances. You must also have available
     /// firewall and routes quota.
     #[prost(int32, tag = "3")]

@@ -11,12 +11,12 @@ pub struct PlayableLocation {
     /// Type information might not be available for all playable locations.
     #[prost(string, repeated, tag = "4")]
     pub types: ::std::vec::Vec<std::string::String>,
-    /// Required. The latitude and longitude associated with the center of the playable
-    /// location.
+    /// Required. The latitude and longitude associated with the center of the
+    /// playable location.
     ///
     /// By default, the set of playable locations returned from
-    /// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations] use
-    /// center-point coordinates.
+    /// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
+    /// use center-point coordinates.
     #[prost(message, optional, tag = "5")]
     pub center_point: ::std::option::Option<super::super::super::super::r#type::LatLng>,
     /// The playable location's coordinates, snapped to the sidewalk of the
@@ -44,9 +44,8 @@ pub mod playable_location {
 /// A set of options that specifies the separation between playable locations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpacingOptions {
-    /// Required. The minimum spacing between any two playable locations, measured in meters.
-    /// The minimum value is 200.
-    /// The maximum value is 1000.
+    /// Required. The minimum spacing between any two playable locations, measured
+    /// in meters. The minimum value is 30. The maximum value is 1000.
     ///
     /// Inputs will be rounded up to the next 10 meter interval.
     ///
@@ -117,7 +116,7 @@ pub mod spacing_options {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
     /// Specifies the maximum number of playable locations to return. This value
-    /// must not be greater than 500. The default value is 100.
+    /// must not be greater than 1000. The default value is 100.
     ///
     /// Only the top-ranking playable locations are returned.
     #[prost(int32, tag = "1")]
@@ -135,9 +134,10 @@ pub struct Filter {
 /// locations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Criterion {
-    /// Required. An arbitrary, developer-defined identifier of the type of game object that
-    /// the playable location is used for. This field allows you to specify
-    /// criteria per game object type when searching for playable locations.
+    /// Required. An arbitrary, developer-defined identifier of the type of game
+    /// object that the playable location is used for. This field allows you to
+    /// specify criteria per game object type when searching for playable
+    /// locations.
     ///
     /// You should assign a unique `game_object_type` ID across all
     /// `request_criteria` to represent a distinct type of game object. For
@@ -168,8 +168,8 @@ pub struct Criterion {
 /// Specifies the area to search for playable locations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AreaFilter {
-    /// Required. The S2 cell ID of the area you want. This must be between cell level 11 and
-    /// 14 (inclusive).
+    /// Required. The S2 cell ID of the area you want. This must be between cell
+    /// level 11 and 14 (inclusive).
     ///
     /// S2 cells are 64-bit integers that identify areas on the Earth. They are
     /// hierarchical, and can therefore be used for spatial indexing.

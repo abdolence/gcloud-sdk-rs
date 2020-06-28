@@ -116,7 +116,7 @@ pub mod custom_info_type {
     }
     /// Message for detecting output from deidentification transformations
     /// such as
-    /// [`CryptoReplaceFfxFpeConfig`](/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig).
+    /// [`CryptoReplaceFfxFpeConfig`](https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig).
     /// These types of transformations are
     /// those that perform pseudonymization, thereby producing a "surrogate" as
     /// output. This should be used in conjunction with a field on the
@@ -1004,8 +1004,8 @@ pub struct InspectResult {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// Resource name in format
-    /// projects/{project}/locations/{location}/findings/{finding} Populated only
-    /// when viewing persisted findings.
+    /// projects/{project}/locations/{location}/findings/{finding}
+    /// Populated only when viewing persisted findings.
     #[prost(string, tag = "14")]
     pub name: std::string::String,
     /// The content that was found. Even if the content is not textual, it
@@ -1273,12 +1273,11 @@ pub struct BoundingBox {
 /// by covering it with a colored rectangle.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactImageRequest {
-    /// The parent resource name, for example projects/my-project-id.
+    /// The parent resource name, for example projects/my-project-id
+    /// or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// The geographic location to process the request. Reserved for future
-    /// extensions.
-    /// Location is restricted to 'global', 'us', 'asia', and 'europe'.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "8")]
     pub location_id: std::string::String,
     /// Configuration for the inspector.
@@ -1355,7 +1354,8 @@ pub struct RedactImageResponse {
 /// Request to de-identify a list of items.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyContentRequest {
-    /// The parent resource name, for example projects/my-project-id.
+    /// The parent resource name, for example projects/my-project-id
+    /// or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the de-identification of the content item.
@@ -1385,8 +1385,7 @@ pub struct DeidentifyContentRequest {
     /// are recursively merged.
     #[prost(string, tag = "6")]
     pub deidentify_template_name: std::string::String,
-    /// The geographic location to process de-identification. Reserved for future
-    /// extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
     pub location_id: std::string::String,
 }
@@ -1439,8 +1438,7 @@ pub struct ReidentifyContentRequest {
     /// are recursively merged.
     #[prost(string, tag = "6")]
     pub reidentify_template_name: std::string::String,
-    /// The geographic location to process content reidentification.  Reserved for
-    /// future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
     pub location_id: std::string::String,
 }
@@ -1457,7 +1455,8 @@ pub struct ReidentifyContentResponse {
 /// Request to search for potentially sensitive info in a ContentItem.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectContentRequest {
-    /// The parent resource name, for example projects/my-project-id.
+    /// The parent resource name, for example projects/my-project-id
+    /// or projects/my-project-id/locations/{location_id}
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the inspector. What specified here will override
@@ -1474,10 +1473,7 @@ pub struct InspectContentRequest {
     /// are recursively merged.
     #[prost(string, tag = "4")]
     pub inspect_template_name: std::string::String,
-    /// The geographic location to process content inspection. Reserved for future
-    /// extensions.
-    /// When inspecting images location is restricted to 'global', 'us', 'asia',
-    /// and 'europe'.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
     pub location_id: std::string::String,
 }
@@ -1601,7 +1597,7 @@ pub mod inspect_data_source_details {
         pub hybrid_stats: ::std::option::Option<super::HybridInspectStatistics>,
     }
 }
-/// Statistics related to processing hybrid inspect requests.
+/// Statistics related to processing hybrid inspect requests.s
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectStatistics {
     /// The number of hybrid inspection requests processed within this job.
@@ -1639,6 +1635,9 @@ pub struct InfoTypeDescription {
 /// Request for the list of infoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInfoTypesRequest {
+    /// The parent resource name, for example locations/{location_id}
+    #[prost(string, tag = "4")]
+    pub parent: std::string::String,
     /// BCP-47 language code for localized infoType friendly
     /// names. If omitted, or if localized strings are not available,
     /// en-US strings will be returned.
@@ -1648,8 +1647,7 @@ pub struct ListInfoTypesRequest {
     /// API. Defaults to supported_by=INSPECT.
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
-    /// The geographic location to list info types. Reserved for future
-    /// extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "3")]
     pub location_id: std::string::String,
 }
@@ -1726,8 +1724,8 @@ pub struct StatisticalTable {
     /// Required. Quasi-identifier columns.
     #[prost(message, repeated, tag = "1")]
     pub quasi_ids: ::std::vec::Vec<statistical_table::QuasiIdentifierField>,
-    /// Required. The relative frequency column must contain a floating-point number
-    /// between 0 and 1 (inclusive). Null values are assumed to be zero.
+    /// Required. The relative frequency column must contain a floating-point
+    /// number between 0 and 1 (inclusive). Null values are assumed to be zero.
     #[prost(message, optional, tag = "2")]
     pub relative_frequency: ::std::option::Option<FieldId>,
 }
@@ -1817,8 +1815,8 @@ pub mod privacy_metric {
     /// extrapolating from the distribution of values in the input dataset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KMapEstimationConfig {
-        /// Required. Fields considered to be quasi-identifiers. No two columns can have the
-        /// same tag.
+        /// Required. Fields considered to be quasi-identifiers. No two columns can
+        /// have the same tag.
         #[prost(message, repeated, tag = "1")]
         pub quasi_ids: ::std::vec::Vec<k_map_estimation_config::TaggedField>,
         /// ISO 3166-1 alpha-2 region code to use in the statistical modeling.
@@ -1884,8 +1882,8 @@ pub mod privacy_metric {
             /// Required. Quasi-identifier columns.
             #[prost(message, repeated, tag = "1")]
             pub quasi_ids: ::std::vec::Vec<auxiliary_table::QuasiIdField>,
-            /// Required. The relative frequency column must contain a floating-point number
-            /// between 0 and 1 (inclusive). Null values are assumed to be zero.
+            /// Required. The relative frequency column must contain a floating-point
+            /// number between 0 and 1 (inclusive). Null values are assumed to be zero.
             #[prost(message, optional, tag = "2")]
             pub relative_frequency: ::std::option::Option<super::super::FieldId>,
         }
@@ -1909,8 +1907,8 @@ pub mod privacy_metric {
     /// knowing the attack dataset, so we use a statistical model instead.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeltaPresenceEstimationConfig {
-        /// Required. Fields considered to be quasi-identifiers. No two fields can have the
-        /// same tag.
+        /// Required. Fields considered to be quasi-identifiers. No two fields can
+        /// have the same tag.
         #[prost(message, repeated, tag = "1")]
         pub quasi_ids: ::std::vec::Vec<super::QuasiId>,
         /// ISO 3166-1 alpha-2 region code to use in the statistical modeling.
@@ -2653,18 +2651,18 @@ pub struct CharacterMaskConfig {
 /// See https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FixedSizeBucketingConfig {
-    /// Required. Lower bound value of buckets. All values less than `lower_bound` are
-    /// grouped together into a single bucket; for example if `lower_bound` = 10,
-    /// then all values less than 10 are replaced with the value “-10”.
+    /// Required. Lower bound value of buckets. All values less than `lower_bound`
+    /// are grouped together into a single bucket; for example if `lower_bound` =
+    /// 10, then all values less than 10 are replaced with the value “-10”.
     #[prost(message, optional, tag = "1")]
     pub lower_bound: ::std::option::Option<Value>,
-    /// Required. Upper bound value of buckets. All values greater than upper_bound are
-    /// grouped together into a single bucket; for example if `upper_bound` = 89,
-    /// then all values greater than 89 are replaced with the value “89+”.
+    /// Required. Upper bound value of buckets. All values greater than upper_bound
+    /// are grouped together into a single bucket; for example if `upper_bound` =
+    /// 89, then all values greater than 89 are replaced with the value “89+”.
     #[prost(message, optional, tag = "2")]
     pub upper_bound: ::std::option::Option<Value>,
-    /// Required. Size of each bucket (except for minimum and maximum buckets). So if
-    /// `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the
+    /// Required. Size of each bucket (except for minimum and maximum buckets). So
+    /// if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the
     /// following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60,
     /// 60-70, 70-80, 80-89, 89+. Precision up to 2 decimals works.
     #[prost(double, tag = "3")]
@@ -2754,7 +2752,7 @@ pub struct CryptoReplaceFfxFpeConfig {
     ///
     /// This annotation identifies the surrogate when inspecting content using the
     /// custom infoType
-    /// [`SurrogateType`](/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype).
+    /// [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype).
     /// This facilitates reversal of the surrogate when it occurs in free text.
     ///
     /// In order for inspection to work properly, the name of this infoType must
@@ -2782,13 +2780,13 @@ pub mod crypto_replace_ffx_fpe_config {
     pub enum FfxCommonNativeAlphabet {
         /// Unused.
         Unspecified = 0,
-        /// [0-9] (radix of 10)
+        /// `[0-9]` (radix of 10)
         Numeric = 1,
-        /// [0-9A-F] (radix of 16)
+        /// `[0-9A-F]` (radix of 16)
         Hexadecimal = 2,
-        /// [0-9A-Z] (radix of 36)
+        /// `[0-9A-Z]` (radix of 36)
         UpperCaseAlphaNumeric = 3,
-        /// [0-9A-Za-z] (radix of 62)
+        /// `[0-9A-Za-z]` (radix of 62)
         AlphaNumeric = 4,
     }
     /// Choose an alphabet which the data being transformed will be made up of.
@@ -2877,14 +2875,15 @@ pub struct KmsWrappedCryptoKey {
 /// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateShiftConfig {
-    /// Required. Range of shift in days. Actual shift will be selected at random within this
-    /// range (inclusive ends). Negative means shift to earlier in time. Must not
-    /// be more than 365250 days (1000 years) each direction.
+    /// Required. Range of shift in days. Actual shift will be selected at random
+    /// within this range (inclusive ends). Negative means shift to earlier in
+    /// time. Must not be more than 365250 days (1000 years) each direction.
     ///
     /// For example, 3 means shift date to at most 3 days into the future.
     #[prost(int32, tag = "1")]
     pub upper_bound_days: i32,
-    /// Required. For example, -5 means shift date to at most 5 days back in the past.
+    /// Required. For example, -5 means shift date to at most 5 days back in the
+    /// past.
     #[prost(int32, tag = "2")]
     pub lower_bound_days: i32,
     /// Points to the field that contains the context, for example, an entity id.
@@ -3334,7 +3333,7 @@ pub mod action {
     /// Publish a message into given Pub/Sub topic when DlpJob has completed. The
     /// message contains a single field, `DlpJobName`, which is equal to the
     /// finished job's
-    /// [`DlpJob.name`](/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob).
+    /// [`DlpJob.name`](https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob).
     /// Compatible with: Inspect, Risk
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishToPubSub {
@@ -3406,7 +3405,7 @@ pub mod action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInspectTemplateRequest {
     /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id.
+    /// organizations/my-org-id or projects/my-project-id/locations/{location-id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The InspectTemplate to create.
@@ -3418,16 +3417,15 @@ pub struct CreateInspectTemplateRequest {
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub template_id: std::string::String,
-    /// The geographic location to store the inspection template. Reserved for
-    /// future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
     pub location_id: std::string::String,
 }
 /// Request message for UpdateInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInspectTemplateRequest {
-    /// Required. Resource name of organization and inspectTemplate to be updated, for
-    /// example `organizations/433245324/inspectTemplates/432452342` or
+    /// Required. Resource name of organization and inspectTemplate to be updated,
+    /// for example `organizations/433245324/inspectTemplates/432452342` or
     /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -3441,8 +3439,8 @@ pub struct UpdateInspectTemplateRequest {
 /// Request message for GetInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInspectTemplateRequest {
-    /// Required. Resource name of the organization and inspectTemplate to be read, for
-    /// example `organizations/433245324/inspectTemplates/432452342` or
+    /// Required. Resource name of the organization and inspectTemplate to be read,
+    /// for example `organizations/433245324/inspectTemplates/432452342` or
     /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -3451,7 +3449,7 @@ pub struct GetInspectTemplateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInspectTemplatesRequest {
     /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id.
+    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3477,8 +3475,7 @@ pub struct ListInspectTemplatesRequest {
     /// - `display_name`: corresponds to template's display name.
     #[prost(string, tag = "4")]
     pub order_by: std::string::String,
-    /// The geographic location where inspection templates will be retrieved from.
-    /// Use `-` for all locations. Reserved for future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
     pub location_id: std::string::String,
 }
@@ -3496,16 +3493,17 @@ pub struct ListInspectTemplatesResponse {
 /// Request message for DeleteInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInspectTemplateRequest {
-    /// Required. Resource name of the organization and inspectTemplate to be deleted, for
-    /// example `organizations/433245324/inspectTemplates/432452342` or
-    /// projects/project-id/inspectTemplates/432452342.
+    /// Required. Resource name of the organization and inspectTemplate to be
+    /// deleted, for example `organizations/433245324/inspectTemplates/432452342`
+    /// or projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
 /// Request message for CreateJobTrigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobTriggerRequest {
-    /// Required. The parent resource name, for example projects/my-project-id.
+    /// Required. The parent resource name, for example projects/my-project-id
+    /// or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The JobTrigger to create.
@@ -3517,8 +3515,7 @@ pub struct CreateJobTriggerRequest {
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub trigger_id: std::string::String,
-    /// The geographic location to store the job trigger. Reserved for
-    /// future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
     pub location_id: std::string::String,
 }
@@ -3557,7 +3554,8 @@ pub struct GetJobTriggerRequest {
 /// Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDlpJobRequest {
-    /// Required. The parent resource name, for example projects/my-project-id.
+    /// Required. The parent resource name, for example projects/my-project-id
+    /// or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The job id can contain uppercase and lowercase letters,
@@ -3566,8 +3564,7 @@ pub struct CreateDlpJobRequest {
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "4")]
     pub job_id: std::string::String,
-    /// The geographic location to store and process the job. Reserved for
-    /// future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
     pub location_id: std::string::String,
     /// The configuration details for the specific type of job to run.
@@ -3589,7 +3586,8 @@ pub mod create_dlp_job_request {
 /// Request message for ListJobTriggers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTriggersRequest {
-    /// Required. The parent resource name, for example `projects/my-project-id`.
+    /// Required. The parent resource name, for example `projects/my-project-id`
+    /// or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3643,8 +3641,7 @@ pub struct ListJobTriggersRequest {
     /// The length of this field should be no more than 500 characters.
     #[prost(string, tag = "5")]
     pub filter: std::string::String,
-    /// The geographic location where job triggers will be retrieved from.
-    /// Use `-` for all locations. Reserved for future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
     pub location_id: std::string::String,
 }
@@ -3760,7 +3757,8 @@ pub struct GetDlpJobRequest {
 /// The request message for listing DLP jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDlpJobsRequest {
-    /// Required. The parent resource name, for example projects/my-project-id.
+    /// Required. The parent resource name, for example projects/my-project-id
+    /// or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "4")]
     pub parent: std::string::String,
     /// Allows filtering.
@@ -3817,8 +3815,7 @@ pub struct ListDlpJobsRequest {
     /// - `state`: corresponds to `state`
     #[prost(string, tag = "6")]
     pub order_by: std::string::String,
-    /// The geographic location where jobs will be retrieved from.
-    /// Use `-` for all locations. Reserved for future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
     pub location_id: std::string::String,
 }
@@ -3857,7 +3854,7 @@ pub struct DeleteDlpJobRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeidentifyTemplateRequest {
     /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id.
+    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The DeidentifyTemplate to create.
@@ -3869,16 +3866,16 @@ pub struct CreateDeidentifyTemplateRequest {
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub template_id: std::string::String,
-    /// The geographic location to store the deidentification template. Reserved
-    /// for future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
     pub location_id: std::string::String,
 }
 /// Request message for UpdateDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeidentifyTemplateRequest {
-    /// Required. Resource name of organization and deidentify template to be updated, for
-    /// example `organizations/433245324/deidentifyTemplates/432452342` or
+    /// Required. Resource name of organization and deidentify template to be
+    /// updated, for example
+    /// `organizations/433245324/deidentifyTemplates/432452342` or
     /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -3892,9 +3889,9 @@ pub struct UpdateDeidentifyTemplateRequest {
 /// Request message for GetDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeidentifyTemplateRequest {
-    /// Required. Resource name of the organization and deidentify template to be read, for
-    /// example `organizations/433245324/deidentifyTemplates/432452342` or
-    /// projects/project-id/deidentifyTemplates/432452342.
+    /// Required. Resource name of the organization and deidentify template to be
+    /// read, for example `organizations/433245324/deidentifyTemplates/432452342`
+    /// or projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -3902,7 +3899,7 @@ pub struct GetDeidentifyTemplateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeidentifyTemplatesRequest {
     /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id.
+    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3928,8 +3925,7 @@ pub struct ListDeidentifyTemplatesRequest {
     /// - `display_name`: corresponds to template's display name.
     #[prost(string, tag = "4")]
     pub order_by: std::string::String,
-    /// The geographic location where deidentifications templates will be retrieved
-    /// from. Use `-` for all locations. Reserved for future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
     pub location_id: std::string::String,
 }
@@ -3948,8 +3944,9 @@ pub struct ListDeidentifyTemplatesResponse {
 /// Request message for DeleteDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDeidentifyTemplateRequest {
-    /// Required. Resource name of the organization and deidentify template to be deleted,
-    /// for example `organizations/433245324/deidentifyTemplates/432452342` or
+    /// Required. Resource name of the organization and deidentify template to be
+    /// deleted, for example
+    /// `organizations/433245324/deidentifyTemplates/432452342` or
     /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -4088,7 +4085,7 @@ pub struct StoredInfoType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStoredInfoTypeRequest {
     /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id.
+    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. Configuration of the storedInfoType to create.
@@ -4100,8 +4097,7 @@ pub struct CreateStoredInfoTypeRequest {
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub stored_info_type_id: std::string::String,
-    /// The geographic location to store the stored infoType. Reserved for
-    /// future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
     pub location_id: std::string::String,
 }
@@ -4125,8 +4121,8 @@ pub struct UpdateStoredInfoTypeRequest {
 /// Request message for GetStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStoredInfoTypeRequest {
-    /// Required. Resource name of the organization and storedInfoType to be read, for
-    /// example `organizations/433245324/storedInfoTypes/432452342` or
+    /// Required. Resource name of the organization and storedInfoType to be read,
+    /// for example `organizations/433245324/storedInfoTypes/432452342` or
     /// projects/project-id/storedInfoTypes/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -4135,7 +4131,7 @@ pub struct GetStoredInfoTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStoredInfoTypesRequest {
     /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id.
+    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -4162,8 +4158,7 @@ pub struct ListStoredInfoTypesRequest {
     /// - `display_name`: corresponds to info type's display name.
     #[prost(string, tag = "4")]
     pub order_by: std::string::String,
-    /// The geographic location where stored infoTypes will be retrieved from.
-    /// Use `-` for all locations. Reserved for future extensions.
+    /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
     pub location_id: std::string::String,
 }
@@ -4181,8 +4176,8 @@ pub struct ListStoredInfoTypesResponse {
 /// Request message for DeleteStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStoredInfoTypeRequest {
-    /// Required. Resource name of the organization and storedInfoType to be deleted, for
-    /// example `organizations/433245324/storedInfoTypes/432452342` or
+    /// Required. Resource name of the organization and storedInfoType to be
+    /// deleted, for example `organizations/433245324/storedInfoTypes/432452342` or
     /// projects/project-id/storedInfoTypes/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -4190,8 +4185,8 @@ pub struct DeleteStoredInfoTypeRequest {
 /// Request to search for potentially sensitive info in a custom location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectJobTriggerRequest {
-    /// Required. Resource name of the trigger to execute a hybrid inspect on, for example
-    /// `projects/dlp-test-project/jobTriggers/53234423`.
+    /// Required. Resource name of the trigger to execute a hybrid inspect on, for
+    /// example `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The item to inspect.
@@ -4201,8 +4196,8 @@ pub struct HybridInspectJobTriggerRequest {
 /// Request to search for potentially sensitive info in a custom location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectDlpJobRequest {
-    /// Required. Resource name of the job to execute a hybrid inspect on, for example
-    /// `projects/dlp-test-project/dlpJob/53234423`.
+    /// Required. Resource name of the job to execute a hybrid inspect on, for
+    /// example `projects/dlp-test-project/dlpJob/53234423`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The item to inspect.

@@ -557,10 +557,14 @@ pub struct ResourceDescriptor {
     ///     }
     #[prost(enumeration = "resource_descriptor::History", tag = "4")]
     pub history: i32,
-    /// The plural name used in the resource name, such as 'projects' for
-    /// the name of 'projects/{project}'. It is the same concept of the `plural`
-    /// field in k8s CRD spec
+    /// The plural name used in the resource name and permission names, such as
+    /// 'projects' for the resource name of 'projects/{project}' and the permission
+    /// name of 'cloudresourcemanager.googleapis.com/projects.get'. It is the same
+    /// concept of the `plural` field in k8s CRD spec
     /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
+    ///
+    /// Note: The plural form is required even for singleton resources. See
+    /// https://aip.dev/156
     #[prost(string, tag = "5")]
     pub plural: std::string::String,
     /// The same concept of the `singular` field in k8s CRD spec
@@ -597,6 +601,17 @@ pub struct ResourceReference {
     ///     message Subscription {
     ///       string topic = 2 [(google.api.resource_reference) = {
     ///         type: "pubsub.googleapis.com/Topic"
+    ///       }];
+    ///     }
+    ///
+    /// Occasionally, a field may reference an arbitrary resource. In this case,
+    /// APIs use the special value * in their resource reference.
+    ///
+    /// Example:
+    ///
+    ///     message GetIamPolicyRequest {
+    ///       string resource = 2 [(google.api.resource_reference) = {
+    ///         type: "*"
     ///       }];
     ///     }
     #[prost(string, tag = "1")]
@@ -729,11 +744,15 @@ pub struct AuthProvider {
     /// The list of JWT
     /// [audiences](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3).
     /// that are allowed to access. A JWT containing any of these audiences will
-    /// be accepted. When this setting is absent, only JWTs with audience
-    /// "https://[Service_name][google.api.Service.name]/[API_name][google.protobuf.Api.name]"
-    /// will be accepted. For example, if no audiences are in the setting,
-    /// LibraryService API will only accept JWTs with the following audience
-    /// "https://library-example.googleapis.com/google.example.library.v1.LibraryService".
+    /// be accepted. When this setting is absent, JWTs with audiences:
+    ///   - "https://[service.name]/[google.protobuf.Api.name]"
+    ///   - "https://[service.name]/"
+    /// will be accepted.
+    /// For example, if no audiences are in the setting, LibraryService API will
+    /// accept JWTs with the following audiences:
+    ///   -
+    ///   https://library-example.googleapis.com/google.example.library.v1.LibraryService
+    ///   - https://library-example.googleapis.com/
     ///
     /// Example:
     ///
@@ -1038,6 +1057,10 @@ pub mod label_descriptor {
 pub enum LaunchStage {
     /// Do not use this default value.
     Unspecified = 0,
+    /// The feature is not yet implemented. Users can not use it.
+    Unimplemented = 6,
+    /// Prelaunch features are hidden from users and are only visible internally.
+    Prelaunch = 7,
     /// Early Access features are limited to a closed group of testers. To use
     /// these features, you must sign up in advance and sign a Trusted Tester
     /// agreement (which includes confidentiality provisions). These features may
@@ -1073,15 +1096,41 @@ pub enum LaunchStage {
 /// Defines a metric type and its schema. Once a metric descriptor is created,
 /// deleting or altering it stops data collection and makes the metric type's
 /// existing data unusable.
+///
+/// The following are specific rules for service defined Monitoring metric
+/// descriptors:
+///
+/// * `type`, `metric_kind`, `value_type`, `description`, `display_name`,
+///   `launch_stage` fields are all required. The `unit` field must be specified
+///   if the `value_type` is any of DOUBLE, INT64, DISTRIBUTION.
+/// * Maximum of default 500 metric descriptors per service is allowed.
+/// * Maximum of default 10 labels per metric descriptor is allowed.
+///
+/// The default maximum limit can be overridden. Please follow
+/// https://cloud.google.com/monitoring/quotas
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricDescriptor {
     /// The resource name of the metric descriptor.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The metric type, including its DNS name prefix. The type is not
-    /// URL-encoded.  All user-defined metric types have the DNS name
-    /// `custom.googleapis.com` or `external.googleapis.com`.  Metric types should
-    /// use a natural hierarchical grouping. For example:
+    /// URL-encoded.
+    ///
+    /// All service defined metrics must be prefixed with the service name, in the
+    /// format of `{service name}/{relative metric name}`, such as
+    /// `cloudsql.googleapis.com/database/cpu/utilization`. The relative metric
+    /// name must follow:
+    ///
+    /// * Only upper and lower-case letters, digits, '/' and underscores '_' are
+    ///   allowed.
+    /// * The maximum number of characters allowed for the relative_metric_name is
+    ///   100.
+    ///
+    /// All user-defined metric types have the DNS name
+    /// `custom.googleapis.com`, `external.googleapis.com`, or
+    /// `logging.googleapis.com/user/`.
+    ///
+    /// Metric types should use a natural hierarchical grouping. For example:
     ///
     ///     "custom.googleapis.com/invoice/paid/amount"
     ///     "external.googleapis.com/prometheus/up"
@@ -1089,7 +1138,16 @@ pub struct MetricDescriptor {
     #[prost(string, tag = "8")]
     pub r#type: std::string::String,
     /// The set of labels that can be used to describe a specific
-    /// instance of this metric type. For example, the
+    /// instance of this metric type.
+    ///
+    /// The label key name must follow:
+    ///
+    /// * Only upper and lower-case letters, digits and underscores (_) are
+    ///   allowed.
+    /// * Label name must start with a letter or digit.
+    /// * The maximum length of a label name is 100 characters.
+    ///
+    /// For example, the
     /// `appengine.googleapis.com/http/server/response_latencies` metric
     /// type has a label for the HTTP response code, `response_code`, so
     /// you can look at latencies for successful responses or just
@@ -1119,7 +1177,7 @@ pub struct MetricDescriptor {
     /// `s{CPU}` (or equivalently `1s{CPU}` or just `s`). If the job uses 12,005
     /// CPU-seconds, then the value is written as `12005`.
     ///
-    /// Alternatively, if you want a custome metric to record data in a more
+    /// Alternatively, if you want a custom metric to record data in a more
     /// granular way, you can create a `DOUBLE CUMULATIVE` metric whose `unit` is
     /// `ks{CPU}`, and then write the value `12.005` (which is `12005/1000`),
     /// or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).
@@ -1135,6 +1193,7 @@ pub struct MetricDescriptor {
     /// * `min`   minute
     /// * `h`     hour
     /// * `d`     day
+    /// * `1`     dimensionless
     ///
     /// **Prefixes (PREFIX)**
     ///
@@ -1205,7 +1264,6 @@ pub struct MetricDescriptor {
     /// * `10^2.%` indicates a metric contains a ratio, typically in the range
     ///    0..1, that will be multiplied by 100 and displayed as a percentage
     ///    (so a metric value `0.03` means "3 percent").
-    ///
     #[prost(string, tag = "5")]
     pub unit: std::string::String,
     /// A detailed description of the metric, which can be used in documentation.
@@ -1223,13 +1281,19 @@ pub struct MetricDescriptor {
     /// Optional. The launch stage of the metric definition.
     #[prost(enumeration = "LaunchStage", tag = "12")]
     pub launch_stage: i32,
+    /// Read-only. If present, then a [time
+    /// series][google.monitoring.v3.TimeSeries], which is identified partially by
+    /// a metric type and a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor], that is associated
+    /// with this metric type can only be associated with one of the monitored
+    /// resource types listed here.
+    #[prost(string, repeated, tag = "13")]
+    pub monitored_resource_types: ::std::vec::Vec<std::string::String>,
 }
 pub mod metric_descriptor {
     /// Additional annotations that can be used to guide the usage of a metric.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricDescriptorMetadata {
-        /// Deprecated. Please use the MetricDescriptor.launch_stage instead.
-        /// The launch stage of the metric definition.
+        /// Deprecated. Must use the [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage] instead.
         #[prost(enumeration = "super::LaunchStage", tag = "1")]
         pub launch_stage: i32,
         /// The sampling period of metric data points. For metrics which are written
@@ -1299,22 +1363,33 @@ pub struct Metric {
 /// Billing related configuration of the service.
 ///
 /// The following example shows how to configure monitored resources and metrics
-/// for billing:
+/// for billing, `consumer_destinations` is the only supported destination and
+/// the monitored resources need at least one label key
+/// `cloud.googleapis.com/location` to indicate the location of the billing
+/// usage, using different monitored resources between monitoring and billing is
+/// recommended so they can be evolved independently:
+///
 ///
 ///     monitored_resources:
-///     - type: library.googleapis.com/branch
+///     - type: library.googleapis.com/billing_branch
 ///       labels:
-///       - key: /city
-///         description: The city where the library branch is located in.
-///       - key: /name
-///         description: The name of the branch.
+///       - key: cloud.googleapis.com/location
+///         description: |
+///           Predefined label to support billing location restriction.
+///       - key: city
+///         description: |
+///           Custom label to define the city where the library branch is located
+///           in.
+///       - key: name
+///         description: Custom label to define the name of the library branch.
 ///     metrics:
 ///     - name: library.googleapis.com/book/borrowed_count
 ///       metric_kind: DELTA
 ///       value_type: INT64
+///       unit: "1"
 ///     billing:
 ///       consumer_destinations:
-///       - monitored_resource: library.googleapis.com/branch
+///       - monitored_resource: library.googleapis.com/billing_branch
 ///         metrics:
 ///         - library.googleapis.com/book/borrowed_count
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1813,6 +1888,12 @@ pub struct Documentation {
     /// The URL to the root of documentation.
     #[prost(string, tag = "4")]
     pub documentation_root_url: std::string::String,
+    /// Specifies the service root url if the default one (the service name
+    /// from the yaml file) is not suitable. This can be seen in any fully
+    /// specified service urls as well as sections that show a base that other
+    /// urls are relative to.
+    #[prost(string, tag = "6")]
+    pub service_root_url: std::string::String,
     /// Declares a single overview page. For example:
     /// <pre><code>documentation:
     ///   summary: ...
@@ -1905,9 +1986,6 @@ pub struct Endpoint {
     /// Additional names that this endpoint will be hosted on.
     #[prost(string, repeated, tag = "2")]
     pub aliases: ::std::vec::Vec<std::string::String>,
-    /// The list of features enabled on this endpoint.
-    #[prost(string, repeated, tag = "4")]
-    pub features: ::std::vec::Vec<std::string::String>,
     /// The specification of an Internet routable address of API frontend that will
     /// handle requests to this [API
     /// Endpoint](https://cloud.google.com/apis/design/glossary). It should be
@@ -2073,9 +2151,24 @@ pub mod logging {
 /// `"gce_instance"` and specifies the use of the labels `"instance_id"` and
 /// `"zone"` to identify particular VM instances.
 ///
-/// Different APIs can support different monitored resource types. APIs generally
-/// provide a `list` method that returns the monitored resource descriptors used
-/// by the API.
+/// Different services can support different monitored resource types.
+///
+/// The following are specific rules to service defined monitored resources for
+/// Monitoring and Logging:
+///
+/// * The `type`, `display_name`, `description`, `labels` and `launch_stage`
+///   fields are all required.
+/// * The first label of the monitored resource descriptor must be
+///   `resource_container`. There are legacy monitored resource descritptors
+///   start with `project_id`.
+/// * It must include a `location` label.
+/// * Maximum of default 5 service defined monitored resource descriptors
+///   is allowed per service.
+/// * Maximum of default 10 labels per monitored resource is allowed.
+///
+/// The default maximum limit can be overridden. Please follow
+/// https://cloud.google.com/monitoring/quotas
+///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonitoredResourceDescriptor {
     /// Optional. The resource name of the monitored resource descriptor:
@@ -2087,8 +2180,19 @@ pub struct MonitoredResourceDescriptor {
     #[prost(string, tag = "5")]
     pub name: std::string::String,
     /// Required. The monitored resource type. For example, the type
-    /// `"cloudsql_database"` represents databases in Google Cloud SQL.
-    /// The maximum length of this value is 256 characters.
+    /// `cloudsql_database` represents databases in Google Cloud SQL.
+    ///
+    /// All service defined monitored resource types must be prefixed with the
+    /// service name, in the format of `{service name}/{relative resource name}`.
+    /// The relative resource name must follow:
+    ///
+    /// * Only upper and lower-case letters and digits are allowed.
+    /// * It must start with upper case character and is recommended to use Upper
+    ///   Camel Case style.
+    /// * The maximum number of characters allowed for the relative_resource_name
+    ///   is 100.
+    ///
+    /// Note there are legacy service monitored resources not following this rule.
     #[prost(string, tag = "1")]
     pub r#type: std::string::String,
     /// Optional. A concise name for the monitored resource type that might be
@@ -2102,8 +2206,16 @@ pub struct MonitoredResourceDescriptor {
     #[prost(string, tag = "3")]
     pub description: std::string::String,
     /// Required. A set of labels used to describe instances of this monitored
-    /// resource type. For example, an individual Google Cloud SQL database is
-    /// identified by values for the labels `"database_id"` and `"zone"`.
+    /// resource type.
+    /// The label key name must follow:
+    ///
+    /// * Only upper and lower-case letters, digits and underscores (_) are
+    ///   allowed.
+    /// * Label name must start with a letter or digit.
+    /// * The maximum length of a label name is 100 characters.
+    ///
+    /// For example, an individual Google Cloud SQL database is
+    /// identified by values for the labels `database_id` and `location`.
     #[prost(message, repeated, tag = "4")]
     pub labels: ::std::vec::Vec<LabelDescriptor>,
     /// Optional. The launch stage of the monitored resource definition.
@@ -2361,10 +2473,7 @@ pub struct QuotaLimit {
     /// Used by group-based quotas only.
     #[prost(int64, tag = "7")]
     pub free_tier: i64,
-    /// Duration of this limit in textual notation. Example: "100s", "24h", "1d".
-    /// For duration longer than a day, only multiple of days is supported. We
-    /// support only "100s" and "1d" for now. Additional support will be added in
-    /// the future. "0" indicates indefinite duration.
+    /// Duration of this limit in textual notation. Must be "100s" or "1d".
     ///
     /// Used by group-based quotas only.
     #[prost(string, tag = "5")]
@@ -2575,6 +2684,7 @@ pub struct Service {
     /// The semantic version of the service configuration. The config version
     /// affects the interpretation of the service configuration. For example,
     /// certain features are enabled by default for certain config versions.
+    ///
     /// The latest config version is `3`.
     #[prost(message, optional, tag = "20")]
     pub config_version: ::std::option::Option<u32>,
@@ -2585,8 +2695,9 @@ pub struct Service {
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// A unique ID for a specific instance of this message, typically assigned
-    /// by the client for tracking purpose. If empty, the server may choose to
-    /// generate one instead. Must be no longer than 60 characters.
+    /// by the client for tracking purpose. Must be no longer than 63 characters
+    /// and only lower case letters, digits, '.', '_' and '-' are allowed. If
+    /// empty, the server may choose to generate one instead.
     #[prost(string, tag = "33")]
     pub id: std::string::String,
     /// The product title for this service.

@@ -1378,7 +1378,7 @@ pub struct PatchInstanceFilter {
     #[prost(string, repeated, tag = "3")]
     pub zones: ::std::vec::Vec<std::string::String>,
     /// Targets any of the VM instances specified. Instances are specified by their
-    /// URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME],
+    /// URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME]`,
     /// `projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`, or
     /// `https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`
     #[prost(string, repeated, tag = "4")]

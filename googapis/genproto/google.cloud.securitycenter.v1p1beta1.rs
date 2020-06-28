@@ -1,6 +1,6 @@
-/// User specified security marks that are attached to the parent Cloud Security
-/// Command Center (Cloud SCC) resource. Security marks are scoped within a Cloud
-/// SCC organization -- they can be modified and viewed by all users who have
+/// User specified security marks that are attached to the parent Security
+/// Command Center resource. Security marks are scoped within a Security Command
+/// Center organization -- they can be modified and viewed by all users who have
 /// proper permissions on the organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityMarks {
@@ -22,12 +22,13 @@ pub struct SecurityMarks {
     #[prost(map = "string, string", tag = "2")]
     pub marks: ::std::collections::HashMap<std::string::String, std::string::String>,
 }
-/// Cloud Security Command Center's (Cloud SCC) representation of a Google Cloud
-/// Platform (GCP) resource.
+/// Security Command Center representation of a Google Cloud
+/// resource.
 ///
-/// The Asset is a Cloud SCC resource that captures information about a single
-/// GCP resource. All modifications to an Asset are only within the context of
-/// Cloud SCC and don't affect the referenced GCP resource.
+/// The Asset is a Security Command Center resource that captures information
+/// about a single Google Cloud resource. All modifications to an Asset are only
+/// within the context of Security Command Center and don't affect the referenced
+/// Google Cloud resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The relative resource name of this asset. See:
@@ -36,45 +37,46 @@ pub struct Asset {
     /// "organizations/{organization_id}/assets/{asset_id}".
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Cloud SCC managed properties. These properties are managed by
-    /// Cloud SCC and cannot be modified by the user.
+    /// Security Command Center managed properties. These properties are managed by
+    /// Security Command Center and cannot be modified by the user.
     #[prost(message, optional, tag = "2")]
     pub security_center_properties: ::std::option::Option<asset::SecurityCenterProperties>,
     /// Resource managed properties. These properties are managed and defined by
-    /// the GCP resource and cannot be modified by the user.
+    /// the Google Cloud resource and cannot be modified by the user.
     #[prost(map = "string, message", tag = "7")]
     pub resource_properties: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
     /// User specified security marks. These marks are entirely managed by the user
     /// and come from the SecurityMarks resource that belongs to the asset.
     #[prost(message, optional, tag = "8")]
     pub security_marks: ::std::option::Option<SecurityMarks>,
-    /// The time at which the asset was created in Cloud SCC.
+    /// The time at which the asset was created in Security Command Center.
     #[prost(message, optional, tag = "9")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
     /// The time at which the asset was last updated, added, or deleted in Cloud
     /// SCC.
     #[prost(message, optional, tag = "10")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// IAM Policy information associated with the GCP resource described by the
-    /// Cloud SCC asset. This information is managed and defined by the GCP
-    /// resource and cannot be modified by the user.
+    /// Cloud IAM Policy information associated with the Google Cloud resource
+    /// described by the Security Command Center asset. This information is managed
+    /// and defined by the Google Cloud resource and cannot be modified by the
+    /// user.
     #[prost(message, optional, tag = "11")]
     pub iam_policy: ::std::option::Option<asset::IamPolicy>,
 }
 pub mod asset {
-    /// Cloud SCC managed properties. These properties are managed by Cloud SCC and
-    /// cannot be modified by the user.
+    /// Security Command Center managed properties. These properties are managed by
+    /// Security Command Center and cannot be modified by the user.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SecurityCenterProperties {
-        /// The full resource name of the GCP resource this asset
+        /// The full resource name of the Google Cloud resource this asset
         /// represents. This field is immutable after create time. See:
         /// https://cloud.google.com/apis/design/resource_names#full_resource_name
         #[prost(string, tag = "1")]
         pub resource_name: std::string::String,
-        /// The type of the GCP resource. Examples include: APPLICATION,
+        /// The type of the Google Cloud resource. Examples include: APPLICATION,
         /// PROJECT, and ORGANIZATION. This is a case insensitive field defined by
-        /// Cloud SCC and/or the producer of the resource and is immutable
-        /// after create time.
+        /// Security Command Center and/or the producer of the resource and is
+        /// immutable after create time.
         #[prost(string, tag = "2")]
         pub resource_type: std::string::String,
         /// The full resource name of the immediate parent of the resource. See:
@@ -98,24 +100,25 @@ pub mod asset {
         #[prost(string, tag = "8")]
         pub resource_project_display_name: std::string::String,
     }
-    /// IAM Policy information associated with the GCP resource described by the
-    /// Cloud SCC asset. This information is managed and defined by the GCP
-    /// resource and cannot be modified by the user.
+    /// Cloud IAM Policy information associated with the Google Cloud resource
+    /// described by the Security Command Center asset. This information is managed
+    /// and defined by the Google Cloud resource and cannot be modified by the
+    /// user.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamPolicy {
         /// The JSON representation of the Policy associated with the asset.
-        /// See https://cloud.google.com/iam/reference/rest/v1/Policy for
+        /// See https://cloud.google.com/iam/docs/reference/rest/v1/Policy for
         /// format details.
         #[prost(string, tag = "1")]
         pub policy_blob: std::string::String,
     }
 }
-/// Cloud Security Command Center (Cloud SCC) finding.
+/// Security Command Center finding.
 ///
 /// A finding is a record of assessment data (security, risk, health or privacy)
-/// ingested into Cloud SCC for presentation, notification, analysis,
-/// policy testing, and enforcement. For example, an XSS vulnerability in an
-/// App Engine application is a finding.
+/// ingested into Security Command Center for presentation, notification,
+/// analysis, policy testing, and enforcement. For example, an XSS vulnerability
+/// in an App Engine application is a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// The relative resource name of this finding. See:
@@ -131,12 +134,12 @@ pub struct Finding {
     /// "organizations/{organization_id}/sources/{source_id}"
     #[prost(string, tag = "2")]
     pub parent: std::string::String,
-    /// For findings on Google Cloud Platform (GCP) resources, the full resource
-    /// name of the GCP resource this finding is for. See:
+    /// For findings on Google Cloud resources, the full resource
+    /// name of the Google Cloud resource this finding is for. See:
     /// https://cloud.google.com/apis/design/resource_names#full_resource_name
-    /// When the finding is for a non-GCP resource, the resourceName can be a
-    /// customer or partner defined string.
-    /// This field is immutable after creation time.
+    /// When the finding is for a non-Google Cloud resource, the resourceName can
+    /// be a customer or partner defined string. This field is immutable after
+    /// creation time.
     #[prost(string, tag = "3")]
     pub resource_name: std::string::String,
     /// The state of the finding.
@@ -147,9 +150,9 @@ pub struct Finding {
     /// Example: "XSS_FLASH_INJECTION"
     #[prost(string, tag = "5")]
     pub category: std::string::String,
-    /// The URI that, if available, points to a web page outside of Cloud SCC
-    /// where additional information about the finding can be found. This field is
-    /// guaranteed to be either empty or a well formed URL.
+    /// The URI that, if available, points to a web page outside of Security
+    /// Command Center where additional information about the finding can be found.
+    /// This field is guaranteed to be either empty or a well formed URL.
     #[prost(string, tag = "6")]
     pub external_uri: std::string::String,
     /// Source specific properties. These properties are managed by the source
@@ -168,7 +171,7 @@ pub struct Finding {
     /// the firewall became open. The accuracy is determined by the detector.
     #[prost(message, optional, tag = "9")]
     pub event_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// The time at which the finding was created in Cloud SCC.
+    /// The time at which the finding was created in Security Command Center.
     #[prost(message, optional, tag = "10")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
 }
@@ -186,10 +189,11 @@ pub mod finding {
         Inactive = 2,
     }
 }
-/// Cloud Security Command Center (Cloud SCC) notification configs.
+/// Security Command Center notification configs.
 ///
-/// A notification config is a Cloud SCC resource that contains the configuration
-/// to send notifications for create/update events of findings, assets and etc.
+/// A notification config is a Security Command Center resource that contains the
+/// configuration to send notifications for create/update events of findings,
+/// assets and etc.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
     /// The relative resource name of this notification config. See:
@@ -204,12 +208,12 @@ pub struct NotificationConfig {
     /// The type of events the config is for, e.g. FINDING.
     #[prost(enumeration = "notification_config::EventType", tag = "3")]
     pub event_type: i32,
-    /// The PubSub topic to send notifications to. Its format is
+    /// The Pub/Sub topic to send notifications to. Its format is
     /// "projects/[project_id]/topics/[topic]".
     #[prost(string, tag = "4")]
     pub pubsub_topic: std::string::String,
     /// Output only. The service account that needs "pubsub.topics.publish"
-    /// permission to publish to the PubSub topic.
+    /// permission to publish to the Pub/Sub topic.
     #[prost(string, tag = "5")]
     pub service_account: std::string::String,
     /// The config for triggering notifications.
@@ -262,12 +266,35 @@ pub mod notification_config {
         StreamingConfig(StreamingConfig),
     }
 }
-/// Cloud SCC's Notification
+/// Information related to the Google Cloud resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Resource {
+    /// The full resource name of the resource. See:
+    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// The full resource name of project that the resource belongs to.
+    #[prost(string, tag = "2")]
+    pub project: std::string::String,
+    /// The human readable name of project that the resource belongs to.
+    #[prost(string, tag = "3")]
+    pub project_display_name: std::string::String,
+    /// The full resource name of resource's parent.
+    #[prost(string, tag = "4")]
+    pub parent: std::string::String,
+    /// The human readable name of resource's parent.
+    #[prost(string, tag = "5")]
+    pub parent_display_name: std::string::String,
+}
+/// Security Command Center's Notification
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationMessage {
     /// Name of the notification config that generated current notification.
     #[prost(string, tag = "1")]
     pub notification_config_name: std::string::String,
+    /// The Cloud resource tied to the notification.
+    #[prost(message, optional, tag = "3")]
+    pub resource: ::std::option::Option<Resource>,
     /// Notification Event.
     #[prost(oneof = "notification_message::Event", tags = "2")]
     pub event: ::std::option::Option<notification_message::Event>,
@@ -282,8 +309,8 @@ pub mod notification_message {
         Finding(super::Finding),
     }
 }
-/// User specified settings that are attached to the Cloud Security Command
-/// Center (Cloud SCC) organization.
+/// User specified settings that are attached to the Security Command
+/// Center organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationSettings {
     /// The relative resource name of the settings. See:
@@ -363,7 +390,7 @@ pub mod run_asset_discovery_response {
         Terminated = 3,
     }
 }
-/// Cloud Security Command Center's (Cloud SCC) finding source. A finding source
+/// Security Command Center finding source. A finding source
 /// is an entity or a mechanism that can produce a finding. A source is like a
 /// container of findings that come from the same scanner, logger, monitor, etc.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -383,7 +410,7 @@ pub struct Source {
     pub display_name: std::string::String,
     /// The description of the source (max of 1024 characters).
     /// Example:
-    /// "Cloud Security Scanner is a web security scanner for common
+    /// "Web Security Scanner is a web security scanner for common
     /// vulnerabilities in App Engine applications. It can automatically
     /// scan and detect four common vulnerabilities, including cross-site-scripting
     /// (XSS), Flash injection, mixed content (HTTP in HTTPS), and
@@ -511,15 +538,15 @@ pub struct GroupAssetsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "update_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "update_time = 1560208038000"
+    ///     `update_time = "2019-06-10T16:07:18-07:00"`
+    ///     `update_time = 1560208038000`
     ///
     /// * create_time: `=`, `>`, `<`, `>=`, `<=`
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "create_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "create_time = 1560208038000"
+    ///     `create_time = "2019-06-10T16:07:18-07:00"`
+    ///     `create_time = 1560208038000`
     ///
     /// * iam_policy.policy_blob: `=`, `:`
     /// * resource_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
@@ -534,6 +561,12 @@ pub struct GroupAssetsRequest {
     /// * security_center_properties.resource_owners: `=`, `:`
     ///
     /// For example, `resource_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing: `resource_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-resource_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Required. Expression that defines what assets fields to use for grouping.
@@ -591,11 +624,6 @@ pub struct GroupAssetsRequest {
     /// NOW.
     #[prost(message, optional, tag = "5")]
     pub read_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// Filter that specifies what fields to further filter on *after* the query
-    /// filter has been executed. Currently only `state_change` is supported and
-    /// requires compare_duration to be specified.
-    #[prost(string, tag = "6")]
-    pub having: std::string::String,
     /// The value returned by the last `GroupAssetsResponse`; indicates
     /// that this is a continuation of a prior `GroupAssets` call, and that the
     /// system should return the next page of data.
@@ -670,13 +698,19 @@ pub struct GroupFindingsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "event_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "event_time = 1560208038000"
+    ///     `event_time = "2019-06-10T16:07:18-07:00"`
+    ///     `event_time = 1560208038000`
     ///
     /// * security_marks.marks: `=`, `:`
     /// * source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
     ///
     /// For example, `source_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing: `source_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-source_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Required. Expression that defines what assets fields to use for grouping
@@ -714,12 +748,18 @@ pub struct GroupFindingsRequest {
     ///
     /// Possible "state_change" values when compare_duration is specified:
     ///
-    /// * "CHANGED":   indicates that the finding was present at the start of
-    ///                  compare_duration, but changed its state at read_time.
-    /// * "UNCHANGED": indicates that the finding was present at the start of
-    ///                  compare_duration and did not change state at read_time.
-    /// * "ADDED":     indicates that the finding was not present at the start
-    ///                  of compare_duration, but was present at read_time.
+    /// * "CHANGED":   indicates that the finding was present and matched the given
+    ///                  filter at the start of compare_duration, but changed its
+    ///                  state at read_time.
+    /// * "UNCHANGED": indicates that the finding was present and matched the given
+    ///                  filter at the start of compare_duration and did not change
+    ///                  state at read_time.
+    /// * "ADDED":     indicates that the finding did not match the given filter or
+    ///                  was not present at the start of compare_duration, but was
+    ///                  present at read_time.
+    /// * "REMOVED":   indicates that the finding was present and matched the
+    ///                  filter at the start of compare_duration, but did not match
+    ///                  the filter at read_time.
     ///
     /// If compare_duration is not specified, then the only possible state_change
     /// is "UNUSED",  which will be the state_change set for all findings present
@@ -729,11 +769,6 @@ pub struct GroupFindingsRequest {
     /// `group_by`.
     #[prost(message, optional, tag = "5")]
     pub compare_duration: ::std::option::Option<::prost_types::Duration>,
-    /// Filter that specifies what fields to further filter on *after* the query
-    /// filter has been executed. Currently only `finding.state` and `state_change`
-    /// are supported and requires compare_duration to be specified.
-    #[prost(string, tag = "6")]
-    pub having: std::string::String,
     /// The value returned by the last `GroupFindingsResponse`; indicates
     /// that this is a continuation of a prior `GroupFindings` call, and
     /// that the system should return the next page of data.
@@ -869,15 +904,15 @@ pub struct ListAssetsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "update_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "update_time = 1560208038000"
+    ///     `update_time = "2019-06-10T16:07:18-07:00"`
+    ///     `update_time = 1560208038000`
     ///
     /// * create_time: `=`, `>`, `<`, `>=`, `<=`
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "create_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "create_time = 1560208038000"
+    ///     `create_time = "2019-06-10T16:07:18-07:00"`
+    ///     `create_time = 1560208038000`
     ///
     /// * iam_policy.policy_blob: `=`, `:`
     /// * resource_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
@@ -892,6 +927,12 @@ pub struct ListAssetsRequest {
     /// * security_center_properties.resource_owners: `=`, `:`
     ///
     /// For example, `resource_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing: `resource_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-resource_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Expression that defines what fields and order to use for sorting. The
@@ -949,11 +990,6 @@ pub struct ListAssetsRequest {
     /// read_time.
     #[prost(message, optional, tag = "5")]
     pub compare_duration: ::std::option::Option<::prost_types::Duration>,
-    /// Filter that specifies what fields to further filter on *after* the query
-    /// filter has been executed. Currently only `state_change` is supported and
-    /// requires compare_duration to be specified.
-    #[prost(string, tag = "6")]
-    pub having: std::string::String,
     /// Optional.
     /// A field mask to specify the ListAssetsResult fields to be listed in the
     /// response.
@@ -1064,13 +1100,19 @@ pub struct ListFindingsRequest {
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
-    ///     "event_time = \"2019-06-10T16:07:18-07:00\""
-    ///     "event_time = 1560208038000"
+    ///     `event_time = "2019-06-10T16:07:18-07:00"`
+    ///     `event_time = 1560208038000`
     ///
     /// security_marks.marks: `=`, `:`
     /// source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
     ///
     /// For example, `source_properties.size = 100` is a valid filter string.
+    ///
+    /// Use a partial match on the empty string to filter based on a property
+    /// existing: `source_properties.my_property : ""`
+    ///
+    /// Use a negated partial match on the empty string to filter based on a
+    /// property not existing: `-source_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Expression that defines what fields and order to use for sorting. The
@@ -1113,23 +1155,24 @@ pub struct ListFindingsRequest {
     ///
     /// Possible "state_change" values when compare_duration is specified:
     ///
-    /// * "CHANGED":   indicates that the finding was present at the start of
-    ///                  compare_duration, but changed its state at read_time.
-    /// * "UNCHANGED": indicates that the finding was present at the start of
-    ///                  compare_duration and did not change state at read_time.
-    /// * "ADDED":     indicates that the finding was not present at the start
-    ///                  of compare_duration, but was present at read_time.
+    /// * "CHANGED":   indicates that the finding was present and matched the given
+    ///                  filter at the start of compare_duration, but changed its
+    ///                  state at read_time.
+    /// * "UNCHANGED": indicates that the finding was present and matched the given
+    ///                  filter at the start of compare_duration and did not change
+    ///                  state at read_time.
+    /// * "ADDED":     indicates that the finding did not match the given filter or
+    ///                  was not present at the start of compare_duration, but was
+    ///                  present at read_time.
+    /// * "REMOVED":   indicates that the finding was present and matched the
+    ///                  filter at the start of compare_duration, but did not match
+    ///                  the filter at read_time.
     ///
     /// If compare_duration is not specified, then the only possible state_change
     /// is "UNUSED", which will be the state_change set for all findings present at
     /// read_time.
     #[prost(message, optional, tag = "5")]
     pub compare_duration: ::std::option::Option<::prost_types::Duration>,
-    /// Filter that specifies what fields to further filter on *after* the query
-    /// filter has been executed. Currently only `finding.state` and `state_change`
-    /// are supported and requires compare_duration to be specified.
-    #[prost(string, tag = "6")]
-    pub having: std::string::String,
     /// Optional.
     /// A field mask to specify the Finding fields to be listed in the response.
     /// An empty field mask will list all fields.
@@ -1177,7 +1220,7 @@ pub mod list_findings_response {
         pub resource: ::std::option::Option<list_findings_result::Resource>,
     }
     pub mod list_findings_result {
-        /// Information related to the Google Cloud Platform (GCP) resource that is
+        /// Information related to the Google Cloud resource that is
         /// associated with this finding.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Resource {
@@ -1692,7 +1735,6 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = ""]
         #[doc = " Creates or updates a finding. The corresponding source must exist for a"]
         #[doc = " finding creation to succeed."]
         pub async fn update_finding(
@@ -1711,7 +1753,8 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a notification config."]
+        #[doc = " Updates a notification config. The following update"]
+        #[doc = " fields are allowed: description, pubsub_topic, streaming_config.filter"]
         pub async fn update_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNotificationConfigRequest>,
@@ -1912,14 +1955,14 @@ pub mod security_center_server {
             tonic::Response<super::super::super::super::iam::v1::TestIamPermissionsResponse>,
             tonic::Status,
         >;
-        #[doc = ""]
         #[doc = " Creates or updates a finding. The corresponding source must exist for a"]
         #[doc = " finding creation to succeed."]
         async fn update_finding(
             &self,
             request: tonic::Request<super::UpdateFindingRequest>,
         ) -> Result<tonic::Response<super::Finding>, tonic::Status>;
-        #[doc = " Updates a notification config."]
+        #[doc = " Updates a notification config. The following update"]
+        #[doc = " fields are allowed: description, pubsub_topic, streaming_config.filter"]
         async fn update_notification_config(
             &self,
             request: tonic::Request<super::UpdateNotificationConfigRequest>,

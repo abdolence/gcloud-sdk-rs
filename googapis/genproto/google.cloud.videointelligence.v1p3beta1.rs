@@ -2,20 +2,21 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoRequest {
     /// Input video location. Currently, only
-    /// [Google Cloud Storage](https://cloud.google.com/storage/) URIs are
-    /// supported, which must be specified in the following format:
+    /// [Cloud Storage](https://cloud.google.com/storage/) URIs are
+    /// supported. URIs must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
     /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
-    /// more information, see [Request URIs](https://cloud.google.com/storage/docs/request-endpoints). A video
-    /// URI may include wildcards in `object-id`, and thus identify multiple
-    /// videos. Supported wildcards: '*' to match 0 or more characters;
+    /// more information, see [Request
+    /// URIs](https://cloud.google.com/storage/docs/request-endpoints). To identify
+    /// multiple videos, a video URI may include wildcards in the `object-id`.
+    /// Supported wildcards: '*' to match 0 or more characters;
     /// '?' to match 1 character. If unset, the input video should be embedded
-    /// in the request as `input_content`. If set, `input_content` should be unset.
+    /// in the request as `input_content`. If set, `input_content` must be unset.
     #[prost(string, tag = "1")]
     pub input_uri: std::string::String,
     /// The video data bytes.
-    /// If unset, the input video(s) should be specified via `input_uri`.
-    /// If set, `input_uri` should be unset.
+    /// If unset, the input video(s) should be specified via the `input_uri`.
+    /// If set, `input_uri` must be unset.
     #[prost(bytes, tag = "6")]
     pub input_content: std::vec::Vec<u8>,
     /// Required. Requested video annotation features.
@@ -25,16 +26,18 @@ pub struct AnnotateVideoRequest {
     #[prost(message, optional, tag = "3")]
     pub video_context: ::std::option::Option<VideoContext>,
     /// Optional. Location where the output (in JSON format) should be stored.
-    /// Currently, only [Google Cloud Storage](https://cloud.google.com/storage/)
-    /// URIs are supported, which must be specified in the following format:
+    /// Currently, only [Cloud Storage](https://cloud.google.com/storage/)
+    /// URIs are supported. These must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
     /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
-    /// more information, see [Request URIs](https://cloud.google.com/storage/docs/request-endpoints).
+    /// more information, see [Request
+    /// URIs](https://cloud.google.com/storage/docs/request-endpoints).
     #[prost(string, tag = "4")]
     pub output_uri: std::string::String,
     /// Optional. Cloud region where annotation should take place. Supported cloud
-    /// regions: `us-east1`, `us-west1`, `europe-west1`, `asia-east1`. If no region
-    /// is specified, a region will be determined based on video file location.
+    /// regions are: `us-east1`, `us-west1`, `europe-west1`, `asia-east1`. If no
+    /// region is specified, the region will be determined based on video file
+    /// location.
     #[prost(string, tag = "5")]
     pub location_id: std::string::String,
 }
@@ -79,9 +82,9 @@ pub struct LabelDetectionConfig {
     /// If unspecified, defaults to `SHOT_MODE`.
     #[prost(enumeration = "LabelDetectionMode", tag = "1")]
     pub label_detection_mode: i32,
-    /// Whether the video has been shot from a stationary (i.e. non-moving) camera.
-    /// When set to true, might improve detection accuracy for moving objects.
-    /// Should be used with `SHOT_AND_FRAME_MODE` enabled.
+    /// Whether the video has been shot from a stationary (i.e., non-moving)
+    /// camera. When set to true, might improve detection accuracy for moving
+    /// objects. Should be used with `SHOT_AND_FRAME_MODE` enabled.
     #[prost(bool, tag = "2")]
     pub stationary_camera: bool,
     /// Model to use for label detection.
@@ -93,15 +96,15 @@ pub struct LabelDetectionConfig {
     /// frame-level detection. If not set, it is set to 0.4 by default. The valid
     /// range for this threshold is [0.1, 0.9]. Any value set outside of this
     /// range will be clipped.
-    /// Note: for best results please follow the default threshold. We will update
+    /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
     #[prost(float, tag = "4")]
     pub frame_confidence_threshold: f32,
     /// The confidence threshold we perform filtering on the labels from
-    /// video-level and shot-level detections. If not set, it is set to 0.3 by
+    /// video-level and shot-level detections. If not set, it's set to 0.3 by
     /// default. The valid range for this threshold is [0.1, 0.9]. Any value set
     /// outside of this range will be clipped.
-    /// Note: for best results please follow the default threshold. We will update
+    /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
     #[prost(float, tag = "5")]
     pub video_confidence_threshold: f32,
@@ -141,29 +144,29 @@ pub struct FaceDetectionConfig {
     /// "builtin/latest".
     #[prost(string, tag = "1")]
     pub model: std::string::String,
-    /// Whether bounding boxes be included in the face annotation output.
+    /// Whether bounding boxes are included in the face annotation output.
     #[prost(bool, tag = "2")]
     pub include_bounding_boxes: bool,
     /// Whether to enable face attributes detection, such as glasses, dark_glasses,
-    /// mouth_open etc. Ignored if 'include_bounding_boxes' is false.
+    /// mouth_open etc. Ignored if 'include_bounding_boxes' is set to false.
     #[prost(bool, tag = "5")]
     pub include_attributes: bool,
 }
 /// Config for PERSON_DETECTION.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersonDetectionConfig {
-    /// Whether bounding boxes be included in the person detection annotation
+    /// Whether bounding boxes are included in the person detection annotation
     /// output.
     #[prost(bool, tag = "1")]
     pub include_bounding_boxes: bool,
     /// Whether to enable pose landmarks detection. Ignored if
-    /// 'include_bounding_boxes' is false.
+    /// 'include_bounding_boxes' is set to false.
     #[prost(bool, tag = "2")]
     pub include_pose_landmarks: bool,
     /// Whether to enable person attributes detection, such as cloth color (black,
-    /// blue, etc), type (coat, dress, etc), pattern (plain, floral, etc), hair
-    /// color (black, blonde, etc), hair length (long, short, bald), etc.
-    /// Ignored if 'include_bounding_boxes' is false.
+    /// blue, etc), type (coat, dress, etc), pattern (plain, floral, etc), hair,
+    /// etc.
+    /// Ignored if 'include_bounding_boxes' is set to false.
     #[prost(bool, tag = "3")]
     pub include_attributes: bool,
 }
@@ -224,7 +227,7 @@ pub struct Entity {
     /// API](https://developers.google.com/knowledge-graph/).
     #[prost(string, tag = "1")]
     pub entity_id: std::string::String,
-    /// Textual description, e.g. `Fixed-gear bicycle`.
+    /// Textual description, e.g., `Fixed-gear bicycle`.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
     /// Language code for `description` in BCP-47 format.
@@ -238,9 +241,9 @@ pub struct LabelAnnotation {
     #[prost(message, optional, tag = "1")]
     pub entity: ::std::option::Option<Entity>,
     /// Common categories for the detected entity.
-    /// E.g. when the label is `Terrier` the category is likely `dog`. And in some
-    /// cases there might be more than one categories e.g. `Terrier` could also be
-    /// a `pet`.
+    /// For example, when the label is `Terrier`, the category is likely `dog`. And
+    /// in some cases there might be more than one categories e.g., `Terrier` could
+    /// also be a `pet`.
     #[prost(message, repeated, tag = "2")]
     pub category_entities: ::std::vec::Vec<Entity>,
     /// All video segments where a label was detected.
@@ -326,7 +329,7 @@ pub struct Track {
 /// A generic detected attribute represented by name in string format.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectedAttribute {
-    /// The name of the attribute, i.e. glasses, dark_glasses, mouth_open etc.
+    /// The name of the attribute, for example, glasses, dark_glasses, mouth_open.
     /// A full list of supported type names will be provided in the document.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -390,7 +393,7 @@ pub struct CelebrityRecognitionAnnotation {
 /// location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectedLandmark {
-    /// The name of this landmark, i.e. left_hand, right_shoulder.
+    /// The name of this landmark, for example, left_hand, right_shoulder.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The 2D point of the detected landmark using the normalized image
@@ -414,7 +417,7 @@ pub struct FaceDetectionAnnotation {
 /// Person detection annotation per video.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersonDetectionAnnotation {
-    /// The trackes that a person is detected.
+    /// The detected tracks of a person.
     #[prost(message, repeated, tag = "1")]
     pub tracks: ::std::vec::Vec<Track>,
 }
@@ -422,17 +425,17 @@ pub struct PersonDetectionAnnotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationResults {
     /// Video file location in
-    /// [Google Cloud Storage](https://cloud.google.com/storage/).
+    /// [Cloud Storage](https://cloud.google.com/storage/).
     #[prost(string, tag = "1")]
     pub input_uri: std::string::String,
     /// Video segment on which the annotation is run.
     #[prost(message, optional, tag = "10")]
     pub segment: ::std::option::Option<VideoSegment>,
-    /// Topical label annotations on video level or user specified segment level.
+    /// Topical label annotations on video level or user-specified segment level.
     /// There is exactly one element for each unique label.
     #[prost(message, repeated, tag = "2")]
     pub segment_label_annotations: ::std::vec::Vec<LabelAnnotation>,
-    /// Presence label annotations on video level or user specified segment level.
+    /// Presence label annotations on video level or user-specified segment level.
     /// There is exactly one element for each unique label. Compared to the
     /// existing topical `segment_label_annotations`, this field presents more
     /// fine-grained, segment-level labels detected in video content and is made
@@ -502,7 +505,7 @@ pub struct AnnotateVideoResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Video file location in
-    /// [Google Cloud Storage](https://cloud.google.com/storage/).
+    /// [Cloud Storage](https://cloud.google.com/storage/).
     #[prost(string, tag = "1")]
     pub input_uri: std::string::String,
     /// Approximate percentage processed thus far. Guaranteed to be
@@ -516,11 +519,11 @@ pub struct VideoAnnotationProgress {
     #[prost(message, optional, tag = "4")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Specifies which feature is being tracked if the request contains more than
-    /// one features.
+    /// one feature.
     #[prost(enumeration = "Feature", tag = "5")]
     pub feature: i32,
     /// Specifies which segment is being tracked if the request contains more than
-    /// one segments.
+    /// one segment.
     #[prost(message, optional, tag = "6")]
     pub segment: ::std::option::Option<VideoSegment>,
 }
@@ -575,7 +578,7 @@ pub struct SpeechTranscriptionConfig {
     /// the top alternative of the recognition result using a speaker_tag provided
     /// in the WordInfo.
     /// Note: When this is true, we send all the words from the beginning of the
-    /// audio for the top alternative in every consecutive responses.
+    /// audio for the top alternative in every consecutive response.
     /// This is done in order to improve our speaker tags as our models learn to
     /// identify the speakers in the conversation over time.
     #[prost(bool, tag = "7")]
@@ -634,8 +637,8 @@ pub struct SpeechRecognitionAlternative {
     #[prost(float, tag = "2")]
     pub confidence: f32,
     /// Output only. A list of word-specific information for each recognized word.
-    /// Note: When `enable_speaker_diarization` is true, you will see all the words
-    /// from the beginning of the audio.
+    /// Note: When `enable_speaker_diarization` is set to true, you will see all
+    /// the words from the beginning of the audio.
     #[prost(message, repeated, tag = "3")]
     pub words: ::std::vec::Vec<WordInfo>,
 }
@@ -849,95 +852,6 @@ pub mod streaming_annotate_video_request {
         InputContent(std::vec::Vec<u8>),
     }
 }
-/// `StreamingAnnotateVideoResponse` is the only message returned to the client
-/// by `StreamingAnnotateVideo`. A series of zero or more
-/// `StreamingAnnotateVideoResponse` messages are streamed back to the client.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingAnnotateVideoResponse {
-    /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
-    /// specifies the error for the operation.
-    #[prost(message, optional, tag = "1")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
-    /// Streaming annotation results.
-    #[prost(message, optional, tag = "2")]
-    pub annotation_results: ::std::option::Option<StreamingVideoAnnotationResults>,
-    /// GCS URI that stores annotation results of one streaming session.
-    /// It is a directory that can hold multiple files in JSON format.
-    /// Example uri format:
-    /// gs://bucket_id/object_id/cloud_project_name-session_id
-    #[prost(string, tag = "3")]
-    pub annotation_results_uri: std::string::String,
-}
-/// Config for STREAMING_AUTOML_CLASSIFICATION.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingAutomlClassificationConfig {
-    /// Resource name of AutoML model.
-    /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
-    #[prost(string, tag = "1")]
-    pub model_name: std::string::String,
-}
-/// Config for STREAMING_AUTOML_OBJECT_TRACKING.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingAutomlObjectTrackingConfig {
-    /// Resource name of AutoML model.
-    /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
-    #[prost(string, tag = "1")]
-    pub model_name: std::string::String,
-}
-/// Config for STREAMING_EXPLICIT_CONTENT_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingExplicitContentDetectionConfig {}
-/// Config for STREAMING_LABEL_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingLabelDetectionConfig {
-    /// Whether the video has been captured from a stationary (i.e. non-moving)
-    /// camera. When set to true, might improve detection accuracy for moving
-    /// objects. Default: false.
-    #[prost(bool, tag = "1")]
-    pub stationary_camera: bool,
-}
-/// Config for STREAMING_OBJECT_TRACKING.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingObjectTrackingConfig {}
-/// Config for STREAMING_SHOT_CHANGE_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingShotChangeDetectionConfig {}
-/// Config for streaming storage option.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingStorageConfig {
-    /// Enable streaming storage. Default: false.
-    #[prost(bool, tag = "1")]
-    pub enable_storage_annotation_result: bool,
-    /// GCS URI to store all annotation results for one client. Client should
-    /// specify this field as the top-level storage directory. Annotation results
-    /// of different sessions will be put into different sub-directories denoted
-    /// by project_name and session_id. All sub-directories will be auto generated
-    /// by program and will be made accessible to client in response proto.
-    /// URIs must be specified in the following format: `gs://bucket-id/object-id`
-    /// `bucket-id` should be a valid GCS bucket created by client and bucket
-    /// permission shall also be configured properly. `object-id` can be arbitrary
-    /// string that make sense to client. Other URI formats will return error and
-    /// cause GCS write failure.
-    #[prost(string, tag = "3")]
-    pub annotation_result_storage_directory: std::string::String,
-}
-/// Streaming annotation results corresponding to a portion of the video
-/// that is currently being processed.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingVideoAnnotationResults {
-    /// Shot annotation results. Each shot is represented as a video segment.
-    #[prost(message, repeated, tag = "1")]
-    pub shot_annotations: ::std::vec::Vec<VideoSegment>,
-    /// Label annotation results.
-    #[prost(message, repeated, tag = "2")]
-    pub label_annotations: ::std::vec::Vec<LabelAnnotation>,
-    /// Explicit content annotation results.
-    #[prost(message, optional, tag = "3")]
-    pub explicit_annotation: ::std::option::Option<ExplicitContentAnnotation>,
-    /// Object tracking results.
-    #[prost(message, repeated, tag = "4")]
-    pub object_annotations: ::std::vec::Vec<ObjectTrackingAnnotation>,
-}
 /// Provides information to the annotator that specifies how to process the
 /// request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -951,7 +865,7 @@ pub struct StreamingVideoConfig {
     /// Config for requested annotation feature.
     #[prost(
         oneof = "streaming_video_config::StreamingConfig",
-        tags = "2, 3, 4, 5, 21, 22"
+        tags = "2, 3, 4, 5, 23, 21, 22"
     )]
     pub streaming_config: ::std::option::Option<streaming_video_config::StreamingConfig>,
 }
@@ -971,6 +885,9 @@ pub mod streaming_video_config {
         /// Config for STREAMING_OBJECT_TRACKING.
         #[prost(message, tag = "5")]
         ObjectTrackingConfig(super::StreamingObjectTrackingConfig),
+        /// Config for STREAMING_AUTOML_ACTION_RECOGNITION.
+        #[prost(message, tag = "23")]
+        AutomlActionRecognitionConfig(super::StreamingAutomlActionRecognitionConfig),
         /// Config for STREAMING_AUTOML_CLASSIFICATION.
         #[prost(message, tag = "21")]
         AutomlClassificationConfig(super::StreamingAutomlClassificationConfig),
@@ -979,32 +896,103 @@ pub mod streaming_video_config {
         AutomlObjectTrackingConfig(super::StreamingAutomlObjectTrackingConfig),
     }
 }
-/// Video annotation feature.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum Feature {
-    /// Unspecified.
-    Unspecified = 0,
-    /// Label detection. Detect objects, such as dog or flower.
-    LabelDetection = 1,
-    /// Shot change detection.
-    ShotChangeDetection = 2,
-    /// Explicit content detection.
-    ExplicitContentDetection = 3,
-    /// Human face detection.
-    FaceDetection = 4,
-    /// Speech transcription.
-    SpeechTranscription = 6,
-    /// OCR text detection and tracking.
-    TextDetection = 7,
-    /// Object detection and tracking.
-    ObjectTracking = 9,
-    /// Logo detection, tracking, and recognition.
-    LogoRecognition = 12,
-    /// Celebrity recognition.
-    CelebrityRecognition = 13,
-    /// Person detection.
-    PersonDetection = 14,
+/// `StreamingAnnotateVideoResponse` is the only message returned to the client
+/// by `StreamingAnnotateVideo`. A series of zero or more
+/// `StreamingAnnotateVideoResponse` messages are streamed back to the client.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAnnotateVideoResponse {
+    /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
+    /// specifies the error for the operation.
+    #[prost(message, optional, tag = "1")]
+    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    /// Streaming annotation results.
+    #[prost(message, optional, tag = "2")]
+    pub annotation_results: ::std::option::Option<StreamingVideoAnnotationResults>,
+    /// Google Cloud Storage(GCS) URI that stores annotation results of one
+    /// streaming session in JSON format.
+    /// It is the annotation_result_storage_directory
+    /// from the request followed by '/cloud_project_number-session_id'.
+    #[prost(string, tag = "3")]
+    pub annotation_results_uri: std::string::String,
+}
+/// Streaming annotation results corresponding to a portion of the video
+/// that is currently being processed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingVideoAnnotationResults {
+    /// Shot annotation results. Each shot is represented as a video segment.
+    #[prost(message, repeated, tag = "1")]
+    pub shot_annotations: ::std::vec::Vec<VideoSegment>,
+    /// Label annotation results.
+    #[prost(message, repeated, tag = "2")]
+    pub label_annotations: ::std::vec::Vec<LabelAnnotation>,
+    /// Explicit content annotation results.
+    #[prost(message, optional, tag = "3")]
+    pub explicit_annotation: ::std::option::Option<ExplicitContentAnnotation>,
+    /// Object tracking results.
+    #[prost(message, repeated, tag = "4")]
+    pub object_annotations: ::std::vec::Vec<ObjectTrackingAnnotation>,
+}
+/// Config for STREAMING_SHOT_CHANGE_DETECTION.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingShotChangeDetectionConfig {}
+/// Config for STREAMING_LABEL_DETECTION.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingLabelDetectionConfig {
+    /// Whether the video has been captured from a stationary (i.e. non-moving)
+    /// camera. When set to true, might improve detection accuracy for moving
+    /// objects. Default: false.
+    #[prost(bool, tag = "1")]
+    pub stationary_camera: bool,
+}
+/// Config for STREAMING_EXPLICIT_CONTENT_DETECTION.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingExplicitContentDetectionConfig {}
+/// Config for STREAMING_OBJECT_TRACKING.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingObjectTrackingConfig {}
+/// Config for STREAMING_AUTOML_ACTION_RECOGNITION.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAutomlActionRecognitionConfig {
+    /// Resource name of AutoML model.
+    /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
+    #[prost(string, tag = "1")]
+    pub model_name: std::string::String,
+}
+/// Config for STREAMING_AUTOML_CLASSIFICATION.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAutomlClassificationConfig {
+    /// Resource name of AutoML model.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/models/{model_id}`
+    #[prost(string, tag = "1")]
+    pub model_name: std::string::String,
+}
+/// Config for STREAMING_AUTOML_OBJECT_TRACKING.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAutomlObjectTrackingConfig {
+    /// Resource name of AutoML model.
+    /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
+    #[prost(string, tag = "1")]
+    pub model_name: std::string::String,
+}
+/// Config for streaming storage option.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingStorageConfig {
+    /// Enable streaming storage. Default: false.
+    #[prost(bool, tag = "1")]
+    pub enable_storage_annotation_result: bool,
+    /// Cloud Storage URI to store all annotation results for one client. Client
+    /// should specify this field as the top-level storage directory. Annotation
+    /// results of different sessions will be put into different sub-directories
+    /// denoted by project_name and session_id. All sub-directories will be auto
+    /// generated by program and will be made accessible to client in response
+    /// proto. URIs must be specified in the following format:
+    /// `gs://bucket-id/object-id` `bucket-id` should be a valid Cloud Storage
+    /// bucket created by client and bucket permission shall also be configured
+    /// properly. `object-id` can be arbitrary string that make sense to client.
+    /// Other URI formats will return error and cause Cloud Storage write failure.
+    #[prost(string, tag = "3")]
+    pub annotation_result_storage_directory: std::string::String,
 }
 /// Label detection mode.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1050,16 +1038,45 @@ pub enum StreamingFeature {
     StreamingExplicitContentDetection = 3,
     /// Object detection and tracking.
     StreamingObjectTracking = 4,
+    /// Action recognition based on AutoML model.
+    StreamingAutomlActionRecognition = 23,
     /// Video classification based on AutoML model.
     StreamingAutomlClassification = 21,
     /// Object detection and tracking based on AutoML model.
     StreamingAutomlObjectTracking = 22,
 }
+/// Video annotation feature.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Feature {
+    /// Unspecified.
+    Unspecified = 0,
+    /// Label detection. Detect objects, such as dog or flower.
+    LabelDetection = 1,
+    /// Shot change detection.
+    ShotChangeDetection = 2,
+    /// Explicit content detection.
+    ExplicitContentDetection = 3,
+    /// Human face detection.
+    FaceDetection = 4,
+    /// Speech transcription.
+    SpeechTranscription = 6,
+    /// OCR text detection and tracking.
+    TextDetection = 7,
+    /// Object detection and tracking.
+    ObjectTracking = 9,
+    /// Logo detection, tracking, and recognition.
+    LogoRecognition = 12,
+    /// Celebrity recognition.
+    CelebrityRecognition = 13,
+    /// Person detection.
+    PersonDetection = 14,
+}
 #[doc = r" Generated client implementations."]
 pub mod video_intelligence_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Service that implements Google Cloud Video Intelligence API."]
+    #[doc = " Service that implements the Video Intelligence API."]
     pub struct VideoIntelligenceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -1130,7 +1147,7 @@ pub mod video_intelligence_service_client {
 pub mod streaming_video_intelligence_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Service that implements streaming Google Cloud Video Intelligence API."]
+    #[doc = " Service that implements streaming Video Intelligence API."]
     pub struct StreamingVideoIntelligenceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -1215,7 +1232,7 @@ pub mod video_intelligence_service_server {
             tonic::Status,
         >;
     }
-    #[doc = " Service that implements Google Cloud Video Intelligence API."]
+    #[doc = " Service that implements the Video Intelligence API."]
     #[derive(Debug)]
     #[doc(hidden)]
     pub struct VideoIntelligenceServiceServer<T: VideoIntelligenceService> {
@@ -1294,7 +1311,7 @@ pub mod streaming_video_intelligence_service_server {
             request: tonic::Request<tonic::Streaming<super::StreamingAnnotateVideoRequest>>,
         ) -> Result<tonic::Response<Self::StreamingAnnotateVideoStream>, tonic::Status>;
     }
-    #[doc = " Service that implements streaming Google Cloud Video Intelligence API."]
+    #[doc = " Service that implements streaming Video Intelligence API."]
     #[derive(Debug)]
     #[doc(hidden)]
     pub struct StreamingVideoIntelligenceServiceServer<T: StreamingVideoIntelligenceService> {

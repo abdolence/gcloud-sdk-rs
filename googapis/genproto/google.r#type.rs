@@ -106,25 +106,6 @@ pub struct TimeZone {
     #[prost(string, tag = "2")]
     pub version: std::string::String,
 }
-/// Represents an amount of money with its currency type.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Money {
-    /// The 3-letter currency code defined in ISO 4217.
-    #[prost(string, tag = "1")]
-    pub currency_code: std::string::String,
-    /// The whole units of the amount.
-    /// For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
-    #[prost(int64, tag = "2")]
-    pub units: i64,
-    /// Number of nano (10^-9) units of the amount.
-    /// The value must be between -999,999,999 and +999,999,999 inclusive.
-    /// If `units` is positive, `nanos` must be positive or zero.
-    /// If `units` is zero, `nanos` can be positive, zero, or negative.
-    /// If `units` is negative, `nanos` must be negative or zero.
-    /// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
-    #[prost(int32, tag = "3")]
-    pub nanos: i32,
-}
 /// Represents an expression text. Example:
 ///
 ///     title: "User account presence"
@@ -166,6 +147,25 @@ pub struct LatLng {
     /// The longitude in degrees. It must be in the range [-180.0, +180.0].
     #[prost(double, tag = "2")]
     pub longitude: f64,
+}
+/// Represents an amount of money with its currency type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Money {
+    /// The 3-letter currency code defined in ISO 4217.
+    #[prost(string, tag = "1")]
+    pub currency_code: std::string::String,
+    /// The whole units of the amount.
+    /// For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+    #[prost(int64, tag = "2")]
+    pub units: i64,
+    /// Number of nano (10^-9) units of the amount.
+    /// The value must be between -999,999,999 and +999,999,999 inclusive.
+    /// If `units` is positive, `nanos` must be positive or zero.
+    /// If `units` is zero, `nanos` can be positive, zero, or negative.
+    /// If `units` is negative, `nanos` must be negative or zero.
+    /// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+    #[prost(int32, tag = "3")]
+    pub nanos: i32,
 }
 /// Represents a color in the RGBA color space. This representation is designed
 /// for simplicity of conversion to/from color representations in various

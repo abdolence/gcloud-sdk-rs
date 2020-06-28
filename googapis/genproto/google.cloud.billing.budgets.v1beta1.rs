@@ -142,6 +142,19 @@ pub struct Filter {
     /// https://cloud.google.com/billing/v1/how-tos/catalog-api.
     #[prost(string, repeated, tag = "3")]
     pub services: ::std::vec::Vec<std::string::String>,
+    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`, specifying
+    /// that usage from only this set of subaccounts should be included in the
+    /// budget. If a subaccount is set to the name of the master account, usage
+    /// from the master account will be included. If omitted, the report will
+    /// include usage from the master account and all subaccounts, if they exist.
+    #[prost(string, repeated, tag = "5")]
+    pub subaccounts: ::std::vec::Vec<std::string::String>,
+    /// Optional. A single label and value pair specifying that usage from only this set of
+    /// labeled resources should be included in the budget. Multiple entries or
+    /// multiple values per entry are not allowed. If omitted, the report will
+    /// include all labeled and unlabeled usage.
+    #[prost(map = "string, message", tag = "6")]
+    pub labels: ::std::collections::HashMap<std::string::String, ::prost_types::ListValue>,
 }
 pub mod filter {
     /// Specifies how credits should be treated when determining spend for
@@ -286,7 +299,7 @@ pub mod budget_service_client {
         #[doc = " Updates a budget and returns the updated budget."]
         #[doc = ""]
         #[doc = " WARNING: There are some fields exposed on the Google Cloud Console that"]
-        #[doc = " aren’t available on this API. Budget fields that are not exposed in"]
+        #[doc = " aren't available on this API. Budget fields that are not exposed in"]
         #[doc = " this API will not be changed by this method."]
         pub async fn update_budget(
             &mut self,
@@ -307,7 +320,7 @@ pub mod budget_service_client {
         #[doc = " Returns a budget."]
         #[doc = ""]
         #[doc = " WARNING: There are some fields exposed on the Google Cloud Console that"]
-        #[doc = " aren’t available on this API. When reading from the API, you will not"]
+        #[doc = " aren't available on this API. When reading from the API, you will not"]
         #[doc = " see these fields in the return value, though they may have been set"]
         #[doc = " in the Cloud Console."]
         pub async fn get_budget(
@@ -329,7 +342,7 @@ pub mod budget_service_client {
         #[doc = " Returns a list of budgets for a billing account."]
         #[doc = ""]
         #[doc = " WARNING: There are some fields exposed on the Google Cloud Console that"]
-        #[doc = " aren’t available on this API. When reading from the API, you will not"]
+        #[doc = " aren't available on this API. When reading from the API, you will not"]
         #[doc = " see these fields in the return value, though they may have been set"]
         #[doc = " in the Cloud Console."]
         pub async fn list_budgets(
@@ -396,7 +409,7 @@ pub mod budget_service_server {
         #[doc = " Updates a budget and returns the updated budget."]
         #[doc = ""]
         #[doc = " WARNING: There are some fields exposed on the Google Cloud Console that"]
-        #[doc = " aren’t available on this API. Budget fields that are not exposed in"]
+        #[doc = " aren't available on this API. Budget fields that are not exposed in"]
         #[doc = " this API will not be changed by this method."]
         async fn update_budget(
             &self,
@@ -405,7 +418,7 @@ pub mod budget_service_server {
         #[doc = " Returns a budget."]
         #[doc = ""]
         #[doc = " WARNING: There are some fields exposed on the Google Cloud Console that"]
-        #[doc = " aren’t available on this API. When reading from the API, you will not"]
+        #[doc = " aren't available on this API. When reading from the API, you will not"]
         #[doc = " see these fields in the return value, though they may have been set"]
         #[doc = " in the Cloud Console."]
         async fn get_budget(
@@ -415,7 +428,7 @@ pub mod budget_service_server {
         #[doc = " Returns a list of budgets for a billing account."]
         #[doc = ""]
         #[doc = " WARNING: There are some fields exposed on the Google Cloud Console that"]
-        #[doc = " aren’t available on this API. When reading from the API, you will not"]
+        #[doc = " aren't available on this API. When reading from the API, you will not"]
         #[doc = " see these fields in the return value, though they may have been set"]
         #[doc = " in the Cloud Console."]
         async fn list_budgets(
