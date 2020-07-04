@@ -110,9 +110,8 @@ pub struct Instance {
     /// operation.
     #[prost(string, tag = "21")]
     pub persistence_iam_identity: std::string::String,
-    /// Optional. The connect mode of Redis instance.
-    /// If not provided, default one will be used.
-    /// Current default: DIRECT_PEERING.
+    /// Optional. The network connect mode of the Redis instance.
+    /// If not provided, the connect mode defaults to DIRECT_PEERING.
     #[prost(enumeration = "instance::ConnectMode", tag = "22")]
     pub connect_mode: i32,
 }
@@ -159,10 +158,11 @@ pub mod instance {
     pub enum ConnectMode {
         /// Not set.
         Unspecified = 0,
-        /// Connect via directly peering with memorystore redis hosted service.
+        /// Connect via direct peering to the Memorystore for Redis hosted service.
         DirectPeering = 1,
-        /// Connect with google via private service access and share connection
-        /// across google managed services.
+        /// Connect your Memorystore for Redis instance using Private Service
+        /// Access. Private services access provides an IP address range for multiple
+        /// Google Cloud services, including Memorystore.
         PrivateServiceAccess = 2,
     }
 }
@@ -259,6 +259,18 @@ pub struct UpdateInstanceRequest {
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "2")]
     pub instance: ::std::option::Option<Instance>,
+}
+/// Request for [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeInstanceRequest {
+    /// Required. Redis instance resource name using the form:
+    ///     `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Required. Specifies the target version of Redis software to upgrade to.
+    #[prost(string, tag = "2")]
+    pub redis_version: std::string::String,
 }
 /// Request for [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -560,6 +572,27 @@ pub mod cloud_redis_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Upgrades Redis instance to the newer Redis version specified in the"]
+        #[doc = " request."]
+        pub async fn upgrade_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpgradeInstanceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.v1.CloudRedis/UpgradeInstance",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Import a Redis RDB snapshot file from Cloud Storage into a Redis instance."]
         #[doc = ""]
         #[doc = " Redis may stop serving during this operation. Instance state will be"]
@@ -720,6 +753,15 @@ pub mod cloud_redis_server {
         async fn update_instance(
             &self,
             request: tonic::Request<super::UpdateInstanceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        >;
+        #[doc = " Upgrades Redis instance to the newer Redis version specified in the"]
+        #[doc = " request."]
+        async fn upgrade_instance(
+            &self,
+            request: tonic::Request<super::UpgradeInstanceRequest>,
         ) -> Result<
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
@@ -938,6 +980,39 @@ pub mod cloud_redis_server {
                         let interceptor = inner.1.clone();
                         let inner = inner.0;
                         let method = UpdateInstanceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.redis.v1.CloudRedis/UpgradeInstance" => {
+                    #[allow(non_camel_case_types)]
+                    struct UpgradeInstanceSvc<T: CloudRedis>(pub Arc<T>);
+                    impl<T: CloudRedis> tonic::server::UnaryService<super::UpgradeInstanceRequest>
+                        for UpgradeInstanceSvc<T>
+                    {
+                        type Response = super::super::super::super::longrunning::Operation;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::UpgradeInstanceRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.upgrade_instance(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = UpgradeInstanceSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = if let Some(interceptor) = interceptor {
                             tonic::server::Grpc::with_interceptor(codec, interceptor)

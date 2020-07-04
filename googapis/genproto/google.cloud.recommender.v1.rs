@@ -43,6 +43,19 @@ pub struct Recommendation {
     /// updating states.
     #[prost(string, tag = "11")]
     pub etag: std::string::String,
+    /// Insights that led to this recommendation.
+    #[prost(message, repeated, tag = "14")]
+    pub associated_insights: ::std::vec::Vec<recommendation::InsightReference>,
+}
+pub mod recommendation {
+    /// Reference to an associated insight.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InsightReference {
+        /// Insight resource name, e.g.
+        /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/insights/[INSIGHT_ID]
+        #[prost(string, tag = "1")]
+        pub insight: std::string::String,
+    }
 }
 /// Contains what resources are changing and how they are changing.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -224,7 +237,7 @@ pub struct RecommendationStateInfo {
     pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
 }
 pub mod recommendation_state_info {
-    /// Represents Recommendation State
+    /// Represents Recommendation State.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
@@ -256,6 +269,167 @@ pub mod recommendation_state_info {
         /// DISMISSED recommendations can be marked as ACTIVE.
         Dismissed = 5,
     }
+}
+/// An insight along with the information used to derive the insight. The insight
+/// may have associated recomendations as well.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Insight {
+    /// Name of the insight.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Free-form human readable summary in English. The maximum length is 500
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub description: std::string::String,
+    /// Fully qualified resource names that this insight is targeting.
+    #[prost(string, repeated, tag = "9")]
+    pub target_resources: ::std::vec::Vec<std::string::String>,
+    /// Insight subtype. Insight content schema will be stable for a given subtype.
+    #[prost(string, tag = "10")]
+    pub insight_subtype: std::string::String,
+    /// A struct of custom fields to explain the insight.
+    /// Example: "grantedPermissionsCount": "1000"
+    #[prost(message, optional, tag = "3")]
+    pub content: ::std::option::Option<::prost_types::Struct>,
+    /// Timestamp of the latest data used to generate the insight.
+    #[prost(message, optional, tag = "4")]
+    pub last_refresh_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Observation period that led to the insight. The source data used to
+    /// generate the insight ends at last_refresh_time and begins at
+    /// (last_refresh_time - observation_period).
+    #[prost(message, optional, tag = "5")]
+    pub observation_period: ::std::option::Option<::prost_types::Duration>,
+    /// Information state and metadata.
+    #[prost(message, optional, tag = "6")]
+    pub state_info: ::std::option::Option<InsightStateInfo>,
+    /// Category being targeted by the insight.
+    #[prost(enumeration = "insight::Category", tag = "7")]
+    pub category: i32,
+    /// Fingerprint of the Insight. Provides optimistic locking when updating
+    /// states.
+    #[prost(string, tag = "11")]
+    pub etag: std::string::String,
+    /// Recommendations derived from this insight.
+    #[prost(message, repeated, tag = "8")]
+    pub associated_recommendations: ::std::vec::Vec<insight::RecommendationReference>,
+}
+pub mod insight {
+    /// Reference to an associated recommendation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RecommendationReference {
+        /// Recommendation resource name, e.g.
+        /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
+        #[prost(string, tag = "1")]
+        pub recommendation: std::string::String,
+    }
+    /// Insight category.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Category {
+        /// Unspecified category.
+        Unspecified = 0,
+        /// The insight is related to cost.
+        Cost = 1,
+        /// The insight is related to security.
+        Security = 2,
+        /// The insight is related to performance.
+        Performance = 3,
+        /// This insight is related to manageability.
+        Manageability = 4,
+    }
+}
+/// Information related to insight state.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsightStateInfo {
+    /// Insight state.
+    #[prost(enumeration = "insight_state_info::State", tag = "1")]
+    pub state: i32,
+    /// A map of metadata for the state, provided by user or automations systems.
+    #[prost(map = "string, string", tag = "2")]
+    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+}
+pub mod insight_state_info {
+    /// Represents insight state.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.
+        Unspecified = 0,
+        /// Insight is active. Content for ACTIVE insights can be updated by Google.
+        /// ACTIVE insights can be marked DISMISSED OR ACCEPTED.
+        Active = 1,
+        /// Some action has been taken based on this insight. Insights become
+        /// accepted when a recommendation derived from the insight has been marked
+        /// CLAIMED, SUCCEEDED, or FAILED. ACTIVE insights can also be marked
+        /// ACCEPTED explicitly. Content for ACCEPTED insights is immutable. ACCEPTED
+        /// insights can only be marked ACCEPTED (which may update state metadata).
+        Accepted = 2,
+        /// Insight is dismissed. Content for DISMISSED insights can be updated by
+        /// Google. DISMISSED insights can be marked as ACTIVE.
+        Dismissed = 3,
+    }
+}
+/// Request for the `ListInsights` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInsightsRequest {
+    /// Required. The container resource on which to execute the request.
+    /// Acceptable formats:
+    ///
+    /// 1.
+    /// "projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]",
+    ///
+    /// LOCATION here refers to GCP Locations:
+    /// https://cloud.google.com/about/locations/
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Optional. The maximum number of results to return from this request.  Non-positive
+    /// values are ignored. If not specified, the server will determine the number
+    /// of results to return.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. If present, retrieves the next batch of results from the preceding call to
+    /// this method. `page_token` must be the value of `next_page_token` from the
+    /// previous response. The values of other method parameters must be identical
+    /// to those in the previous call.
+    #[prost(string, tag = "3")]
+    pub page_token: std::string::String,
+    /// Optional. Filter expression to restrict the insights returned. Supported
+    /// filter fields: state
+    /// Eg: `state:"DISMISSED" or state:"ACTIVE"
+    #[prost(string, tag = "4")]
+    pub filter: std::string::String,
+}
+/// Response to the `ListInsights` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInsightsResponse {
+    /// The set of insights for the `parent` resource.
+    #[prost(message, repeated, tag = "1")]
+    pub insights: ::std::vec::Vec<Insight>,
+    /// A token that can be used to request the next page of results. This field is
+    /// empty if there are no additional results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+}
+/// Request to the `GetInsight` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetInsightRequest {
+    /// Required. Name of the insight.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+}
+/// Request for the `MarkInsightAccepted` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MarkInsightAcceptedRequest {
+    /// Required. Name of the insight.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Optional. State properties user wish to include with this state.  Full replace of the
+    /// current state_metadata.
+    #[prost(map = "string, string", tag = "2")]
+    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    /// Required. Fingerprint of the Insight. Provides optimistic locking.
+    #[prost(string, tag = "3")]
+    pub etag: std::string::String,
 }
 /// Request for the `ListRecommendations` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -357,10 +531,10 @@ pub struct MarkRecommendationFailedRequest {
 pub mod recommender_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Provides recommendations for cloud customers for various categories like"]
-    #[doc = " performance optimization, cost savings, reliability, feature discovery, etc."]
-    #[doc = " These recommendations are generated automatically based on analysis of user"]
-    #[doc = " resources, configuration and monitoring metrics."]
+    #[doc = " Provides insights and recommendations for cloud customers for various"]
+    #[doc = " categories like performance optimization, cost savings, reliability, feature"]
+    #[doc = " discovery, etc. Insights and recommendations are generated automatically"]
+    #[doc = " based on analysis of user resources, configuration and monitoring metrics."]
     pub struct RecommenderClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -389,6 +563,64 @@ pub mod recommender_client {
         pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
+        }
+        #[doc = " Lists insights for a Cloud project. Requires the recommender.*.list IAM"]
+        #[doc = " permission for the specified insight type."]
+        pub async fn list_insights(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListInsightsRequest>,
+        ) -> Result<tonic::Response<super::ListInsightsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recommender.v1.Recommender/ListInsights",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets the requested insight. Requires the recommender.*.get IAM permission"]
+        #[doc = " for the specified insight type."]
+        pub async fn get_insight(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetInsightRequest>,
+        ) -> Result<tonic::Response<super::Insight>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recommender.v1.Recommender/GetInsight",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Marks the Insight State as Accepted. Users can use this method to"]
+        #[doc = " indicate to the Recommender API that they have applied some action based"]
+        #[doc = " on the insight. This stops the insight content from being updated."]
+        #[doc = ""]
+        #[doc = " MarkInsightAccepted can be applied to insights in ACTIVE state. Requires"]
+        #[doc = " the recommender.*.update IAM permission for the specified insight."]
+        pub async fn mark_insight_accepted(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MarkInsightAcceptedRequest>,
+        ) -> Result<tonic::Response<super::Insight>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recommender.v1.Recommender/MarkInsightAccepted",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists recommendations for a Cloud project. Requires the recommender.*.list"]
         #[doc = " IAM permission for the specified recommender."]
@@ -426,10 +658,10 @@ pub mod recommender_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Mark the Recommendation State as Claimed. Users can use this method to"]
+        #[doc = " Marks the Recommendation State as Claimed. Users can use this method to"]
         #[doc = " indicate to the Recommender API that they are starting to apply the"]
         #[doc = " recommendation themselves. This stops the recommendation content from being"]
-        #[doc = " updated."]
+        #[doc = " updated. Associated insights are frozen and placed in the ACCEPTED state."]
         #[doc = ""]
         #[doc = " MarkRecommendationClaimed can be applied to recommendations in CLAIMED,"]
         #[doc = " SUCCEEDED, FAILED, or ACTIVE state."]
@@ -452,10 +684,11 @@ pub mod recommender_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Mark the Recommendation State as Succeeded. Users can use this method to"]
+        #[doc = " Marks the Recommendation State as Succeeded. Users can use this method to"]
         #[doc = " indicate to the Recommender API that they have applied the recommendation"]
         #[doc = " themselves, and the operation was successful. This stops the recommendation"]
-        #[doc = " content from being updated."]
+        #[doc = " content from being updated. Associated insights are frozen and placed in"]
+        #[doc = " the ACCEPTED state."]
         #[doc = ""]
         #[doc = " MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,"]
         #[doc = " CLAIMED, SUCCEEDED, or FAILED state."]
@@ -478,10 +711,11 @@ pub mod recommender_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Mark the Recommendation State as Failed. Users can use this method to"]
+        #[doc = " Marks the Recommendation State as Failed. Users can use this method to"]
         #[doc = " indicate to the Recommender API that they have applied the recommendation"]
         #[doc = " themselves, and the operation failed. This stops the recommendation content"]
-        #[doc = " from being updated."]
+        #[doc = " from being updated. Associated insights are frozen and placed in the"]
+        #[doc = " ACCEPTED state."]
         #[doc = ""]
         #[doc = " MarkRecommendationFailed can be applied to recommendations in ACTIVE,"]
         #[doc = " CLAIMED, SUCCEEDED, or FAILED state."]
@@ -525,6 +759,28 @@ pub mod recommender_server {
     #[doc = "Generated trait containing gRPC methods that should be implemented for use with RecommenderServer."]
     #[async_trait]
     pub trait Recommender: Send + Sync + 'static {
+        #[doc = " Lists insights for a Cloud project. Requires the recommender.*.list IAM"]
+        #[doc = " permission for the specified insight type."]
+        async fn list_insights(
+            &self,
+            request: tonic::Request<super::ListInsightsRequest>,
+        ) -> Result<tonic::Response<super::ListInsightsResponse>, tonic::Status>;
+        #[doc = " Gets the requested insight. Requires the recommender.*.get IAM permission"]
+        #[doc = " for the specified insight type."]
+        async fn get_insight(
+            &self,
+            request: tonic::Request<super::GetInsightRequest>,
+        ) -> Result<tonic::Response<super::Insight>, tonic::Status>;
+        #[doc = " Marks the Insight State as Accepted. Users can use this method to"]
+        #[doc = " indicate to the Recommender API that they have applied some action based"]
+        #[doc = " on the insight. This stops the insight content from being updated."]
+        #[doc = ""]
+        #[doc = " MarkInsightAccepted can be applied to insights in ACTIVE state. Requires"]
+        #[doc = " the recommender.*.update IAM permission for the specified insight."]
+        async fn mark_insight_accepted(
+            &self,
+            request: tonic::Request<super::MarkInsightAcceptedRequest>,
+        ) -> Result<tonic::Response<super::Insight>, tonic::Status>;
         #[doc = " Lists recommendations for a Cloud project. Requires the recommender.*.list"]
         #[doc = " IAM permission for the specified recommender."]
         async fn list_recommendations(
@@ -537,10 +793,10 @@ pub mod recommender_server {
             &self,
             request: tonic::Request<super::GetRecommendationRequest>,
         ) -> Result<tonic::Response<super::Recommendation>, tonic::Status>;
-        #[doc = " Mark the Recommendation State as Claimed. Users can use this method to"]
+        #[doc = " Marks the Recommendation State as Claimed. Users can use this method to"]
         #[doc = " indicate to the Recommender API that they are starting to apply the"]
         #[doc = " recommendation themselves. This stops the recommendation content from being"]
-        #[doc = " updated."]
+        #[doc = " updated. Associated insights are frozen and placed in the ACCEPTED state."]
         #[doc = ""]
         #[doc = " MarkRecommendationClaimed can be applied to recommendations in CLAIMED,"]
         #[doc = " SUCCEEDED, FAILED, or ACTIVE state."]
@@ -551,10 +807,11 @@ pub mod recommender_server {
             &self,
             request: tonic::Request<super::MarkRecommendationClaimedRequest>,
         ) -> Result<tonic::Response<super::Recommendation>, tonic::Status>;
-        #[doc = " Mark the Recommendation State as Succeeded. Users can use this method to"]
+        #[doc = " Marks the Recommendation State as Succeeded. Users can use this method to"]
         #[doc = " indicate to the Recommender API that they have applied the recommendation"]
         #[doc = " themselves, and the operation was successful. This stops the recommendation"]
-        #[doc = " content from being updated."]
+        #[doc = " content from being updated. Associated insights are frozen and placed in"]
+        #[doc = " the ACCEPTED state."]
         #[doc = ""]
         #[doc = " MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,"]
         #[doc = " CLAIMED, SUCCEEDED, or FAILED state."]
@@ -565,10 +822,11 @@ pub mod recommender_server {
             &self,
             request: tonic::Request<super::MarkRecommendationSucceededRequest>,
         ) -> Result<tonic::Response<super::Recommendation>, tonic::Status>;
-        #[doc = " Mark the Recommendation State as Failed. Users can use this method to"]
+        #[doc = " Marks the Recommendation State as Failed. Users can use this method to"]
         #[doc = " indicate to the Recommender API that they have applied the recommendation"]
         #[doc = " themselves, and the operation failed. This stops the recommendation content"]
-        #[doc = " from being updated."]
+        #[doc = " from being updated. Associated insights are frozen and placed in the"]
+        #[doc = " ACCEPTED state."]
         #[doc = ""]
         #[doc = " MarkRecommendationFailed can be applied to recommendations in ACTIVE,"]
         #[doc = " CLAIMED, SUCCEEDED, or FAILED state."]
@@ -580,10 +838,10 @@ pub mod recommender_server {
             request: tonic::Request<super::MarkRecommendationFailedRequest>,
         ) -> Result<tonic::Response<super::Recommendation>, tonic::Status>;
     }
-    #[doc = " Provides recommendations for cloud customers for various categories like"]
-    #[doc = " performance optimization, cost savings, reliability, feature discovery, etc."]
-    #[doc = " These recommendations are generated automatically based on analysis of user"]
-    #[doc = " resources, configuration and monitoring metrics."]
+    #[doc = " Provides insights and recommendations for cloud customers for various"]
+    #[doc = " categories like performance optimization, cost savings, reliability, feature"]
+    #[doc = " discovery, etc. Insights and recommendations are generated automatically"]
+    #[doc = " based on analysis of user resources, configuration and monitoring metrics."]
     #[derive(Debug)]
     #[doc(hidden)]
     pub struct RecommenderServer<T: Recommender> {
@@ -617,6 +875,104 @@ pub mod recommender_server {
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
+                "/google.cloud.recommender.v1.Recommender/ListInsights" => {
+                    #[allow(non_camel_case_types)]
+                    struct ListInsightsSvc<T: Recommender>(pub Arc<T>);
+                    impl<T: Recommender> tonic::server::UnaryService<super::ListInsightsRequest>
+                        for ListInsightsSvc<T>
+                    {
+                        type Response = super::ListInsightsResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::ListInsightsRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.list_insights(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = ListInsightsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.recommender.v1.Recommender/GetInsight" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetInsightSvc<T: Recommender>(pub Arc<T>);
+                    impl<T: Recommender> tonic::server::UnaryService<super::GetInsightRequest> for GetInsightSvc<T> {
+                        type Response = super::Insight;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::GetInsightRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.get_insight(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = GetInsightSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.recommender.v1.Recommender/MarkInsightAccepted" => {
+                    #[allow(non_camel_case_types)]
+                    struct MarkInsightAcceptedSvc<T: Recommender>(pub Arc<T>);
+                    impl<T: Recommender>
+                        tonic::server::UnaryService<super::MarkInsightAcceptedRequest>
+                        for MarkInsightAcceptedSvc<T>
+                    {
+                        type Response = super::Insight;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::MarkInsightAcceptedRequest>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { inner.mark_insight_accepted(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = MarkInsightAcceptedSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
                 "/google.cloud.recommender.v1.Recommender/ListRecommendations" => {
                     #[allow(non_camel_case_types)]
                     struct ListRecommendationsSvc<T: Recommender>(pub Arc<T>);

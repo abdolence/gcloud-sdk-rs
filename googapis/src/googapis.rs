@@ -136,6 +136,12 @@ pub mod google {
         }
     }
     pub mod analytics {
+        pub mod admin {
+            pub mod v1alpha {
+                #[cfg(any(feature = "google-analytics-admin-v1alpha",))]
+                include_proto!("google.analytics.admin.v1alpha");
+            }
+        }
         pub mod data {
             pub mod v1alpha {
                 #[cfg(any(feature = "google-analytics-data-v1alpha",))]
@@ -167,6 +173,7 @@ pub mod google {
             feature = "google-ads-googleads-v3-errors",
             feature = "google-ads-googleads-v3-resources",
             feature = "google-ads-googleads-v3-services",
+            feature = "google-analytics-admin-v1alpha",
             feature = "google-analytics-data-v1alpha",
             feature = "google-analytics-management-v1alpha",
             feature = "google-api",
