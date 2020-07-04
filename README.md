@@ -79,12 +79,10 @@ use tonic::{
     Request,
 };
 
-// PROJECT=your-project-id DATABASE=your-spanner-instance cargo run
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let project = std::env::var("PROJECT")?;
-    let database = std::env::var("DATABASE")?;
+    let instance = std::env::var("INSTANCE")?;
     let token = Token::new()?;
 
     let tls_config = ClientTlsConfig::new()
@@ -105,7 +103,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let response = service
         .list_databases(Request::new(ListDatabasesRequest {
-            parent: format!("projects/{}/instances/{}", project, database),
+            parent: format!("projects/{}/instances/{}", project, instance),
             page_size: 100,
             ..Default::default()
         }))
