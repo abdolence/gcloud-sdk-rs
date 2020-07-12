@@ -91,17 +91,6 @@ pub mod account_budget_proposal_service_client {
     pub struct AccountBudgetProposalServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl AccountBudgetProposalServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> AccountBudgetProposalServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -248,11 +237,6 @@ pub mod account_budget_proposal_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AccountBudgetProposalService> tonic::transport::NamedService
-        for AccountBudgetProposalServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AccountBudgetProposalService";
-    }
 }
 /// Request message for
 /// [AccountBudgetService.GetAccountBudget][google.ads.googleads.v3.services.AccountBudgetService.GetAccountBudget].
@@ -271,17 +255,6 @@ pub mod account_budget_service_client {
     #[doc = " Account-level budgets are mutated by creating proposal resources."]
     pub struct AccountBudgetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AccountBudgetServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AccountBudgetServiceClient<T>
     where
@@ -439,9 +412,6 @@ pub mod account_budget_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AccountBudgetService> tonic::transport::NamedService for AccountBudgetServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AccountBudgetService";
-    }
 }
 /// Request message for [AdGroupAdAssetViewService.GetAdGroupAdAssetView][google.ads.googleads.v3.services.AdGroupAdAssetViewService.GetAdGroupAdAssetView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -457,17 +427,6 @@ pub mod ad_group_ad_asset_view_service_client {
     #[doc = " Service to fetch ad group ad asset views."]
     pub struct AdGroupAdAssetViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupAdAssetViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupAdAssetViewServiceClient<T>
     where
@@ -581,11 +540,6 @@ pub mod ad_group_ad_asset_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupAdAssetViewService> tonic::transport::NamedService
-        for AdGroupAdAssetViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupAdAssetViewService";
-    }
 }
 /// Request message for [AdGroupAdLabelService.GetAdGroupAdLabel][google.ads.googleads.v3.services.AdGroupAdLabelService.GetAdGroupAdLabel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -665,17 +619,6 @@ pub mod ad_group_ad_label_service_client {
     #[doc = " Service to manage labels on ad group ads."]
     pub struct AdGroupAdLabelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupAdLabelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupAdLabelServiceClient<T>
     where
@@ -889,9 +832,6 @@ pub mod ad_group_ad_label_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupAdLabelService> tonic::transport::NamedService for AdGroupAdLabelServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupAdLabelService";
-    }
 }
 /// Request message for [AdGroupAdService.GetAdGroupAd][google.ads.googleads.v3.services.AdGroupAdService.GetAdGroupAd].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -979,17 +919,6 @@ pub mod ad_group_ad_service_client {
     #[doc = " Service to manage ads in an ad group."]
     pub struct AdGroupAdServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupAdServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupAdServiceClient<T>
     where
@@ -1200,9 +1129,6 @@ pub mod ad_group_ad_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupAdService> tonic::transport::NamedService for AdGroupAdServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupAdService";
-    }
 }
 /// Request message for [AdGroupAudienceViewService.GetAdGoupAudienceView][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1218,17 +1144,6 @@ pub mod ad_group_audience_view_service_client {
     #[doc = " Service to manage ad group audience views."]
     pub struct AdGroupAudienceViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupAudienceViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupAudienceViewServiceClient<T>
     where
@@ -1340,11 +1255,6 @@ pub mod ad_group_audience_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupAudienceViewService> tonic::transport::NamedService
-        for AdGroupAudienceViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupAudienceViewService";
-    }
 }
 /// Request message for [AdGroupBidModifierService.GetAdGroupBidModifier][google.ads.googleads.v3.services.AdGroupBidModifierService.GetAdGroupBidModifier].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1430,17 +1340,6 @@ pub mod ad_group_bid_modifier_service_client {
     #[doc = " Service to manage ad group bid modifiers."]
     pub struct AdGroupBidModifierServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupBidModifierServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupBidModifierServiceClient<T>
     where
@@ -1577,11 +1476,6 @@ pub mod ad_group_bid_modifier_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupBidModifierService> tonic::transport::NamedService
-        for AdGroupBidModifierServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupBidModifierService";
-    }
 }
 /// Request message for
 /// [AdGroupCriterionLabelService.GetAdGroupCriterionLabel][google.ads.googleads.v3.services.AdGroupCriterionLabelService.GetAdGroupCriterionLabel].
@@ -1662,17 +1556,6 @@ pub mod ad_group_criterion_label_service_client {
     #[doc = " Service to manage labels on ad group criteria."]
     pub struct AdGroupCriterionLabelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupCriterionLabelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupCriterionLabelServiceClient<T>
     where
@@ -1807,11 +1690,6 @@ pub mod ad_group_criterion_label_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupCriterionLabelService> tonic::transport::NamedService
-        for AdGroupCriterionLabelServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupCriterionLabelService";
-    }
 }
 /// Request message for [AdGroupCriterionService.GetAdGroupCriterion][google.ads.googleads.v3.services.AdGroupCriterionService.GetAdGroupCriterion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1907,17 +1785,6 @@ pub mod ad_group_criterion_service_client {
     #[doc = " Service to manage ad group criteria."]
     pub struct AdGroupCriterionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupCriterionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupCriterionServiceClient<T>
     where
@@ -2053,11 +1920,6 @@ pub mod ad_group_criterion_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupCriterionService> tonic::transport::NamedService
-        for AdGroupCriterionServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupCriterionService";
-    }
 }
 /// Request message for
 /// [AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation][google.ads.googleads.v3.services.AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation].
@@ -2074,17 +1936,6 @@ pub mod ad_group_criterion_simulation_service_client {
     #[doc = " Service to fetch ad group criterion simulations."]
     pub struct AdGroupCriterionSimulationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupCriterionSimulationServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupCriterionSimulationServiceClient<T>
     where
@@ -2201,12 +2052,6 @@ pub mod ad_group_criterion_simulation_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupCriterionSimulationService> tonic::transport::NamedService
-        for AdGroupCriterionSimulationServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.AdGroupCriterionSimulationService";
-    }
 }
 /// Request message for
 /// [AdGroupExtensionSettingService.GetAdGroupExtensionSetting][google.ads.googleads.v3.services.AdGroupExtensionSettingService.GetAdGroupExtensionSetting].
@@ -2299,17 +2144,6 @@ pub mod ad_group_extension_setting_service_client {
     #[doc = " Service to manage ad group extension settings."]
     pub struct AdGroupExtensionSettingServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupExtensionSettingServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupExtensionSettingServiceClient<T>
     where
@@ -2444,12 +2278,6 @@ pub mod ad_group_extension_setting_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupExtensionSettingService> tonic::transport::NamedService
-        for AdGroupExtensionSettingServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.AdGroupExtensionSettingService";
-    }
 }
 /// Request message for [AdGroupFeedService.GetAdGroupFeed][google.ads.googleads.v3.services.AdGroupFeedService.GetAdGroupFeed].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2534,17 +2362,6 @@ pub mod ad_group_feed_service_client {
     #[doc = " Service to manage ad group feeds."]
     pub struct AdGroupFeedServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupFeedServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupFeedServiceClient<T>
     where
@@ -2757,9 +2574,6 @@ pub mod ad_group_feed_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupFeedService> tonic::transport::NamedService for AdGroupFeedServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupFeedService";
-    }
 }
 /// Request message for [AdGroupLabelService.GetAdGroupLabel][google.ads.googleads.v3.services.AdGroupLabelService.GetAdGroupLabel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2838,17 +2652,6 @@ pub mod ad_group_label_service_client {
     #[doc = " Service to manage labels on ad groups."]
     pub struct AdGroupLabelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupLabelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupLabelServiceClient<T>
     where
@@ -3061,9 +2864,6 @@ pub mod ad_group_label_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupLabelService> tonic::transport::NamedService for AdGroupLabelServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupLabelService";
-    }
 }
 /// Request message for [AdGroupService.GetAdGroup][google.ads.googleads.v3.services.AdGroupService.GetAdGroup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3147,17 +2947,6 @@ pub mod ad_group_service_client {
     #[doc = " Service to manage ad groups."]
     pub struct AdGroupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupServiceClient<T>
     where
@@ -3365,9 +3154,6 @@ pub mod ad_group_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupService> tonic::transport::NamedService for AdGroupServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupService";
-    }
 }
 /// Request message for [AdGroupSimulationService.GetAdGroupSimulation][google.ads.googleads.v3.services.AdGroupSimulationService.GetAdGroupSimulation].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3383,17 +3169,6 @@ pub mod ad_group_simulation_service_client {
     #[doc = " Service to fetch ad group simulations."]
     pub struct AdGroupSimulationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdGroupSimulationServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdGroupSimulationServiceClient<T>
     where
@@ -3507,11 +3282,6 @@ pub mod ad_group_simulation_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdGroupSimulationService> tonic::transport::NamedService
-        for AdGroupSimulationServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdGroupSimulationService";
-    }
 }
 /// Request message for [AdParameterService.GetAdParameter][google.ads.googleads.v3.services.AdParameterService.GetAdParameter]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3596,17 +3366,6 @@ pub mod ad_parameter_service_client {
     #[doc = " Service to manage ad parameters."]
     pub struct AdParameterServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdParameterServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdParameterServiceClient<T>
     where
@@ -3819,9 +3578,6 @@ pub mod ad_parameter_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdParameterService> tonic::transport::NamedService for AdParameterServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdParameterService";
-    }
 }
 /// Request message for [AdScheduleViewService.GetAdScheduleView][google.ads.googleads.v3.services.AdScheduleViewService.GetAdScheduleView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3837,17 +3593,6 @@ pub mod ad_schedule_view_service_client {
     #[doc = " Service to fetch ad schedule views."]
     pub struct AdScheduleViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdScheduleViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdScheduleViewServiceClient<T>
     where
@@ -4003,9 +3748,6 @@ pub mod ad_schedule_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdScheduleViewService> tonic::transport::NamedService for AdScheduleViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdScheduleViewService";
-    }
 }
 /// Request message for [AdService.GetAd][google.ads.googleads.v3.services.AdService.GetAd].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4067,17 +3809,6 @@ pub mod ad_service_client {
     #[doc = " Service to manage ads."]
     pub struct AdServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AdServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AdServiceClient<T>
     where
@@ -4282,9 +4013,6 @@ pub mod ad_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdService> tonic::transport::NamedService for AdServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AdService";
-    }
 }
 /// Request message for [AgeRangeViewService.GetAgeRangeView][google.ads.googleads.v3.services.AgeRangeViewService.GetAgeRangeView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4300,17 +4028,6 @@ pub mod age_range_view_service_client {
     #[doc = " Service to manage age range views."]
     pub struct AgeRangeViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AgeRangeViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AgeRangeViewServiceClient<T>
     where
@@ -4465,9 +4182,6 @@ pub mod age_range_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AgeRangeViewService> tonic::transport::NamedService for AgeRangeViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AgeRangeViewService";
-    }
 }
 /// Request message for [AssetService.GetAsset][google.ads.googleads.v3.services.AssetService.GetAsset]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4527,17 +4241,6 @@ pub mod asset_service_client {
     #[doc = " created with Ad inline."]
     pub struct AssetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AssetServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AssetServiceClient<T>
     where
@@ -4746,9 +4449,6 @@ pub mod asset_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AssetService> tonic::transport::NamedService for AssetServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.AssetService";
-    }
 }
 /// Request message for [BiddingStrategyService.GetBiddingStrategy][google.ads.googleads.v3.services.BiddingStrategyService.GetBiddingStrategy].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4834,17 +4534,6 @@ pub mod bidding_strategy_service_client {
     #[doc = " Service to manage bidding strategies."]
     pub struct BiddingStrategyServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl BiddingStrategyServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> BiddingStrategyServiceClient<T>
     where
@@ -4983,9 +4672,6 @@ pub mod bidding_strategy_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: BiddingStrategyService> tonic::transport::NamedService for BiddingStrategyServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.BiddingStrategyService";
-    }
 }
 /// Request message for
 /// [BillingSetupService.GetBillingSetup][google.ads.googleads.v3.services.BillingSetupService.GetBillingSetup].
@@ -5060,17 +4746,6 @@ pub mod billing_setup_service_client {
     #[doc = " The CREATE operation creates a new billing setup."]
     pub struct BillingSetupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl BillingSetupServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> BillingSetupServiceClient<T>
     where
@@ -5289,9 +4964,6 @@ pub mod billing_setup_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: BillingSetupService> tonic::transport::NamedService for BillingSetupServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.BillingSetupService";
-    }
 }
 /// Request message for [CampaignAudienceViewService.GetCampaignAudienceView][google.ads.googleads.v3.services.CampaignAudienceViewService.GetCampaignAudienceView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5307,17 +4979,6 @@ pub mod campaign_audience_view_service_client {
     #[doc = " Service to manage campaign audience views."]
     pub struct CampaignAudienceViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignAudienceViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignAudienceViewServiceClient<T>
     where
@@ -5429,11 +5090,6 @@ pub mod campaign_audience_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignAudienceViewService> tonic::transport::NamedService
-        for CampaignAudienceViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignAudienceViewService";
-    }
 }
 /// Request message for [CampaignBidModifierService.GetCampaignBidModifier][google.ads.googleads.v3.services.CampaignBidModifierService.GetCampaignBidModifier].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5519,17 +5175,6 @@ pub mod campaign_bid_modifier_service_client {
     #[doc = " Service to manage campaign bid modifiers."]
     pub struct CampaignBidModifierServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignBidModifierServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignBidModifierServiceClient<T>
     where
@@ -5664,11 +5309,6 @@ pub mod campaign_bid_modifier_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignBidModifierService> tonic::transport::NamedService
-        for CampaignBidModifierServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignBidModifierService";
-    }
 }
 /// Request message for [CampaignBudgetService.GetCampaignBudget][google.ads.googleads.v3.services.CampaignBudgetService.GetCampaignBudget].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5753,17 +5393,6 @@ pub mod campaign_budget_service_client {
     #[doc = " Service to manage campaign budgets."]
     pub struct CampaignBudgetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignBudgetServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignBudgetServiceClient<T>
     where
@@ -5977,9 +5606,6 @@ pub mod campaign_budget_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignBudgetService> tonic::transport::NamedService for CampaignBudgetServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignBudgetService";
-    }
 }
 /// Request message for [CampaignCriterionService.GetCampaignCriterion][google.ads.googleads.v3.services.CampaignCriterionService.GetCampaignCriterion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6064,17 +5690,6 @@ pub mod campaign_criterion_service_client {
     #[doc = " Service to manage campaign criteria."]
     pub struct CampaignCriterionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignCriterionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignCriterionServiceClient<T>
     where
@@ -6210,11 +5825,6 @@ pub mod campaign_criterion_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignCriterionService> tonic::transport::NamedService
-        for CampaignCriterionServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignCriterionService";
-    }
 }
 /// Request message for
 /// [CampaignCriterionSimulationService.GetCampaignCriterionSimulation][google.ads.googleads.v3.services.CampaignCriterionSimulationService.GetCampaignCriterionSimulation].
@@ -6231,17 +5841,6 @@ pub mod campaign_criterion_simulation_service_client {
     #[doc = " Service to fetch campaign criterion simulations."]
     pub struct CampaignCriterionSimulationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignCriterionSimulationServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignCriterionSimulationServiceClient<T>
     where
@@ -6357,12 +5956,6 @@ pub mod campaign_criterion_simulation_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: CampaignCriterionSimulationService> tonic::transport::NamedService
-        for CampaignCriterionSimulationServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.CampaignCriterionSimulationService";
     }
 }
 /// Request message for [CampaignDraftService.GetCampaignDraft][google.ads.googleads.v3.services.CampaignDraftService.GetCampaignDraft].
@@ -6487,17 +6080,6 @@ pub mod campaign_draft_service_client {
     #[doc = " Service to manage campaign drafts."]
     pub struct CampaignDraftServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignDraftServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignDraftServiceClient<T>
     where
@@ -6704,9 +6286,6 @@ pub mod campaign_draft_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignDraftService> tonic::transport::NamedService for CampaignDraftServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignDraftService";
-    }
 }
 /// Request message for [CampaignExperimentService.GetCampaignExperiment][google.ads.googleads.v3.services.CampaignExperimentService.GetCampaignExperiment].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6886,17 +6465,6 @@ pub mod campaign_experiment_service_client {
     #[doc = " and will be a snapshot of changes in the draft at the time of creation."]
     pub struct CampaignExperimentServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignExperimentServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignExperimentServiceClient<T>
     where
@@ -7194,11 +6762,6 @@ pub mod campaign_experiment_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignExperimentService> tonic::transport::NamedService
-        for CampaignExperimentServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignExperimentService";
-    }
 }
 /// Request message for
 /// [CampaignExtensionSettingService.GetCampaignExtensionSetting][google.ads.googleads.v3.services.CampaignExtensionSettingService.GetCampaignExtensionSetting].
@@ -7291,17 +6854,6 @@ pub mod campaign_extension_setting_service_client {
     #[doc = " Service to manage campaign extension settings."]
     pub struct CampaignExtensionSettingServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignExtensionSettingServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignExtensionSettingServiceClient<T>
     where
@@ -7436,12 +6988,6 @@ pub mod campaign_extension_setting_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignExtensionSettingService> tonic::transport::NamedService
-        for CampaignExtensionSettingServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.CampaignExtensionSettingService";
-    }
 }
 /// Request message for [CampaignFeedService.GetCampaignFeed][google.ads.googleads.v3.services.CampaignFeedService.GetCampaignFeed].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7526,17 +7072,6 @@ pub mod campaign_feed_service_client {
     #[doc = " Service to manage campaign feeds."]
     pub struct CampaignFeedServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignFeedServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignFeedServiceClient<T>
     where
@@ -7749,9 +7284,6 @@ pub mod campaign_feed_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignFeedService> tonic::transport::NamedService for CampaignFeedServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignFeedService";
-    }
 }
 /// Request message for [CampaignLabelService.GetCampaignLabel][google.ads.googleads.v3.services.CampaignLabelService.GetCampaignLabel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7830,17 +7362,6 @@ pub mod campaign_label_service_client {
     #[doc = " Service to manage labels on campaigns."]
     pub struct CampaignLabelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignLabelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignLabelServiceClient<T>
     where
@@ -8054,9 +7575,6 @@ pub mod campaign_label_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignLabelService> tonic::transport::NamedService for CampaignLabelServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignLabelService";
-    }
 }
 /// Request message for [CampaignService.GetCampaign][google.ads.googleads.v3.services.CampaignService.GetCampaign].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8141,17 +7659,6 @@ pub mod campaign_service_client {
     #[doc = " Service to manage campaigns."]
     pub struct CampaignServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignServiceClient<T>
     where
@@ -8361,9 +7868,6 @@ pub mod campaign_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignService> tonic::transport::NamedService for CampaignServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignService";
-    }
 }
 /// Request message for [CampaignSharedSetService.GetCampaignSharedSet][google.ads.googleads.v3.services.CampaignSharedSetService.GetCampaignSharedSet].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8442,17 +7946,6 @@ pub mod campaign_shared_set_service_client {
     #[doc = " Service to manage campaign shared sets."]
     pub struct CampaignSharedSetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CampaignSharedSetServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CampaignSharedSetServiceClient<T>
     where
@@ -8587,11 +8080,6 @@ pub mod campaign_shared_set_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CampaignSharedSetService> tonic::transport::NamedService
-        for CampaignSharedSetServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CampaignSharedSetService";
-    }
 }
 /// Request message for [CarrierConstantService.GetCarrierConstant][google.ads.googleads.v3.services.CarrierConstantService.GetCarrierConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8607,17 +8095,6 @@ pub mod carrier_constant_service_client {
     #[doc = " Service to fetch carrier constants."]
     pub struct CarrierConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CarrierConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CarrierConstantServiceClient<T>
     where
@@ -8773,9 +8250,6 @@ pub mod carrier_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CarrierConstantService> tonic::transport::NamedService for CarrierConstantServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CarrierConstantService";
-    }
 }
 /// Request message for '[ChangeStatusService.GetChangeStatus][google.ads.googleads.v3.services.ChangeStatusService.GetChangeStatus]'.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8791,17 +8265,6 @@ pub mod change_status_service_client {
     #[doc = " Service to fetch change statuses."]
     pub struct ChangeStatusServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ChangeStatusServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ChangeStatusServiceClient<T>
     where
@@ -8956,9 +8419,6 @@ pub mod change_status_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ChangeStatusService> tonic::transport::NamedService for ChangeStatusServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ChangeStatusService";
-    }
 }
 /// Request message for [ClickViewService.GetClickView][google.ads.googleads.v3.services.ClickViewService.GetClickView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8974,17 +8434,6 @@ pub mod click_view_service_client {
     #[doc = " Service to fetch click views."]
     pub struct ClickViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ClickViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ClickViewServiceClient<T>
     where
@@ -9139,9 +8588,6 @@ pub mod click_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ClickViewService> tonic::transport::NamedService for ClickViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ClickViewService";
-    }
 }
 /// Request message for [ConversionActionService.GetConversionAction][google.ads.googleads.v3.services.ConversionActionService.GetConversionAction].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9227,17 +8673,6 @@ pub mod conversion_action_service_client {
     #[doc = " Service to manage conversion actions."]
     pub struct ConversionActionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ConversionActionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ConversionActionServiceClient<T>
     where
@@ -9375,11 +8810,6 @@ pub mod conversion_action_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ConversionActionService> tonic::transport::NamedService
-        for ConversionActionServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ConversionActionService";
     }
 }
 /// Request message for
@@ -9538,17 +8968,6 @@ pub mod conversion_adjustment_upload_service_client {
     pub struct ConversionAdjustmentUploadServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ConversionAdjustmentUploadServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ConversionAdjustmentUploadServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -9658,12 +9077,6 @@ pub mod conversion_adjustment_upload_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ConversionAdjustmentUploadService> tonic::transport::NamedService
-        for ConversionAdjustmentUploadServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.ConversionAdjustmentUploadService";
     }
 }
 /// Request message for [ConversionUploadService.UploadClickConversions][google.ads.googleads.v3.services.ConversionUploadService.UploadClickConversions].
@@ -9851,17 +9264,6 @@ pub mod conversion_upload_service_client {
     pub struct ConversionUploadServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ConversionUploadServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ConversionUploadServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -9995,11 +9397,6 @@ pub mod conversion_upload_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ConversionUploadService> tonic::transport::NamedService
-        for ConversionUploadServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ConversionUploadService";
-    }
 }
 /// Request message for [CurrencyConstantService.GetCurrencyConstant][google.ads.googleads.v3.services.CurrencyConstantService.GetCurrencyConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10015,17 +9412,6 @@ pub mod currency_constant_service_client {
     #[doc = " Service to fetch currency constants."]
     pub struct CurrencyConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CurrencyConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CurrencyConstantServiceClient<T>
     where
@@ -10181,11 +9567,6 @@ pub mod currency_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CurrencyConstantService> tonic::transport::NamedService
-        for CurrencyConstantServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CurrencyConstantService";
-    }
 }
 /// Request message for [CustomInterestService.GetCustomInterest][google.ads.googleads.v3.services.CustomInterestService.GetCustomInterest].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10253,17 +9634,6 @@ pub mod custom_interest_service_client {
     #[doc = " Service to manage custom interests."]
     pub struct CustomInterestServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomInterestServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomInterestServiceClient<T>
     where
@@ -10475,9 +9845,6 @@ pub mod custom_interest_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomInterestService> tonic::transport::NamedService for CustomInterestServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CustomInterestService";
-    }
 }
 /// Request message for [CustomerClientLinkService.GetCustomerClientLink][google.ads.googleads.v3.services.CustomerClientLinkService.GetCustomerClientLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10539,17 +9906,6 @@ pub mod customer_client_link_service_client {
     #[doc = " Service to manage customer client links."]
     pub struct CustomerClientLinkServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerClientLinkServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerClientLinkServiceClient<T>
     where
@@ -10684,11 +10040,6 @@ pub mod customer_client_link_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerClientLinkService> tonic::transport::NamedService
-        for CustomerClientLinkServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CustomerClientLinkService";
-    }
 }
 /// Request message for [CustomerClientService.GetCustomerClient][google.ads.googleads.v3.services.CustomerClientService.GetCustomerClient].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10704,17 +10055,6 @@ pub mod customer_client_service_client {
     #[doc = " Service to get clients in a customer's hierarchy."]
     pub struct CustomerClientServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerClientServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerClientServiceClient<T>
     where
@@ -10870,9 +10210,6 @@ pub mod customer_client_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerClientService> tonic::transport::NamedService for CustomerClientServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CustomerClientService";
-    }
 }
 /// Request message for
 /// [CustomerExtensionSettingService.GetCustomerExtensionSetting][google.ads.googleads.v3.services.CustomerExtensionSettingService.GetCustomerExtensionSetting].
@@ -10965,17 +10302,6 @@ pub mod customer_extension_setting_service_client {
     #[doc = " Service to manage customer extension settings."]
     pub struct CustomerExtensionSettingServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerExtensionSettingServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerExtensionSettingServiceClient<T>
     where
@@ -11110,12 +10436,6 @@ pub mod customer_extension_setting_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerExtensionSettingService> tonic::transport::NamedService
-        for CustomerExtensionSettingServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.CustomerExtensionSettingService";
-    }
 }
 /// Request message for [CustomerFeedService.GetCustomerFeed][google.ads.googleads.v3.services.CustomerFeedService.GetCustomerFeed].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11200,17 +10520,6 @@ pub mod customer_feed_service_client {
     #[doc = " Service to manage customer feeds."]
     pub struct CustomerFeedServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerFeedServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerFeedServiceClient<T>
     where
@@ -11423,9 +10732,6 @@ pub mod customer_feed_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerFeedService> tonic::transport::NamedService for CustomerFeedServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CustomerFeedService";
-    }
 }
 /// Request message for [CustomerLabelService.GetCustomerLabel][google.ads.googleads.v3.services.CustomerLabelService.GetCustomerLabel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11504,17 +10810,6 @@ pub mod customer_label_service_client {
     #[doc = " Service to manage labels on customers."]
     pub struct CustomerLabelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerLabelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerLabelServiceClient<T>
     where
@@ -11728,9 +11023,6 @@ pub mod customer_label_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerLabelService> tonic::transport::NamedService for CustomerLabelServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CustomerLabelService";
-    }
 }
 /// Request message for [CustomerManagerLinkService.GetCustomerManagerLink][google.ads.googleads.v3.services.CustomerManagerLinkService.GetCustomerManagerLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11818,17 +11110,6 @@ pub mod customer_manager_link_service_client {
     #[doc = " Service to manage customer-manager links."]
     pub struct CustomerManagerLinkServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerManagerLinkServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerManagerLinkServiceClient<T>
     where
@@ -11991,11 +11272,6 @@ pub mod customer_manager_link_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerManagerLinkService> tonic::transport::NamedService
-        for CustomerManagerLinkServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CustomerManagerLinkService";
-    }
 }
 /// Request message for
 /// [CustomerNegativeCriterionService.GetCustomerNegativeCriterion][google.ads.googleads.v3.services.CustomerNegativeCriterionService.GetCustomerNegativeCriterion].
@@ -12078,17 +11354,6 @@ pub mod customer_negative_criterion_service_client {
     #[doc = " Service to manage customer negative criteria."]
     pub struct CustomerNegativeCriterionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerNegativeCriterionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerNegativeCriterionServiceClient<T>
     where
@@ -12226,12 +11491,6 @@ pub mod customer_negative_criterion_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerNegativeCriterionService> tonic::transport::NamedService
-        for CustomerNegativeCriterionServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.CustomerNegativeCriterionService";
-    }
 }
 /// Request message for [CustomerService.GetCustomer][google.ads.googleads.v3.services.CustomerService.GetCustomer].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12322,17 +11581,6 @@ pub mod customer_service_client {
     #[doc = " Service to manage customers."]
     pub struct CustomerServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CustomerServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CustomerServiceClient<T>
     where
@@ -12657,9 +11905,6 @@ pub mod customer_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CustomerService> tonic::transport::NamedService for CustomerServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.CustomerService";
-    }
 }
 /// Request message for [DetailPlacementViewService.GetDetailPlacementView][google.ads.googleads.v3.services.DetailPlacementViewService.GetDetailPlacementView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12675,17 +11920,6 @@ pub mod detail_placement_view_service_client {
     #[doc = " Service to fetch Detail Placement views."]
     pub struct DetailPlacementViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl DetailPlacementViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> DetailPlacementViewServiceClient<T>
     where
@@ -12797,11 +12031,6 @@ pub mod detail_placement_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: DetailPlacementViewService> tonic::transport::NamedService
-        for DetailPlacementViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.DetailPlacementViewService";
-    }
 }
 /// Request message for [DisplayKeywordViewService.GetDisplayKeywordView][google.ads.googleads.v3.services.DisplayKeywordViewService.GetDisplayKeywordView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12817,17 +12046,6 @@ pub mod display_keyword_view_service_client {
     #[doc = " Service to manage display keyword views."]
     pub struct DisplayKeywordViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl DisplayKeywordViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> DisplayKeywordViewServiceClient<T>
     where
@@ -12941,11 +12159,6 @@ pub mod display_keyword_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: DisplayKeywordViewService> tonic::transport::NamedService
-        for DisplayKeywordViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.DisplayKeywordViewService";
-    }
 }
 /// Request message for [DistanceViewService.GetDistanceView][google.ads.googleads.v3.services.DistanceViewService.GetDistanceView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12961,17 +12174,6 @@ pub mod distance_view_service_client {
     #[doc = " Service to fetch distance views."]
     pub struct DistanceViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl DistanceViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> DistanceViewServiceClient<T>
     where
@@ -13126,9 +12328,6 @@ pub mod distance_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: DistanceViewService> tonic::transport::NamedService for DistanceViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.DistanceViewService";
-    }
 }
 /// Request message for
 /// [DomainCategoryService.GetDomainCategory][google.ads.googleads.v3.services.DomainCategoryService.GetDomainCategory].
@@ -13145,17 +12344,6 @@ pub mod domain_category_service_client {
     #[doc = " Service to fetch domain categories."]
     pub struct DomainCategoryServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl DomainCategoryServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> DomainCategoryServiceClient<T>
     where
@@ -13311,9 +12499,6 @@ pub mod domain_category_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: DomainCategoryService> tonic::transport::NamedService for DomainCategoryServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.DomainCategoryService";
-    }
 }
 /// Request message for
 /// [DynamicSearchAdsSearchTermViewService.GetDynamicSearchAdsSearchTermView][google.ads.googleads.v3.services.DynamicSearchAdsSearchTermViewService.GetDynamicSearchAdsSearchTermView].
@@ -13330,17 +12515,6 @@ pub mod dynamic_search_ads_search_term_view_service_client {
     #[doc = " Service to fetch dynamic search ads views."]
     pub struct DynamicSearchAdsSearchTermViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl DynamicSearchAdsSearchTermViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> DynamicSearchAdsSearchTermViewServiceClient<T>
     where
@@ -13459,12 +12633,6 @@ pub mod dynamic_search_ads_search_term_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: DynamicSearchAdsSearchTermViewService> tonic::transport::NamedService
-        for DynamicSearchAdsSearchTermViewServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.DynamicSearchAdsSearchTermViewService";
-    }
 }
 /// Request message for
 /// [ExpandedLandingPageViewService.GetExpandedLandingPageView][google.ads.googleads.v3.services.ExpandedLandingPageViewService.GetExpandedLandingPageView].
@@ -13481,17 +12649,6 @@ pub mod expanded_landing_page_view_service_client {
     #[doc = " Service to fetch expanded landing page views."]
     pub struct ExpandedLandingPageViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ExpandedLandingPageViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ExpandedLandingPageViewServiceClient<T>
     where
@@ -13603,12 +12760,6 @@ pub mod expanded_landing_page_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ExpandedLandingPageViewService> tonic::transport::NamedService
-        for ExpandedLandingPageViewServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.ExpandedLandingPageViewService";
-    }
 }
 /// Request message for [ExtensionFeedItemService.GetExtensionFeedItem][google.ads.googleads.v3.services.ExtensionFeedItemService.GetExtensionFeedItem].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13695,17 +12846,6 @@ pub mod extension_feed_item_service_client {
     #[doc = " Service to manage extension feed items."]
     pub struct ExtensionFeedItemServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ExtensionFeedItemServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ExtensionFeedItemServiceClient<T>
     where
@@ -13842,11 +12982,6 @@ pub mod extension_feed_item_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ExtensionFeedItemService> tonic::transport::NamedService
-        for ExtensionFeedItemServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ExtensionFeedItemService";
-    }
 }
 /// Request message for [FeedItemService.GetFeedItem][google.ads.googleads.v3.services.FeedItemService.GetFeedItem].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13931,17 +13066,6 @@ pub mod feed_item_service_client {
     #[doc = " Service to manage feed items."]
     pub struct FeedItemServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl FeedItemServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> FeedItemServiceClient<T>
     where
@@ -14153,9 +13277,6 @@ pub mod feed_item_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: FeedItemService> tonic::transport::NamedService for FeedItemServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.FeedItemService";
-    }
 }
 /// Request message for [FeedItemTargetService.GetFeedItemTarget][google.ads.googleads.v3.services.FeedItemTargetService.GetFeedItemTarget].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -14218,17 +13339,6 @@ pub mod feed_item_target_service_client {
     #[doc = " Service to manage feed item targets."]
     pub struct FeedItemTargetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl FeedItemTargetServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> FeedItemTargetServiceClient<T>
     where
@@ -14440,9 +13550,6 @@ pub mod feed_item_target_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: FeedItemTargetService> tonic::transport::NamedService for FeedItemTargetServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.FeedItemTargetService";
-    }
 }
 /// Request message for [FeedMappingService.GetFeedMapping][google.ads.googleads.v3.services.FeedMappingService.GetFeedMapping].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -14520,17 +13627,6 @@ pub mod feed_mapping_service_client {
     #[doc = " Service to manage feed mappings."]
     pub struct FeedMappingServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl FeedMappingServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> FeedMappingServiceClient<T>
     where
@@ -14743,9 +13839,6 @@ pub mod feed_mapping_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: FeedMappingService> tonic::transport::NamedService for FeedMappingServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.FeedMappingService";
-    }
 }
 /// Request message for [FeedPlaceholderViewService.GetFeedPlaceholderView][google.ads.googleads.v3.services.FeedPlaceholderViewService.GetFeedPlaceholderView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -14761,17 +13854,6 @@ pub mod feed_placeholder_view_service_client {
     #[doc = " Service to fetch feed placeholder views."]
     pub struct FeedPlaceholderViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl FeedPlaceholderViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> FeedPlaceholderViewServiceClient<T>
     where
@@ -14883,11 +13965,6 @@ pub mod feed_placeholder_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: FeedPlaceholderViewService> tonic::transport::NamedService
-        for FeedPlaceholderViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.FeedPlaceholderViewService";
-    }
 }
 /// Request message for [FeedService.GetFeed][google.ads.googleads.v3.services.FeedService.GetFeed].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -14972,17 +14049,6 @@ pub mod feed_service_client {
     #[doc = " Service to manage feeds."]
     pub struct FeedServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl FeedServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> FeedServiceClient<T>
     where
@@ -15189,9 +14255,6 @@ pub mod feed_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: FeedService> tonic::transport::NamedService for FeedServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.FeedService";
-    }
 }
 /// Request message for [GenderViewService.GetGenderView][google.ads.googleads.v3.services.GenderViewService.GetGenderView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -15207,17 +14270,6 @@ pub mod gender_view_service_client {
     #[doc = " Service to manage gender views."]
     pub struct GenderViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GenderViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GenderViewServiceClient<T>
     where
@@ -15372,9 +14424,6 @@ pub mod gender_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GenderViewService> tonic::transport::NamedService for GenderViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.GenderViewService";
-    }
 }
 /// Request message for [GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v3.services.GeoTargetConstantService.GetGeoTargetConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -15463,17 +14512,6 @@ pub mod geo_target_constant_service_client {
     #[doc = " Service to fetch geo target constants."]
     pub struct GeoTargetConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GeoTargetConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GeoTargetConstantServiceClient<T>
     where
@@ -15608,11 +14646,6 @@ pub mod geo_target_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GeoTargetConstantService> tonic::transport::NamedService
-        for GeoTargetConstantServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.GeoTargetConstantService";
-    }
 }
 /// Request message for [GeographicViewService.GetGeographicView][google.ads.googleads.v3.services.GeographicViewService.GetGeographicView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -15628,17 +14661,6 @@ pub mod geographic_view_service_client {
     #[doc = " Service to manage geographic views."]
     pub struct GeographicViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GeographicViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GeographicViewServiceClient<T>
     where
@@ -15794,9 +14816,6 @@ pub mod geographic_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GeographicViewService> tonic::transport::NamedService for GeographicViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.GeographicViewService";
-    }
 }
 /// Request message for [GoogleAdsFieldService.GetGoogleAdsField][google.ads.googleads.v3.services.GoogleAdsFieldService.GetGoogleAdsField].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -15844,17 +14863,6 @@ pub mod google_ads_field_service_client {
     #[doc = " Service to fetch Google Ads API fields."]
     pub struct GoogleAdsFieldServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GoogleAdsFieldServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GoogleAdsFieldServiceClient<T>
     where
@@ -16066,9 +15074,6 @@ pub mod google_ads_field_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GoogleAdsFieldService> tonic::transport::NamedService for GoogleAdsFieldServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.GoogleAdsFieldService";
-    }
 }
 /// Request message for [LabelService.GetLabel][google.ads.googleads.v3.services.LabelService.GetLabel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16152,17 +15157,6 @@ pub mod label_service_client {
     #[doc = " Service to manage labels."]
     pub struct LabelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl LabelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> LabelServiceClient<T>
     where
@@ -16369,9 +15363,6 @@ pub mod label_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: LabelService> tonic::transport::NamedService for LabelServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.LabelService";
-    }
 }
 /// Request message for [MediaFileService.GetMediaFile][google.ads.googleads.v3.services.MediaFileService.GetMediaFile]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16443,17 +15434,6 @@ pub mod media_file_service_client {
     #[doc = " Service to manage media files."]
     pub struct MediaFileServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl MediaFileServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> MediaFileServiceClient<T>
     where
@@ -16664,9 +15644,6 @@ pub mod media_file_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: MediaFileService> tonic::transport::NamedService for MediaFileServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.MediaFileService";
-    }
 }
 /// Request message for [RemarketingActionService.GetRemarketingAction][google.ads.googleads.v3.services.RemarketingActionService.GetRemarketingAction].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16746,17 +15723,6 @@ pub mod remarketing_action_service_client {
     #[doc = " Service to manage remarketing actions."]
     pub struct RemarketingActionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl RemarketingActionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> RemarketingActionServiceClient<T>
     where
@@ -16891,11 +15857,6 @@ pub mod remarketing_action_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: RemarketingActionService> tonic::transport::NamedService
-        for RemarketingActionServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.RemarketingActionService";
-    }
 }
 /// Request message for [SharedCriterionService.GetSharedCriterion][google.ads.googleads.v3.services.SharedCriterionService.GetSharedCriterion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16974,17 +15935,6 @@ pub mod shared_criterion_service_client {
     #[doc = " Service to manage shared criteria."]
     pub struct SharedCriterionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl SharedCriterionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> SharedCriterionServiceClient<T>
     where
@@ -17196,9 +16146,6 @@ pub mod shared_criterion_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: SharedCriterionService> tonic::transport::NamedService for SharedCriterionServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.SharedCriterionService";
-    }
 }
 /// Request message for [SharedSetService.GetSharedSet][google.ads.googleads.v3.services.SharedSetService.GetSharedSet].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -17283,17 +16230,6 @@ pub mod shared_set_service_client {
     #[doc = " Service to manage shared sets."]
     pub struct SharedSetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl SharedSetServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> SharedSetServiceClient<T>
     where
@@ -17504,9 +16440,6 @@ pub mod shared_set_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: SharedSetService> tonic::transport::NamedService for SharedSetServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.SharedSetService";
-    }
 }
 /// Request message for [UserListService.GetUserList][google.ads.googleads.v3.services.UserListService.GetUserList].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -17591,17 +16524,6 @@ pub mod user_list_service_client {
     #[doc = " Service to manage user lists."]
     pub struct UserListServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl UserListServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> UserListServiceClient<T>
     where
@@ -17810,9 +16732,6 @@ pub mod user_list_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: UserListService> tonic::transport::NamedService for UserListServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.UserListService";
     }
 }
 /// Request message for [GoogleAdsService.Search][google.ads.googleads.v3.services.GoogleAdsService.Search].
@@ -18540,17 +17459,6 @@ pub mod google_ads_service_client {
     pub struct GoogleAdsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl GoogleAdsServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> GoogleAdsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -18928,9 +17836,6 @@ pub mod google_ads_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GoogleAdsService> tonic::transport::NamedService for GoogleAdsServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.GoogleAdsService";
-    }
 }
 /// Request message for [GroupPlacementViewService.GetGroupPlacementView][google.ads.googleads.v3.services.GroupPlacementViewService.GetGroupPlacementView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -18946,17 +17851,6 @@ pub mod group_placement_view_service_client {
     #[doc = " Service to fetch Group Placement views."]
     pub struct GroupPlacementViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GroupPlacementViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GroupPlacementViewServiceClient<T>
     where
@@ -19070,11 +17964,6 @@ pub mod group_placement_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GroupPlacementViewService> tonic::transport::NamedService
-        for GroupPlacementViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.GroupPlacementViewService";
-    }
 }
 /// Request message for [HotelGroupViewService.GetHotelGroupView][google.ads.googleads.v3.services.HotelGroupViewService.GetHotelGroupView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19090,17 +17979,6 @@ pub mod hotel_group_view_service_client {
     #[doc = " Service to manage Hotel Group Views."]
     pub struct HotelGroupViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl HotelGroupViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> HotelGroupViewServiceClient<T>
     where
@@ -19256,9 +18134,6 @@ pub mod hotel_group_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: HotelGroupViewService> tonic::transport::NamedService for HotelGroupViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.HotelGroupViewService";
-    }
 }
 /// Request message for [HotelPerformanceViewService.GetHotelPerformanceView][google.ads.googleads.v3.services.HotelPerformanceViewService.GetHotelPerformanceView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19274,17 +18149,6 @@ pub mod hotel_performance_view_service_client {
     #[doc = " Service to manage Hotel Performance Views."]
     pub struct HotelPerformanceViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl HotelPerformanceViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> HotelPerformanceViewServiceClient<T>
     where
@@ -19396,11 +18260,6 @@ pub mod hotel_performance_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: HotelPerformanceViewService> tonic::transport::NamedService
-        for HotelPerformanceViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.HotelPerformanceViewService";
-    }
 }
 /// Request message for fetching the invoices of a given billing setup that were
 /// issued during a given month.
@@ -19439,17 +18298,6 @@ pub mod invoice_service_client {
     #[doc = " A service to fetch invoices issued for a billing setup during a given month."]
     pub struct InvoiceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl InvoiceServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> InvoiceServiceClient<T>
     where
@@ -19603,9 +18451,6 @@ pub mod invoice_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: InvoiceService> tonic::transport::NamedService for InvoiceServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.InvoiceService";
-    }
 }
 /// Request message for [KeywordPlanAdGroupService.GetKeywordPlanAdGroup][google.ads.googleads.v3.services.KeywordPlanAdGroupService.GetKeywordPlanAdGroup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19692,17 +18537,6 @@ pub mod keyword_plan_ad_group_service_client {
     #[doc = " Service to manage Keyword Plan ad groups."]
     pub struct KeywordPlanAdGroupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl KeywordPlanAdGroupServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> KeywordPlanAdGroupServiceClient<T>
     where
@@ -19839,11 +18673,6 @@ pub mod keyword_plan_ad_group_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: KeywordPlanAdGroupService> tonic::transport::NamedService
-        for KeywordPlanAdGroupServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.KeywordPlanAdGroupService";
-    }
 }
 /// Request message for [KeywordPlanCampaignService.GetKeywordPlanCampaign][google.ads.googleads.v3.services.KeywordPlanCampaignService.GetKeywordPlanCampaign].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19931,17 +18760,6 @@ pub mod keyword_plan_campaign_service_client {
     #[doc = " Service to manage Keyword Plan campaigns."]
     pub struct KeywordPlanCampaignServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl KeywordPlanCampaignServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> KeywordPlanCampaignServiceClient<T>
     where
@@ -20076,11 +18894,6 @@ pub mod keyword_plan_campaign_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: KeywordPlanCampaignService> tonic::transport::NamedService
-        for KeywordPlanCampaignServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.KeywordPlanCampaignService";
-    }
 }
 /// Request message for [KeywordIdeaService.GenerateKeywordIdeas][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -20173,17 +18986,6 @@ pub mod keyword_plan_idea_service_client {
     #[doc = " Service to generate keyword ideas."]
     pub struct KeywordPlanIdeaServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl KeywordPlanIdeaServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> KeywordPlanIdeaServiceClient<T>
     where
@@ -20338,9 +19140,6 @@ pub mod keyword_plan_idea_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: KeywordPlanIdeaService> tonic::transport::NamedService for KeywordPlanIdeaServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.KeywordPlanIdeaService";
-    }
 }
 /// Request message for [KeywordPlanKeywordService.GetKeywordPlanKeyword][google.ads.googleads.v3.services.KeywordPlanKeywordService.GetKeywordPlanKeyword].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -20427,17 +19226,6 @@ pub mod keyword_plan_keyword_service_client {
     #[doc = " Service to manage Keyword Plan ad group keywords."]
     pub struct KeywordPlanKeywordServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl KeywordPlanKeywordServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> KeywordPlanKeywordServiceClient<T>
     where
@@ -20574,11 +19362,6 @@ pub mod keyword_plan_keyword_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: KeywordPlanKeywordService> tonic::transport::NamedService
-        for KeywordPlanKeywordServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.KeywordPlanKeywordService";
-    }
 }
 /// Request message for
 /// [KeywordPlanNegativeKeywordService.GetKeywordPlanNegativeKeyword][google.ads.googleads.v3.services.KeywordPlanNegativeKeywordService.GetKeywordPlanNegativeKeyword].
@@ -20672,17 +19455,6 @@ pub mod keyword_plan_negative_keyword_service_client {
     #[doc = " Service to manage Keyword Plan negative keywords."]
     pub struct KeywordPlanNegativeKeywordServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl KeywordPlanNegativeKeywordServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> KeywordPlanNegativeKeywordServiceClient<T>
     where
@@ -20821,12 +19593,6 @@ pub mod keyword_plan_negative_keyword_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: KeywordPlanNegativeKeywordService> tonic::transport::NamedService
-        for KeywordPlanNegativeKeywordServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.KeywordPlanNegativeKeywordService";
     }
 }
 /// Request message for [KeywordPlanService.GetKeywordPlan][google.ads.googleads.v3.services.KeywordPlanService.GetKeywordPlan].
@@ -21022,17 +19788,6 @@ pub mod keyword_plan_service_client {
     pub struct KeywordPlanServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl KeywordPlanServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> KeywordPlanServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -21214,9 +19969,6 @@ pub mod keyword_plan_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: KeywordPlanService> tonic::transport::NamedService for KeywordPlanServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.KeywordPlanService";
-    }
 }
 /// Request message for [KeywordViewService.GetKeywordView][google.ads.googleads.v3.services.KeywordViewService.GetKeywordView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -21232,17 +19984,6 @@ pub mod keyword_view_service_client {
     #[doc = " Service to manage keyword views."]
     pub struct KeywordViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl KeywordViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> KeywordViewServiceClient<T>
     where
@@ -21397,9 +20138,6 @@ pub mod keyword_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: KeywordViewService> tonic::transport::NamedService for KeywordViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.KeywordViewService";
-    }
 }
 /// Request message for [LandingPageViewService.GetLandingPageView][google.ads.googleads.v3.services.LandingPageViewService.GetLandingPageView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -21415,17 +20153,6 @@ pub mod landing_page_view_service_client {
     #[doc = " Service to fetch landing page views."]
     pub struct LandingPageViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl LandingPageViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> LandingPageViewServiceClient<T>
     where
@@ -21581,9 +20308,6 @@ pub mod landing_page_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: LandingPageViewService> tonic::transport::NamedService for LandingPageViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.LandingPageViewService";
-    }
 }
 /// Request message for [LanguageConstantService.GetLanguageConstant][google.ads.googleads.v3.services.LanguageConstantService.GetLanguageConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -21599,17 +20323,6 @@ pub mod language_constant_service_client {
     #[doc = " Service to fetch language constants."]
     pub struct LanguageConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl LanguageConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> LanguageConstantServiceClient<T>
     where
@@ -21765,11 +20478,6 @@ pub mod language_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: LanguageConstantService> tonic::transport::NamedService
-        for LanguageConstantServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.LanguageConstantService";
-    }
 }
 /// Request message for [LocationViewService.GetLocationView][google.ads.googleads.v3.services.LocationViewService.GetLocationView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -21785,17 +20493,6 @@ pub mod location_view_service_client {
     #[doc = " Service to fetch location views."]
     pub struct LocationViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl LocationViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> LocationViewServiceClient<T>
     where
@@ -21950,9 +20647,6 @@ pub mod location_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: LocationViewService> tonic::transport::NamedService for LocationViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.LocationViewService";
-    }
 }
 /// Request message for [ManagedPlacementViewService.GetManagedPlacementView][google.ads.googleads.v3.services.ManagedPlacementViewService.GetManagedPlacementView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -21968,17 +20662,6 @@ pub mod managed_placement_view_service_client {
     #[doc = " Service to manage Managed Placement views."]
     pub struct ManagedPlacementViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ManagedPlacementViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ManagedPlacementViewServiceClient<T>
     where
@@ -22090,11 +20773,6 @@ pub mod managed_placement_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ManagedPlacementViewService> tonic::transport::NamedService
-        for ManagedPlacementViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ManagedPlacementViewService";
-    }
 }
 /// Request message for [MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v3.services.MerchantCenterLinkService.ListMerchantCenterLinks].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -22176,17 +20854,6 @@ pub mod merchant_center_link_service_client {
     #[doc = " Merchant Center."]
     pub struct MerchantCenterLinkServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl MerchantCenterLinkServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> MerchantCenterLinkServiceClient<T>
     where
@@ -22343,11 +21010,6 @@ pub mod merchant_center_link_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: MerchantCenterLinkService> tonic::transport::NamedService
-        for MerchantCenterLinkServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.MerchantCenterLinkService";
-    }
 }
 /// Request message for
 /// [MobileAppCategoryConstantService.GetMobileAppCategoryConstant][google.ads.googleads.v3.services.MobileAppCategoryConstantService.GetMobileAppCategoryConstant].
@@ -22364,17 +21026,6 @@ pub mod mobile_app_category_constant_service_client {
     #[doc = " Service to fetch mobile app category constants."]
     pub struct MobileAppCategoryConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl MobileAppCategoryConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> MobileAppCategoryConstantServiceClient<T>
     where
@@ -22491,12 +21142,6 @@ pub mod mobile_app_category_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: MobileAppCategoryConstantService> tonic::transport::NamedService
-        for MobileAppCategoryConstantServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.MobileAppCategoryConstantService";
-    }
 }
 /// Request message for [MobileDeviceConstantService.GetMobileDeviceConstant][google.ads.googleads.v3.services.MobileDeviceConstantService.GetMobileDeviceConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -22512,17 +21157,6 @@ pub mod mobile_device_constant_service_client {
     #[doc = " Service to fetch mobile device constants."]
     pub struct MobileDeviceConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl MobileDeviceConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> MobileDeviceConstantServiceClient<T>
     where
@@ -22633,11 +21267,6 @@ pub mod mobile_device_constant_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: MobileDeviceConstantService> tonic::transport::NamedService
-        for MobileDeviceConstantServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.MobileDeviceConstantService";
     }
 }
 /// Request message for [MutateJobService.CreateMutateJobRequest][]
@@ -22758,17 +21387,6 @@ pub mod mutate_job_service_client {
     #[doc = " Service to manage mutate jobs."]
     pub struct MutateJobServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl MutateJobServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> MutateJobServiceClient<T>
     where
@@ -23163,9 +21781,6 @@ pub mod mutate_job_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: MutateJobService> tonic::transport::NamedService for MutateJobServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.MutateJobService";
-    }
 }
 /// Request message for
 /// [OfflineUserDataJobService.CreateOfflineUserDataJobRequest][]
@@ -23257,17 +21872,6 @@ pub mod offline_user_data_job_service_client {
     #[doc = " Service to manage offline user data jobs."]
     pub struct OfflineUserDataJobServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl OfflineUserDataJobServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> OfflineUserDataJobServiceClient<T>
     where
@@ -23457,11 +22061,6 @@ pub mod offline_user_data_job_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: OfflineUserDataJobService> tonic::transport::NamedService
-        for OfflineUserDataJobServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.OfflineUserDataJobService";
-    }
 }
 /// Request message for
 /// [OperatingSystemVersionConstantService.GetOperatingSystemVersionConstant][google.ads.googleads.v3.services.OperatingSystemVersionConstantService.GetOperatingSystemVersionConstant].
@@ -23478,17 +22077,6 @@ pub mod operating_system_version_constant_service_client {
     #[doc = " Service to fetch Operating System Version constants."]
     pub struct OperatingSystemVersionConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl OperatingSystemVersionConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> OperatingSystemVersionConstantServiceClient<T>
     where
@@ -23607,12 +22195,6 @@ pub mod operating_system_version_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: OperatingSystemVersionConstantService> tonic::transport::NamedService
-        for OperatingSystemVersionConstantServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.OperatingSystemVersionConstantService";
-    }
 }
 /// Request message for
 /// [PaidOrganicSearchTermViewService.GetPaidOrganicSearchTermView][google.ads.googleads.v3.services.PaidOrganicSearchTermViewService.GetPaidOrganicSearchTermView].
@@ -23629,17 +22211,6 @@ pub mod paid_organic_search_term_view_service_client {
     #[doc = " Service to fetch paid organic search term views."]
     pub struct PaidOrganicSearchTermViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl PaidOrganicSearchTermViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> PaidOrganicSearchTermViewServiceClient<T>
     where
@@ -23756,12 +22327,6 @@ pub mod paid_organic_search_term_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: PaidOrganicSearchTermViewService> tonic::transport::NamedService
-        for PaidOrganicSearchTermViewServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.PaidOrganicSearchTermViewService";
-    }
 }
 /// Request message for [ParentalStatusViewService.GetParentalStatusView][google.ads.googleads.v3.services.ParentalStatusViewService.GetParentalStatusView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -23777,17 +22342,6 @@ pub mod parental_status_view_service_client {
     #[doc = " Service to manage parental status views."]
     pub struct ParentalStatusViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ParentalStatusViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ParentalStatusViewServiceClient<T>
     where
@@ -23901,11 +22455,6 @@ pub mod parental_status_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ParentalStatusViewService> tonic::transport::NamedService
-        for ParentalStatusViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ParentalStatusViewService";
-    }
 }
 /// Request message for fetching all accessible payments accounts.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -23929,17 +22478,6 @@ pub mod payments_account_service_client {
     #[doc = " billing."]
     pub struct PaymentsAccountServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl PaymentsAccountServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> PaymentsAccountServiceClient<T>
     where
@@ -24099,9 +22637,6 @@ pub mod payments_account_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: PaymentsAccountService> tonic::transport::NamedService for PaymentsAccountServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.PaymentsAccountService";
-    }
 }
 /// Request message for
 /// [ProductBiddingCategoryService.GetProductBiddingCategory][].
@@ -24118,17 +22653,6 @@ pub mod product_bidding_category_constant_service_client {
     #[doc = " Service to fetch Product Bidding Categories."]
     pub struct ProductBiddingCategoryConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ProductBiddingCategoryConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ProductBiddingCategoryConstantServiceClient<T>
     where
@@ -24247,12 +22771,6 @@ pub mod product_bidding_category_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ProductBiddingCategoryConstantService> tonic::transport::NamedService
-        for ProductBiddingCategoryConstantServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.ProductBiddingCategoryConstantService";
-    }
 }
 /// Request message for [ProductGroupViewService.GetProductGroupView][google.ads.googleads.v3.services.ProductGroupViewService.GetProductGroupView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -24268,17 +22786,6 @@ pub mod product_group_view_service_client {
     #[doc = " Service to manage product group views."]
     pub struct ProductGroupViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ProductGroupViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ProductGroupViewServiceClient<T>
     where
@@ -24433,11 +22940,6 @@ pub mod product_group_view_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ProductGroupViewService> tonic::transport::NamedService
-        for ProductGroupViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ProductGroupViewService";
     }
 }
 /// Request message for [ReachForecastService.ListPlannableLocations][]
@@ -24768,17 +23270,6 @@ pub mod reach_plan_service_client {
     #[doc = " certain duration with a defined budget."]
     pub struct ReachPlanServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ReachPlanServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ReachPlanServiceClient<T>
     where
@@ -25113,9 +23604,6 @@ pub mod reach_plan_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ReachPlanService> tonic::transport::NamedService for ReachPlanServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.ReachPlanService";
-    }
 }
 /// Request message for [RecommendationService.GetRecommendation][google.ads.googleads.v3.services.RecommendationService.GetRecommendation].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -25337,17 +23825,6 @@ pub mod recommendation_service_client {
     #[doc = " Service to manage recommendations."]
     pub struct RecommendationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl RecommendationServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> RecommendationServiceClient<T>
     where
@@ -25615,9 +24092,6 @@ pub mod recommendation_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: RecommendationService> tonic::transport::NamedService for RecommendationServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.RecommendationService";
-    }
 }
 /// Request message for [SearchTermViewService.GetSearchTermView][google.ads.googleads.v3.services.SearchTermViewService.GetSearchTermView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -25633,17 +24107,6 @@ pub mod search_term_view_service_client {
     #[doc = " Service to manage search term views."]
     pub struct SearchTermViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl SearchTermViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> SearchTermViewServiceClient<T>
     where
@@ -25799,9 +24262,6 @@ pub mod search_term_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: SearchTermViewService> tonic::transport::NamedService for SearchTermViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.SearchTermViewService";
-    }
 }
 /// Request message for
 /// [ShoppingPerformanceViewService.GetShoppingPerformanceView][google.ads.googleads.v3.services.ShoppingPerformanceViewService.GetShoppingPerformanceView].
@@ -25818,17 +24278,6 @@ pub mod shopping_performance_view_service_client {
     #[doc = " Service to fetch Shopping performance views."]
     pub struct ShoppingPerformanceViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ShoppingPerformanceViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ShoppingPerformanceViewServiceClient<T>
     where
@@ -25940,12 +24389,6 @@ pub mod shopping_performance_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ShoppingPerformanceViewService> tonic::transport::NamedService
-        for ShoppingPerformanceViewServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.ads.googleads.v3.services.ShoppingPerformanceViewService";
-    }
 }
 /// Request message for [TopicConstantService.GetTopicConstant][google.ads.googleads.v3.services.TopicConstantService.GetTopicConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -25961,17 +24404,6 @@ pub mod topic_constant_service_client {
     #[doc = " Service to fetch topic constants."]
     pub struct TopicConstantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl TopicConstantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> TopicConstantServiceClient<T>
     where
@@ -26127,9 +24559,6 @@ pub mod topic_constant_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: TopicConstantService> tonic::transport::NamedService for TopicConstantServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.TopicConstantService";
-    }
 }
 /// Request message for [TopicViewService.GetTopicView][google.ads.googleads.v3.services.TopicViewService.GetTopicView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26145,17 +24574,6 @@ pub mod topic_view_service_client {
     #[doc = " Service to manage topic views."]
     pub struct TopicViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl TopicViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> TopicViewServiceClient<T>
     where
@@ -26310,9 +24728,6 @@ pub mod topic_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: TopicViewService> tonic::transport::NamedService for TopicViewServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.TopicViewService";
-    }
 }
 /// Request message for [UserDataService.UploadUserData][google.ads.googleads.v3.services.UserDataService.UploadUserData]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26371,17 +24786,6 @@ pub mod user_data_service_client {
     #[doc = " Accessible to whitelisted customers only."]
     pub struct UserDataServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl UserDataServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> UserDataServiceClient<T>
     where
@@ -26537,9 +24941,6 @@ pub mod user_data_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: UserDataService> tonic::transport::NamedService for UserDataServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.UserDataService";
-    }
 }
 /// Request message for [UserInterestService.GetUserInterest][google.ads.googleads.v3.services.UserInterestService.GetUserInterest].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26555,17 +24956,6 @@ pub mod user_interest_service_client {
     #[doc = " Service to fetch Google Ads User Interest."]
     pub struct UserInterestServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl UserInterestServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> UserInterestServiceClient<T>
     where
@@ -26720,9 +25110,6 @@ pub mod user_interest_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: UserInterestService> tonic::transport::NamedService for UserInterestServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.UserInterestService";
-    }
 }
 /// Request message for [UserLocationViewService.GetUserLocationView][google.ads.googleads.v3.services.UserLocationViewService.GetUserLocationView].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26738,17 +25125,6 @@ pub mod user_location_view_service_client {
     #[doc = " Service to manage user location views."]
     pub struct UserLocationViewServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl UserLocationViewServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> UserLocationViewServiceClient<T>
     where
@@ -26904,11 +25280,6 @@ pub mod user_location_view_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: UserLocationViewService> tonic::transport::NamedService
-        for UserLocationViewServiceServer<T>
-    {
-        const NAME: &'static str = "google.ads.googleads.v3.services.UserLocationViewService";
-    }
 }
 /// Request message for [VideoService.GetVideo][google.ads.googleads.v3.services.VideoService.GetVideo].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26924,17 +25295,6 @@ pub mod video_service_client {
     #[doc = " Service to manage videos."]
     pub struct VideoServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl VideoServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> VideoServiceClient<T>
     where
@@ -27085,8 +25445,5 @@ pub mod video_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: VideoService> tonic::transport::NamedService for VideoServiceServer<T> {
-        const NAME: &'static str = "google.ads.googleads.v3.services.VideoService";
     }
 }

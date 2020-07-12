@@ -1518,17 +1518,6 @@ pub mod grafeas_client {
     pub struct GrafeasClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl GrafeasClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> GrafeasClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -2382,8 +2371,5 @@ pub mod grafeas_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Grafeas> tonic::transport::NamedService for GrafeasServer<T> {
-        const NAME: &'static str = "grafeas.v1.Grafeas";
     }
 }

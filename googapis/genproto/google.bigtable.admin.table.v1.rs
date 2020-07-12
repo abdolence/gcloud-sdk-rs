@@ -227,17 +227,6 @@ pub mod bigtable_table_service_client {
     pub struct BigtableTableServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl BigtableTableServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> BigtableTableServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -843,8 +832,5 @@ pub mod bigtable_table_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: BigtableTableService> tonic::transport::NamedService for BigtableTableServiceServer<T> {
-        const NAME: &'static str = "google.bigtable.admin.table.v1.BigtableTableService";
     }
 }

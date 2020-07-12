@@ -95,17 +95,6 @@ pub mod lookup_service_client {
     pub struct LookupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl LookupServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> LookupServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -261,9 +250,6 @@ pub mod lookup_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: LookupService> tonic::transport::NamedService for LookupServiceServer<T> {
-        const NAME: &'static str = "google.cloud.servicedirectory.v1beta1.LookupService";
     }
 }
 /// A container for [services][google.cloud.servicedirectory.v1beta1.Service].
@@ -607,17 +593,6 @@ pub mod registration_service_client {
     #[doc = " `projects/*/locations/*/namespaces/*/services/*/endpoints/*`."]
     pub struct RegistrationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl RegistrationServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> RegistrationServiceClient<T>
     where
@@ -1760,8 +1735,5 @@ pub mod registration_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: RegistrationService> tonic::transport::NamedService for RegistrationServiceServer<T> {
-        const NAME: &'static str = "google.cloud.servicedirectory.v1beta1.RegistrationService";
     }
 }

@@ -480,17 +480,6 @@ pub mod game_server_clusters_service_client {
     pub struct GameServerClustersServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl GameServerClustersServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> GameServerClustersServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -774,11 +763,6 @@ pub mod game_server_clusters_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GameServerClustersService> tonic::transport::NamedService
-        for GameServerClustersServiceServer<T>
-    {
-        const NAME: &'static str = "google.cloud.gaming.v1beta.GameServerClustersService";
-    }
 }
 /// Request message for GameServerConfigsService.ListGameServerConfigs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -922,17 +906,6 @@ pub mod game_server_configs_service_client {
     #[doc = " The game server config configures the game servers in an Agones fleet."]
     pub struct GameServerConfigsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GameServerConfigsServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GameServerConfigsServiceClient<T>
     where
@@ -1275,11 +1248,6 @@ pub mod game_server_configs_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GameServerConfigsService> tonic::transport::NamedService
-        for GameServerConfigsServiceServer<T>
-    {
-        const NAME: &'static str = "google.cloud.gaming.v1beta.GameServerConfigsService";
-    }
 }
 /// Request message for GameServerDeploymentsService.ListGameServerDeployments.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1558,17 +1526,6 @@ pub mod game_server_deployments_service_client {
     #[doc = " fleets."]
     pub struct GameServerDeploymentsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GameServerDeploymentsServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GameServerDeploymentsServiceClient<T>
     where
@@ -1886,11 +1843,6 @@ pub mod game_server_deployments_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: GameServerDeploymentsService> tonic::transport::NamedService
-        for GameServerDeploymentsServiceServer<T>
-    {
-        const NAME: &'static str = "google.cloud.gaming.v1beta.GameServerDeploymentsService";
-    }
 }
 /// Request message for RealmsService.ListRealms.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2044,17 +1996,6 @@ pub mod realms_service_client {
     #[doc = " interchangeable."]
     pub struct RealmsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl RealmsServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> RealmsServiceClient<T>
     where
@@ -2498,8 +2439,5 @@ pub mod realms_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: RealmsService> tonic::transport::NamedService for RealmsServiceServer<T> {
-        const NAME: &'static str = "google.cloud.gaming.v1beta.RealmsService";
     }
 }

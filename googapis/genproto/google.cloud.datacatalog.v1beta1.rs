@@ -1133,17 +1133,6 @@ pub mod data_catalog_client {
     pub struct DataCatalogClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl DataCatalogClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> DataCatalogClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -2987,9 +2976,6 @@ pub mod data_catalog_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: DataCatalog> tonic::transport::NamedService for DataCatalogServer<T> {
-        const NAME: &'static str = "google.cloud.datacatalog.v1beta1.DataCatalog";
-    }
 }
 /// A taxonomy is a collection of policy tags that classify data along a common
 /// axis. For instance a data *sensitivity* taxonomy could contain policy tags
@@ -3221,17 +3207,6 @@ pub mod policy_tag_manager_client {
     #[doc = " and policy tags."]
     pub struct PolicyTagManagerClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl PolicyTagManagerClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> PolicyTagManagerClient<T>
     where
@@ -4084,9 +4059,6 @@ pub mod policy_tag_manager_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: PolicyTagManager> tonic::transport::NamedService for PolicyTagManagerServer<T> {
-        const NAME: &'static str = "google.cloud.datacatalog.v1beta1.PolicyTagManager";
-    }
 }
 /// Message capturing a taxonomy and its policy tag hierarchy as a nested proto.
 /// Used for taxonomy import/export and mutation.
@@ -4195,17 +4167,6 @@ pub mod policy_tag_manager_serialization_client {
     #[doc = " their taxonomies and policy tags data with serialized format."]
     pub struct PolicyTagManagerSerializationClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl PolicyTagManagerSerializationClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> PolicyTagManagerSerializationClient<T>
     where
@@ -4354,10 +4315,5 @@ pub mod policy_tag_manager_serialization_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: PolicyTagManagerSerialization> tonic::transport::NamedService
-        for PolicyTagManagerSerializationServer<T>
-    {
-        const NAME: &'static str = "google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization";
     }
 }

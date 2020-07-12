@@ -1080,17 +1080,6 @@ pub mod video_intelligence_service_client {
     pub struct VideoIntelligenceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl VideoIntelligenceServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> VideoIntelligenceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1150,17 +1139,6 @@ pub mod streaming_video_intelligence_service_client {
     #[doc = " Service that implements streaming Video Intelligence API."]
     pub struct StreamingVideoIntelligenceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl StreamingVideoIntelligenceServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> StreamingVideoIntelligenceServiceClient<T>
     where
@@ -1284,12 +1262,6 @@ pub mod video_intelligence_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: VideoIntelligenceService> tonic::transport::NamedService
-        for VideoIntelligenceServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.cloud.videointelligence.v1p3beta1.VideoIntelligenceService";
-    }
 }
 #[doc = r" Generated server implementations."]
 pub mod streaming_video_intelligence_service_server {
@@ -1362,11 +1334,5 @@ pub mod streaming_video_intelligence_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: StreamingVideoIntelligenceService> tonic::transport::NamedService
-        for StreamingVideoIntelligenceServiceServer<T>
-    {
-        const NAME: &'static str =
-            "google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService";
     }
 }

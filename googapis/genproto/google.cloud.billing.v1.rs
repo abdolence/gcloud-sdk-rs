@@ -175,17 +175,6 @@ pub mod cloud_billing_client {
     pub struct CloudBillingClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl CloudBillingClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> CloudBillingClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -990,9 +979,6 @@ pub mod cloud_billing_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CloudBilling> tonic::transport::NamedService for CloudBillingServer<T> {
-        const NAME: &'static str = "google.cloud.billing.v1.CloudBilling";
-    }
 }
 /// Encapsulates a single service in Google Cloud Platform.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1277,17 +1263,6 @@ pub mod cloud_catalog_client {
     pub struct CloudCatalogClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl CloudCatalogClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> CloudCatalogClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1494,8 +1469,5 @@ pub mod cloud_catalog_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: CloudCatalog> tonic::transport::NamedService for CloudCatalogServer<T> {
-        const NAME: &'static str = "google.cloud.billing.v1.CloudCatalog";
     }
 }

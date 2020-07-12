@@ -372,17 +372,6 @@ pub mod cloud_memcache_client {
     pub struct CloudMemcacheClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl CloudMemcacheClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> CloudMemcacheClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -916,8 +905,5 @@ pub mod cloud_memcache_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: CloudMemcache> tonic::transport::NamedService for CloudMemcacheServer<T> {
-        const NAME: &'static str = "google.cloud.memcache.v1beta2.CloudMemcache";
     }
 }

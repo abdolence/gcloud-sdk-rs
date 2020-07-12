@@ -658,17 +658,6 @@ pub mod cloud_scheduler_client {
     pub struct CloudSchedulerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl CloudSchedulerClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> CloudSchedulerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1234,8 +1223,5 @@ pub mod cloud_scheduler_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: CloudScheduler> tonic::transport::NamedService for CloudSchedulerServer<T> {
-        const NAME: &'static str = "google.cloud.scheduler.v1beta1.CloudScheduler";
     }
 }

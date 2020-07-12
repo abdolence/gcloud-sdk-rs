@@ -1175,17 +1175,6 @@ pub mod application_service_client {
     pub struct ApplicationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ApplicationServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ApplicationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1564,9 +1553,6 @@ pub mod application_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ApplicationService> tonic::transport::NamedService for ApplicationServiceServer<T> {
-        const NAME: &'static str = "google.cloud.talent.v4beta1.ApplicationService";
-    }
 }
 /// A Company resource represents a company in the service. A company is the
 /// entity that owns job postings, that is, the hiring entity responsible for
@@ -1764,17 +1750,6 @@ pub mod company_service_client {
     #[doc = " A service that handles company management, including CRUD and enumeration."]
     pub struct CompanyServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CompanyServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CompanyServiceClient<T>
     where
@@ -2148,9 +2123,6 @@ pub mod company_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CompanyService> tonic::transport::NamedService for CompanyServiceServer<T> {
-        const NAME: &'static str = "google.cloud.talent.v4beta1.CompanyService";
-    }
 }
 /// Auto-complete parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2274,17 +2246,6 @@ pub mod completion_client {
     #[doc = " A service handles auto completion."]
     pub struct CompletionClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CompletionClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CompletionClient<T>
     where
@@ -2439,9 +2400,6 @@ pub mod completion_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Completion> tonic::transport::NamedService for CompletionServer<T> {
-        const NAME: &'static str = "google.cloud.talent.v4beta1.Completion";
     }
 }
 /// An event issued when an end user interacts with the application that
@@ -2673,17 +2631,6 @@ pub mod event_service_client {
     pub struct EventServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl EventServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> EventServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -2848,9 +2795,6 @@ pub mod event_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: EventService> tonic::transport::NamedService for EventServiceServer<T> {
-        const NAME: &'static str = "google.cloud.talent.v4beta1.EventService";
     }
 }
 /// The query required to perform a search query.
@@ -4664,17 +4608,6 @@ pub mod job_service_client {
     pub struct JobServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl JobServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> JobServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -5367,9 +5300,6 @@ pub mod job_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: JobService> tonic::transport::NamedService for JobServiceServer<T> {
-        const NAME: &'static str = "google.cloud.talent.v4beta1.JobService";
     }
 } // Cloud Profile Discovery API definition
 
@@ -6508,17 +6438,6 @@ pub mod profile_service_client {
     pub struct ProfileServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ProfileServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ProfileServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -6960,9 +6879,6 @@ pub mod profile_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ProfileService> tonic::transport::NamedService for ProfileServiceServer<T> {
-        const NAME: &'static str = "google.cloud.talent.v4beta1.ProfileService";
-    }
 }
 /// A Tenant resource represents a tenant in the service. A tenant is a group or
 /// entity that shares common access with specific privileges for resources like
@@ -7101,17 +7017,6 @@ pub mod tenant_service_client {
     #[doc = " A service that handles tenant management, including CRUD and enumeration."]
     pub struct TenantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl TenantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> TenantServiceClient<T>
     where
@@ -7482,8 +7387,5 @@ pub mod tenant_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: TenantService> tonic::transport::NamedService for TenantServiceServer<T> {
-        const NAME: &'static str = "google.cloud.talent.v4beta1.TenantService";
     }
 }

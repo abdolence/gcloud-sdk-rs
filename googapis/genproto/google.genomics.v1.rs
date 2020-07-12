@@ -541,17 +541,6 @@ pub mod annotation_service_v1_client {
     pub struct AnnotationServiceV1Client<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl AnnotationServiceV1Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> AnnotationServiceV1Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1386,9 +1375,6 @@ pub mod annotation_service_v1_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AnnotationServiceV1> tonic::transport::NamedService for AnnotationServiceV1Server<T> {
-        const NAME: &'static str = "google.genomics.v1.AnnotationServiceV1";
-    }
 }
 /// A single CIGAR operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1551,17 +1537,6 @@ pub mod dataset_service_v1_client {
     #[doc = " This service manages datasets, which are collections of genomic data."]
     pub struct DatasetServiceV1Client<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl DatasetServiceV1Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> DatasetServiceV1Client<T>
     where
@@ -2287,9 +2262,6 @@ pub mod dataset_service_v1_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: DatasetServiceV1> tonic::transport::NamedService for DatasetServiceV1Server<T> {
-        const NAME: &'static str = "google.genomics.v1.DatasetServiceV1";
     }
 }
 /// Metadata describing an [Operation][google.longrunning.Operation].
@@ -3018,17 +2990,6 @@ pub mod streaming_read_service_client {
     pub struct StreamingReadServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl StreamingReadServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> StreamingReadServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -3088,17 +3049,6 @@ pub mod read_service_v1_client {
     #[doc = " The Readstore. A data store for DNA sequencing Reads."]
     pub struct ReadServiceV1Client<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ReadServiceV1Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ReadServiceV1Client<T>
     where
@@ -3462,9 +3412,6 @@ pub mod streaming_read_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: StreamingReadService> tonic::transport::NamedService for StreamingReadServiceServer<T> {
-        const NAME: &'static str = "google.genomics.v1.StreamingReadService";
     }
 }
 #[doc = r" Generated server implementations."]
@@ -3928,9 +3875,6 @@ pub mod read_service_v1_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ReadServiceV1> tonic::transport::NamedService for ReadServiceV1Server<T> {
-        const NAME: &'static str = "google.genomics.v1.ReadServiceV1";
-    }
 }
 /// A reference is a canonical assembled DNA sequence, intended to act as a
 /// reference coordinate space for other genomic annotations. A single reference
@@ -4142,17 +4086,6 @@ pub mod reference_service_v1_client {
     use tonic::codegen::*;
     pub struct ReferenceServiceV1Client<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ReferenceServiceV1Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ReferenceServiceV1Client<T>
     where
@@ -4598,9 +4531,6 @@ pub mod reference_service_v1_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ReferenceServiceV1> tonic::transport::NamedService for ReferenceServiceV1Server<T> {
-        const NAME: &'static str = "google.genomics.v1.ReferenceServiceV1";
     }
 }
 /// Metadata describes a single piece of variant call metadata.
@@ -5223,17 +5153,6 @@ pub mod streaming_variant_service_client {
     pub struct StreamingVariantServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl StreamingVariantServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> StreamingVariantServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -5292,17 +5211,6 @@ pub mod variant_service_v1_client {
     use tonic::codegen::*;
     pub struct VariantServiceV1Client<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl VariantServiceV1Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> VariantServiceV1Client<T>
     where
@@ -5944,11 +5852,6 @@ pub mod streaming_variant_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: StreamingVariantService> tonic::transport::NamedService
-        for StreamingVariantServiceServer<T>
-    {
-        const NAME: &'static str = "google.genomics.v1.StreamingVariantService";
     }
 }
 #[doc = r" Generated server implementations."]
@@ -6907,8 +6810,5 @@ pub mod variant_service_v1_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: VariantServiceV1> tonic::transport::NamedService for VariantServiceV1Server<T> {
-        const NAME: &'static str = "google.genomics.v1.VariantServiceV1";
     }
 }

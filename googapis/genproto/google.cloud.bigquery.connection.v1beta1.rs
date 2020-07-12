@@ -176,17 +176,6 @@ pub mod connection_service_client {
     pub struct ConnectionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ConnectionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ConnectionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -525,8 +514,5 @@ pub mod connection_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ConnectionService> tonic::transport::NamedService for ConnectionServiceServer<T> {
-        const NAME: &'static str = "google.cloud.bigquery.connection.v1beta1.ConnectionService";
     }
 }

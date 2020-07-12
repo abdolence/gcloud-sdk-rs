@@ -1198,17 +1198,6 @@ pub mod data_catalog_client {
     pub struct DataCatalogClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl DataCatalogClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> DataCatalogClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -3075,8 +3064,5 @@ pub mod data_catalog_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: DataCatalog> tonic::transport::NamedService for DataCatalogServer<T> {
-        const NAME: &'static str = "google.cloud.datacatalog.v1.DataCatalog";
     }
 }

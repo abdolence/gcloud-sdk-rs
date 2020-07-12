@@ -707,17 +707,6 @@ pub mod speech_client {
     pub struct SpeechClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl SpeechClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> SpeechClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1011,8 +1000,5 @@ pub mod speech_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Speech> tonic::transport::NamedService for SpeechServer<T> {
-        const NAME: &'static str = "google.cloud.speech.v1.Speech";
     }
 }

@@ -6,17 +6,6 @@ pub mod routes_alpha_client {
     pub struct RoutesAlphaClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl RoutesAlphaClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> RoutesAlphaClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -309,8 +298,5 @@ pub mod routes_alpha_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: RoutesAlpha> tonic::transport::NamedService for RoutesAlphaServer<T> {
-        const NAME: &'static str = "google.maps.routes.v1alpha.RoutesAlpha";
     }
 }

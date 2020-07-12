@@ -889,17 +889,6 @@ pub mod image_annotator_client {
     pub struct ImageAnnotatorClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ImageAnnotatorClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ImageAnnotatorClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1054,8 +1043,5 @@ pub mod image_annotator_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ImageAnnotator> tonic::transport::NamedService for ImageAnnotatorServer<T> {
-        const NAME: &'static str = "google.cloud.vision.v1p1beta1.ImageAnnotator";
     }
 }

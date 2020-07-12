@@ -203,17 +203,6 @@ pub mod text_to_speech_client {
     pub struct TextToSpeechClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl TextToSpeechClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> TextToSpeechClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -421,8 +410,5 @@ pub mod text_to_speech_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: TextToSpeech> tonic::transport::NamedService for TextToSpeechServer<T> {
-        const NAME: &'static str = "google.cloud.texttospeech.v1.TextToSpeech";
     }
 }

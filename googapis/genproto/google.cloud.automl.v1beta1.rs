@@ -3382,17 +3382,6 @@ pub mod prediction_service_client {
     pub struct PredictionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl PredictionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> PredictionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -3665,9 +3654,6 @@ pub mod prediction_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: PredictionService> tonic::transport::NamedService for PredictionServiceServer<T> {
-        const NAME: &'static str = "google.cloud.automl.v1beta1.PredictionService";
     }
 }
 /// A specification of a relational table.
@@ -4114,17 +4100,6 @@ pub mod auto_ml_client {
     #[doc = " snake_case or kebab-case, either of those cases is accepted."]
     pub struct AutoMlClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AutoMlClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AutoMlClient<T>
     where
@@ -5694,8 +5669,5 @@ pub mod auto_ml_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: AutoMl> tonic::transport::NamedService for AutoMlServer<T> {
-        const NAME: &'static str = "google.cloud.automl.v1beta1.AutoMl";
     }
 }

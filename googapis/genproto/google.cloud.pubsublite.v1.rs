@@ -362,17 +362,6 @@ pub mod admin_service_client {
     pub struct AdminServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl AdminServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> AdminServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1127,9 +1116,6 @@ pub mod admin_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AdminService> tonic::transport::NamedService for AdminServiceServer<T> {
-        const NAME: &'static str = "google.cloud.pubsublite.v1.AdminService";
-    }
 }
 /// The first streaming request that must be sent on a newly-opened stream. The
 /// client must wait for the response before sending subsequent requests on the
@@ -1266,17 +1252,6 @@ pub mod cursor_service_client {
     #[doc = " progress within a topic partition for a given subscription."]
     pub struct CursorServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl CursorServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> CursorServiceClient<T>
     where
@@ -1558,9 +1533,6 @@ pub mod cursor_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CursorService> tonic::transport::NamedService for CursorServiceServer<T> {
-        const NAME: &'static str = "google.cloud.pubsublite.v1.CursorService";
-    }
 }
 /// The first request that must be sent on a newly-opened stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1635,17 +1607,6 @@ pub mod publisher_service_client {
     #[doc = " to subscriber clients upon request (via the `SubscriberService`)."]
     pub struct PublisherServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl PublisherServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> PublisherServiceClient<T>
     where
@@ -1822,9 +1783,6 @@ pub mod publisher_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: PublisherService> tonic::transport::NamedService for PublisherServiceServer<T> {
-        const NAME: &'static str = "google.cloud.pubsublite.v1.PublisherService";
-    }
 }
 /// The first request that must be sent on a newly-opened stream. The client must
 /// wait for the response before sending subsequent requests on the stream.
@@ -1960,17 +1918,6 @@ pub mod subscriber_service_client {
     #[doc = " from subscriptions."]
     pub struct SubscriberServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl SubscriberServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> SubscriberServiceClient<T>
     where
@@ -2135,8 +2082,5 @@ pub mod subscriber_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: SubscriberService> tonic::transport::NamedService for SubscriberServiceServer<T> {
-        const NAME: &'static str = "google.cloud.pubsublite.v1.SubscriberService";
     }
 }

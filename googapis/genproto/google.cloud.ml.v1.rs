@@ -575,17 +575,6 @@ pub mod job_service_client {
     pub struct JobServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl JobServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> JobServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -891,9 +880,6 @@ pub mod job_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: JobService> tonic::transport::NamedService for JobServiceServer<T> {
-        const NAME: &'static str = "google.cloud.ml.v1.JobService";
-    }
 }
 /// Represents a machine learning solution.
 ///
@@ -1162,17 +1148,6 @@ pub mod model_service_client {
     #[doc = "     to start a batch prediction job."]
     pub struct ModelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ModelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ModelServiceClient<T>
     where
@@ -1881,9 +1856,6 @@ pub mod model_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ModelService> tonic::transport::NamedService for ModelServiceServer<T> {
-        const NAME: &'static str = "google.cloud.ml.v1.ModelService";
-    }
 } // Copyright 2017 Google Inc. All Rights Reserved.
   //
   // Proto file for the Google Cloud Machine Learning Engine.
@@ -2136,17 +2108,6 @@ pub mod online_prediction_service_client {
     pub struct OnlinePredictionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl OnlinePredictionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> OnlinePredictionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -2305,11 +2266,6 @@ pub mod online_prediction_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: OnlinePredictionService> tonic::transport::NamedService
-        for OnlinePredictionServiceServer<T>
-    {
-        const NAME: &'static str = "google.cloud.ml.v1.OnlinePredictionService";
-    }
 }
 /// Requests service account information associated with a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2337,17 +2293,6 @@ pub mod project_management_service_client {
     #[doc = " Allows retrieving project related information."]
     pub struct ProjectManagementServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ProjectManagementServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ProjectManagementServiceClient<T>
     where
@@ -2506,10 +2451,5 @@ pub mod project_management_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ProjectManagementService> tonic::transport::NamedService
-        for ProjectManagementServiceServer<T>
-    {
-        const NAME: &'static str = "google.cloud.ml.v1.ProjectManagementService";
     }
 }

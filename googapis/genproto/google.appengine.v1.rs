@@ -1141,17 +1141,6 @@ pub mod instances_client {
     pub struct InstancesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl InstancesClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> InstancesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1264,17 +1253,6 @@ pub mod versions_client {
     #[doc = " Manages versions of a service."]
     pub struct VersionsClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl VersionsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> VersionsClient<T>
     where
@@ -1412,17 +1390,6 @@ pub mod services_client {
     pub struct ServicesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ServicesClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ServicesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1525,17 +1492,6 @@ pub mod applications_client {
     #[doc = " Manages App Engine applications."]
     pub struct ApplicationsClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ApplicationsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ApplicationsClient<T>
     where
@@ -1829,9 +1785,6 @@ pub mod instances_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Instances> tonic::transport::NamedService for InstancesServer<T> {
-        const NAME: &'static str = "google.appengine.v1.Instances";
-    }
 }
 #[doc = r" Generated server implementations."]
 pub mod versions_server {
@@ -2097,9 +2050,6 @@ pub mod versions_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Versions> tonic::transport::NamedService for VersionsServer<T> {
-        const NAME: &'static str = "google.appengine.v1.Versions";
-    }
 }
 #[doc = r" Generated server implementations."]
 pub mod services_server {
@@ -2313,9 +2263,6 @@ pub mod services_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Services> tonic::transport::NamedService for ServicesServer<T> {
-        const NAME: &'static str = "google.appengine.v1.Services";
-    }
 }
 #[doc = r" Generated server implementations."]
 pub mod applications_server {
@@ -2464,9 +2411,6 @@ pub mod applications_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Applications> tonic::transport::NamedService for ApplicationsServer<T> {
-        const NAME: &'static str = "google.appengine.v1.Applications";
     }
 }
 /// App Engine admin service audit log.

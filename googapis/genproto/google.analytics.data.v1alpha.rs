@@ -903,17 +903,6 @@ pub mod alpha_analytics_data_client {
     pub struct AlphaAnalyticsDataClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl AlphaAnalyticsDataClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> AlphaAnalyticsDataClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1257,8 +1246,5 @@ pub mod alpha_analytics_data_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: AlphaAnalyticsData> tonic::transport::NamedService for AlphaAnalyticsDataServer<T> {
-        const NAME: &'static str = "google.analytics.data.v1alpha.AlphaAnalyticsData";
     }
 }

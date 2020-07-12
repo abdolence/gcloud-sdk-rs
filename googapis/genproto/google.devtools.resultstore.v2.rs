@@ -1830,17 +1830,6 @@ pub mod result_store_download_client {
     pub struct ResultStoreDownloadClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ResultStoreDownloadClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ResultStoreDownloadClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -2426,9 +2415,6 @@ pub mod result_store_download_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ResultStoreDownload> tonic::transport::NamedService for ResultStoreDownloadServer<T> {
-        const NAME: &'static str = "google.devtools.resultstore.v2.ResultStoreDownload";
-    }
 }
 /// Request object for GetFile
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2506,17 +2492,6 @@ pub mod result_store_file_download_client {
     #[doc = " ResultStore resources."]
     pub struct ResultStoreFileDownloadClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ResultStoreFileDownloadClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ResultStoreFileDownloadClient<T>
     where
@@ -2755,11 +2730,6 @@ pub mod result_store_file_download_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ResultStoreFileDownload> tonic::transport::NamedService
-        for ResultStoreFileDownloadServer<T>
-    {
-        const NAME: &'static str = "google.devtools.resultstore.v2.ResultStoreFileDownload";
     }
 }
 /// The upload metadata for an invocation
@@ -3525,17 +3495,6 @@ pub mod result_store_upload_client {
     #[doc = " out of memory."]
     pub struct ResultStoreUploadClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ResultStoreUploadClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ResultStoreUploadClient<T>
     where
@@ -5503,8 +5462,5 @@ pub mod result_store_upload_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ResultStoreUpload> tonic::transport::NamedService for ResultStoreUploadServer<T> {
-        const NAME: &'static str = "google.devtools.resultstore.v2.ResultStoreUpload";
     }
 }

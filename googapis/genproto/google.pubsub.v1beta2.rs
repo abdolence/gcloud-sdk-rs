@@ -306,17 +306,6 @@ pub mod subscriber_client {
     pub struct SubscriberClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl SubscriberClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> SubscriberClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -516,17 +505,6 @@ pub mod publisher_client {
     #[doc = " messages to a topic."]
     pub struct PublisherClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl PublisherClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> PublisherClient<T>
     where
@@ -1056,9 +1034,6 @@ pub mod subscriber_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Subscriber> tonic::transport::NamedService for SubscriberServer<T> {
-        const NAME: &'static str = "google.pubsub.v1beta2.Subscriber";
-    }
 }
 #[doc = r" Generated server implementations."]
 pub mod publisher_server {
@@ -1349,8 +1324,5 @@ pub mod publisher_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Publisher> tonic::transport::NamedService for PublisherServer<T> {
-        const NAME: &'static str = "google.pubsub.v1beta2.Publisher";
     }
 }

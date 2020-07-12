@@ -236,17 +236,6 @@ pub mod folders_client {
     pub struct FoldersClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl FoldersClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> FoldersClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1171,8 +1160,5 @@ pub mod folders_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Folders> tonic::transport::NamedService for FoldersServer<T> {
-        const NAME: &'static str = "google.cloud.resourcemanager.v2.Folders";
     }
 }

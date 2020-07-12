@@ -884,17 +884,6 @@ pub mod publisher_client {
     pub struct PublisherClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl PublisherClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> PublisherClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1094,17 +1083,6 @@ pub mod subscriber_client {
     #[doc = " establishing a bi-directional stream using the `StreamingPull` method."]
     pub struct SubscriberClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl SubscriberClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> SubscriberClient<T>
     where
@@ -1901,9 +1879,6 @@ pub mod publisher_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Publisher> tonic::transport::NamedService for PublisherServer<T> {
-        const NAME: &'static str = "google.pubsub.v1.Publisher";
-    }
 }
 #[doc = r" Generated server implementations."]
 pub mod subscriber_server {
@@ -2668,8 +2643,5 @@ pub mod subscriber_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Subscriber> tonic::transport::NamedService for SubscriberServer<T> {
-        const NAME: &'static str = "google.pubsub.v1.Subscriber";
     }
 }

@@ -168,17 +168,6 @@ pub mod error_group_service_client {
     pub struct ErrorGroupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ErrorGroupServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ErrorGroupServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -386,9 +375,6 @@ pub mod error_group_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ErrorGroupService> tonic::transport::NamedService for ErrorGroupServiceServer<T> {
-        const NAME: &'static str = "google.devtools.clouderrorreporting.v1beta1.ErrorGroupService";
     }
 }
 /// Specifies a set of `ErrorGroupStats` to return.
@@ -695,17 +681,6 @@ pub mod error_stats_service_client {
     pub struct ErrorStatsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ErrorStatsServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ErrorStatsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -971,9 +946,6 @@ pub mod error_stats_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ErrorStatsService> tonic::transport::NamedService for ErrorStatsServiceServer<T> {
-        const NAME: &'static str = "google.devtools.clouderrorreporting.v1beta1.ErrorStatsService";
-    }
 }
 /// A request for reporting an individual error event.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1041,17 +1013,6 @@ pub mod report_errors_service_client {
     #[doc = " An API for reporting error events."]
     pub struct ReportErrorsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ReportErrorsServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ReportErrorsServiceClient<T>
     where
@@ -1179,9 +1140,5 @@ pub mod report_errors_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ReportErrorsService> tonic::transport::NamedService for ReportErrorsServiceServer<T> {
-        const NAME: &'static str =
-            "google.devtools.clouderrorreporting.v1beta1.ReportErrorsService";
     }
 }

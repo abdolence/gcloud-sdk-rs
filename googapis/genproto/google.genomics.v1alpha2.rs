@@ -572,17 +572,6 @@ pub mod pipelines_v1_alpha2_client {
     pub struct PipelinesV1Alpha2Client<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl PipelinesV1Alpha2Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> PipelinesV1Alpha2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1112,8 +1101,5 @@ pub mod pipelines_v1_alpha2_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: PipelinesV1Alpha2> tonic::transport::NamedService for PipelinesV1Alpha2Server<T> {
-        const NAME: &'static str = "google.genomics.v1alpha2.PipelinesV1Alpha2";
     }
 }

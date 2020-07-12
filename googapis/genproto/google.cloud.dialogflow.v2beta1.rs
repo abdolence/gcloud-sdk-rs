@@ -391,17 +391,6 @@ pub mod environments_client {
     pub struct EnvironmentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl EnvironmentsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> EnvironmentsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -554,9 +543,6 @@ pub mod environments_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Environments> tonic::transport::NamedService for EnvironmentsServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.Environments";
     }
 }
 /// Represents a single validation error.
@@ -918,17 +904,6 @@ pub mod agents_client {
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/agents-overview)."]
     pub struct AgentsClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl AgentsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> AgentsClient<T>
     where
@@ -1631,9 +1606,6 @@ pub mod agents_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Agents> tonic::transport::NamedService for AgentsServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.Agents";
-    }
 }
 /// Represents a context.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1796,17 +1768,6 @@ pub mod contexts_client {
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/contexts-overview)."]
     pub struct ContextsClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ContextsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ContextsClient<T>
     where
@@ -2246,9 +2207,6 @@ pub mod contexts_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Contexts> tonic::transport::NamedService for ContextsServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.Contexts";
-    }
 }
 /// Google Cloud Storage location for single input.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2493,17 +2451,6 @@ pub mod documents_client {
     #[doc = " Manages documents of a knowledge base."]
     pub struct DocumentsClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl DocumentsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> DocumentsClient<T>
     where
@@ -2996,9 +2943,6 @@ pub mod documents_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Documents> tonic::transport::NamedService for DocumentsServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.Documents";
-    }
 }
 /// Represents an entity type.
 /// Entity types serve as a tool for extracting parameter values from natural
@@ -3347,17 +3291,6 @@ pub mod entity_types_client {
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/entities-overview)."]
     pub struct EntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl EntityTypesClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> EntityTypesClient<T>
     where
@@ -4087,9 +4020,6 @@ pub mod entity_types_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: EntityTypes> tonic::transport::NamedService for EntityTypesServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.EntityTypes";
     }
 }
 /// Represents an intent.
@@ -5457,17 +5387,6 @@ pub mod intents_client {
     pub struct IntentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl IntentsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> IntentsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -5991,9 +5910,6 @@ pub mod intents_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Intents> tonic::transport::NamedService for IntentsServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.Intents";
-    }
 }
 /// Represents knowledge base resource.
 ///
@@ -6094,17 +6010,6 @@ pub mod knowledge_bases_client {
     #[doc = " Allows users to setup and maintain knowledge bases with their knowledge data."]
     pub struct KnowledgeBasesClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl KnowledgeBasesClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> KnowledgeBasesClient<T>
     where
@@ -6515,9 +6420,6 @@ pub mod knowledge_bases_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: KnowledgeBases> tonic::transport::NamedService for KnowledgeBasesServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.KnowledgeBases";
-    }
 }
 /// Represents a session entity type.
 ///
@@ -6674,17 +6576,6 @@ pub mod session_entity_types_client {
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/entities-overview)."]
     pub struct SessionEntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl SessionEntityTypesClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> SessionEntityTypesClient<T>
     where
@@ -7127,9 +7018,6 @@ pub mod session_entity_types_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: SessionEntityTypes> tonic::transport::NamedService for SessionEntityTypesServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.SessionEntityTypes";
     }
 }
 /// The request to detect user's intent.
@@ -7811,17 +7699,6 @@ pub mod sessions_client {
     pub struct SessionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl SessionsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> SessionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -8054,9 +7931,6 @@ pub mod sessions_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Sessions> tonic::transport::NamedService for SessionsServer<T> {
-        const NAME: &'static str = "google.cloud.dialogflow.v2beta1.Sessions";
     }
 }
 /// The request message for a webhook call.

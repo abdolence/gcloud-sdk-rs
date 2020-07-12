@@ -902,17 +902,6 @@ pub mod alert_policy_service_client {
     pub struct AlertPolicyServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl AlertPolicyServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> AlertPolicyServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1304,9 +1293,6 @@ pub mod alert_policy_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: AlertPolicyService> tonic::transport::NamedService for AlertPolicyServiceServer<T> {
-        const NAME: &'static str = "google.monitoring.v3.AlertPolicyService";
-    }
 }
 /// A set of (label, value) pairs which were dropped during aggregation, attached
 /// to google.api.Distribution.Exemplars in google.api.Distribution values during
@@ -1571,17 +1557,6 @@ pub mod group_service_client {
     #[doc = " from the infrastructure."]
     pub struct GroupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl GroupServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> GroupServiceClient<T>
     where
@@ -2012,9 +1987,6 @@ pub mod group_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: GroupService> tonic::transport::NamedService for GroupServiceServer<T> {
-        const NAME: &'static str = "google.monitoring.v3.GroupService";
     }
 }
 /// A single data point in a time series.
@@ -2565,17 +2537,6 @@ pub mod metric_service_client {
     #[doc = " time series data."]
     pub struct MetricServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl MetricServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> MetricServiceClient<T>
     where
@@ -3149,9 +3110,6 @@ pub mod metric_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: MetricService> tonic::transport::NamedService for MetricServiceServer<T> {
-        const NAME: &'static str = "google.monitoring.v3.MetricService";
-    }
 }
 /// A description of a notification channel. The descriptor includes
 /// the properties of the channel and the set of labels or fields that
@@ -3514,17 +3472,6 @@ pub mod notification_channel_service_client {
     #[doc = " controls how messages related to incidents are sent."]
     pub struct NotificationChannelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl NotificationChannelServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> NotificationChannelServiceClient<T>
     where
@@ -3899,11 +3846,6 @@ pub mod notification_channel_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: NotificationChannelService> tonic::transport::NamedService
-        for NotificationChannelServiceServer<T>
-    {
-        const NAME: &'static str = "google.monitoring.v3.NotificationChannelService";
     }
 }
 /// A `Service` is a discrete, autonomous, and network-accessible unit, designed
@@ -4531,17 +4473,6 @@ pub mod service_monitoring_service_client {
     #[doc = " of categorized Health Metrics."]
     pub struct ServiceMonitoringServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ServiceMonitoringServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ServiceMonitoringServiceClient<T>
     where
@@ -5208,11 +5139,6 @@ pub mod service_monitoring_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ServiceMonitoringService> tonic::transport::NamedService
-        for ServiceMonitoringServiceServer<T>
-    {
-        const NAME: &'static str = "google.monitoring.v3.ServiceMonitoringService";
-    }
 }
 /// The context of a span, attached to
 /// [Exemplars][google.api.Distribution.Exemplars]
@@ -5739,17 +5665,6 @@ pub mod uptime_check_service_client {
     pub struct UptimeCheckServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl UptimeCheckServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> UptimeCheckServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -6204,8 +6119,5 @@ pub mod uptime_check_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: UptimeCheckService> tonic::transport::NamedService for UptimeCheckServiceServer<T> {
-        const NAME: &'static str = "google.monitoring.v3.UptimeCheckService";
     }
 }

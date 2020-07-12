@@ -243,17 +243,6 @@ pub mod autoscaling_policy_service_client {
     pub struct AutoscalingPolicyServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl AutoscalingPolicyServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> AutoscalingPolicyServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -640,11 +629,6 @@ pub mod autoscaling_policy_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: AutoscalingPolicyService> tonic::transport::NamedService
-        for AutoscalingPolicyServiceServer<T>
-    {
-        const NAME: &'static str = "google.cloud.dataproc.v1.AutoscalingPolicyService";
     }
 }
 /// Cluster components that can be activated.
@@ -1523,17 +1507,6 @@ pub mod cluster_controller_client {
     pub struct ClusterControllerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ClusterControllerClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ClusterControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -2014,9 +1987,6 @@ pub mod cluster_controller_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ClusterController> tonic::transport::NamedService for ClusterControllerServer<T> {
-        const NAME: &'static str = "google.cloud.dataproc.v1.ClusterController";
     }
 }
 /// The runtime logging config of the job.
@@ -2881,17 +2851,6 @@ pub mod job_controller_client {
     pub struct JobControllerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl JobControllerClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> JobControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -3377,9 +3336,6 @@ pub mod job_controller_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: JobController> tonic::transport::NamedService for JobControllerServer<T> {
-        const NAME: &'static str = "google.cloud.dataproc.v1.JobController";
     }
 }
 /// The status of the operation.
@@ -4048,17 +4004,6 @@ pub mod workflow_template_service_client {
     pub struct WorkflowTemplateServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl WorkflowTemplateServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> WorkflowTemplateServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -4404,10 +4349,5 @@ pub mod workflow_template_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: WorkflowTemplateService> tonic::transport::NamedService
-        for WorkflowTemplateServiceServer<T>
-    {
-        const NAME: &'static str = "google.cloud.dataproc.v1.WorkflowTemplateService";
     }
 }

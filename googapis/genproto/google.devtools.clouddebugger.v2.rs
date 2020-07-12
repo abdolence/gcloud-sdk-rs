@@ -525,17 +525,6 @@ pub mod controller2_client {
     pub struct Controller2Client<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl Controller2Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> Controller2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -875,9 +864,6 @@ pub mod controller2_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: Controller2> tonic::transport::NamedService for Controller2Server<T> {
-        const NAME: &'static str = "google.devtools.clouddebugger.v2.Controller2";
-    }
 }
 /// Request to set a breakpoint
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1038,17 +1024,6 @@ pub mod debugger2_client {
     #[doc = " Debuggee and collect the results of the set Breakpoints."]
     pub struct Debugger2Client<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl Debugger2Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> Debugger2Client<T>
     where
@@ -1432,8 +1407,5 @@ pub mod debugger2_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Debugger2> tonic::transport::NamedService for Debugger2Server<T> {
-        const NAME: &'static str = "google.devtools.clouddebugger.v2.Debugger2";
     }
 }

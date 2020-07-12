@@ -1123,17 +1123,6 @@ pub mod management_client {
     pub struct ManagementClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ManagementClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ManagementClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -2385,8 +2374,5 @@ pub mod management_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Management> tonic::transport::NamedService for ManagementServer<T> {
-        const NAME: &'static str = "google.analytics.management.v1alpha.Management";
     }
 }

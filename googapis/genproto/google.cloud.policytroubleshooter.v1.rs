@@ -252,17 +252,6 @@ pub mod iam_checker_client {
     pub struct IamCheckerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl IamCheckerClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> IamCheckerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -419,8 +408,5 @@ pub mod iam_checker_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: IamChecker> tonic::transport::NamedService for IamCheckerServer<T> {
-        const NAME: &'static str = "google.cloud.policytroubleshooter.v1.IamChecker";
     }
 }

@@ -631,17 +631,6 @@ pub mod quota_controller_client {
     pub struct QuotaControllerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl QuotaControllerClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> QuotaControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -817,9 +806,6 @@ pub mod quota_controller_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: QuotaController> tonic::transport::NamedService for QuotaControllerServer<T> {
-        const NAME: &'static str = "google.api.servicecontrol.v1.QuotaController";
     }
 }
 /// Request message for the Check method.
@@ -1002,17 +988,6 @@ pub mod service_controller_client {
     #[doc = " service](https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService)."]
     pub struct ServiceControllerClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl ServiceControllerClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> ServiceControllerClient<T>
     where
@@ -1279,8 +1254,5 @@ pub mod service_controller_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ServiceController> tonic::transport::NamedService for ServiceControllerServer<T> {
-        const NAME: &'static str = "google.api.servicecontrol.v1.ServiceController";
     }
 }

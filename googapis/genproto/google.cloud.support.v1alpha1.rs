@@ -131,17 +131,6 @@ pub mod cloud_support_client {
     pub struct CloudSupportClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl CloudSupportClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> CloudSupportClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -747,8 +736,5 @@ pub mod cloud_support_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: CloudSupport> tonic::transport::NamedService for CloudSupportServer<T> {
-        const NAME: &'static str = "google.cloud.support.v1alpha1.CloudSupport";
     }
 }

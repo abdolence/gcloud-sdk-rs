@@ -297,17 +297,6 @@ pub mod big_query_read_client {
     pub struct BigQueryReadClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl BigQueryReadClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> BigQueryReadClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -653,8 +642,5 @@ pub mod big_query_read_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: BigQueryRead> tonic::transport::NamedService for BigQueryReadServer<T> {
-        const NAME: &'static str = "google.cloud.bigquery.storage.v1beta2.BigQueryRead";
     }
 }

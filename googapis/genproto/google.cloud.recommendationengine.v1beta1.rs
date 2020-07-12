@@ -788,17 +788,6 @@ pub mod catalog_service_client {
     pub struct CatalogServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl CatalogServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> CatalogServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1250,9 +1239,6 @@ pub mod catalog_service_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: CatalogService> tonic::transport::NamedService for CatalogServiceServer<T> {
-        const NAME: &'static str = "google.cloud.recommendationengine.v1beta1.CatalogService";
-    }
 }
 /// Registered Api Key.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1317,17 +1303,6 @@ pub mod prediction_api_key_registry_client {
     #[doc = " key. You can register up to 20 API keys per project."]
     pub struct PredictionApiKeyRegistryClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl PredictionApiKeyRegistryClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> PredictionApiKeyRegistryClient<T>
     where
@@ -1482,12 +1457,6 @@ pub mod prediction_api_key_registry_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: PredictionApiKeyRegistry> tonic::transport::NamedService
-        for PredictionApiKeyRegistryServer<T>
-    {
-        const NAME: &'static str =
-            "google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry";
     }
 }
 /// Request message for Predict method.
@@ -1644,17 +1613,6 @@ pub mod prediction_service_client {
     pub struct PredictionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl PredictionServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> PredictionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1810,9 +1768,6 @@ pub mod prediction_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: PredictionService> tonic::transport::NamedService for PredictionServiceServer<T> {
-        const NAME: &'static str = "google.cloud.recommendationengine.v1beta1.PredictionService";
     }
 }
 /// Request message for PurgeUserEvents method.
@@ -1973,17 +1928,6 @@ pub mod user_event_service_client {
     #[doc = " Service for ingesting end user actions on the customer website."]
     pub struct UserEventServiceClient<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl UserEventServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> UserEventServiceClient<T>
     where
@@ -2400,8 +2344,5 @@ pub mod user_event_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: UserEventService> tonic::transport::NamedService for UserEventServiceServer<T> {
-        const NAME: &'static str = "google.cloud.recommendationengine.v1beta1.UserEventService";
     }
 }

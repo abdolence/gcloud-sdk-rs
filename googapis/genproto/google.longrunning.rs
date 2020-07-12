@@ -153,17 +153,6 @@ pub mod operations_client {
     pub struct OperationsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl OperationsClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> OperationsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -602,8 +591,5 @@ pub mod operations_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: Operations> tonic::transport::NamedService for OperationsServer<T> {
-        const NAME: &'static str = "google.longrunning.Operations";
     }
 }

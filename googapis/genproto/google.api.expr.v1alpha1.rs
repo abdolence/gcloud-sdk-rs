@@ -1000,17 +1000,6 @@ pub mod conformance_service_client {
     pub struct ConformanceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ConformanceServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ConformanceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1274,9 +1263,6 @@ pub mod conformance_service_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: ConformanceService> tonic::transport::NamedService for ConformanceServiceServer<T> {
-        const NAME: &'static str = "google.api.expr.v1alpha1.ConformanceService";
     }
 }
 /// Values of intermediate expressions produced when evaluating expression.

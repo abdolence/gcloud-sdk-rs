@@ -849,17 +849,6 @@ pub mod config_service_v2_client {
     pub struct ConfigServiceV2Client<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl ConfigServiceV2Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
     impl<T> ConfigServiceV2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
@@ -1861,9 +1850,6 @@ pub mod config_service_v2_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: ConfigServiceV2> tonic::transport::NamedService for ConfigServiceV2Server<T> {
-        const NAME: &'static str = "google.logging.v2.ConfigServiceV2";
-    }
 }
 /// The parameters to DeleteLog.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2110,17 +2096,6 @@ pub mod logging_service_v2_client {
     #[doc = " Service for ingesting and querying logs."]
     pub struct LoggingServiceV2Client<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl LoggingServiceV2Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> LoggingServiceV2Client<T>
     where
@@ -2520,9 +2495,6 @@ pub mod logging_service_v2_server {
             write!(f, "{:?}", self.0)
         }
     }
-    impl<T: LoggingServiceV2> tonic::transport::NamedService for LoggingServiceV2Server<T> {
-        const NAME: &'static str = "google.logging.v2.LoggingServiceV2";
-    }
 }
 /// Describes a logs-based metric. The value of the metric is the number of log
 /// entries that match a logs filter in a given time interval.
@@ -2740,17 +2712,6 @@ pub mod metrics_service_v2_client {
     #[doc = " Service for configuring logs-based metrics."]
     pub struct MetricsServiceV2Client<T> {
         inner: tonic::client::Grpc<T>,
-    }
-    impl MetricsServiceV2Client<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
     }
     impl<T> MetricsServiceV2Client<T>
     where
@@ -3128,8 +3089,5 @@ pub mod metrics_service_v2_server {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "{:?}", self.0)
         }
-    }
-    impl<T: MetricsServiceV2> tonic::transport::NamedService for MetricsServiceV2Server<T> {
-        const NAME: &'static str = "google.logging.v2.MetricsServiceV2";
     }
 }
