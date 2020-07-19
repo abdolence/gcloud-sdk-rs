@@ -248,6 +248,6 @@ grafeas-v1beta1-source = []
 # grafeas-v1beta1-vulnerability = []
 
 [dependencies]
-tonic = { version = "0.2" }
+tonic = { version = "0.3" }
 prost = { version = "0.6" }
 prost-types = { version = "0.6" }
