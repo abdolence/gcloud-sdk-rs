@@ -26,10 +26,17 @@ fn gen() {
     let out_dir = PathBuf::from("googapis/genproto");
     let _ = fs::remove_dir_all(out_dir.as_path());
     let _ = fs::create_dir(out_dir.as_path());
-    tonic_build::configure()
-        .out_dir(out_dir)
-        .compile(&gen::proto_path(&protos), &[proto_root])
-        .unwrap();
+    let includes = [proto_root];
+
+    for chunk in gen::proto_path(&protos).chunks(1000) {
+        tonic_build::configure()
+            // .build_server(false)
+            .format(false)
+            .out_dir(out_dir.clone())
+            .compile(&chunk, &includes)
+            .unwrap();
+    }
+    tonic_build::fmt(out_dir.to_str().unwrap());
 
     let mut out_path = PathBuf::from("googapis/src/googapis.rs");
     let root = gen::from_protos(protos);
