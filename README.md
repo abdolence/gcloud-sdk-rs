@@ -54,6 +54,7 @@ The list of available features can be found [here](./googapis/Cargo.toml#L22-L24
 | googapis | tonic | tonic-build |
 |----------|-------|-------------|
 | 0.1.x    | 0.2.x | 0.2.x       |
+| 0.2.x    | 0.2.x | 0.2.x       |
 
 ## Example
 The complete code can be found [here](./examples/spanner-admin).
