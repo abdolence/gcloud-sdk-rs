@@ -40,7 +40,7 @@
 //!         .domain_name("spanner.googleapis.com");
 //!
 //!     let channel = Channel::from_static("https://spanner.googleapis.com")
-//!         .tls_config(tls_config)
+//!         .tls_config(tls_config)?
 //!         .connect()
 //!         .await?;
 //!
