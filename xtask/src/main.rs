@@ -30,7 +30,7 @@ fn gen() {
 
     for chunk in gen::proto_path(&protos).chunks(1000) {
         tonic_build::configure()
-            // .build_server(false)
+            .build_server(false)
             .format(false)
             .out_dir(out_dir.clone())
             .compile(&chunk, &includes)
