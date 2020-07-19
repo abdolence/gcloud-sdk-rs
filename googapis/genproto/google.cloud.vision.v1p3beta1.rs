@@ -1341,7 +1341,6 @@ pub mod product_search_server {
     #[doc = " - Each [Product][google.cloud.vision.v1p3beta1.Product] has a collection of [ReferenceImage][google.cloud.vision.v1p3beta1.ReferenceImage] resources, named"]
     #[doc = "   `projects/*/locations/*/products/*/referenceImages/*`"]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ProductSearchServer<T: ProductSearch> {
         inner: _Inner<T>,
     }
@@ -1387,7 +1386,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::CreateProductSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_product_set(request).await };
+                            let fut = async move { (*inner).create_product_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1421,7 +1420,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::ListProductSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_product_sets(request).await };
+                            let fut = async move { (*inner).list_product_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1454,7 +1453,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::GetProductSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_product_set(request).await };
+                            let fut = async move { (*inner).get_product_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1488,7 +1487,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::UpdateProductSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_product_set(request).await };
+                            let fut = async move { (*inner).update_product_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1522,7 +1521,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::DeleteProductSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_product_set(request).await };
+                            let fut = async move { (*inner).delete_product_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1555,7 +1554,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::CreateProductRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_product(request).await };
+                            let fut = async move { (*inner).create_product(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1588,7 +1587,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::ListProductsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_products(request).await };
+                            let fut = async move { (*inner).list_products(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1619,7 +1618,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::GetProductRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_product(request).await };
+                            let fut = async move { (*inner).get_product(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1652,7 +1651,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::UpdateProductRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_product(request).await };
+                            let fut = async move { (*inner).update_product(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1685,7 +1684,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::DeleteProductRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_product(request).await };
+                            let fut = async move { (*inner).delete_product(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1719,7 +1718,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::CreateReferenceImageRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_reference_image(request).await };
+                            let fut = async move { (*inner).create_reference_image(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1753,7 +1752,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::DeleteReferenceImageRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_reference_image(request).await };
+                            let fut = async move { (*inner).delete_reference_image(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1787,7 +1786,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::ListReferenceImagesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_reference_images(request).await };
+                            let fut = async move { (*inner).list_reference_images(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1821,7 +1820,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::GetReferenceImageRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_reference_image(request).await };
+                            let fut = async move { (*inner).get_reference_image(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1856,7 +1855,7 @@ pub mod product_search_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.add_product_to_product_set(request).await };
+                                async move { (*inner).add_product_to_product_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1890,8 +1889,9 @@ pub mod product_search_server {
                             request: tonic::Request<super::RemoveProductFromProductSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.remove_product_from_product_set(request).await };
+                            let fut = async move {
+                                (*inner).remove_product_from_product_set(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -1926,7 +1926,7 @@ pub mod product_search_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.list_products_in_product_set(request).await };
+                                async move { (*inner).list_products_in_product_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1960,7 +1960,7 @@ pub mod product_search_server {
                             request: tonic::Request<super::ImportProductSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_product_sets(request).await };
+                            let fut = async move { (*inner).import_product_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3315,7 +3315,6 @@ pub mod image_annotator_server {
     #[doc = " images, such as face, landmark, logo, label, and text detection. The"]
     #[doc = " ImageAnnotator service returns detected entities from the images."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ImageAnnotatorServer<T: ImageAnnotator> {
         inner: _Inner<T>,
     }
@@ -3361,7 +3360,7 @@ pub mod image_annotator_server {
                             request: tonic::Request<super::BatchAnnotateImagesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_annotate_images(request).await };
+                            let fut = async move { (*inner).batch_annotate_images(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3396,7 +3395,7 @@ pub mod image_annotator_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.async_batch_annotate_files(request).await };
+                                async move { (*inner).async_batch_annotate_files(request).await };
                             Box::pin(fut)
                         }
                     }

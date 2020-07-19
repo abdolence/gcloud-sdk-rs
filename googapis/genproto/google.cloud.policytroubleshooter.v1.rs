@@ -317,7 +317,6 @@ pub mod iam_checker_server {
     #[doc = ""]
     #[doc = " This service helps you troubleshoot access issues for Google Cloud resources."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct IamCheckerServer<T: IamChecker> {
         inner: _Inner<T>,
     }
@@ -363,7 +362,8 @@ pub mod iam_checker_server {
                             request: tonic::Request<super::TroubleshootIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.troubleshoot_iam_policy(request).await };
+                            let fut =
+                                async move { (*inner).troubleshoot_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -741,7 +741,6 @@ pub mod folders_server {
     #[doc = " Cloud Resource Folders can be used to organize the resources under an"]
     #[doc = " organization and to control the IAM policies applied to groups of resources."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct FoldersServer<T: Folders> {
         inner: _Inner<T>,
     }
@@ -784,7 +783,7 @@ pub mod folders_server {
                             request: tonic::Request<super::ListFoldersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_folders(request).await };
+                            let fut = async move { (*inner).list_folders(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -815,7 +814,7 @@ pub mod folders_server {
                             request: tonic::Request<super::SearchFoldersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_folders(request).await };
+                            let fut = async move { (*inner).search_folders(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -846,7 +845,7 @@ pub mod folders_server {
                             request: tonic::Request<super::GetFolderRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_folder(request).await };
+                            let fut = async move { (*inner).get_folder(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -877,7 +876,7 @@ pub mod folders_server {
                             request: tonic::Request<super::CreateFolderRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_folder(request).await };
+                            let fut = async move { (*inner).create_folder(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -908,7 +907,7 @@ pub mod folders_server {
                             request: tonic::Request<super::UpdateFolderRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_folder(request).await };
+                            let fut = async move { (*inner).update_folder(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -939,7 +938,7 @@ pub mod folders_server {
                             request: tonic::Request<super::MoveFolderRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.move_folder(request).await };
+                            let fut = async move { (*inner).move_folder(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -970,7 +969,7 @@ pub mod folders_server {
                             request: tonic::Request<super::DeleteFolderRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_folder(request).await };
+                            let fut = async move { (*inner).delete_folder(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1003,7 +1002,7 @@ pub mod folders_server {
                             request: tonic::Request<super::UndeleteFolderRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.undelete_folder(request).await };
+                            let fut = async move { (*inner).undelete_folder(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1040,7 +1039,7 @@ pub mod folders_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1077,7 +1076,7 @@ pub mod folders_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1115,7 +1114,7 @@ pub mod folders_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -294,7 +294,6 @@ pub mod asset_service_server {
     }
     #[doc = " Asset service definition."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AssetServiceServer<T: AssetService> {
         inner: _Inner<T>,
     }
@@ -340,7 +339,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::SearchAllResourcesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_all_resources(request).await };
+                            let fut = async move { (*inner).search_all_resources(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -374,7 +373,8 @@ pub mod asset_service_server {
                             request: tonic::Request<super::SearchAllIamPoliciesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_all_iam_policies(request).await };
+                            let fut =
+                                async move { (*inner).search_all_iam_policies(request).await };
                             Box::pin(fut)
                         }
                     }

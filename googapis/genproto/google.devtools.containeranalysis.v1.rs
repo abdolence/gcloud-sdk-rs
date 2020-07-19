@@ -185,7 +185,6 @@ pub mod container_analysis_server {
     #[doc = " there would be one note for the vulnerability and an occurrence for each"]
     #[doc = " image with the vulnerability referring to that note."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ContainerAnalysisServer<T: ContainerAnalysis> {
         inner: _Inner<T>,
     }
@@ -234,7 +233,7 @@ pub mod container_analysis_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -271,7 +270,7 @@ pub mod container_analysis_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -309,7 +308,7 @@ pub mod container_analysis_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

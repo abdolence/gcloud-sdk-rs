@@ -2016,7 +2016,6 @@ pub mod os_config_service_server {
     #[doc = " The OS Config service is a server-side component that you can use to"]
     #[doc = " manage package installations and patch jobs for virtual machine instances."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct OsConfigServiceServer<T: OsConfigService> {
         inner: _Inner<T>,
     }
@@ -2062,7 +2061,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::ExecutePatchJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.execute_patch_job(request).await };
+                            let fut = async move { (*inner).execute_patch_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2095,7 +2094,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::GetPatchJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_patch_job(request).await };
+                            let fut = async move { (*inner).get_patch_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2129,7 +2128,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::CancelPatchJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.cancel_patch_job(request).await };
+                            let fut = async move { (*inner).cancel_patch_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2163,7 +2162,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::ListPatchJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_patch_jobs(request).await };
+                            let fut = async move { (*inner).list_patch_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2197,8 +2196,9 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::ListPatchJobInstanceDetailsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.list_patch_job_instance_details(request).await };
+                            let fut = async move {
+                                (*inner).list_patch_job_instance_details(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -2232,7 +2232,8 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::CreatePatchDeploymentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_patch_deployment(request).await };
+                            let fut =
+                                async move { (*inner).create_patch_deployment(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2266,7 +2267,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::GetPatchDeploymentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_patch_deployment(request).await };
+                            let fut = async move { (*inner).get_patch_deployment(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2300,7 +2301,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::ListPatchDeploymentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_patch_deployments(request).await };
+                            let fut = async move { (*inner).list_patch_deployments(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2334,7 +2335,8 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::DeletePatchDeploymentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_patch_deployment(request).await };
+                            let fut =
+                                async move { (*inner).delete_patch_deployment(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2368,7 +2370,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::CreateGuestPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_guest_policy(request).await };
+                            let fut = async move { (*inner).create_guest_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2402,7 +2404,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::GetGuestPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_guest_policy(request).await };
+                            let fut = async move { (*inner).get_guest_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2436,7 +2438,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::ListGuestPoliciesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_guest_policies(request).await };
+                            let fut = async move { (*inner).list_guest_policies(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2470,7 +2472,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::UpdateGuestPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_guest_policy(request).await };
+                            let fut = async move { (*inner).update_guest_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2504,7 +2506,7 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::DeleteGuestPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_guest_policy(request).await };
+                            let fut = async move { (*inner).delete_guest_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2538,8 +2540,9 @@ pub mod os_config_service_server {
                             request: tonic::Request<super::LookupEffectiveGuestPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.lookup_effective_guest_policy(request).await };
+                            let fut = async move {
+                                (*inner).lookup_effective_guest_policy(request).await
+                            };
                             Box::pin(fut)
                         }
                     }

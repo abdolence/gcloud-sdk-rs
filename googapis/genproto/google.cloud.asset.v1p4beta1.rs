@@ -566,7 +566,6 @@ pub mod asset_service_server {
     }
     #[doc = " Asset service definition."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AssetServiceServer<T: AssetService> {
         inner: _Inner<T>,
     }
@@ -612,7 +611,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::AnalyzeIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.analyze_iam_policy(request).await };
+                            let fut = async move { (*inner).analyze_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -647,7 +646,7 @@ pub mod asset_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.export_iam_policy_analysis(request).await };
+                                async move { (*inner).export_iam_policy_analysis(request).await };
                             Box::pin(fut)
                         }
                     }

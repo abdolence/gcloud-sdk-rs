@@ -160,7 +160,6 @@ pub mod lookup_service_server {
     }
     #[doc = " Service Directory API for looking up service data at runtime."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LookupServiceServer<T: LookupService> {
         inner: _Inner<T>,
     }
@@ -205,7 +204,7 @@ pub mod lookup_service_server {
                             request: tonic::Request<super::ResolveServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.resolve_service(request).await };
+                            let fut = async move { (*inner).resolve_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1057,7 +1056,6 @@ pub mod registration_service_server {
     #[doc = " resources, named"]
     #[doc = " `projects/*/locations/*/namespaces/*/services/*/endpoints/*`."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RegistrationServiceServer<T: RegistrationService> {
         inner: _Inner<T>,
     }
@@ -1103,7 +1101,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::CreateNamespaceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_namespace(request).await };
+                            let fut = async move { (*inner).create_namespace(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1137,7 +1135,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::ListNamespacesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_namespaces(request).await };
+                            let fut = async move { (*inner).list_namespaces(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1171,7 +1169,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::GetNamespaceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_namespace(request).await };
+                            let fut = async move { (*inner).get_namespace(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1205,7 +1203,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::UpdateNamespaceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_namespace(request).await };
+                            let fut = async move { (*inner).update_namespace(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1239,7 +1237,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::DeleteNamespaceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_namespace(request).await };
+                            let fut = async move { (*inner).delete_namespace(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1273,7 +1271,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::CreateServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_service(request).await };
+                            let fut = async move { (*inner).create_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1307,7 +1305,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::ListServicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_services(request).await };
+                            let fut = async move { (*inner).list_services(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1340,7 +1338,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::GetServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service(request).await };
+                            let fut = async move { (*inner).get_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1374,7 +1372,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::UpdateServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_service(request).await };
+                            let fut = async move { (*inner).update_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1408,7 +1406,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::DeleteServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_service(request).await };
+                            let fut = async move { (*inner).delete_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1442,7 +1440,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::CreateEndpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_endpoint(request).await };
+                            let fut = async move { (*inner).create_endpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1476,7 +1474,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::ListEndpointsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_endpoints(request).await };
+                            let fut = async move { (*inner).list_endpoints(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1510,7 +1508,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::GetEndpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_endpoint(request).await };
+                            let fut = async move { (*inner).get_endpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1544,7 +1542,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::UpdateEndpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_endpoint(request).await };
+                            let fut = async move { (*inner).update_endpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1578,7 +1576,7 @@ pub mod registration_service_server {
                             request: tonic::Request<super::DeleteEndpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_endpoint(request).await };
+                            let fut = async move { (*inner).delete_endpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1615,7 +1613,7 @@ pub mod registration_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1652,7 +1650,7 @@ pub mod registration_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1690,7 +1688,7 @@ pub mod registration_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

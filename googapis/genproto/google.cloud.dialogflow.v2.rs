@@ -653,7 +653,6 @@ pub mod agents_server {
     }
     #[doc = " Service for managing [Agents][google.cloud.dialogflow.v2.Agent]."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AgentsServer<T: Agents> {
         inner: _Inner<T>,
     }
@@ -696,7 +695,7 @@ pub mod agents_server {
                             request: tonic::Request<super::GetAgentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_agent(request).await };
+                            let fut = async move { (*inner).get_agent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -727,7 +726,7 @@ pub mod agents_server {
                             request: tonic::Request<super::SetAgentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_agent(request).await };
+                            let fut = async move { (*inner).set_agent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -758,7 +757,7 @@ pub mod agents_server {
                             request: tonic::Request<super::DeleteAgentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_agent(request).await };
+                            let fut = async move { (*inner).delete_agent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -789,7 +788,7 @@ pub mod agents_server {
                             request: tonic::Request<super::SearchAgentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_agents(request).await };
+                            let fut = async move { (*inner).search_agents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -820,7 +819,7 @@ pub mod agents_server {
                             request: tonic::Request<super::TrainAgentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.train_agent(request).await };
+                            let fut = async move { (*inner).train_agent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -851,7 +850,7 @@ pub mod agents_server {
                             request: tonic::Request<super::ExportAgentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_agent(request).await };
+                            let fut = async move { (*inner).export_agent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -882,7 +881,7 @@ pub mod agents_server {
                             request: tonic::Request<super::ImportAgentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_agent(request).await };
+                            let fut = async move { (*inner).import_agent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -913,7 +912,7 @@ pub mod agents_server {
                             request: tonic::Request<super::RestoreAgentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.restore_agent(request).await };
+                            let fut = async move { (*inner).restore_agent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -946,7 +945,7 @@ pub mod agents_server {
                             request: tonic::Request<super::GetValidationResultRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_validation_result(request).await };
+                            let fut = async move { (*inner).get_validation_result(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1662,7 +1661,6 @@ pub mod contexts_server {
     #[doc = " [Dialogflow"]
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/contexts-overview)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ContextsServer<T: Contexts> {
         inner: _Inner<T>,
     }
@@ -1705,7 +1703,7 @@ pub mod contexts_server {
                             request: tonic::Request<super::ListContextsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_contexts(request).await };
+                            let fut = async move { (*inner).list_contexts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1736,7 +1734,7 @@ pub mod contexts_server {
                             request: tonic::Request<super::GetContextRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_context(request).await };
+                            let fut = async move { (*inner).get_context(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1767,7 +1765,7 @@ pub mod contexts_server {
                             request: tonic::Request<super::CreateContextRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_context(request).await };
+                            let fut = async move { (*inner).create_context(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1798,7 +1796,7 @@ pub mod contexts_server {
                             request: tonic::Request<super::UpdateContextRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_context(request).await };
+                            let fut = async move { (*inner).update_context(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1829,7 +1827,7 @@ pub mod contexts_server {
                             request: tonic::Request<super::DeleteContextRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_context(request).await };
+                            let fut = async move { (*inner).delete_context(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1862,7 +1860,7 @@ pub mod contexts_server {
                             request: tonic::Request<super::DeleteAllContextsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_all_contexts(request).await };
+                            let fut = async move { (*inner).delete_all_contexts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2601,7 +2599,6 @@ pub mod entity_types_server {
     #[doc = " [Dialogflow"]
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/entities-overview)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct EntityTypesServer<T: EntityTypes> {
         inner: _Inner<T>,
     }
@@ -2646,7 +2643,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::ListEntityTypesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_entity_types(request).await };
+                            let fut = async move { (*inner).list_entity_types(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2679,7 +2676,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::GetEntityTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_entity_type(request).await };
+                            let fut = async move { (*inner).get_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2712,7 +2709,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::CreateEntityTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_entity_type(request).await };
+                            let fut = async move { (*inner).create_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2745,7 +2742,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::UpdateEntityTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_entity_type(request).await };
+                            let fut = async move { (*inner).update_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2778,7 +2775,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::DeleteEntityTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_entity_type(request).await };
+                            let fut = async move { (*inner).delete_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2812,7 +2809,8 @@ pub mod entity_types_server {
                             request: tonic::Request<super::BatchUpdateEntityTypesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_update_entity_types(request).await };
+                            let fut =
+                                async move { (*inner).batch_update_entity_types(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2846,7 +2844,8 @@ pub mod entity_types_server {
                             request: tonic::Request<super::BatchDeleteEntityTypesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_delete_entity_types(request).await };
+                            let fut =
+                                async move { (*inner).batch_delete_entity_types(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2880,7 +2879,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::BatchCreateEntitiesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_create_entities(request).await };
+                            let fut = async move { (*inner).batch_create_entities(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2914,7 +2913,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::BatchUpdateEntitiesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_update_entities(request).await };
+                            let fut = async move { (*inner).batch_update_entities(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2948,7 +2947,7 @@ pub mod entity_types_server {
                             request: tonic::Request<super::BatchDeleteEntitiesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_delete_entities(request).await };
+                            let fut = async move { (*inner).batch_delete_entities(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3135,7 +3134,6 @@ pub mod environments_server {
     }
     #[doc = " Manages agent environments."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct EnvironmentsServer<T: Environments> {
         inner: _Inner<T>,
     }
@@ -3181,7 +3179,7 @@ pub mod environments_server {
                             request: tonic::Request<super::ListEnvironmentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_environments(request).await };
+                            let fut = async move { (*inner).list_environments(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4470,7 +4468,6 @@ pub mod intents_server {
     #[doc = " [Dialogflow"]
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/intents-overview)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct IntentsServer<T: Intents> {
         inner: _Inner<T>,
     }
@@ -4513,7 +4510,7 @@ pub mod intents_server {
                             request: tonic::Request<super::ListIntentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_intents(request).await };
+                            let fut = async move { (*inner).list_intents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4544,7 +4541,7 @@ pub mod intents_server {
                             request: tonic::Request<super::GetIntentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_intent(request).await };
+                            let fut = async move { (*inner).get_intent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4575,7 +4572,7 @@ pub mod intents_server {
                             request: tonic::Request<super::CreateIntentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_intent(request).await };
+                            let fut = async move { (*inner).create_intent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4606,7 +4603,7 @@ pub mod intents_server {
                             request: tonic::Request<super::UpdateIntentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_intent(request).await };
+                            let fut = async move { (*inner).update_intent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4637,7 +4634,7 @@ pub mod intents_server {
                             request: tonic::Request<super::DeleteIntentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_intent(request).await };
+                            let fut = async move { (*inner).delete_intent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4670,7 +4667,7 @@ pub mod intents_server {
                             request: tonic::Request<super::BatchUpdateIntentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_update_intents(request).await };
+                            let fut = async move { (*inner).batch_update_intents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4703,7 +4700,7 @@ pub mod intents_server {
                             request: tonic::Request<super::BatchDeleteIntentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_delete_intents(request).await };
+                            let fut = async move { (*inner).batch_delete_intents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5119,7 +5116,6 @@ pub mod session_entity_types_server {
     #[doc = " [Dialogflow"]
     #[doc = " documentation](https://cloud.google.com/dialogflow/docs/entities-overview)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SessionEntityTypesServer<T: SessionEntityTypes> {
         inner: _Inner<T>,
     }
@@ -5165,7 +5161,8 @@ pub mod session_entity_types_server {
                             request: tonic::Request<super::ListSessionEntityTypesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_session_entity_types(request).await };
+                            let fut =
+                                async move { (*inner).list_session_entity_types(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5199,7 +5196,8 @@ pub mod session_entity_types_server {
                             request: tonic::Request<super::GetSessionEntityTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_session_entity_type(request).await };
+                            let fut =
+                                async move { (*inner).get_session_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5234,7 +5232,7 @@ pub mod session_entity_types_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.create_session_entity_type(request).await };
+                                async move { (*inner).create_session_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5269,7 +5267,7 @@ pub mod session_entity_types_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_session_entity_type(request).await };
+                                async move { (*inner).update_session_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5304,7 +5302,7 @@ pub mod session_entity_types_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.delete_session_entity_type(request).await };
+                                async move { (*inner).delete_session_entity_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6012,7 +6010,6 @@ pub mod sessions_server {
     #[doc = " [StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]) method to determine"]
     #[doc = " user intent and respond."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SessionsServer<T: Sessions> {
         inner: _Inner<T>,
     }
@@ -6055,7 +6052,7 @@ pub mod sessions_server {
                             request: tonic::Request<super::DetectIntentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.detect_intent(request).await };
+                            let fut = async move { (*inner).detect_intent(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6093,7 +6090,8 @@ pub mod sessions_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.streaming_detect_intent(request).await };
+                            let fut =
+                                async move { (*inner).streaming_detect_intent(request).await };
                             Box::pin(fut)
                         }
                     }

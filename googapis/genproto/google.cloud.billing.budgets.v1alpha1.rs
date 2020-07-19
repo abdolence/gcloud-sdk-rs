@@ -433,7 +433,6 @@ pub mod budget_service_server {
     #[doc = " BudgetService stores Cloud Billing budgets, which define a"]
     #[doc = " budget plan and rules to execute as we track spend against that plan."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BudgetServiceServer<T: BudgetService> {
         inner: _Inner<T>,
     }
@@ -478,7 +477,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::CreateBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_budget(request).await };
+                            let fut = async move { (*inner).create_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -511,7 +510,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::UpdateBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_budget(request).await };
+                            let fut = async move { (*inner).update_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -542,7 +541,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::GetBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_budget(request).await };
+                            let fut = async move { (*inner).get_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -575,7 +574,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::ListBudgetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_budgets(request).await };
+                            let fut = async move { (*inner).list_budgets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -608,7 +607,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::DeleteBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_budget(request).await };
+                            let fut = async move { (*inner).delete_budget(request).await };
                             Box::pin(fut)
                         }
                     }

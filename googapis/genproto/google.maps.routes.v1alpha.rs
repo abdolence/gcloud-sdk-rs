@@ -25,12 +25,12 @@ pub mod routes_alpha_client {
         #[doc = " of terminal and intermediate waypoints."]
         #[doc = ""]
         #[doc = " **NOTE:** This method requires that you specify a response field mask in"]
-        #[doc = " the input. You can provide the response field mask by using URL parameter"]
-        #[doc = " `$fields` or `fields`, or by using an HTTP/gRPC header `X-Goog-FieldMask`"]
-        #[doc = " (see the [available URL parameters and"]
+        #[doc = " the input. You can provide the response field mask by using the URL"]
+        #[doc = " parameter `$fields` or `fields`, or by using the HTTP/gRPC header"]
+        #[doc = " `X-Goog-FieldMask` (see the [available URL parameters and"]
         #[doc = " headers](https://cloud.google.com/apis/docs/system-parameters). The value"]
-        #[doc = " is a comma separated list of field paths. See detailed documentation about"]
-        #[doc = " [how to construct the field"]
+        #[doc = " is a comma separated list of field paths. See this detailed documentation"]
+        #[doc = " about [how to construct the field"]
         #[doc = " paths](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto)."]
         #[doc = ""]
         #[doc = " For example, in this method:"]
@@ -42,18 +42,17 @@ pub mod routes_alpha_client {
         #[doc = "   `X-Goog-FieldMask:"]
         #[doc = "   routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline`"]
         #[doc = ""]
-        #[doc = " Google discourage the use of the wildcard (`*`) response field mask, or"]
+        #[doc = " Google discourages the use of the wildcard (`*`) response field mask, or"]
         #[doc = " specifying the field mask at the top level (`routes`), because:"]
         #[doc = ""]
         #[doc = " * Selecting only the fields that you need helps our server save computation"]
         #[doc = " cycles, allowing us to return the result to you with a lower latency."]
-        #[doc = " * Selecting only the fields that you need"]
-        #[doc = " in your production job ensures stable latency performance. We might add"]
-        #[doc = " more response fields in the future, and those new fields might require"]
-        #[doc = " extra computation time. If you select all fields, or if you select all"]
-        #[doc = " fields at the top level, then you might experience performance degradation"]
-        #[doc = " because any new field we add will be automatically included in the"]
-        #[doc = " response."]
+        #[doc = " * Selecting only the fields that you need in your production job ensures"]
+        #[doc = " stable latency performance. We might add more response fields in the"]
+        #[doc = " future, and those new fields might require extra computation time. If you"]
+        #[doc = " select all fields, or if you select all fields at the top level, then you"]
+        #[doc = " might experience performance degradation because any new field we add will"]
+        #[doc = " be automatically included in the response."]
         #[doc = " * Selecting only the fields that you need results in a smaller response"]
         #[doc = " size, and thus higher network throughput."]
         pub async fn compute_routes(
@@ -75,6 +74,38 @@ pub mod routes_alpha_client {
         }
         #[doc = " Takes in a list of origins and destinations and returns a stream containing"]
         #[doc = " route information for each combination of origin and destination."]
+        #[doc = ""]
+        #[doc = " **NOTE:** This method requires that you specify a response field mask in"]
+        #[doc = " the input. You can provide the response field mask by using the URL"]
+        #[doc = " parameter `$fields` or `fields`, or by using the HTTP/gRPC header"]
+        #[doc = " `X-Goog-FieldMask` (see the [available URL parameters and"]
+        #[doc = " headers](https://cloud.google.com/apis/docs/system-parameters). The value"]
+        #[doc = " is a comma separated list of field paths. See this detailed documentation"]
+        #[doc = " about [how to construct the field"]
+        #[doc = " paths](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto)."]
+        #[doc = ""]
+        #[doc = " For example, in this method:"]
+        #[doc = ""]
+        #[doc = " * Field mask of all available fields (for manual inspection):"]
+        #[doc = "   `X-Goog-FieldMask: *`"]
+        #[doc = " * Field mask of route durations, distances, element status, and element"]
+        #[doc = "   indices (an example production setup):"]
+        #[doc = "   `X-Goog-FieldMask:"]
+        #[doc = "   originIndex,destinationIndex,status,distanceMeters,duration`"]
+        #[doc = ""]
+        #[doc = " Google discourages the use of the wildcard (`*`) response field mask,"]
+        #[doc = " because:"]
+        #[doc = ""]
+        #[doc = " * Selecting only the fields that you need helps our server save computation"]
+        #[doc = " cycles, allowing us to return the result to you with a lower latency."]
+        #[doc = " * Selecting only the fields that you need in your production job ensures"]
+        #[doc = " stable latency performance. We might add more response fields in the"]
+        #[doc = " future, and those new fields might require extra computation time. If you"]
+        #[doc = " select all fields, or if you select all fields at the top level, then you"]
+        #[doc = " might experience performance degradation because any new field we add will"]
+        #[doc = " be automatically included in the response."]
+        #[doc = " * Selecting only the fields that you need results in a smaller response"]
+        #[doc = " size, and thus higher network throughput."]
         pub async fn compute_route_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::super::v1::ComputeRouteMatrixRequest>,
@@ -121,12 +152,12 @@ pub mod routes_alpha_server {
         #[doc = " of terminal and intermediate waypoints."]
         #[doc = ""]
         #[doc = " **NOTE:** This method requires that you specify a response field mask in"]
-        #[doc = " the input. You can provide the response field mask by using URL parameter"]
-        #[doc = " `$fields` or `fields`, or by using an HTTP/gRPC header `X-Goog-FieldMask`"]
-        #[doc = " (see the [available URL parameters and"]
+        #[doc = " the input. You can provide the response field mask by using the URL"]
+        #[doc = " parameter `$fields` or `fields`, or by using the HTTP/gRPC header"]
+        #[doc = " `X-Goog-FieldMask` (see the [available URL parameters and"]
         #[doc = " headers](https://cloud.google.com/apis/docs/system-parameters). The value"]
-        #[doc = " is a comma separated list of field paths. See detailed documentation about"]
-        #[doc = " [how to construct the field"]
+        #[doc = " is a comma separated list of field paths. See this detailed documentation"]
+        #[doc = " about [how to construct the field"]
         #[doc = " paths](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto)."]
         #[doc = ""]
         #[doc = " For example, in this method:"]
@@ -138,18 +169,17 @@ pub mod routes_alpha_server {
         #[doc = "   `X-Goog-FieldMask:"]
         #[doc = "   routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline`"]
         #[doc = ""]
-        #[doc = " Google discourage the use of the wildcard (`*`) response field mask, or"]
+        #[doc = " Google discourages the use of the wildcard (`*`) response field mask, or"]
         #[doc = " specifying the field mask at the top level (`routes`), because:"]
         #[doc = ""]
         #[doc = " * Selecting only the fields that you need helps our server save computation"]
         #[doc = " cycles, allowing us to return the result to you with a lower latency."]
-        #[doc = " * Selecting only the fields that you need"]
-        #[doc = " in your production job ensures stable latency performance. We might add"]
-        #[doc = " more response fields in the future, and those new fields might require"]
-        #[doc = " extra computation time. If you select all fields, or if you select all"]
-        #[doc = " fields at the top level, then you might experience performance degradation"]
-        #[doc = " because any new field we add will be automatically included in the"]
-        #[doc = " response."]
+        #[doc = " * Selecting only the fields that you need in your production job ensures"]
+        #[doc = " stable latency performance. We might add more response fields in the"]
+        #[doc = " future, and those new fields might require extra computation time. If you"]
+        #[doc = " select all fields, or if you select all fields at the top level, then you"]
+        #[doc = " might experience performance degradation because any new field we add will"]
+        #[doc = " be automatically included in the response."]
         #[doc = " * Selecting only the fields that you need results in a smaller response"]
         #[doc = " size, and thus higher network throughput."]
         async fn compute_routes(
@@ -163,6 +193,38 @@ pub mod routes_alpha_server {
             + 'static;
         #[doc = " Takes in a list of origins and destinations and returns a stream containing"]
         #[doc = " route information for each combination of origin and destination."]
+        #[doc = ""]
+        #[doc = " **NOTE:** This method requires that you specify a response field mask in"]
+        #[doc = " the input. You can provide the response field mask by using the URL"]
+        #[doc = " parameter `$fields` or `fields`, or by using the HTTP/gRPC header"]
+        #[doc = " `X-Goog-FieldMask` (see the [available URL parameters and"]
+        #[doc = " headers](https://cloud.google.com/apis/docs/system-parameters). The value"]
+        #[doc = " is a comma separated list of field paths. See this detailed documentation"]
+        #[doc = " about [how to construct the field"]
+        #[doc = " paths](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto)."]
+        #[doc = ""]
+        #[doc = " For example, in this method:"]
+        #[doc = ""]
+        #[doc = " * Field mask of all available fields (for manual inspection):"]
+        #[doc = "   `X-Goog-FieldMask: *`"]
+        #[doc = " * Field mask of route durations, distances, element status, and element"]
+        #[doc = "   indices (an example production setup):"]
+        #[doc = "   `X-Goog-FieldMask:"]
+        #[doc = "   originIndex,destinationIndex,status,distanceMeters,duration`"]
+        #[doc = ""]
+        #[doc = " Google discourages the use of the wildcard (`*`) response field mask,"]
+        #[doc = " because:"]
+        #[doc = ""]
+        #[doc = " * Selecting only the fields that you need helps our server save computation"]
+        #[doc = " cycles, allowing us to return the result to you with a lower latency."]
+        #[doc = " * Selecting only the fields that you need in your production job ensures"]
+        #[doc = " stable latency performance. We might add more response fields in the"]
+        #[doc = " future, and those new fields might require extra computation time. If you"]
+        #[doc = " select all fields, or if you select all fields at the top level, then you"]
+        #[doc = " might experience performance degradation because any new field we add will"]
+        #[doc = " be automatically included in the response."]
+        #[doc = " * Selecting only the fields that you need results in a smaller response"]
+        #[doc = " size, and thus higher network throughput."]
         async fn compute_route_matrix(
             &self,
             request: tonic::Request<super::super::v1::ComputeRouteMatrixRequest>,
@@ -170,7 +232,6 @@ pub mod routes_alpha_server {
     }
     #[doc = " The Routes Preferred API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RoutesAlphaServer<T: RoutesAlpha> {
         inner: _Inner<T>,
     }
@@ -216,7 +277,7 @@ pub mod routes_alpha_server {
                             request: tonic::Request<super::super::v1::ComputeRoutesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.compute_routes(request).await };
+                            let fut = async move { (*inner).compute_routes(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -253,7 +314,7 @@ pub mod routes_alpha_server {
                             request: tonic::Request<super::super::v1::ComputeRouteMatrixRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.compute_route_matrix(request).await };
+                            let fut = async move { (*inner).compute_route_matrix(request).await };
                             Box::pin(fut)
                         }
                     }

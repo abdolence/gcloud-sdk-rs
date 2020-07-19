@@ -949,7 +949,6 @@ pub mod runtime_config_manager_server {
     #[doc = " Config objects represent logical containers for variables, e.g. flags,"]
     #[doc = " passwords, etc."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RuntimeConfigManagerServer<T: RuntimeConfigManager> {
         inner: _Inner<T>,
     }
@@ -995,7 +994,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::ListConfigsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_configs(request).await };
+                            let fut = async move { (*inner).list_configs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1028,7 +1027,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::GetConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_config(request).await };
+                            let fut = async move { (*inner).get_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1062,7 +1061,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::CreateConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_config(request).await };
+                            let fut = async move { (*inner).create_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1096,7 +1095,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::UpdateConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_config(request).await };
+                            let fut = async move { (*inner).update_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1130,7 +1129,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::DeleteConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_config(request).await };
+                            let fut = async move { (*inner).delete_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1164,7 +1163,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::ListVariablesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_variables(request).await };
+                            let fut = async move { (*inner).list_variables(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1198,7 +1197,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::GetVariableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_variable(request).await };
+                            let fut = async move { (*inner).get_variable(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1232,7 +1231,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::WatchVariableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.watch_variable(request).await };
+                            let fut = async move { (*inner).watch_variable(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1266,7 +1265,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::CreateVariableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_variable(request).await };
+                            let fut = async move { (*inner).create_variable(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1300,7 +1299,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::UpdateVariableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_variable(request).await };
+                            let fut = async move { (*inner).update_variable(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1334,7 +1333,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::DeleteVariableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_variable(request).await };
+                            let fut = async move { (*inner).delete_variable(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1368,7 +1367,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::ListWaitersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_waiters(request).await };
+                            let fut = async move { (*inner).list_waiters(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1401,7 +1400,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::GetWaiterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_waiter(request).await };
+                            let fut = async move { (*inner).get_waiter(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1435,7 +1434,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::CreateWaiterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_waiter(request).await };
+                            let fut = async move { (*inner).create_waiter(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1469,7 +1468,7 @@ pub mod runtime_config_manager_server {
                             request: tonic::Request<super::DeleteWaiterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_waiter(request).await };
+                            let fut = async move { (*inner).delete_waiter(request).await };
                             Box::pin(fut)
                         }
                     }

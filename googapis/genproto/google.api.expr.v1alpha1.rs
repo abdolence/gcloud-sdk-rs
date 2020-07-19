@@ -1113,7 +1113,6 @@ pub mod conformance_service_server {
     #[doc = " a server for this API.  The API will be used for conformance testing"]
     #[doc = " and other utilities."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ConformanceServiceServer<T: ConformanceService> {
         inner: _Inner<T>,
     }
@@ -1156,7 +1155,7 @@ pub mod conformance_service_server {
                             request: tonic::Request<super::ParseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.parse(request).await };
+                            let fut = async move { (*inner).parse(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1187,7 +1186,7 @@ pub mod conformance_service_server {
                             request: tonic::Request<super::CheckRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.check(request).await };
+                            let fut = async move { (*inner).check(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1218,7 +1217,7 @@ pub mod conformance_service_server {
                             request: tonic::Request<super::EvalRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.eval(request).await };
+                            let fut = async move { (*inner).eval(request).await };
                             Box::pin(fut)
                         }
                     }

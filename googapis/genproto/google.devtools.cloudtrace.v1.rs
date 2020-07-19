@@ -366,7 +366,6 @@ pub mod trace_service_server {
     #[doc = " timed event which forms a node of the trace tree. Spans for a single trace"]
     #[doc = " may span multiple services."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct TraceServiceServer<T: TraceService> {
         inner: _Inner<T>,
     }
@@ -409,7 +408,7 @@ pub mod trace_service_server {
                             request: tonic::Request<super::ListTracesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_traces(request).await };
+                            let fut = async move { (*inner).list_traces(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -440,7 +439,7 @@ pub mod trace_service_server {
                             request: tonic::Request<super::GetTraceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_trace(request).await };
+                            let fut = async move { (*inner).get_trace(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -471,7 +470,7 @@ pub mod trace_service_server {
                             request: tonic::Request<super::PatchTracesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.patch_traces(request).await };
+                            let fut = async move { (*inner).patch_traces(request).await };
                             Box::pin(fut)
                         }
                     }

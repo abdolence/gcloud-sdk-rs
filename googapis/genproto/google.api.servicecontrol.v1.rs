@@ -715,7 +715,6 @@ pub mod quota_controller_server {
     #[doc = " Allows clients to allocate and release quota against a [managed"]
     #[doc = " service](https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct QuotaControllerServer<T: QuotaController> {
         inner: _Inner<T>,
     }
@@ -761,7 +760,7 @@ pub mod quota_controller_server {
                             request: tonic::Request<super::AllocateQuotaRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.allocate_quota(request).await };
+                            let fut = async move { (*inner).allocate_quota(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1135,7 +1134,6 @@ pub mod service_controller_server {
     #[doc = " Lets clients check and report operations against a [managed"]
     #[doc = " service](https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ServiceControllerServer<T: ServiceController> {
         inner: _Inner<T>,
     }
@@ -1178,7 +1176,7 @@ pub mod service_controller_server {
                             request: tonic::Request<super::CheckRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.check(request).await };
+                            let fut = async move { (*inner).check(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1209,7 +1207,7 @@ pub mod service_controller_server {
                             request: tonic::Request<super::ReportRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.report(request).await };
+                            let fut = async move { (*inner).report(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -387,7 +387,6 @@ pub mod cloud_support_server {
     #[doc = " Retrieves the list of Google Cloud Platform Support accounts and manages"]
     #[doc = " support cases associated with them."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudSupportServer<T: CloudSupport> {
         inner: _Inner<T>,
     }
@@ -433,7 +432,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::GetSupportAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_support_account(request).await };
+                            let fut = async move { (*inner).get_support_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -467,7 +466,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::ListSupportAccountsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_support_accounts(request).await };
+                            let fut = async move { (*inner).list_support_accounts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -498,7 +497,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::GetCaseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_case(request).await };
+                            let fut = async move { (*inner).get_case(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -529,7 +528,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::ListCasesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_cases(request).await };
+                            let fut = async move { (*inner).list_cases(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -562,7 +561,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::ListCommentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_comments(request).await };
+                            let fut = async move { (*inner).list_comments(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -593,7 +592,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::CreateCaseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_case(request).await };
+                            let fut = async move { (*inner).create_case(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -624,7 +623,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::UpdateCaseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_case(request).await };
+                            let fut = async move { (*inner).update_case(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -657,7 +656,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::CreateCommentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_comment(request).await };
+                            let fut = async move { (*inner).create_comment(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -691,7 +690,7 @@ pub mod cloud_support_server {
                             request: tonic::Request<super::GetIssueTaxonomyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_issue_taxonomy(request).await };
+                            let fut = async move { (*inner).get_issue_taxonomy(request).await };
                             Box::pin(fut)
                         }
                     }

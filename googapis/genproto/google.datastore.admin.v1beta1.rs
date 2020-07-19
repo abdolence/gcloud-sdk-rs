@@ -448,7 +448,6 @@ pub mod datastore_admin_server {
     #[doc = " Operations are created by service DatastoreAdmin,"]
     #[doc = " but are accessed via service google.longrunning.Operations."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DatastoreAdminServer<T: DatastoreAdmin> {
         inner: _Inner<T>,
     }
@@ -494,7 +493,7 @@ pub mod datastore_admin_server {
                             request: tonic::Request<super::ExportEntitiesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_entities(request).await };
+                            let fut = async move { (*inner).export_entities(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -528,7 +527,7 @@ pub mod datastore_admin_server {
                             request: tonic::Request<super::ImportEntitiesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_entities(request).await };
+                            let fut = async move { (*inner).import_entities(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -666,7 +666,6 @@ pub mod admin_service_server {
     #[doc = " The service that a client application uses to manage topics and"]
     #[doc = " subscriptions, such creating, listing, and deleting topics and subscriptions."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdminServiceServer<T: AdminService> {
         inner: _Inner<T>,
     }
@@ -709,7 +708,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::CreateTopicRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_topic(request).await };
+                            let fut = async move { (*inner).create_topic(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -740,7 +739,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::GetTopicRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_topic(request).await };
+                            let fut = async move { (*inner).get_topic(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -774,7 +773,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::GetTopicPartitionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_topic_partitions(request).await };
+                            let fut = async move { (*inner).get_topic_partitions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -805,7 +804,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::ListTopicsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_topics(request).await };
+                            let fut = async move { (*inner).list_topics(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -836,7 +835,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::UpdateTopicRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_topic(request).await };
+                            let fut = async move { (*inner).update_topic(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -867,7 +866,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::DeleteTopicRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_topic(request).await };
+                            let fut = async move { (*inner).delete_topic(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -901,7 +900,8 @@ pub mod admin_service_server {
                             request: tonic::Request<super::ListTopicSubscriptionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_topic_subscriptions(request).await };
+                            let fut =
+                                async move { (*inner).list_topic_subscriptions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -935,7 +935,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::CreateSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_subscription(request).await };
+                            let fut = async move { (*inner).create_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -968,7 +968,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::GetSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_subscription(request).await };
+                            let fut = async move { (*inner).get_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1002,7 +1002,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::ListSubscriptionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_subscriptions(request).await };
+                            let fut = async move { (*inner).list_subscriptions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1036,7 +1036,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::UpdateSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_subscription(request).await };
+                            let fut = async move { (*inner).update_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1070,7 +1070,7 @@ pub mod admin_service_server {
                             request: tonic::Request<super::DeleteSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_subscription(request).await };
+                            let fut = async move { (*inner).delete_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1370,7 +1370,6 @@ pub mod cursor_service_server {
     #[doc = " cursors while receiving messsages. A cursor represents a subscriber's"]
     #[doc = " progress within a topic partition for a given subscription."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CursorServiceServer<T: CursorService> {
         inner: _Inner<T>,
     }
@@ -1420,7 +1419,8 @@ pub mod cursor_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.streaming_commit_cursor(request).await };
+                            let fut =
+                                async move { (*inner).streaming_commit_cursor(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1453,7 +1453,7 @@ pub mod cursor_service_server {
                             request: tonic::Request<super::CommitCursorRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.commit_cursor(request).await };
+                            let fut = async move { (*inner).commit_cursor(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1487,7 +1487,7 @@ pub mod cursor_service_server {
                             request: tonic::Request<super::ListPartitionCursorsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_partition_cursors(request).await };
+                            let fut = async move { (*inner).list_partition_cursors(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1692,7 +1692,6 @@ pub mod publisher_service_server {
     #[doc = " the retention period configured for the respective topic, and are delivered"]
     #[doc = " to subscriber clients upon request (via the `SubscriberService`)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PublisherServiceServer<T: PublisherService> {
         inner: _Inner<T>,
     }
@@ -1737,7 +1736,7 @@ pub mod publisher_service_server {
                             request: tonic::Request<tonic::Streaming<super::PublishRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.publish(request).await };
+                            let fut = async move { (*inner).publish(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1989,7 +1988,6 @@ pub mod subscriber_service_server {
     #[doc = " The service that a subscriber client application uses to receive messages"]
     #[doc = " from subscriptions."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SubscriberServiceServer<T: SubscriberService> {
         inner: _Inner<T>,
     }
@@ -2037,7 +2035,7 @@ pub mod subscriber_service_server {
                             request: tonic::Request<tonic::Streaming<super::SubscribeRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.subscribe(request).await };
+                            let fut = async move { (*inner).subscribe(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -613,7 +613,6 @@ pub mod access_approval_server {
     #[doc = ""]
     #[doc = " If a request is not approved or dismissed, we call it pending."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AccessApprovalServer<T: AccessApproval> {
         inner: _Inner<T>,
     }
@@ -659,7 +658,7 @@ pub mod access_approval_server {
                             request: tonic::Request<super::ListApprovalRequestsMessage>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_approval_requests(request).await };
+                            let fut = async move { (*inner).list_approval_requests(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -693,7 +692,7 @@ pub mod access_approval_server {
                             request: tonic::Request<super::GetApprovalRequestMessage>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_approval_request(request).await };
+                            let fut = async move { (*inner).get_approval_request(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -727,7 +726,8 @@ pub mod access_approval_server {
                             request: tonic::Request<super::ApproveApprovalRequestMessage>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.approve_approval_request(request).await };
+                            let fut =
+                                async move { (*inner).approve_approval_request(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -761,7 +761,8 @@ pub mod access_approval_server {
                             request: tonic::Request<super::DismissApprovalRequestMessage>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.dismiss_approval_request(request).await };
+                            let fut =
+                                async move { (*inner).dismiss_approval_request(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -796,7 +797,7 @@ pub mod access_approval_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.get_access_approval_settings(request).await };
+                                async move { (*inner).get_access_approval_settings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -830,8 +831,9 @@ pub mod access_approval_server {
                             request: tonic::Request<super::UpdateAccessApprovalSettingsMessage>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.update_access_approval_settings(request).await };
+                            let fut = async move {
+                                (*inner).update_access_approval_settings(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -865,8 +867,9 @@ pub mod access_approval_server {
                             request: tonic::Request<super::DeleteAccessApprovalSettingsMessage>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.delete_access_approval_settings(request).await };
+                            let fut = async move {
+                                (*inner).delete_access_approval_settings(request).await
+                            };
                             Box::pin(fut)
                         }
                     }

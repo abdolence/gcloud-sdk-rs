@@ -938,7 +938,6 @@ pub mod ad_mob_api_server {
     #[doc = " The AdMob API allows AdMob publishers to access their account settings and"]
     #[doc = " generate reports."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdMobApiServer<T: AdMobApi> {
         inner: _Inner<T>,
     }
@@ -983,7 +982,7 @@ pub mod ad_mob_api_server {
                             request: tonic::Request<super::GetPublisherAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_publisher_account(request).await };
+                            let fut = async move { (*inner).get_publisher_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1017,7 +1016,8 @@ pub mod ad_mob_api_server {
                             request: tonic::Request<super::ListPublisherAccountsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_publisher_accounts(request).await };
+                            let fut =
+                                async move { (*inner).list_publisher_accounts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1053,7 +1053,8 @@ pub mod ad_mob_api_server {
                             request: tonic::Request<super::GenerateNetworkReportRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_network_report(request).await };
+                            let fut =
+                                async move { (*inner).generate_network_report(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1089,7 +1090,8 @@ pub mod ad_mob_api_server {
                             request: tonic::Request<super::GenerateMediationReportRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_mediation_report(request).await };
+                            let fut =
+                                async move { (*inner).generate_mediation_report(request).await };
                             Box::pin(fut)
                         }
                     }

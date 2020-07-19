@@ -818,7 +818,6 @@ pub mod routes_preferred_server {
     }
     #[doc = " The Routes Preferred API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RoutesPreferredServer<T: RoutesPreferred> {
         inner: _Inner<T>,
     }
@@ -864,7 +863,7 @@ pub mod routes_preferred_server {
                             request: tonic::Request<super::ComputeRoutesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.compute_routes(request).await };
+                            let fut = async move { (*inner).compute_routes(request).await };
                             Box::pin(fut)
                         }
                     }

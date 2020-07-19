@@ -1,3 +1,25 @@
+/// Audit log information specific to Cloud IAM admin APIs. This message is
+/// serialized as an `Any` type in the `ServiceData` message of an
+/// `AuditLog` message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuditData {
+    /// The permission_delta when when creating or updating a Role.
+    #[prost(message, optional, tag = "1")]
+    pub permission_delta: ::std::option::Option<audit_data::PermissionDelta>,
+}
+pub mod audit_data {
+    /// A PermissionDelta message to record the added_permissions and
+    /// removed_permissions inside a role.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PermissionDelta {
+        /// Added permissions.
+        #[prost(string, repeated, tag = "1")]
+        pub added_permissions: ::std::vec::Vec<std::string::String>,
+        /// Removed permissions.
+        #[prost(string, repeated, tag = "2")]
+        pub removed_permissions: ::std::vec::Vec<std::string::String>,
+    }
+}
 /// A service account in the Identity and Access Management API.
 ///
 /// To create a service account, specify the `project_id` and the `account_id`
@@ -1390,7 +1412,6 @@ pub mod iam_server {
     #[doc = " the account. The `ACCOUNT` value can be the `email` address or the"]
     #[doc = " `unique_id` of the service account."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct IamServer<T: Iam> {
         inner: _Inner<T>,
     }
@@ -1435,7 +1456,7 @@ pub mod iam_server {
                             request: tonic::Request<super::ListServiceAccountsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_service_accounts(request).await };
+                            let fut = async move { (*inner).list_service_accounts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1468,7 +1489,7 @@ pub mod iam_server {
                             request: tonic::Request<super::GetServiceAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service_account(request).await };
+                            let fut = async move { (*inner).get_service_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1501,7 +1522,7 @@ pub mod iam_server {
                             request: tonic::Request<super::CreateServiceAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_service_account(request).await };
+                            let fut = async move { (*inner).create_service_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1532,7 +1553,7 @@ pub mod iam_server {
                             request: tonic::Request<super::ServiceAccount>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_service_account(request).await };
+                            let fut = async move { (*inner).update_service_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1565,7 +1586,7 @@ pub mod iam_server {
                             request: tonic::Request<super::DeleteServiceAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_service_account(request).await };
+                            let fut = async move { (*inner).delete_service_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1598,7 +1619,8 @@ pub mod iam_server {
                             request: tonic::Request<super::ListServiceAccountKeysRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_service_account_keys(request).await };
+                            let fut =
+                                async move { (*inner).list_service_account_keys(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1631,7 +1653,8 @@ pub mod iam_server {
                             request: tonic::Request<super::GetServiceAccountKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service_account_key(request).await };
+                            let fut =
+                                async move { (*inner).get_service_account_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1665,7 +1688,7 @@ pub mod iam_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.create_service_account_key(request).await };
+                                async move { (*inner).create_service_account_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1699,7 +1722,7 @@ pub mod iam_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.delete_service_account_key(request).await };
+                                async move { (*inner).delete_service_account_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1730,7 +1753,7 @@ pub mod iam_server {
                             request: tonic::Request<super::SignBlobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.sign_blob(request).await };
+                            let fut = async move { (*inner).sign_blob(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1761,7 +1784,7 @@ pub mod iam_server {
                             request: tonic::Request<super::SignJwtRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.sign_jwt(request).await };
+                            let fut = async move { (*inner).sign_jwt(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1795,7 +1818,7 @@ pub mod iam_server {
                             request: tonic::Request<super::super::super::v1::GetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1829,7 +1852,7 @@ pub mod iam_server {
                             request: tonic::Request<super::super::super::v1::SetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1866,7 +1889,7 @@ pub mod iam_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1899,7 +1922,7 @@ pub mod iam_server {
                             request: tonic::Request<super::QueryGrantableRolesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.query_grantable_roles(request).await };
+                            let fut = async move { (*inner).query_grantable_roles(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1930,7 +1953,7 @@ pub mod iam_server {
                             request: tonic::Request<super::ListRolesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_roles(request).await };
+                            let fut = async move { (*inner).list_roles(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1961,7 +1984,7 @@ pub mod iam_server {
                             request: tonic::Request<super::GetRoleRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_role(request).await };
+                            let fut = async move { (*inner).get_role(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1992,7 +2015,7 @@ pub mod iam_server {
                             request: tonic::Request<super::CreateRoleRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_role(request).await };
+                            let fut = async move { (*inner).create_role(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2023,7 +2046,7 @@ pub mod iam_server {
                             request: tonic::Request<super::UpdateRoleRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_role(request).await };
+                            let fut = async move { (*inner).update_role(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2054,7 +2077,7 @@ pub mod iam_server {
                             request: tonic::Request<super::DeleteRoleRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_role(request).await };
+                            let fut = async move { (*inner).delete_role(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2085,7 +2108,7 @@ pub mod iam_server {
                             request: tonic::Request<super::UndeleteRoleRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.undelete_role(request).await };
+                            let fut = async move { (*inner).undelete_role(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2119,7 +2142,7 @@ pub mod iam_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.query_testable_permissions(request).await };
+                                async move { (*inner).query_testable_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

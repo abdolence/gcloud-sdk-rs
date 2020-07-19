@@ -1025,7 +1025,6 @@ pub mod bigtable_instance_admin_server {
     #[doc = " Clusters. Provides access to the Instance and Cluster schemas only, not the"]
     #[doc = " tables' metadata or data stored in those tables."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BigtableInstanceAdminServer<T: BigtableInstanceAdmin> {
         inner: _Inner<T>,
     }
@@ -1071,7 +1070,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::CreateInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_instance(request).await };
+                            let fut = async move { (*inner).create_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1105,7 +1104,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::GetInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_instance(request).await };
+                            let fut = async move { (*inner).get_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1139,7 +1138,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::ListInstancesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_instances(request).await };
+                            let fut = async move { (*inner).list_instances(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1172,7 +1171,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::Instance>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_instance(request).await };
+                            let fut = async move { (*inner).update_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1206,7 +1205,8 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::PartialUpdateInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.partial_update_instance(request).await };
+                            let fut =
+                                async move { (*inner).partial_update_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1240,7 +1240,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::DeleteInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_instance(request).await };
+                            let fut = async move { (*inner).delete_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1274,7 +1274,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::CreateClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_cluster(request).await };
+                            let fut = async move { (*inner).create_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1307,7 +1307,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::GetClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_cluster(request).await };
+                            let fut = async move { (*inner).get_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1341,7 +1341,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::ListClustersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_clusters(request).await };
+                            let fut = async move { (*inner).list_clusters(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1372,7 +1372,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::Cluster>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_cluster(request).await };
+                            let fut = async move { (*inner).update_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1406,7 +1406,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::DeleteClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_cluster(request).await };
+                            let fut = async move { (*inner).delete_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1440,7 +1440,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::CreateAppProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_app_profile(request).await };
+                            let fut = async move { (*inner).create_app_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1474,7 +1474,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::GetAppProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_app_profile(request).await };
+                            let fut = async move { (*inner).get_app_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1508,7 +1508,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::ListAppProfilesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_app_profiles(request).await };
+                            let fut = async move { (*inner).list_app_profiles(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1542,7 +1542,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::UpdateAppProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_app_profile(request).await };
+                            let fut = async move { (*inner).update_app_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1576,7 +1576,7 @@ pub mod bigtable_instance_admin_server {
                             request: tonic::Request<super::DeleteAppProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_app_profile(request).await };
+                            let fut = async move { (*inner).delete_app_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1613,7 +1613,7 @@ pub mod bigtable_instance_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1650,7 +1650,7 @@ pub mod bigtable_instance_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1688,7 +1688,7 @@ pub mod bigtable_instance_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3381,7 +3381,6 @@ pub mod bigtable_table_admin_server {
     #[doc = " Provides access to the table schemas only, not the data stored within"]
     #[doc = " the tables."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BigtableTableAdminServer<T: BigtableTableAdmin> {
         inner: _Inner<T>,
     }
@@ -3427,7 +3426,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::CreateTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_table(request).await };
+                            let fut = async move { (*inner).create_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3462,7 +3461,7 @@ pub mod bigtable_table_admin_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.create_table_from_snapshot(request).await };
+                                async move { (*inner).create_table_from_snapshot(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3495,7 +3494,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::ListTablesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_tables(request).await };
+                            let fut = async move { (*inner).list_tables(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3526,7 +3525,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::GetTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_table(request).await };
+                            let fut = async move { (*inner).get_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3560,7 +3559,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::DeleteTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_table(request).await };
+                            let fut = async move { (*inner).delete_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3594,7 +3593,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::ModifyColumnFamiliesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.modify_column_families(request).await };
+                            let fut = async move { (*inner).modify_column_families(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3628,7 +3627,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::DropRowRangeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.drop_row_range(request).await };
+                            let fut = async move { (*inner).drop_row_range(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3663,7 +3662,7 @@ pub mod bigtable_table_admin_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.generate_consistency_token(request).await };
+                                async move { (*inner).generate_consistency_token(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3697,7 +3696,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::CheckConsistencyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.check_consistency(request).await };
+                            let fut = async move { (*inner).check_consistency(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3731,7 +3730,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::SnapshotTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.snapshot_table(request).await };
+                            let fut = async move { (*inner).snapshot_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3765,7 +3764,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::GetSnapshotRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_snapshot(request).await };
+                            let fut = async move { (*inner).get_snapshot(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3799,7 +3798,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::ListSnapshotsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_snapshots(request).await };
+                            let fut = async move { (*inner).list_snapshots(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3833,7 +3832,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::DeleteSnapshotRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_snapshot(request).await };
+                            let fut = async move { (*inner).delete_snapshot(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3867,7 +3866,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::CreateBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_backup(request).await };
+                            let fut = async move { (*inner).create_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3900,7 +3899,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::GetBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_backup(request).await };
+                            let fut = async move { (*inner).get_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3934,7 +3933,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::UpdateBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_backup(request).await };
+                            let fut = async move { (*inner).update_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3968,7 +3967,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::DeleteBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_backup(request).await };
+                            let fut = async move { (*inner).delete_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4002,7 +4001,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::ListBackupsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_backups(request).await };
+                            let fut = async move { (*inner).list_backups(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4036,7 +4035,7 @@ pub mod bigtable_table_admin_server {
                             request: tonic::Request<super::RestoreTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.restore_table(request).await };
+                            let fut = async move { (*inner).restore_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4073,7 +4072,7 @@ pub mod bigtable_table_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4110,7 +4109,7 @@ pub mod bigtable_table_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4148,7 +4147,7 @@ pub mod bigtable_table_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

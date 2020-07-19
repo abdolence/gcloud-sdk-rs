@@ -293,7 +293,6 @@ pub mod iam_credentials_server {
     #[doc = " tokens, OpenID Connect ID tokens, self-signed JSON Web Tokens (JWTs), and"]
     #[doc = " more."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct IamCredentialsServer<T: IamCredentials> {
         inner: _Inner<T>,
     }
@@ -339,7 +338,7 @@ pub mod iam_credentials_server {
                             request: tonic::Request<super::GenerateAccessTokenRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_access_token(request).await };
+                            let fut = async move { (*inner).generate_access_token(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -373,7 +372,7 @@ pub mod iam_credentials_server {
                             request: tonic::Request<super::GenerateIdTokenRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_id_token(request).await };
+                            let fut = async move { (*inner).generate_id_token(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -404,7 +403,7 @@ pub mod iam_credentials_server {
                             request: tonic::Request<super::SignBlobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.sign_blob(request).await };
+                            let fut = async move { (*inner).sign_blob(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -435,7 +434,7 @@ pub mod iam_credentials_server {
                             request: tonic::Request<super::SignJwtRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.sign_jwt(request).await };
+                            let fut = async move { (*inner).sign_jwt(request).await };
                             Box::pin(fut)
                         }
                     }

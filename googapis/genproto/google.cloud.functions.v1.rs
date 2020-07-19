@@ -6,60 +6,54 @@ pub struct CloudFunction {
     /// globally and match pattern `projects/*/locations/*/functions/*`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
+    /// User-provided description of a function.
+    #[prost(string, tag = "2")]
+    pub description: std::string::String,
     /// Output only. Status of the function deployment.
     #[prost(enumeration = "CloudFunctionStatus", tag = "7")]
     pub status: i32,
-    /// Output only. Name of the most recent operation modifying the function. If
-    /// the function status is `DEPLOYING` or `DELETING`, then it points to the
-    /// active operation.
-    #[prost(string, tag = "8")]
-    pub latest_operation: std::string::String,
     /// The name of the function (as defined in source code) that will be
     /// executed. Defaults to the resource name suffix, if not specified. For
     /// backward compatibility, if function with given name is not found, then the
     /// system will try to use function named "function".
     /// For Node.js this is name of a function exported by the module specified
     /// in `source_location`.
-    #[prost(string, tag = "9")]
+    #[prost(string, tag = "8")]
     pub entry_point: std::string::String,
     /// The runtime in which to run the function. Required when deploying a new
     /// function, optional when updating an existing function. For a complete
     /// list of possible choices, see the
     /// [`gcloud` command
     /// reference](/sdk/gcloud/reference/functions/deploy#--runtime).
-    #[prost(string, tag = "23")]
+    #[prost(string, tag = "19")]
     pub runtime: std::string::String,
     /// The function execution timeout. Execution is considered failed and
     /// can be terminated if the function is not completed at the end of the
     /// timeout period. Defaults to 60 seconds.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag = "9")]
     pub timeout: ::std::option::Option<::prost_types::Duration>,
     /// The amount of memory in MB available for a function.
     /// Defaults to 256MB.
-    #[prost(int32, tag = "11")]
+    #[prost(int32, tag = "10")]
     pub available_memory_mb: i32,
     /// The email of the function's service account. If empty, defaults to
     /// `{project_id}@appspot.gserviceaccount.com`.
-    #[prost(string, tag = "13")]
-    pub service_account: std::string::String,
+    #[prost(string, tag = "11")]
+    pub service_account_email: std::string::String,
     /// Output only. The last update timestamp of a Cloud Function.
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag = "12")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Output only. The version identifier of the Cloud Function. Each deployment attempt
     /// results in a new version of a function being created.
-    #[prost(int64, tag = "20")]
+    #[prost(int64, tag = "14")]
     pub version_id: i64,
     /// Labels associated with this Cloud Function.
-    #[prost(map = "string, string", tag = "21")]
+    #[prost(map = "string, string", tag = "15")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// Environment variables that shall be available during function execution.
-    #[prost(map = "string, string", tag = "22")]
+    #[prost(map = "string, string", tag = "17")]
     pub environment_variables:
         ::std::collections::HashMap<std::string::String, std::string::String>,
-    /// The limit on the maximum number of function instances that may coexist at a
-    /// given time.
-    #[prost(int32, tag = "24")]
-    pub max_instances: i32,
     /// The VPC Network that this cloud function can connect to. It can be
     /// either the fully-qualified URI, or the short name of the network resource.
     /// If the short network name is used, the network must belong to the same
@@ -74,8 +68,12 @@ pub struct CloudFunction {
     ///
     /// See [the VPC documentation](https://cloud.google.com/compute/docs/vpc) for
     /// more information on connecting Cloud projects.
-    #[prost(string, tag = "25")]
+    #[prost(string, tag = "18")]
     pub network: std::string::String,
+    /// The limit on the maximum number of function instances that may coexist at a
+    /// given time.
+    #[prost(int32, tag = "20")]
+    pub max_instances: i32,
     /// The VPC Network Connector that this cloud function can connect to. It can
     /// be either the fully-qualified URI, or the short name of the network
     /// connector resource. The format of this field is
@@ -86,43 +84,74 @@ pub struct CloudFunction {
     ///
     /// See [the VPC documentation](https://cloud.google.com/compute/docs/vpc) for
     /// more information on connecting Cloud projects.
-    #[prost(string, tag = "26")]
+    #[prost(string, tag = "22")]
     pub vpc_connector: std::string::String,
+    /// The egress settings for the connector, controlling what traffic is diverted
+    /// through it.
+    #[prost(enumeration = "cloud_function::VpcConnectorEgressSettings", tag = "23")]
+    pub vpc_connector_egress_settings: i32,
+    /// The ingress settings for the function, controlling what traffic can reach
+    /// it.
+    #[prost(enumeration = "cloud_function::IngressSettings", tag = "24")]
+    pub ingress_settings: i32,
+    /// Output only. The Cloud Build ID of the latest successful deployment of the
+    /// function.
+    #[prost(string, tag = "27")]
+    pub build_id: std::string::String,
     /// The location of the function source code.
-    #[prost(oneof = "cloud_function::SourceCode", tags = "14, 3, 18, 16")]
+    #[prost(oneof = "cloud_function::SourceCode", tags = "3, 4, 16")]
     pub source_code: ::std::option::Option<cloud_function::SourceCode>,
     /// An event that triggers the function.
-    #[prost(oneof = "cloud_function::Trigger", tags = "6, 12")]
+    #[prost(oneof = "cloud_function::Trigger", tags = "5, 6")]
     pub trigger: ::std::option::Option<cloud_function::Trigger>,
 }
 pub mod cloud_function {
+    /// Available egress settings.
+    ///
+    /// This controls what traffic is diverted through the VPC Access Connector
+    /// resource. By default PRIVATE_RANGES_ONLY will be used.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum VpcConnectorEgressSettings {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Use the VPC Access Connector only for private IP space from RFC1918.
+        PrivateRangesOnly = 1,
+        /// Force the use of VPC Access Connector for all egress traffic from the
+        /// function.
+        AllTraffic = 2,
+    }
+    /// Available ingress settings.
+    ///
+    /// This controls what traffic can reach the function.
+    ///
+    /// If unspecified, ALLOW_ALL will be used.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum IngressSettings {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Allow HTTP traffic from public and private sources.
+        AllowAll = 1,
+        /// Allow HTTP traffic from only private VPC sources.
+        AllowInternalOnly = 2,
+        /// Allow HTTP traffic from private VPC sources and through GCLB.
+        AllowInternalAndGclb = 3,
+    }
     /// The location of the function source code.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceCode {
         /// The Google Cloud Storage URL, starting with gs://, pointing to the zip
         /// archive which contains the function.
-        #[prost(string, tag = "14")]
+        #[prost(string, tag = "3")]
         SourceArchiveUrl(std::string::String),
-        /// The hosted repository where the function is defined.
-        #[prost(message, tag = "3")]
+        /// **Beta Feature**
+        ///
+        /// The source repository where a function is hosted.
+        #[prost(message, tag = "4")]
         SourceRepository(super::SourceRepository),
-        /// The URL pointing to the hosted repository where the function is defined.
-        /// There are supported Cloud Source Repository URLs in the following
-        /// formats:
-        ///
-        /// To refer to a specific commit:
-        /// `https://source.developers.google.com/projects/*/repos/*/revisions/*/paths/*`
-        /// To refer to a moveable alias (branch):
-        /// `https://source.developers.google.com/projects/*/repos/*/moveable-aliases/*/paths/*`
-        /// In particular, to refer to HEAD use `master` moveable alias.
-        /// To refer to a specific fixed alias (tag):
-        /// `https://source.developers.google.com/projects/*/repos/*/fixed-aliases/*/paths/*`
-        ///
-        /// You may omit `paths/*` if you want to use the main directory.
-        #[prost(string, tag = "18")]
-        SourceRepositoryUrl(std::string::String),
         /// The Google Cloud Storage signed URL used for source uploading, generated
-        /// by [google.cloud.functions.v1beta2.GenerateUploadUrl][]
+        /// by [google.cloud.functions.v1.GenerateUploadUrl][]
         #[prost(string, tag = "16")]
         SourceUploadUrl(std::string::String),
     }
@@ -130,14 +159,39 @@ pub mod cloud_function {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Trigger {
         /// An HTTPS endpoint type of source that can be triggered via URL.
-        #[prost(message, tag = "6")]
+        #[prost(message, tag = "5")]
         HttpsTrigger(super::HttpsTrigger),
         /// A source that fires events in response to a condition in another service.
-        #[prost(message, tag = "12")]
+        #[prost(message, tag = "6")]
         EventTrigger(super::EventTrigger),
     }
 }
-/// Describes HTTPSTrigger, could be used to connect web hooks to function.
+/// Describes SourceRepository, used to represent parameters related to
+/// source repository where a function is hosted.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SourceRepository {
+    /// The URL pointing to the hosted repository where the function is defined.
+    /// There are supported Cloud Source Repository URLs in the following
+    /// formats:
+    ///
+    /// To refer to a specific commit:
+    /// `https://source.developers.google.com/projects/*/repos/*/revisions/*/paths/*`
+    /// To refer to a moveable alias (branch):
+    /// `https://source.developers.google.com/projects/*/repos/*/moveable-aliases/*/paths/*`
+    /// In particular, to refer to HEAD use `master` moveable alias.
+    /// To refer to a specific fixed alias (tag):
+    /// `https://source.developers.google.com/projects/*/repos/*/fixed-aliases/*/paths/*`
+    ///
+    /// You may omit `paths/*` if you want to use the main directory.
+    #[prost(string, tag = "1")]
+    pub url: std::string::String,
+    /// Output only. The URL pointing to the hosted repository where the function
+    /// were defined at the time of deployment. It always points to a specific
+    /// commit in the format described above.
+    #[prost(string, tag = "2")]
+    pub deployed_url: std::string::String,
+}
+/// Describes HttpsTrigger, could be used to connect web hooks to function.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpsTrigger {
     /// Output only. The deployed url for the function.
@@ -148,23 +202,41 @@ pub struct HttpsTrigger {
 /// service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventTrigger {
-    /// `event_type` names contain the service that is sending an event and the
-    /// kind of event that was fired. Must be of the form
-    /// `providers/*/eventTypes/*` e.g. Directly handle a Message published to
-    /// Google Cloud Pub/Sub `providers/cloud.pubsub/eventTypes/topic.publish`.
+    /// Required. The type of event to observe. For example:
+    /// `providers/cloud.storage/eventTypes/object.change` and
+    /// `providers/cloud.pubsub/eventTypes/topic.publish`.
     ///
-    /// Handle an object changing in Google Cloud Storage:
-    /// `providers/cloud.storage/eventTypes/object.change`
+    /// Event types match pattern `providers/*/eventTypes/*.*`.
+    /// The pattern contains:
     ///
-    /// Handle a write to the Firebase Realtime Database:
-    /// `providers/google.firebase.database/eventTypes/ref.write`
+    /// 1. namespace: For example, `cloud.storage` and
+    ///    `google.firebase.analytics`.
+    /// 2. resource type: The type of resource on which event occurs. For
+    ///    example, the Google Cloud Storage API includes the type `object`.
+    /// 3. action: The action that generates the event. For example, action for
+    ///    a Google Cloud Storage Object is 'change'.
+    /// These parts are lower case.
     #[prost(string, tag = "1")]
     pub event_type: std::string::String,
-    /// Which instance of the source's service should send events. E.g. for Pub/Sub
-    /// this would be a Pub/Sub topic at `projects/*/topics/*`. For Google Cloud
-    /// Storage this would be a bucket at `projects/*/buckets/*`. For any source
-    /// that only supports one instance per-project, this should be the name of the
-    /// project (`projects/*`)
+    /// Required. The resource(s) from which to observe events, for example,
+    /// `projects/_/buckets/myBucket`.
+    ///
+    /// Not all syntactically correct values are accepted by all services. For
+    /// example:
+    ///
+    /// 1. The authorization model must support it. Google Cloud Functions
+    ///    only allows EventTriggers to be deployed that observe resources in the
+    ///    same project as the `CloudFunction`.
+    /// 2. The resource type must match the pattern expected for an
+    ///    `event_type`. For example, an `EventTrigger` that has an
+    ///    `event_type` of "google.pubsub.topic.publish" should have a resource
+    ///    that matches Google Cloud Pub/Sub topics.
+    ///
+    /// Additionally, some services may support short names when creating an
+    /// `EventTrigger`. These will always be returned in the normalized "long"
+    /// format.
+    ///
+    /// See each *service's* documentation for supported formats.
     #[prost(string, tag = "2")]
     pub resource: std::string::String,
     /// The hostname of the service that should be observed.
@@ -172,55 +244,11 @@ pub struct EventTrigger {
     /// If no string is provided, the default service implementing the API will
     /// be used. For example, `storage.googleapis.com` is the default for all
     /// event types in the `google.storage` namespace.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag = "3")]
     pub service: std::string::String,
     /// Specifies policy for failed executions.
     #[prost(message, optional, tag = "5")]
     pub failure_policy: ::std::option::Option<FailurePolicy>,
-}
-/// Describes the location of the function source in a remote repository.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SourceRepository {
-    /// URL to the hosted repository where the function is defined. Only paths in
-    /// https://source.developers.google.com domain are supported. The path should
-    /// contain the name of the repository.
-    #[prost(string, tag = "1")]
-    pub repository_url: std::string::String,
-    /// The path within the repository where the function is defined. The path
-    /// should point to the directory where Cloud Functions files are located. Use
-    /// "/" if the function is defined directly in the root directory of a
-    /// repository.
-    #[prost(string, tag = "2")]
-    pub source_path: std::string::String,
-    /// Output only. The id of the revision that was resolved at the moment of
-    /// function creation or update. For example when a user deployed from a
-    /// branch, it will be the revision id of the latest change on this branch at
-    /// that time. If user deployed from revision then this value will be always
-    /// equal to the revision specified by the user.
-    #[prost(string, tag = "6")]
-    pub deployed_revision: std::string::String,
-    /// The version of a function. Defaults to the latest version of the master
-    /// branch.
-    #[prost(oneof = "source_repository::Version", tags = "3, 4, 5")]
-    pub version: ::std::option::Option<source_repository::Version>,
-}
-pub mod source_repository {
-    /// The version of a function. Defaults to the latest version of the master
-    /// branch.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Version {
-        /// The name of the branch from which the function should be fetched.
-        #[prost(string, tag = "3")]
-        Branch(std::string::String),
-        /// The name of the tag that captures the state of the repository from
-        /// which the function should be fetched.
-        #[prost(string, tag = "4")]
-        Tag(std::string::String),
-        /// The id of the revision that captures the state of the repository from
-        /// which the function should be fetched.
-        #[prost(string, tag = "5")]
-        Revision(std::string::String),
-    }
 }
 /// Describes the policy in case of function's execution failure.
 /// If empty, then defaults to ignoring failures (i.e. not retrying them).
@@ -260,12 +288,12 @@ pub struct CreateFunctionRequest {
 /// Request for the `UpdateFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFunctionRequest {
-    /// Required. The name of the function to be updated.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
     /// Required. New version of the function.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "1")]
     pub function: ::std::option::Option<CloudFunction>,
+    /// Required list of fields to be updated in this request.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `GetFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -277,14 +305,14 @@ pub struct GetFunctionRequest {
 /// Request for the `ListFunctions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFunctionsRequest {
-    /// Required. The project and location from which the function should be listed,
+    /// The project and location from which the function should be listed,
     /// specified in the format `projects/*/locations/*`
     /// If you want to list functions in all locations, use "-" in place of a
     /// location. When listing functions in all locations, if one or more
     /// location(s) are unreachable, the response will contain functions from all
     /// reachable locations along with the names of any unreachable locations.
     #[prost(string, tag = "1")]
-    pub location: std::string::String,
+    pub parent: std::string::String,
     /// Maximum number of functions to return per call.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -303,7 +331,7 @@ pub struct ListFunctionsResponse {
     pub functions: ::std::vec::Vec<CloudFunction>,
     /// If not empty, indicates that there may be more functions that match
     /// the request; this value should be passed in a new
-    /// [google.cloud.functions.v1beta2.ListFunctionsRequest][google.cloud.functions.v1beta2.ListFunctionsRequest]
+    /// [google.cloud.functions.v1.ListFunctionsRequest][google.cloud.functions.v1.ListFunctionsRequest]
     /// to get more functions.
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
@@ -344,7 +372,7 @@ pub struct CallFunctionResponse {
     #[prost(string, tag = "3")]
     pub error: std::string::String,
 }
-/// Request of `GenerateUploadUrl` method.
+/// Request of `GenerateSourceUploadUrl` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateUploadUrlRequest {
     /// The project and location in which the Google Cloud Storage signed URL
@@ -352,7 +380,7 @@ pub struct GenerateUploadUrlRequest {
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
 }
-/// Response of `GenerateUploadUrl` method.
+/// Response of `GenerateSourceUploadUrl` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateUploadUrlResponse {
     /// The generated Google Cloud Storage signed URL that should be used for a
@@ -368,7 +396,8 @@ pub struct GenerateDownloadUrlRequest {
     /// URL should be generated.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// The optional version of function.
+    /// The optional version of function. If not set, default, current version
+    /// is used.
     #[prost(uint64, tag = "2")]
     pub version_id: u64,
 }
@@ -384,17 +413,19 @@ pub struct GenerateDownloadUrlResponse {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CloudFunctionStatus {
-    /// Status not specified.
-    StatusUnspecified = 0,
-    /// Successfully deployed.
-    Ready = 1,
-    /// Not deployed correctly - behavior is undefined. The item should be updated
-    /// or deleted to move it out of this state.
-    Failed = 2,
-    /// Creation or update in progress.
-    Deploying = 3,
-    /// Deletion in progress.
-    Deleting = 4,
+    /// Not specified. Invalid state.
+    Unspecified = 0,
+    /// Function has been successfully deployed and is serving.
+    Active = 1,
+    /// Function deployment failed and the function isn’t serving.
+    Offline = 2,
+    /// Function is being created or updated.
+    DeployInProgress = 3,
+    /// Function is being deleted.
+    DeleteInProgress = 4,
+    /// Function deployment failed and the function serving state is undefined.
+    /// The function should be updated or deleted to move it out of this state.
+    Unknown = 5,
 }
 #[doc = r" Generated client implementations."]
 pub mod cloud_functions_service_client {
@@ -432,7 +463,7 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/ListFunctions",
+                "/google.cloud.functions.v1.CloudFunctionsService/ListFunctions",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -449,7 +480,7 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/GetFunction",
+                "/google.cloud.functions.v1.CloudFunctionsService/GetFunction",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -471,7 +502,7 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/CreateFunction",
+                "/google.cloud.functions.v1.CloudFunctionsService/CreateFunction",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -491,7 +522,7 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/UpdateFunction",
+                "/google.cloud.functions.v1.CloudFunctionsService/UpdateFunction",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -513,14 +544,14 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/DeleteFunction",
+                "/google.cloud.functions.v1.CloudFunctionsService/DeleteFunction",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Synchronously invokes a deployed Cloud Function. To be used for testing"]
         #[doc = " purposes as very limited traffic is allowed. For more information on"]
-        #[doc = " the actual limits refer to [API Calls]("]
-        #[doc = " https://cloud.google.com/functions/quotas#rate_limits)."]
+        #[doc = " the actual limits, refer to"]
+        #[doc = " [Rate Limits](https://cloud.google.com/functions/quotas#rate_limits)."]
         pub async fn call_function(
             &mut self,
             request: impl tonic::IntoRequest<super::CallFunctionRequest>,
@@ -533,13 +564,13 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/CallFunction",
+                "/google.cloud.functions.v1.CloudFunctionsService/CallFunction",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns a signed URL for uploading a function source code."]
         #[doc = " For more information about the signed URL usage see:"]
-        #[doc = " https://cloud.google.com/storage/docs/access-control/signed-urls"]
+        #[doc = " https://cloud.google.com/storage/docs/access-control/signed-urls."]
         #[doc = " Once the function source code upload is complete, the used signed"]
         #[doc = " URL should be provided in CreateFunction or UpdateFunction request"]
         #[doc = " as a reference to the function source code."]
@@ -574,7 +605,7 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/GenerateUploadUrl",
+                "/google.cloud.functions.v1.CloudFunctionsService/GenerateUploadUrl",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -595,7 +626,71 @@ pub mod cloud_functions_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/GenerateDownloadUrl",
+                "/google.cloud.functions.v1.CloudFunctionsService/GenerateDownloadUrl",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Sets the IAM access control policy on the specified function."]
+        #[doc = " Replaces any existing policy."]
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::SetIamPolicyRequest>,
+        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.functions.v1.CloudFunctionsService/SetIamPolicy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets the IAM access control policy for a function."]
+        #[doc = " Returns an empty policy if the function exists and does not have a policy"]
+        #[doc = " set."]
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::GetIamPolicyRequest>,
+        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.functions.v1.CloudFunctionsService/GetIamPolicy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Tests the specified permissions against the IAM access control policy"]
+        #[doc = " for a function."]
+        #[doc = " If the function does not exist, this will return an empty set of"]
+        #[doc = " permissions, not a NOT_FOUND error."]
+        pub async fn test_iam_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::TestIamPermissionsRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::TestIamPermissionsResponse>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.functions.v1.CloudFunctionsService/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -660,15 +755,15 @@ pub mod cloud_functions_service_server {
         >;
         #[doc = " Synchronously invokes a deployed Cloud Function. To be used for testing"]
         #[doc = " purposes as very limited traffic is allowed. For more information on"]
-        #[doc = " the actual limits refer to [API Calls]("]
-        #[doc = " https://cloud.google.com/functions/quotas#rate_limits)."]
+        #[doc = " the actual limits, refer to"]
+        #[doc = " [Rate Limits](https://cloud.google.com/functions/quotas#rate_limits)."]
         async fn call_function(
             &self,
             request: tonic::Request<super::CallFunctionRequest>,
         ) -> Result<tonic::Response<super::CallFunctionResponse>, tonic::Status>;
         #[doc = " Returns a signed URL for uploading a function source code."]
         #[doc = " For more information about the signed URL usage see:"]
-        #[doc = " https://cloud.google.com/storage/docs/access-control/signed-urls"]
+        #[doc = " https://cloud.google.com/storage/docs/access-control/signed-urls."]
         #[doc = " Once the function source code upload is complete, the used signed"]
         #[doc = " URL should be provided in CreateFunction or UpdateFunction request"]
         #[doc = " as a reference to the function source code."]
@@ -704,10 +799,33 @@ pub mod cloud_functions_service_server {
             &self,
             request: tonic::Request<super::GenerateDownloadUrlRequest>,
         ) -> Result<tonic::Response<super::GenerateDownloadUrlResponse>, tonic::Status>;
+        #[doc = " Sets the IAM access control policy on the specified function."]
+        #[doc = " Replaces any existing policy."]
+        async fn set_iam_policy(
+            &self,
+            request: tonic::Request<super::super::super::super::iam::v1::SetIamPolicyRequest>,
+        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>;
+        #[doc = " Gets the IAM access control policy for a function."]
+        #[doc = " Returns an empty policy if the function exists and does not have a policy"]
+        #[doc = " set."]
+        async fn get_iam_policy(
+            &self,
+            request: tonic::Request<super::super::super::super::iam::v1::GetIamPolicyRequest>,
+        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>;
+        #[doc = " Tests the specified permissions against the IAM access control policy"]
+        #[doc = " for a function."]
+        #[doc = " If the function does not exist, this will return an empty set of"]
+        #[doc = " permissions, not a NOT_FOUND error."]
+        async fn test_iam_permissions(
+            &self,
+            request: tonic::Request<super::super::super::super::iam::v1::TestIamPermissionsRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::TestIamPermissionsResponse>,
+            tonic::Status,
+        >;
     }
     #[doc = " A service that application uses to manipulate triggers and functions."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudFunctionsServiceServer<T: CloudFunctionsService> {
         inner: _Inner<T>,
     }
@@ -739,7 +857,7 @@ pub mod cloud_functions_service_server {
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
             match req.uri().path() {
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/ListFunctions" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/ListFunctions" => {
                     #[allow(non_camel_case_types)]
                     struct ListFunctionsSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -753,7 +871,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::ListFunctionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_functions(request).await };
+                            let fut = async move { (*inner).list_functions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -773,7 +891,7 @@ pub mod cloud_functions_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/GetFunction" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/GetFunction" => {
                     #[allow(non_camel_case_types)]
                     struct GetFunctionSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -787,7 +905,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::GetFunctionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_function(request).await };
+                            let fut = async move { (*inner).get_function(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -807,7 +925,7 @@ pub mod cloud_functions_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/CreateFunction" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/CreateFunction" => {
                     #[allow(non_camel_case_types)]
                     struct CreateFunctionSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -821,7 +939,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::CreateFunctionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_function(request).await };
+                            let fut = async move { (*inner).create_function(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -841,7 +959,7 @@ pub mod cloud_functions_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/UpdateFunction" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/UpdateFunction" => {
                     #[allow(non_camel_case_types)]
                     struct UpdateFunctionSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -855,7 +973,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::UpdateFunctionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_function(request).await };
+                            let fut = async move { (*inner).update_function(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -875,7 +993,7 @@ pub mod cloud_functions_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/DeleteFunction" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/DeleteFunction" => {
                     #[allow(non_camel_case_types)]
                     struct DeleteFunctionSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -889,7 +1007,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::DeleteFunctionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_function(request).await };
+                            let fut = async move { (*inner).delete_function(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -909,7 +1027,7 @@ pub mod cloud_functions_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/CallFunction" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/CallFunction" => {
                     #[allow(non_camel_case_types)]
                     struct CallFunctionSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -923,7 +1041,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::CallFunctionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.call_function(request).await };
+                            let fut = async move { (*inner).call_function(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -943,7 +1061,7 @@ pub mod cloud_functions_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/GenerateUploadUrl" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/GenerateUploadUrl" => {
                     #[allow(non_camel_case_types)]
                     struct GenerateUploadUrlSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -957,7 +1075,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::GenerateUploadUrlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_upload_url(request).await };
+                            let fut = async move { (*inner).generate_upload_url(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -977,7 +1095,7 @@ pub mod cloud_functions_service_server {
                     };
                     Box::pin(fut)
                 }
-                "/google.cloud.functions.v1beta2.CloudFunctionsService/GenerateDownloadUrl" => {
+                "/google.cloud.functions.v1.CloudFunctionsService/GenerateDownloadUrl" => {
                     #[allow(non_camel_case_types)]
                     struct GenerateDownloadUrlSvc<T: CloudFunctionsService>(pub Arc<T>);
                     impl<T: CloudFunctionsService>
@@ -991,7 +1109,7 @@ pub mod cloud_functions_service_server {
                             request: tonic::Request<super::GenerateDownloadUrlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_download_url(request).await };
+                            let fut = async move { (*inner).generate_download_url(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1000,6 +1118,118 @@ pub mod cloud_functions_service_server {
                         let interceptor = inner.1.clone();
                         let inner = inner.0;
                         let method = GenerateDownloadUrlSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.functions.v1.CloudFunctionsService/SetIamPolicy" => {
+                    #[allow(non_camel_case_types)]
+                    struct SetIamPolicySvc<T: CloudFunctionsService>(pub Arc<T>);
+                    impl<T: CloudFunctionsService>
+                        tonic::server::UnaryService<
+                            super::super::super::super::iam::v1::SetIamPolicyRequest,
+                        > for SetIamPolicySvc<T>
+                    {
+                        type Response = super::super::super::super::iam::v1::Policy;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<
+                                super::super::super::super::iam::v1::SetIamPolicyRequest,
+                            >,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { (*inner).set_iam_policy(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = SetIamPolicySvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.functions.v1.CloudFunctionsService/GetIamPolicy" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetIamPolicySvc<T: CloudFunctionsService>(pub Arc<T>);
+                    impl<T: CloudFunctionsService>
+                        tonic::server::UnaryService<
+                            super::super::super::super::iam::v1::GetIamPolicyRequest,
+                        > for GetIamPolicySvc<T>
+                    {
+                        type Response = super::super::super::super::iam::v1::Policy;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<
+                                super::super::super::super::iam::v1::GetIamPolicyRequest,
+                            >,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { (*inner).get_iam_policy(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = GetIamPolicySvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = if let Some(interceptor) = interceptor {
+                            tonic::server::Grpc::with_interceptor(codec, interceptor)
+                        } else {
+                            tonic::server::Grpc::new(codec)
+                        };
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/google.cloud.functions.v1.CloudFunctionsService/TestIamPermissions" => {
+                    #[allow(non_camel_case_types)]
+                    struct TestIamPermissionsSvc<T: CloudFunctionsService>(pub Arc<T>);
+                    impl<T: CloudFunctionsService>
+                        tonic::server::UnaryService<
+                            super::super::super::super::iam::v1::TestIamPermissionsRequest,
+                        > for TestIamPermissionsSvc<T>
+                    {
+                        type Response =
+                            super::super::super::super::iam::v1::TestIamPermissionsResponse;
+                        type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<
+                                super::super::super::super::iam::v1::TestIamPermissionsRequest,
+                            >,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let interceptor = inner.1.clone();
+                        let inner = inner.0;
+                        let method = TestIamPermissionsSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = if let Some(interceptor) = interceptor {
                             tonic::server::Grpc::with_interceptor(codec, interceptor)
@@ -1040,7 +1270,7 @@ pub mod cloud_functions_service_server {
 }
 /// Metadata describing an [Operation][google.longrunning.Operation]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationMetadataV1Beta2 {
+pub struct OperationMetadataV1 {
     /// Target of the operation - for example
     /// projects/project-1/locations/region-1/functions/function-1
     #[prost(string, tag = "1")]
@@ -1058,6 +1288,10 @@ pub struct OperationMetadataV1Beta2 {
     /// The last update timestamp of the operation.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// The Cloud Build ID of the function created or updated by an API call.
+    /// This field is only populated for Create and Update operations.
+    #[prost(string, tag = "6")]
+    pub build_id: std::string::String,
 }
 /// A type of an operation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

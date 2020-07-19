@@ -806,7 +806,6 @@ pub mod pipelines_v1_alpha2_server {
     }
     #[doc = " A service for running genomics pipelines."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PipelinesV1Alpha2Server<T: PipelinesV1Alpha2> {
         inner: _Inner<T>,
     }
@@ -852,7 +851,7 @@ pub mod pipelines_v1_alpha2_server {
                             request: tonic::Request<super::CreatePipelineRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_pipeline(request).await };
+                            let fut = async move { (*inner).create_pipeline(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -886,7 +885,7 @@ pub mod pipelines_v1_alpha2_server {
                             request: tonic::Request<super::RunPipelineRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_pipeline(request).await };
+                            let fut = async move { (*inner).run_pipeline(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -920,7 +919,7 @@ pub mod pipelines_v1_alpha2_server {
                             request: tonic::Request<super::GetPipelineRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_pipeline(request).await };
+                            let fut = async move { (*inner).get_pipeline(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -954,7 +953,7 @@ pub mod pipelines_v1_alpha2_server {
                             request: tonic::Request<super::ListPipelinesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_pipelines(request).await };
+                            let fut = async move { (*inner).list_pipelines(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -988,7 +987,7 @@ pub mod pipelines_v1_alpha2_server {
                             request: tonic::Request<super::DeletePipelineRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_pipeline(request).await };
+                            let fut = async move { (*inner).delete_pipeline(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1022,7 +1021,7 @@ pub mod pipelines_v1_alpha2_server {
                             request: tonic::Request<super::GetControllerConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_controller_config(request).await };
+                            let fut = async move { (*inner).get_controller_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1056,7 +1055,7 @@ pub mod pipelines_v1_alpha2_server {
                             request: tonic::Request<super::SetOperationStatusRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_operation_status(request).await };
+                            let fut = async move { (*inner).set_operation_status(request).await };
                             Box::pin(fut)
                         }
                     }

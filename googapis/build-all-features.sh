@@ -23,6 +23,11 @@ features=(
   google-ads-googleads-v3-errors
   google-ads-googleads-v3-resources
   google-ads-googleads-v3-services
+  google-ads-googleads-v4-common
+  google-ads-googleads-v4-enums
+  google-ads-googleads-v4-errors
+  google-ads-googleads-v4-resources
+  google-ads-googleads-v4-services
   google-analytics-admin-v1alpha
   google-analytics-data-v1alpha
   google-analytics-management-v1alpha
@@ -34,6 +39,7 @@ features=(
   google-appengine-legacy
   google-appengine-logging-v1
   google-appengine-v1
+  google-appengine-v1beta
   google-assistant-embedded-v1alpha1
   google-assistant-embedded-v1alpha2
   google-bigtable-admin-cluster-v1
@@ -78,7 +84,7 @@ features=(
   google-cloud-dialogflow-v2beta1
   google-cloud-documentai-v1beta1
   google-cloud-documentai-v1beta2
-  google-cloud-functions-v1beta2
+  google-cloud-functions-v1
   google-cloud-gaming-v1beta
   google-cloud-iot-v1
   google-cloud-irm-v1alpha2
@@ -92,6 +98,7 @@ features=(
   google-cloud-mediatranslation-v1beta1
   google-cloud-memcache-v1beta2
   google-cloud-ml-v1
+  google-cloud-notebooks-v1beta1
   google-cloud-orgpolicy-v1
   google-cloud-osconfig-agentendpoint-v1
   google-cloud-osconfig-agentendpoint-v1beta
@@ -119,6 +126,7 @@ features=(
   google-cloud-scheduler-v1beta1
   google-cloud-secretmanager-v1
   google-cloud-secrets-v1beta1
+  google-cloud-security-privateca-v1beta1
   google-cloud-securitycenter-settings-v1beta1
   google-cloud-securitycenter-v1
   google-cloud-securitycenter-v1beta1

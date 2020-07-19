@@ -324,7 +324,6 @@ pub mod source_repo_server {
     }
     #[doc = " The Source Repo API service."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SourceRepoServer<T: SourceRepo> {
         inner: _Inner<T>,
     }
@@ -367,7 +366,7 @@ pub mod source_repo_server {
                             request: tonic::Request<super::ListReposRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_repos(request).await };
+                            let fut = async move { (*inner).list_repos(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -398,7 +397,7 @@ pub mod source_repo_server {
                             request: tonic::Request<super::GetRepoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_repo(request).await };
+                            let fut = async move { (*inner).get_repo(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -429,7 +428,7 @@ pub mod source_repo_server {
                             request: tonic::Request<super::CreateRepoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_repo(request).await };
+                            let fut = async move { (*inner).create_repo(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -460,7 +459,7 @@ pub mod source_repo_server {
                             request: tonic::Request<super::DeleteRepoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_repo(request).await };
+                            let fut = async move { (*inner).delete_repo(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -497,7 +496,7 @@ pub mod source_repo_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -534,7 +533,7 @@ pub mod source_repo_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -572,7 +571,7 @@ pub mod source_repo_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

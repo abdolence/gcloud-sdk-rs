@@ -482,7 +482,6 @@ pub mod big_query_read_server {
     #[doc = ""]
     #[doc = " The Read API can be used to read data from BigQuery."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BigQueryReadServer<T: BigQueryRead> {
         inner: _Inner<T>,
     }
@@ -528,7 +527,7 @@ pub mod big_query_read_server {
                             request: tonic::Request<super::CreateReadSessionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_read_session(request).await };
+                            let fut = async move { (*inner).create_read_session(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -564,7 +563,7 @@ pub mod big_query_read_server {
                             request: tonic::Request<super::ReadRowsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.read_rows(request).await };
+                            let fut = async move { (*inner).read_rows(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -597,7 +596,7 @@ pub mod big_query_read_server {
                             request: tonic::Request<super::SplitReadStreamRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.split_read_stream(request).await };
+                            let fut = async move { (*inner).split_read_stream(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -977,7 +977,6 @@ pub mod catalog_service_server {
     }
     #[doc = " Service for ingesting catalog information of the customer's website."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CatalogServiceServer<T: CatalogService> {
         inner: _Inner<T>,
     }
@@ -1023,7 +1022,7 @@ pub mod catalog_service_server {
                             request: tonic::Request<super::CreateCatalogItemRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_catalog_item(request).await };
+                            let fut = async move { (*inner).create_catalog_item(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1057,7 +1056,7 @@ pub mod catalog_service_server {
                             request: tonic::Request<super::GetCatalogItemRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_catalog_item(request).await };
+                            let fut = async move { (*inner).get_catalog_item(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1091,7 +1090,7 @@ pub mod catalog_service_server {
                             request: tonic::Request<super::ListCatalogItemsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_catalog_items(request).await };
+                            let fut = async move { (*inner).list_catalog_items(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1125,7 +1124,7 @@ pub mod catalog_service_server {
                             request: tonic::Request<super::UpdateCatalogItemRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_catalog_item(request).await };
+                            let fut = async move { (*inner).update_catalog_item(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1159,7 +1158,7 @@ pub mod catalog_service_server {
                             request: tonic::Request<super::DeleteCatalogItemRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_catalog_item(request).await };
+                            let fut = async move { (*inner).delete_catalog_item(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1193,7 +1192,7 @@ pub mod catalog_service_server {
                             request: tonic::Request<super::ImportCatalogItemsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_catalog_items(request).await };
+                            let fut = async move { (*inner).import_catalog_items(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1408,7 +1407,6 @@ pub mod prediction_api_key_registry_server {
     #[doc = " authenticate your `predict` method call, you do not need to register an API"]
     #[doc = " key. You can register up to 20 API keys per project."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PredictionApiKeyRegistryServer<T: PredictionApiKeyRegistry> {
         inner: _Inner<T>,
     }
@@ -1439,7 +1437,7 @@ pub mod prediction_api_key_registry_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/CreatePredictionApiKeyRegistration" => { # [ allow ( non_camel_case_types ) ] struct CreatePredictionApiKeyRegistrationSvc < T : PredictionApiKeyRegistry > ( pub Arc < T > ) ; impl < T : PredictionApiKeyRegistry > tonic :: server :: UnaryService < super :: CreatePredictionApiKeyRegistrationRequest > for CreatePredictionApiKeyRegistrationSvc < T > { type Response = super :: PredictionApiKeyRegistration ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreatePredictionApiKeyRegistrationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_prediction_api_key_registration ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreatePredictionApiKeyRegistrationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/ListPredictionApiKeyRegistrations" => { # [ allow ( non_camel_case_types ) ] struct ListPredictionApiKeyRegistrationsSvc < T : PredictionApiKeyRegistry > ( pub Arc < T > ) ; impl < T : PredictionApiKeyRegistry > tonic :: server :: UnaryService < super :: ListPredictionApiKeyRegistrationsRequest > for ListPredictionApiKeyRegistrationsSvc < T > { type Response = super :: ListPredictionApiKeyRegistrationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListPredictionApiKeyRegistrationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_prediction_api_key_registrations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListPredictionApiKeyRegistrationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/DeletePredictionApiKeyRegistration" => { # [ allow ( non_camel_case_types ) ] struct DeletePredictionApiKeyRegistrationSvc < T : PredictionApiKeyRegistry > ( pub Arc < T > ) ; impl < T : PredictionApiKeyRegistry > tonic :: server :: UnaryService < super :: DeletePredictionApiKeyRegistrationRequest > for DeletePredictionApiKeyRegistrationSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeletePredictionApiKeyRegistrationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_prediction_api_key_registration ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeletePredictionApiKeyRegistrationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/CreatePredictionApiKeyRegistration" => { # [ allow ( non_camel_case_types ) ] struct CreatePredictionApiKeyRegistrationSvc < T : PredictionApiKeyRegistry > ( pub Arc < T > ) ; impl < T : PredictionApiKeyRegistry > tonic :: server :: UnaryService < super :: CreatePredictionApiKeyRegistrationRequest > for CreatePredictionApiKeyRegistrationSvc < T > { type Response = super :: PredictionApiKeyRegistration ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreatePredictionApiKeyRegistrationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . create_prediction_api_key_registration ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreatePredictionApiKeyRegistrationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/ListPredictionApiKeyRegistrations" => { # [ allow ( non_camel_case_types ) ] struct ListPredictionApiKeyRegistrationsSvc < T : PredictionApiKeyRegistry > ( pub Arc < T > ) ; impl < T : PredictionApiKeyRegistry > tonic :: server :: UnaryService < super :: ListPredictionApiKeyRegistrationsRequest > for ListPredictionApiKeyRegistrationsSvc < T > { type Response = super :: ListPredictionApiKeyRegistrationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListPredictionApiKeyRegistrationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_prediction_api_key_registrations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListPredictionApiKeyRegistrationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/DeletePredictionApiKeyRegistration" => { # [ allow ( non_camel_case_types ) ] struct DeletePredictionApiKeyRegistrationSvc < T : PredictionApiKeyRegistry > ( pub Arc < T > ) ; impl < T : PredictionApiKeyRegistry > tonic :: server :: UnaryService < super :: DeletePredictionApiKeyRegistrationRequest > for DeletePredictionApiKeyRegistrationSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeletePredictionApiKeyRegistrationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . delete_prediction_api_key_registration ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeletePredictionApiKeyRegistrationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: PredictionApiKeyRegistry> Clone for PredictionApiKeyRegistryServer<T> {
@@ -1680,7 +1678,6 @@ pub mod prediction_service_server {
     }
     #[doc = " Service for making recommendation prediction."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PredictionServiceServer<T: PredictionService> {
         inner: _Inner<T>,
     }
@@ -1723,7 +1720,7 @@ pub mod prediction_service_server {
                             request: tonic::Request<super::PredictRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.predict(request).await };
+                            let fut = async move { (*inner).predict(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2117,7 +2114,6 @@ pub mod user_event_service_server {
     }
     #[doc = " Service for ingesting end user actions on the customer website."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct UserEventServiceServer<T: UserEventService> {
         inner: _Inner<T>,
     }
@@ -2163,7 +2159,7 @@ pub mod user_event_service_server {
                             request: tonic::Request<super::WriteUserEventRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.write_user_event(request).await };
+                            let fut = async move { (*inner).write_user_event(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2197,7 +2193,7 @@ pub mod user_event_service_server {
                             request: tonic::Request<super::CollectUserEventRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.collect_user_event(request).await };
+                            let fut = async move { (*inner).collect_user_event(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2231,7 +2227,7 @@ pub mod user_event_service_server {
                             request: tonic::Request<super::ListUserEventsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_user_events(request).await };
+                            let fut = async move { (*inner).list_user_events(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2265,7 +2261,7 @@ pub mod user_event_service_server {
                             request: tonic::Request<super::PurgeUserEventsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.purge_user_events(request).await };
+                            let fut = async move { (*inner).purge_user_events(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2299,7 +2295,7 @@ pub mod user_event_service_server {
                             request: tonic::Request<super::ImportUserEventsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_user_events(request).await };
+                            let fut = async move { (*inner).import_user_events(request).await };
                             Box::pin(fut)
                         }
                     }

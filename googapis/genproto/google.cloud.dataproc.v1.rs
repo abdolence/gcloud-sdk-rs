@@ -402,7 +402,6 @@ pub mod autoscaling_policy_service_server {
     #[doc = " The API interface for managing autoscaling policies in the"]
     #[doc = " Dataproc API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AutoscalingPolicyServiceServer<T: AutoscalingPolicyService> {
         inner: _Inner<T>,
     }
@@ -448,7 +447,8 @@ pub mod autoscaling_policy_service_server {
                             request: tonic::Request<super::CreateAutoscalingPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_autoscaling_policy(request).await };
+                            let fut =
+                                async move { (*inner).create_autoscaling_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -482,7 +482,8 @@ pub mod autoscaling_policy_service_server {
                             request: tonic::Request<super::UpdateAutoscalingPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_autoscaling_policy(request).await };
+                            let fut =
+                                async move { (*inner).update_autoscaling_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -516,7 +517,7 @@ pub mod autoscaling_policy_service_server {
                             request: tonic::Request<super::GetAutoscalingPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_autoscaling_policy(request).await };
+                            let fut = async move { (*inner).get_autoscaling_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -550,7 +551,8 @@ pub mod autoscaling_policy_service_server {
                             request: tonic::Request<super::ListAutoscalingPoliciesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_autoscaling_policies(request).await };
+                            let fut =
+                                async move { (*inner).list_autoscaling_policies(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -584,7 +586,8 @@ pub mod autoscaling_policy_service_server {
                             request: tonic::Request<super::DeleteAutoscalingPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_autoscaling_policy(request).await };
+                            let fut =
+                                async move { (*inner).delete_autoscaling_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1727,7 +1730,6 @@ pub mod cluster_controller_server {
     #[doc = " The ClusterControllerService provides methods to manage clusters"]
     #[doc = " of Compute Engine instances."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ClusterControllerServer<T: ClusterController> {
         inner: _Inner<T>,
     }
@@ -1773,7 +1775,7 @@ pub mod cluster_controller_server {
                             request: tonic::Request<super::CreateClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_cluster(request).await };
+                            let fut = async move { (*inner).create_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1807,7 +1809,7 @@ pub mod cluster_controller_server {
                             request: tonic::Request<super::UpdateClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_cluster(request).await };
+                            let fut = async move { (*inner).update_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1841,7 +1843,7 @@ pub mod cluster_controller_server {
                             request: tonic::Request<super::DeleteClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_cluster(request).await };
+                            let fut = async move { (*inner).delete_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1874,7 +1876,7 @@ pub mod cluster_controller_server {
                             request: tonic::Request<super::GetClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_cluster(request).await };
+                            let fut = async move { (*inner).get_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1908,7 +1910,7 @@ pub mod cluster_controller_server {
                             request: tonic::Request<super::ListClustersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_clusters(request).await };
+                            let fut = async move { (*inner).list_clusters(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1942,7 +1944,7 @@ pub mod cluster_controller_server {
                             request: tonic::Request<super::DiagnoseClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.diagnose_cluster(request).await };
+                            let fut = async move { (*inner).diagnose_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3060,7 +3062,6 @@ pub mod job_controller_server {
     }
     #[doc = " The JobController provides methods to manage jobs."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct JobControllerServer<T: JobController> {
         inner: _Inner<T>,
     }
@@ -3103,7 +3104,7 @@ pub mod job_controller_server {
                             request: tonic::Request<super::SubmitJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.submit_job(request).await };
+                            let fut = async move { (*inner).submit_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3136,7 +3137,8 @@ pub mod job_controller_server {
                             request: tonic::Request<super::SubmitJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.submit_job_as_operation(request).await };
+                            let fut =
+                                async move { (*inner).submit_job_as_operation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3167,7 +3169,7 @@ pub mod job_controller_server {
                             request: tonic::Request<super::GetJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_job(request).await };
+                            let fut = async move { (*inner).get_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3198,7 +3200,7 @@ pub mod job_controller_server {
                             request: tonic::Request<super::ListJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_jobs(request).await };
+                            let fut = async move { (*inner).list_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3229,7 +3231,7 @@ pub mod job_controller_server {
                             request: tonic::Request<super::UpdateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_job(request).await };
+                            let fut = async move { (*inner).update_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3260,7 +3262,7 @@ pub mod job_controller_server {
                             request: tonic::Request<super::CancelJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.cancel_job(request).await };
+                            let fut = async move { (*inner).cancel_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3291,7 +3293,7 @@ pub mod job_controller_server {
                             request: tonic::Request<super::DeleteJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_job(request).await };
+                            let fut = async move { (*inner).delete_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4300,7 +4302,6 @@ pub mod workflow_template_service_server {
     #[doc = " The API interface for managing Workflow Templates in the"]
     #[doc = " Dataproc API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct WorkflowTemplateServiceServer<T: WorkflowTemplateService> {
         inner: _Inner<T>,
     }
@@ -4331,7 +4332,7 @@ pub mod workflow_template_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.cloud.dataproc.v1.WorkflowTemplateService/CreateWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct CreateWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: CreateWorkflowTemplateRequest > for CreateWorkflowTemplateSvc < T > { type Response = super :: WorkflowTemplate ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/GetWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct GetWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: GetWorkflowTemplateRequest > for GetWorkflowTemplateSvc < T > { type Response = super :: WorkflowTemplate ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/InstantiateWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct InstantiateWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: InstantiateWorkflowTemplateRequest > for InstantiateWorkflowTemplateSvc < T > { type Response = super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: InstantiateWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . instantiate_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = InstantiateWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/InstantiateInlineWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct InstantiateInlineWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: InstantiateInlineWorkflowTemplateRequest > for InstantiateInlineWorkflowTemplateSvc < T > { type Response = super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: InstantiateInlineWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . instantiate_inline_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = InstantiateInlineWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/UpdateWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct UpdateWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: UpdateWorkflowTemplateRequest > for UpdateWorkflowTemplateSvc < T > { type Response = super :: WorkflowTemplate ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/ListWorkflowTemplates" => { # [ allow ( non_camel_case_types ) ] struct ListWorkflowTemplatesSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: ListWorkflowTemplatesRequest > for ListWorkflowTemplatesSvc < T > { type Response = super :: ListWorkflowTemplatesResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListWorkflowTemplatesRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_workflow_templates ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListWorkflowTemplatesSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/DeleteWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct DeleteWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: DeleteWorkflowTemplateRequest > for DeleteWorkflowTemplateSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.cloud.dataproc.v1.WorkflowTemplateService/CreateWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct CreateWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: CreateWorkflowTemplateRequest > for CreateWorkflowTemplateSvc < T > { type Response = super :: WorkflowTemplate ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . create_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/GetWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct GetWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: GetWorkflowTemplateRequest > for GetWorkflowTemplateSvc < T > { type Response = super :: WorkflowTemplate ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/InstantiateWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct InstantiateWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: InstantiateWorkflowTemplateRequest > for InstantiateWorkflowTemplateSvc < T > { type Response = super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: InstantiateWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . instantiate_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = InstantiateWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/InstantiateInlineWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct InstantiateInlineWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: InstantiateInlineWorkflowTemplateRequest > for InstantiateInlineWorkflowTemplateSvc < T > { type Response = super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: InstantiateInlineWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . instantiate_inline_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = InstantiateInlineWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/UpdateWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct UpdateWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: UpdateWorkflowTemplateRequest > for UpdateWorkflowTemplateSvc < T > { type Response = super :: WorkflowTemplate ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . update_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/ListWorkflowTemplates" => { # [ allow ( non_camel_case_types ) ] struct ListWorkflowTemplatesSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: ListWorkflowTemplatesRequest > for ListWorkflowTemplatesSvc < T > { type Response = super :: ListWorkflowTemplatesResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListWorkflowTemplatesRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_workflow_templates ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListWorkflowTemplatesSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.cloud.dataproc.v1.WorkflowTemplateService/DeleteWorkflowTemplate" => { # [ allow ( non_camel_case_types ) ] struct DeleteWorkflowTemplateSvc < T : WorkflowTemplateService > ( pub Arc < T > ) ; impl < T : WorkflowTemplateService > tonic :: server :: UnaryService < super :: DeleteWorkflowTemplateRequest > for DeleteWorkflowTemplateSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteWorkflowTemplateRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . delete_workflow_template ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteWorkflowTemplateSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: WorkflowTemplateService> Clone for WorkflowTemplateServiceServer<T> {

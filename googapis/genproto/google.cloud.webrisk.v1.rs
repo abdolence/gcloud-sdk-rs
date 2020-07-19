@@ -453,7 +453,6 @@ pub mod web_risk_service_server {
     #[doc = " Web Risk API defines an interface to detect malicious URLs on your"]
     #[doc = " website and in client applications."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct WebRiskServiceServer<T: WebRiskService> {
         inner: _Inner<T>,
     }
@@ -499,7 +498,8 @@ pub mod web_risk_service_server {
                             request: tonic::Request<super::ComputeThreatListDiffRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.compute_threat_list_diff(request).await };
+                            let fut =
+                                async move { (*inner).compute_threat_list_diff(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -530,7 +530,7 @@ pub mod web_risk_service_server {
                             request: tonic::Request<super::SearchUrisRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_uris(request).await };
+                            let fut = async move { (*inner).search_uris(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -563,7 +563,7 @@ pub mod web_risk_service_server {
                             request: tonic::Request<super::SearchHashesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_hashes(request).await };
+                            let fut = async move { (*inner).search_hashes(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -597,7 +597,7 @@ pub mod web_risk_service_server {
                             request: tonic::Request<super::CreateSubmissionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_submission(request).await };
+                            let fut = async move { (*inner).create_submission(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -1139,7 +1139,6 @@ pub mod service_manager_server {
     }
     #[doc = " [Google Service Management API](/service-management/overview)"]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ServiceManagerServer<T: ServiceManager> {
         inner: _Inner<T>,
     }
@@ -1184,7 +1183,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::ListServicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_services(request).await };
+                            let fut = async move { (*inner).list_services(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1215,7 +1214,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::GetServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service(request).await };
+                            let fut = async move { (*inner).get_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1248,7 +1247,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::CreateServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_service(request).await };
+                            let fut = async move { (*inner).create_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1281,7 +1280,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::DeleteServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_service(request).await };
+                            let fut = async move { (*inner).delete_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1315,7 +1314,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::UndeleteServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.undelete_service(request).await };
+                            let fut = async move { (*inner).undelete_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1349,7 +1348,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::ListServiceConfigsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_service_configs(request).await };
+                            let fut = async move { (*inner).list_service_configs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1383,7 +1382,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::GetServiceConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service_config(request).await };
+                            let fut = async move { (*inner).get_service_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1417,7 +1416,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::CreateServiceConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_service_config(request).await };
+                            let fut = async move { (*inner).create_service_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1451,7 +1450,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::SubmitConfigSourceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.submit_config_source(request).await };
+                            let fut = async move { (*inner).submit_config_source(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1485,7 +1484,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::ListServiceRolloutsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_service_rollouts(request).await };
+                            let fut = async move { (*inner).list_service_rollouts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1519,7 +1518,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::GetServiceRolloutRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service_rollout(request).await };
+                            let fut = async move { (*inner).get_service_rollout(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1553,7 +1552,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::CreateServiceRolloutRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_service_rollout(request).await };
+                            let fut = async move { (*inner).create_service_rollout(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1587,7 +1586,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::GenerateConfigReportRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_config_report(request).await };
+                            let fut = async move { (*inner).generate_config_report(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1620,7 +1619,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::EnableServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.enable_service(request).await };
+                            let fut = async move { (*inner).enable_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1654,7 +1653,7 @@ pub mod service_manager_server {
                             request: tonic::Request<super::DisableServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.disable_service(request).await };
+                            let fut = async move { (*inner).disable_service(request).await };
                             Box::pin(fut)
                         }
                     }

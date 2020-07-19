@@ -40,11 +40,11 @@ pub struct LogEntry {
     /// current time. Timestamps have nanosecond accuracy, but trailing zeros in
     /// the fractional seconds might be omitted when the timestamp is displayed.
     ///
-    /// Incoming log entries should have timestamps that are no more than the [logs
-    /// retention period](https://cloud.google.com/logging/quotas) in the past, and no more than 24 hours
-    /// in the future. Log entries outside those time boundaries will not be
-    /// available when calling `entries.list`, but those log entries can still be
-    /// [exported with LogSinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
+    /// Incoming log entries must have timestamps that don't exceed the
+    /// [logs retention
+    /// period](https://cloud.google.com/logging/quotas#logs_retention_periods) in
+    /// the past, and that don't exceed 24 hours in the future. Log entries outside
+    /// those time boundaries aren't ingested by Logging.
     #[prost(message, optional, tag = "9")]
     pub timestamp: ::std::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the log entry was received by Logging.
@@ -229,12 +229,14 @@ pub struct LogSink {
     /// The sink's `writer_identity`, set when the sink is created, must
     /// have permission to write to the destination or else the log
     /// entries are not exported. For more information, see
-    /// [Exporting Logs with Sinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
+    /// [Exporting Logs with
+    /// Sinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
     #[prost(string, tag = "3")]
     pub destination: std::string::String,
-    /// Optional. An [advanced logs filter](https://cloud.google.com/logging/docs/view/advanced-queries). The only
-    /// exported log entries are those that are in the resource owning the sink and
-    /// that match the filter. For example:
+    /// Optional. An [advanced logs
+    /// filter](https://cloud.google.com/logging/docs/view/advanced-queries). The
+    /// only exported log entries are those that are in the resource owning the
+    /// sink and that match the filter. For example:
     ///
     ///     logName="projects/[PROJECT_ID]/logs/[LOG_ID]" AND severity>=ERROR
     #[prost(string, tag = "5")]
@@ -247,8 +249,7 @@ pub struct LogSink {
     /// export any log entries.
     #[prost(bool, tag = "19")]
     pub disabled: bool,
-    /// Deprecated. The log entry format to use for this sink's exported log
-    /// entries. The v2 format is used by default and cannot be changed.
+    /// Deprecated. This field is unused.
     #[prost(enumeration = "log_sink::VersionFormat", tag = "6")]
     pub output_version_format: i32,
     /// Output only. An IAM identity–a service account or group&mdash;under which Logging
@@ -295,9 +296,7 @@ pub struct LogSink {
     pub options: ::std::option::Option<log_sink::Options>,
 }
 pub mod log_sink {
-    /// Available log entry formats. Log entries can be written to
-    /// Logging in either format and can be exported in either format.
-    /// Version 2 is the preferred format.
+    /// Deprecated. This is unused.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum VersionFormat {
@@ -320,12 +319,13 @@ pub mod log_sink {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryOptions {
     /// Optional. Whether to use [BigQuery's partition
-    /// tables](https://cloud.google.com/bigquery/docs/partitioned-tables). By default, Logging
-    /// creates dated tables based on the log entries' timestamps, e.g.
-    /// syslog_20170523. With partitioned tables the date suffix is no longer
+    /// tables](https://cloud.google.com/bigquery/docs/partitioned-tables). By
+    /// default, Logging creates dated tables based on the log entries' timestamps,
+    /// e.g. syslog_20170523. With partitioned tables the date suffix is no longer
     /// present and [special query
-    /// syntax](https://cloud.google.com/bigquery/docs/querying-partitioned-tables) has to be used instead.
-    /// In both cases, tables are sharded based on UTC timezone.
+    /// syntax](https://cloud.google.com/bigquery/docs/querying-partitioned-tables)
+    /// has to be used instead. In both cases, tables are sharded based on UTC
+    /// timezone.
     #[prost(bool, tag = "1")]
     pub use_partitioned_tables: bool,
     /// Output only. True if new timestamp column based partitioning is in use,
@@ -581,9 +581,10 @@ pub struct LogExclusion {
     /// Optional. A description of this exclusion.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
-    /// Required. An [advanced logs filter](https://cloud.google.com/logging/docs/view/advanced-queries)
-    /// that matches the log entries to be excluded. By using the
-    /// [sample function](https://cloud.google.com/logging/docs/view/advanced-queries#sample),
+    /// Required. An [advanced logs
+    /// filter](https://cloud.google.com/logging/docs/view/advanced-queries) that
+    /// matches the log entries to be excluded. By using the [sample
+    /// function](https://cloud.google.com/logging/docs/view/advanced-queries#sample),
     /// you can exclude less than 100% of the matching log entries.
     /// For example, the following query matches 99% of low-severity log
     /// entries from Google Cloud Storage buckets:
@@ -719,8 +720,9 @@ pub struct DeleteExclusionRequest {
 /// The parameters to
 /// [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
 ///
-/// See [Enabling CMEK for Logs Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
-/// for more information.
+/// See [Enabling CMEK for Logs
+/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for
+/// more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCmekSettingsRequest {
     /// Required. The resource for which to retrieve CMEK settings.
@@ -741,8 +743,9 @@ pub struct GetCmekSettingsRequest {
 /// The parameters to
 /// [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
 ///
-/// See [Enabling CMEK for Logs Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
-/// for more information.
+/// See [Enabling CMEK for Logs
+/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for
+/// more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCmekSettingsRequest {
     /// Required. The resource name for the CMEK settings to update.
@@ -762,7 +765,8 @@ pub struct UpdateCmekSettingsRequest {
     /// Required. The CMEK settings to update.
     ///
     /// See [Enabling CMEK for Logs
-    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for more information.
+    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+    /// for more information.
     #[prost(message, optional, tag = "2")]
     pub cmek_settings: ::std::option::Option<CmekSettings>,
     /// Optional. Field mask identifying which fields from `cmek_settings` should
@@ -782,8 +786,9 @@ pub struct UpdateCmekSettingsRequest {
 /// organizations. Once configured, it applies to all projects and folders in the
 /// GCP organization.
 ///
-/// See [Enabling CMEK for Logs Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
-/// for more information.
+/// See [Enabling CMEK for Logs
+/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for
+/// more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CmekSettings {
     /// Output only. The resource name of the CMEK settings.
@@ -812,7 +817,8 @@ pub struct CmekSettings {
     /// To disable CMEK for the Logs Router, set this field to an empty string.
     ///
     /// See [Enabling CMEK for Logs
-    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for more information.
+    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+    /// for more information.
     #[prost(string, tag = "2")]
     pub kms_key_name: std::string::String,
     /// Output only. The service account that will be used by the Logs Router to access your
@@ -825,7 +831,8 @@ pub struct CmekSettings {
     /// obtain the service account ID.
     ///
     /// See [Enabling CMEK for Logs
-    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for more information.
+    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+    /// for more information.
     #[prost(string, tag = "3")]
     pub service_account_id: std::string::String,
 }
@@ -1111,7 +1118,8 @@ pub mod config_service_v2_client {
         #[doc = " the GCP organization."]
         #[doc = ""]
         #[doc = " See [Enabling CMEK for Logs"]
-        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for more information."]
+        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption)"]
+        #[doc = " for more information."]
         pub async fn get_cmek_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCmekSettingsRequest>,
@@ -1141,7 +1149,8 @@ pub mod config_service_v2_client {
         #[doc = " 3) access to the key is disabled."]
         #[doc = ""]
         #[doc = " See [Enabling CMEK for Logs"]
-        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for more information."]
+        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption)"]
+        #[doc = " for more information."]
         pub async fn update_cmek_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCmekSettingsRequest>,
@@ -1271,7 +1280,8 @@ pub mod config_service_v2_server {
         #[doc = " the GCP organization."]
         #[doc = ""]
         #[doc = " See [Enabling CMEK for Logs"]
-        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for more information."]
+        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption)"]
+        #[doc = " for more information."]
         async fn get_cmek_settings(
             &self,
             request: tonic::Request<super::GetCmekSettingsRequest>,
@@ -1289,7 +1299,8 @@ pub mod config_service_v2_server {
         #[doc = " 3) access to the key is disabled."]
         #[doc = ""]
         #[doc = " See [Enabling CMEK for Logs"]
-        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for more information."]
+        #[doc = " Router](https://cloud.google.com/logging/docs/routing/managed-encryption)"]
+        #[doc = " for more information."]
         async fn update_cmek_settings(
             &self,
             request: tonic::Request<super::UpdateCmekSettingsRequest>,
@@ -1297,7 +1308,6 @@ pub mod config_service_v2_server {
     }
     #[doc = " Service for configuring sinks used to route log entries."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ConfigServiceV2Server<T: ConfigServiceV2> {
         inner: _Inner<T>,
     }
@@ -1342,7 +1352,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::ListBucketsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_buckets(request).await };
+                            let fut = async move { (*inner).list_buckets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1373,7 +1383,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::GetBucketRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_bucket(request).await };
+                            let fut = async move { (*inner).get_bucket(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1406,7 +1416,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::UpdateBucketRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_bucket(request).await };
+                            let fut = async move { (*inner).update_bucket(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1437,7 +1447,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::ListSinksRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_sinks(request).await };
+                            let fut = async move { (*inner).list_sinks(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1468,7 +1478,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::GetSinkRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_sink(request).await };
+                            let fut = async move { (*inner).get_sink(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1501,7 +1511,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::CreateSinkRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_sink(request).await };
+                            let fut = async move { (*inner).create_sink(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1534,7 +1544,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::UpdateSinkRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_sink(request).await };
+                            let fut = async move { (*inner).update_sink(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1567,7 +1577,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::DeleteSinkRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_sink(request).await };
+                            let fut = async move { (*inner).delete_sink(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1601,7 +1611,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::ListExclusionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_exclusions(request).await };
+                            let fut = async move { (*inner).list_exclusions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1634,7 +1644,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::GetExclusionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_exclusion(request).await };
+                            let fut = async move { (*inner).get_exclusion(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1668,7 +1678,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::CreateExclusionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_exclusion(request).await };
+                            let fut = async move { (*inner).create_exclusion(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1702,7 +1712,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::UpdateExclusionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_exclusion(request).await };
+                            let fut = async move { (*inner).update_exclusion(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1736,7 +1746,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::DeleteExclusionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_exclusion(request).await };
+                            let fut = async move { (*inner).delete_exclusion(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1770,7 +1780,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::GetCmekSettingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_cmek_settings(request).await };
+                            let fut = async move { (*inner).get_cmek_settings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1804,7 +1814,7 @@ pub mod config_service_v2_server {
                             request: tonic::Request<super::UpdateCmekSettingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_cmek_settings(request).await };
+                            let fut = async move { (*inner).update_cmek_settings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1921,15 +1931,16 @@ pub struct WriteLogEntriesRequest {
     /// the entries later in the list. See the `entries.list` method.
     ///
     /// Log entries with timestamps that are more than the
-    /// [logs retention period](https://cloud.google.com/logging/quota-policy) in the past or more than
-    /// 24 hours in the future will not be available when calling `entries.list`.
-    /// However, those log entries can still be
-    /// [exported with LogSinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
+    /// [logs retention period](https://cloud.google.com/logging/quota-policy) in
+    /// the past or more than 24 hours in the future will not be available when
+    /// calling `entries.list`. However, those log entries can still be [exported
+    /// with
+    /// LogSinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
     ///
     /// To improve throughput and to avoid exceeding the
-    /// [quota limit](https://cloud.google.com/logging/quota-policy) for calls to `entries.write`,
-    /// you should try to include several log entries in this list,
-    /// rather than calling this method for each individual log entry.
+    /// [quota limit](https://cloud.google.com/logging/quota-policy) for calls to
+    /// `entries.write`, you should try to include several log entries in this
+    /// list, rather than calling this method for each individual log entry.
     #[prost(message, repeated, tag = "4")]
     pub entries: ::std::vec::Vec<LogEntry>,
     /// Optional. Whether valid entries should be written even if some other
@@ -1976,12 +1987,12 @@ pub struct ListLogEntriesRequest {
     #[prost(string, repeated, tag = "8")]
     pub resource_names: ::std::vec::Vec<std::string::String>,
     /// Optional. A filter that chooses which log entries to return.  See [Advanced
-    /// Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).  Only log entries that
-    /// match the filter are returned.  An empty filter matches all log entries in
-    /// the resources listed in `resource_names`. Referencing a parent resource
-    /// that is not listed in `resource_names` will cause the filter to return no
-    /// results.
-    /// The maximum length of the filter is 20000 characters.
+    /// Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
+    /// Only log entries that match the filter are returned.  An empty filter
+    /// matches all log entries in the resources listed in `resource_names`.
+    /// Referencing a parent resource that is not listed in `resource_names` will
+    /// cause the filter to return no results. The maximum length of the filter is
+    /// 20000 characters.
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// Optional. How the results should be sorted.  Presently, the only permitted
@@ -1993,7 +2004,8 @@ pub struct ListLogEntriesRequest {
     #[prost(string, tag = "3")]
     pub order_by: std::string::String,
     /// Optional. The maximum number of results to return from this request.
-    /// Non-positive values are ignored.  The presence of `next_page_token` in the
+    /// Default is 50. If the value is negative or exceeds 1000,
+    /// the request is rejected. The presence of `next_page_token` in the
     /// response indicates that more results might be available.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
@@ -2157,7 +2169,8 @@ pub mod logging_service_v2_client {
         }
         #[doc = " Lists log entries.  Use this method to retrieve log entries that originated"]
         #[doc = " from a project/folder/organization/billing account.  For ways to export log"]
-        #[doc = " entries, see [Exporting Logs](https://cloud.google.com/logging/docs/export)."]
+        #[doc = " entries, see [Exporting"]
+        #[doc = " Logs](https://cloud.google.com/logging/docs/export)."]
         pub async fn list_log_entries(
             &mut self,
             request: impl tonic::IntoRequest<super::ListLogEntriesRequest>,
@@ -2252,7 +2265,8 @@ pub mod logging_service_v2_server {
         ) -> Result<tonic::Response<super::WriteLogEntriesResponse>, tonic::Status>;
         #[doc = " Lists log entries.  Use this method to retrieve log entries that originated"]
         #[doc = " from a project/folder/organization/billing account.  For ways to export log"]
-        #[doc = " entries, see [Exporting Logs](https://cloud.google.com/logging/docs/export)."]
+        #[doc = " entries, see [Exporting"]
+        #[doc = " Logs](https://cloud.google.com/logging/docs/export)."]
         async fn list_log_entries(
             &self,
             request: tonic::Request<super::ListLogEntriesRequest>,
@@ -2271,7 +2285,6 @@ pub mod logging_service_v2_server {
     }
     #[doc = " Service for ingesting and querying logs."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LoggingServiceV2Server<T: LoggingServiceV2> {
         inner: _Inner<T>,
     }
@@ -2314,7 +2327,7 @@ pub mod logging_service_v2_server {
                             request: tonic::Request<super::DeleteLogRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_log(request).await };
+                            let fut = async move { (*inner).delete_log(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2348,7 +2361,7 @@ pub mod logging_service_v2_server {
                             request: tonic::Request<super::WriteLogEntriesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.write_log_entries(request).await };
+                            let fut = async move { (*inner).write_log_entries(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2382,7 +2395,7 @@ pub mod logging_service_v2_server {
                             request: tonic::Request<super::ListLogEntriesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_log_entries(request).await };
+                            let fut = async move { (*inner).list_log_entries(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2417,7 +2430,7 @@ pub mod logging_service_v2_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.list_monitored_resource_descriptors(request).await
+                                (*inner).list_monitored_resource_descriptors(request).await
                             };
                             Box::pin(fut)
                         }
@@ -2449,7 +2462,7 @@ pub mod logging_service_v2_server {
                             request: tonic::Request<super::ListLogsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_logs(request).await };
+                            let fut = async move { (*inner).list_logs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2524,9 +2537,9 @@ pub struct LogMetric {
     /// The maximum length of the description is 8000 characters.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
-    /// Required. An [advanced logs filter](https://cloud.google.com/logging/docs/view/advanced_filters) which is
-    /// used to match log entries.
-    /// Example:
+    /// Required. An [advanced logs
+    /// filter](https://cloud.google.com/logging/docs/view/advanced_filters) which
+    /// is used to match log entries. Example:
     ///
     ///     "resource.type=gae_app AND severity>=ERROR"
     ///
@@ -2862,7 +2875,6 @@ pub mod metrics_service_v2_server {
     }
     #[doc = " Service for configuring logs-based metrics."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct MetricsServiceV2Server<T: MetricsServiceV2> {
         inner: _Inner<T>,
     }
@@ -2908,7 +2920,7 @@ pub mod metrics_service_v2_server {
                             request: tonic::Request<super::ListLogMetricsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_log_metrics(request).await };
+                            let fut = async move { (*inner).list_log_metrics(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2942,7 +2954,7 @@ pub mod metrics_service_v2_server {
                             request: tonic::Request<super::GetLogMetricRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_log_metric(request).await };
+                            let fut = async move { (*inner).get_log_metric(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2976,7 +2988,7 @@ pub mod metrics_service_v2_server {
                             request: tonic::Request<super::CreateLogMetricRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_log_metric(request).await };
+                            let fut = async move { (*inner).create_log_metric(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3010,7 +3022,7 @@ pub mod metrics_service_v2_server {
                             request: tonic::Request<super::UpdateLogMetricRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_log_metric(request).await };
+                            let fut = async move { (*inner).update_log_metric(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3044,7 +3056,7 @@ pub mod metrics_service_v2_server {
                             request: tonic::Request<super::DeleteLogMetricRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_log_metric(request).await };
+                            let fut = async move { (*inner).delete_log_metric(request).await };
                             Box::pin(fut)
                         }
                     }

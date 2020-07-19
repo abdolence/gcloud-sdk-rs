@@ -1727,7 +1727,6 @@ pub mod cloud_build_server {
     #[doc = " A user can list previously-requested builds or get builds by their ID to"]
     #[doc = " determine the status of the build."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudBuildServer<T: CloudBuild> {
         inner: _Inner<T>,
     }
@@ -1770,7 +1769,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::CreateBuildRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_build(request).await };
+                            let fut = async move { (*inner).create_build(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1801,7 +1800,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::GetBuildRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_build(request).await };
+                            let fut = async move { (*inner).get_build(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1832,7 +1831,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::ListBuildsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_builds(request).await };
+                            let fut = async move { (*inner).list_builds(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1863,7 +1862,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::CancelBuildRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.cancel_build(request).await };
+                            let fut = async move { (*inner).cancel_build(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1894,7 +1893,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::RetryBuildRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.retry_build(request).await };
+                            let fut = async move { (*inner).retry_build(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1928,7 +1927,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::CreateBuildTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_build_trigger(request).await };
+                            let fut = async move { (*inner).create_build_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1961,7 +1960,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::GetBuildTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_build_trigger(request).await };
+                            let fut = async move { (*inner).get_build_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1994,7 +1993,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::ListBuildTriggersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_build_triggers(request).await };
+                            let fut = async move { (*inner).list_build_triggers(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2028,7 +2027,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::DeleteBuildTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_build_trigger(request).await };
+                            let fut = async move { (*inner).delete_build_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2062,7 +2061,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::UpdateBuildTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_build_trigger(request).await };
+                            let fut = async move { (*inner).update_build_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2095,7 +2094,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::RunBuildTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_build_trigger(request).await };
+                            let fut = async move { (*inner).run_build_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2128,7 +2127,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::CreateWorkerPoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_worker_pool(request).await };
+                            let fut = async move { (*inner).create_worker_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2161,7 +2160,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::GetWorkerPoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_worker_pool(request).await };
+                            let fut = async move { (*inner).get_worker_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2194,7 +2193,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::DeleteWorkerPoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_worker_pool(request).await };
+                            let fut = async move { (*inner).delete_worker_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2227,7 +2226,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::UpdateWorkerPoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_worker_pool(request).await };
+                            let fut = async move { (*inner).update_worker_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2260,7 +2259,7 @@ pub mod cloud_build_server {
                             request: tonic::Request<super::ListWorkerPoolsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_worker_pools(request).await };
+                            let fut = async move { (*inner).list_worker_pools(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -371,7 +371,6 @@ pub mod operations_server {
     #[doc = " returns long-running operations should implement the `Operations` interface"]
     #[doc = " so developers can have a consistent client experience."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct OperationsServer<T: Operations> {
         inner: _Inner<T>,
     }
@@ -416,7 +415,7 @@ pub mod operations_server {
                             request: tonic::Request<super::ListOperationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_operations(request).await };
+                            let fut = async move { (*inner).list_operations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -447,7 +446,7 @@ pub mod operations_server {
                             request: tonic::Request<super::GetOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_operation(request).await };
+                            let fut = async move { (*inner).get_operation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -480,7 +479,7 @@ pub mod operations_server {
                             request: tonic::Request<super::DeleteOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_operation(request).await };
+                            let fut = async move { (*inner).delete_operation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -513,7 +512,7 @@ pub mod operations_server {
                             request: tonic::Request<super::CancelOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.cancel_operation(request).await };
+                            let fut = async move { (*inner).cancel_operation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -546,7 +545,7 @@ pub mod operations_server {
                             request: tonic::Request<super::WaitOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.wait_operation(request).await };
+                            let fut = async move { (*inner).wait_operation(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -1054,7 +1054,6 @@ pub mod alpha_analytics_data_server {
     }
     #[doc = " Google Analytics reporting data service."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AlphaAnalyticsDataServer<T: AlphaAnalyticsData> {
         inner: _Inner<T>,
     }
@@ -1099,7 +1098,7 @@ pub mod alpha_analytics_data_server {
                             request: tonic::Request<super::RunReportRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_report(request).await };
+                            let fut = async move { (*inner).run_report(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1133,7 +1132,7 @@ pub mod alpha_analytics_data_server {
                             request: tonic::Request<super::RunPivotReportRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_pivot_report(request).await };
+                            let fut = async move { (*inner).run_pivot_report(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1167,7 +1166,7 @@ pub mod alpha_analytics_data_server {
                             request: tonic::Request<super::BatchRunReportsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_run_reports(request).await };
+                            let fut = async move { (*inner).batch_run_reports(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1201,7 +1200,8 @@ pub mod alpha_analytics_data_server {
                             request: tonic::Request<super::BatchRunPivotReportsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_run_pivot_reports(request).await };
+                            let fut =
+                                async move { (*inner).batch_run_pivot_reports(request).await };
                             Box::pin(fut)
                         }
                     }

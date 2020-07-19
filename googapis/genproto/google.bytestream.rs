@@ -325,7 +325,6 @@ pub mod byte_stream_server {
     #[doc = ""]
     #[doc = " The errors returned by the service are in the Google canonical error space."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ByteStreamServer<T: ByteStream> {
         inner: _Inner<T>,
     }
@@ -370,7 +369,7 @@ pub mod byte_stream_server {
                             request: tonic::Request<super::ReadRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.read(request).await };
+                            let fut = async move { (*inner).read(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -401,7 +400,7 @@ pub mod byte_stream_server {
                             request: tonic::Request<tonic::Streaming<super::WriteRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.write(request).await };
+                            let fut = async move { (*inner).write(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -434,7 +433,7 @@ pub mod byte_stream_server {
                             request: tonic::Request<super::QueryWriteStatusRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.query_write_status(request).await };
+                            let fut = async move { (*inner).query_write_status(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -590,7 +590,6 @@ pub mod embedded_assistant_server {
     }
     #[doc = " Service that implements the Google Assistant API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct EmbeddedAssistantServer<T: EmbeddedAssistant> {
         inner: _Inner<T>,
     }
@@ -635,7 +634,7 @@ pub mod embedded_assistant_server {
                             request: tonic::Request<tonic::Streaming<super::AssistRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.assist(request).await };
+                            let fut = async move { (*inner).assist(request).await };
                             Box::pin(fut)
                         }
                     }

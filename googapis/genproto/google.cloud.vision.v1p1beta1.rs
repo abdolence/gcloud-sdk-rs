@@ -952,7 +952,6 @@ pub mod image_annotator_server {
     #[doc = " images, such as face, landmark, logo, label, and text detection. The"]
     #[doc = " ImageAnnotator service returns detected entities from the images."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ImageAnnotatorServer<T: ImageAnnotator> {
         inner: _Inner<T>,
     }
@@ -998,7 +997,7 @@ pub mod image_annotator_server {
                             request: tonic::Request<super::BatchAnnotateImagesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_annotate_images(request).await };
+                            let fut = async move { (*inner).batch_annotate_images(request).await };
                             Box::pin(fut)
                         }
                     }

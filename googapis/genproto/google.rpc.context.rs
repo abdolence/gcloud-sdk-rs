@@ -46,6 +46,9 @@ pub struct AttributeContext {
     /// Represents an API operation that is involved to a network activity.
     #[prost(message, optional, tag = "6")]
     pub api: ::std::option::Option<attribute_context::Api>,
+    /// Supports extensions for advanced use cases, such as logs and metrics.
+    #[prost(message, repeated, tag = "8")]
+    pub extensions: ::std::vec::Vec<::prost_types::Any>,
 }
 pub mod attribute_context {
     /// This message defines attributes for a node that handles a network request.
@@ -115,10 +118,10 @@ pub mod attribute_context {
         /// value(s) depends on the `issuer`, but typically include one or more of
         /// the following pieces of information:
         ///
-        /// *  The services intended to receive the credential such as
-        ///    ["pubsub.googleapis.com", "storage.googleapis.com"]
+        /// *  The services intended to receive the credential. For example,
+        ///    ["https://pubsub.googleapis.com/", "https://storage.googleapis.com/"].
         /// *  A set of service-based scopes. For example,
-        ///    ["https://www.googleapis.com/auth/cloud-platform"]
+        ///    ["https://www.googleapis.com/auth/cloud-platform"].
         /// *  The client id of an app, such as the Firebase project id for JWTs
         ///    from Firebase Auth.
         ///

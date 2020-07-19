@@ -793,7 +793,6 @@ pub mod cloud_redis_server {
     #[doc = " Note that location_id must be refering to a GCP `region`; for example:"]
     #[doc = " * `projects/redpepper-1290/locations/us-central1/instances/my-redis`"]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudRedisServer<T: CloudRedis> {
         inner: _Inner<T>,
     }
@@ -838,7 +837,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::ListInstancesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_instances(request).await };
+                            let fut = async move { (*inner).list_instances(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -869,7 +868,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::GetInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_instance(request).await };
+                            let fut = async move { (*inner).get_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -902,7 +901,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::CreateInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_instance(request).await };
+                            let fut = async move { (*inner).create_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -935,7 +934,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::UpdateInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_instance(request).await };
+                            let fut = async move { (*inner).update_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -968,7 +967,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::UpgradeInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.upgrade_instance(request).await };
+                            let fut = async move { (*inner).upgrade_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1001,7 +1000,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::ImportInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_instance(request).await };
+                            let fut = async move { (*inner).import_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1034,7 +1033,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::ExportInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_instance(request).await };
+                            let fut = async move { (*inner).export_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1067,7 +1066,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::FailoverInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.failover_instance(request).await };
+                            let fut = async move { (*inner).failover_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1100,7 +1099,7 @@ pub mod cloud_redis_server {
                             request: tonic::Request<super::DeleteInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_instance(request).await };
+                            let fut = async move { (*inner).delete_instance(request).await };
                             Box::pin(fut)
                         }
                     }

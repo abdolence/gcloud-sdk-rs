@@ -884,7 +884,6 @@ pub mod grafeas_v1_beta1_server {
     #[doc = " there would be one note for the vulnerability and an occurrence for each"]
     #[doc = " image with the vulnerability referring to that note."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GrafeasV1Beta1Server<T: GrafeasV1Beta1> {
         inner: _Inner<T>,
     }
@@ -929,7 +928,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::GetOccurrenceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_occurrence(request).await };
+                            let fut = async move { (*inner).get_occurrence(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -963,7 +962,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::ListOccurrencesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_occurrences(request).await };
+                            let fut = async move { (*inner).list_occurrences(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -997,7 +996,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::DeleteOccurrenceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_occurrence(request).await };
+                            let fut = async move { (*inner).delete_occurrence(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1031,7 +1030,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::CreateOccurrenceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_occurrence(request).await };
+                            let fut = async move { (*inner).create_occurrence(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1065,7 +1064,8 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::BatchCreateOccurrencesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_create_occurrences(request).await };
+                            let fut =
+                                async move { (*inner).batch_create_occurrences(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1099,7 +1099,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::UpdateOccurrenceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_occurrence(request).await };
+                            let fut = async move { (*inner).update_occurrence(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1133,7 +1133,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::GetOccurrenceNoteRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_occurrence_note(request).await };
+                            let fut = async move { (*inner).get_occurrence_note(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1164,7 +1164,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::GetNoteRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_note(request).await };
+                            let fut = async move { (*inner).get_note(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1195,7 +1195,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::ListNotesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_notes(request).await };
+                            let fut = async move { (*inner).list_notes(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1226,7 +1226,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::DeleteNoteRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_note(request).await };
+                            let fut = async move { (*inner).delete_note(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1257,7 +1257,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::CreateNoteRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_note(request).await };
+                            let fut = async move { (*inner).create_note(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1291,7 +1291,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::BatchCreateNotesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_create_notes(request).await };
+                            let fut = async move { (*inner).batch_create_notes(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1322,7 +1322,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::UpdateNoteRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_note(request).await };
+                            let fut = async move { (*inner).update_note(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1356,7 +1356,7 @@ pub mod grafeas_v1_beta1_server {
                             request: tonic::Request<super::ListNoteOccurrencesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_note_occurrences(request).await };
+                            let fut = async move { (*inner).list_note_occurrences(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1394,7 +1394,9 @@ pub mod grafeas_v1_beta1_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.get_vulnerability_occurrences_summary(request).await
+                                (*inner)
+                                    .get_vulnerability_occurrences_summary(request)
+                                    .await
                             };
                             Box::pin(fut)
                         }

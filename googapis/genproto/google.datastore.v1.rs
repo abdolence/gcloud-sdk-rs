@@ -1069,7 +1069,6 @@ pub mod datastore_server {
     #[doc = " the request."]
     #[doc = ""]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DatastoreServer<T: Datastore> {
         inner: _Inner<T>,
     }
@@ -1112,7 +1111,7 @@ pub mod datastore_server {
                             request: tonic::Request<super::LookupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.lookup(request).await };
+                            let fut = async move { (*inner).lookup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1143,7 +1142,7 @@ pub mod datastore_server {
                             request: tonic::Request<super::RunQueryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_query(request).await };
+                            let fut = async move { (*inner).run_query(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1176,7 +1175,7 @@ pub mod datastore_server {
                             request: tonic::Request<super::BeginTransactionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.begin_transaction(request).await };
+                            let fut = async move { (*inner).begin_transaction(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1207,7 +1206,7 @@ pub mod datastore_server {
                             request: tonic::Request<super::CommitRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.commit(request).await };
+                            let fut = async move { (*inner).commit(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1238,7 +1237,7 @@ pub mod datastore_server {
                             request: tonic::Request<super::RollbackRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.rollback(request).await };
+                            let fut = async move { (*inner).rollback(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1269,7 +1268,7 @@ pub mod datastore_server {
                             request: tonic::Request<super::AllocateIdsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.allocate_ids(request).await };
+                            let fut = async move { (*inner).allocate_ids(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1300,7 +1299,7 @@ pub mod datastore_server {
                             request: tonic::Request<super::ReserveIdsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.reserve_ids(request).await };
+                            let fut = async move { (*inner).reserve_ids(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -698,7 +698,6 @@ pub mod job_service_server {
     }
     #[doc = " Service to create and manage training and batch prediction jobs."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct JobServiceServer<T: JobService> {
         inner: _Inner<T>,
     }
@@ -741,7 +740,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::CreateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_job(request).await };
+                            let fut = async move { (*inner).create_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -772,7 +771,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::ListJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_jobs(request).await };
+                            let fut = async move { (*inner).list_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -803,7 +802,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::GetJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_job(request).await };
+                            let fut = async move { (*inner).get_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -834,7 +833,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::CancelJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.cancel_job(request).await };
+                            let fut = async move { (*inner).cancel_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1510,7 +1509,6 @@ pub mod model_service_server {
     #[doc = "     [projects.jobs.create](/ml/reference/rest/v1/projects.jobs/create)"]
     #[doc = "     to start a batch prediction job."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ModelServiceServer<T: ModelService> {
         inner: _Inner<T>,
     }
@@ -1553,7 +1551,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::CreateModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_model(request).await };
+                            let fut = async move { (*inner).create_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1584,7 +1582,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::ListModelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_models(request).await };
+                            let fut = async move { (*inner).list_models(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1615,7 +1613,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::GetModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_model(request).await };
+                            let fut = async move { (*inner).get_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1646,7 +1644,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::DeleteModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_model(request).await };
+                            let fut = async move { (*inner).delete_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1679,7 +1677,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::CreateVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_version(request).await };
+                            let fut = async move { (*inner).create_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1712,7 +1710,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::ListVersionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_versions(request).await };
+                            let fut = async move { (*inner).list_versions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1743,7 +1741,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::GetVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_version(request).await };
+                            let fut = async move { (*inner).get_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1776,7 +1774,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::DeleteVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_version(request).await };
+                            let fut = async move { (*inner).delete_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1810,7 +1808,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::SetDefaultVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_default_version(request).await };
+                            let fut = async move { (*inner).set_default_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2175,7 +2173,6 @@ pub mod online_prediction_service_server {
     #[doc = " The Prediction API, which serves predictions for models managed by"]
     #[doc = " ModelService."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct OnlinePredictionServiceServer<T: OnlinePredictionService> {
         inner: _Inner<T>,
     }
@@ -2220,7 +2217,7 @@ pub mod online_prediction_service_server {
                             request: tonic::Request<super::PredictRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.predict(request).await };
+                            let fut = async move { (*inner).predict(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2361,7 +2358,6 @@ pub mod project_management_service_server {
     }
     #[doc = " Allows retrieving project related information."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ProjectManagementServiceServer<T: ProjectManagementService> {
         inner: _Inner<T>,
     }
@@ -2406,7 +2402,7 @@ pub mod project_management_service_server {
                             request: tonic::Request<super::GetConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_config(request).await };
+                            let fut = async move { (*inner).get_config(request).await };
                             Box::pin(fut)
                         }
                     }

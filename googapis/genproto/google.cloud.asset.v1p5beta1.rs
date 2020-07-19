@@ -230,7 +230,6 @@ pub mod asset_service_server {
     }
     #[doc = " Asset service definition."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AssetServiceServer<T: AssetService> {
         inner: _Inner<T>,
     }
@@ -273,7 +272,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::ListAssetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_assets(request).await };
+                            let fut = async move { (*inner).list_assets(request).await };
                             Box::pin(fut)
                         }
                     }

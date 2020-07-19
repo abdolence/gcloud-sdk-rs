@@ -418,7 +418,6 @@ pub mod connection_service_server {
     }
     #[doc = " Manages external data source connections and credentials."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ConnectionServiceServer<T: ConnectionService> {
         inner: _Inner<T>,
     }
@@ -464,7 +463,7 @@ pub mod connection_service_server {
                             request: tonic::Request<super::CreateConnectionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_connection(request).await };
+                            let fut = async move { (*inner).create_connection(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -498,7 +497,7 @@ pub mod connection_service_server {
                             request: tonic::Request<super::GetConnectionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_connection(request).await };
+                            let fut = async move { (*inner).get_connection(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -532,7 +531,7 @@ pub mod connection_service_server {
                             request: tonic::Request<super::ListConnectionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_connections(request).await };
+                            let fut = async move { (*inner).list_connections(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -566,7 +565,7 @@ pub mod connection_service_server {
                             request: tonic::Request<super::UpdateConnectionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_connection(request).await };
+                            let fut = async move { (*inner).update_connection(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -600,7 +599,7 @@ pub mod connection_service_server {
                             request: tonic::Request<super::DeleteConnectionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_connection(request).await };
+                            let fut = async move { (*inner).delete_connection(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -637,7 +636,7 @@ pub mod connection_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -674,7 +673,7 @@ pub mod connection_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -710,7 +709,7 @@ pub mod connection_service_server {
                             request : tonic :: Request < super :: super :: super :: super :: super :: iam :: v1 :: TestIamPermissionsRequest >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -860,7 +860,6 @@ pub mod model_service_server {
         ) -> Result<tonic::Response<()>, tonic::Status>;
     }
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ModelServiceServer<T: ModelService> {
         inner: _Inner<T>,
     }
@@ -903,7 +902,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::GetModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_model(request).await };
+                            let fut = async move { (*inner).get_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -934,7 +933,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::ListModelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_models(request).await };
+                            let fut = async move { (*inner).list_models(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -965,7 +964,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::PatchModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.patch_model(request).await };
+                            let fut = async move { (*inner).patch_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -996,7 +995,7 @@ pub mod model_service_server {
                             request: tonic::Request<super::DeleteModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_model(request).await };
+                            let fut = async move { (*inner).delete_model(request).await };
                             Box::pin(fut)
                         }
                     }

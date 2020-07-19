@@ -951,7 +951,6 @@ pub mod street_view_publish_service_server {
     }
     #[doc = " Publishes and connects user-contributed photos on Street View."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct StreetViewPublishServiceServer<T: StreetViewPublishService> {
         inner: _Inner<T>,
     }
@@ -991,7 +990,7 @@ pub mod street_view_publish_service_server {
                         type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(&mut self, request: tonic::Request<()>) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.start_upload(request).await };
+                            let fut = async move { (*inner).start_upload(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1025,7 +1024,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::CreatePhotoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_photo(request).await };
+                            let fut = async move { (*inner).create_photo(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1058,7 +1057,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::GetPhotoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_photo(request).await };
+                            let fut = async move { (*inner).get_photo(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1092,7 +1091,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::BatchGetPhotosRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_get_photos(request).await };
+                            let fut = async move { (*inner).batch_get_photos(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1125,7 +1124,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::ListPhotosRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_photos(request).await };
+                            let fut = async move { (*inner).list_photos(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1159,7 +1158,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::UpdatePhotoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_photo(request).await };
+                            let fut = async move { (*inner).update_photo(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1193,7 +1192,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::BatchUpdatePhotosRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_update_photos(request).await };
+                            let fut = async move { (*inner).batch_update_photos(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1227,7 +1226,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::DeletePhotoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_photo(request).await };
+                            let fut = async move { (*inner).delete_photo(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1261,7 +1260,7 @@ pub mod street_view_publish_service_server {
                             request: tonic::Request<super::BatchDeletePhotosRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_delete_photos(request).await };
+                            let fut = async move { (*inner).batch_delete_photos(request).await };
                             Box::pin(fut)
                         }
                     }

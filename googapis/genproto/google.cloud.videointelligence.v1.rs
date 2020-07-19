@@ -884,7 +884,6 @@ pub mod video_intelligence_service_server {
     }
     #[doc = " Service that implements Google Cloud Video Intelligence API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct VideoIntelligenceServiceServer<T: VideoIntelligenceService> {
         inner: _Inner<T>,
     }
@@ -930,7 +929,7 @@ pub mod video_intelligence_service_server {
                             request: tonic::Request<super::AnnotateVideoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.annotate_video(request).await };
+                            let fut = async move { (*inner).annotate_video(request).await };
                             Box::pin(fut)
                         }
                     }

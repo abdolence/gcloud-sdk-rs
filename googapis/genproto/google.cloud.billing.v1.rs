@@ -570,7 +570,6 @@ pub mod cloud_billing_server {
     }
     #[doc = " Retrieves GCP Console billing accounts and associates them with projects."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudBillingServer<T: CloudBilling> {
         inner: _Inner<T>,
     }
@@ -616,7 +615,7 @@ pub mod cloud_billing_server {
                             request: tonic::Request<super::GetBillingAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_billing_account(request).await };
+                            let fut = async move { (*inner).get_billing_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -650,7 +649,7 @@ pub mod cloud_billing_server {
                             request: tonic::Request<super::ListBillingAccountsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_billing_accounts(request).await };
+                            let fut = async move { (*inner).list_billing_accounts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -684,7 +683,7 @@ pub mod cloud_billing_server {
                             request: tonic::Request<super::UpdateBillingAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_billing_account(request).await };
+                            let fut = async move { (*inner).update_billing_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -718,7 +717,7 @@ pub mod cloud_billing_server {
                             request: tonic::Request<super::CreateBillingAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_billing_account(request).await };
+                            let fut = async move { (*inner).create_billing_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -752,7 +751,8 @@ pub mod cloud_billing_server {
                             request: tonic::Request<super::ListProjectBillingInfoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_project_billing_info(request).await };
+                            let fut =
+                                async move { (*inner).list_project_billing_info(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -786,7 +786,8 @@ pub mod cloud_billing_server {
                             request: tonic::Request<super::GetProjectBillingInfoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_project_billing_info(request).await };
+                            let fut =
+                                async move { (*inner).get_project_billing_info(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -821,7 +822,7 @@ pub mod cloud_billing_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_project_billing_info(request).await };
+                                async move { (*inner).update_project_billing_info(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -858,7 +859,7 @@ pub mod cloud_billing_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -895,7 +896,7 @@ pub mod cloud_billing_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -933,7 +934,7 @@ pub mod cloud_billing_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1348,7 +1349,6 @@ pub mod cloud_catalog_server {
     #[doc = " Provides pricing information and metadata on Google Cloud Platform services"]
     #[doc = " and SKUs."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudCatalogServer<T: CloudCatalog> {
         inner: _Inner<T>,
     }
@@ -1393,7 +1393,7 @@ pub mod cloud_catalog_server {
                             request: tonic::Request<super::ListServicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_services(request).await };
+                            let fut = async move { (*inner).list_services(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1424,7 +1424,7 @@ pub mod cloud_catalog_server {
                             request: tonic::Request<super::ListSkusRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_skus(request).await };
+                            let fut = async move { (*inner).list_skus(request).await };
                             Box::pin(fut)
                         }
                     }

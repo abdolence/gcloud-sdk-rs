@@ -161,7 +161,6 @@ pub mod connection_api_server {
     }
     #[doc = " FCM's service to create client connections to send/receive messages."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ConnectionApiServer<T: ConnectionApi> {
         inner: _Inner<T>,
     }
@@ -206,7 +205,7 @@ pub mod connection_api_server {
                             request: tonic::Request<tonic::Streaming<super::UpstreamRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.connect(request).await };
+                            let fut = async move { (*inner).connect(request).await };
                             Box::pin(fut)
                         }
                     }

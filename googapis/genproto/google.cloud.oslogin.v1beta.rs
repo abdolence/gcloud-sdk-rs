@@ -281,7 +281,6 @@ pub mod os_login_service_server {
     #[doc = " The Cloud OS Login API allows you to manage users and their associated SSH"]
     #[doc = " public keys for logging into virtual machines on Google Cloud Platform."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct OsLoginServiceServer<T: OsLoginService> {
         inner: _Inner<T>,
     }
@@ -327,7 +326,7 @@ pub mod os_login_service_server {
                             request: tonic::Request<super::DeletePosixAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_posix_account(request).await };
+                            let fut = async move { (*inner).delete_posix_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -361,7 +360,7 @@ pub mod os_login_service_server {
                             request: tonic::Request<super::DeleteSshPublicKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_ssh_public_key(request).await };
+                            let fut = async move { (*inner).delete_ssh_public_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -395,7 +394,7 @@ pub mod os_login_service_server {
                             request: tonic::Request<super::GetLoginProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_login_profile(request).await };
+                            let fut = async move { (*inner).get_login_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -429,7 +428,7 @@ pub mod os_login_service_server {
                             request: tonic::Request<super::GetSshPublicKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ssh_public_key(request).await };
+                            let fut = async move { (*inner).get_ssh_public_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -463,7 +462,7 @@ pub mod os_login_service_server {
                             request: tonic::Request<super::ImportSshPublicKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_ssh_public_key(request).await };
+                            let fut = async move { (*inner).import_ssh_public_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -497,7 +496,7 @@ pub mod os_login_service_server {
                             request: tonic::Request<super::UpdateSshPublicKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_ssh_public_key(request).await };
+                            let fut = async move { (*inner).update_ssh_public_key(request).await };
                             Box::pin(fut)
                         }
                     }

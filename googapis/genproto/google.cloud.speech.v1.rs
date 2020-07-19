@@ -841,7 +841,6 @@ pub mod speech_server {
     }
     #[doc = " Service that implements Google Cloud Speech API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SpeechServer<T: Speech> {
         inner: _Inner<T>,
     }
@@ -884,7 +883,7 @@ pub mod speech_server {
                             request: tonic::Request<super::RecognizeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.recognize(request).await };
+                            let fut = async move { (*inner).recognize(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -917,7 +916,7 @@ pub mod speech_server {
                             request: tonic::Request<super::LongRunningRecognizeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.long_running_recognize(request).await };
+                            let fut = async move { (*inner).long_running_recognize(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -955,7 +954,7 @@ pub mod speech_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.streaming_recognize(request).await };
+                            let fut = async move { (*inner).streaming_recognize(request).await };
                             Box::pin(fut)
                         }
                     }

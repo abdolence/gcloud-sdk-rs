@@ -379,7 +379,6 @@ pub mod web_risk_service_v1_beta1_server {
     #[doc = " Web Risk v1beta1 API defines an interface to detect malicious URLs on your"]
     #[doc = " website and in client applications."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct WebRiskServiceV1Beta1Server<T: WebRiskServiceV1Beta1> {
         inner: _Inner<T>,
     }
@@ -425,7 +424,8 @@ pub mod web_risk_service_v1_beta1_server {
                             request: tonic::Request<super::ComputeThreatListDiffRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.compute_threat_list_diff(request).await };
+                            let fut =
+                                async move { (*inner).compute_threat_list_diff(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -458,7 +458,7 @@ pub mod web_risk_service_v1_beta1_server {
                             request: tonic::Request<super::SearchUrisRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_uris(request).await };
+                            let fut = async move { (*inner).search_uris(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -492,7 +492,7 @@ pub mod web_risk_service_v1_beta1_server {
                             request: tonic::Request<super::SearchHashesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_hashes(request).await };
+                            let fut = async move { (*inner).search_hashes(request).await };
                             Box::pin(fut)
                         }
                     }

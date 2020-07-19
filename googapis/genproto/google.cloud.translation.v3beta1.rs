@@ -1026,7 +1026,6 @@ pub mod translation_service_server {
     }
     #[doc = " Provides natural language translation operations."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct TranslationServiceServer<T: TranslationService> {
         inner: _Inner<T>,
     }
@@ -1072,7 +1071,7 @@ pub mod translation_service_server {
                             request: tonic::Request<super::TranslateTextRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.translate_text(request).await };
+                            let fut = async move { (*inner).translate_text(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1106,7 +1105,7 @@ pub mod translation_service_server {
                             request: tonic::Request<super::DetectLanguageRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.detect_language(request).await };
+                            let fut = async move { (*inner).detect_language(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1140,7 +1139,8 @@ pub mod translation_service_server {
                             request: tonic::Request<super::GetSupportedLanguagesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_supported_languages(request).await };
+                            let fut =
+                                async move { (*inner).get_supported_languages(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1174,7 +1174,7 @@ pub mod translation_service_server {
                             request: tonic::Request<super::BatchTranslateTextRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_translate_text(request).await };
+                            let fut = async move { (*inner).batch_translate_text(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1208,7 +1208,7 @@ pub mod translation_service_server {
                             request: tonic::Request<super::CreateGlossaryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_glossary(request).await };
+                            let fut = async move { (*inner).create_glossary(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1242,7 +1242,7 @@ pub mod translation_service_server {
                             request: tonic::Request<super::ListGlossariesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_glossaries(request).await };
+                            let fut = async move { (*inner).list_glossaries(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1276,7 +1276,7 @@ pub mod translation_service_server {
                             request: tonic::Request<super::GetGlossaryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_glossary(request).await };
+                            let fut = async move { (*inner).get_glossary(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1310,7 +1310,7 @@ pub mod translation_service_server {
                             request: tonic::Request<super::DeleteGlossaryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_glossary(request).await };
+                            let fut = async move { (*inner).delete_glossary(request).await };
                             Box::pin(fut)
                         }
                     }

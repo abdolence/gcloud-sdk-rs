@@ -1244,7 +1244,6 @@ pub mod web_security_scanner_server {
     #[doc = " applications hosted on Google Cloud. It crawls your application, and"]
     #[doc = " attempts to exercise as many user inputs and event handlers as possible."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct WebSecurityScannerServer<T: WebSecurityScanner> {
         inner: _Inner<T>,
     }
@@ -1290,7 +1289,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::CreateScanConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_scan_config(request).await };
+                            let fut = async move { (*inner).create_scan_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1324,7 +1323,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::DeleteScanConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_scan_config(request).await };
+                            let fut = async move { (*inner).delete_scan_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1358,7 +1357,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::GetScanConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_scan_config(request).await };
+                            let fut = async move { (*inner).get_scan_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1392,7 +1391,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::ListScanConfigsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_scan_configs(request).await };
+                            let fut = async move { (*inner).list_scan_configs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1426,7 +1425,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::UpdateScanConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_scan_config(request).await };
+                            let fut = async move { (*inner).update_scan_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1460,7 +1459,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::StartScanRunRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.start_scan_run(request).await };
+                            let fut = async move { (*inner).start_scan_run(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1493,7 +1492,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::GetScanRunRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_scan_run(request).await };
+                            let fut = async move { (*inner).get_scan_run(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1527,7 +1526,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::ListScanRunsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_scan_runs(request).await };
+                            let fut = async move { (*inner).list_scan_runs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1561,7 +1560,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::StopScanRunRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.stop_scan_run(request).await };
+                            let fut = async move { (*inner).stop_scan_run(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1595,7 +1594,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::ListCrawledUrlsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_crawled_urls(request).await };
+                            let fut = async move { (*inner).list_crawled_urls(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1628,7 +1627,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::GetFindingRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_finding(request).await };
+                            let fut = async move { (*inner).get_finding(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1662,7 +1661,7 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::ListFindingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_findings(request).await };
+                            let fut = async move { (*inner).list_findings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1696,7 +1695,8 @@ pub mod web_security_scanner_server {
                             request: tonic::Request<super::ListFindingTypeStatsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_finding_type_stats(request).await };
+                            let fut =
+                                async move { (*inner).list_finding_type_stats(request).await };
                             Box::pin(fut)
                         }
                     }

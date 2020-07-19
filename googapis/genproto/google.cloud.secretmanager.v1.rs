@@ -751,7 +751,6 @@ pub mod secret_manager_service_server {
     #[doc = " * [Secret][google.cloud.secretmanager.v1.Secret]"]
     #[doc = " * [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]"]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SecretManagerServiceServer<T: SecretManagerService> {
         inner: _Inner<T>,
     }
@@ -797,7 +796,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::ListSecretsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_secrets(request).await };
+                            let fut = async move { (*inner).list_secrets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -831,7 +830,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::CreateSecretRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_secret(request).await };
+                            let fut = async move { (*inner).create_secret(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -865,7 +864,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::AddSecretVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.add_secret_version(request).await };
+                            let fut = async move { (*inner).add_secret_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -898,7 +897,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::GetSecretRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_secret(request).await };
+                            let fut = async move { (*inner).get_secret(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -932,7 +931,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::UpdateSecretRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_secret(request).await };
+                            let fut = async move { (*inner).update_secret(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -966,7 +965,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::DeleteSecretRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_secret(request).await };
+                            let fut = async move { (*inner).delete_secret(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1000,7 +999,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::ListSecretVersionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_secret_versions(request).await };
+                            let fut = async move { (*inner).list_secret_versions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1034,7 +1033,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::GetSecretVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_secret_version(request).await };
+                            let fut = async move { (*inner).get_secret_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1068,7 +1067,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::AccessSecretVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.access_secret_version(request).await };
+                            let fut = async move { (*inner).access_secret_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1102,7 +1101,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::DisableSecretVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.disable_secret_version(request).await };
+                            let fut = async move { (*inner).disable_secret_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1136,7 +1135,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::EnableSecretVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.enable_secret_version(request).await };
+                            let fut = async move { (*inner).enable_secret_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1170,7 +1169,7 @@ pub mod secret_manager_service_server {
                             request: tonic::Request<super::DestroySecretVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.destroy_secret_version(request).await };
+                            let fut = async move { (*inner).destroy_secret_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1207,7 +1206,7 @@ pub mod secret_manager_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1244,7 +1243,7 @@ pub mod secret_manager_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1282,7 +1281,7 @@ pub mod secret_manager_service_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

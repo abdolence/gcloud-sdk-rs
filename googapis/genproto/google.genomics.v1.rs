@@ -943,7 +943,6 @@ pub mod annotation_service_v1_server {
     #[doc = " This service provides storage and positional retrieval of genomic"]
     #[doc = " reference annotations, including variant annotations."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AnnotationServiceV1Server<T: AnnotationServiceV1> {
         inner: _Inner<T>,
     }
@@ -989,7 +988,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::CreateAnnotationSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_annotation_set(request).await };
+                            let fut = async move { (*inner).create_annotation_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1023,7 +1022,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::GetAnnotationSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_annotation_set(request).await };
+                            let fut = async move { (*inner).get_annotation_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1057,7 +1056,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::UpdateAnnotationSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_annotation_set(request).await };
+                            let fut = async move { (*inner).update_annotation_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1091,7 +1090,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::DeleteAnnotationSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_annotation_set(request).await };
+                            let fut = async move { (*inner).delete_annotation_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1125,7 +1124,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::SearchAnnotationSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_annotation_sets(request).await };
+                            let fut = async move { (*inner).search_annotation_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1159,7 +1158,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::CreateAnnotationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_annotation(request).await };
+                            let fut = async move { (*inner).create_annotation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1193,7 +1192,8 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::BatchCreateAnnotationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_create_annotations(request).await };
+                            let fut =
+                                async move { (*inner).batch_create_annotations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1227,7 +1227,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::GetAnnotationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_annotation(request).await };
+                            let fut = async move { (*inner).get_annotation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1261,7 +1261,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::UpdateAnnotationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_annotation(request).await };
+                            let fut = async move { (*inner).update_annotation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1295,7 +1295,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::DeleteAnnotationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_annotation(request).await };
+                            let fut = async move { (*inner).delete_annotation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1329,7 +1329,7 @@ pub mod annotation_service_v1_server {
                             request: tonic::Request<super::SearchAnnotationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_annotations(request).await };
+                            let fut = async move { (*inner).search_annotations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1891,7 +1891,6 @@ pub mod dataset_service_v1_server {
     }
     #[doc = " This service manages datasets, which are collections of genomic data."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DatasetServiceV1Server<T: DatasetServiceV1> {
         inner: _Inner<T>,
     }
@@ -1937,7 +1936,7 @@ pub mod dataset_service_v1_server {
                             request: tonic::Request<super::ListDatasetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_datasets(request).await };
+                            let fut = async move { (*inner).list_datasets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1971,7 +1970,7 @@ pub mod dataset_service_v1_server {
                             request: tonic::Request<super::CreateDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_dataset(request).await };
+                            let fut = async move { (*inner).create_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2004,7 +2003,7 @@ pub mod dataset_service_v1_server {
                             request: tonic::Request<super::GetDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_dataset(request).await };
+                            let fut = async move { (*inner).get_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2038,7 +2037,7 @@ pub mod dataset_service_v1_server {
                             request: tonic::Request<super::UpdateDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_dataset(request).await };
+                            let fut = async move { (*inner).update_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2072,7 +2071,7 @@ pub mod dataset_service_v1_server {
                             request: tonic::Request<super::DeleteDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_dataset(request).await };
+                            let fut = async move { (*inner).delete_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2106,7 +2105,7 @@ pub mod dataset_service_v1_server {
                             request: tonic::Request<super::UndeleteDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.undelete_dataset(request).await };
+                            let fut = async move { (*inner).undelete_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2143,7 +2142,7 @@ pub mod dataset_service_v1_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2180,7 +2179,7 @@ pub mod dataset_service_v1_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2217,7 +2216,7 @@ pub mod dataset_service_v1_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3319,7 +3318,6 @@ pub mod streaming_read_service_server {
         ) -> Result<tonic::Response<Self::StreamReadsStream>, tonic::Status>;
     }
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct StreamingReadServiceServer<T: StreamingReadService> {
         inner: _Inner<T>,
     }
@@ -3367,7 +3365,7 @@ pub mod streaming_read_service_server {
                             request: tonic::Request<super::StreamReadsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.stream_reads(request).await };
+                            let fut = async move { (*inner).stream_reads(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3546,7 +3544,6 @@ pub mod read_service_v1_server {
     }
     #[doc = " The Readstore. A data store for DNA sequencing Reads."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ReadServiceV1Server<T: ReadServiceV1> {
         inner: _Inner<T>,
     }
@@ -3592,7 +3589,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::ImportReadGroupSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_read_group_sets(request).await };
+                            let fut = async move { (*inner).import_read_group_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3626,7 +3623,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::ExportReadGroupSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_read_group_set(request).await };
+                            let fut = async move { (*inner).export_read_group_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3660,7 +3657,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::SearchReadGroupSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_read_group_sets(request).await };
+                            let fut = async move { (*inner).search_read_group_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3694,7 +3691,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::UpdateReadGroupSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_read_group_set(request).await };
+                            let fut = async move { (*inner).update_read_group_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3728,7 +3725,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::DeleteReadGroupSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_read_group_set(request).await };
+                            let fut = async move { (*inner).delete_read_group_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3762,7 +3759,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::GetReadGroupSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_read_group_set(request).await };
+                            let fut = async move { (*inner).get_read_group_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3796,7 +3793,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::ListCoverageBucketsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_coverage_buckets(request).await };
+                            let fut = async move { (*inner).list_coverage_buckets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3829,7 +3826,7 @@ pub mod read_service_v1_server {
                             request: tonic::Request<super::SearchReadsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_reads(request).await };
+                            let fut = async move { (*inner).search_reads(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4305,7 +4302,6 @@ pub mod reference_service_v1_server {
         ) -> Result<tonic::Response<super::ListBasesResponse>, tonic::Status>;
     }
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ReferenceServiceV1Server<T: ReferenceServiceV1> {
         inner: _Inner<T>,
     }
@@ -4351,7 +4347,7 @@ pub mod reference_service_v1_server {
                             request: tonic::Request<super::SearchReferenceSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_reference_sets(request).await };
+                            let fut = async move { (*inner).search_reference_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4385,7 +4381,7 @@ pub mod reference_service_v1_server {
                             request: tonic::Request<super::GetReferenceSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_reference_set(request).await };
+                            let fut = async move { (*inner).get_reference_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4419,7 +4415,7 @@ pub mod reference_service_v1_server {
                             request: tonic::Request<super::SearchReferencesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_references(request).await };
+                            let fut = async move { (*inner).search_references(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4453,7 +4449,7 @@ pub mod reference_service_v1_server {
                             request: tonic::Request<super::GetReferenceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_reference(request).await };
+                            let fut = async move { (*inner).get_reference(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4486,7 +4482,7 @@ pub mod reference_service_v1_server {
                             request: tonic::Request<super::ListBasesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_bases(request).await };
+                            let fut = async move { (*inner).list_bases(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5759,7 +5755,6 @@ pub mod streaming_variant_service_server {
         ) -> Result<tonic::Response<Self::StreamVariantsStream>, tonic::Status>;
     }
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct StreamingVariantServiceServer<T: StreamingVariantService> {
         inner: _Inner<T>,
     }
@@ -5807,7 +5802,7 @@ pub mod streaming_variant_service_server {
                             request: tonic::Request<super::StreamVariantsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.stream_variants(request).await };
+                            let fut = async move { (*inner).stream_variants(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6143,7 +6138,6 @@ pub mod variant_service_v1_server {
         ) -> Result<tonic::Response<super::CallSet>, tonic::Status>;
     }
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct VariantServiceV1Server<T: VariantServiceV1> {
         inner: _Inner<T>,
     }
@@ -6189,7 +6183,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::ImportVariantsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_variants(request).await };
+                            let fut = async move { (*inner).import_variants(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6223,7 +6217,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::CreateVariantSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_variant_set(request).await };
+                            let fut = async move { (*inner).create_variant_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6257,7 +6251,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::ExportVariantSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_variant_set(request).await };
+                            let fut = async move { (*inner).export_variant_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6291,7 +6285,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::GetVariantSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_variant_set(request).await };
+                            let fut = async move { (*inner).get_variant_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6325,7 +6319,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::SearchVariantSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_variant_sets(request).await };
+                            let fut = async move { (*inner).search_variant_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6359,7 +6353,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::DeleteVariantSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_variant_set(request).await };
+                            let fut = async move { (*inner).delete_variant_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6393,7 +6387,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::UpdateVariantSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_variant_set(request).await };
+                            let fut = async move { (*inner).update_variant_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6427,7 +6421,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::SearchVariantsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_variants(request).await };
+                            let fut = async move { (*inner).search_variants(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6461,7 +6455,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::CreateVariantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_variant(request).await };
+                            let fut = async move { (*inner).create_variant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6495,7 +6489,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::UpdateVariantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_variant(request).await };
+                            let fut = async move { (*inner).update_variant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6529,7 +6523,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::DeleteVariantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_variant(request).await };
+                            let fut = async move { (*inner).delete_variant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6562,7 +6556,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::GetVariantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_variant(request).await };
+                            let fut = async move { (*inner).get_variant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6596,7 +6590,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::MergeVariantsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.merge_variants(request).await };
+                            let fut = async move { (*inner).merge_variants(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6630,7 +6624,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::SearchCallSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_call_sets(request).await };
+                            let fut = async move { (*inner).search_call_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6664,7 +6658,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::CreateCallSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_call_set(request).await };
+                            let fut = async move { (*inner).create_call_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6698,7 +6692,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::UpdateCallSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_call_set(request).await };
+                            let fut = async move { (*inner).update_call_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6732,7 +6726,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::DeleteCallSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_call_set(request).await };
+                            let fut = async move { (*inner).delete_call_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6765,7 +6759,7 @@ pub mod variant_service_v1_server {
                             request: tonic::Request<super::GetCallSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_call_set(request).await };
+                            let fut = async move { (*inner).get_call_set(request).await };
                             Box::pin(fut)
                         }
                     }

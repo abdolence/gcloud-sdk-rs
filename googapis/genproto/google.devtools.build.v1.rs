@@ -472,7 +472,6 @@ pub mod publish_build_event_server {
     #[doc = " target objects produced via compilation, tests run, et cetera. There could be"]
     #[doc = " more than one build tool stream for an invocation attempt of a build."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PublishBuildEventServer<T: PublishBuildEvent> {
         inner: _Inner<T>,
     }
@@ -518,7 +517,8 @@ pub mod publish_build_event_server {
                             request: tonic::Request<super::PublishLifecycleEventRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.publish_lifecycle_event(request).await };
+                            let fut =
+                                async move { (*inner).publish_lifecycle_event(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -556,8 +556,9 @@ pub mod publish_build_event_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.publish_build_tool_event_stream(request).await };
+                            let fut = async move {
+                                (*inner).publish_build_tool_event_stream(request).await
+                            };
                             Box::pin(fut)
                         }
                     }

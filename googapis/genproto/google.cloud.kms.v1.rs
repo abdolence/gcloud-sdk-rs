@@ -1725,7 +1725,6 @@ pub mod key_management_service_server {
     #[doc = " If you are using manual gRPC libraries, see"]
     #[doc = " [Using gRPC with Cloud KMS](https://cloud.google.com/kms/docs/grpc)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeyManagementServiceServer<T: KeyManagementService> {
         inner: _Inner<T>,
     }
@@ -1771,7 +1770,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::ListKeyRingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_key_rings(request).await };
+                            let fut = async move { (*inner).list_key_rings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1805,7 +1804,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::ListCryptoKeysRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_crypto_keys(request).await };
+                            let fut = async move { (*inner).list_crypto_keys(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1839,7 +1838,8 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::ListCryptoKeyVersionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_crypto_key_versions(request).await };
+                            let fut =
+                                async move { (*inner).list_crypto_key_versions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1873,7 +1873,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::ListImportJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_import_jobs(request).await };
+                            let fut = async move { (*inner).list_import_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1906,7 +1906,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::GetKeyRingRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_key_ring(request).await };
+                            let fut = async move { (*inner).get_key_ring(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1940,7 +1940,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::GetCryptoKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_crypto_key(request).await };
+                            let fut = async move { (*inner).get_crypto_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1974,7 +1974,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::GetCryptoKeyVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_crypto_key_version(request).await };
+                            let fut = async move { (*inner).get_crypto_key_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2008,7 +2008,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::GetPublicKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_public_key(request).await };
+                            let fut = async move { (*inner).get_public_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2042,7 +2042,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::GetImportJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_import_job(request).await };
+                            let fut = async move { (*inner).get_import_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2076,7 +2076,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::CreateKeyRingRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_key_ring(request).await };
+                            let fut = async move { (*inner).create_key_ring(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2110,7 +2110,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::CreateCryptoKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_crypto_key(request).await };
+                            let fut = async move { (*inner).create_crypto_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2144,7 +2144,8 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::CreateCryptoKeyVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_crypto_key_version(request).await };
+                            let fut =
+                                async move { (*inner).create_crypto_key_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2178,7 +2179,8 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::ImportCryptoKeyVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_crypto_key_version(request).await };
+                            let fut =
+                                async move { (*inner).import_crypto_key_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2212,7 +2214,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::CreateImportJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_import_job(request).await };
+                            let fut = async move { (*inner).create_import_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2246,7 +2248,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::UpdateCryptoKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_crypto_key(request).await };
+                            let fut = async move { (*inner).update_crypto_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2280,7 +2282,8 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::UpdateCryptoKeyVersionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_crypto_key_version(request).await };
+                            let fut =
+                                async move { (*inner).update_crypto_key_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2311,7 +2314,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::EncryptRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.encrypt(request).await };
+                            let fut = async move { (*inner).encrypt(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2342,7 +2345,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::DecryptRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.decrypt(request).await };
+                            let fut = async move { (*inner).decrypt(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2376,7 +2379,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::AsymmetricSignRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.asymmetric_sign(request).await };
+                            let fut = async move { (*inner).asymmetric_sign(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2410,7 +2413,7 @@ pub mod key_management_service_server {
                             request: tonic::Request<super::AsymmetricDecryptRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.asymmetric_decrypt(request).await };
+                            let fut = async move { (*inner).asymmetric_decrypt(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2445,7 +2448,7 @@ pub mod key_management_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.update_crypto_key_primary_version(request).await
+                                (*inner).update_crypto_key_primary_version(request).await
                             };
                             Box::pin(fut)
                         }
@@ -2481,7 +2484,7 @@ pub mod key_management_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.destroy_crypto_key_version(request).await };
+                                async move { (*inner).destroy_crypto_key_version(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2516,7 +2519,7 @@ pub mod key_management_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.restore_crypto_key_version(request).await };
+                                async move { (*inner).restore_crypto_key_version(request).await };
                             Box::pin(fut)
                         }
                     }

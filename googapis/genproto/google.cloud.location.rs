@@ -153,7 +153,6 @@ pub mod locations_server {
     #[doc = " a service. Service-specific metadata is provided through the"]
     #[doc = " [Location.metadata][google.cloud.location.Location.metadata] field."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LocationsServer<T: Locations> {
         inner: _Inner<T>,
     }
@@ -198,7 +197,7 @@ pub mod locations_server {
                             request: tonic::Request<super::ListLocationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_locations(request).await };
+                            let fut = async move { (*inner).list_locations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -229,7 +228,7 @@ pub mod locations_server {
                             request: tonic::Request<super::GetLocationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_location(request).await };
+                            let fut = async move { (*inner).get_location(request).await };
                             Box::pin(fut)
                         }
                     }

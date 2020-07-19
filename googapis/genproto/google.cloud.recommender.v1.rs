@@ -1,3 +1,102 @@
+/// An insight along with the information used to derive the insight. The insight
+/// may have associated recomendations as well.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Insight {
+    /// Name of the insight.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Free-form human readable summary in English. The maximum length is 500
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub description: std::string::String,
+    /// Fully qualified resource names that this insight is targeting.
+    #[prost(string, repeated, tag = "9")]
+    pub target_resources: ::std::vec::Vec<std::string::String>,
+    /// Insight subtype. Insight content schema will be stable for a given subtype.
+    #[prost(string, tag = "10")]
+    pub insight_subtype: std::string::String,
+    /// A struct of custom fields to explain the insight.
+    /// Example: "grantedPermissionsCount": "1000"
+    #[prost(message, optional, tag = "3")]
+    pub content: ::std::option::Option<::prost_types::Struct>,
+    /// Timestamp of the latest data used to generate the insight.
+    #[prost(message, optional, tag = "4")]
+    pub last_refresh_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Observation period that led to the insight. The source data used to
+    /// generate the insight ends at last_refresh_time and begins at
+    /// (last_refresh_time - observation_period).
+    #[prost(message, optional, tag = "5")]
+    pub observation_period: ::std::option::Option<::prost_types::Duration>,
+    /// Information state and metadata.
+    #[prost(message, optional, tag = "6")]
+    pub state_info: ::std::option::Option<InsightStateInfo>,
+    /// Category being targeted by the insight.
+    #[prost(enumeration = "insight::Category", tag = "7")]
+    pub category: i32,
+    /// Fingerprint of the Insight. Provides optimistic locking when updating
+    /// states.
+    #[prost(string, tag = "11")]
+    pub etag: std::string::String,
+    /// Recommendations derived from this insight.
+    #[prost(message, repeated, tag = "8")]
+    pub associated_recommendations: ::std::vec::Vec<insight::RecommendationReference>,
+}
+pub mod insight {
+    /// Reference to an associated recommendation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RecommendationReference {
+        /// Recommendation resource name, e.g.
+        /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
+        #[prost(string, tag = "1")]
+        pub recommendation: std::string::String,
+    }
+    /// Insight category.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Category {
+        /// Unspecified category.
+        Unspecified = 0,
+        /// The insight is related to cost.
+        Cost = 1,
+        /// The insight is related to security.
+        Security = 2,
+        /// The insight is related to performance.
+        Performance = 3,
+        /// This insight is related to manageability.
+        Manageability = 4,
+    }
+}
+/// Information related to insight state.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsightStateInfo {
+    /// Insight state.
+    #[prost(enumeration = "insight_state_info::State", tag = "1")]
+    pub state: i32,
+    /// A map of metadata for the state, provided by user or automations systems.
+    #[prost(map = "string, string", tag = "2")]
+    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+}
+pub mod insight_state_info {
+    /// Represents insight state.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.
+        Unspecified = 0,
+        /// Insight is active. Content for ACTIVE insights can be updated by Google.
+        /// ACTIVE insights can be marked DISMISSED OR ACCEPTED.
+        Active = 1,
+        /// Some action has been taken based on this insight. Insights become
+        /// accepted when a recommendation derived from the insight has been marked
+        /// CLAIMED, SUCCEEDED, or FAILED. ACTIVE insights can also be marked
+        /// ACCEPTED explicitly. Content for ACCEPTED insights is immutable. ACCEPTED
+        /// insights can only be marked ACCEPTED (which may update state metadata).
+        Accepted = 2,
+        /// Insight is dismissed. Content for DISMISSED insights can be updated by
+        /// Google. DISMISSED insights can be marked as ACTIVE.
+        Dismissed = 3,
+    }
+}
 /// A recommendation along with a suggested action. E.g., a rightsizing
 /// recommendation for an underutilized VM, IAM role recommendations, etc
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -268,105 +367,6 @@ pub mod recommendation_state_info {
         ///
         /// DISMISSED recommendations can be marked as ACTIVE.
         Dismissed = 5,
-    }
-}
-/// An insight along with the information used to derive the insight. The insight
-/// may have associated recomendations as well.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Insight {
-    /// Name of the insight.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// Free-form human readable summary in English. The maximum length is 500
-    /// characters.
-    #[prost(string, tag = "2")]
-    pub description: std::string::String,
-    /// Fully qualified resource names that this insight is targeting.
-    #[prost(string, repeated, tag = "9")]
-    pub target_resources: ::std::vec::Vec<std::string::String>,
-    /// Insight subtype. Insight content schema will be stable for a given subtype.
-    #[prost(string, tag = "10")]
-    pub insight_subtype: std::string::String,
-    /// A struct of custom fields to explain the insight.
-    /// Example: "grantedPermissionsCount": "1000"
-    #[prost(message, optional, tag = "3")]
-    pub content: ::std::option::Option<::prost_types::Struct>,
-    /// Timestamp of the latest data used to generate the insight.
-    #[prost(message, optional, tag = "4")]
-    pub last_refresh_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// Observation period that led to the insight. The source data used to
-    /// generate the insight ends at last_refresh_time and begins at
-    /// (last_refresh_time - observation_period).
-    #[prost(message, optional, tag = "5")]
-    pub observation_period: ::std::option::Option<::prost_types::Duration>,
-    /// Information state and metadata.
-    #[prost(message, optional, tag = "6")]
-    pub state_info: ::std::option::Option<InsightStateInfo>,
-    /// Category being targeted by the insight.
-    #[prost(enumeration = "insight::Category", tag = "7")]
-    pub category: i32,
-    /// Fingerprint of the Insight. Provides optimistic locking when updating
-    /// states.
-    #[prost(string, tag = "11")]
-    pub etag: std::string::String,
-    /// Recommendations derived from this insight.
-    #[prost(message, repeated, tag = "8")]
-    pub associated_recommendations: ::std::vec::Vec<insight::RecommendationReference>,
-}
-pub mod insight {
-    /// Reference to an associated recommendation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RecommendationReference {
-        /// Recommendation resource name, e.g.
-        /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
-        #[prost(string, tag = "1")]
-        pub recommendation: std::string::String,
-    }
-    /// Insight category.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum Category {
-        /// Unspecified category.
-        Unspecified = 0,
-        /// The insight is related to cost.
-        Cost = 1,
-        /// The insight is related to security.
-        Security = 2,
-        /// The insight is related to performance.
-        Performance = 3,
-        /// This insight is related to manageability.
-        Manageability = 4,
-    }
-}
-/// Information related to insight state.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InsightStateInfo {
-    /// Insight state.
-    #[prost(enumeration = "insight_state_info::State", tag = "1")]
-    pub state: i32,
-    /// A map of metadata for the state, provided by user or automations systems.
-    #[prost(map = "string, string", tag = "2")]
-    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
-}
-pub mod insight_state_info {
-    /// Represents insight state.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum State {
-        /// Unspecified state.
-        Unspecified = 0,
-        /// Insight is active. Content for ACTIVE insights can be updated by Google.
-        /// ACTIVE insights can be marked DISMISSED OR ACCEPTED.
-        Active = 1,
-        /// Some action has been taken based on this insight. Insights become
-        /// accepted when a recommendation derived from the insight has been marked
-        /// CLAIMED, SUCCEEDED, or FAILED. ACTIVE insights can also be marked
-        /// ACCEPTED explicitly. Content for ACCEPTED insights is immutable. ACCEPTED
-        /// insights can only be marked ACCEPTED (which may update state metadata).
-        Accepted = 2,
-        /// Insight is dismissed. Content for DISMISSED insights can be updated by
-        /// Google. DISMISSED insights can be marked as ACTIVE.
-        Dismissed = 3,
     }
 }
 /// Request for the `ListInsights` method.
@@ -832,7 +832,6 @@ pub mod recommender_server {
     #[doc = " discovery, etc. Insights and recommendations are generated automatically"]
     #[doc = " based on analysis of user resources, configuration and monitoring metrics."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RecommenderServer<T: Recommender> {
         inner: _Inner<T>,
     }
@@ -877,7 +876,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::ListInsightsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_insights(request).await };
+                            let fut = async move { (*inner).list_insights(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -908,7 +907,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::GetInsightRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_insight(request).await };
+                            let fut = async move { (*inner).get_insight(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -942,7 +941,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::MarkInsightAcceptedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mark_insight_accepted(request).await };
+                            let fut = async move { (*inner).mark_insight_accepted(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -976,7 +975,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::ListRecommendationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_recommendations(request).await };
+                            let fut = async move { (*inner).list_recommendations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1010,7 +1009,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::GetRecommendationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_recommendation(request).await };
+                            let fut = async move { (*inner).get_recommendation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1045,7 +1044,7 @@ pub mod recommender_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.mark_recommendation_claimed(request).await };
+                                async move { (*inner).mark_recommendation_claimed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1079,8 +1078,9 @@ pub mod recommender_server {
                             request: tonic::Request<super::MarkRecommendationSucceededRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.mark_recommendation_succeeded(request).await };
+                            let fut = async move {
+                                (*inner).mark_recommendation_succeeded(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -1115,7 +1115,7 @@ pub mod recommender_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.mark_recommendation_failed(request).await };
+                                async move { (*inner).mark_recommendation_failed(request).await };
                             Box::pin(fut)
                         }
                     }

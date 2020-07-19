@@ -705,7 +705,6 @@ pub mod controller2_server {
     #[doc = " a completed breakpoint. This functionality is available using the Debugger"]
     #[doc = " service."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct Controller2Server<T: Controller2> {
         inner: _Inner<T>,
     }
@@ -750,7 +749,7 @@ pub mod controller2_server {
                             request: tonic::Request<super::RegisterDebuggeeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.register_debuggee(request).await };
+                            let fut = async move { (*inner).register_debuggee(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -784,7 +783,8 @@ pub mod controller2_server {
                             request: tonic::Request<super::ListActiveBreakpointsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_active_breakpoints(request).await };
+                            let fut =
+                                async move { (*inner).list_active_breakpoints(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -818,7 +818,8 @@ pub mod controller2_server {
                             request: tonic::Request<super::UpdateActiveBreakpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_active_breakpoint(request).await };
+                            let fut =
+                                async move { (*inner).update_active_breakpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1185,7 +1186,6 @@ pub mod debugger2_server {
     #[doc = " The Debugger service enables the client to set one or more Breakpoints on a"]
     #[doc = " Debuggee and collect the results of the set Breakpoints."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct Debugger2Server<T: Debugger2> {
         inner: _Inner<T>,
     }
@@ -1230,7 +1230,7 @@ pub mod debugger2_server {
                             request: tonic::Request<super::SetBreakpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_breakpoint(request).await };
+                            let fut = async move { (*inner).set_breakpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1263,7 +1263,7 @@ pub mod debugger2_server {
                             request: tonic::Request<super::GetBreakpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_breakpoint(request).await };
+                            let fut = async move { (*inner).get_breakpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1296,7 +1296,7 @@ pub mod debugger2_server {
                             request: tonic::Request<super::DeleteBreakpointRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_breakpoint(request).await };
+                            let fut = async move { (*inner).delete_breakpoint(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1329,7 +1329,7 @@ pub mod debugger2_server {
                             request: tonic::Request<super::ListBreakpointsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_breakpoints(request).await };
+                            let fut = async move { (*inner).list_breakpoints(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1362,7 +1362,7 @@ pub mod debugger2_server {
                             request: tonic::Request<super::ListDebuggeesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_debuggees(request).await };
+                            let fut = async move { (*inner).list_debuggees(request).await };
                             Box::pin(fut)
                         }
                     }

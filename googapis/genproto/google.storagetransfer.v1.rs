@@ -762,7 +762,6 @@ pub mod storage_transfer_service_server {
     #[doc = " Transfers data between between Google Cloud Storage buckets or from a data"]
     #[doc = " source external to Google to a Cloud Storage bucket."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct StorageTransferServiceServer<T: StorageTransferService> {
         inner: _Inner<T>,
     }
@@ -809,7 +808,7 @@ pub mod storage_transfer_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.get_google_service_account(request).await };
+                                async move { (*inner).get_google_service_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -843,7 +842,7 @@ pub mod storage_transfer_service_server {
                             request: tonic::Request<super::CreateTransferJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_transfer_job(request).await };
+                            let fut = async move { (*inner).create_transfer_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -877,7 +876,7 @@ pub mod storage_transfer_service_server {
                             request: tonic::Request<super::UpdateTransferJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_transfer_job(request).await };
+                            let fut = async move { (*inner).update_transfer_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -911,7 +910,7 @@ pub mod storage_transfer_service_server {
                             request: tonic::Request<super::GetTransferJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_transfer_job(request).await };
+                            let fut = async move { (*inner).get_transfer_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -945,7 +944,7 @@ pub mod storage_transfer_service_server {
                             request: tonic::Request<super::ListTransferJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_transfer_jobs(request).await };
+                            let fut = async move { (*inner).list_transfer_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -979,7 +978,8 @@ pub mod storage_transfer_service_server {
                             request: tonic::Request<super::PauseTransferOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.pause_transfer_operation(request).await };
+                            let fut =
+                                async move { (*inner).pause_transfer_operation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1013,7 +1013,8 @@ pub mod storage_transfer_service_server {
                             request: tonic::Request<super::ResumeTransferOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.resume_transfer_operation(request).await };
+                            let fut =
+                                async move { (*inner).resume_transfer_operation(request).await };
                             Box::pin(fut)
                         }
                     }

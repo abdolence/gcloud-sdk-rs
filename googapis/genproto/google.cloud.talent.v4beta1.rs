@@ -1325,7 +1325,6 @@ pub mod application_service_server {
     #[doc = " A service that handles application management, including CRUD and"]
     #[doc = " enumeration."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ApplicationServiceServer<T: ApplicationService> {
         inner: _Inner<T>,
     }
@@ -1371,7 +1370,7 @@ pub mod application_service_server {
                             request: tonic::Request<super::CreateApplicationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_application(request).await };
+                            let fut = async move { (*inner).create_application(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1405,7 +1404,7 @@ pub mod application_service_server {
                             request: tonic::Request<super::GetApplicationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_application(request).await };
+                            let fut = async move { (*inner).get_application(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1439,7 +1438,7 @@ pub mod application_service_server {
                             request: tonic::Request<super::UpdateApplicationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_application(request).await };
+                            let fut = async move { (*inner).update_application(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1473,7 +1472,7 @@ pub mod application_service_server {
                             request: tonic::Request<super::DeleteApplicationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_application(request).await };
+                            let fut = async move { (*inner).delete_application(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1507,7 +1506,7 @@ pub mod application_service_server {
                             request: tonic::Request<super::ListApplicationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_applications(request).await };
+                            let fut = async move { (*inner).list_applications(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1902,7 +1901,6 @@ pub mod company_service_server {
     }
     #[doc = " A service that handles company management, including CRUD and enumeration."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CompanyServiceServer<T: CompanyService> {
         inner: _Inner<T>,
     }
@@ -1947,7 +1945,7 @@ pub mod company_service_server {
                             request: tonic::Request<super::CreateCompanyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_company(request).await };
+                            let fut = async move { (*inner).create_company(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1978,7 +1976,7 @@ pub mod company_service_server {
                             request: tonic::Request<super::GetCompanyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_company(request).await };
+                            let fut = async move { (*inner).get_company(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2011,7 +2009,7 @@ pub mod company_service_server {
                             request: tonic::Request<super::UpdateCompanyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_company(request).await };
+                            let fut = async move { (*inner).update_company(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2044,7 +2042,7 @@ pub mod company_service_server {
                             request: tonic::Request<super::DeleteCompanyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_company(request).await };
+                            let fut = async move { (*inner).delete_company(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2077,7 +2075,7 @@ pub mod company_service_server {
                             request: tonic::Request<super::ListCompaniesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_companies(request).await };
+                            let fut = async move { (*inner).list_companies(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2310,7 +2308,6 @@ pub mod completion_server {
     }
     #[doc = " A service handles auto completion."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CompletionServer<T: Completion> {
         inner: _Inner<T>,
     }
@@ -2355,7 +2352,7 @@ pub mod completion_server {
                             request: tonic::Request<super::CompleteQueryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.complete_query(request).await };
+                            let fut = async move { (*inner).complete_query(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2704,7 +2701,6 @@ pub mod event_service_server {
     }
     #[doc = " A service handles client event report."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct EventServiceServer<T: EventService> {
         inner: _Inner<T>,
     }
@@ -2750,7 +2746,7 @@ pub mod event_service_server {
                             request: tonic::Request<super::CreateClientEventRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_client_event(request).await };
+                            let fut = async move { (*inner).create_client_event(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4925,7 +4921,6 @@ pub mod job_service_server {
     }
     #[doc = " A service handles job management, including job CRUD, enumeration and search."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct JobServiceServer<T: JobService> {
         inner: _Inner<T>,
     }
@@ -4968,7 +4963,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::CreateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_job(request).await };
+                            let fut = async move { (*inner).create_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5001,7 +4996,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::BatchCreateJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_create_jobs(request).await };
+                            let fut = async move { (*inner).batch_create_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5032,7 +5027,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::GetJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_job(request).await };
+                            let fut = async move { (*inner).get_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5063,7 +5058,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::UpdateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_job(request).await };
+                            let fut = async move { (*inner).update_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5096,7 +5091,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::BatchUpdateJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_update_jobs(request).await };
+                            let fut = async move { (*inner).batch_update_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5127,7 +5122,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::DeleteJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_job(request).await };
+                            let fut = async move { (*inner).delete_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5160,7 +5155,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::BatchDeleteJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_delete_jobs(request).await };
+                            let fut = async move { (*inner).batch_delete_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5191,7 +5186,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::ListJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_jobs(request).await };
+                            let fut = async move { (*inner).list_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5222,7 +5217,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::SearchJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_jobs(request).await };
+                            let fut = async move { (*inner).search_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5255,7 +5250,7 @@ pub mod job_service_server {
                             request: tonic::Request<super::SearchJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_jobs_for_alert(request).await };
+                            let fut = async move { (*inner).search_jobs_for_alert(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6624,7 +6619,6 @@ pub mod profile_service_server {
     #[doc = " A service that handles profile management, including profile CRUD,"]
     #[doc = " enumeration and search."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ProfileServiceServer<T: ProfileService> {
         inner: _Inner<T>,
     }
@@ -6669,7 +6663,7 @@ pub mod profile_service_server {
                             request: tonic::Request<super::ListProfilesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_profiles(request).await };
+                            let fut = async move { (*inner).list_profiles(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6702,7 +6696,7 @@ pub mod profile_service_server {
                             request: tonic::Request<super::CreateProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_profile(request).await };
+                            let fut = async move { (*inner).create_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6733,7 +6727,7 @@ pub mod profile_service_server {
                             request: tonic::Request<super::GetProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_profile(request).await };
+                            let fut = async move { (*inner).get_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6766,7 +6760,7 @@ pub mod profile_service_server {
                             request: tonic::Request<super::UpdateProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_profile(request).await };
+                            let fut = async move { (*inner).update_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6799,7 +6793,7 @@ pub mod profile_service_server {
                             request: tonic::Request<super::DeleteProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_profile(request).await };
+                            let fut = async move { (*inner).delete_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6833,7 +6827,7 @@ pub mod profile_service_server {
                             request: tonic::Request<super::SearchProfilesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_profiles(request).await };
+                            let fut = async move { (*inner).search_profiles(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7167,7 +7161,6 @@ pub mod tenant_service_server {
     }
     #[doc = " A service that handles tenant management, including CRUD and enumeration."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct TenantServiceServer<T: TenantService> {
         inner: _Inner<T>,
     }
@@ -7212,7 +7205,7 @@ pub mod tenant_service_server {
                             request: tonic::Request<super::CreateTenantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_tenant(request).await };
+                            let fut = async move { (*inner).create_tenant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7243,7 +7236,7 @@ pub mod tenant_service_server {
                             request: tonic::Request<super::GetTenantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_tenant(request).await };
+                            let fut = async move { (*inner).get_tenant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7276,7 +7269,7 @@ pub mod tenant_service_server {
                             request: tonic::Request<super::UpdateTenantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_tenant(request).await };
+                            let fut = async move { (*inner).update_tenant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7309,7 +7302,7 @@ pub mod tenant_service_server {
                             request: tonic::Request<super::DeleteTenantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_tenant(request).await };
+                            let fut = async move { (*inner).delete_tenant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7342,7 +7335,7 @@ pub mod tenant_service_server {
                             request: tonic::Request<super::ListTenantsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_tenants(request).await };
+                            let fut = async move { (*inner).list_tenants(request).await };
                             Box::pin(fut)
                         }
                     }

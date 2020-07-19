@@ -253,7 +253,6 @@ pub mod error_group_service_server {
     }
     #[doc = " Service for retrieving and updating individual error groups."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ErrorGroupServiceServer<T: ErrorGroupService> {
         inner: _Inner<T>,
     }
@@ -296,7 +295,7 @@ pub mod error_group_service_server {
                             request: tonic::Request<super::GetGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_group(request).await };
+                            let fut = async move { (*inner).get_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -330,7 +329,7 @@ pub mod error_group_service_server {
                             request: tonic::Request<super::UpdateGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_group(request).await };
+                            let fut = async move { (*inner).update_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -787,7 +786,6 @@ pub mod error_stats_service_server {
     #[doc = " An API for retrieving and managing error statistics as well as data for"]
     #[doc = " individual events."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ErrorStatsServiceServer<T: ErrorStatsService> {
         inner: _Inner<T>,
     }
@@ -833,7 +831,7 @@ pub mod error_stats_service_server {
                             request: tonic::Request<super::ListGroupStatsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_group_stats(request).await };
+                            let fut = async move { (*inner).list_group_stats(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -866,7 +864,7 @@ pub mod error_stats_service_server {
                             request: tonic::Request<super::ListEventsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_events(request).await };
+                            let fut = async move { (*inner).list_events(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -900,7 +898,7 @@ pub mod error_stats_service_server {
                             request: tonic::Request<super::DeleteEventsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_events(request).await };
+                            let fut = async move { (*inner).delete_events(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1091,7 +1089,6 @@ pub mod report_errors_service_server {
     }
     #[doc = " An API for reporting error events."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ReportErrorsServiceServer<T: ReportErrorsService> {
         inner: _Inner<T>,
     }
@@ -1122,7 +1119,7 @@ pub mod report_errors_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.devtools.clouderrorreporting.v1beta1.ReportErrorsService/ReportErrorEvent" => { # [ allow ( non_camel_case_types ) ] struct ReportErrorEventSvc < T : ReportErrorsService > ( pub Arc < T > ) ; impl < T : ReportErrorsService > tonic :: server :: UnaryService < super :: ReportErrorEventRequest > for ReportErrorEventSvc < T > { type Response = super :: ReportErrorEventResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ReportErrorEventRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . report_error_event ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ReportErrorEventSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.devtools.clouderrorreporting.v1beta1.ReportErrorsService/ReportErrorEvent" => { # [ allow ( non_camel_case_types ) ] struct ReportErrorEventSvc < T : ReportErrorsService > ( pub Arc < T > ) ; impl < T : ReportErrorsService > tonic :: server :: UnaryService < super :: ReportErrorEventRequest > for ReportErrorEventSvc < T > { type Response = super :: ReportErrorEventResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ReportErrorEventRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . report_error_event ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ReportErrorEventSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ReportErrorsService> Clone for ReportErrorsServiceServer<T> {

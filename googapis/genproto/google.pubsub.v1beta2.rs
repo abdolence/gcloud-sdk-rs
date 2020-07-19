@@ -717,7 +717,6 @@ pub mod subscriber_server {
     #[doc = " The service that an application uses to manipulate subscriptions and to"]
     #[doc = " consume messages from a subscription via the Pull method."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SubscriberServer<T: Subscriber> {
         inner: _Inner<T>,
     }
@@ -760,7 +759,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::Subscription>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_subscription(request).await };
+                            let fut = async move { (*inner).create_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -793,7 +792,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::GetSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_subscription(request).await };
+                            let fut = async move { (*inner).get_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -826,7 +825,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::ListSubscriptionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_subscriptions(request).await };
+                            let fut = async move { (*inner).list_subscriptions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -860,7 +859,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::DeleteSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_subscription(request).await };
+                            let fut = async move { (*inner).delete_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -893,7 +892,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::ModifyAckDeadlineRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.modify_ack_deadline(request).await };
+                            let fut = async move { (*inner).modify_ack_deadline(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -924,7 +923,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::AcknowledgeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.acknowledge(request).await };
+                            let fut = async move { (*inner).acknowledge(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -955,7 +954,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::PullRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.pull(request).await };
+                            let fut = async move { (*inner).pull(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -988,7 +987,7 @@ pub mod subscriber_server {
                             request: tonic::Request<super::ModifyPushConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.modify_push_config(request).await };
+                            let fut = async move { (*inner).modify_push_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1081,7 +1080,6 @@ pub mod publisher_server {
     #[doc = " The service that an application uses to manipulate topics, and to send"]
     #[doc = " messages to a topic."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PublisherServer<T: Publisher> {
         inner: _Inner<T>,
     }
@@ -1121,7 +1119,7 @@ pub mod publisher_server {
                         type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(&mut self, request: tonic::Request<super::Topic>) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_topic(request).await };
+                            let fut = async move { (*inner).create_topic(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1152,7 +1150,7 @@ pub mod publisher_server {
                             request: tonic::Request<super::PublishRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.publish(request).await };
+                            let fut = async move { (*inner).publish(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1183,7 +1181,7 @@ pub mod publisher_server {
                             request: tonic::Request<super::GetTopicRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_topic(request).await };
+                            let fut = async move { (*inner).get_topic(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1214,7 +1212,7 @@ pub mod publisher_server {
                             request: tonic::Request<super::ListTopicsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_topics(request).await };
+                            let fut = async move { (*inner).list_topics(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1248,7 +1246,8 @@ pub mod publisher_server {
                             request: tonic::Request<super::ListTopicSubscriptionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_topic_subscriptions(request).await };
+                            let fut =
+                                async move { (*inner).list_topic_subscriptions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1279,7 +1278,7 @@ pub mod publisher_server {
                             request: tonic::Request<super::DeleteTopicRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_topic(request).await };
+                            let fut = async move { (*inner).delete_topic(request).await };
                             Box::pin(fut)
                         }
                     }

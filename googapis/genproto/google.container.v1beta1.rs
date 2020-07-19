@@ -3412,7 +3412,6 @@ pub mod cluster_manager_server {
     }
     #[doc = " Google Kubernetes Engine Cluster Manager v1beta1"]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ClusterManagerServer<T: ClusterManager> {
         inner: _Inner<T>,
     }
@@ -3457,7 +3456,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::ListClustersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_clusters(request).await };
+                            let fut = async move { (*inner).list_clusters(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3488,7 +3487,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::GetClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_cluster(request).await };
+                            let fut = async move { (*inner).get_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3521,7 +3520,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::CreateClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_cluster(request).await };
+                            let fut = async move { (*inner).create_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3554,7 +3553,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::UpdateClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_cluster(request).await };
+                            let fut = async move { (*inner).update_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3588,7 +3587,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::UpdateNodePoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_node_pool(request).await };
+                            let fut = async move { (*inner).update_node_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3622,7 +3621,8 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetNodePoolAutoscalingRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_node_pool_autoscaling(request).await };
+                            let fut =
+                                async move { (*inner).set_node_pool_autoscaling(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3656,7 +3656,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetLoggingServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_logging_service(request).await };
+                            let fut = async move { (*inner).set_logging_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3690,7 +3690,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetMonitoringServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_monitoring_service(request).await };
+                            let fut = async move { (*inner).set_monitoring_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3724,7 +3724,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetAddonsConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_addons_config(request).await };
+                            let fut = async move { (*inner).set_addons_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3757,7 +3757,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetLocationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_locations(request).await };
+                            let fut = async move { (*inner).set_locations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3790,7 +3790,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::UpdateMasterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_master(request).await };
+                            let fut = async move { (*inner).update_master(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3823,7 +3823,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetMasterAuthRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_master_auth(request).await };
+                            let fut = async move { (*inner).set_master_auth(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3856,7 +3856,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::DeleteClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_cluster(request).await };
+                            let fut = async move { (*inner).delete_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3890,7 +3890,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::ListOperationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_operations(request).await };
+                            let fut = async move { (*inner).list_operations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3923,7 +3923,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::GetOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_operation(request).await };
+                            let fut = async move { (*inner).get_operation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3957,7 +3957,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::CancelOperationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.cancel_operation(request).await };
+                            let fut = async move { (*inner).cancel_operation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3991,7 +3991,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::GetServerConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_server_config(request).await };
+                            let fut = async move { (*inner).get_server_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4024,7 +4024,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::ListNodePoolsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_node_pools(request).await };
+                            let fut = async move { (*inner).list_node_pools(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4057,7 +4057,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::GetNodePoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_node_pool(request).await };
+                            let fut = async move { (*inner).get_node_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4091,7 +4091,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::CreateNodePoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_node_pool(request).await };
+                            let fut = async move { (*inner).create_node_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4125,7 +4125,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::DeleteNodePoolRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_node_pool(request).await };
+                            let fut = async move { (*inner).delete_node_pool(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4160,7 +4160,7 @@ pub mod cluster_manager_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.rollback_node_pool_upgrade(request).await };
+                                async move { (*inner).rollback_node_pool_upgrade(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4194,7 +4194,8 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetNodePoolManagementRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_node_pool_management(request).await };
+                            let fut =
+                                async move { (*inner).set_node_pool_management(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4225,7 +4226,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetLabelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_labels(request).await };
+                            let fut = async move { (*inner).set_labels(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4258,7 +4259,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetLegacyAbacRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_legacy_abac(request).await };
+                            let fut = async move { (*inner).set_legacy_abac(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4292,7 +4293,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::StartIpRotationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.start_ip_rotation(request).await };
+                            let fut = async move { (*inner).start_ip_rotation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4326,7 +4327,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::CompleteIpRotationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.complete_ip_rotation(request).await };
+                            let fut = async move { (*inner).complete_ip_rotation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4360,7 +4361,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetNodePoolSizeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_node_pool_size(request).await };
+                            let fut = async move { (*inner).set_node_pool_size(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4394,7 +4395,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetNetworkPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_network_policy(request).await };
+                            let fut = async move { (*inner).set_network_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4428,7 +4429,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::SetMaintenancePolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_maintenance_policy(request).await };
+                            let fut = async move { (*inner).set_maintenance_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4462,7 +4463,8 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::ListUsableSubnetworksRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_usable_subnetworks(request).await };
+                            let fut =
+                                async move { (*inner).list_usable_subnetworks(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4495,7 +4497,7 @@ pub mod cluster_manager_server {
                             request: tonic::Request<super::ListLocationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_locations(request).await };
+                            let fut = async move { (*inner).list_locations(request).await };
                             Box::pin(fut)
                         }
                     }

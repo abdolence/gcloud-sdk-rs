@@ -862,7 +862,6 @@ pub mod instance_admin_server {
     #[doc = " instance resources, fewer resources are available for other"]
     #[doc = " databases in that instance, and their performance may suffer."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct InstanceAdminServer<T: InstanceAdmin> {
         inner: _Inner<T>,
     }
@@ -908,7 +907,7 @@ pub mod instance_admin_server {
                             request: tonic::Request<super::ListInstanceConfigsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_instance_configs(request).await };
+                            let fut = async move { (*inner).list_instance_configs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -942,7 +941,7 @@ pub mod instance_admin_server {
                             request: tonic::Request<super::GetInstanceConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_instance_config(request).await };
+                            let fut = async move { (*inner).get_instance_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -975,7 +974,7 @@ pub mod instance_admin_server {
                             request: tonic::Request<super::ListInstancesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_instances(request).await };
+                            let fut = async move { (*inner).list_instances(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1008,7 +1007,7 @@ pub mod instance_admin_server {
                             request: tonic::Request<super::GetInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_instance(request).await };
+                            let fut = async move { (*inner).get_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1041,7 +1040,7 @@ pub mod instance_admin_server {
                             request: tonic::Request<super::CreateInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_instance(request).await };
+                            let fut = async move { (*inner).create_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1074,7 +1073,7 @@ pub mod instance_admin_server {
                             request: tonic::Request<super::UpdateInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_instance(request).await };
+                            let fut = async move { (*inner).update_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1107,7 +1106,7 @@ pub mod instance_admin_server {
                             request: tonic::Request<super::DeleteInstanceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_instance(request).await };
+                            let fut = async move { (*inner).delete_instance(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1144,7 +1143,7 @@ pub mod instance_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1181,7 +1180,7 @@ pub mod instance_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1217,7 +1216,7 @@ pub mod instance_admin_server {
                             request : tonic :: Request < super :: super :: super :: super :: super :: iam :: v1 :: TestIamPermissionsRequest >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

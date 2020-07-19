@@ -1065,7 +1065,6 @@ pub mod alert_policy_service_server {
     #[doc = " which can be reached by clicking the \"Monitoring\" tab in"]
     #[doc = " [Cloud Console](https://console.cloud.google.com/)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AlertPolicyServiceServer<T: AlertPolicyService> {
         inner: _Inner<T>,
     }
@@ -1111,7 +1110,7 @@ pub mod alert_policy_service_server {
                             request: tonic::Request<super::ListAlertPoliciesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_alert_policies(request).await };
+                            let fut = async move { (*inner).list_alert_policies(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1145,7 +1144,7 @@ pub mod alert_policy_service_server {
                             request: tonic::Request<super::GetAlertPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_alert_policy(request).await };
+                            let fut = async move { (*inner).get_alert_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1179,7 +1178,7 @@ pub mod alert_policy_service_server {
                             request: tonic::Request<super::CreateAlertPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_alert_policy(request).await };
+                            let fut = async move { (*inner).create_alert_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1213,7 +1212,7 @@ pub mod alert_policy_service_server {
                             request: tonic::Request<super::DeleteAlertPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_alert_policy(request).await };
+                            let fut = async move { (*inner).delete_alert_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1247,7 +1246,7 @@ pub mod alert_policy_service_server {
                             request: tonic::Request<super::UpdateAlertPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_alert_policy(request).await };
+                            let fut = async move { (*inner).update_alert_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1741,7 +1740,6 @@ pub mod group_service_server {
     #[doc = " updated automatically as monitored resources are added and removed"]
     #[doc = " from the infrastructure."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GroupServiceServer<T: GroupService> {
         inner: _Inner<T>,
     }
@@ -1784,7 +1782,7 @@ pub mod group_service_server {
                             request: tonic::Request<super::ListGroupsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_groups(request).await };
+                            let fut = async move { (*inner).list_groups(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1815,7 +1813,7 @@ pub mod group_service_server {
                             request: tonic::Request<super::GetGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_group(request).await };
+                            let fut = async move { (*inner).get_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1846,7 +1844,7 @@ pub mod group_service_server {
                             request: tonic::Request<super::CreateGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_group(request).await };
+                            let fut = async move { (*inner).create_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1877,7 +1875,7 @@ pub mod group_service_server {
                             request: tonic::Request<super::UpdateGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_group(request).await };
+                            let fut = async move { (*inner).update_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1908,7 +1906,7 @@ pub mod group_service_server {
                             request: tonic::Request<super::DeleteGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_group(request).await };
+                            let fut = async move { (*inner).delete_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1942,7 +1940,7 @@ pub mod group_service_server {
                             request: tonic::Request<super::ListGroupMembersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_group_members(request).await };
+                            let fut = async move { (*inner).list_group_members(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2777,7 +2775,6 @@ pub mod metric_service_server {
     #[doc = " Manages metric descriptors, monitored resource descriptors, and"]
     #[doc = " time series data."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct MetricServiceServer<T: MetricService> {
         inner: _Inner<T>,
     }
@@ -2824,7 +2821,7 @@ pub mod metric_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.list_monitored_resource_descriptors(request).await
+                                (*inner).list_monitored_resource_descriptors(request).await
                             };
                             Box::pin(fut)
                         }
@@ -2860,7 +2857,7 @@ pub mod metric_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.get_monitored_resource_descriptor(request).await
+                                (*inner).get_monitored_resource_descriptor(request).await
                             };
                             Box::pin(fut)
                         }
@@ -2895,7 +2892,8 @@ pub mod metric_service_server {
                             request: tonic::Request<super::ListMetricDescriptorsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_metric_descriptors(request).await };
+                            let fut =
+                                async move { (*inner).list_metric_descriptors(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2929,7 +2927,7 @@ pub mod metric_service_server {
                             request: tonic::Request<super::GetMetricDescriptorRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_metric_descriptor(request).await };
+                            let fut = async move { (*inner).get_metric_descriptor(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2963,7 +2961,8 @@ pub mod metric_service_server {
                             request: tonic::Request<super::CreateMetricDescriptorRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_metric_descriptor(request).await };
+                            let fut =
+                                async move { (*inner).create_metric_descriptor(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2997,7 +2996,8 @@ pub mod metric_service_server {
                             request: tonic::Request<super::DeleteMetricDescriptorRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_metric_descriptor(request).await };
+                            let fut =
+                                async move { (*inner).delete_metric_descriptor(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3030,7 +3030,7 @@ pub mod metric_service_server {
                             request: tonic::Request<super::ListTimeSeriesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_time_series(request).await };
+                            let fut = async move { (*inner).list_time_series(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3064,7 +3064,7 @@ pub mod metric_service_server {
                             request: tonic::Request<super::CreateTimeSeriesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_time_series(request).await };
+                            let fut = async move { (*inner).create_time_series(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3797,7 +3797,6 @@ pub mod notification_channel_service_server {
     #[doc = " The Notification Channel API provides access to configuration that"]
     #[doc = " controls how messages related to incidents are sent."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct NotificationChannelServiceServer<T: NotificationChannelService> {
         inner: _Inner<T>,
     }
@@ -3828,7 +3827,7 @@ pub mod notification_channel_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.monitoring.v3.NotificationChannelService/ListNotificationChannelDescriptors" => { # [ allow ( non_camel_case_types ) ] struct ListNotificationChannelDescriptorsSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: ListNotificationChannelDescriptorsRequest > for ListNotificationChannelDescriptorsSvc < T > { type Response = super :: ListNotificationChannelDescriptorsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListNotificationChannelDescriptorsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_notification_channel_descriptors ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListNotificationChannelDescriptorsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/GetNotificationChannelDescriptor" => { # [ allow ( non_camel_case_types ) ] struct GetNotificationChannelDescriptorSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: GetNotificationChannelDescriptorRequest > for GetNotificationChannelDescriptorSvc < T > { type Response = super :: NotificationChannelDescriptor ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetNotificationChannelDescriptorRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_notification_channel_descriptor ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetNotificationChannelDescriptorSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/ListNotificationChannels" => { # [ allow ( non_camel_case_types ) ] struct ListNotificationChannelsSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: ListNotificationChannelsRequest > for ListNotificationChannelsSvc < T > { type Response = super :: ListNotificationChannelsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListNotificationChannelsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_notification_channels ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListNotificationChannelsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/GetNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct GetNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: GetNotificationChannelRequest > for GetNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/CreateNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct CreateNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: CreateNotificationChannelRequest > for CreateNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/UpdateNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct UpdateNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: UpdateNotificationChannelRequest > for UpdateNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . update_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/DeleteNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct DeleteNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: DeleteNotificationChannelRequest > for DeleteNotificationChannelSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . delete_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/SendNotificationChannelVerificationCode" => { # [ allow ( non_camel_case_types ) ] struct SendNotificationChannelVerificationCodeSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: SendNotificationChannelVerificationCodeRequest > for SendNotificationChannelVerificationCodeSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SendNotificationChannelVerificationCodeRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . send_notification_channel_verification_code ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SendNotificationChannelVerificationCodeSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/GetNotificationChannelVerificationCode" => { # [ allow ( non_camel_case_types ) ] struct GetNotificationChannelVerificationCodeSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: GetNotificationChannelVerificationCodeRequest > for GetNotificationChannelVerificationCodeSvc < T > { type Response = super :: GetNotificationChannelVerificationCodeResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetNotificationChannelVerificationCodeRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_notification_channel_verification_code ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetNotificationChannelVerificationCodeSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/VerifyNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct VerifyNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: VerifyNotificationChannelRequest > for VerifyNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: VerifyNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . verify_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = VerifyNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.monitoring.v3.NotificationChannelService/ListNotificationChannelDescriptors" => { # [ allow ( non_camel_case_types ) ] struct ListNotificationChannelDescriptorsSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: ListNotificationChannelDescriptorsRequest > for ListNotificationChannelDescriptorsSvc < T > { type Response = super :: ListNotificationChannelDescriptorsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListNotificationChannelDescriptorsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_notification_channel_descriptors ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListNotificationChannelDescriptorsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/GetNotificationChannelDescriptor" => { # [ allow ( non_camel_case_types ) ] struct GetNotificationChannelDescriptorSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: GetNotificationChannelDescriptorRequest > for GetNotificationChannelDescriptorSvc < T > { type Response = super :: NotificationChannelDescriptor ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetNotificationChannelDescriptorRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_notification_channel_descriptor ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetNotificationChannelDescriptorSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/ListNotificationChannels" => { # [ allow ( non_camel_case_types ) ] struct ListNotificationChannelsSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: ListNotificationChannelsRequest > for ListNotificationChannelsSvc < T > { type Response = super :: ListNotificationChannelsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListNotificationChannelsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_notification_channels ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListNotificationChannelsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/GetNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct GetNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: GetNotificationChannelRequest > for GetNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/CreateNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct CreateNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: CreateNotificationChannelRequest > for CreateNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . create_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/UpdateNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct UpdateNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: UpdateNotificationChannelRequest > for UpdateNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UpdateNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . update_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UpdateNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/DeleteNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct DeleteNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: DeleteNotificationChannelRequest > for DeleteNotificationChannelSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: DeleteNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . delete_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = DeleteNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/SendNotificationChannelVerificationCode" => { # [ allow ( non_camel_case_types ) ] struct SendNotificationChannelVerificationCodeSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: SendNotificationChannelVerificationCodeRequest > for SendNotificationChannelVerificationCodeSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SendNotificationChannelVerificationCodeRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . send_notification_channel_verification_code ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SendNotificationChannelVerificationCodeSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/GetNotificationChannelVerificationCode" => { # [ allow ( non_camel_case_types ) ] struct GetNotificationChannelVerificationCodeSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: GetNotificationChannelVerificationCodeRequest > for GetNotificationChannelVerificationCodeSvc < T > { type Response = super :: GetNotificationChannelVerificationCodeResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetNotificationChannelVerificationCodeRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_notification_channel_verification_code ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetNotificationChannelVerificationCodeSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.monitoring.v3.NotificationChannelService/VerifyNotificationChannel" => { # [ allow ( non_camel_case_types ) ] struct VerifyNotificationChannelSvc < T : NotificationChannelService > ( pub Arc < T > ) ; impl < T : NotificationChannelService > tonic :: server :: UnaryService < super :: VerifyNotificationChannelRequest > for VerifyNotificationChannelSvc < T > { type Response = super :: NotificationChannel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: VerifyNotificationChannelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . verify_notification_channel ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = VerifyNotificationChannelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: NotificationChannelService> Clone for NotificationChannelServiceServer<T> {
@@ -4737,7 +4736,6 @@ pub mod service_monitoring_service_server {
     #[doc = " `Service`'s monitored resources, its Service-Level Objectives, and a taxonomy"]
     #[doc = " of categorized Health Metrics."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ServiceMonitoringServiceServer<T: ServiceMonitoringService> {
         inner: _Inner<T>,
     }
@@ -4783,7 +4781,7 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::CreateServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_service(request).await };
+                            let fut = async move { (*inner).create_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4816,7 +4814,7 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::GetServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service(request).await };
+                            let fut = async move { (*inner).get_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4850,7 +4848,7 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::ListServicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_services(request).await };
+                            let fut = async move { (*inner).list_services(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4884,7 +4882,7 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::UpdateServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_service(request).await };
+                            let fut = async move { (*inner).update_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4918,7 +4916,7 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::DeleteServiceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_service(request).await };
+                            let fut = async move { (*inner).delete_service(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4952,8 +4950,9 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::CreateServiceLevelObjectiveRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.create_service_level_objective(request).await };
+                            let fut = async move {
+                                (*inner).create_service_level_objective(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -4988,7 +4987,7 @@ pub mod service_monitoring_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.get_service_level_objective(request).await };
+                                async move { (*inner).get_service_level_objective(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5022,8 +5021,9 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::ListServiceLevelObjectivesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.list_service_level_objectives(request).await };
+                            let fut = async move {
+                                (*inner).list_service_level_objectives(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -5057,8 +5057,9 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::UpdateServiceLevelObjectiveRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.update_service_level_objective(request).await };
+                            let fut = async move {
+                                (*inner).update_service_level_objective(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -5092,8 +5093,9 @@ pub mod service_monitoring_service_server {
                             request: tonic::Request<super::DeleteServiceLevelObjectiveRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.delete_service_level_objective(request).await };
+                            let fut = async move {
+                                (*inner).delete_service_level_objective(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -5855,7 +5857,6 @@ pub mod uptime_check_service_server {
     #[doc = " clicking on \"Monitoring\" on the left-hand side to navigate to Stackdriver,"]
     #[doc = " and then clicking on \"Uptime\"."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct UptimeCheckServiceServer<T: UptimeCheckService> {
         inner: _Inner<T>,
     }
@@ -5901,7 +5902,8 @@ pub mod uptime_check_service_server {
                             request: tonic::Request<super::ListUptimeCheckConfigsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_uptime_check_configs(request).await };
+                            let fut =
+                                async move { (*inner).list_uptime_check_configs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5935,7 +5937,8 @@ pub mod uptime_check_service_server {
                             request: tonic::Request<super::GetUptimeCheckConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_uptime_check_config(request).await };
+                            let fut =
+                                async move { (*inner).get_uptime_check_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5970,7 +5973,7 @@ pub mod uptime_check_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.create_uptime_check_config(request).await };
+                                async move { (*inner).create_uptime_check_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6005,7 +6008,7 @@ pub mod uptime_check_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_uptime_check_config(request).await };
+                                async move { (*inner).update_uptime_check_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6040,7 +6043,7 @@ pub mod uptime_check_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.delete_uptime_check_config(request).await };
+                                async move { (*inner).delete_uptime_check_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6074,7 +6077,7 @@ pub mod uptime_check_service_server {
                             request: tonic::Request<super::ListUptimeCheckIpsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_uptime_check_ips(request).await };
+                            let fut = async move { (*inner).list_uptime_check_ips(request).await };
                             Box::pin(fut)
                         }
                     }

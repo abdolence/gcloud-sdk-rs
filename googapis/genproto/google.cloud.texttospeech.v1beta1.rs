@@ -288,7 +288,6 @@ pub mod text_to_speech_server {
     }
     #[doc = " Service that implements Google Cloud Text-to-Speech API."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct TextToSpeechServer<T: TextToSpeech> {
         inner: _Inner<T>,
     }
@@ -331,7 +330,7 @@ pub mod text_to_speech_server {
                             request: tonic::Request<super::ListVoicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_voices(request).await };
+                            let fut = async move { (*inner).list_voices(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -365,7 +364,7 @@ pub mod text_to_speech_server {
                             request: tonic::Request<super::SynthesizeSpeechRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.synthesize_speech(request).await };
+                            let fut = async move { (*inner).synthesize_speech(request).await };
                             Box::pin(fut)
                         }
                     }

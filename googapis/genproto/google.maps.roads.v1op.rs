@@ -169,7 +169,6 @@ pub mod roads_service_server {
         ) -> Result<tonic::Response<super::ListNearestRoadsResponse>, tonic::Status>;
     }
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RoadsServiceServer<T: RoadsService> {
         inner: _Inner<T>,
     }
@@ -212,7 +211,7 @@ pub mod roads_service_server {
                             request: tonic::Request<super::SnapToRoadsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.snap_to_roads(request).await };
+                            let fut = async move { (*inner).snap_to_roads(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -246,7 +245,7 @@ pub mod roads_service_server {
                             request: tonic::Request<super::ListNearestRoadsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_nearest_roads(request).await };
+                            let fut = async move { (*inner).list_nearest_roads(request).await };
                             Box::pin(fut)
                         }
                     }

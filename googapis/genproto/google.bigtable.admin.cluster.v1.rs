@@ -530,7 +530,6 @@ pub mod bigtable_cluster_service_server {
     }
     #[doc = " Service for managing zonal Cloud Bigtable resources."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BigtableClusterServiceServer<T: BigtableClusterService> {
         inner: _Inner<T>,
     }
@@ -575,7 +574,7 @@ pub mod bigtable_cluster_service_server {
                             request: tonic::Request<super::ListZonesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_zones(request).await };
+                            let fut = async move { (*inner).list_zones(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -608,7 +607,7 @@ pub mod bigtable_cluster_service_server {
                             request: tonic::Request<super::GetClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_cluster(request).await };
+                            let fut = async move { (*inner).get_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -642,7 +641,7 @@ pub mod bigtable_cluster_service_server {
                             request: tonic::Request<super::ListClustersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_clusters(request).await };
+                            let fut = async move { (*inner).list_clusters(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -676,7 +675,7 @@ pub mod bigtable_cluster_service_server {
                             request: tonic::Request<super::CreateClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_cluster(request).await };
+                            let fut = async move { (*inner).create_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -709,7 +708,7 @@ pub mod bigtable_cluster_service_server {
                             request: tonic::Request<super::Cluster>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_cluster(request).await };
+                            let fut = async move { (*inner).update_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -743,7 +742,7 @@ pub mod bigtable_cluster_service_server {
                             request: tonic::Request<super::DeleteClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_cluster(request).await };
+                            let fut = async move { (*inner).delete_cluster(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -777,7 +776,7 @@ pub mod bigtable_cluster_service_server {
                             request: tonic::Request<super::UndeleteClusterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.undelete_cluster(request).await };
+                            let fut = async move { (*inner).undelete_cluster(request).await };
                             Box::pin(fut)
                         }
                     }

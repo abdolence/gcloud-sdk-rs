@@ -472,7 +472,6 @@ pub mod bigtable_table_service_server {
     #[doc = " Provides access to the table schemas only, not the data stored within the"]
     #[doc = " tables."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BigtableTableServiceServer<T: BigtableTableService> {
         inner: _Inner<T>,
     }
@@ -518,7 +517,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::CreateTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_table(request).await };
+                            let fut = async move { (*inner).create_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -551,7 +550,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::ListTablesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_tables(request).await };
+                            let fut = async move { (*inner).list_tables(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -584,7 +583,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::GetTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_table(request).await };
+                            let fut = async move { (*inner).get_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -618,7 +617,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::DeleteTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_table(request).await };
+                            let fut = async move { (*inner).delete_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -652,7 +651,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::RenameTableRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.rename_table(request).await };
+                            let fut = async move { (*inner).rename_table(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -686,7 +685,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::CreateColumnFamilyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_column_family(request).await };
+                            let fut = async move { (*inner).create_column_family(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -719,7 +718,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::ColumnFamily>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_column_family(request).await };
+                            let fut = async move { (*inner).update_column_family(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -753,7 +752,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::DeleteColumnFamilyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_column_family(request).await };
+                            let fut = async move { (*inner).delete_column_family(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -787,7 +786,7 @@ pub mod bigtable_table_service_server {
                             request: tonic::Request<super::BulkDeleteRowsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.bulk_delete_rows(request).await };
+                            let fut = async move { (*inner).bulk_delete_rows(request).await };
                             Box::pin(fut)
                         }
                     }

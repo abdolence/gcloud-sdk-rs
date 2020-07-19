@@ -192,7 +192,6 @@ pub mod watcher_server {
     #[doc = " The errors returned by the service are in the canonical error space,"]
     #[doc = " see [google.rpc.Code][]."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct WatcherServer<T: Watcher> {
         inner: _Inner<T>,
     }
@@ -237,7 +236,7 @@ pub mod watcher_server {
                             request: tonic::Request<super::Request>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.watch(request).await };
+                            let fut = async move { (*inner).watch(request).await };
                             Box::pin(fut)
                         }
                     }

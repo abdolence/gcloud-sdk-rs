@@ -1944,7 +1944,6 @@ pub mod incident_service_server {
     }
     #[doc = " The Incident API for Incident Response & Management."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct IncidentServiceServer<T: IncidentService> {
         inner: _Inner<T>,
     }
@@ -1990,7 +1989,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CreateIncidentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_incident(request).await };
+                            let fut = async move { (*inner).create_incident(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2023,7 +2022,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::GetIncidentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_incident(request).await };
+                            let fut = async move { (*inner).get_incident(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2057,7 +2056,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::SearchIncidentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_incidents(request).await };
+                            let fut = async move { (*inner).search_incidents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2091,7 +2090,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::UpdateIncidentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_incident(request).await };
+                            let fut = async move { (*inner).update_incident(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2125,7 +2124,8 @@ pub mod incident_service_server {
                             request: tonic::Request<super::SearchSimilarIncidentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_similar_incidents(request).await };
+                            let fut =
+                                async move { (*inner).search_similar_incidents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2159,7 +2159,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CreateAnnotationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_annotation(request).await };
+                            let fut = async move { (*inner).create_annotation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2193,7 +2193,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::ListAnnotationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_annotations(request).await };
+                            let fut = async move { (*inner).list_annotations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2224,7 +2224,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CreateTagRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_tag(request).await };
+                            let fut = async move { (*inner).create_tag(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2255,7 +2255,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::DeleteTagRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_tag(request).await };
+                            let fut = async move { (*inner).delete_tag(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2286,7 +2286,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::ListTagsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_tags(request).await };
+                            let fut = async move { (*inner).list_tags(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2319,7 +2319,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CreateSignalRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_signal(request).await };
+                            let fut = async move { (*inner).create_signal(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2353,7 +2353,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::SearchSignalsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_signals(request).await };
+                            let fut = async move { (*inner).search_signals(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2386,7 +2386,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::LookupSignalRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.lookup_signal(request).await };
+                            let fut = async move { (*inner).lookup_signal(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2417,7 +2417,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::GetSignalRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_signal(request).await };
+                            let fut = async move { (*inner).get_signal(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2450,7 +2450,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::UpdateSignalRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_signal(request).await };
+                            let fut = async move { (*inner).update_signal(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2484,7 +2484,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::EscalateIncidentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.escalate_incident(request).await };
+                            let fut = async move { (*inner).escalate_incident(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2518,7 +2518,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CreateArtifactRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_artifact(request).await };
+                            let fut = async move { (*inner).create_artifact(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2552,7 +2552,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::ListArtifactsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_artifacts(request).await };
+                            let fut = async move { (*inner).list_artifacts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2586,7 +2586,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::UpdateArtifactRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_artifact(request).await };
+                            let fut = async move { (*inner).update_artifact(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2620,7 +2620,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::DeleteArtifactRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_artifact(request).await };
+                            let fut = async move { (*inner).delete_artifact(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2654,7 +2654,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::SendShiftHandoffRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.send_shift_handoff(request).await };
+                            let fut = async move { (*inner).send_shift_handoff(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2688,7 +2688,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CreateSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_subscription(request).await };
+                            let fut = async move { (*inner).create_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2722,7 +2722,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::UpdateSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_subscription(request).await };
+                            let fut = async move { (*inner).update_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2756,7 +2756,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::ListSubscriptionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_subscriptions(request).await };
+                            let fut = async move { (*inner).list_subscriptions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2790,7 +2790,7 @@ pub mod incident_service_server {
                             request: tonic::Request<super::DeleteSubscriptionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_subscription(request).await };
+                            let fut = async move { (*inner).delete_subscription(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2824,8 +2824,9 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CreateIncidentRoleAssignmentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.create_incident_role_assignment(request).await };
+                            let fut = async move {
+                                (*inner).create_incident_role_assignment(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -2859,8 +2860,9 @@ pub mod incident_service_server {
                             request: tonic::Request<super::DeleteIncidentRoleAssignmentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.delete_incident_role_assignment(request).await };
+                            let fut = async move {
+                                (*inner).delete_incident_role_assignment(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -2894,8 +2896,9 @@ pub mod incident_service_server {
                             request: tonic::Request<super::ListIncidentRoleAssignmentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.list_incident_role_assignments(request).await };
+                            let fut = async move {
+                                (*inner).list_incident_role_assignments(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -2929,8 +2932,9 @@ pub mod incident_service_server {
                             request: tonic::Request<super::RequestIncidentRoleHandoverRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.request_incident_role_handover(request).await };
+                            let fut = async move {
+                                (*inner).request_incident_role_handover(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -2964,8 +2968,9 @@ pub mod incident_service_server {
                             request: tonic::Request<super::ConfirmIncidentRoleHandoverRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.confirm_incident_role_handover(request).await };
+                            let fut = async move {
+                                (*inner).confirm_incident_role_handover(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -3000,7 +3005,7 @@ pub mod incident_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.force_incident_role_handover(request).await };
+                                async move { (*inner).force_incident_role_handover(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3034,8 +3039,9 @@ pub mod incident_service_server {
                             request: tonic::Request<super::CancelIncidentRoleHandoverRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.cancel_incident_role_handover(request).await };
+                            let fut = async move {
+                                (*inner).cancel_incident_role_handover(request).await
+                            };
                             Box::pin(fut)
                         }
                     }

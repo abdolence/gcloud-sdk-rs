@@ -187,7 +187,6 @@ pub mod account_budget_proposal_service_server {
     #[doc = " UPDATE operations aren't supported."]
     #[doc = " The REMOVE operation cancels a pending proposal."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AccountBudgetProposalServiceServer<T: AccountBudgetProposalService> {
         inner: _Inner<T>,
     }
@@ -218,7 +217,7 @@ pub mod account_budget_proposal_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AccountBudgetProposalService/GetAccountBudgetProposal" => { # [ allow ( non_camel_case_types ) ] struct GetAccountBudgetProposalSvc < T : AccountBudgetProposalService > ( pub Arc < T > ) ; impl < T : AccountBudgetProposalService > tonic :: server :: UnaryService < super :: GetAccountBudgetProposalRequest > for GetAccountBudgetProposalSvc < T > { type Response = super :: super :: resources :: AccountBudgetProposal ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAccountBudgetProposalRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_account_budget_proposal ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAccountBudgetProposalSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AccountBudgetProposalService/MutateAccountBudgetProposal" => { # [ allow ( non_camel_case_types ) ] struct MutateAccountBudgetProposalSvc < T : AccountBudgetProposalService > ( pub Arc < T > ) ; impl < T : AccountBudgetProposalService > tonic :: server :: UnaryService < super :: MutateAccountBudgetProposalRequest > for MutateAccountBudgetProposalSvc < T > { type Response = super :: MutateAccountBudgetProposalResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAccountBudgetProposalRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_account_budget_proposal ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAccountBudgetProposalSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AccountBudgetProposalService/GetAccountBudgetProposal" => { # [ allow ( non_camel_case_types ) ] struct GetAccountBudgetProposalSvc < T : AccountBudgetProposalService > ( pub Arc < T > ) ; impl < T : AccountBudgetProposalService > tonic :: server :: UnaryService < super :: GetAccountBudgetProposalRequest > for GetAccountBudgetProposalSvc < T > { type Response = super :: super :: resources :: AccountBudgetProposal ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAccountBudgetProposalRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_account_budget_proposal ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAccountBudgetProposalSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AccountBudgetProposalService/MutateAccountBudgetProposal" => { # [ allow ( non_camel_case_types ) ] struct MutateAccountBudgetProposalSvc < T : AccountBudgetProposalService > ( pub Arc < T > ) ; impl < T : AccountBudgetProposalService > tonic :: server :: UnaryService < super :: MutateAccountBudgetProposalRequest > for MutateAccountBudgetProposalSvc < T > { type Response = super :: MutateAccountBudgetProposalResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAccountBudgetProposalRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_account_budget_proposal ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAccountBudgetProposalSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AccountBudgetProposalService> Clone for AccountBudgetProposalServiceServer<T> {
@@ -320,7 +319,6 @@ pub mod account_budget_service_server {
     #[doc = ""]
     #[doc = " Account-level budgets are mutated by creating proposal resources."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AccountBudgetServiceServer<T: AccountBudgetService> {
         inner: _Inner<T>,
     }
@@ -366,7 +364,7 @@ pub mod account_budget_service_server {
                             request: tonic::Request<super::GetAccountBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_account_budget(request).await };
+                            let fut = async move { (*inner).get_account_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -490,7 +488,6 @@ pub mod ad_group_ad_asset_view_service_server {
     }
     #[doc = " Service to fetch ad group ad asset views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupAdAssetViewServiceServer<T: AdGroupAdAssetViewService> {
         inner: _Inner<T>,
     }
@@ -521,7 +518,7 @@ pub mod ad_group_ad_asset_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupAdAssetViewService/GetAdGroupAdAssetView" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupAdAssetViewSvc < T : AdGroupAdAssetViewService > ( pub Arc < T > ) ; impl < T : AdGroupAdAssetViewService > tonic :: server :: UnaryService < super :: GetAdGroupAdAssetViewRequest > for GetAdGroupAdAssetViewSvc < T > { type Response = super :: super :: resources :: AdGroupAdAssetView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupAdAssetViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_ad_asset_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupAdAssetViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupAdAssetViewService/GetAdGroupAdAssetView" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupAdAssetViewSvc < T : AdGroupAdAssetViewService > ( pub Arc < T > ) ; impl < T : AdGroupAdAssetViewService > tonic :: server :: UnaryService < super :: GetAdGroupAdAssetViewRequest > for GetAdGroupAdAssetViewSvc < T > { type Response = super :: super :: resources :: AdGroupAdAssetView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupAdAssetViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_ad_asset_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupAdAssetViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupAdAssetViewService> Clone for AdGroupAdAssetViewServiceServer<T> {
@@ -706,7 +703,6 @@ pub mod ad_group_ad_label_service_server {
     }
     #[doc = " Service to manage labels on ad group ads."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupAdLabelServiceServer<T: AdGroupAdLabelService> {
         inner: _Inner<T>,
     }
@@ -752,7 +748,7 @@ pub mod ad_group_ad_label_service_server {
                             request: tonic::Request<super::GetAdGroupAdLabelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad_group_ad_label(request).await };
+                            let fut = async move { (*inner).get_ad_group_ad_label(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -786,7 +782,8 @@ pub mod ad_group_ad_label_service_server {
                             request: tonic::Request<super::MutateAdGroupAdLabelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_ad_group_ad_labels(request).await };
+                            let fut =
+                                async move { (*inner).mutate_ad_group_ad_labels(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1003,7 +1000,6 @@ pub mod ad_group_ad_service_server {
     }
     #[doc = " Service to manage ads in an ad group."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupAdServiceServer<T: AdGroupAdService> {
         inner: _Inner<T>,
     }
@@ -1049,7 +1045,7 @@ pub mod ad_group_ad_service_server {
                             request: tonic::Request<super::GetAdGroupAdRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad_group_ad(request).await };
+                            let fut = async move { (*inner).get_ad_group_ad(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1083,7 +1079,7 @@ pub mod ad_group_ad_service_server {
                             request: tonic::Request<super::MutateAdGroupAdsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_ad_group_ads(request).await };
+                            let fut = async move { (*inner).mutate_ad_group_ads(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1205,7 +1201,6 @@ pub mod ad_group_audience_view_service_server {
     }
     #[doc = " Service to manage ad group audience views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupAudienceViewServiceServer<T: AdGroupAudienceViewService> {
         inner: _Inner<T>,
     }
@@ -1236,7 +1231,7 @@ pub mod ad_group_audience_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupAudienceViewService/GetAdGroupAudienceView" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupAudienceViewSvc < T : AdGroupAudienceViewService > ( pub Arc < T > ) ; impl < T : AdGroupAudienceViewService > tonic :: server :: UnaryService < super :: GetAdGroupAudienceViewRequest > for GetAdGroupAudienceViewSvc < T > { type Response = super :: super :: resources :: AdGroupAudienceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupAudienceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_audience_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupAudienceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupAudienceViewService/GetAdGroupAudienceView" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupAudienceViewSvc < T : AdGroupAudienceViewService > ( pub Arc < T > ) ; impl < T : AdGroupAudienceViewService > tonic :: server :: UnaryService < super :: GetAdGroupAudienceViewRequest > for GetAdGroupAudienceViewSvc < T > { type Response = super :: super :: resources :: AdGroupAudienceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupAudienceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_audience_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupAudienceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupAudienceViewService> Clone for AdGroupAudienceViewServiceServer<T> {
@@ -1426,7 +1421,6 @@ pub mod ad_group_bid_modifier_service_server {
     }
     #[doc = " Service to manage ad group bid modifiers."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupBidModifierServiceServer<T: AdGroupBidModifierService> {
         inner: _Inner<T>,
     }
@@ -1457,7 +1451,7 @@ pub mod ad_group_bid_modifier_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupBidModifierService/GetAdGroupBidModifier" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupBidModifierSvc < T : AdGroupBidModifierService > ( pub Arc < T > ) ; impl < T : AdGroupBidModifierService > tonic :: server :: UnaryService < super :: GetAdGroupBidModifierRequest > for GetAdGroupBidModifierSvc < T > { type Response = super :: super :: resources :: AdGroupBidModifier ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupBidModifierRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_bid_modifier ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupBidModifierSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupBidModifierService/MutateAdGroupBidModifiers" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupBidModifiersSvc < T : AdGroupBidModifierService > ( pub Arc < T > ) ; impl < T : AdGroupBidModifierService > tonic :: server :: UnaryService < super :: MutateAdGroupBidModifiersRequest > for MutateAdGroupBidModifiersSvc < T > { type Response = super :: MutateAdGroupBidModifiersResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupBidModifiersRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_ad_group_bid_modifiers ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupBidModifiersSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupBidModifierService/GetAdGroupBidModifier" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupBidModifierSvc < T : AdGroupBidModifierService > ( pub Arc < T > ) ; impl < T : AdGroupBidModifierService > tonic :: server :: UnaryService < super :: GetAdGroupBidModifierRequest > for GetAdGroupBidModifierSvc < T > { type Response = super :: super :: resources :: AdGroupBidModifier ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupBidModifierRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_bid_modifier ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupBidModifierSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupBidModifierService/MutateAdGroupBidModifiers" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupBidModifiersSvc < T : AdGroupBidModifierService > ( pub Arc < T > ) ; impl < T : AdGroupBidModifierService > tonic :: server :: UnaryService < super :: MutateAdGroupBidModifiersRequest > for MutateAdGroupBidModifiersSvc < T > { type Response = super :: MutateAdGroupBidModifiersResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupBidModifiersRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_ad_group_bid_modifiers ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupBidModifiersSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupBidModifierService> Clone for AdGroupBidModifierServiceServer<T> {
@@ -1640,7 +1634,6 @@ pub mod ad_group_criterion_label_service_server {
     }
     #[doc = " Service to manage labels on ad group criteria."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupCriterionLabelServiceServer<T: AdGroupCriterionLabelService> {
         inner: _Inner<T>,
     }
@@ -1671,7 +1664,7 @@ pub mod ad_group_criterion_label_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupCriterionLabelService/GetAdGroupCriterionLabel" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupCriterionLabelSvc < T : AdGroupCriterionLabelService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionLabelService > tonic :: server :: UnaryService < super :: GetAdGroupCriterionLabelRequest > for GetAdGroupCriterionLabelSvc < T > { type Response = super :: super :: resources :: AdGroupCriterionLabel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupCriterionLabelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_criterion_label ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupCriterionLabelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupCriterionLabelService/MutateAdGroupCriterionLabels" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupCriterionLabelsSvc < T : AdGroupCriterionLabelService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionLabelService > tonic :: server :: UnaryService < super :: MutateAdGroupCriterionLabelsRequest > for MutateAdGroupCriterionLabelsSvc < T > { type Response = super :: MutateAdGroupCriterionLabelsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupCriterionLabelsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_ad_group_criterion_labels ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupCriterionLabelsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupCriterionLabelService/GetAdGroupCriterionLabel" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupCriterionLabelSvc < T : AdGroupCriterionLabelService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionLabelService > tonic :: server :: UnaryService < super :: GetAdGroupCriterionLabelRequest > for GetAdGroupCriterionLabelSvc < T > { type Response = super :: super :: resources :: AdGroupCriterionLabel ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupCriterionLabelRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_criterion_label ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupCriterionLabelSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupCriterionLabelService/MutateAdGroupCriterionLabels" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupCriterionLabelsSvc < T : AdGroupCriterionLabelService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionLabelService > tonic :: server :: UnaryService < super :: MutateAdGroupCriterionLabelsRequest > for MutateAdGroupCriterionLabelsSvc < T > { type Response = super :: MutateAdGroupCriterionLabelsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupCriterionLabelsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_ad_group_criterion_labels ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupCriterionLabelsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupCriterionLabelService> Clone for AdGroupCriterionLabelServiceServer<T> {
@@ -1870,7 +1863,6 @@ pub mod ad_group_criterion_service_server {
     }
     #[doc = " Service to manage ad group criteria."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupCriterionServiceServer<T: AdGroupCriterionService> {
         inner: _Inner<T>,
     }
@@ -1901,7 +1893,7 @@ pub mod ad_group_criterion_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupCriterionService/GetAdGroupCriterion" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupCriterionSvc < T : AdGroupCriterionService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionService > tonic :: server :: UnaryService < super :: GetAdGroupCriterionRequest > for GetAdGroupCriterionSvc < T > { type Response = super :: super :: resources :: AdGroupCriterion ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupCriterionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_criterion ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupCriterionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupCriterionService/MutateAdGroupCriteria" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupCriteriaSvc < T : AdGroupCriterionService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionService > tonic :: server :: UnaryService < super :: MutateAdGroupCriteriaRequest > for MutateAdGroupCriteriaSvc < T > { type Response = super :: MutateAdGroupCriteriaResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupCriteriaRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_ad_group_criteria ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupCriteriaSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupCriterionService/GetAdGroupCriterion" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupCriterionSvc < T : AdGroupCriterionService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionService > tonic :: server :: UnaryService < super :: GetAdGroupCriterionRequest > for GetAdGroupCriterionSvc < T > { type Response = super :: super :: resources :: AdGroupCriterion ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupCriterionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_criterion ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupCriterionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupCriterionService/MutateAdGroupCriteria" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupCriteriaSvc < T : AdGroupCriterionService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionService > tonic :: server :: UnaryService < super :: MutateAdGroupCriteriaRequest > for MutateAdGroupCriteriaSvc < T > { type Response = super :: MutateAdGroupCriteriaResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupCriteriaRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_ad_group_criteria ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupCriteriaSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupCriterionService> Clone for AdGroupCriterionServiceServer<T> {
@@ -2002,7 +1994,6 @@ pub mod ad_group_criterion_simulation_service_server {
     }
     #[doc = " Service to fetch ad group criterion simulations."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupCriterionSimulationServiceServer<T: AdGroupCriterionSimulationService> {
         inner: _Inner<T>,
     }
@@ -2033,7 +2024,7 @@ pub mod ad_group_criterion_simulation_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupCriterionSimulationService/GetAdGroupCriterionSimulation" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupCriterionSimulationSvc < T : AdGroupCriterionSimulationService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionSimulationService > tonic :: server :: UnaryService < super :: GetAdGroupCriterionSimulationRequest > for GetAdGroupCriterionSimulationSvc < T > { type Response = super :: super :: resources :: AdGroupCriterionSimulation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupCriterionSimulationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_criterion_simulation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupCriterionSimulationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupCriterionSimulationService/GetAdGroupCriterionSimulation" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupCriterionSimulationSvc < T : AdGroupCriterionSimulationService > ( pub Arc < T > ) ; impl < T : AdGroupCriterionSimulationService > tonic :: server :: UnaryService < super :: GetAdGroupCriterionSimulationRequest > for GetAdGroupCriterionSimulationSvc < T > { type Response = super :: super :: resources :: AdGroupCriterionSimulation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupCriterionSimulationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_criterion_simulation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupCriterionSimulationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupCriterionSimulationService> Clone for AdGroupCriterionSimulationServiceServer<T> {
@@ -2228,7 +2219,6 @@ pub mod ad_group_extension_setting_service_server {
     }
     #[doc = " Service to manage ad group extension settings."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupExtensionSettingServiceServer<T: AdGroupExtensionSettingService> {
         inner: _Inner<T>,
     }
@@ -2259,7 +2249,7 @@ pub mod ad_group_extension_setting_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupExtensionSettingService/GetAdGroupExtensionSetting" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupExtensionSettingSvc < T : AdGroupExtensionSettingService > ( pub Arc < T > ) ; impl < T : AdGroupExtensionSettingService > tonic :: server :: UnaryService < super :: GetAdGroupExtensionSettingRequest > for GetAdGroupExtensionSettingSvc < T > { type Response = super :: super :: resources :: AdGroupExtensionSetting ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupExtensionSettingRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_extension_setting ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupExtensionSettingSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupExtensionSettingService/MutateAdGroupExtensionSettings" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupExtensionSettingsSvc < T : AdGroupExtensionSettingService > ( pub Arc < T > ) ; impl < T : AdGroupExtensionSettingService > tonic :: server :: UnaryService < super :: MutateAdGroupExtensionSettingsRequest > for MutateAdGroupExtensionSettingsSvc < T > { type Response = super :: MutateAdGroupExtensionSettingsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupExtensionSettingsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_ad_group_extension_settings ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupExtensionSettingsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupExtensionSettingService/GetAdGroupExtensionSetting" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupExtensionSettingSvc < T : AdGroupExtensionSettingService > ( pub Arc < T > ) ; impl < T : AdGroupExtensionSettingService > tonic :: server :: UnaryService < super :: GetAdGroupExtensionSettingRequest > for GetAdGroupExtensionSettingSvc < T > { type Response = super :: super :: resources :: AdGroupExtensionSetting ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupExtensionSettingRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_extension_setting ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupExtensionSettingSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.AdGroupExtensionSettingService/MutateAdGroupExtensionSettings" => { # [ allow ( non_camel_case_types ) ] struct MutateAdGroupExtensionSettingsSvc < T : AdGroupExtensionSettingService > ( pub Arc < T > ) ; impl < T : AdGroupExtensionSettingService > tonic :: server :: UnaryService < super :: MutateAdGroupExtensionSettingsRequest > for MutateAdGroupExtensionSettingsSvc < T > { type Response = super :: MutateAdGroupExtensionSettingsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateAdGroupExtensionSettingsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_ad_group_extension_settings ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateAdGroupExtensionSettingsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupExtensionSettingService> Clone for AdGroupExtensionSettingServiceServer<T> {
@@ -2448,7 +2438,6 @@ pub mod ad_group_feed_service_server {
     }
     #[doc = " Service to manage ad group feeds."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupFeedServiceServer<T: AdGroupFeedService> {
         inner: _Inner<T>,
     }
@@ -2494,7 +2483,7 @@ pub mod ad_group_feed_service_server {
                             request: tonic::Request<super::GetAdGroupFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad_group_feed(request).await };
+                            let fut = async move { (*inner).get_ad_group_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2528,7 +2517,7 @@ pub mod ad_group_feed_service_server {
                             request: tonic::Request<super::MutateAdGroupFeedsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_ad_group_feeds(request).await };
+                            let fut = async move { (*inner).mutate_ad_group_feeds(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2738,7 +2727,6 @@ pub mod ad_group_label_service_server {
     }
     #[doc = " Service to manage labels on ad groups."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupLabelServiceServer<T: AdGroupLabelService> {
         inner: _Inner<T>,
     }
@@ -2784,7 +2772,7 @@ pub mod ad_group_label_service_server {
                             request: tonic::Request<super::GetAdGroupLabelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad_group_label(request).await };
+                            let fut = async move { (*inner).get_ad_group_label(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2818,7 +2806,7 @@ pub mod ad_group_label_service_server {
                             request: tonic::Request<super::MutateAdGroupLabelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_ad_group_labels(request).await };
+                            let fut = async move { (*inner).mutate_ad_group_labels(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3031,7 +3019,6 @@ pub mod ad_group_service_server {
     }
     #[doc = " Service to manage ad groups."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupServiceServer<T: AdGroupService> {
         inner: _Inner<T>,
     }
@@ -3074,7 +3061,7 @@ pub mod ad_group_service_server {
                             request: tonic::Request<super::GetAdGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad_group(request).await };
+                            let fut = async move { (*inner).get_ad_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3108,7 +3095,7 @@ pub mod ad_group_service_server {
                             request: tonic::Request<super::MutateAdGroupsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_ad_groups(request).await };
+                            let fut = async move { (*inner).mutate_ad_groups(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3232,7 +3219,6 @@ pub mod ad_group_simulation_service_server {
     }
     #[doc = " Service to fetch ad group simulations."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdGroupSimulationServiceServer<T: AdGroupSimulationService> {
         inner: _Inner<T>,
     }
@@ -3263,7 +3249,7 @@ pub mod ad_group_simulation_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupSimulationService/GetAdGroupSimulation" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupSimulationSvc < T : AdGroupSimulationService > ( pub Arc < T > ) ; impl < T : AdGroupSimulationService > tonic :: server :: UnaryService < super :: GetAdGroupSimulationRequest > for GetAdGroupSimulationSvc < T > { type Response = super :: super :: resources :: AdGroupSimulation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupSimulationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_ad_group_simulation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupSimulationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.AdGroupSimulationService/GetAdGroupSimulation" => { # [ allow ( non_camel_case_types ) ] struct GetAdGroupSimulationSvc < T : AdGroupSimulationService > ( pub Arc < T > ) ; impl < T : AdGroupSimulationService > tonic :: server :: UnaryService < super :: GetAdGroupSimulationRequest > for GetAdGroupSimulationSvc < T > { type Response = super :: super :: resources :: AdGroupSimulation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetAdGroupSimulationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_ad_group_simulation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetAdGroupSimulationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: AdGroupSimulationService> Clone for AdGroupSimulationServiceServer<T> {
@@ -3452,7 +3438,6 @@ pub mod ad_parameter_service_server {
     }
     #[doc = " Service to manage ad parameters."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdParameterServiceServer<T: AdParameterService> {
         inner: _Inner<T>,
     }
@@ -3498,7 +3483,7 @@ pub mod ad_parameter_service_server {
                             request: tonic::Request<super::GetAdParameterRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad_parameter(request).await };
+                            let fut = async move { (*inner).get_ad_parameter(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3532,7 +3517,7 @@ pub mod ad_parameter_service_server {
                             request: tonic::Request<super::MutateAdParametersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_ad_parameters(request).await };
+                            let fut = async move { (*inner).mutate_ad_parameters(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3656,7 +3641,6 @@ pub mod ad_schedule_view_service_server {
     }
     #[doc = " Service to fetch ad schedule views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdScheduleViewServiceServer<T: AdScheduleViewService> {
         inner: _Inner<T>,
     }
@@ -3702,7 +3686,7 @@ pub mod ad_schedule_view_service_server {
                             request: tonic::Request<super::GetAdScheduleViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad_schedule_view(request).await };
+                            let fut = async move { (*inner).get_ad_schedule_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3893,7 +3877,6 @@ pub mod ad_service_server {
     }
     #[doc = " Service to manage ads."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AdServiceServer<T: AdService> {
         inner: _Inner<T>,
     }
@@ -3936,7 +3919,7 @@ pub mod ad_service_server {
                             request: tonic::Request<super::GetAdRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_ad(request).await };
+                            let fut = async move { (*inner).get_ad(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3967,7 +3950,7 @@ pub mod ad_service_server {
                             request: tonic::Request<super::MutateAdsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_ads(request).await };
+                            let fut = async move { (*inner).mutate_ads(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4090,7 +4073,6 @@ pub mod age_range_view_service_server {
     }
     #[doc = " Service to manage age range views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AgeRangeViewServiceServer<T: AgeRangeViewService> {
         inner: _Inner<T>,
     }
@@ -4136,7 +4118,7 @@ pub mod age_range_view_service_server {
                             request: tonic::Request<super::GetAgeRangeViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_age_range_view(request).await };
+                            let fut = async move { (*inner).get_age_range_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4327,7 +4309,6 @@ pub mod asset_service_server {
     #[doc = " YoutubeVideoAsset, MediaBundleAsset and ImageAsset. TextAsset should be"]
     #[doc = " created with Ad inline."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AssetServiceServer<T: AssetService> {
         inner: _Inner<T>,
     }
@@ -4370,7 +4351,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::GetAssetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_asset(request).await };
+                            let fut = async move { (*inner).get_asset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4403,7 +4384,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::MutateAssetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_assets(request).await };
+                            let fut = async move { (*inner).mutate_assets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4622,7 +4603,6 @@ pub mod bidding_strategy_service_server {
     }
     #[doc = " Service to manage bidding strategies."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BiddingStrategyServiceServer<T: BiddingStrategyService> {
         inner: _Inner<T>,
     }
@@ -4653,7 +4633,7 @@ pub mod bidding_strategy_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.BiddingStrategyService/GetBiddingStrategy" => { # [ allow ( non_camel_case_types ) ] struct GetBiddingStrategySvc < T : BiddingStrategyService > ( pub Arc < T > ) ; impl < T : BiddingStrategyService > tonic :: server :: UnaryService < super :: GetBiddingStrategyRequest > for GetBiddingStrategySvc < T > { type Response = super :: super :: resources :: BiddingStrategy ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetBiddingStrategyRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_bidding_strategy ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetBiddingStrategySvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.BiddingStrategyService/MutateBiddingStrategies" => { # [ allow ( non_camel_case_types ) ] struct MutateBiddingStrategiesSvc < T : BiddingStrategyService > ( pub Arc < T > ) ; impl < T : BiddingStrategyService > tonic :: server :: UnaryService < super :: MutateBiddingStrategiesRequest > for MutateBiddingStrategiesSvc < T > { type Response = super :: MutateBiddingStrategiesResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateBiddingStrategiesRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_bidding_strategies ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateBiddingStrategiesSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.BiddingStrategyService/GetBiddingStrategy" => { # [ allow ( non_camel_case_types ) ] struct GetBiddingStrategySvc < T : BiddingStrategyService > ( pub Arc < T > ) ; impl < T : BiddingStrategyService > tonic :: server :: UnaryService < super :: GetBiddingStrategyRequest > for GetBiddingStrategySvc < T > { type Response = super :: super :: resources :: BiddingStrategy ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetBiddingStrategyRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_bidding_strategy ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetBiddingStrategySvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.BiddingStrategyService/MutateBiddingStrategies" => { # [ allow ( non_camel_case_types ) ] struct MutateBiddingStrategiesSvc < T : BiddingStrategyService > ( pub Arc < T > ) ; impl < T : BiddingStrategyService > tonic :: server :: UnaryService < super :: MutateBiddingStrategiesRequest > for MutateBiddingStrategiesSvc < T > { type Response = super :: MutateBiddingStrategiesResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateBiddingStrategiesRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_bidding_strategies ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateBiddingStrategiesSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: BiddingStrategyService> Clone for BiddingStrategyServiceServer<T> {
@@ -4838,7 +4818,6 @@ pub mod billing_setup_service_server {
     #[doc = " The REMOVE operation cancels a pending billing setup."]
     #[doc = " The CREATE operation creates a new billing setup."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BillingSetupServiceServer<T: BillingSetupService> {
         inner: _Inner<T>,
     }
@@ -4884,7 +4863,7 @@ pub mod billing_setup_service_server {
                             request: tonic::Request<super::GetBillingSetupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_billing_setup(request).await };
+                            let fut = async move { (*inner).get_billing_setup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4918,7 +4897,7 @@ pub mod billing_setup_service_server {
                             request: tonic::Request<super::MutateBillingSetupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_billing_setup(request).await };
+                            let fut = async move { (*inner).mutate_billing_setup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5040,7 +5019,6 @@ pub mod campaign_audience_view_service_server {
     }
     #[doc = " Service to manage campaign audience views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignAudienceViewServiceServer<T: CampaignAudienceViewService> {
         inner: _Inner<T>,
     }
@@ -5071,7 +5049,7 @@ pub mod campaign_audience_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignAudienceViewService/GetCampaignAudienceView" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignAudienceViewSvc < T : CampaignAudienceViewService > ( pub Arc < T > ) ; impl < T : CampaignAudienceViewService > tonic :: server :: UnaryService < super :: GetCampaignAudienceViewRequest > for GetCampaignAudienceViewSvc < T > { type Response = super :: super :: resources :: CampaignAudienceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignAudienceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_audience_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignAudienceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignAudienceViewService/GetCampaignAudienceView" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignAudienceViewSvc < T : CampaignAudienceViewService > ( pub Arc < T > ) ; impl < T : CampaignAudienceViewService > tonic :: server :: UnaryService < super :: GetCampaignAudienceViewRequest > for GetCampaignAudienceViewSvc < T > { type Response = super :: super :: resources :: CampaignAudienceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignAudienceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_audience_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignAudienceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignAudienceViewService> Clone for CampaignAudienceViewServiceServer<T> {
@@ -5259,7 +5237,6 @@ pub mod campaign_bid_modifier_service_server {
     }
     #[doc = " Service to manage campaign bid modifiers."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignBidModifierServiceServer<T: CampaignBidModifierService> {
         inner: _Inner<T>,
     }
@@ -5290,7 +5267,7 @@ pub mod campaign_bid_modifier_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignBidModifierService/GetCampaignBidModifier" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignBidModifierSvc < T : CampaignBidModifierService > ( pub Arc < T > ) ; impl < T : CampaignBidModifierService > tonic :: server :: UnaryService < super :: GetCampaignBidModifierRequest > for GetCampaignBidModifierSvc < T > { type Response = super :: super :: resources :: CampaignBidModifier ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignBidModifierRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_bid_modifier ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignBidModifierSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignBidModifierService/MutateCampaignBidModifiers" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignBidModifiersSvc < T : CampaignBidModifierService > ( pub Arc < T > ) ; impl < T : CampaignBidModifierService > tonic :: server :: UnaryService < super :: MutateCampaignBidModifiersRequest > for MutateCampaignBidModifiersSvc < T > { type Response = super :: MutateCampaignBidModifiersResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignBidModifiersRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_campaign_bid_modifiers ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignBidModifiersSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignBidModifierService/GetCampaignBidModifier" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignBidModifierSvc < T : CampaignBidModifierService > ( pub Arc < T > ) ; impl < T : CampaignBidModifierService > tonic :: server :: UnaryService < super :: GetCampaignBidModifierRequest > for GetCampaignBidModifierSvc < T > { type Response = super :: super :: resources :: CampaignBidModifier ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignBidModifierRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_bid_modifier ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignBidModifierSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignBidModifierService/MutateCampaignBidModifiers" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignBidModifiersSvc < T : CampaignBidModifierService > ( pub Arc < T > ) ; impl < T : CampaignBidModifierService > tonic :: server :: UnaryService < super :: MutateCampaignBidModifiersRequest > for MutateCampaignBidModifiersSvc < T > { type Response = super :: MutateCampaignBidModifiersResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignBidModifiersRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_campaign_bid_modifiers ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignBidModifiersSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignBidModifierService> Clone for CampaignBidModifierServiceServer<T> {
@@ -5480,7 +5457,6 @@ pub mod campaign_budget_service_server {
     }
     #[doc = " Service to manage campaign budgets."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignBudgetServiceServer<T: CampaignBudgetService> {
         inner: _Inner<T>,
     }
@@ -5526,7 +5502,7 @@ pub mod campaign_budget_service_server {
                             request: tonic::Request<super::GetCampaignBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_campaign_budget(request).await };
+                            let fut = async move { (*inner).get_campaign_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5560,7 +5536,8 @@ pub mod campaign_budget_service_server {
                             request: tonic::Request<super::MutateCampaignBudgetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_campaign_budgets(request).await };
+                            let fut =
+                                async move { (*inner).mutate_campaign_budgets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5775,7 +5752,6 @@ pub mod campaign_criterion_service_server {
     }
     #[doc = " Service to manage campaign criteria."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignCriterionServiceServer<T: CampaignCriterionService> {
         inner: _Inner<T>,
     }
@@ -5806,7 +5782,7 @@ pub mod campaign_criterion_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignCriterionService/GetCampaignCriterion" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignCriterionSvc < T : CampaignCriterionService > ( pub Arc < T > ) ; impl < T : CampaignCriterionService > tonic :: server :: UnaryService < super :: GetCampaignCriterionRequest > for GetCampaignCriterionSvc < T > { type Response = super :: super :: resources :: CampaignCriterion ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignCriterionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_criterion ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignCriterionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignCriterionService/MutateCampaignCriteria" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignCriteriaSvc < T : CampaignCriterionService > ( pub Arc < T > ) ; impl < T : CampaignCriterionService > tonic :: server :: UnaryService < super :: MutateCampaignCriteriaRequest > for MutateCampaignCriteriaSvc < T > { type Response = super :: MutateCampaignCriteriaResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignCriteriaRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_campaign_criteria ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignCriteriaSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignCriterionService/GetCampaignCriterion" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignCriterionSvc < T : CampaignCriterionService > ( pub Arc < T > ) ; impl < T : CampaignCriterionService > tonic :: server :: UnaryService < super :: GetCampaignCriterionRequest > for GetCampaignCriterionSvc < T > { type Response = super :: super :: resources :: CampaignCriterion ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignCriterionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_criterion ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignCriterionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignCriterionService/MutateCampaignCriteria" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignCriteriaSvc < T : CampaignCriterionService > ( pub Arc < T > ) ; impl < T : CampaignCriterionService > tonic :: server :: UnaryService < super :: MutateCampaignCriteriaRequest > for MutateCampaignCriteriaSvc < T > { type Response = super :: MutateCampaignCriteriaResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignCriteriaRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_campaign_criteria ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignCriteriaSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignCriterionService> Clone for CampaignCriterionServiceServer<T> {
@@ -5907,7 +5883,6 @@ pub mod campaign_criterion_simulation_service_server {
     }
     #[doc = " Service to fetch campaign criterion simulations."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignCriterionSimulationServiceServer<T: CampaignCriterionSimulationService> {
         inner: _Inner<T>,
     }
@@ -5938,7 +5913,7 @@ pub mod campaign_criterion_simulation_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignCriterionSimulationService/GetCampaignCriterionSimulation" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignCriterionSimulationSvc < T : CampaignCriterionSimulationService > ( pub Arc < T > ) ; impl < T : CampaignCriterionSimulationService > tonic :: server :: UnaryService < super :: GetCampaignCriterionSimulationRequest > for GetCampaignCriterionSimulationSvc < T > { type Response = super :: super :: resources :: CampaignCriterionSimulation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignCriterionSimulationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_criterion_simulation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignCriterionSimulationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignCriterionSimulationService/GetCampaignCriterionSimulation" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignCriterionSimulationSvc < T : CampaignCriterionSimulationService > ( pub Arc < T > ) ; impl < T : CampaignCriterionSimulationService > tonic :: server :: UnaryService < super :: GetCampaignCriterionSimulationRequest > for GetCampaignCriterionSimulationSvc < T > { type Response = super :: super :: resources :: CampaignCriterionSimulation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignCriterionSimulationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_criterion_simulation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignCriterionSimulationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignCriterionSimulationService> Clone for CampaignCriterionSimulationServiceServer<T> {
@@ -6236,7 +6211,6 @@ pub mod campaign_draft_service_server {
     }
     #[doc = " Service to manage campaign drafts."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignDraftServiceServer<T: CampaignDraftService> {
         inner: _Inner<T>,
     }
@@ -6267,7 +6241,7 @@ pub mod campaign_draft_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignDraftService/GetCampaignDraft" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignDraftSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: GetCampaignDraftRequest > for GetCampaignDraftSvc < T > { type Response = super :: super :: resources :: CampaignDraft ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignDraftRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_draft ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignDraftSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignDraftService/MutateCampaignDrafts" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignDraftsSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: MutateCampaignDraftsRequest > for MutateCampaignDraftsSvc < T > { type Response = super :: MutateCampaignDraftsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignDraftsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_campaign_drafts ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignDraftsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignDraftService/PromoteCampaignDraft" => { # [ allow ( non_camel_case_types ) ] struct PromoteCampaignDraftSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: PromoteCampaignDraftRequest > for PromoteCampaignDraftSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: PromoteCampaignDraftRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . promote_campaign_draft ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = PromoteCampaignDraftSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignDraftService/ListCampaignDraftAsyncErrors" => { # [ allow ( non_camel_case_types ) ] struct ListCampaignDraftAsyncErrorsSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: ListCampaignDraftAsyncErrorsRequest > for ListCampaignDraftAsyncErrorsSvc < T > { type Response = super :: ListCampaignDraftAsyncErrorsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListCampaignDraftAsyncErrorsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_campaign_draft_async_errors ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListCampaignDraftAsyncErrorsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignDraftService/GetCampaignDraft" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignDraftSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: GetCampaignDraftRequest > for GetCampaignDraftSvc < T > { type Response = super :: super :: resources :: CampaignDraft ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignDraftRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_draft ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignDraftSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignDraftService/MutateCampaignDrafts" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignDraftsSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: MutateCampaignDraftsRequest > for MutateCampaignDraftsSvc < T > { type Response = super :: MutateCampaignDraftsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignDraftsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_campaign_drafts ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignDraftsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignDraftService/PromoteCampaignDraft" => { # [ allow ( non_camel_case_types ) ] struct PromoteCampaignDraftSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: PromoteCampaignDraftRequest > for PromoteCampaignDraftSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: PromoteCampaignDraftRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . promote_campaign_draft ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = PromoteCampaignDraftSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignDraftService/ListCampaignDraftAsyncErrors" => { # [ allow ( non_camel_case_types ) ] struct ListCampaignDraftAsyncErrorsSvc < T : CampaignDraftService > ( pub Arc < T > ) ; impl < T : CampaignDraftService > tonic :: server :: UnaryService < super :: ListCampaignDraftAsyncErrorsRequest > for ListCampaignDraftAsyncErrorsSvc < T > { type Response = super :: ListCampaignDraftAsyncErrorsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListCampaignDraftAsyncErrorsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_campaign_draft_async_errors ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListCampaignDraftAsyncErrorsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignDraftService> Clone for CampaignDraftServiceServer<T> {
@@ -6712,7 +6686,6 @@ pub mod campaign_experiment_service_server {
     #[doc = " A campaign experiment is created from a draft of changes to the base campaign"]
     #[doc = " and will be a snapshot of changes in the draft at the time of creation."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignExperimentServiceServer<T: CampaignExperimentService> {
         inner: _Inner<T>,
     }
@@ -6743,7 +6716,7 @@ pub mod campaign_experiment_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignExperimentService/GetCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: GetCampaignExperimentRequest > for GetCampaignExperimentSvc < T > { type Response = super :: super :: resources :: CampaignExperiment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/CreateCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct CreateCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: CreateCampaignExperimentRequest > for CreateCampaignExperimentSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/MutateCampaignExperiments" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignExperimentsSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: MutateCampaignExperimentsRequest > for MutateCampaignExperimentsSvc < T > { type Response = super :: MutateCampaignExperimentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignExperimentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_campaign_experiments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignExperimentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/GraduateCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct GraduateCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: GraduateCampaignExperimentRequest > for GraduateCampaignExperimentSvc < T > { type Response = super :: GraduateCampaignExperimentResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GraduateCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . graduate_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GraduateCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/PromoteCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct PromoteCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: PromoteCampaignExperimentRequest > for PromoteCampaignExperimentSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: PromoteCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . promote_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = PromoteCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/EndCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct EndCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: EndCampaignExperimentRequest > for EndCampaignExperimentSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: EndCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . end_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = EndCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/ListCampaignExperimentAsyncErrors" => { # [ allow ( non_camel_case_types ) ] struct ListCampaignExperimentAsyncErrorsSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: ListCampaignExperimentAsyncErrorsRequest > for ListCampaignExperimentAsyncErrorsSvc < T > { type Response = super :: ListCampaignExperimentAsyncErrorsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListCampaignExperimentAsyncErrorsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_campaign_experiment_async_errors ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListCampaignExperimentAsyncErrorsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignExperimentService/GetCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: GetCampaignExperimentRequest > for GetCampaignExperimentSvc < T > { type Response = super :: super :: resources :: CampaignExperiment ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/CreateCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct CreateCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: CreateCampaignExperimentRequest > for CreateCampaignExperimentSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . create_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/MutateCampaignExperiments" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignExperimentsSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: MutateCampaignExperimentsRequest > for MutateCampaignExperimentsSvc < T > { type Response = super :: MutateCampaignExperimentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignExperimentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_campaign_experiments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignExperimentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/GraduateCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct GraduateCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: GraduateCampaignExperimentRequest > for GraduateCampaignExperimentSvc < T > { type Response = super :: GraduateCampaignExperimentResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GraduateCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . graduate_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GraduateCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/PromoteCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct PromoteCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: PromoteCampaignExperimentRequest > for PromoteCampaignExperimentSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: PromoteCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . promote_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = PromoteCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/EndCampaignExperiment" => { # [ allow ( non_camel_case_types ) ] struct EndCampaignExperimentSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: EndCampaignExperimentRequest > for EndCampaignExperimentSvc < T > { type Response = ( ) ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: EndCampaignExperimentRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . end_campaign_experiment ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = EndCampaignExperimentSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExperimentService/ListCampaignExperimentAsyncErrors" => { # [ allow ( non_camel_case_types ) ] struct ListCampaignExperimentAsyncErrorsSvc < T : CampaignExperimentService > ( pub Arc < T > ) ; impl < T : CampaignExperimentService > tonic :: server :: UnaryService < super :: ListCampaignExperimentAsyncErrorsRequest > for ListCampaignExperimentAsyncErrorsSvc < T > { type Response = super :: ListCampaignExperimentAsyncErrorsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListCampaignExperimentAsyncErrorsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_campaign_experiment_async_errors ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListCampaignExperimentAsyncErrorsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignExperimentService> Clone for CampaignExperimentServiceServer<T> {
@@ -6938,7 +6911,6 @@ pub mod campaign_extension_setting_service_server {
     }
     #[doc = " Service to manage campaign extension settings."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignExtensionSettingServiceServer<T: CampaignExtensionSettingService> {
         inner: _Inner<T>,
     }
@@ -6969,7 +6941,7 @@ pub mod campaign_extension_setting_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignExtensionSettingService/GetCampaignExtensionSetting" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignExtensionSettingSvc < T : CampaignExtensionSettingService > ( pub Arc < T > ) ; impl < T : CampaignExtensionSettingService > tonic :: server :: UnaryService < super :: GetCampaignExtensionSettingRequest > for GetCampaignExtensionSettingSvc < T > { type Response = super :: super :: resources :: CampaignExtensionSetting ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignExtensionSettingRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_extension_setting ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignExtensionSettingSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExtensionSettingService/MutateCampaignExtensionSettings" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignExtensionSettingsSvc < T : CampaignExtensionSettingService > ( pub Arc < T > ) ; impl < T : CampaignExtensionSettingService > tonic :: server :: UnaryService < super :: MutateCampaignExtensionSettingsRequest > for MutateCampaignExtensionSettingsSvc < T > { type Response = super :: MutateCampaignExtensionSettingsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignExtensionSettingsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_campaign_extension_settings ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignExtensionSettingsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignExtensionSettingService/GetCampaignExtensionSetting" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignExtensionSettingSvc < T : CampaignExtensionSettingService > ( pub Arc < T > ) ; impl < T : CampaignExtensionSettingService > tonic :: server :: UnaryService < super :: GetCampaignExtensionSettingRequest > for GetCampaignExtensionSettingSvc < T > { type Response = super :: super :: resources :: CampaignExtensionSetting ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignExtensionSettingRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_extension_setting ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignExtensionSettingSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignExtensionSettingService/MutateCampaignExtensionSettings" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignExtensionSettingsSvc < T : CampaignExtensionSettingService > ( pub Arc < T > ) ; impl < T : CampaignExtensionSettingService > tonic :: server :: UnaryService < super :: MutateCampaignExtensionSettingsRequest > for MutateCampaignExtensionSettingsSvc < T > { type Response = super :: MutateCampaignExtensionSettingsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignExtensionSettingsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_campaign_extension_settings ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignExtensionSettingsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignExtensionSettingService> Clone for CampaignExtensionSettingServiceServer<T> {
@@ -7158,7 +7130,6 @@ pub mod campaign_feed_service_server {
     }
     #[doc = " Service to manage campaign feeds."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignFeedServiceServer<T: CampaignFeedService> {
         inner: _Inner<T>,
     }
@@ -7204,7 +7175,7 @@ pub mod campaign_feed_service_server {
                             request: tonic::Request<super::GetCampaignFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_campaign_feed(request).await };
+                            let fut = async move { (*inner).get_campaign_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7238,7 +7209,7 @@ pub mod campaign_feed_service_server {
                             request: tonic::Request<super::MutateCampaignFeedsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_campaign_feeds(request).await };
+                            let fut = async move { (*inner).mutate_campaign_feeds(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7449,7 +7420,6 @@ pub mod campaign_label_service_server {
     }
     #[doc = " Service to manage labels on campaigns."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignLabelServiceServer<T: CampaignLabelService> {
         inner: _Inner<T>,
     }
@@ -7495,7 +7465,7 @@ pub mod campaign_label_service_server {
                             request: tonic::Request<super::GetCampaignLabelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_campaign_label(request).await };
+                            let fut = async move { (*inner).get_campaign_label(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7529,7 +7499,7 @@ pub mod campaign_label_service_server {
                             request: tonic::Request<super::MutateCampaignLabelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_campaign_labels(request).await };
+                            let fut = async move { (*inner).mutate_campaign_labels(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7743,7 +7713,6 @@ pub mod campaign_service_server {
     }
     #[doc = " Service to manage campaigns."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignServiceServer<T: CampaignService> {
         inner: _Inner<T>,
     }
@@ -7788,7 +7757,7 @@ pub mod campaign_service_server {
                             request: tonic::Request<super::GetCampaignRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_campaign(request).await };
+                            let fut = async move { (*inner).get_campaign(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -7822,7 +7791,7 @@ pub mod campaign_service_server {
                             request: tonic::Request<super::MutateCampaignsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_campaigns(request).await };
+                            let fut = async move { (*inner).mutate_campaigns(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -8030,7 +7999,6 @@ pub mod campaign_shared_set_service_server {
     }
     #[doc = " Service to manage campaign shared sets."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CampaignSharedSetServiceServer<T: CampaignSharedSetService> {
         inner: _Inner<T>,
     }
@@ -8061,7 +8029,7 @@ pub mod campaign_shared_set_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignSharedSetService/GetCampaignSharedSet" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignSharedSetSvc < T : CampaignSharedSetService > ( pub Arc < T > ) ; impl < T : CampaignSharedSetService > tonic :: server :: UnaryService < super :: GetCampaignSharedSetRequest > for GetCampaignSharedSetSvc < T > { type Response = super :: super :: resources :: CampaignSharedSet ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignSharedSetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_campaign_shared_set ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignSharedSetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignSharedSetService/MutateCampaignSharedSets" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignSharedSetsSvc < T : CampaignSharedSetService > ( pub Arc < T > ) ; impl < T : CampaignSharedSetService > tonic :: server :: UnaryService < super :: MutateCampaignSharedSetsRequest > for MutateCampaignSharedSetsSvc < T > { type Response = super :: MutateCampaignSharedSetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignSharedSetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_campaign_shared_sets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignSharedSetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CampaignSharedSetService/GetCampaignSharedSet" => { # [ allow ( non_camel_case_types ) ] struct GetCampaignSharedSetSvc < T : CampaignSharedSetService > ( pub Arc < T > ) ; impl < T : CampaignSharedSetService > tonic :: server :: UnaryService < super :: GetCampaignSharedSetRequest > for GetCampaignSharedSetSvc < T > { type Response = super :: super :: resources :: CampaignSharedSet ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCampaignSharedSetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_campaign_shared_set ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCampaignSharedSetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CampaignSharedSetService/MutateCampaignSharedSets" => { # [ allow ( non_camel_case_types ) ] struct MutateCampaignSharedSetsSvc < T : CampaignSharedSetService > ( pub Arc < T > ) ; impl < T : CampaignSharedSetService > tonic :: server :: UnaryService < super :: MutateCampaignSharedSetsRequest > for MutateCampaignSharedSetsSvc < T > { type Response = super :: MutateCampaignSharedSetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCampaignSharedSetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_campaign_shared_sets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCampaignSharedSetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CampaignSharedSetService> Clone for CampaignSharedSetServiceServer<T> {
@@ -8158,7 +8126,6 @@ pub mod carrier_constant_service_server {
     }
     #[doc = " Service to fetch carrier constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CarrierConstantServiceServer<T: CarrierConstantService> {
         inner: _Inner<T>,
     }
@@ -8204,7 +8171,7 @@ pub mod carrier_constant_service_server {
                             request: tonic::Request<super::GetCarrierConstantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_carrier_constant(request).await };
+                            let fut = async move { (*inner).get_carrier_constant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -8327,7 +8294,6 @@ pub mod change_status_service_server {
     }
     #[doc = " Service to fetch change statuses."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ChangeStatusServiceServer<T: ChangeStatusService> {
         inner: _Inner<T>,
     }
@@ -8373,7 +8339,7 @@ pub mod change_status_service_server {
                             request: tonic::Request<super::GetChangeStatusRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_change_status(request).await };
+                            let fut = async move { (*inner).get_change_status(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -8496,7 +8462,6 @@ pub mod click_view_service_server {
     }
     #[doc = " Service to fetch click views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ClickViewServiceServer<T: ClickViewService> {
         inner: _Inner<T>,
     }
@@ -8542,7 +8507,7 @@ pub mod click_view_service_server {
                             request: tonic::Request<super::GetClickViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_click_view(request).await };
+                            let fut = async move { (*inner).get_click_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -8761,7 +8726,6 @@ pub mod conversion_action_service_server {
     }
     #[doc = " Service to manage conversion actions."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ConversionActionServiceServer<T: ConversionActionService> {
         inner: _Inner<T>,
     }
@@ -8792,7 +8756,7 @@ pub mod conversion_action_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ConversionActionService/GetConversionAction" => { # [ allow ( non_camel_case_types ) ] struct GetConversionActionSvc < T : ConversionActionService > ( pub Arc < T > ) ; impl < T : ConversionActionService > tonic :: server :: UnaryService < super :: GetConversionActionRequest > for GetConversionActionSvc < T > { type Response = super :: super :: resources :: ConversionAction ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetConversionActionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_conversion_action ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetConversionActionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.ConversionActionService/MutateConversionActions" => { # [ allow ( non_camel_case_types ) ] struct MutateConversionActionsSvc < T : ConversionActionService > ( pub Arc < T > ) ; impl < T : ConversionActionService > tonic :: server :: UnaryService < super :: MutateConversionActionsRequest > for MutateConversionActionsSvc < T > { type Response = super :: MutateConversionActionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateConversionActionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_conversion_actions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateConversionActionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ConversionActionService/GetConversionAction" => { # [ allow ( non_camel_case_types ) ] struct GetConversionActionSvc < T : ConversionActionService > ( pub Arc < T > ) ; impl < T : ConversionActionService > tonic :: server :: UnaryService < super :: GetConversionActionRequest > for GetConversionActionSvc < T > { type Response = super :: super :: resources :: ConversionAction ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetConversionActionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_conversion_action ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetConversionActionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.ConversionActionService/MutateConversionActions" => { # [ allow ( non_camel_case_types ) ] struct MutateConversionActionsSvc < T : ConversionActionService > ( pub Arc < T > ) ; impl < T : ConversionActionService > tonic :: server :: UnaryService < super :: MutateConversionActionsRequest > for MutateConversionActionsSvc < T > { type Response = super :: MutateConversionActionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateConversionActionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_conversion_actions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateConversionActionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ConversionActionService> Clone for ConversionActionServiceServer<T> {
@@ -9028,7 +8992,6 @@ pub mod conversion_adjustment_upload_service_server {
     }
     #[doc = " Service to upload conversion adjustments."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ConversionAdjustmentUploadServiceServer<T: ConversionAdjustmentUploadService> {
         inner: _Inner<T>,
     }
@@ -9059,7 +9022,7 @@ pub mod conversion_adjustment_upload_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ConversionAdjustmentUploadService/UploadConversionAdjustments" => { # [ allow ( non_camel_case_types ) ] struct UploadConversionAdjustmentsSvc < T : ConversionAdjustmentUploadService > ( pub Arc < T > ) ; impl < T : ConversionAdjustmentUploadService > tonic :: server :: UnaryService < super :: UploadConversionAdjustmentsRequest > for UploadConversionAdjustmentsSvc < T > { type Response = super :: UploadConversionAdjustmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UploadConversionAdjustmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . upload_conversion_adjustments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UploadConversionAdjustmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ConversionAdjustmentUploadService/UploadConversionAdjustments" => { # [ allow ( non_camel_case_types ) ] struct UploadConversionAdjustmentsSvc < T : ConversionAdjustmentUploadService > ( pub Arc < T > ) ; impl < T : ConversionAdjustmentUploadService > tonic :: server :: UnaryService < super :: UploadConversionAdjustmentsRequest > for UploadConversionAdjustmentsSvc < T > { type Response = super :: UploadConversionAdjustmentsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UploadConversionAdjustmentsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . upload_conversion_adjustments ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UploadConversionAdjustmentsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ConversionAdjustmentUploadService> Clone for ConversionAdjustmentUploadServiceServer<T> {
@@ -9347,7 +9310,6 @@ pub mod conversion_upload_service_server {
     }
     #[doc = " Service to upload conversions."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ConversionUploadServiceServer<T: ConversionUploadService> {
         inner: _Inner<T>,
     }
@@ -9378,7 +9340,7 @@ pub mod conversion_upload_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ConversionUploadService/UploadClickConversions" => { # [ allow ( non_camel_case_types ) ] struct UploadClickConversionsSvc < T : ConversionUploadService > ( pub Arc < T > ) ; impl < T : ConversionUploadService > tonic :: server :: UnaryService < super :: UploadClickConversionsRequest > for UploadClickConversionsSvc < T > { type Response = super :: UploadClickConversionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UploadClickConversionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . upload_click_conversions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UploadClickConversionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.ConversionUploadService/UploadCallConversions" => { # [ allow ( non_camel_case_types ) ] struct UploadCallConversionsSvc < T : ConversionUploadService > ( pub Arc < T > ) ; impl < T : ConversionUploadService > tonic :: server :: UnaryService < super :: UploadCallConversionsRequest > for UploadCallConversionsSvc < T > { type Response = super :: UploadCallConversionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UploadCallConversionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . upload_call_conversions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UploadCallConversionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ConversionUploadService/UploadClickConversions" => { # [ allow ( non_camel_case_types ) ] struct UploadClickConversionsSvc < T : ConversionUploadService > ( pub Arc < T > ) ; impl < T : ConversionUploadService > tonic :: server :: UnaryService < super :: UploadClickConversionsRequest > for UploadClickConversionsSvc < T > { type Response = super :: UploadClickConversionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UploadClickConversionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . upload_click_conversions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UploadClickConversionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.ConversionUploadService/UploadCallConversions" => { # [ allow ( non_camel_case_types ) ] struct UploadCallConversionsSvc < T : ConversionUploadService > ( pub Arc < T > ) ; impl < T : ConversionUploadService > tonic :: server :: UnaryService < super :: UploadCallConversionsRequest > for UploadCallConversionsSvc < T > { type Response = super :: UploadCallConversionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: UploadCallConversionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . upload_call_conversions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = UploadCallConversionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ConversionUploadService> Clone for ConversionUploadServiceServer<T> {
@@ -9475,7 +9437,6 @@ pub mod currency_constant_service_server {
     }
     #[doc = " Service to fetch currency constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CurrencyConstantServiceServer<T: CurrencyConstantService> {
         inner: _Inner<T>,
     }
@@ -9521,7 +9482,7 @@ pub mod currency_constant_service_server {
                             request: tonic::Request<super::GetCurrencyConstantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_currency_constant(request).await };
+                            let fut = async move { (*inner).get_currency_constant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -9719,7 +9680,6 @@ pub mod custom_interest_service_server {
     }
     #[doc = " Service to manage custom interests."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomInterestServiceServer<T: CustomInterestService> {
         inner: _Inner<T>,
     }
@@ -9765,7 +9725,7 @@ pub mod custom_interest_service_server {
                             request: tonic::Request<super::GetCustomInterestRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_custom_interest(request).await };
+                            let fut = async move { (*inner).get_custom_interest(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -9799,7 +9759,8 @@ pub mod custom_interest_service_server {
                             request: tonic::Request<super::MutateCustomInterestsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_custom_interests(request).await };
+                            let fut =
+                                async move { (*inner).mutate_custom_interests(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -9990,7 +9951,6 @@ pub mod customer_client_link_service_server {
     }
     #[doc = " Service to manage customer client links."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerClientLinkServiceServer<T: CustomerClientLinkService> {
         inner: _Inner<T>,
     }
@@ -10021,7 +9981,7 @@ pub mod customer_client_link_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerClientLinkService/GetCustomerClientLink" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerClientLinkSvc < T : CustomerClientLinkService > ( pub Arc < T > ) ; impl < T : CustomerClientLinkService > tonic :: server :: UnaryService < super :: GetCustomerClientLinkRequest > for GetCustomerClientLinkSvc < T > { type Response = super :: super :: resources :: CustomerClientLink ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerClientLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_customer_client_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerClientLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerClientLinkService/MutateCustomerClientLink" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerClientLinkSvc < T : CustomerClientLinkService > ( pub Arc < T > ) ; impl < T : CustomerClientLinkService > tonic :: server :: UnaryService < super :: MutateCustomerClientLinkRequest > for MutateCustomerClientLinkSvc < T > { type Response = super :: MutateCustomerClientLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerClientLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_customer_client_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerClientLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerClientLinkService/GetCustomerClientLink" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerClientLinkSvc < T : CustomerClientLinkService > ( pub Arc < T > ) ; impl < T : CustomerClientLinkService > tonic :: server :: UnaryService < super :: GetCustomerClientLinkRequest > for GetCustomerClientLinkSvc < T > { type Response = super :: super :: resources :: CustomerClientLink ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerClientLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_customer_client_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerClientLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerClientLinkService/MutateCustomerClientLink" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerClientLinkSvc < T : CustomerClientLinkService > ( pub Arc < T > ) ; impl < T : CustomerClientLinkService > tonic :: server :: UnaryService < super :: MutateCustomerClientLinkRequest > for MutateCustomerClientLinkSvc < T > { type Response = super :: MutateCustomerClientLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerClientLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_customer_client_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerClientLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CustomerClientLinkService> Clone for CustomerClientLinkServiceServer<T> {
@@ -10118,7 +10078,6 @@ pub mod customer_client_service_server {
     }
     #[doc = " Service to get clients in a customer's hierarchy."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerClientServiceServer<T: CustomerClientService> {
         inner: _Inner<T>,
     }
@@ -10164,7 +10123,7 @@ pub mod customer_client_service_server {
                             request: tonic::Request<super::GetCustomerClientRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_customer_client(request).await };
+                            let fut = async move { (*inner).get_customer_client(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -10386,7 +10345,6 @@ pub mod customer_extension_setting_service_server {
     }
     #[doc = " Service to manage customer extension settings."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerExtensionSettingServiceServer<T: CustomerExtensionSettingService> {
         inner: _Inner<T>,
     }
@@ -10417,7 +10375,7 @@ pub mod customer_extension_setting_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerExtensionSettingService/GetCustomerExtensionSetting" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerExtensionSettingSvc < T : CustomerExtensionSettingService > ( pub Arc < T > ) ; impl < T : CustomerExtensionSettingService > tonic :: server :: UnaryService < super :: GetCustomerExtensionSettingRequest > for GetCustomerExtensionSettingSvc < T > { type Response = super :: super :: resources :: CustomerExtensionSetting ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerExtensionSettingRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_customer_extension_setting ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerExtensionSettingSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerExtensionSettingService/MutateCustomerExtensionSettings" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerExtensionSettingsSvc < T : CustomerExtensionSettingService > ( pub Arc < T > ) ; impl < T : CustomerExtensionSettingService > tonic :: server :: UnaryService < super :: MutateCustomerExtensionSettingsRequest > for MutateCustomerExtensionSettingsSvc < T > { type Response = super :: MutateCustomerExtensionSettingsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerExtensionSettingsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_customer_extension_settings ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerExtensionSettingsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerExtensionSettingService/GetCustomerExtensionSetting" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerExtensionSettingSvc < T : CustomerExtensionSettingService > ( pub Arc < T > ) ; impl < T : CustomerExtensionSettingService > tonic :: server :: UnaryService < super :: GetCustomerExtensionSettingRequest > for GetCustomerExtensionSettingSvc < T > { type Response = super :: super :: resources :: CustomerExtensionSetting ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerExtensionSettingRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_customer_extension_setting ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerExtensionSettingSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerExtensionSettingService/MutateCustomerExtensionSettings" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerExtensionSettingsSvc < T : CustomerExtensionSettingService > ( pub Arc < T > ) ; impl < T : CustomerExtensionSettingService > tonic :: server :: UnaryService < super :: MutateCustomerExtensionSettingsRequest > for MutateCustomerExtensionSettingsSvc < T > { type Response = super :: MutateCustomerExtensionSettingsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerExtensionSettingsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_customer_extension_settings ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerExtensionSettingsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CustomerExtensionSettingService> Clone for CustomerExtensionSettingServiceServer<T> {
@@ -10606,7 +10564,6 @@ pub mod customer_feed_service_server {
     }
     #[doc = " Service to manage customer feeds."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerFeedServiceServer<T: CustomerFeedService> {
         inner: _Inner<T>,
     }
@@ -10652,7 +10609,7 @@ pub mod customer_feed_service_server {
                             request: tonic::Request<super::GetCustomerFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_customer_feed(request).await };
+                            let fut = async move { (*inner).get_customer_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -10686,7 +10643,7 @@ pub mod customer_feed_service_server {
                             request: tonic::Request<super::MutateCustomerFeedsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_customer_feeds(request).await };
+                            let fut = async move { (*inner).mutate_customer_feeds(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -10897,7 +10854,6 @@ pub mod customer_label_service_server {
     }
     #[doc = " Service to manage labels on customers."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerLabelServiceServer<T: CustomerLabelService> {
         inner: _Inner<T>,
     }
@@ -10943,7 +10899,7 @@ pub mod customer_label_service_server {
                             request: tonic::Request<super::GetCustomerLabelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_customer_label(request).await };
+                            let fut = async move { (*inner).get_customer_label(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -10977,7 +10933,7 @@ pub mod customer_label_service_server {
                             request: tonic::Request<super::MutateCustomerLabelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_customer_labels(request).await };
+                            let fut = async move { (*inner).mutate_customer_labels(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -11222,7 +11178,6 @@ pub mod customer_manager_link_service_server {
     }
     #[doc = " Service to manage customer-manager links."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerManagerLinkServiceServer<T: CustomerManagerLinkService> {
         inner: _Inner<T>,
     }
@@ -11253,7 +11208,7 @@ pub mod customer_manager_link_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerManagerLinkService/GetCustomerManagerLink" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerManagerLinkSvc < T : CustomerManagerLinkService > ( pub Arc < T > ) ; impl < T : CustomerManagerLinkService > tonic :: server :: UnaryService < super :: GetCustomerManagerLinkRequest > for GetCustomerManagerLinkSvc < T > { type Response = super :: super :: resources :: CustomerManagerLink ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerManagerLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_customer_manager_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerManagerLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerManagerLinkService/MutateCustomerManagerLink" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerManagerLinkSvc < T : CustomerManagerLinkService > ( pub Arc < T > ) ; impl < T : CustomerManagerLinkService > tonic :: server :: UnaryService < super :: MutateCustomerManagerLinkRequest > for MutateCustomerManagerLinkSvc < T > { type Response = super :: MutateCustomerManagerLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerManagerLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_customer_manager_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerManagerLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerManagerLinkService/MoveManagerLink" => { # [ allow ( non_camel_case_types ) ] struct MoveManagerLinkSvc < T : CustomerManagerLinkService > ( pub Arc < T > ) ; impl < T : CustomerManagerLinkService > tonic :: server :: UnaryService < super :: MoveManagerLinkRequest > for MoveManagerLinkSvc < T > { type Response = super :: MoveManagerLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MoveManagerLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . move_manager_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MoveManagerLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerManagerLinkService/GetCustomerManagerLink" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerManagerLinkSvc < T : CustomerManagerLinkService > ( pub Arc < T > ) ; impl < T : CustomerManagerLinkService > tonic :: server :: UnaryService < super :: GetCustomerManagerLinkRequest > for GetCustomerManagerLinkSvc < T > { type Response = super :: super :: resources :: CustomerManagerLink ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerManagerLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_customer_manager_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerManagerLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerManagerLinkService/MutateCustomerManagerLink" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerManagerLinkSvc < T : CustomerManagerLinkService > ( pub Arc < T > ) ; impl < T : CustomerManagerLinkService > tonic :: server :: UnaryService < super :: MutateCustomerManagerLinkRequest > for MutateCustomerManagerLinkSvc < T > { type Response = super :: MutateCustomerManagerLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerManagerLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_customer_manager_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerManagerLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerManagerLinkService/MoveManagerLink" => { # [ allow ( non_camel_case_types ) ] struct MoveManagerLinkSvc < T : CustomerManagerLinkService > ( pub Arc < T > ) ; impl < T : CustomerManagerLinkService > tonic :: server :: UnaryService < super :: MoveManagerLinkRequest > for MoveManagerLinkSvc < T > { type Response = super :: MoveManagerLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MoveManagerLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . move_manager_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MoveManagerLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CustomerManagerLinkService> Clone for CustomerManagerLinkServiceServer<T> {
@@ -11441,7 +11396,6 @@ pub mod customer_negative_criterion_service_server {
     }
     #[doc = " Service to manage customer negative criteria."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerNegativeCriterionServiceServer<T: CustomerNegativeCriterionService> {
         inner: _Inner<T>,
     }
@@ -11472,7 +11426,7 @@ pub mod customer_negative_criterion_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerNegativeCriterionService/GetCustomerNegativeCriterion" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerNegativeCriterionSvc < T : CustomerNegativeCriterionService > ( pub Arc < T > ) ; impl < T : CustomerNegativeCriterionService > tonic :: server :: UnaryService < super :: GetCustomerNegativeCriterionRequest > for GetCustomerNegativeCriterionSvc < T > { type Response = super :: super :: resources :: CustomerNegativeCriterion ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerNegativeCriterionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_customer_negative_criterion ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerNegativeCriterionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerNegativeCriterionService/MutateCustomerNegativeCriteria" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerNegativeCriteriaSvc < T : CustomerNegativeCriterionService > ( pub Arc < T > ) ; impl < T : CustomerNegativeCriterionService > tonic :: server :: UnaryService < super :: MutateCustomerNegativeCriteriaRequest > for MutateCustomerNegativeCriteriaSvc < T > { type Response = super :: MutateCustomerNegativeCriteriaResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerNegativeCriteriaRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_customer_negative_criteria ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerNegativeCriteriaSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.CustomerNegativeCriterionService/GetCustomerNegativeCriterion" => { # [ allow ( non_camel_case_types ) ] struct GetCustomerNegativeCriterionSvc < T : CustomerNegativeCriterionService > ( pub Arc < T > ) ; impl < T : CustomerNegativeCriterionService > tonic :: server :: UnaryService < super :: GetCustomerNegativeCriterionRequest > for GetCustomerNegativeCriterionSvc < T > { type Response = super :: super :: resources :: CustomerNegativeCriterion ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetCustomerNegativeCriterionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_customer_negative_criterion ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetCustomerNegativeCriterionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.CustomerNegativeCriterionService/MutateCustomerNegativeCriteria" => { # [ allow ( non_camel_case_types ) ] struct MutateCustomerNegativeCriteriaSvc < T : CustomerNegativeCriterionService > ( pub Arc < T > ) ; impl < T : CustomerNegativeCriterionService > tonic :: server :: UnaryService < super :: MutateCustomerNegativeCriteriaRequest > for MutateCustomerNegativeCriteriaSvc < T > { type Response = super :: MutateCustomerNegativeCriteriaResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateCustomerNegativeCriteriaRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_customer_negative_criteria ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateCustomerNegativeCriteriaSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: CustomerNegativeCriterionService> Clone for CustomerNegativeCriterionServiceServer<T> {
@@ -11712,7 +11666,6 @@ pub mod customer_service_server {
     }
     #[doc = " Service to manage customers."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CustomerServiceServer<T: CustomerService> {
         inner: _Inner<T>,
     }
@@ -11757,7 +11710,7 @@ pub mod customer_service_server {
                             request: tonic::Request<super::GetCustomerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_customer(request).await };
+                            let fut = async move { (*inner).get_customer(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -11791,7 +11744,7 @@ pub mod customer_service_server {
                             request: tonic::Request<super::MutateCustomerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_customer(request).await };
+                            let fut = async move { (*inner).mutate_customer(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -11825,7 +11778,8 @@ pub mod customer_service_server {
                             request: tonic::Request<super::ListAccessibleCustomersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_accessible_customers(request).await };
+                            let fut =
+                                async move { (*inner).list_accessible_customers(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -11859,7 +11813,7 @@ pub mod customer_service_server {
                             request: tonic::Request<super::CreateCustomerClientRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_customer_client(request).await };
+                            let fut = async move { (*inner).create_customer_client(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -11981,7 +11935,6 @@ pub mod detail_placement_view_service_server {
     }
     #[doc = " Service to fetch Detail Placement views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DetailPlacementViewServiceServer<T: DetailPlacementViewService> {
         inner: _Inner<T>,
     }
@@ -12012,7 +11965,7 @@ pub mod detail_placement_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.DetailPlacementViewService/GetDetailPlacementView" => { # [ allow ( non_camel_case_types ) ] struct GetDetailPlacementViewSvc < T : DetailPlacementViewService > ( pub Arc < T > ) ; impl < T : DetailPlacementViewService > tonic :: server :: UnaryService < super :: GetDetailPlacementViewRequest > for GetDetailPlacementViewSvc < T > { type Response = super :: super :: resources :: DetailPlacementView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetDetailPlacementViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_detail_placement_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetDetailPlacementViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.DetailPlacementViewService/GetDetailPlacementView" => { # [ allow ( non_camel_case_types ) ] struct GetDetailPlacementViewSvc < T : DetailPlacementViewService > ( pub Arc < T > ) ; impl < T : DetailPlacementViewService > tonic :: server :: UnaryService < super :: GetDetailPlacementViewRequest > for GetDetailPlacementViewSvc < T > { type Response = super :: super :: resources :: DetailPlacementView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetDetailPlacementViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_detail_placement_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetDetailPlacementViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: DetailPlacementViewService> Clone for DetailPlacementViewServiceServer<T> {
@@ -12109,7 +12062,6 @@ pub mod display_keyword_view_service_server {
     }
     #[doc = " Service to manage display keyword views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DisplayKeywordViewServiceServer<T: DisplayKeywordViewService> {
         inner: _Inner<T>,
     }
@@ -12140,7 +12092,7 @@ pub mod display_keyword_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.DisplayKeywordViewService/GetDisplayKeywordView" => { # [ allow ( non_camel_case_types ) ] struct GetDisplayKeywordViewSvc < T : DisplayKeywordViewService > ( pub Arc < T > ) ; impl < T : DisplayKeywordViewService > tonic :: server :: UnaryService < super :: GetDisplayKeywordViewRequest > for GetDisplayKeywordViewSvc < T > { type Response = super :: super :: resources :: DisplayKeywordView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetDisplayKeywordViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_display_keyword_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetDisplayKeywordViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.DisplayKeywordViewService/GetDisplayKeywordView" => { # [ allow ( non_camel_case_types ) ] struct GetDisplayKeywordViewSvc < T : DisplayKeywordViewService > ( pub Arc < T > ) ; impl < T : DisplayKeywordViewService > tonic :: server :: UnaryService < super :: GetDisplayKeywordViewRequest > for GetDisplayKeywordViewSvc < T > { type Response = super :: super :: resources :: DisplayKeywordView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetDisplayKeywordViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_display_keyword_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetDisplayKeywordViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: DisplayKeywordViewService> Clone for DisplayKeywordViewServiceServer<T> {
@@ -12236,7 +12188,6 @@ pub mod distance_view_service_server {
     }
     #[doc = " Service to fetch distance views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DistanceViewServiceServer<T: DistanceViewService> {
         inner: _Inner<T>,
     }
@@ -12282,7 +12233,7 @@ pub mod distance_view_service_server {
                             request: tonic::Request<super::GetDistanceViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_distance_view(request).await };
+                            let fut = async move { (*inner).get_distance_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -12407,7 +12358,6 @@ pub mod domain_category_service_server {
     }
     #[doc = " Service to fetch domain categories."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DomainCategoryServiceServer<T: DomainCategoryService> {
         inner: _Inner<T>,
     }
@@ -12453,7 +12403,7 @@ pub mod domain_category_service_server {
                             request: tonic::Request<super::GetDomainCategoryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_domain_category(request).await };
+                            let fut = async move { (*inner).get_domain_category(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -12581,7 +12531,6 @@ pub mod dynamic_search_ads_search_term_view_service_server {
     }
     #[doc = " Service to fetch dynamic search ads views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DynamicSearchAdsSearchTermViewServiceServer<T: DynamicSearchAdsSearchTermViewService> {
         inner: _Inner<T>,
     }
@@ -12612,7 +12561,7 @@ pub mod dynamic_search_ads_search_term_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.DynamicSearchAdsSearchTermViewService/GetDynamicSearchAdsSearchTermView" => { # [ allow ( non_camel_case_types ) ] struct GetDynamicSearchAdsSearchTermViewSvc < T : DynamicSearchAdsSearchTermViewService > ( pub Arc < T > ) ; impl < T : DynamicSearchAdsSearchTermViewService > tonic :: server :: UnaryService < super :: GetDynamicSearchAdsSearchTermViewRequest > for GetDynamicSearchAdsSearchTermViewSvc < T > { type Response = super :: super :: resources :: DynamicSearchAdsSearchTermView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetDynamicSearchAdsSearchTermViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_dynamic_search_ads_search_term_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetDynamicSearchAdsSearchTermViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.DynamicSearchAdsSearchTermViewService/GetDynamicSearchAdsSearchTermView" => { # [ allow ( non_camel_case_types ) ] struct GetDynamicSearchAdsSearchTermViewSvc < T : DynamicSearchAdsSearchTermViewService > ( pub Arc < T > ) ; impl < T : DynamicSearchAdsSearchTermViewService > tonic :: server :: UnaryService < super :: GetDynamicSearchAdsSearchTermViewRequest > for GetDynamicSearchAdsSearchTermViewSvc < T > { type Response = super :: super :: resources :: DynamicSearchAdsSearchTermView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetDynamicSearchAdsSearchTermViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_dynamic_search_ads_search_term_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetDynamicSearchAdsSearchTermViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: DynamicSearchAdsSearchTermViewService> Clone
@@ -12710,7 +12659,6 @@ pub mod expanded_landing_page_view_service_server {
     }
     #[doc = " Service to fetch expanded landing page views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ExpandedLandingPageViewServiceServer<T: ExpandedLandingPageViewService> {
         inner: _Inner<T>,
     }
@@ -12741,7 +12689,7 @@ pub mod expanded_landing_page_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ExpandedLandingPageViewService/GetExpandedLandingPageView" => { # [ allow ( non_camel_case_types ) ] struct GetExpandedLandingPageViewSvc < T : ExpandedLandingPageViewService > ( pub Arc < T > ) ; impl < T : ExpandedLandingPageViewService > tonic :: server :: UnaryService < super :: GetExpandedLandingPageViewRequest > for GetExpandedLandingPageViewSvc < T > { type Response = super :: super :: resources :: ExpandedLandingPageView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetExpandedLandingPageViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_expanded_landing_page_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetExpandedLandingPageViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ExpandedLandingPageViewService/GetExpandedLandingPageView" => { # [ allow ( non_camel_case_types ) ] struct GetExpandedLandingPageViewSvc < T : ExpandedLandingPageViewService > ( pub Arc < T > ) ; impl < T : ExpandedLandingPageViewService > tonic :: server :: UnaryService < super :: GetExpandedLandingPageViewRequest > for GetExpandedLandingPageViewSvc < T > { type Response = super :: super :: resources :: ExpandedLandingPageView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetExpandedLandingPageViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_expanded_landing_page_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetExpandedLandingPageViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ExpandedLandingPageViewService> Clone for ExpandedLandingPageViewServiceServer<T> {
@@ -12932,7 +12880,6 @@ pub mod extension_feed_item_service_server {
     }
     #[doc = " Service to manage extension feed items."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ExtensionFeedItemServiceServer<T: ExtensionFeedItemService> {
         inner: _Inner<T>,
     }
@@ -12963,7 +12910,7 @@ pub mod extension_feed_item_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ExtensionFeedItemService/GetExtensionFeedItem" => { # [ allow ( non_camel_case_types ) ] struct GetExtensionFeedItemSvc < T : ExtensionFeedItemService > ( pub Arc < T > ) ; impl < T : ExtensionFeedItemService > tonic :: server :: UnaryService < super :: GetExtensionFeedItemRequest > for GetExtensionFeedItemSvc < T > { type Response = super :: super :: resources :: ExtensionFeedItem ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetExtensionFeedItemRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_extension_feed_item ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetExtensionFeedItemSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.ExtensionFeedItemService/MutateExtensionFeedItems" => { # [ allow ( non_camel_case_types ) ] struct MutateExtensionFeedItemsSvc < T : ExtensionFeedItemService > ( pub Arc < T > ) ; impl < T : ExtensionFeedItemService > tonic :: server :: UnaryService < super :: MutateExtensionFeedItemsRequest > for MutateExtensionFeedItemsSvc < T > { type Response = super :: MutateExtensionFeedItemsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateExtensionFeedItemsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_extension_feed_items ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateExtensionFeedItemsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ExtensionFeedItemService/GetExtensionFeedItem" => { # [ allow ( non_camel_case_types ) ] struct GetExtensionFeedItemSvc < T : ExtensionFeedItemService > ( pub Arc < T > ) ; impl < T : ExtensionFeedItemService > tonic :: server :: UnaryService < super :: GetExtensionFeedItemRequest > for GetExtensionFeedItemSvc < T > { type Response = super :: super :: resources :: ExtensionFeedItem ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetExtensionFeedItemRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_extension_feed_item ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetExtensionFeedItemSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.ExtensionFeedItemService/MutateExtensionFeedItems" => { # [ allow ( non_camel_case_types ) ] struct MutateExtensionFeedItemsSvc < T : ExtensionFeedItemService > ( pub Arc < T > ) ; impl < T : ExtensionFeedItemService > tonic :: server :: UnaryService < super :: MutateExtensionFeedItemsRequest > for MutateExtensionFeedItemsSvc < T > { type Response = super :: MutateExtensionFeedItemsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateExtensionFeedItemsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_extension_feed_items ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateExtensionFeedItemsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ExtensionFeedItemService> Clone for ExtensionFeedItemServiceServer<T> {
@@ -13152,7 +13099,6 @@ pub mod feed_item_service_server {
     }
     #[doc = " Service to manage feed items."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct FeedItemServiceServer<T: FeedItemService> {
         inner: _Inner<T>,
     }
@@ -13197,7 +13143,7 @@ pub mod feed_item_service_server {
                             request: tonic::Request<super::GetFeedItemRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_feed_item(request).await };
+                            let fut = async move { (*inner).get_feed_item(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -13231,7 +13177,7 @@ pub mod feed_item_service_server {
                             request: tonic::Request<super::MutateFeedItemsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_feed_items(request).await };
+                            let fut = async move { (*inner).mutate_feed_items(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -13424,7 +13370,6 @@ pub mod feed_item_target_service_server {
     }
     #[doc = " Service to manage feed item targets."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct FeedItemTargetServiceServer<T: FeedItemTargetService> {
         inner: _Inner<T>,
     }
@@ -13470,7 +13415,7 @@ pub mod feed_item_target_service_server {
                             request: tonic::Request<super::GetFeedItemTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_feed_item_target(request).await };
+                            let fut = async move { (*inner).get_feed_item_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -13504,7 +13449,8 @@ pub mod feed_item_target_service_server {
                             request: tonic::Request<super::MutateFeedItemTargetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_feed_item_targets(request).await };
+                            let fut =
+                                async move { (*inner).mutate_feed_item_targets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -13713,7 +13659,6 @@ pub mod feed_mapping_service_server {
     }
     #[doc = " Service to manage feed mappings."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct FeedMappingServiceServer<T: FeedMappingService> {
         inner: _Inner<T>,
     }
@@ -13759,7 +13704,7 @@ pub mod feed_mapping_service_server {
                             request: tonic::Request<super::GetFeedMappingRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_feed_mapping(request).await };
+                            let fut = async move { (*inner).get_feed_mapping(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -13793,7 +13738,7 @@ pub mod feed_mapping_service_server {
                             request: tonic::Request<super::MutateFeedMappingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_feed_mappings(request).await };
+                            let fut = async move { (*inner).mutate_feed_mappings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -13915,7 +13860,6 @@ pub mod feed_placeholder_view_service_server {
     }
     #[doc = " Service to fetch feed placeholder views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct FeedPlaceholderViewServiceServer<T: FeedPlaceholderViewService> {
         inner: _Inner<T>,
     }
@@ -13946,7 +13890,7 @@ pub mod feed_placeholder_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.FeedPlaceholderViewService/GetFeedPlaceholderView" => { # [ allow ( non_camel_case_types ) ] struct GetFeedPlaceholderViewSvc < T : FeedPlaceholderViewService > ( pub Arc < T > ) ; impl < T : FeedPlaceholderViewService > tonic :: server :: UnaryService < super :: GetFeedPlaceholderViewRequest > for GetFeedPlaceholderViewSvc < T > { type Response = super :: super :: resources :: FeedPlaceholderView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetFeedPlaceholderViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_feed_placeholder_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetFeedPlaceholderViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.FeedPlaceholderViewService/GetFeedPlaceholderView" => { # [ allow ( non_camel_case_types ) ] struct GetFeedPlaceholderViewSvc < T : FeedPlaceholderViewService > ( pub Arc < T > ) ; impl < T : FeedPlaceholderViewService > tonic :: server :: UnaryService < super :: GetFeedPlaceholderViewRequest > for GetFeedPlaceholderViewSvc < T > { type Response = super :: super :: resources :: FeedPlaceholderView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetFeedPlaceholderViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_feed_placeholder_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetFeedPlaceholderViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: FeedPlaceholderViewService> Clone for FeedPlaceholderViewServiceServer<T> {
@@ -14135,7 +14079,6 @@ pub mod feed_service_server {
     }
     #[doc = " Service to manage feeds."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct FeedServiceServer<T: FeedService> {
         inner: _Inner<T>,
     }
@@ -14178,7 +14121,7 @@ pub mod feed_service_server {
                             request: tonic::Request<super::GetFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_feed(request).await };
+                            let fut = async move { (*inner).get_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -14209,7 +14152,7 @@ pub mod feed_service_server {
                             request: tonic::Request<super::MutateFeedsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_feeds(request).await };
+                            let fut = async move { (*inner).mutate_feeds(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -14332,7 +14275,6 @@ pub mod gender_view_service_server {
     }
     #[doc = " Service to manage gender views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GenderViewServiceServer<T: GenderViewService> {
         inner: _Inner<T>,
     }
@@ -14378,7 +14320,7 @@ pub mod gender_view_service_server {
                             request: tonic::Request<super::GetGenderViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_gender_view(request).await };
+                            let fut = async move { (*inner).get_gender_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -14596,7 +14538,6 @@ pub mod geo_target_constant_service_server {
     }
     #[doc = " Service to fetch geo target constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GeoTargetConstantServiceServer<T: GeoTargetConstantService> {
         inner: _Inner<T>,
     }
@@ -14627,7 +14568,7 @@ pub mod geo_target_constant_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.GeoTargetConstantService/GetGeoTargetConstant" => { # [ allow ( non_camel_case_types ) ] struct GetGeoTargetConstantSvc < T : GeoTargetConstantService > ( pub Arc < T > ) ; impl < T : GeoTargetConstantService > tonic :: server :: UnaryService < super :: GetGeoTargetConstantRequest > for GetGeoTargetConstantSvc < T > { type Response = super :: super :: resources :: GeoTargetConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetGeoTargetConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_geo_target_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetGeoTargetConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.GeoTargetConstantService/SuggestGeoTargetConstants" => { # [ allow ( non_camel_case_types ) ] struct SuggestGeoTargetConstantsSvc < T : GeoTargetConstantService > ( pub Arc < T > ) ; impl < T : GeoTargetConstantService > tonic :: server :: UnaryService < super :: SuggestGeoTargetConstantsRequest > for SuggestGeoTargetConstantsSvc < T > { type Response = super :: SuggestGeoTargetConstantsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SuggestGeoTargetConstantsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . suggest_geo_target_constants ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SuggestGeoTargetConstantsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.GeoTargetConstantService/GetGeoTargetConstant" => { # [ allow ( non_camel_case_types ) ] struct GetGeoTargetConstantSvc < T : GeoTargetConstantService > ( pub Arc < T > ) ; impl < T : GeoTargetConstantService > tonic :: server :: UnaryService < super :: GetGeoTargetConstantRequest > for GetGeoTargetConstantSvc < T > { type Response = super :: super :: resources :: GeoTargetConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetGeoTargetConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_geo_target_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetGeoTargetConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.GeoTargetConstantService/SuggestGeoTargetConstants" => { # [ allow ( non_camel_case_types ) ] struct SuggestGeoTargetConstantsSvc < T : GeoTargetConstantService > ( pub Arc < T > ) ; impl < T : GeoTargetConstantService > tonic :: server :: UnaryService < super :: SuggestGeoTargetConstantsRequest > for SuggestGeoTargetConstantsSvc < T > { type Response = super :: SuggestGeoTargetConstantsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SuggestGeoTargetConstantsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . suggest_geo_target_constants ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SuggestGeoTargetConstantsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: GeoTargetConstantService> Clone for GeoTargetConstantServiceServer<T> {
@@ -14724,7 +14665,6 @@ pub mod geographic_view_service_server {
     }
     #[doc = " Service to manage geographic views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GeographicViewServiceServer<T: GeographicViewService> {
         inner: _Inner<T>,
     }
@@ -14770,7 +14710,7 @@ pub mod geographic_view_service_server {
                             request: tonic::Request<super::GetGeographicViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_geographic_view(request).await };
+                            let fut = async move { (*inner).get_geographic_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -14948,7 +14888,6 @@ pub mod google_ads_field_service_server {
     }
     #[doc = " Service to fetch Google Ads API fields."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GoogleAdsFieldServiceServer<T: GoogleAdsFieldService> {
         inner: _Inner<T>,
     }
@@ -14994,7 +14933,7 @@ pub mod google_ads_field_service_server {
                             request: tonic::Request<super::GetGoogleAdsFieldRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_google_ads_field(request).await };
+                            let fut = async move { (*inner).get_google_ads_field(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -15028,7 +14967,8 @@ pub mod google_ads_field_service_server {
                             request: tonic::Request<super::SearchGoogleAdsFieldsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_google_ads_fields(request).await };
+                            let fut =
+                                async move { (*inner).search_google_ads_fields(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -15241,7 +15181,6 @@ pub mod label_service_server {
     }
     #[doc = " Service to manage labels."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LabelServiceServer<T: LabelService> {
         inner: _Inner<T>,
     }
@@ -15284,7 +15223,7 @@ pub mod label_service_server {
                             request: tonic::Request<super::GetLabelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_label(request).await };
+                            let fut = async move { (*inner).get_label(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -15317,7 +15256,7 @@ pub mod label_service_server {
                             request: tonic::Request<super::MutateLabelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_labels(request).await };
+                            let fut = async move { (*inner).mutate_labels(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -15518,7 +15457,6 @@ pub mod media_file_service_server {
     }
     #[doc = " Service to manage media files."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct MediaFileServiceServer<T: MediaFileService> {
         inner: _Inner<T>,
     }
@@ -15564,7 +15502,7 @@ pub mod media_file_service_server {
                             request: tonic::Request<super::GetMediaFileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_media_file(request).await };
+                            let fut = async move { (*inner).get_media_file(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -15598,7 +15536,7 @@ pub mod media_file_service_server {
                             request: tonic::Request<super::MutateMediaFilesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_media_files(request).await };
+                            let fut = async move { (*inner).mutate_media_files(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -15807,7 +15745,6 @@ pub mod remarketing_action_service_server {
     }
     #[doc = " Service to manage remarketing actions."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RemarketingActionServiceServer<T: RemarketingActionService> {
         inner: _Inner<T>,
     }
@@ -15838,7 +15775,7 @@ pub mod remarketing_action_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.RemarketingActionService/GetRemarketingAction" => { # [ allow ( non_camel_case_types ) ] struct GetRemarketingActionSvc < T : RemarketingActionService > ( pub Arc < T > ) ; impl < T : RemarketingActionService > tonic :: server :: UnaryService < super :: GetRemarketingActionRequest > for GetRemarketingActionSvc < T > { type Response = super :: super :: resources :: RemarketingAction ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetRemarketingActionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_remarketing_action ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetRemarketingActionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.RemarketingActionService/MutateRemarketingActions" => { # [ allow ( non_camel_case_types ) ] struct MutateRemarketingActionsSvc < T : RemarketingActionService > ( pub Arc < T > ) ; impl < T : RemarketingActionService > tonic :: server :: UnaryService < super :: MutateRemarketingActionsRequest > for MutateRemarketingActionsSvc < T > { type Response = super :: MutateRemarketingActionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateRemarketingActionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_remarketing_actions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateRemarketingActionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.RemarketingActionService/GetRemarketingAction" => { # [ allow ( non_camel_case_types ) ] struct GetRemarketingActionSvc < T : RemarketingActionService > ( pub Arc < T > ) ; impl < T : RemarketingActionService > tonic :: server :: UnaryService < super :: GetRemarketingActionRequest > for GetRemarketingActionSvc < T > { type Response = super :: super :: resources :: RemarketingAction ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetRemarketingActionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_remarketing_action ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetRemarketingActionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.RemarketingActionService/MutateRemarketingActions" => { # [ allow ( non_camel_case_types ) ] struct MutateRemarketingActionsSvc < T : RemarketingActionService > ( pub Arc < T > ) ; impl < T : RemarketingActionService > tonic :: server :: UnaryService < super :: MutateRemarketingActionsRequest > for MutateRemarketingActionsSvc < T > { type Response = super :: MutateRemarketingActionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateRemarketingActionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_remarketing_actions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateRemarketingActionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: RemarketingActionService> Clone for RemarketingActionServiceServer<T> {
@@ -16020,7 +15957,6 @@ pub mod shared_criterion_service_server {
     }
     #[doc = " Service to manage shared criteria."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SharedCriterionServiceServer<T: SharedCriterionService> {
         inner: _Inner<T>,
     }
@@ -16066,7 +16002,7 @@ pub mod shared_criterion_service_server {
                             request: tonic::Request<super::GetSharedCriterionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_shared_criterion(request).await };
+                            let fut = async move { (*inner).get_shared_criterion(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -16100,7 +16036,7 @@ pub mod shared_criterion_service_server {
                             request: tonic::Request<super::MutateSharedCriteriaRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_shared_criteria(request).await };
+                            let fut = async move { (*inner).mutate_shared_criteria(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -16314,7 +16250,6 @@ pub mod shared_set_service_server {
     }
     #[doc = " Service to manage shared sets."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SharedSetServiceServer<T: SharedSetService> {
         inner: _Inner<T>,
     }
@@ -16360,7 +16295,7 @@ pub mod shared_set_service_server {
                             request: tonic::Request<super::GetSharedSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_shared_set(request).await };
+                            let fut = async move { (*inner).get_shared_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -16394,7 +16329,7 @@ pub mod shared_set_service_server {
                             request: tonic::Request<super::MutateSharedSetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_shared_sets(request).await };
+                            let fut = async move { (*inner).mutate_shared_sets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -16608,7 +16543,6 @@ pub mod user_list_service_server {
     }
     #[doc = " Service to manage user lists."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct UserListServiceServer<T: UserListService> {
         inner: _Inner<T>,
     }
@@ -16653,7 +16587,7 @@ pub mod user_list_service_server {
                             request: tonic::Request<super::GetUserListRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_user_list(request).await };
+                            let fut = async move { (*inner).get_user_list(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -16687,7 +16621,7 @@ pub mod user_list_service_server {
                             request: tonic::Request<super::MutateUserListsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_user_lists(request).await };
+                            let fut = async move { (*inner).mutate_user_lists(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -17674,7 +17608,6 @@ pub mod google_ads_service_server {
     }
     #[doc = " Service to fetch data and metrics across resources."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GoogleAdsServiceServer<T: GoogleAdsService> {
         inner: _Inner<T>,
     }
@@ -17720,7 +17653,7 @@ pub mod google_ads_service_server {
                             request: tonic::Request<super::SearchGoogleAdsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search(request).await };
+                            let fut = async move { (*inner).search(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -17756,7 +17689,7 @@ pub mod google_ads_service_server {
                             request: tonic::Request<super::SearchGoogleAdsStreamRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_stream(request).await };
+                            let fut = async move { (*inner).search_stream(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -17790,7 +17723,7 @@ pub mod google_ads_service_server {
                             request: tonic::Request<super::MutateGoogleAdsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate(request).await };
+                            let fut = async move { (*inner).mutate(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -17914,7 +17847,6 @@ pub mod group_placement_view_service_server {
     }
     #[doc = " Service to fetch Group Placement views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct GroupPlacementViewServiceServer<T: GroupPlacementViewService> {
         inner: _Inner<T>,
     }
@@ -17945,7 +17877,7 @@ pub mod group_placement_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.GroupPlacementViewService/GetGroupPlacementView" => { # [ allow ( non_camel_case_types ) ] struct GetGroupPlacementViewSvc < T : GroupPlacementViewService > ( pub Arc < T > ) ; impl < T : GroupPlacementViewService > tonic :: server :: UnaryService < super :: GetGroupPlacementViewRequest > for GetGroupPlacementViewSvc < T > { type Response = super :: super :: resources :: GroupPlacementView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetGroupPlacementViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_group_placement_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetGroupPlacementViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.GroupPlacementViewService/GetGroupPlacementView" => { # [ allow ( non_camel_case_types ) ] struct GetGroupPlacementViewSvc < T : GroupPlacementViewService > ( pub Arc < T > ) ; impl < T : GroupPlacementViewService > tonic :: server :: UnaryService < super :: GetGroupPlacementViewRequest > for GetGroupPlacementViewSvc < T > { type Response = super :: super :: resources :: GroupPlacementView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetGroupPlacementViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_group_placement_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetGroupPlacementViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: GroupPlacementViewService> Clone for GroupPlacementViewServiceServer<T> {
@@ -18042,7 +17974,6 @@ pub mod hotel_group_view_service_server {
     }
     #[doc = " Service to manage Hotel Group Views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct HotelGroupViewServiceServer<T: HotelGroupViewService> {
         inner: _Inner<T>,
     }
@@ -18088,7 +18019,7 @@ pub mod hotel_group_view_service_server {
                             request: tonic::Request<super::GetHotelGroupViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_hotel_group_view(request).await };
+                            let fut = async move { (*inner).get_hotel_group_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -18210,7 +18141,6 @@ pub mod hotel_performance_view_service_server {
     }
     #[doc = " Service to manage Hotel Performance Views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct HotelPerformanceViewServiceServer<T: HotelPerformanceViewService> {
         inner: _Inner<T>,
     }
@@ -18241,7 +18171,7 @@ pub mod hotel_performance_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.HotelPerformanceViewService/GetHotelPerformanceView" => { # [ allow ( non_camel_case_types ) ] struct GetHotelPerformanceViewSvc < T : HotelPerformanceViewService > ( pub Arc < T > ) ; impl < T : HotelPerformanceViewService > tonic :: server :: UnaryService < super :: GetHotelPerformanceViewRequest > for GetHotelPerformanceViewSvc < T > { type Response = super :: super :: resources :: HotelPerformanceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetHotelPerformanceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_hotel_performance_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetHotelPerformanceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.HotelPerformanceViewService/GetHotelPerformanceView" => { # [ allow ( non_camel_case_types ) ] struct GetHotelPerformanceViewSvc < T : HotelPerformanceViewService > ( pub Arc < T > ) ; impl < T : HotelPerformanceViewService > tonic :: server :: UnaryService < super :: GetHotelPerformanceViewRequest > for GetHotelPerformanceViewSvc < T > { type Response = super :: super :: resources :: HotelPerformanceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetHotelPerformanceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_hotel_performance_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetHotelPerformanceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: HotelPerformanceViewService> Clone for HotelPerformanceViewServiceServer<T> {
@@ -18360,7 +18290,6 @@ pub mod invoice_service_server {
     }
     #[doc = " A service to fetch invoices issued for a billing setup during a given month."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct InvoiceServiceServer<T: InvoiceService> {
         inner: _Inner<T>,
     }
@@ -18405,7 +18334,7 @@ pub mod invoice_service_server {
                             request: tonic::Request<super::ListInvoicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_invoices(request).await };
+                            let fut = async move { (*inner).list_invoices(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -18623,7 +18552,6 @@ pub mod keyword_plan_ad_group_service_server {
     }
     #[doc = " Service to manage Keyword Plan ad groups."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeywordPlanAdGroupServiceServer<T: KeywordPlanAdGroupService> {
         inner: _Inner<T>,
     }
@@ -18654,7 +18582,7 @@ pub mod keyword_plan_ad_group_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanAdGroupService/GetKeywordPlanAdGroup" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanAdGroupSvc < T : KeywordPlanAdGroupService > ( pub Arc < T > ) ; impl < T : KeywordPlanAdGroupService > tonic :: server :: UnaryService < super :: GetKeywordPlanAdGroupRequest > for GetKeywordPlanAdGroupSvc < T > { type Response = super :: super :: resources :: KeywordPlanAdGroup ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanAdGroupRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_keyword_plan_ad_group ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanAdGroupSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanAdGroupService/MutateKeywordPlanAdGroups" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanAdGroupsSvc < T : KeywordPlanAdGroupService > ( pub Arc < T > ) ; impl < T : KeywordPlanAdGroupService > tonic :: server :: UnaryService < super :: MutateKeywordPlanAdGroupsRequest > for MutateKeywordPlanAdGroupsSvc < T > { type Response = super :: MutateKeywordPlanAdGroupsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanAdGroupsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_keyword_plan_ad_groups ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanAdGroupsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanAdGroupService/GetKeywordPlanAdGroup" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanAdGroupSvc < T : KeywordPlanAdGroupService > ( pub Arc < T > ) ; impl < T : KeywordPlanAdGroupService > tonic :: server :: UnaryService < super :: GetKeywordPlanAdGroupRequest > for GetKeywordPlanAdGroupSvc < T > { type Response = super :: super :: resources :: KeywordPlanAdGroup ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanAdGroupRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_keyword_plan_ad_group ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanAdGroupSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanAdGroupService/MutateKeywordPlanAdGroups" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanAdGroupsSvc < T : KeywordPlanAdGroupService > ( pub Arc < T > ) ; impl < T : KeywordPlanAdGroupService > tonic :: server :: UnaryService < super :: MutateKeywordPlanAdGroupsRequest > for MutateKeywordPlanAdGroupsSvc < T > { type Response = super :: MutateKeywordPlanAdGroupsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanAdGroupsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_keyword_plan_ad_groups ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanAdGroupsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: KeywordPlanAdGroupService> Clone for KeywordPlanAdGroupServiceServer<T> {
@@ -18844,7 +18772,6 @@ pub mod keyword_plan_campaign_service_server {
     }
     #[doc = " Service to manage Keyword Plan campaigns."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeywordPlanCampaignServiceServer<T: KeywordPlanCampaignService> {
         inner: _Inner<T>,
     }
@@ -18875,7 +18802,7 @@ pub mod keyword_plan_campaign_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanCampaignService/GetKeywordPlanCampaign" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanCampaignSvc < T : KeywordPlanCampaignService > ( pub Arc < T > ) ; impl < T : KeywordPlanCampaignService > tonic :: server :: UnaryService < super :: GetKeywordPlanCampaignRequest > for GetKeywordPlanCampaignSvc < T > { type Response = super :: super :: resources :: KeywordPlanCampaign ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanCampaignRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_keyword_plan_campaign ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanCampaignSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanCampaignService/MutateKeywordPlanCampaigns" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanCampaignsSvc < T : KeywordPlanCampaignService > ( pub Arc < T > ) ; impl < T : KeywordPlanCampaignService > tonic :: server :: UnaryService < super :: MutateKeywordPlanCampaignsRequest > for MutateKeywordPlanCampaignsSvc < T > { type Response = super :: MutateKeywordPlanCampaignsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanCampaignsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_keyword_plan_campaigns ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanCampaignsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanCampaignService/GetKeywordPlanCampaign" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanCampaignSvc < T : KeywordPlanCampaignService > ( pub Arc < T > ) ; impl < T : KeywordPlanCampaignService > tonic :: server :: UnaryService < super :: GetKeywordPlanCampaignRequest > for GetKeywordPlanCampaignSvc < T > { type Response = super :: super :: resources :: KeywordPlanCampaign ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanCampaignRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_keyword_plan_campaign ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanCampaignSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanCampaignService/MutateKeywordPlanCampaigns" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanCampaignsSvc < T : KeywordPlanCampaignService > ( pub Arc < T > ) ; impl < T : KeywordPlanCampaignService > tonic :: server :: UnaryService < super :: MutateKeywordPlanCampaignsRequest > for MutateKeywordPlanCampaignsSvc < T > { type Response = super :: MutateKeywordPlanCampaignsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanCampaignsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_keyword_plan_campaigns ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanCampaignsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: KeywordPlanCampaignService> Clone for KeywordPlanCampaignServiceServer<T> {
@@ -19048,7 +18975,6 @@ pub mod keyword_plan_idea_service_server {
     }
     #[doc = " Service to generate keyword ideas."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeywordPlanIdeaServiceServer<T: KeywordPlanIdeaService> {
         inner: _Inner<T>,
     }
@@ -19094,7 +19020,7 @@ pub mod keyword_plan_idea_service_server {
                             request: tonic::Request<super::GenerateKeywordIdeasRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_keyword_ideas(request).await };
+                            let fut = async move { (*inner).generate_keyword_ideas(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -19312,7 +19238,6 @@ pub mod keyword_plan_keyword_service_server {
     }
     #[doc = " Service to manage Keyword Plan ad group keywords."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeywordPlanKeywordServiceServer<T: KeywordPlanKeywordService> {
         inner: _Inner<T>,
     }
@@ -19343,7 +19268,7 @@ pub mod keyword_plan_keyword_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanKeywordService/GetKeywordPlanKeyword" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanKeywordSvc < T : KeywordPlanKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanKeywordService > tonic :: server :: UnaryService < super :: GetKeywordPlanKeywordRequest > for GetKeywordPlanKeywordSvc < T > { type Response = super :: super :: resources :: KeywordPlanKeyword ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanKeywordRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_keyword_plan_keyword ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanKeywordSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanKeywordService/MutateKeywordPlanKeywords" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanKeywordsSvc < T : KeywordPlanKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanKeywordService > tonic :: server :: UnaryService < super :: MutateKeywordPlanKeywordsRequest > for MutateKeywordPlanKeywordsSvc < T > { type Response = super :: MutateKeywordPlanKeywordsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanKeywordsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_keyword_plan_keywords ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanKeywordsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanKeywordService/GetKeywordPlanKeyword" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanKeywordSvc < T : KeywordPlanKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanKeywordService > tonic :: server :: UnaryService < super :: GetKeywordPlanKeywordRequest > for GetKeywordPlanKeywordSvc < T > { type Response = super :: super :: resources :: KeywordPlanKeyword ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanKeywordRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_keyword_plan_keyword ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanKeywordSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanKeywordService/MutateKeywordPlanKeywords" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanKeywordsSvc < T : KeywordPlanKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanKeywordService > tonic :: server :: UnaryService < super :: MutateKeywordPlanKeywordsRequest > for MutateKeywordPlanKeywordsSvc < T > { type Response = super :: MutateKeywordPlanKeywordsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanKeywordsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_keyword_plan_keywords ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanKeywordsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: KeywordPlanKeywordService> Clone for KeywordPlanKeywordServiceServer<T> {
@@ -19544,7 +19469,6 @@ pub mod keyword_plan_negative_keyword_service_server {
     }
     #[doc = " Service to manage Keyword Plan negative keywords."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeywordPlanNegativeKeywordServiceServer<T: KeywordPlanNegativeKeywordService> {
         inner: _Inner<T>,
     }
@@ -19575,7 +19499,7 @@ pub mod keyword_plan_negative_keyword_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanNegativeKeywordService/GetKeywordPlanNegativeKeyword" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanNegativeKeywordSvc < T : KeywordPlanNegativeKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanNegativeKeywordService > tonic :: server :: UnaryService < super :: GetKeywordPlanNegativeKeywordRequest > for GetKeywordPlanNegativeKeywordSvc < T > { type Response = super :: super :: resources :: KeywordPlanNegativeKeyword ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanNegativeKeywordRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_keyword_plan_negative_keyword ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanNegativeKeywordSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanNegativeKeywordService/MutateKeywordPlanNegativeKeywords" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanNegativeKeywordsSvc < T : KeywordPlanNegativeKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanNegativeKeywordService > tonic :: server :: UnaryService < super :: MutateKeywordPlanNegativeKeywordsRequest > for MutateKeywordPlanNegativeKeywordsSvc < T > { type Response = super :: MutateKeywordPlanNegativeKeywordsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanNegativeKeywordsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_keyword_plan_negative_keywords ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanNegativeKeywordsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanNegativeKeywordService/GetKeywordPlanNegativeKeyword" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanNegativeKeywordSvc < T : KeywordPlanNegativeKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanNegativeKeywordService > tonic :: server :: UnaryService < super :: GetKeywordPlanNegativeKeywordRequest > for GetKeywordPlanNegativeKeywordSvc < T > { type Response = super :: super :: resources :: KeywordPlanNegativeKeyword ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanNegativeKeywordRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_keyword_plan_negative_keyword ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanNegativeKeywordSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanNegativeKeywordService/MutateKeywordPlanNegativeKeywords" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlanNegativeKeywordsSvc < T : KeywordPlanNegativeKeywordService > ( pub Arc < T > ) ; impl < T : KeywordPlanNegativeKeywordService > tonic :: server :: UnaryService < super :: MutateKeywordPlanNegativeKeywordsRequest > for MutateKeywordPlanNegativeKeywordsSvc < T > { type Response = super :: MutateKeywordPlanNegativeKeywordsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlanNegativeKeywordsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_keyword_plan_negative_keywords ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlanNegativeKeywordsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: KeywordPlanNegativeKeywordService> Clone for KeywordPlanNegativeKeywordServiceServer<T> {
@@ -19919,7 +19843,6 @@ pub mod keyword_plan_service_server {
     }
     #[doc = " Service to manage keyword plans."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeywordPlanServiceServer<T: KeywordPlanService> {
         inner: _Inner<T>,
     }
@@ -19950,7 +19873,7 @@ pub mod keyword_plan_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanService/GetKeywordPlan" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: GetKeywordPlanRequest > for GetKeywordPlanSvc < T > { type Response = super :: super :: resources :: KeywordPlan ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_keyword_plan ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanService/MutateKeywordPlans" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlansSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: MutateKeywordPlansRequest > for MutateKeywordPlansSvc < T > { type Response = super :: MutateKeywordPlansResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlansRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_keyword_plans ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlansSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanService/GenerateForecastMetrics" => { # [ allow ( non_camel_case_types ) ] struct GenerateForecastMetricsSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: GenerateForecastMetricsRequest > for GenerateForecastMetricsSvc < T > { type Response = super :: GenerateForecastMetricsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GenerateForecastMetricsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . generate_forecast_metrics ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GenerateForecastMetricsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanService/GenerateHistoricalMetrics" => { # [ allow ( non_camel_case_types ) ] struct GenerateHistoricalMetricsSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: GenerateHistoricalMetricsRequest > for GenerateHistoricalMetricsSvc < T > { type Response = super :: GenerateHistoricalMetricsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GenerateHistoricalMetricsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . generate_historical_metrics ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GenerateHistoricalMetricsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.KeywordPlanService/GetKeywordPlan" => { # [ allow ( non_camel_case_types ) ] struct GetKeywordPlanSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: GetKeywordPlanRequest > for GetKeywordPlanSvc < T > { type Response = super :: super :: resources :: KeywordPlan ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetKeywordPlanRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_keyword_plan ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetKeywordPlanSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanService/MutateKeywordPlans" => { # [ allow ( non_camel_case_types ) ] struct MutateKeywordPlansSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: MutateKeywordPlansRequest > for MutateKeywordPlansSvc < T > { type Response = super :: MutateKeywordPlansResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateKeywordPlansRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_keyword_plans ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateKeywordPlansSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanService/GenerateForecastMetrics" => { # [ allow ( non_camel_case_types ) ] struct GenerateForecastMetricsSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: GenerateForecastMetricsRequest > for GenerateForecastMetricsSvc < T > { type Response = super :: GenerateForecastMetricsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GenerateForecastMetricsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . generate_forecast_metrics ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GenerateForecastMetricsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.KeywordPlanService/GenerateHistoricalMetrics" => { # [ allow ( non_camel_case_types ) ] struct GenerateHistoricalMetricsSvc < T : KeywordPlanService > ( pub Arc < T > ) ; impl < T : KeywordPlanService > tonic :: server :: UnaryService < super :: GenerateHistoricalMetricsRequest > for GenerateHistoricalMetricsSvc < T > { type Response = super :: GenerateHistoricalMetricsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GenerateHistoricalMetricsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . generate_historical_metrics ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GenerateHistoricalMetricsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: KeywordPlanService> Clone for KeywordPlanServiceServer<T> {
@@ -20046,7 +19969,6 @@ pub mod keyword_view_service_server {
     }
     #[doc = " Service to manage keyword views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct KeywordViewServiceServer<T: KeywordViewService> {
         inner: _Inner<T>,
     }
@@ -20092,7 +20014,7 @@ pub mod keyword_view_service_server {
                             request: tonic::Request<super::GetKeywordViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_keyword_view(request).await };
+                            let fut = async move { (*inner).get_keyword_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -20216,7 +20138,6 @@ pub mod landing_page_view_service_server {
     }
     #[doc = " Service to fetch landing page views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LandingPageViewServiceServer<T: LandingPageViewService> {
         inner: _Inner<T>,
     }
@@ -20262,7 +20183,7 @@ pub mod landing_page_view_service_server {
                             request: tonic::Request<super::GetLandingPageViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_landing_page_view(request).await };
+                            let fut = async move { (*inner).get_landing_page_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -20386,7 +20307,6 @@ pub mod language_constant_service_server {
     }
     #[doc = " Service to fetch language constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LanguageConstantServiceServer<T: LanguageConstantService> {
         inner: _Inner<T>,
     }
@@ -20432,7 +20352,7 @@ pub mod language_constant_service_server {
                             request: tonic::Request<super::GetLanguageConstantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_language_constant(request).await };
+                            let fut = async move { (*inner).get_language_constant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -20555,7 +20475,6 @@ pub mod location_view_service_server {
     }
     #[doc = " Service to fetch location views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LocationViewServiceServer<T: LocationViewService> {
         inner: _Inner<T>,
     }
@@ -20601,7 +20520,7 @@ pub mod location_view_service_server {
                             request: tonic::Request<super::GetLocationViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_location_view(request).await };
+                            let fut = async move { (*inner).get_location_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -20723,7 +20642,6 @@ pub mod managed_placement_view_service_server {
     }
     #[doc = " Service to manage Managed Placement views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ManagedPlacementViewServiceServer<T: ManagedPlacementViewService> {
         inner: _Inner<T>,
     }
@@ -20754,7 +20672,7 @@ pub mod managed_placement_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ManagedPlacementViewService/GetManagedPlacementView" => { # [ allow ( non_camel_case_types ) ] struct GetManagedPlacementViewSvc < T : ManagedPlacementViewService > ( pub Arc < T > ) ; impl < T : ManagedPlacementViewService > tonic :: server :: UnaryService < super :: GetManagedPlacementViewRequest > for GetManagedPlacementViewSvc < T > { type Response = super :: super :: resources :: ManagedPlacementView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetManagedPlacementViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_managed_placement_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetManagedPlacementViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ManagedPlacementViewService/GetManagedPlacementView" => { # [ allow ( non_camel_case_types ) ] struct GetManagedPlacementViewSvc < T : ManagedPlacementViewService > ( pub Arc < T > ) ; impl < T : ManagedPlacementViewService > tonic :: server :: UnaryService < super :: GetManagedPlacementViewRequest > for GetManagedPlacementViewSvc < T > { type Response = super :: super :: resources :: ManagedPlacementView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetManagedPlacementViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_managed_placement_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetManagedPlacementViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ManagedPlacementViewService> Clone for ManagedPlacementViewServiceServer<T> {
@@ -20960,7 +20878,6 @@ pub mod merchant_center_link_service_server {
     #[doc = " This service allows management of links between Google Ads and Google"]
     #[doc = " Merchant Center."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct MerchantCenterLinkServiceServer<T: MerchantCenterLinkService> {
         inner: _Inner<T>,
     }
@@ -20991,7 +20908,7 @@ pub mod merchant_center_link_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.MerchantCenterLinkService/ListMerchantCenterLinks" => { # [ allow ( non_camel_case_types ) ] struct ListMerchantCenterLinksSvc < T : MerchantCenterLinkService > ( pub Arc < T > ) ; impl < T : MerchantCenterLinkService > tonic :: server :: UnaryService < super :: ListMerchantCenterLinksRequest > for ListMerchantCenterLinksSvc < T > { type Response = super :: ListMerchantCenterLinksResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListMerchantCenterLinksRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_merchant_center_links ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListMerchantCenterLinksSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.MerchantCenterLinkService/GetMerchantCenterLink" => { # [ allow ( non_camel_case_types ) ] struct GetMerchantCenterLinkSvc < T : MerchantCenterLinkService > ( pub Arc < T > ) ; impl < T : MerchantCenterLinkService > tonic :: server :: UnaryService < super :: GetMerchantCenterLinkRequest > for GetMerchantCenterLinkSvc < T > { type Response = super :: super :: resources :: MerchantCenterLink ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetMerchantCenterLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_merchant_center_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetMerchantCenterLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.MerchantCenterLinkService/MutateMerchantCenterLink" => { # [ allow ( non_camel_case_types ) ] struct MutateMerchantCenterLinkSvc < T : MerchantCenterLinkService > ( pub Arc < T > ) ; impl < T : MerchantCenterLinkService > tonic :: server :: UnaryService < super :: MutateMerchantCenterLinkRequest > for MutateMerchantCenterLinkSvc < T > { type Response = super :: MutateMerchantCenterLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateMerchantCenterLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . mutate_merchant_center_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateMerchantCenterLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.MerchantCenterLinkService/ListMerchantCenterLinks" => { # [ allow ( non_camel_case_types ) ] struct ListMerchantCenterLinksSvc < T : MerchantCenterLinkService > ( pub Arc < T > ) ; impl < T : MerchantCenterLinkService > tonic :: server :: UnaryService < super :: ListMerchantCenterLinksRequest > for ListMerchantCenterLinksSvc < T > { type Response = super :: ListMerchantCenterLinksResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListMerchantCenterLinksRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_merchant_center_links ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListMerchantCenterLinksSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.MerchantCenterLinkService/GetMerchantCenterLink" => { # [ allow ( non_camel_case_types ) ] struct GetMerchantCenterLinkSvc < T : MerchantCenterLinkService > ( pub Arc < T > ) ; impl < T : MerchantCenterLinkService > tonic :: server :: UnaryService < super :: GetMerchantCenterLinkRequest > for GetMerchantCenterLinkSvc < T > { type Response = super :: super :: resources :: MerchantCenterLink ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetMerchantCenterLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_merchant_center_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetMerchantCenterLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.MerchantCenterLinkService/MutateMerchantCenterLink" => { # [ allow ( non_camel_case_types ) ] struct MutateMerchantCenterLinkSvc < T : MerchantCenterLinkService > ( pub Arc < T > ) ; impl < T : MerchantCenterLinkService > tonic :: server :: UnaryService < super :: MutateMerchantCenterLinkRequest > for MutateMerchantCenterLinkSvc < T > { type Response = super :: MutateMerchantCenterLinkResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: MutateMerchantCenterLinkRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . mutate_merchant_center_link ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = MutateMerchantCenterLinkSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: MerchantCenterLinkService> Clone for MerchantCenterLinkServiceServer<T> {
@@ -21092,7 +21009,6 @@ pub mod mobile_app_category_constant_service_server {
     }
     #[doc = " Service to fetch mobile app category constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct MobileAppCategoryConstantServiceServer<T: MobileAppCategoryConstantService> {
         inner: _Inner<T>,
     }
@@ -21123,7 +21039,7 @@ pub mod mobile_app_category_constant_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.MobileAppCategoryConstantService/GetMobileAppCategoryConstant" => { # [ allow ( non_camel_case_types ) ] struct GetMobileAppCategoryConstantSvc < T : MobileAppCategoryConstantService > ( pub Arc < T > ) ; impl < T : MobileAppCategoryConstantService > tonic :: server :: UnaryService < super :: GetMobileAppCategoryConstantRequest > for GetMobileAppCategoryConstantSvc < T > { type Response = super :: super :: resources :: MobileAppCategoryConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetMobileAppCategoryConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_mobile_app_category_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetMobileAppCategoryConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.MobileAppCategoryConstantService/GetMobileAppCategoryConstant" => { # [ allow ( non_camel_case_types ) ] struct GetMobileAppCategoryConstantSvc < T : MobileAppCategoryConstantService > ( pub Arc < T > ) ; impl < T : MobileAppCategoryConstantService > tonic :: server :: UnaryService < super :: GetMobileAppCategoryConstantRequest > for GetMobileAppCategoryConstantSvc < T > { type Response = super :: super :: resources :: MobileAppCategoryConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetMobileAppCategoryConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_mobile_app_category_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetMobileAppCategoryConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: MobileAppCategoryConstantService> Clone for MobileAppCategoryConstantServiceServer<T> {
@@ -21218,7 +21134,6 @@ pub mod mobile_device_constant_service_server {
     }
     #[doc = " Service to fetch mobile device constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct MobileDeviceConstantServiceServer<T: MobileDeviceConstantService> {
         inner: _Inner<T>,
     }
@@ -21249,7 +21164,7 @@ pub mod mobile_device_constant_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.MobileDeviceConstantService/GetMobileDeviceConstant" => { # [ allow ( non_camel_case_types ) ] struct GetMobileDeviceConstantSvc < T : MobileDeviceConstantService > ( pub Arc < T > ) ; impl < T : MobileDeviceConstantService > tonic :: server :: UnaryService < super :: GetMobileDeviceConstantRequest > for GetMobileDeviceConstantSvc < T > { type Response = super :: super :: resources :: MobileDeviceConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetMobileDeviceConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_mobile_device_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetMobileDeviceConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.MobileDeviceConstantService/GetMobileDeviceConstant" => { # [ allow ( non_camel_case_types ) ] struct GetMobileDeviceConstantSvc < T : MobileDeviceConstantService > ( pub Arc < T > ) ; impl < T : MobileDeviceConstantService > tonic :: server :: UnaryService < super :: GetMobileDeviceConstantRequest > for GetMobileDeviceConstantSvc < T > { type Response = super :: super :: resources :: MobileDeviceConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetMobileDeviceConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_mobile_device_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetMobileDeviceConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: MobileDeviceConstantService> Clone for MobileDeviceConstantServiceServer<T> {
@@ -21553,7 +21468,6 @@ pub mod mutate_job_service_server {
     }
     #[doc = " Service to manage mutate jobs."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct MutateJobServiceServer<T: MutateJobService> {
         inner: _Inner<T>,
     }
@@ -21599,7 +21513,7 @@ pub mod mutate_job_service_server {
                             request: tonic::Request<super::CreateMutateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_mutate_job(request).await };
+                            let fut = async move { (*inner).create_mutate_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -21633,7 +21547,7 @@ pub mod mutate_job_service_server {
                             request: tonic::Request<super::GetMutateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_mutate_job(request).await };
+                            let fut = async move { (*inner).get_mutate_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -21667,7 +21581,8 @@ pub mod mutate_job_service_server {
                             request: tonic::Request<super::ListMutateJobResultsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_mutate_job_results(request).await };
+                            let fut =
+                                async move { (*inner).list_mutate_job_results(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -21701,7 +21616,7 @@ pub mod mutate_job_service_server {
                             request: tonic::Request<super::RunMutateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_mutate_job(request).await };
+                            let fut = async move { (*inner).run_mutate_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -21735,7 +21650,8 @@ pub mod mutate_job_service_server {
                             request: tonic::Request<super::AddMutateJobOperationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.add_mutate_job_operations(request).await };
+                            let fut =
+                                async move { (*inner).add_mutate_job_operations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -22011,7 +21927,6 @@ pub mod offline_user_data_job_service_server {
     }
     #[doc = " Service to manage offline user data jobs."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct OfflineUserDataJobServiceServer<T: OfflineUserDataJobService> {
         inner: _Inner<T>,
     }
@@ -22042,7 +21957,7 @@ pub mod offline_user_data_job_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.OfflineUserDataJobService/CreateOfflineUserDataJob" => { # [ allow ( non_camel_case_types ) ] struct CreateOfflineUserDataJobSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: CreateOfflineUserDataJobRequest > for CreateOfflineUserDataJobSvc < T > { type Response = super :: CreateOfflineUserDataJobResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateOfflineUserDataJobRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . create_offline_user_data_job ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateOfflineUserDataJobSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.OfflineUserDataJobService/GetOfflineUserDataJob" => { # [ allow ( non_camel_case_types ) ] struct GetOfflineUserDataJobSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: GetOfflineUserDataJobRequest > for GetOfflineUserDataJobSvc < T > { type Response = super :: super :: resources :: OfflineUserDataJob ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetOfflineUserDataJobRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_offline_user_data_job ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetOfflineUserDataJobSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.OfflineUserDataJobService/AddOfflineUserDataJobOperations" => { # [ allow ( non_camel_case_types ) ] struct AddOfflineUserDataJobOperationsSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: AddOfflineUserDataJobOperationsRequest > for AddOfflineUserDataJobOperationsSvc < T > { type Response = super :: AddOfflineUserDataJobOperationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: AddOfflineUserDataJobOperationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . add_offline_user_data_job_operations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = AddOfflineUserDataJobOperationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.OfflineUserDataJobService/RunOfflineUserDataJob" => { # [ allow ( non_camel_case_types ) ] struct RunOfflineUserDataJobSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: RunOfflineUserDataJobRequest > for RunOfflineUserDataJobSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: RunOfflineUserDataJobRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . run_offline_user_data_job ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = RunOfflineUserDataJobSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.OfflineUserDataJobService/CreateOfflineUserDataJob" => { # [ allow ( non_camel_case_types ) ] struct CreateOfflineUserDataJobSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: CreateOfflineUserDataJobRequest > for CreateOfflineUserDataJobSvc < T > { type Response = super :: CreateOfflineUserDataJobResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: CreateOfflineUserDataJobRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . create_offline_user_data_job ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = CreateOfflineUserDataJobSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.OfflineUserDataJobService/GetOfflineUserDataJob" => { # [ allow ( non_camel_case_types ) ] struct GetOfflineUserDataJobSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: GetOfflineUserDataJobRequest > for GetOfflineUserDataJobSvc < T > { type Response = super :: super :: resources :: OfflineUserDataJob ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetOfflineUserDataJobRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_offline_user_data_job ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetOfflineUserDataJobSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.OfflineUserDataJobService/AddOfflineUserDataJobOperations" => { # [ allow ( non_camel_case_types ) ] struct AddOfflineUserDataJobOperationsSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: AddOfflineUserDataJobOperationsRequest > for AddOfflineUserDataJobOperationsSvc < T > { type Response = super :: AddOfflineUserDataJobOperationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: AddOfflineUserDataJobOperationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . add_offline_user_data_job_operations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = AddOfflineUserDataJobOperationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.ads.googleads.v3.services.OfflineUserDataJobService/RunOfflineUserDataJob" => { # [ allow ( non_camel_case_types ) ] struct RunOfflineUserDataJobSvc < T : OfflineUserDataJobService > ( pub Arc < T > ) ; impl < T : OfflineUserDataJobService > tonic :: server :: UnaryService < super :: RunOfflineUserDataJobRequest > for RunOfflineUserDataJobSvc < T > { type Response = super :: super :: super :: super :: super :: longrunning :: Operation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: RunOfflineUserDataJobRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . run_offline_user_data_job ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = RunOfflineUserDataJobSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: OfflineUserDataJobService> Clone for OfflineUserDataJobServiceServer<T> {
@@ -22143,7 +22058,6 @@ pub mod operating_system_version_constant_service_server {
     }
     #[doc = " Service to fetch Operating System Version constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct OperatingSystemVersionConstantServiceServer<T: OperatingSystemVersionConstantService> {
         inner: _Inner<T>,
     }
@@ -22174,7 +22088,7 @@ pub mod operating_system_version_constant_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.OperatingSystemVersionConstantService/GetOperatingSystemVersionConstant" => { # [ allow ( non_camel_case_types ) ] struct GetOperatingSystemVersionConstantSvc < T : OperatingSystemVersionConstantService > ( pub Arc < T > ) ; impl < T : OperatingSystemVersionConstantService > tonic :: server :: UnaryService < super :: GetOperatingSystemVersionConstantRequest > for GetOperatingSystemVersionConstantSvc < T > { type Response = super :: super :: resources :: OperatingSystemVersionConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetOperatingSystemVersionConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_operating_system_version_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetOperatingSystemVersionConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.OperatingSystemVersionConstantService/GetOperatingSystemVersionConstant" => { # [ allow ( non_camel_case_types ) ] struct GetOperatingSystemVersionConstantSvc < T : OperatingSystemVersionConstantService > ( pub Arc < T > ) ; impl < T : OperatingSystemVersionConstantService > tonic :: server :: UnaryService < super :: GetOperatingSystemVersionConstantRequest > for GetOperatingSystemVersionConstantSvc < T > { type Response = super :: super :: resources :: OperatingSystemVersionConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetOperatingSystemVersionConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_operating_system_version_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetOperatingSystemVersionConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: OperatingSystemVersionConstantService> Clone
@@ -22277,7 +22191,6 @@ pub mod paid_organic_search_term_view_service_server {
     }
     #[doc = " Service to fetch paid organic search term views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PaidOrganicSearchTermViewServiceServer<T: PaidOrganicSearchTermViewService> {
         inner: _Inner<T>,
     }
@@ -22308,7 +22221,7 @@ pub mod paid_organic_search_term_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.PaidOrganicSearchTermViewService/GetPaidOrganicSearchTermView" => { # [ allow ( non_camel_case_types ) ] struct GetPaidOrganicSearchTermViewSvc < T : PaidOrganicSearchTermViewService > ( pub Arc < T > ) ; impl < T : PaidOrganicSearchTermViewService > tonic :: server :: UnaryService < super :: GetPaidOrganicSearchTermViewRequest > for GetPaidOrganicSearchTermViewSvc < T > { type Response = super :: super :: resources :: PaidOrganicSearchTermView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetPaidOrganicSearchTermViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_paid_organic_search_term_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetPaidOrganicSearchTermViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.PaidOrganicSearchTermViewService/GetPaidOrganicSearchTermView" => { # [ allow ( non_camel_case_types ) ] struct GetPaidOrganicSearchTermViewSvc < T : PaidOrganicSearchTermViewService > ( pub Arc < T > ) ; impl < T : PaidOrganicSearchTermViewService > tonic :: server :: UnaryService < super :: GetPaidOrganicSearchTermViewRequest > for GetPaidOrganicSearchTermViewSvc < T > { type Response = super :: super :: resources :: PaidOrganicSearchTermView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetPaidOrganicSearchTermViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_paid_organic_search_term_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetPaidOrganicSearchTermViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: PaidOrganicSearchTermViewService> Clone for PaidOrganicSearchTermViewServiceServer<T> {
@@ -22405,7 +22318,6 @@ pub mod parental_status_view_service_server {
     }
     #[doc = " Service to manage parental status views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ParentalStatusViewServiceServer<T: ParentalStatusViewService> {
         inner: _Inner<T>,
     }
@@ -22436,7 +22348,7 @@ pub mod parental_status_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ParentalStatusViewService/GetParentalStatusView" => { # [ allow ( non_camel_case_types ) ] struct GetParentalStatusViewSvc < T : ParentalStatusViewService > ( pub Arc < T > ) ; impl < T : ParentalStatusViewService > tonic :: server :: UnaryService < super :: GetParentalStatusViewRequest > for GetParentalStatusViewSvc < T > { type Response = super :: super :: resources :: ParentalStatusView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetParentalStatusViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_parental_status_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetParentalStatusViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ParentalStatusViewService/GetParentalStatusView" => { # [ allow ( non_camel_case_types ) ] struct GetParentalStatusViewSvc < T : ParentalStatusViewService > ( pub Arc < T > ) ; impl < T : ParentalStatusViewService > tonic :: server :: UnaryService < super :: GetParentalStatusViewRequest > for GetParentalStatusViewSvc < T > { type Response = super :: super :: resources :: ParentalStatusView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetParentalStatusViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_parental_status_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetParentalStatusViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ParentalStatusViewService> Clone for ParentalStatusViewServiceServer<T> {
@@ -22545,7 +22457,6 @@ pub mod payments_account_service_server {
     #[doc = " Service to provide payments accounts that can be used to set up consolidated"]
     #[doc = " billing."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PaymentsAccountServiceServer<T: PaymentsAccountService> {
         inner: _Inner<T>,
     }
@@ -22591,7 +22502,7 @@ pub mod payments_account_service_server {
                             request: tonic::Request<super::ListPaymentsAccountsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_payments_accounts(request).await };
+                            let fut = async move { (*inner).list_payments_accounts(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -22719,7 +22630,6 @@ pub mod product_bidding_category_constant_service_server {
     }
     #[doc = " Service to fetch Product Bidding Categories."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ProductBiddingCategoryConstantServiceServer<T: ProductBiddingCategoryConstantService> {
         inner: _Inner<T>,
     }
@@ -22750,7 +22660,7 @@ pub mod product_bidding_category_constant_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ProductBiddingCategoryConstantService/GetProductBiddingCategoryConstant" => { # [ allow ( non_camel_case_types ) ] struct GetProductBiddingCategoryConstantSvc < T : ProductBiddingCategoryConstantService > ( pub Arc < T > ) ; impl < T : ProductBiddingCategoryConstantService > tonic :: server :: UnaryService < super :: GetProductBiddingCategoryConstantRequest > for GetProductBiddingCategoryConstantSvc < T > { type Response = super :: super :: resources :: ProductBiddingCategoryConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetProductBiddingCategoryConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_product_bidding_category_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetProductBiddingCategoryConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ProductBiddingCategoryConstantService/GetProductBiddingCategoryConstant" => { # [ allow ( non_camel_case_types ) ] struct GetProductBiddingCategoryConstantSvc < T : ProductBiddingCategoryConstantService > ( pub Arc < T > ) ; impl < T : ProductBiddingCategoryConstantService > tonic :: server :: UnaryService < super :: GetProductBiddingCategoryConstantRequest > for GetProductBiddingCategoryConstantSvc < T > { type Response = super :: super :: resources :: ProductBiddingCategoryConstant ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetProductBiddingCategoryConstantRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_product_bidding_category_constant ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetProductBiddingCategoryConstantSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ProductBiddingCategoryConstantService> Clone
@@ -22849,7 +22759,6 @@ pub mod product_group_view_service_server {
     }
     #[doc = " Service to manage product group views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ProductGroupViewServiceServer<T: ProductGroupViewService> {
         inner: _Inner<T>,
     }
@@ -22895,7 +22804,7 @@ pub mod product_group_view_service_server {
                             request: tonic::Request<super::GetProductGroupViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_product_group_view(request).await };
+                            let fut = async move { (*inner).get_product_group_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -23409,7 +23318,6 @@ pub mod reach_plan_service_server {
     #[doc = " demographics that can be reached by an ad in a given market by a campaign of"]
     #[doc = " certain duration with a defined budget."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ReachPlanServiceServer<T: ReachPlanService> {
         inner: _Inner<T>,
     }
@@ -23455,7 +23363,8 @@ pub mod reach_plan_service_server {
                             request: tonic::Request<super::ListPlannableLocationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_plannable_locations(request).await };
+                            let fut =
+                                async move { (*inner).list_plannable_locations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -23489,7 +23398,8 @@ pub mod reach_plan_service_server {
                             request: tonic::Request<super::ListPlannableProductsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_plannable_products(request).await };
+                            let fut =
+                                async move { (*inner).list_plannable_products(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -23524,7 +23434,7 @@ pub mod reach_plan_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.generate_product_mix_ideas(request).await };
+                                async move { (*inner).generate_product_mix_ideas(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -23558,7 +23468,8 @@ pub mod reach_plan_service_server {
                             request: tonic::Request<super::GenerateReachForecastRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.generate_reach_forecast(request).await };
+                            let fut =
+                                async move { (*inner).generate_reach_forecast(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -23932,7 +23843,6 @@ pub mod recommendation_service_server {
     }
     #[doc = " Service to manage recommendations."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RecommendationServiceServer<T: RecommendationService> {
         inner: _Inner<T>,
     }
@@ -23978,7 +23888,7 @@ pub mod recommendation_service_server {
                             request: tonic::Request<super::GetRecommendationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_recommendation(request).await };
+                            let fut = async move { (*inner).get_recommendation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -24012,7 +23922,7 @@ pub mod recommendation_service_server {
                             request: tonic::Request<super::ApplyRecommendationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.apply_recommendation(request).await };
+                            let fut = async move { (*inner).apply_recommendation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -24046,7 +23956,7 @@ pub mod recommendation_service_server {
                             request: tonic::Request<super::DismissRecommendationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.dismiss_recommendation(request).await };
+                            let fut = async move { (*inner).dismiss_recommendation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -24170,7 +24080,6 @@ pub mod search_term_view_service_server {
     }
     #[doc = " Service to manage search term views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SearchTermViewServiceServer<T: SearchTermViewService> {
         inner: _Inner<T>,
     }
@@ -24216,7 +24125,7 @@ pub mod search_term_view_service_server {
                             request: tonic::Request<super::GetSearchTermViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_search_term_view(request).await };
+                            let fut = async move { (*inner).get_search_term_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -24339,7 +24248,6 @@ pub mod shopping_performance_view_service_server {
     }
     #[doc = " Service to fetch Shopping performance views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ShoppingPerformanceViewServiceServer<T: ShoppingPerformanceViewService> {
         inner: _Inner<T>,
     }
@@ -24370,7 +24278,7 @@ pub mod shopping_performance_view_service_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ShoppingPerformanceViewService/GetShoppingPerformanceView" => { # [ allow ( non_camel_case_types ) ] struct GetShoppingPerformanceViewSvc < T : ShoppingPerformanceViewService > ( pub Arc < T > ) ; impl < T : ShoppingPerformanceViewService > tonic :: server :: UnaryService < super :: GetShoppingPerformanceViewRequest > for GetShoppingPerformanceViewSvc < T > { type Response = super :: super :: resources :: ShoppingPerformanceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetShoppingPerformanceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_shopping_performance_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetShoppingPerformanceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.ads.googleads.v3.services.ShoppingPerformanceViewService/GetShoppingPerformanceView" => { # [ allow ( non_camel_case_types ) ] struct GetShoppingPerformanceViewSvc < T : ShoppingPerformanceViewService > ( pub Arc < T > ) ; impl < T : ShoppingPerformanceViewService > tonic :: server :: UnaryService < super :: GetShoppingPerformanceViewRequest > for GetShoppingPerformanceViewSvc < T > { type Response = super :: super :: resources :: ShoppingPerformanceView ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetShoppingPerformanceViewRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_shopping_performance_view ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetShoppingPerformanceViewSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ShoppingPerformanceViewService> Clone for ShoppingPerformanceViewServiceServer<T> {
@@ -24467,7 +24375,6 @@ pub mod topic_constant_service_server {
     }
     #[doc = " Service to fetch topic constants."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct TopicConstantServiceServer<T: TopicConstantService> {
         inner: _Inner<T>,
     }
@@ -24513,7 +24420,7 @@ pub mod topic_constant_service_server {
                             request: tonic::Request<super::GetTopicConstantRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_topic_constant(request).await };
+                            let fut = async move { (*inner).get_topic_constant(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -24636,7 +24543,6 @@ pub mod topic_view_service_server {
     }
     #[doc = " Service to manage topic views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct TopicViewServiceServer<T: TopicViewService> {
         inner: _Inner<T>,
     }
@@ -24682,7 +24588,7 @@ pub mod topic_view_service_server {
                             request: tonic::Request<super::GetTopicViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_topic_view(request).await };
+                            let fut = async move { (*inner).get_topic_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -24849,7 +24755,6 @@ pub mod user_data_service_server {
     #[doc = " Service to manage user data uploads."]
     #[doc = " Accessible to whitelisted customers only."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct UserDataServiceServer<T: UserDataService> {
         inner: _Inner<T>,
     }
@@ -24895,7 +24800,7 @@ pub mod user_data_service_server {
                             request: tonic::Request<super::UploadUserDataRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.upload_user_data(request).await };
+                            let fut = async move { (*inner).upload_user_data(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -25018,7 +24923,6 @@ pub mod user_interest_service_server {
     }
     #[doc = " Service to fetch Google Ads User Interest."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct UserInterestServiceServer<T: UserInterestService> {
         inner: _Inner<T>,
     }
@@ -25064,7 +24968,7 @@ pub mod user_interest_service_server {
                             request: tonic::Request<super::GetUserInterestRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_user_interest(request).await };
+                            let fut = async move { (*inner).get_user_interest(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -25188,7 +25092,6 @@ pub mod user_location_view_service_server {
     }
     #[doc = " Service to manage user location views."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct UserLocationViewServiceServer<T: UserLocationViewService> {
         inner: _Inner<T>,
     }
@@ -25234,7 +25137,7 @@ pub mod user_location_view_service_server {
                             request: tonic::Request<super::GetUserLocationViewRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_user_location_view(request).await };
+                            let fut = async move { (*inner).get_user_location_view(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -25357,7 +25260,6 @@ pub mod video_service_server {
     }
     #[doc = " Service to manage videos."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct VideoServiceServer<T: VideoService> {
         inner: _Inner<T>,
     }
@@ -25400,7 +25302,7 @@ pub mod video_service_server {
                             request: tonic::Request<super::GetVideoRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_video(request).await };
+                            let fut = async move { (*inner).get_video(request).await };
                             Box::pin(fut)
                         }
                     }

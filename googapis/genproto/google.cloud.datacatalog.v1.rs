@@ -2116,7 +2116,6 @@ pub mod data_catalog_server {
     #[doc = " Data Catalog API service allows clients to discover, understand, and manage"]
     #[doc = " their data."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DataCatalogServer<T: DataCatalog> {
         inner: _Inner<T>,
     }
@@ -2161,7 +2160,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::SearchCatalogRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_catalog(request).await };
+                            let fut = async move { (*inner).search_catalog(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2194,7 +2193,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::CreateEntryGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_entry_group(request).await };
+                            let fut = async move { (*inner).create_entry_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2227,7 +2226,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::GetEntryGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_entry_group(request).await };
+                            let fut = async move { (*inner).get_entry_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2260,7 +2259,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::UpdateEntryGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_entry_group(request).await };
+                            let fut = async move { (*inner).update_entry_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2293,7 +2292,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::DeleteEntryGroupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_entry_group(request).await };
+                            let fut = async move { (*inner).delete_entry_group(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2326,7 +2325,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::ListEntryGroupsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_entry_groups(request).await };
+                            let fut = async move { (*inner).list_entry_groups(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2357,7 +2356,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::CreateEntryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_entry(request).await };
+                            let fut = async move { (*inner).create_entry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2388,7 +2387,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::UpdateEntryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_entry(request).await };
+                            let fut = async move { (*inner).update_entry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2419,7 +2418,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::DeleteEntryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_entry(request).await };
+                            let fut = async move { (*inner).delete_entry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2450,7 +2449,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::GetEntryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_entry(request).await };
+                            let fut = async move { (*inner).get_entry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2481,7 +2480,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::LookupEntryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.lookup_entry(request).await };
+                            let fut = async move { (*inner).lookup_entry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2512,7 +2511,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::ListEntriesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_entries(request).await };
+                            let fut = async move { (*inner).list_entries(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2546,7 +2545,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::CreateTagTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_tag_template(request).await };
+                            let fut = async move { (*inner).create_tag_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2579,7 +2578,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::GetTagTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_tag_template(request).await };
+                            let fut = async move { (*inner).get_tag_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2613,7 +2612,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::UpdateTagTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_tag_template(request).await };
+                            let fut = async move { (*inner).update_tag_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2647,7 +2646,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::DeleteTagTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_tag_template(request).await };
+                            let fut = async move { (*inner).delete_tag_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2681,7 +2680,8 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::CreateTagTemplateFieldRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_tag_template_field(request).await };
+                            let fut =
+                                async move { (*inner).create_tag_template_field(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2715,7 +2715,8 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::UpdateTagTemplateFieldRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_tag_template_field(request).await };
+                            let fut =
+                                async move { (*inner).update_tag_template_field(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2749,7 +2750,8 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::RenameTagTemplateFieldRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.rename_tag_template_field(request).await };
+                            let fut =
+                                async move { (*inner).rename_tag_template_field(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2783,7 +2785,8 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::DeleteTagTemplateFieldRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_tag_template_field(request).await };
+                            let fut =
+                                async move { (*inner).delete_tag_template_field(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2814,7 +2817,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::CreateTagRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_tag(request).await };
+                            let fut = async move { (*inner).create_tag(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2845,7 +2848,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::UpdateTagRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_tag(request).await };
+                            let fut = async move { (*inner).update_tag(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2876,7 +2879,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::DeleteTagRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_tag(request).await };
+                            let fut = async move { (*inner).delete_tag(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2907,7 +2910,7 @@ pub mod data_catalog_server {
                             request: tonic::Request<super::ListTagsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_tags(request).await };
+                            let fut = async move { (*inner).list_tags(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2944,7 +2947,7 @@ pub mod data_catalog_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2981,7 +2984,7 @@ pub mod data_catalog_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3019,7 +3022,7 @@ pub mod data_catalog_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

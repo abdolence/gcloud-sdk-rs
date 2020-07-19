@@ -545,7 +545,6 @@ pub mod bots_server {
     #[doc = " take the form \"projects/{project_id}\". This is referred to below as \"the farm"]
     #[doc = " resource.\""]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BotsServer<T: Bots> {
         inner: _Inner<T>,
     }
@@ -590,7 +589,7 @@ pub mod bots_server {
                             request: tonic::Request<super::CreateBotSessionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_bot_session(request).await };
+                            let fut = async move { (*inner).create_bot_session(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -623,7 +622,7 @@ pub mod bots_server {
                             request: tonic::Request<super::UpdateBotSessionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_bot_session(request).await };
+                            let fut = async move { (*inner).update_bot_session(request).await };
                             Box::pin(fut)
                         }
                     }

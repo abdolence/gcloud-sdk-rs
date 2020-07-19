@@ -25,8 +25,8 @@ pub struct Budget {
     /// being crossed) when spend exceeds the specified percentages of the budget.
     #[prost(message, repeated, tag = "5")]
     pub threshold_rules: ::std::vec::Vec<ThresholdRule>,
-    /// Optional. Rules to apply to all updates to the actual spend, regardless
-    /// of the thresholds set in `threshold_rules`.
+    /// Optional. Rules to apply to notifications sent based on budget spend and
+    /// thresholds.
     #[prost(message, optional, tag = "6")]
     pub all_updates_rule: ::std::option::Option<AllUpdatesRule>,
     /// Optional. Etag to validate that the object is unchanged for a
@@ -97,15 +97,14 @@ pub mod threshold_rule {
         ForecastedSpend = 2,
     }
 }
-/// AllUpdatesRule defines notifications that are sent on every update to the
-/// billing account's spend, regardless of the thresholds defined using
-/// threshold rules.
+/// AllUpdatesRule defines notifications that are sent based on budget spend
+/// and thresholds.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllUpdatesRule {
-    /// Required. The name of the Cloud Pub/Sub topic where budget related messages will be
-    /// published, in the form `projects/{project_id}/topics/{topic_id}`. Updates
-    /// are sent at regular intervals to the topic.
-    /// The topic needs to be created before the budget is created; see
+    /// Required. The name of the Cloud Pub/Sub topic where budget related messages
+    /// will be published, in the form `projects/{project_id}/topics/{topic_id}`.
+    /// Updates are sent at regular intervals to the topic. The topic needs to be
+    /// created before the budget is created; see
     /// https://cloud.google.com/billing/docs/how-to/budgets#manage-notifications
     /// for more details.
     /// Caller is expected to have
@@ -115,11 +114,19 @@ pub struct AllUpdatesRule {
     /// Pub/Sub roles and permissions.
     #[prost(string, tag = "1")]
     pub pubsub_topic: std::string::String,
-    /// Required. The schema version of the notification.
+    /// Required. The schema version of the notification sent to `pubsub_topic`.
     /// Only "1.0" is accepted. It represents the JSON schema as defined in
     /// https://cloud.google.com/billing/docs/how-to/budgets#notification_format
     #[prost(string, tag = "2")]
     pub schema_version: std::string::String,
+    /// Optional. Targets to send notifications to when a threshold is exceeded.
+    /// This is in addition to default recipients who have billing account roles.
+    /// The value is the full REST resource name of a monitoring notification
+    /// channel with the form
+    /// `projects/{project_id}/notificationChannels/{channel_id}`. A maximum of 5
+    /// channels are allowed.
+    #[prost(string, repeated, tag = "3")]
+    pub monitoring_notification_channels: ::std::vec::Vec<std::string::String>,
 }
 /// A filter for a budget, limiting the scope of the cost to calculate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -142,17 +149,18 @@ pub struct Filter {
     /// https://cloud.google.com/billing/v1/how-tos/catalog-api.
     #[prost(string, repeated, tag = "3")]
     pub services: ::std::vec::Vec<std::string::String>,
-    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`, specifying
-    /// that usage from only this set of subaccounts should be included in the
-    /// budget. If a subaccount is set to the name of the master account, usage
-    /// from the master account will be included. If omitted, the report will
-    /// include usage from the master account and all subaccounts, if they exist.
+    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
+    /// specifying that usage from only this set of subaccounts should be included
+    /// in the budget. If a subaccount is set to the name of the reseller account,
+    /// usage from the reseller account will be included. If omitted, the report
+    /// will include usage from the reseller account and all subaccounts, if they
+    /// exist.
     #[prost(string, repeated, tag = "5")]
     pub subaccounts: ::std::vec::Vec<std::string::String>,
-    /// Optional. A single label and value pair specifying that usage from only this set of
-    /// labeled resources should be included in the budget. Multiple entries or
-    /// multiple values per entry are not allowed. If omitted, the report will
-    /// include all labeled and unlabeled usage.
+    /// Optional. A single label and value pair specifying that usage from only
+    /// this set of labeled resources should be included in the budget. Currently,
+    /// multiple entries or multiple values per entry are not allowed. If omitted,
+    /// the report will include all labeled and unlabeled usage.
     #[prost(map = "string, message", tag = "6")]
     pub labels: ::std::collections::HashMap<std::string::String, ::prost_types::ListValue>,
 }
@@ -433,7 +441,6 @@ pub mod budget_service_server {
     #[doc = " BudgetService stores Cloud Billing budgets, which define a"]
     #[doc = " budget plan and rules to execute as we track spend against that plan."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BudgetServiceServer<T: BudgetService> {
         inner: _Inner<T>,
     }
@@ -478,7 +485,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::CreateBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_budget(request).await };
+                            let fut = async move { (*inner).create_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -511,7 +518,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::UpdateBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_budget(request).await };
+                            let fut = async move { (*inner).update_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -542,7 +549,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::GetBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_budget(request).await };
+                            let fut = async move { (*inner).get_budget(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -575,7 +582,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::ListBudgetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_budgets(request).await };
+                            let fut = async move { (*inner).list_budgets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -608,7 +615,7 @@ pub mod budget_service_server {
                             request: tonic::Request<super::DeleteBudgetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_budget(request).await };
+                            let fut = async move { (*inner).delete_budget(request).await };
                             Box::pin(fut)
                         }
                     }

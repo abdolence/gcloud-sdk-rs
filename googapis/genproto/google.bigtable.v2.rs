@@ -1113,7 +1113,6 @@ pub mod bigtable_server {
     }
     #[doc = " Service for reading from and writing to existing Bigtable tables."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BigtableServer<T: Bigtable> {
         inner: _Inner<T>,
     }
@@ -1158,7 +1157,7 @@ pub mod bigtable_server {
                             request: tonic::Request<super::ReadRowsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.read_rows(request).await };
+                            let fut = async move { (*inner).read_rows(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1194,7 +1193,7 @@ pub mod bigtable_server {
                             request: tonic::Request<super::SampleRowKeysRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.sample_row_keys(request).await };
+                            let fut = async move { (*inner).sample_row_keys(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1225,7 +1224,7 @@ pub mod bigtable_server {
                             request: tonic::Request<super::MutateRowRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_row(request).await };
+                            let fut = async move { (*inner).mutate_row(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1261,7 +1260,7 @@ pub mod bigtable_server {
                             request: tonic::Request<super::MutateRowsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mutate_rows(request).await };
+                            let fut = async move { (*inner).mutate_rows(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1294,7 +1293,7 @@ pub mod bigtable_server {
                             request: tonic::Request<super::CheckAndMutateRowRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.check_and_mutate_row(request).await };
+                            let fut = async move { (*inner).check_and_mutate_row(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1327,7 +1326,7 @@ pub mod bigtable_server {
                             request: tonic::Request<super::ReadModifyWriteRowRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.read_modify_write_row(request).await };
+                            let fut = async move { (*inner).read_modify_write_row(request).await };
                             Box::pin(fut)
                         }
                     }

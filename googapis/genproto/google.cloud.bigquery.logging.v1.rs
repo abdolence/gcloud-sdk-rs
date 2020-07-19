@@ -7,11 +7,17 @@ pub struct AuditData {
     /// A job completion event.
     #[prost(message, optional, tag = "17")]
     pub job_completed_event: ::std::option::Option<JobCompletedEvent>,
+    /// Information about the table access events.
+    #[prost(message, repeated, tag = "19")]
+    pub table_data_read_events: ::std::vec::Vec<TableDataReadEvent>,
     /// Request data for each BigQuery method.
-    #[prost(oneof = "audit_data::Request", tags = "1, 16, 2, 3, 4, 5, 6, 7, 8")]
+    #[prost(oneof = "audit_data::Request", tags = "1, 16, 2, 3, 4, 5, 6, 7, 8, 20")]
     pub request: ::std::option::Option<audit_data::Request>,
     /// Response data for each BigQuery method.
-    #[prost(oneof = "audit_data::Response", tags = "9, 10, 11, 12, 18, 13, 14, 15")]
+    #[prost(
+        oneof = "audit_data::Response",
+        tags = "9, 10, 11, 12, 18, 13, 14, 15, 21"
+    )]
     pub response: ::std::option::Option<audit_data::Response>,
 }
 pub mod audit_data {
@@ -45,6 +51,9 @@ pub mod audit_data {
         /// Table data-list request.
         #[prost(message, tag = "8")]
         TableDataListRequest(super::TableDataListRequest),
+        /// Iam policy request.
+        #[prost(message, tag = "20")]
+        SetIamPolicyRequest(super::super::super::super::super::iam::v1::SetIamPolicyRequest),
     }
     /// Response data for each BigQuery method.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -74,6 +83,9 @@ pub mod audit_data {
         /// analysis.
         #[prost(message, tag = "15")]
         JobQueryDoneResponse(super::JobQueryDoneResponse),
+        /// Iam Policy.
+        #[prost(message, tag = "21")]
+        PolicyResponse(super::super::super::super::super::iam::v1::Policy),
     }
 }
 /// Table insert request.
@@ -222,6 +234,19 @@ pub struct JobCompletedEvent {
     #[prost(message, optional, tag = "2")]
     pub job: ::std::option::Option<Job>,
 }
+/// Table data read event. Only present for tables, not views, and is only
+/// included in the log record for the project that owns the table.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableDataReadEvent {
+    /// Name of the accessed table.
+    #[prost(message, optional, tag = "1")]
+    pub table_name: ::std::option::Option<TableName>,
+    /// A list of referenced fields. This information is not included by default.
+    /// To enable this in the logs, please contact BigQuery support or open a bug
+    /// in the BigQuery issue tracker.
+    #[prost(string, repeated, tag = "2")]
+    pub referenced_fields: ::std::vec::Vec<std::string::String>,
+}
 /// Table data-list request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDataListRequest {
@@ -264,6 +289,12 @@ pub struct Table {
     /// by an operation with a `writeDisposition` of `WRITE_TRUNCATE`.
     #[prost(message, optional, tag = "7")]
     pub truncate_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// The time the table was last modified.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// The table encryption information. Set when non-default encryption is used.
+    #[prost(message, optional, tag = "10")]
+    pub encryption: ::std::option::Option<EncryptionInfo>,
 }
 /// User-provided metadata for a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -275,6 +306,9 @@ pub struct TableInfo {
     /// describing the table contents in detail.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
+    /// Labels provided for the table.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
 }
 /// Describes a virtual table defined by a SQL query.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -320,6 +354,9 @@ pub struct DatasetInfo {
     /// describing the dataset contents in detail.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
+    /// Labels provided for the dataset.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
 }
 /// An access control list.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -377,6 +414,9 @@ pub struct JobConfiguration {
     /// If true, don't actually run the job. Just check that it would run.
     #[prost(bool, tag = "9")]
     pub dry_run: bool,
+    /// Labels provided for the job.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// Job configuration information.
     #[prost(oneof = "job_configuration::Configuration", tags = "5, 6, 7, 8")]
     pub configuration: ::std::option::Option<job_configuration::Configuration>,
@@ -406,6 +446,17 @@ pub mod job_configuration {
         /// Describes data sources outside BigQuery, if needed.
         #[prost(message, repeated, tag = "6")]
         pub table_definitions: ::std::vec::Vec<super::TableDefinition>,
+        /// Describes the priority given to the query:
+        /// `QUERY_INTERACTIVE` or `QUERY_BATCH`.
+        #[prost(string, tag = "7")]
+        pub query_priority: std::string::String,
+        /// Result table encryption information. Set when non-default encryption is
+        /// used.
+        #[prost(message, optional, tag = "8")]
+        pub destination_table_encryption: ::std::option::Option<super::EncryptionInfo>,
+        /// Type of the statement (e.g. SELECT, INSERT, CREATE_TABLE, CREATE_MODEL..)
+        #[prost(string, tag = "9")]
+        pub statement_type: std::string::String,
     }
     /// Describes a load job, which loads data from an external source via
     /// the  import pipeline.
@@ -429,6 +480,10 @@ pub mod job_configuration {
         /// `WRITE_TRUNCATE`, `WRITE_APPEND`, `WRITE_EMPTY`.
         #[prost(string, tag = "5")]
         pub write_disposition: std::string::String,
+        /// Result table encryption information. Set when non-default encryption is
+        /// used.
+        #[prost(message, optional, tag = "7")]
+        pub destination_table_encryption: ::std::option::Option<super::EncryptionInfo>,
     }
     /// Describes an extract job, which exports data to an external source
     /// via the  export pipeline.
@@ -458,6 +513,10 @@ pub mod job_configuration {
         /// `WRITE_TRUNCATE`, `WRITE_APPEND`, `WRITE_EMPTY`.
         #[prost(string, tag = "4")]
         pub write_disposition: std::string::String,
+        /// Result table encryption information. Set when non-default encryption is
+        /// used.
+        #[prost(message, optional, tag = "5")]
+        pub destination_table_encryption: ::std::option::Option<super::EncryptionInfo>,
     }
     /// Job configuration information.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -495,6 +554,10 @@ pub struct JobStatus {
     /// If the job did not complete successfully, this field describes why.
     #[prost(message, optional, tag = "2")]
     pub error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// Errors encountered during the running of the job. Do not necessarily mean
+    /// that the job has completed or was unsuccessful.
+    #[prost(message, repeated, tag = "3")]
+    pub additional_errors: ::std::vec::Vec<super::super::super::super::rpc::Status>,
 }
 /// Job statistics that may change after a job starts.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -517,6 +580,50 @@ pub struct JobStatistics {
     /// The tier assigned by CPU-based billing.
     #[prost(int32, tag = "7")]
     pub billing_tier: i32,
+    /// The total number of slot-ms consumed by the query job.
+    #[prost(int64, tag = "8")]
+    pub total_slot_ms: i64,
+    /// Reservation usage.
+    #[prost(message, repeated, tag = "14")]
+    pub reservation_usage: ::std::vec::Vec<job_statistics::ReservationResourceUsage>,
+    /// The first N tables accessed by the query job. Older queries that
+    /// reference a large number of tables may not have all of their
+    /// tables in this list. You can use the total_tables_processed count to
+    /// know how many total tables were read in the query. For new queries,
+    /// there is currently no limit.
+    #[prost(message, repeated, tag = "9")]
+    pub referenced_tables: ::std::vec::Vec<TableName>,
+    /// Total number of unique tables referenced in the query.
+    #[prost(int32, tag = "10")]
+    pub total_tables_processed: i32,
+    /// The first N views accessed by the query job. Older queries that
+    /// reference a large number of views may not have all of their
+    /// views in this list. You can use the total_tables_processed count to
+    /// know how many total tables were read in the query. For new queries,
+    /// there is currently no limit.
+    #[prost(message, repeated, tag = "11")]
+    pub referenced_views: ::std::vec::Vec<TableName>,
+    /// Total number of unique views referenced in the query.
+    #[prost(int32, tag = "12")]
+    pub total_views_processed: i32,
+    /// Number of output rows produced by the query job.
+    #[prost(int64, tag = "15")]
+    pub query_output_row_count: i64,
+    /// Total bytes loaded for an import job.
+    #[prost(int64, tag = "13")]
+    pub total_load_output_bytes: i64,
+}
+pub mod job_statistics {
+    /// Job resource usage breakdown by reservation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReservationResourceUsage {
+        /// Reservation name or "unreserved" for on-demand resources usage.
+        #[prost(string, tag = "1")]
+        pub name: std::string::String,
+        /// Total slot milliseconds used by the reservation for a particular job.
+        #[prost(int64, tag = "2")]
+        pub slot_ms: i64,
+    }
 }
 /// The fully-qualified name for a dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -550,4 +657,14 @@ pub struct JobName {
     /// The job ID within the project.
     #[prost(string, tag = "2")]
     pub job_id: std::string::String,
+    /// The job location.
+    #[prost(string, tag = "3")]
+    pub location: std::string::String,
+}
+/// Describes encryption properties for a table or a job
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionInfo {
+    /// unique identifier for cloud kms key
+    #[prost(string, tag = "1")]
+    pub kms_key_name: std::string::String,
 }

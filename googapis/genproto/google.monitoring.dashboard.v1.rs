@@ -1207,7 +1207,6 @@ pub mod dashboards_service_server {
     #[doc = " Manages Stackdriver dashboards. A dashboard is an arrangement of data display"]
     #[doc = " widgets in a specific layout."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DashboardsServiceServer<T: DashboardsService> {
         inner: _Inner<T>,
     }
@@ -1253,7 +1252,7 @@ pub mod dashboards_service_server {
                             request: tonic::Request<super::CreateDashboardRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_dashboard(request).await };
+                            let fut = async move { (*inner).create_dashboard(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1287,7 +1286,7 @@ pub mod dashboards_service_server {
                             request: tonic::Request<super::ListDashboardsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_dashboards(request).await };
+                            let fut = async move { (*inner).list_dashboards(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1321,7 +1320,7 @@ pub mod dashboards_service_server {
                             request: tonic::Request<super::GetDashboardRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_dashboard(request).await };
+                            let fut = async move { (*inner).get_dashboard(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1355,7 +1354,7 @@ pub mod dashboards_service_server {
                             request: tonic::Request<super::DeleteDashboardRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_dashboard(request).await };
+                            let fut = async move { (*inner).delete_dashboard(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1389,7 +1388,7 @@ pub mod dashboards_service_server {
                             request: tonic::Request<super::UpdateDashboardRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_dashboard(request).await };
+                            let fut = async move { (*inner).update_dashboard(request).await };
                             Box::pin(fut)
                         }
                     }

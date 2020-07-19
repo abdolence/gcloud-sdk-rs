@@ -1115,7 +1115,6 @@ pub mod asset_service_server {
     }
     #[doc = " Asset service definition."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AssetServiceServer<T: AssetService> {
         inner: _Inner<T>,
     }
@@ -1160,7 +1159,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::ExportAssetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_assets(request).await };
+                            let fut = async move { (*inner).export_assets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1194,7 +1193,8 @@ pub mod asset_service_server {
                             request: tonic::Request<super::BatchGetAssetsHistoryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_get_assets_history(request).await };
+                            let fut =
+                                async move { (*inner).batch_get_assets_history(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1225,7 +1225,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::CreateFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_feed(request).await };
+                            let fut = async move { (*inner).create_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1256,7 +1256,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::GetFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_feed(request).await };
+                            let fut = async move { (*inner).get_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1287,7 +1287,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::ListFeedsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_feeds(request).await };
+                            let fut = async move { (*inner).list_feeds(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1318,7 +1318,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::UpdateFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_feed(request).await };
+                            let fut = async move { (*inner).update_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1349,7 +1349,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::DeleteFeedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_feed(request).await };
+                            let fut = async move { (*inner).delete_feed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1383,7 +1383,7 @@ pub mod asset_service_server {
                             request: tonic::Request<super::SearchAllResourcesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_all_resources(request).await };
+                            let fut = async move { (*inner).search_all_resources(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1417,7 +1417,8 @@ pub mod asset_service_server {
                             request: tonic::Request<super::SearchAllIamPoliciesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.search_all_iam_policies(request).await };
+                            let fut =
+                                async move { (*inner).search_all_iam_policies(request).await };
                             Box::pin(fut)
                         }
                     }

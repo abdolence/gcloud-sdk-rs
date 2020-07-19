@@ -916,7 +916,6 @@ pub mod cloud_scheduler_server {
     #[doc = " The Cloud Scheduler API allows external entities to reliably"]
     #[doc = " schedule asynchronous jobs."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudSchedulerServer<T: CloudScheduler> {
         inner: _Inner<T>,
     }
@@ -959,7 +958,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::ListJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_jobs(request).await };
+                            let fut = async move { (*inner).list_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -990,7 +989,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::GetJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_job(request).await };
+                            let fut = async move { (*inner).get_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1021,7 +1020,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::CreateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_job(request).await };
+                            let fut = async move { (*inner).create_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1052,7 +1051,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::UpdateJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_job(request).await };
+                            let fut = async move { (*inner).update_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1083,7 +1082,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::DeleteJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_job(request).await };
+                            let fut = async move { (*inner).delete_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1114,7 +1113,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::PauseJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.pause_job(request).await };
+                            let fut = async move { (*inner).pause_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1145,7 +1144,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::ResumeJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.resume_job(request).await };
+                            let fut = async move { (*inner).resume_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1176,7 +1175,7 @@ pub mod cloud_scheduler_server {
                             request: tonic::Request<super::RunJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_job(request).await };
+                            let fut = async move { (*inner).run_job(request).await };
                             Box::pin(fut)
                         }
                     }

@@ -491,7 +491,6 @@ pub mod library_service_server {
     #[doc = " - Each Shelf has a collection of [Book][google.example.library.v1.Book]"]
     #[doc = "   resources, named `shelves/*/books/*`"]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LibraryServiceServer<T: LibraryService> {
         inner: _Inner<T>,
     }
@@ -536,7 +535,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::CreateShelfRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_shelf(request).await };
+                            let fut = async move { (*inner).create_shelf(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -567,7 +566,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::GetShelfRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_shelf(request).await };
+                            let fut = async move { (*inner).get_shelf(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -600,7 +599,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::ListShelvesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_shelves(request).await };
+                            let fut = async move { (*inner).list_shelves(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -633,7 +632,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::DeleteShelfRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_shelf(request).await };
+                            let fut = async move { (*inner).delete_shelf(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -666,7 +665,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::MergeShelvesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.merge_shelves(request).await };
+                            let fut = async move { (*inner).merge_shelves(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -697,7 +696,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::CreateBookRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_book(request).await };
+                            let fut = async move { (*inner).create_book(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -728,7 +727,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::GetBookRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_book(request).await };
+                            let fut = async move { (*inner).get_book(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -759,7 +758,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::ListBooksRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_books(request).await };
+                            let fut = async move { (*inner).list_books(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -790,7 +789,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::DeleteBookRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_book(request).await };
+                            let fut = async move { (*inner).delete_book(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -821,7 +820,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::UpdateBookRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_book(request).await };
+                            let fut = async move { (*inner).update_book(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -852,7 +851,7 @@ pub mod library_service_server {
                             request: tonic::Request<super::MoveBookRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.move_book(request).await };
+                            let fut = async move { (*inner).move_book(request).await };
                             Box::pin(fut)
                         }
                     }

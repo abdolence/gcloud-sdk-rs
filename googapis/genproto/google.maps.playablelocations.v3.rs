@@ -325,7 +325,6 @@ pub mod playable_locations_server {
     }
     #[doc = " The Playable Locations API for v3."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PlayableLocationsServer<T: PlayableLocations> {
         inner: _Inner<T>,
     }
@@ -371,7 +370,8 @@ pub mod playable_locations_server {
                             request: tonic::Request<super::SamplePlayableLocationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.sample_playable_locations(request).await };
+                            let fut =
+                                async move { (*inner).sample_playable_locations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -405,7 +405,7 @@ pub mod playable_locations_server {
                             request: tonic::Request<super::LogPlayerReportsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.log_player_reports(request).await };
+                            let fut = async move { (*inner).log_player_reports(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -439,7 +439,7 @@ pub mod playable_locations_server {
                             request: tonic::Request<super::LogImpressionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.log_impressions(request).await };
+                            let fut = async move { (*inner).log_impressions(request).await };
                             Box::pin(fut)
                         }
                     }

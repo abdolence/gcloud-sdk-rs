@@ -1956,7 +1956,6 @@ pub mod security_center_server {
     }
     #[doc = " V1 APIs for Security Center service."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SecurityCenterServer<T: SecurityCenter> {
         inner: _Inner<T>,
     }
@@ -2001,7 +2000,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::CreateSourceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_source(request).await };
+                            let fut = async move { (*inner).create_source(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2034,7 +2033,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::CreateFindingRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_finding(request).await };
+                            let fut = async move { (*inner).create_finding(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2069,7 +2068,7 @@ pub mod security_center_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.create_notification_config(request).await };
+                                async move { (*inner).create_notification_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2104,7 +2103,7 @@ pub mod security_center_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.delete_notification_config(request).await };
+                                async move { (*inner).delete_notification_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2141,7 +2140,7 @@ pub mod security_center_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2175,7 +2174,8 @@ pub mod security_center_server {
                             request: tonic::Request<super::GetNotificationConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_notification_config(request).await };
+                            let fut =
+                                async move { (*inner).get_notification_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2209,7 +2209,8 @@ pub mod security_center_server {
                             request: tonic::Request<super::GetOrganizationSettingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_organization_settings(request).await };
+                            let fut =
+                                async move { (*inner).get_organization_settings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2240,7 +2241,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::GetSourceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_source(request).await };
+                            let fut = async move { (*inner).get_source(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2273,7 +2274,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::GroupAssetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.group_assets(request).await };
+                            let fut = async move { (*inner).group_assets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2306,7 +2307,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::GroupFindingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.group_findings(request).await };
+                            let fut = async move { (*inner).group_findings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2337,7 +2338,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::ListAssetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_assets(request).await };
+                            let fut = async move { (*inner).list_assets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2370,7 +2371,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::ListFindingsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_findings(request).await };
+                            let fut = async move { (*inner).list_findings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2404,7 +2405,8 @@ pub mod security_center_server {
                             request: tonic::Request<super::ListNotificationConfigsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_notification_configs(request).await };
+                            let fut =
+                                async move { (*inner).list_notification_configs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2437,7 +2439,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::ListSourcesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_sources(request).await };
+                            let fut = async move { (*inner).list_sources(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2471,7 +2473,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::RunAssetDiscoveryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_asset_discovery(request).await };
+                            let fut = async move { (*inner).run_asset_discovery(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2505,7 +2507,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::SetFindingStateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_finding_state(request).await };
+                            let fut = async move { (*inner).set_finding_state(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2542,7 +2544,7 @@ pub mod security_center_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2580,7 +2582,7 @@ pub mod security_center_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2613,7 +2615,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::UpdateFindingRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_finding(request).await };
+                            let fut = async move { (*inner).update_finding(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2648,7 +2650,7 @@ pub mod security_center_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_notification_config(request).await };
+                                async move { (*inner).update_notification_config(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2683,7 +2685,7 @@ pub mod security_center_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_organization_settings(request).await };
+                                async move { (*inner).update_organization_settings(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2716,7 +2718,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::UpdateSourceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_source(request).await };
+                            let fut = async move { (*inner).update_source(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2750,7 +2752,7 @@ pub mod security_center_server {
                             request: tonic::Request<super::UpdateSecurityMarksRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_security_marks(request).await };
+                            let fut = async move { (*inner).update_security_marks(request).await };
                             Box::pin(fut)
                         }
                     }

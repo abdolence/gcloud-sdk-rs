@@ -454,7 +454,6 @@ pub mod iam_policy_server {
     #[doc = " are created and deleted implicitly with the resources to which they are"]
     #[doc = " attached."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct IamPolicyServer<T: IamPolicy> {
         inner: _Inner<T>,
     }
@@ -497,7 +496,7 @@ pub mod iam_policy_server {
                             request: tonic::Request<super::SetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -528,7 +527,7 @@ pub mod iam_policy_server {
                             request: tonic::Request<super::GetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -561,7 +560,7 @@ pub mod iam_policy_server {
                             request: tonic::Request<super::TestIamPermissionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }

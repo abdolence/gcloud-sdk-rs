@@ -1309,7 +1309,6 @@ pub mod device_manager_server {
     }
     #[doc = " Internet of Things (IoT) service. Securely connect and manage IoT devices."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DeviceManagerServer<T: DeviceManager> {
         inner: _Inner<T>,
     }
@@ -1355,7 +1354,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::CreateDeviceRegistryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_device_registry(request).await };
+                            let fut = async move { (*inner).create_device_registry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1389,7 +1388,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::GetDeviceRegistryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_device_registry(request).await };
+                            let fut = async move { (*inner).get_device_registry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1423,7 +1422,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::UpdateDeviceRegistryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_device_registry(request).await };
+                            let fut = async move { (*inner).update_device_registry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1457,7 +1456,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::DeleteDeviceRegistryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_device_registry(request).await };
+                            let fut = async move { (*inner).delete_device_registry(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1491,7 +1490,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::ListDeviceRegistriesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_device_registries(request).await };
+                            let fut = async move { (*inner).list_device_registries(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1524,7 +1523,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::CreateDeviceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_device(request).await };
+                            let fut = async move { (*inner).create_device(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1555,7 +1554,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::GetDeviceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_device(request).await };
+                            let fut = async move { (*inner).get_device(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1588,7 +1587,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::UpdateDeviceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_device(request).await };
+                            let fut = async move { (*inner).update_device(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1621,7 +1620,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::DeleteDeviceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_device(request).await };
+                            let fut = async move { (*inner).delete_device(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1654,7 +1653,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::ListDevicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_devices(request).await };
+                            let fut = async move { (*inner).list_devices(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1688,8 +1687,9 @@ pub mod device_manager_server {
                             request: tonic::Request<super::ModifyCloudToDeviceConfigRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.modify_cloud_to_device_config(request).await };
+                            let fut = async move {
+                                (*inner).modify_cloud_to_device_config(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -1724,7 +1724,7 @@ pub mod device_manager_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.list_device_config_versions(request).await };
+                                async move { (*inner).list_device_config_versions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1758,7 +1758,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::ListDeviceStatesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_device_states(request).await };
+                            let fut = async move { (*inner).list_device_states(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1795,7 +1795,7 @@ pub mod device_manager_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1832,7 +1832,7 @@ pub mod device_manager_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1870,7 +1870,7 @@ pub mod device_manager_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1904,7 +1904,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::SendCommandToDeviceRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.send_command_to_device(request).await };
+                            let fut = async move { (*inner).send_command_to_device(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1938,7 +1938,7 @@ pub mod device_manager_server {
                             request: tonic::Request<super::BindDeviceToGatewayRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.bind_device_to_gateway(request).await };
+                            let fut = async move { (*inner).bind_device_to_gateway(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1973,7 +1973,7 @@ pub mod device_manager_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.unbind_device_from_gateway(request).await };
+                                async move { (*inner).unbind_device_from_gateway(request).await };
                             Box::pin(fut)
                         }
                     }

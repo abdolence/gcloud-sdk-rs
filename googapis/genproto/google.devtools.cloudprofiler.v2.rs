@@ -287,7 +287,6 @@ pub mod profiler_service_server {
     #[doc = " * Profiles for a single deployment must be created in ascending time order."]
     #[doc = " * Profiles can be created in either online or offline mode, see below."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ProfilerServiceServer<T: ProfilerService> {
         inner: _Inner<T>,
     }
@@ -333,7 +332,7 @@ pub mod profiler_service_server {
                             request: tonic::Request<super::CreateProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_profile(request).await };
+                            let fut = async move { (*inner).create_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -367,7 +366,7 @@ pub mod profiler_service_server {
                             request: tonic::Request<super::CreateOfflineProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_offline_profile(request).await };
+                            let fut = async move { (*inner).create_offline_profile(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -401,7 +400,7 @@ pub mod profiler_service_server {
                             request: tonic::Request<super::UpdateProfileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_profile(request).await };
+                            let fut = async move { (*inner).update_profile(request).await };
                             Box::pin(fut)
                         }
                     }

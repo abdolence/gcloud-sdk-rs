@@ -1958,7 +1958,6 @@ pub mod firestore_server {
     #[doc = " integrations with Firebase and Google Cloud Platform (GCP) accelerate"]
     #[doc = " building truly serverless apps."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct FirestoreServer<T: Firestore> {
         inner: _Inner<T>,
     }
@@ -2001,7 +2000,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::GetDocumentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_document(request).await };
+                            let fut = async move { (*inner).get_document(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2034,7 +2033,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::ListDocumentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_documents(request).await };
+                            let fut = async move { (*inner).list_documents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2067,7 +2066,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::UpdateDocumentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_document(request).await };
+                            let fut = async move { (*inner).update_document(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2100,7 +2099,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::DeleteDocumentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_document(request).await };
+                            let fut = async move { (*inner).delete_document(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2136,7 +2135,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::BatchGetDocumentsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_get_documents(request).await };
+                            let fut = async move { (*inner).batch_get_documents(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2169,7 +2168,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::BeginTransactionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.begin_transaction(request).await };
+                            let fut = async move { (*inner).begin_transaction(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2200,7 +2199,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::CommitRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.commit(request).await };
+                            let fut = async move { (*inner).commit(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2231,7 +2230,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::RollbackRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.rollback(request).await };
+                            let fut = async move { (*inner).rollback(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2266,7 +2265,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::RunQueryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_query(request).await };
+                            let fut = async move { (*inner).run_query(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2299,7 +2298,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::PartitionQueryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.partition_query(request).await };
+                            let fut = async move { (*inner).partition_query(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2332,7 +2331,7 @@ pub mod firestore_server {
                             request: tonic::Request<tonic::Streaming<super::WriteRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.write(request).await };
+                            let fut = async move { (*inner).write(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2365,7 +2364,7 @@ pub mod firestore_server {
                             request: tonic::Request<tonic::Streaming<super::ListenRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.listen(request).await };
+                            let fut = async move { (*inner).listen(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2398,7 +2397,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::ListCollectionIdsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_collection_ids(request).await };
+                            let fut = async move { (*inner).list_collection_ids(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2429,7 +2428,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::BatchWriteRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_write(request).await };
+                            let fut = async move { (*inner).batch_write(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2462,7 +2461,7 @@ pub mod firestore_server {
                             request: tonic::Request<super::CreateDocumentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_document(request).await };
+                            let fut = async move { (*inner).create_document(request).await };
                             Box::pin(fut)
                         }
                     }

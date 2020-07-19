@@ -832,7 +832,6 @@ pub mod recommender_server {
     #[doc = " discovery, etc. Insights and recommendations are generated automatically"]
     #[doc = " based on analysis of user resources, configuration and monitoring metrics."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct RecommenderServer<T: Recommender> {
         inner: _Inner<T>,
     }
@@ -877,7 +876,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::ListInsightsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_insights(request).await };
+                            let fut = async move { (*inner).list_insights(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -908,7 +907,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::GetInsightRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_insight(request).await };
+                            let fut = async move { (*inner).get_insight(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -942,7 +941,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::MarkInsightAcceptedRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.mark_insight_accepted(request).await };
+                            let fut = async move { (*inner).mark_insight_accepted(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -976,7 +975,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::ListRecommendationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_recommendations(request).await };
+                            let fut = async move { (*inner).list_recommendations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1010,7 +1009,7 @@ pub mod recommender_server {
                             request: tonic::Request<super::GetRecommendationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_recommendation(request).await };
+                            let fut = async move { (*inner).get_recommendation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1045,7 +1044,7 @@ pub mod recommender_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.mark_recommendation_claimed(request).await };
+                                async move { (*inner).mark_recommendation_claimed(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1079,8 +1078,9 @@ pub mod recommender_server {
                             request: tonic::Request<super::MarkRecommendationSucceededRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.mark_recommendation_succeeded(request).await };
+                            let fut = async move {
+                                (*inner).mark_recommendation_succeeded(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -1115,7 +1115,7 @@ pub mod recommender_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.mark_recommendation_failed(request).await };
+                                async move { (*inner).mark_recommendation_failed(request).await };
                             Box::pin(fut)
                         }
                     }

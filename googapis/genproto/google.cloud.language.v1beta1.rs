@@ -939,7 +939,6 @@ pub mod language_service_server {
     #[doc = " Provides text analysis operations such as sentiment analysis and entity"]
     #[doc = " recognition."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct LanguageServiceServer<T: LanguageService> {
         inner: _Inner<T>,
     }
@@ -985,7 +984,7 @@ pub mod language_service_server {
                             request: tonic::Request<super::AnalyzeSentimentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.analyze_sentiment(request).await };
+                            let fut = async move { (*inner).analyze_sentiment(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1019,7 +1018,7 @@ pub mod language_service_server {
                             request: tonic::Request<super::AnalyzeEntitiesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.analyze_entities(request).await };
+                            let fut = async move { (*inner).analyze_entities(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1053,7 +1052,7 @@ pub mod language_service_server {
                             request: tonic::Request<super::AnalyzeSyntaxRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.analyze_syntax(request).await };
+                            let fut = async move { (*inner).analyze_syntax(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1086,7 +1085,7 @@ pub mod language_service_server {
                             request: tonic::Request<super::AnnotateTextRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.annotate_text(request).await };
+                            let fut = async move { (*inner).annotate_text(request).await };
                             Box::pin(fut)
                         }
                     }

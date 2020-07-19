@@ -719,13 +719,18 @@ pub enum Likelihood {
     /// Many matching elements.
     VeryLikely = 5,
 }
-/// Definitions of file type groups to scan.
+/// Definitions of file type groups to scan. New types will be added to this
+/// list.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FileType {
     /// Includes all files.
     Unspecified = 0,
-    /// Includes all file extensions not covered by text file types.
+    /// Includes all file extensions not covered by another entry. Binary
+    /// scanning attempts to convert the content of the file to utf_8 to scan
+    /// the file.
+    /// If you wish to avoid this fall back, specify one or more of the other
+    /// FileType's in your storage scan.
     BinaryFile = 1,
     /// Included file extensions:
     ///   asc, brf, c, cc, cpp, csv, cxx, c++, cs, css, dart, eml, go, h, hh, hpp,
@@ -739,15 +744,23 @@ pub enum FileType {
     /// bytes_limit_per_file has no effect on image files.
     /// Image inspection is restricted to 'global', 'us', 'asia', and 'europe'.
     Image = 3,
+    /// Word files >30 MB will be scanned as binary files.
     /// Included file extensions:
     ///   docx, dotx, docm, dotm
     Word = 5,
+    /// PDF files >30 MB will be scanned as binary files.
     /// Included file extensions:
     ///   pdf
     Pdf = 6,
     /// Included file extensions:
     ///   avro
     Avro = 7,
+    /// Included file extensions:
+    ///   csv
+    Csv = 8,
+    /// Included file extensions:
+    ///   tsv
+    Tsv = 9,
 }
 /// List of exclude infoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -938,6 +951,10 @@ pub mod byte_content_item {
         Pdf = 8,
         /// avro
         Avro = 11,
+        /// csv
+        Csv = 12,
+        /// tsv
+        Tsv = 13,
     }
 }
 /// Container structure for the content to inspect.
@@ -1004,8 +1021,8 @@ pub struct InspectResult {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// Resource name in format
-    /// projects/{project}/locations/{location}/findings/{finding}
-    /// Populated only when viewing persisted findings.
+    /// projects/{project}/locations/{location}/findings/{finding} Populated only
+    /// when viewing persisted findings.
     #[prost(string, tag = "14")]
     pub name: std::string::String,
     /// The content that was found. Even if the content is not textual, it
@@ -1273,8 +1290,9 @@ pub struct BoundingBox {
 /// by covering it with a colored rectangle.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactImageRequest {
-    /// The parent resource name, for example projects/my-project-id
-    /// or projects/my-project-id/locations/{location_id}.
+    /// The parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Deprecated. This field has no effect.
@@ -1354,8 +1372,9 @@ pub struct RedactImageResponse {
 /// Request to de-identify a list of items.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyContentRequest {
-    /// The parent resource name, for example projects/my-project-id
-    /// or projects/my-project-id/locations/{location_id}.
+    /// Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the de-identification of the content item.
@@ -1403,6 +1422,8 @@ pub struct DeidentifyContentResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReidentifyContentRequest {
     /// Required. The parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the re-identification of the content item.
@@ -1455,8 +1476,9 @@ pub struct ReidentifyContentResponse {
 /// Request to search for potentially sensitive info in a ContentItem.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectContentRequest {
-    /// The parent resource name, for example projects/my-project-id
-    /// or projects/my-project-id/locations/{location_id}
+    /// Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the inspector. What specified here will override
@@ -1597,7 +1619,7 @@ pub mod inspect_data_source_details {
         pub hybrid_stats: ::std::option::Option<super::HybridInspectStatistics>,
     }
 }
-/// Statistics related to processing hybrid inspect requests.s
+/// Statistics related to processing hybrid inspect requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectStatistics {
     /// The number of hybrid inspection requests processed within this job.
@@ -1635,7 +1657,8 @@ pub struct InfoTypeDescription {
 /// Request for the list of infoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInfoTypesRequest {
-    /// The parent resource name, for example locations/{location_id}
+    /// The parent resource name.
+    /// - Format:locations/[LOCATION-ID]
     #[prost(string, tag = "4")]
     pub parent: std::string::String,
     /// BCP-47 language code for localized infoType friendly
@@ -1724,8 +1747,8 @@ pub struct StatisticalTable {
     /// Required. Quasi-identifier columns.
     #[prost(message, repeated, tag = "1")]
     pub quasi_ids: ::std::vec::Vec<statistical_table::QuasiIdentifierField>,
-    /// Required. The relative frequency column must contain a floating-point
-    /// number between 0 and 1 (inclusive). Null values are assumed to be zero.
+    /// Required. The relative frequency column must contain a floating-point number
+    /// between 0 and 1 (inclusive). Null values are assumed to be zero.
     #[prost(message, optional, tag = "2")]
     pub relative_frequency: ::std::option::Option<FieldId>,
 }
@@ -1815,8 +1838,8 @@ pub mod privacy_metric {
     /// extrapolating from the distribution of values in the input dataset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KMapEstimationConfig {
-        /// Required. Fields considered to be quasi-identifiers. No two columns can
-        /// have the same tag.
+        /// Required. Fields considered to be quasi-identifiers. No two columns can have the
+        /// same tag.
         #[prost(message, repeated, tag = "1")]
         pub quasi_ids: ::std::vec::Vec<k_map_estimation_config::TaggedField>,
         /// ISO 3166-1 alpha-2 region code to use in the statistical modeling.
@@ -1882,8 +1905,8 @@ pub mod privacy_metric {
             /// Required. Quasi-identifier columns.
             #[prost(message, repeated, tag = "1")]
             pub quasi_ids: ::std::vec::Vec<auxiliary_table::QuasiIdField>,
-            /// Required. The relative frequency column must contain a floating-point
-            /// number between 0 and 1 (inclusive). Null values are assumed to be zero.
+            /// Required. The relative frequency column must contain a floating-point number
+            /// between 0 and 1 (inclusive). Null values are assumed to be zero.
             #[prost(message, optional, tag = "2")]
             pub relative_frequency: ::std::option::Option<super::super::FieldId>,
         }
@@ -1907,8 +1930,8 @@ pub mod privacy_metric {
     /// knowing the attack dataset, so we use a statistical model instead.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeltaPresenceEstimationConfig {
-        /// Required. Fields considered to be quasi-identifiers. No two fields can
-        /// have the same tag.
+        /// Required. Fields considered to be quasi-identifiers. No two fields can have the
+        /// same tag.
         #[prost(message, repeated, tag = "1")]
         pub quasi_ids: ::std::vec::Vec<super::QuasiId>,
         /// ISO 3166-1 alpha-2 region code to use in the statistical modeling.
@@ -2651,18 +2674,18 @@ pub struct CharacterMaskConfig {
 /// See https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FixedSizeBucketingConfig {
-    /// Required. Lower bound value of buckets. All values less than `lower_bound`
-    /// are grouped together into a single bucket; for example if `lower_bound` =
-    /// 10, then all values less than 10 are replaced with the value “-10”.
+    /// Required. Lower bound value of buckets. All values less than `lower_bound` are
+    /// grouped together into a single bucket; for example if `lower_bound` = 10,
+    /// then all values less than 10 are replaced with the value "-10".
     #[prost(message, optional, tag = "1")]
     pub lower_bound: ::std::option::Option<Value>,
-    /// Required. Upper bound value of buckets. All values greater than upper_bound
-    /// are grouped together into a single bucket; for example if `upper_bound` =
-    /// 89, then all values greater than 89 are replaced with the value “89+”.
+    /// Required. Upper bound value of buckets. All values greater than upper_bound are
+    /// grouped together into a single bucket; for example if `upper_bound` = 89,
+    /// then all values greater than 89 are replaced with the value "89+".
     #[prost(message, optional, tag = "2")]
     pub upper_bound: ::std::option::Option<Value>,
-    /// Required. Size of each bucket (except for minimum and maximum buckets). So
-    /// if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the
+    /// Required. Size of each bucket (except for minimum and maximum buckets). So if
+    /// `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the
     /// following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60,
     /// 60-70, 70-80, 80-89, 89+. Precision up to 2 decimals works.
     #[prost(double, tag = "3")]
@@ -2694,8 +2717,7 @@ pub mod bucketing_config {
         /// Upper bound of the range, exclusive; type must match min.
         #[prost(message, optional, tag = "2")]
         pub max: ::std::option::Option<super::Value>,
-        /// Replacement value for this bucket. If not provided
-        /// the default behavior will be to hyphenate the min-max range.
+        /// Required. Replacement value for this bucket.
         #[prost(message, optional, tag = "3")]
         pub replacement_value: ::std::option::Option<super::Value>,
     }
@@ -2875,15 +2897,14 @@ pub struct KmsWrappedCryptoKey {
 /// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateShiftConfig {
-    /// Required. Range of shift in days. Actual shift will be selected at random
-    /// within this range (inclusive ends). Negative means shift to earlier in
-    /// time. Must not be more than 365250 days (1000 years) each direction.
+    /// Required. Range of shift in days. Actual shift will be selected at random within this
+    /// range (inclusive ends). Negative means shift to earlier in time. Must not
+    /// be more than 365250 days (1000 years) each direction.
     ///
     /// For example, 3 means shift date to at most 3 days into the future.
     #[prost(int32, tag = "1")]
     pub upper_bound_days: i32,
-    /// Required. For example, -5 means shift date to at most 5 days back in the
-    /// past.
+    /// Required. For example, -5 means shift date to at most 5 days back in the past.
     #[prost(int32, tag = "2")]
     pub lower_bound_days: i32,
     /// Points to the field that contains the context, for example, an entity id.
@@ -3404,8 +3425,11 @@ pub mod action {
 /// Request message for CreateInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInspectTemplateRequest {
-    /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id or projects/my-project-id/locations/{location-id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The InspectTemplate to create.
@@ -3424,8 +3448,8 @@ pub struct CreateInspectTemplateRequest {
 /// Request message for UpdateInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInspectTemplateRequest {
-    /// Required. Resource name of organization and inspectTemplate to be updated,
-    /// for example `organizations/433245324/inspectTemplates/432452342` or
+    /// Required. Resource name of organization and inspectTemplate to be updated, for
+    /// example `organizations/433245324/inspectTemplates/432452342` or
     /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -3439,8 +3463,8 @@ pub struct UpdateInspectTemplateRequest {
 /// Request message for GetInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInspectTemplateRequest {
-    /// Required. Resource name of the organization and inspectTemplate to be read,
-    /// for example `organizations/433245324/inspectTemplates/432452342` or
+    /// Required. Resource name of the organization and inspectTemplate to be read, for
+    /// example `organizations/433245324/inspectTemplates/432452342` or
     /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -3448,8 +3472,11 @@ pub struct GetInspectTemplateRequest {
 /// Request message for ListInspectTemplates.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInspectTemplatesRequest {
-    /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3493,17 +3520,18 @@ pub struct ListInspectTemplatesResponse {
 /// Request message for DeleteInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInspectTemplateRequest {
-    /// Required. Resource name of the organization and inspectTemplate to be
-    /// deleted, for example `organizations/433245324/inspectTemplates/432452342`
-    /// or projects/project-id/inspectTemplates/432452342.
+    /// Required. Resource name of the organization and inspectTemplate to be deleted, for
+    /// example `organizations/433245324/inspectTemplates/432452342` or
+    /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
 /// Request message for CreateJobTrigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobTriggerRequest {
-    /// Required. The parent resource name, for example projects/my-project-id
-    /// or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The JobTrigger to create.
@@ -3554,8 +3582,9 @@ pub struct GetJobTriggerRequest {
 /// Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDlpJobRequest {
-    /// Required. The parent resource name, for example projects/my-project-id
-    /// or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The job id can contain uppercase and lowercase letters,
@@ -3586,8 +3615,9 @@ pub mod create_dlp_job_request {
 /// Request message for ListJobTriggers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTriggersRequest {
-    /// Required. The parent resource name, for example `projects/my-project-id`
-    /// or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3757,8 +3787,9 @@ pub struct GetDlpJobRequest {
 /// The request message for listing DLP jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDlpJobsRequest {
-    /// Required. The parent resource name, for example projects/my-project-id
-    /// or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "4")]
     pub parent: std::string::String,
     /// Allows filtering.
@@ -3853,8 +3884,11 @@ pub struct DeleteDlpJobRequest {
 /// Request message for CreateDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeidentifyTemplateRequest {
-    /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The DeidentifyTemplate to create.
@@ -3873,9 +3907,8 @@ pub struct CreateDeidentifyTemplateRequest {
 /// Request message for UpdateDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeidentifyTemplateRequest {
-    /// Required. Resource name of organization and deidentify template to be
-    /// updated, for example
-    /// `organizations/433245324/deidentifyTemplates/432452342` or
+    /// Required. Resource name of organization and deidentify template to be updated, for
+    /// example `organizations/433245324/deidentifyTemplates/432452342` or
     /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -3889,17 +3922,20 @@ pub struct UpdateDeidentifyTemplateRequest {
 /// Request message for GetDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeidentifyTemplateRequest {
-    /// Required. Resource name of the organization and deidentify template to be
-    /// read, for example `organizations/433245324/deidentifyTemplates/432452342`
-    /// or projects/project-id/deidentifyTemplates/432452342.
+    /// Required. Resource name of the organization and deidentify template to be read, for
+    /// example `organizations/433245324/deidentifyTemplates/432452342` or
+    /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
 /// Request message for ListDeidentifyTemplates.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeidentifyTemplatesRequest {
-    /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3944,9 +3980,8 @@ pub struct ListDeidentifyTemplatesResponse {
 /// Request message for DeleteDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDeidentifyTemplateRequest {
-    /// Required. Resource name of the organization and deidentify template to be
-    /// deleted, for example
-    /// `organizations/433245324/deidentifyTemplates/432452342` or
+    /// Required. Resource name of the organization and deidentify template to be deleted,
+    /// for example `organizations/433245324/deidentifyTemplates/432452342` or
     /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -4084,8 +4119,11 @@ pub struct StoredInfoType {
 /// Request message for CreateStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStoredInfoTypeRequest {
-    /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. Configuration of the storedInfoType to create.
@@ -4121,8 +4159,8 @@ pub struct UpdateStoredInfoTypeRequest {
 /// Request message for GetStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStoredInfoTypeRequest {
-    /// Required. Resource name of the organization and storedInfoType to be read,
-    /// for example `organizations/433245324/storedInfoTypes/432452342` or
+    /// Required. Resource name of the organization and storedInfoType to be read, for
+    /// example `organizations/433245324/storedInfoTypes/432452342` or
     /// projects/project-id/storedInfoTypes/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -4130,8 +4168,11 @@ pub struct GetStoredInfoTypeRequest {
 /// Request message for ListStoredInfoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStoredInfoTypesRequest {
-    /// Required. The parent resource name, for example projects/my-project-id or
-    /// organizations/my-org-id or projects/my-project-id/locations/{location_id}.
+    /// Required. Parent resource name.
+    /// - Format:projects/[PROJECT-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]
+    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -4176,8 +4217,8 @@ pub struct ListStoredInfoTypesResponse {
 /// Request message for DeleteStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStoredInfoTypeRequest {
-    /// Required. Resource name of the organization and storedInfoType to be
-    /// deleted, for example `organizations/433245324/storedInfoTypes/432452342` or
+    /// Required. Resource name of the organization and storedInfoType to be deleted, for
+    /// example `organizations/433245324/storedInfoTypes/432452342` or
     /// projects/project-id/storedInfoTypes/432452342.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -4185,8 +4226,8 @@ pub struct DeleteStoredInfoTypeRequest {
 /// Request to search for potentially sensitive info in a custom location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectJobTriggerRequest {
-    /// Required. Resource name of the trigger to execute a hybrid inspect on, for
-    /// example `projects/dlp-test-project/jobTriggers/53234423`.
+    /// Required. Resource name of the trigger to execute a hybrid inspect on, for example
+    /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The item to inspect.
@@ -4196,8 +4237,8 @@ pub struct HybridInspectJobTriggerRequest {
 /// Request to search for potentially sensitive info in a custom location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectDlpJobRequest {
-    /// Required. Resource name of the job to execute a hybrid inspect on, for
-    /// example `projects/dlp-test-project/dlpJob/53234423`.
+    /// Required. Resource name of the job to execute a hybrid inspect on, for example
+    /// `projects/dlp-test-project/dlpJob/53234423`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The item to inspect.
@@ -4326,7 +4367,7 @@ pub enum ContentOption {
 pub enum MetadataType {
     /// Unused
     MetadatatypeUnspecified = 0,
-    /// General file metadata provided by GCS.
+    /// General file metadata provided by Cloud Storage.
     StorageMetadata = 2,
 }
 /// Parts of the APIs which use certain infoTypes.
@@ -5368,7 +5409,6 @@ pub mod dlp_service_server {
     #[doc = " To learn more about concepts and find how-to guides see"]
     #[doc = " https://cloud.google.com/dlp/docs/."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DlpServiceServer<T: DlpService> {
         inner: _Inner<T>,
     }
@@ -5413,7 +5453,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::InspectContentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.inspect_content(request).await };
+                            let fut = async move { (*inner).inspect_content(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5444,7 +5484,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::RedactImageRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.redact_image(request).await };
+                            let fut = async move { (*inner).redact_image(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5477,7 +5517,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::DeidentifyContentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.deidentify_content(request).await };
+                            let fut = async move { (*inner).deidentify_content(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5510,7 +5550,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ReidentifyContentRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.reidentify_content(request).await };
+                            let fut = async move { (*inner).reidentify_content(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5543,7 +5583,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ListInfoTypesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_info_types(request).await };
+                            let fut = async move { (*inner).list_info_types(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5577,7 +5617,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::CreateInspectTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_inspect_template(request).await };
+                            let fut =
+                                async move { (*inner).create_inspect_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5611,7 +5652,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::UpdateInspectTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_inspect_template(request).await };
+                            let fut =
+                                async move { (*inner).update_inspect_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5645,7 +5687,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::GetInspectTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_inspect_template(request).await };
+                            let fut = async move { (*inner).get_inspect_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5679,7 +5721,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ListInspectTemplatesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_inspect_templates(request).await };
+                            let fut = async move { (*inner).list_inspect_templates(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5713,7 +5755,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::DeleteInspectTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_inspect_template(request).await };
+                            let fut =
+                                async move { (*inner).delete_inspect_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5748,7 +5791,7 @@ pub mod dlp_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.create_deidentify_template(request).await };
+                                async move { (*inner).create_deidentify_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5783,7 +5826,7 @@ pub mod dlp_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_deidentify_template(request).await };
+                                async move { (*inner).update_deidentify_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5817,7 +5860,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::GetDeidentifyTemplateRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_deidentify_template(request).await };
+                            let fut =
+                                async move { (*inner).get_deidentify_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5851,7 +5895,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ListDeidentifyTemplatesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_deidentify_templates(request).await };
+                            let fut =
+                                async move { (*inner).list_deidentify_templates(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5886,7 +5931,7 @@ pub mod dlp_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.delete_deidentify_template(request).await };
+                                async move { (*inner).delete_deidentify_template(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5919,7 +5964,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::CreateJobTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_job_trigger(request).await };
+                            let fut = async move { (*inner).create_job_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5952,7 +5997,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::UpdateJobTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_job_trigger(request).await };
+                            let fut = async move { (*inner).update_job_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5987,7 +6032,7 @@ pub mod dlp_service_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.hybrid_inspect_job_trigger(request).await };
+                                async move { (*inner).hybrid_inspect_job_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6020,7 +6065,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::GetJobTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_job_trigger(request).await };
+                            let fut = async move { (*inner).get_job_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6053,7 +6098,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ListJobTriggersRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_job_triggers(request).await };
+                            let fut = async move { (*inner).list_job_triggers(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6086,7 +6131,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::DeleteJobTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_job_trigger(request).await };
+                            let fut = async move { (*inner).delete_job_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6120,7 +6165,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ActivateJobTriggerRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.activate_job_trigger(request).await };
+                            let fut = async move { (*inner).activate_job_trigger(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6151,7 +6196,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::CreateDlpJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_dlp_job(request).await };
+                            let fut = async move { (*inner).create_dlp_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6182,7 +6227,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ListDlpJobsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_dlp_jobs(request).await };
+                            let fut = async move { (*inner).list_dlp_jobs(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6213,7 +6258,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::GetDlpJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_dlp_job(request).await };
+                            let fut = async move { (*inner).get_dlp_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6244,7 +6289,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::DeleteDlpJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_dlp_job(request).await };
+                            let fut = async move { (*inner).delete_dlp_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6275,7 +6320,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::CancelDlpJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.cancel_dlp_job(request).await };
+                            let fut = async move { (*inner).cancel_dlp_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6309,7 +6354,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::CreateStoredInfoTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_stored_info_type(request).await };
+                            let fut =
+                                async move { (*inner).create_stored_info_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6343,7 +6389,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::UpdateStoredInfoTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_stored_info_type(request).await };
+                            let fut =
+                                async move { (*inner).update_stored_info_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6376,7 +6423,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::GetStoredInfoTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_stored_info_type(request).await };
+                            let fut = async move { (*inner).get_stored_info_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6410,7 +6457,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::ListStoredInfoTypesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_stored_info_types(request).await };
+                            let fut = async move { (*inner).list_stored_info_types(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6444,7 +6491,8 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::DeleteStoredInfoTypeRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_stored_info_type(request).await };
+                            let fut =
+                                async move { (*inner).delete_stored_info_type(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6478,7 +6526,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::HybridInspectDlpJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.hybrid_inspect_dlp_job(request).await };
+                            let fut = async move { (*inner).hybrid_inspect_dlp_job(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -6509,7 +6557,7 @@ pub mod dlp_service_server {
                             request: tonic::Request<super::FinishDlpJobRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.finish_dlp_job(request).await };
+                            let fut = async move { (*inner).finish_dlp_job(request).await };
                             Box::pin(fut)
                         }
                     }

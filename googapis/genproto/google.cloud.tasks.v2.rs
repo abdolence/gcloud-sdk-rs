@@ -1860,7 +1860,6 @@ pub mod cloud_tasks_server {
     #[doc = " Cloud Tasks allows developers to manage the execution of background"]
     #[doc = " work in their applications."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct CloudTasksServer<T: CloudTasks> {
         inner: _Inner<T>,
     }
@@ -1903,7 +1902,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::ListQueuesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_queues(request).await };
+                            let fut = async move { (*inner).list_queues(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1934,7 +1933,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::GetQueueRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_queue(request).await };
+                            let fut = async move { (*inner).get_queue(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1965,7 +1964,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::CreateQueueRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_queue(request).await };
+                            let fut = async move { (*inner).create_queue(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1996,7 +1995,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::UpdateQueueRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_queue(request).await };
+                            let fut = async move { (*inner).update_queue(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2027,7 +2026,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::DeleteQueueRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_queue(request).await };
+                            let fut = async move { (*inner).delete_queue(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2058,7 +2057,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::PurgeQueueRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.purge_queue(request).await };
+                            let fut = async move { (*inner).purge_queue(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2089,7 +2088,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::PauseQueueRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.pause_queue(request).await };
+                            let fut = async move { (*inner).pause_queue(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2120,7 +2119,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::ResumeQueueRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.resume_queue(request).await };
+                            let fut = async move { (*inner).resume_queue(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2157,7 +2156,7 @@ pub mod cloud_tasks_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2194,7 +2193,7 @@ pub mod cloud_tasks_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2232,7 +2231,7 @@ pub mod cloud_tasks_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2263,7 +2262,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::ListTasksRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_tasks(request).await };
+                            let fut = async move { (*inner).list_tasks(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2294,7 +2293,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::GetTaskRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_task(request).await };
+                            let fut = async move { (*inner).get_task(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2325,7 +2324,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::CreateTaskRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_task(request).await };
+                            let fut = async move { (*inner).create_task(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2356,7 +2355,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::DeleteTaskRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_task(request).await };
+                            let fut = async move { (*inner).delete_task(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2387,7 +2386,7 @@ pub mod cloud_tasks_server {
                             request: tonic::Request<super::RunTaskRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.run_task(request).await };
+                            let fut = async move { (*inner).run_task(request).await };
                             Box::pin(fut)
                         }
                     }

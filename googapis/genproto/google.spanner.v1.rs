@@ -873,6 +873,16 @@ pub enum TypeCode {
     /// Encoded as `list`, where list element `i` is represented according
     /// to [struct_type.fields[i]][google.spanner.v1.StructType.fields].
     Struct = 9,
+    /// Encoded as `string`, in decimal format or scientific notation format.
+    /// <br>Decimal format:
+    /// <br>`[+-]Digits[.[Digits]]` or
+    /// <br>`[+-][Digits].Digits`
+    ///
+    /// Scientific notation:
+    /// <br>`[+-]Digits[.[Digits]][ExponentIndicator[+-]Digits]` or
+    /// <br>`[+-][Digits].Digits[ExponentIndicator[+-]Digits]`
+    /// <br>(ExponentIndicator is `"e"` or `"E"`)
+    Numeric = 10,
 }
 /// Results from [Read][google.spanner.v1.Spanner.Read] or
 /// [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
@@ -2233,7 +2243,6 @@ pub mod spanner_server {
     #[doc = " The Cloud Spanner API can be used to manage sessions and execute"]
     #[doc = " transactions on data stored in Cloud Spanner databases."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct SpannerServer<T: Spanner> {
         inner: _Inner<T>,
     }
@@ -2276,7 +2285,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::CreateSessionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_session(request).await };
+                            let fut = async move { (*inner).create_session(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2309,7 +2318,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::BatchCreateSessionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_create_sessions(request).await };
+                            let fut = async move { (*inner).batch_create_sessions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2340,7 +2349,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::GetSessionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_session(request).await };
+                            let fut = async move { (*inner).get_session(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2371,7 +2380,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::ListSessionsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_sessions(request).await };
+                            let fut = async move { (*inner).list_sessions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2402,7 +2411,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::DeleteSessionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_session(request).await };
+                            let fut = async move { (*inner).delete_session(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2433,7 +2442,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::ExecuteSqlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.execute_sql(request).await };
+                            let fut = async move { (*inner).execute_sql(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2468,7 +2477,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::ExecuteSqlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.execute_streaming_sql(request).await };
+                            let fut = async move { (*inner).execute_streaming_sql(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2501,7 +2510,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::ExecuteBatchDmlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.execute_batch_dml(request).await };
+                            let fut = async move { (*inner).execute_batch_dml(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2532,7 +2541,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::ReadRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.read(request).await };
+                            let fut = async move { (*inner).read(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2565,7 +2574,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::ReadRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.streaming_read(request).await };
+                            let fut = async move { (*inner).streaming_read(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2598,7 +2607,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::BeginTransactionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.begin_transaction(request).await };
+                            let fut = async move { (*inner).begin_transaction(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2629,7 +2638,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::CommitRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.commit(request).await };
+                            let fut = async move { (*inner).commit(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2660,7 +2669,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::RollbackRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.rollback(request).await };
+                            let fut = async move { (*inner).rollback(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2693,7 +2702,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::PartitionQueryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.partition_query(request).await };
+                            let fut = async move { (*inner).partition_query(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2724,7 +2733,7 @@ pub mod spanner_server {
                             request: tonic::Request<super::PartitionReadRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.partition_read(request).await };
+                            let fut = async move { (*inner).partition_read(request).await };
                             Box::pin(fut)
                         }
                     }

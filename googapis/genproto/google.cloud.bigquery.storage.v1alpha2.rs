@@ -517,7 +517,6 @@ pub mod big_query_write_server {
     #[doc = ""]
     #[doc = " The Write API can be used to write data to BigQuery."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BigQueryWriteServer<T: BigQueryWrite> {
         inner: _Inner<T>,
     }
@@ -563,7 +562,7 @@ pub mod big_query_write_server {
                             request: tonic::Request<super::CreateWriteStreamRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_write_stream(request).await };
+                            let fut = async move { (*inner).create_write_stream(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -598,7 +597,7 @@ pub mod big_query_write_server {
                             request: tonic::Request<tonic::Streaming<super::AppendRowsRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.append_rows(request).await };
+                            let fut = async move { (*inner).append_rows(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -631,7 +630,7 @@ pub mod big_query_write_server {
                             request: tonic::Request<super::GetWriteStreamRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_write_stream(request).await };
+                            let fut = async move { (*inner).get_write_stream(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -665,7 +664,7 @@ pub mod big_query_write_server {
                             request: tonic::Request<super::FinalizeWriteStreamRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.finalize_write_stream(request).await };
+                            let fut = async move { (*inner).finalize_write_stream(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -700,7 +699,7 @@ pub mod big_query_write_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.batch_commit_write_streams(request).await };
+                                async move { (*inner).batch_commit_write_streams(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -731,7 +730,7 @@ pub mod big_query_write_server {
                             request: tonic::Request<super::FlushRowsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.flush_rows(request).await };
+                            let fut = async move { (*inner).flush_rows(request).await };
                             Box::pin(fut)
                         }
                     }

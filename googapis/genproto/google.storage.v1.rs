@@ -3996,7 +3996,6 @@ pub mod storage_server {
     }
     #[doc = " Manages Google Cloud Storage resources."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct StorageServer<T: Storage> {
         inner: _Inner<T>,
     }
@@ -4043,7 +4042,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.delete_bucket_access_control(request).await };
+                                async move { (*inner).delete_bucket_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4077,7 +4076,8 @@ pub mod storage_server {
                             request: tonic::Request<super::GetBucketAccessControlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_bucket_access_control(request).await };
+                            let fut =
+                                async move { (*inner).get_bucket_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4112,7 +4112,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.insert_bucket_access_control(request).await };
+                                async move { (*inner).insert_bucket_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4147,7 +4147,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.list_bucket_access_controls(request).await };
+                                async move { (*inner).list_bucket_access_controls(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4182,7 +4182,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_bucket_access_control(request).await };
+                                async move { (*inner).update_bucket_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4217,7 +4217,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.patch_bucket_access_control(request).await };
+                                async move { (*inner).patch_bucket_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4248,7 +4248,7 @@ pub mod storage_server {
                             request: tonic::Request<super::DeleteBucketRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_bucket(request).await };
+                            let fut = async move { (*inner).delete_bucket(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4279,7 +4279,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetBucketRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_bucket(request).await };
+                            let fut = async move { (*inner).get_bucket(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4310,7 +4310,7 @@ pub mod storage_server {
                             request: tonic::Request<super::InsertBucketRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.insert_bucket(request).await };
+                            let fut = async move { (*inner).insert_bucket(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4341,7 +4341,7 @@ pub mod storage_server {
                             request: tonic::Request<super::ListChannelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_channels(request).await };
+                            let fut = async move { (*inner).list_channels(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4372,7 +4372,7 @@ pub mod storage_server {
                             request: tonic::Request<super::ListBucketsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_buckets(request).await };
+                            let fut = async move { (*inner).list_buckets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4406,7 +4406,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.lock_bucket_retention_policy(request).await };
+                                async move { (*inner).lock_bucket_retention_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4439,7 +4439,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_bucket_iam_policy(request).await };
+                            let fut = async move { (*inner).get_bucket_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4472,7 +4472,7 @@ pub mod storage_server {
                             request: tonic::Request<super::SetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_bucket_iam_policy(request).await };
+                            let fut = async move { (*inner).set_bucket_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4506,7 +4506,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.test_bucket_iam_permissions(request).await };
+                                async move { (*inner).test_bucket_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4537,7 +4537,7 @@ pub mod storage_server {
                             request: tonic::Request<super::PatchBucketRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.patch_bucket(request).await };
+                            let fut = async move { (*inner).patch_bucket(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4568,7 +4568,7 @@ pub mod storage_server {
                             request: tonic::Request<super::UpdateBucketRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_bucket(request).await };
+                            let fut = async move { (*inner).update_bucket(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4599,7 +4599,7 @@ pub mod storage_server {
                             request: tonic::Request<super::StopChannelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.stop_channel(request).await };
+                            let fut = async move { (*inner).stop_channel(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4634,7 +4634,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.delete_default_object_access_control(request).await
+                                (*inner).delete_default_object_access_control(request).await
                             };
                             Box::pin(fut)
                         }
@@ -4670,7 +4670,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.get_default_object_access_control(request).await
+                                (*inner).get_default_object_access_control(request).await
                             };
                             Box::pin(fut)
                         }
@@ -4706,7 +4706,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.insert_default_object_access_control(request).await
+                                (*inner).insert_default_object_access_control(request).await
                             };
                             Box::pin(fut)
                         }
@@ -4742,7 +4742,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.list_default_object_access_controls(request).await
+                                (*inner).list_default_object_access_controls(request).await
                             };
                             Box::pin(fut)
                         }
@@ -4778,7 +4778,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.patch_default_object_access_control(request).await
+                                (*inner).patch_default_object_access_control(request).await
                             };
                             Box::pin(fut)
                         }
@@ -4814,7 +4814,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move {
-                                inner.update_default_object_access_control(request).await
+                                (*inner).update_default_object_access_control(request).await
                             };
                             Box::pin(fut)
                         }
@@ -4848,7 +4848,7 @@ pub mod storage_server {
                             request: tonic::Request<super::DeleteNotificationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_notification(request).await };
+                            let fut = async move { (*inner).delete_notification(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4881,7 +4881,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetNotificationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_notification(request).await };
+                            let fut = async move { (*inner).get_notification(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4914,7 +4914,7 @@ pub mod storage_server {
                             request: tonic::Request<super::InsertNotificationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.insert_notification(request).await };
+                            let fut = async move { (*inner).insert_notification(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4947,7 +4947,7 @@ pub mod storage_server {
                             request: tonic::Request<super::ListNotificationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_notifications(request).await };
+                            let fut = async move { (*inner).list_notifications(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4982,7 +4982,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.delete_object_access_control(request).await };
+                                async move { (*inner).delete_object_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5016,7 +5016,8 @@ pub mod storage_server {
                             request: tonic::Request<super::GetObjectAccessControlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_object_access_control(request).await };
+                            let fut =
+                                async move { (*inner).get_object_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5051,7 +5052,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.insert_object_access_control(request).await };
+                                async move { (*inner).insert_object_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5086,7 +5087,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.list_object_access_controls(request).await };
+                                async move { (*inner).list_object_access_controls(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5121,7 +5122,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.patch_object_access_control(request).await };
+                                async move { (*inner).patch_object_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5156,7 +5157,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.update_object_access_control(request).await };
+                                async move { (*inner).update_object_access_control(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5187,7 +5188,7 @@ pub mod storage_server {
                             request: tonic::Request<super::ComposeObjectRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.compose_object(request).await };
+                            let fut = async move { (*inner).compose_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5218,7 +5219,7 @@ pub mod storage_server {
                             request: tonic::Request<super::CopyObjectRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.copy_object(request).await };
+                            let fut = async move { (*inner).copy_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5249,7 +5250,7 @@ pub mod storage_server {
                             request: tonic::Request<super::DeleteObjectRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_object(request).await };
+                            let fut = async move { (*inner).delete_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5280,7 +5281,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetObjectRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_object(request).await };
+                            let fut = async move { (*inner).get_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5316,7 +5317,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetObjectMediaRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_object_media(request).await };
+                            let fut = async move { (*inner).get_object_media(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5350,7 +5351,7 @@ pub mod storage_server {
                             request: tonic::Request<tonic::Streaming<super::InsertObjectRequest>>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.insert_object(request).await };
+                            let fut = async move { (*inner).insert_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5381,7 +5382,7 @@ pub mod storage_server {
                             request: tonic::Request<super::ListObjectsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_objects(request).await };
+                            let fut = async move { (*inner).list_objects(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5412,7 +5413,7 @@ pub mod storage_server {
                             request: tonic::Request<super::RewriteObjectRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.rewrite_object(request).await };
+                            let fut = async move { (*inner).rewrite_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5445,7 +5446,7 @@ pub mod storage_server {
                             request: tonic::Request<super::StartResumableWriteRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.start_resumable_write(request).await };
+                            let fut = async move { (*inner).start_resumable_write(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5478,7 +5479,7 @@ pub mod storage_server {
                             request: tonic::Request<super::QueryWriteStatusRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.query_write_status(request).await };
+                            let fut = async move { (*inner).query_write_status(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5509,7 +5510,7 @@ pub mod storage_server {
                             request: tonic::Request<super::PatchObjectRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.patch_object(request).await };
+                            let fut = async move { (*inner).patch_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5540,7 +5541,7 @@ pub mod storage_server {
                             request: tonic::Request<super::UpdateObjectRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_object(request).await };
+                            let fut = async move { (*inner).update_object(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5573,7 +5574,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_object_iam_policy(request).await };
+                            let fut = async move { (*inner).get_object_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5606,7 +5607,7 @@ pub mod storage_server {
                             request: tonic::Request<super::SetIamPolicyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_object_iam_policy(request).await };
+                            let fut = async move { (*inner).set_object_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5640,7 +5641,7 @@ pub mod storage_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.test_object_iam_permissions(request).await };
+                                async move { (*inner).test_object_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5673,7 +5674,7 @@ pub mod storage_server {
                             request: tonic::Request<super::WatchAllObjectsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.watch_all_objects(request).await };
+                            let fut = async move { (*inner).watch_all_objects(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5707,7 +5708,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetProjectServiceAccountRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_service_account(request).await };
+                            let fut = async move { (*inner).get_service_account(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5738,7 +5739,7 @@ pub mod storage_server {
                             request: tonic::Request<super::CreateHmacKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_hmac_key(request).await };
+                            let fut = async move { (*inner).create_hmac_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5769,7 +5770,7 @@ pub mod storage_server {
                             request: tonic::Request<super::DeleteHmacKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_hmac_key(request).await };
+                            let fut = async move { (*inner).delete_hmac_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5800,7 +5801,7 @@ pub mod storage_server {
                             request: tonic::Request<super::GetHmacKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_hmac_key(request).await };
+                            let fut = async move { (*inner).get_hmac_key(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5831,7 +5832,7 @@ pub mod storage_server {
                             request: tonic::Request<super::ListHmacKeysRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_hmac_keys(request).await };
+                            let fut = async move { (*inner).list_hmac_keys(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5862,7 +5863,7 @@ pub mod storage_server {
                             request: tonic::Request<super::UpdateHmacKeyRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_hmac_key(request).await };
+                            let fut = async move { (*inner).update_hmac_key(request).await };
                             Box::pin(fut)
                         }
                     }

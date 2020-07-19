@@ -2365,7 +2365,6 @@ pub mod result_store_download_server {
     #[doc = " Most APIs require setting a response FieldMask via the 'fields' URL query"]
     #[doc = " parameter or the X-Goog-FieldMask HTTP/gRPC header."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ResultStoreDownloadServer<T: ResultStoreDownload> {
         inner: _Inner<T>,
     }
@@ -2396,7 +2395,7 @@ pub mod result_store_download_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             let inner = self.inner.clone();
-            match req . uri ( ) . path ( ) { "/google.devtools.resultstore.v2.ResultStoreDownload/GetInvocation" => { # [ allow ( non_camel_case_types ) ] struct GetInvocationSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetInvocationRequest > for GetInvocationSvc < T > { type Response = super :: Invocation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetInvocationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_invocation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetInvocationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/SearchInvocations" => { # [ allow ( non_camel_case_types ) ] struct SearchInvocationsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: SearchInvocationsRequest > for SearchInvocationsSvc < T > { type Response = super :: SearchInvocationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SearchInvocationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . search_invocations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SearchInvocationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetInvocationDownloadMetadata" => { # [ allow ( non_camel_case_types ) ] struct GetInvocationDownloadMetadataSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetInvocationDownloadMetadataRequest > for GetInvocationDownloadMetadataSvc < T > { type Response = super :: DownloadMetadata ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetInvocationDownloadMetadataRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_invocation_download_metadata ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetInvocationDownloadMetadataSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetConfiguration" => { # [ allow ( non_camel_case_types ) ] struct GetConfigurationSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetConfigurationRequest > for GetConfigurationSvc < T > { type Response = super :: Configuration ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetConfigurationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_configuration ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetConfigurationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListConfigurations" => { # [ allow ( non_camel_case_types ) ] struct ListConfigurationsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListConfigurationsRequest > for ListConfigurationsSvc < T > { type Response = super :: ListConfigurationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListConfigurationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_configurations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListConfigurationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetTarget" => { # [ allow ( non_camel_case_types ) ] struct GetTargetSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetTargetRequest > for GetTargetSvc < T > { type Response = super :: Target ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetTargetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_target ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetTargetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListTargets" => { # [ allow ( non_camel_case_types ) ] struct ListTargetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListTargetsRequest > for ListTargetsSvc < T > { type Response = super :: ListTargetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListTargetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_targets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListTargetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetConfiguredTarget" => { # [ allow ( non_camel_case_types ) ] struct GetConfiguredTargetSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetConfiguredTargetRequest > for GetConfiguredTargetSvc < T > { type Response = super :: ConfiguredTarget ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetConfiguredTargetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_configured_target ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetConfiguredTargetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListConfiguredTargets" => { # [ allow ( non_camel_case_types ) ] struct ListConfiguredTargetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListConfiguredTargetsRequest > for ListConfiguredTargetsSvc < T > { type Response = super :: ListConfiguredTargetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListConfiguredTargetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_configured_targets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListConfiguredTargetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetAction" => { # [ allow ( non_camel_case_types ) ] struct GetActionSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetActionRequest > for GetActionSvc < T > { type Response = super :: Action ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetActionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_action ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetActionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListActions" => { # [ allow ( non_camel_case_types ) ] struct ListActionsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListActionsRequest > for ListActionsSvc < T > { type Response = super :: ListActionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListActionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_actions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListActionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetFileSet" => { # [ allow ( non_camel_case_types ) ] struct GetFileSetSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetFileSetRequest > for GetFileSetSvc < T > { type Response = super :: FileSet ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetFileSetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . get_file_set ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetFileSetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListFileSets" => { # [ allow ( non_camel_case_types ) ] struct ListFileSetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListFileSetsRequest > for ListFileSetsSvc < T > { type Response = super :: ListFileSetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListFileSetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . list_file_sets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListFileSetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/TraverseFileSets" => { # [ allow ( non_camel_case_types ) ] struct TraverseFileSetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: TraverseFileSetsRequest > for TraverseFileSetsSvc < T > { type Response = super :: TraverseFileSetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: TraverseFileSetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { inner . traverse_file_sets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = TraverseFileSetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
+            match req . uri ( ) . path ( ) { "/google.devtools.resultstore.v2.ResultStoreDownload/GetInvocation" => { # [ allow ( non_camel_case_types ) ] struct GetInvocationSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetInvocationRequest > for GetInvocationSvc < T > { type Response = super :: Invocation ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetInvocationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_invocation ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetInvocationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/SearchInvocations" => { # [ allow ( non_camel_case_types ) ] struct SearchInvocationsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: SearchInvocationsRequest > for SearchInvocationsSvc < T > { type Response = super :: SearchInvocationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: SearchInvocationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . search_invocations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = SearchInvocationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetInvocationDownloadMetadata" => { # [ allow ( non_camel_case_types ) ] struct GetInvocationDownloadMetadataSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetInvocationDownloadMetadataRequest > for GetInvocationDownloadMetadataSvc < T > { type Response = super :: DownloadMetadata ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetInvocationDownloadMetadataRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_invocation_download_metadata ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetInvocationDownloadMetadataSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetConfiguration" => { # [ allow ( non_camel_case_types ) ] struct GetConfigurationSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetConfigurationRequest > for GetConfigurationSvc < T > { type Response = super :: Configuration ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetConfigurationRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_configuration ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetConfigurationSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListConfigurations" => { # [ allow ( non_camel_case_types ) ] struct ListConfigurationsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListConfigurationsRequest > for ListConfigurationsSvc < T > { type Response = super :: ListConfigurationsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListConfigurationsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_configurations ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListConfigurationsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetTarget" => { # [ allow ( non_camel_case_types ) ] struct GetTargetSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetTargetRequest > for GetTargetSvc < T > { type Response = super :: Target ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetTargetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_target ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetTargetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListTargets" => { # [ allow ( non_camel_case_types ) ] struct ListTargetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListTargetsRequest > for ListTargetsSvc < T > { type Response = super :: ListTargetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListTargetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_targets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListTargetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetConfiguredTarget" => { # [ allow ( non_camel_case_types ) ] struct GetConfiguredTargetSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetConfiguredTargetRequest > for GetConfiguredTargetSvc < T > { type Response = super :: ConfiguredTarget ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetConfiguredTargetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_configured_target ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetConfiguredTargetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListConfiguredTargets" => { # [ allow ( non_camel_case_types ) ] struct ListConfiguredTargetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListConfiguredTargetsRequest > for ListConfiguredTargetsSvc < T > { type Response = super :: ListConfiguredTargetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListConfiguredTargetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_configured_targets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListConfiguredTargetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetAction" => { # [ allow ( non_camel_case_types ) ] struct GetActionSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetActionRequest > for GetActionSvc < T > { type Response = super :: Action ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetActionRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_action ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetActionSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListActions" => { # [ allow ( non_camel_case_types ) ] struct ListActionsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListActionsRequest > for ListActionsSvc < T > { type Response = super :: ListActionsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListActionsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_actions ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListActionsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/GetFileSet" => { # [ allow ( non_camel_case_types ) ] struct GetFileSetSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: GetFileSetRequest > for GetFileSetSvc < T > { type Response = super :: FileSet ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: GetFileSetRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . get_file_set ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = GetFileSetSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/ListFileSets" => { # [ allow ( non_camel_case_types ) ] struct ListFileSetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: ListFileSetsRequest > for ListFileSetsSvc < T > { type Response = super :: ListFileSetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: ListFileSetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . list_file_sets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = ListFileSetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } "/google.devtools.resultstore.v2.ResultStoreDownload/TraverseFileSets" => { # [ allow ( non_camel_case_types ) ] struct TraverseFileSetsSvc < T : ResultStoreDownload > ( pub Arc < T > ) ; impl < T : ResultStoreDownload > tonic :: server :: UnaryService < super :: TraverseFileSetsRequest > for TraverseFileSetsSvc < T > { type Response = super :: TraverseFileSetsResponse ; type Future = BoxFuture < tonic :: Response < Self :: Response > , tonic :: Status > ; fn call ( & mut self , request : tonic :: Request < super :: TraverseFileSetsRequest > ) -> Self :: Future { let inner = self . 0 . clone ( ) ; let fut = async move { ( * inner ) . traverse_file_sets ( request ) . await } ; Box :: pin ( fut ) } } let inner = self . inner . clone ( ) ; let fut = async move { let interceptor = inner . 1 . clone ( ) ; let inner = inner . 0 ; let method = TraverseFileSetsSvc ( inner ) ; let codec = tonic :: codec :: ProstCodec :: default ( ) ; let mut grpc = if let Some ( interceptor ) = interceptor { tonic :: server :: Grpc :: with_interceptor ( codec , interceptor ) } else { tonic :: server :: Grpc :: new ( codec ) } ; let res = grpc . unary ( method , req ) . await ; Ok ( res ) } ; Box :: pin ( fut ) } _ => Box :: pin ( async move { Ok ( http :: Response :: builder ( ) . status ( 200 ) . header ( "grpc-status" , "12" ) . body ( tonic :: body :: BoxBody :: empty ( ) ) . unwrap ( ) ) } ) , }
         }
     }
     impl<T: ResultStoreDownload> Clone for ResultStoreDownloadServer<T> {
@@ -2603,7 +2602,6 @@ pub mod result_store_file_download_server {
     #[doc = " This API allows download of File messages referenced in"]
     #[doc = " ResultStore resources."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ResultStoreFileDownloadServer<T: ResultStoreFileDownload> {
         inner: _Inner<T>,
     }
@@ -2651,7 +2649,7 @@ pub mod result_store_file_download_server {
                             request: tonic::Request<super::GetFileRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_file(request).await };
+                            let fut = async move { (*inner).get_file(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -2685,7 +2683,7 @@ pub mod result_store_file_download_server {
                             request: tonic::Request<super::GetFileTailRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_file_tail(request).await };
+                            let fut = async move { (*inner).get_file_tail(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4587,7 +4585,6 @@ pub mod result_store_upload_server {
     #[doc = " uploader should hold as little state as possible in memory to avoid running"]
     #[doc = " out of memory."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct ResultStoreUploadServer<T: ResultStoreUpload> {
         inner: _Inner<T>,
     }
@@ -4633,7 +4630,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::CreateInvocationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_invocation(request).await };
+                            let fut = async move { (*inner).create_invocation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4667,7 +4664,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::UpdateInvocationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_invocation(request).await };
+                            let fut = async move { (*inner).update_invocation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4701,7 +4698,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::MergeInvocationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.merge_invocation(request).await };
+                            let fut = async move { (*inner).merge_invocation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4735,7 +4732,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::TouchInvocationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.touch_invocation(request).await };
+                            let fut = async move { (*inner).touch_invocation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4769,7 +4766,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::FinalizeInvocationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.finalize_invocation(request).await };
+                            let fut = async move { (*inner).finalize_invocation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4803,7 +4800,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::DeleteInvocationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_invocation(request).await };
+                            let fut = async move { (*inner).delete_invocation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4837,7 +4834,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::CreateTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_target(request).await };
+                            let fut = async move { (*inner).create_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4871,7 +4868,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::UpdateTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_target(request).await };
+                            let fut = async move { (*inner).update_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4905,7 +4902,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::MergeTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.merge_target(request).await };
+                            let fut = async move { (*inner).merge_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4939,7 +4936,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::FinalizeTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.finalize_target(request).await };
+                            let fut = async move { (*inner).finalize_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4973,7 +4970,8 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::CreateConfiguredTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_configured_target(request).await };
+                            let fut =
+                                async move { (*inner).create_configured_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5007,7 +5005,8 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::UpdateConfiguredTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_configured_target(request).await };
+                            let fut =
+                                async move { (*inner).update_configured_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5041,7 +5040,8 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::MergeConfiguredTargetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.merge_configured_target(request).await };
+                            let fut =
+                                async move { (*inner).merge_configured_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5076,7 +5076,7 @@ pub mod result_store_upload_server {
                         ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut =
-                                async move { inner.finalize_configured_target(request).await };
+                                async move { (*inner).finalize_configured_target(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5110,7 +5110,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::CreateActionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_action(request).await };
+                            let fut = async move { (*inner).create_action(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5144,7 +5144,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::UpdateActionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_action(request).await };
+                            let fut = async move { (*inner).update_action(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5178,7 +5178,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::MergeActionRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.merge_action(request).await };
+                            let fut = async move { (*inner).merge_action(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5212,7 +5212,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::CreateConfigurationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_configuration(request).await };
+                            let fut = async move { (*inner).create_configuration(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5246,7 +5246,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::UpdateConfigurationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_configuration(request).await };
+                            let fut = async move { (*inner).update_configuration(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5280,7 +5280,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::CreateFileSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_file_set(request).await };
+                            let fut = async move { (*inner).create_file_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5314,7 +5314,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::UpdateFileSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_file_set(request).await };
+                            let fut = async move { (*inner).update_file_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5348,7 +5348,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::MergeFileSetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.merge_file_set(request).await };
+                            let fut = async move { (*inner).merge_file_set(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5382,7 +5382,7 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::UploadBatchRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.upload_batch(request).await };
+                            let fut = async move { (*inner).upload_batch(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -5416,8 +5416,9 @@ pub mod result_store_upload_server {
                             request: tonic::Request<super::GetInvocationUploadMetadataRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.get_invocation_upload_metadata(request).await };
+                            let fut = async move {
+                                (*inner).get_invocation_upload_metadata(request).await
+                            };
                             Box::pin(fut)
                         }
                     }

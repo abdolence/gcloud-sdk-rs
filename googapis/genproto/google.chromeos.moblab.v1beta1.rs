@@ -302,7 +302,6 @@ pub mod build_service_server {
     }
     #[doc = " Manages Chrome OS build services."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct BuildServiceServer<T: BuildService> {
         inner: _Inner<T>,
     }
@@ -345,7 +344,7 @@ pub mod build_service_server {
                             request: tonic::Request<super::ListBuildsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_builds(request).await };
+                            let fut = async move { (*inner).list_builds(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -379,7 +378,8 @@ pub mod build_service_server {
                             request: tonic::Request<super::CheckBuildStageStatusRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.check_build_stage_status(request).await };
+                            let fut =
+                                async move { (*inner).check_build_stage_status(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -410,7 +410,7 @@ pub mod build_service_server {
                             request: tonic::Request<super::StageBuildRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.stage_build(request).await };
+                            let fut = async move { (*inner).stage_build(request).await };
                             Box::pin(fut)
                         }
                     }

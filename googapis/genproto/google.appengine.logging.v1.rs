@@ -162,6 +162,10 @@ pub struct RequestLog {
     /// Stackdriver Trace identifier for this request.
     #[prost(string, tag = "39")]
     pub trace_id: std::string::String,
+    /// If true, the value in the 'trace_id' field was sampled for storage in a
+    /// trace backend.
+    #[prost(bool, tag = "43")]
+    pub trace_sampled: bool,
     /// Source code for the application that handled this request. There can be
     /// more than one source reference per deployed application if source code is
     /// distributed among multiple repositories.

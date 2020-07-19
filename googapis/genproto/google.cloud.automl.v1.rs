@@ -3042,7 +3042,6 @@ pub mod prediction_service_server {
     #[doc = " On any input that is documented to expect a string parameter in"]
     #[doc = " snake_case or kebab-case, either of those cases is accepted."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct PredictionServiceServer<T: PredictionService> {
         inner: _Inner<T>,
     }
@@ -3085,7 +3084,7 @@ pub mod prediction_service_server {
                             request: tonic::Request<super::PredictRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.predict(request).await };
+                            let fut = async move { (*inner).predict(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -3119,7 +3118,7 @@ pub mod prediction_service_server {
                             request: tonic::Request<super::BatchPredictRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_predict(request).await };
+                            let fut = async move { (*inner).batch_predict(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4036,7 +4035,6 @@ pub mod auto_ml_server {
     #[doc = " On any input that is documented to expect a string parameter in"]
     #[doc = " snake_case or kebab-case, either of those cases is accepted."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct AutoMlServer<T: AutoMl> {
         inner: _Inner<T>,
     }
@@ -4079,7 +4077,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::CreateDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_dataset(request).await };
+                            let fut = async move { (*inner).create_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4110,7 +4108,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::GetDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_dataset(request).await };
+                            let fut = async move { (*inner).get_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4141,7 +4139,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::ListDatasetsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_datasets(request).await };
+                            let fut = async move { (*inner).list_datasets(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4172,7 +4170,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::UpdateDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_dataset(request).await };
+                            let fut = async move { (*inner).update_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4203,7 +4201,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::DeleteDatasetRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_dataset(request).await };
+                            let fut = async move { (*inner).delete_dataset(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4234,7 +4232,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::ImportDataRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.import_data(request).await };
+                            let fut = async move { (*inner).import_data(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4265,7 +4263,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::ExportDataRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_data(request).await };
+                            let fut = async move { (*inner).export_data(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4298,7 +4296,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::GetAnnotationSpecRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_annotation_spec(request).await };
+                            let fut = async move { (*inner).get_annotation_spec(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4329,7 +4327,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::CreateModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_model(request).await };
+                            let fut = async move { (*inner).create_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4360,7 +4358,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::GetModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_model(request).await };
+                            let fut = async move { (*inner).get_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4391,7 +4389,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::ListModelsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_models(request).await };
+                            let fut = async move { (*inner).list_models(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4422,7 +4420,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::DeleteModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_model(request).await };
+                            let fut = async move { (*inner).delete_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4453,7 +4451,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::UpdateModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_model(request).await };
+                            let fut = async move { (*inner).update_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4484,7 +4482,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::DeployModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.deploy_model(request).await };
+                            let fut = async move { (*inner).deploy_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4515,7 +4513,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::UndeployModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.undeploy_model(request).await };
+                            let fut = async move { (*inner).undeploy_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4546,7 +4544,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::ExportModelRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.export_model(request).await };
+                            let fut = async move { (*inner).export_model(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4579,7 +4577,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::GetModelEvaluationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_model_evaluation(request).await };
+                            let fut = async move { (*inner).get_model_evaluation(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -4612,7 +4610,7 @@ pub mod auto_ml_server {
                             request: tonic::Request<super::ListModelEvaluationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_model_evaluations(request).await };
+                            let fut = async move { (*inner).list_model_evaluations(request).await };
                             Box::pin(fut)
                         }
                     }

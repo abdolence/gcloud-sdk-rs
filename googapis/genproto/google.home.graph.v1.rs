@@ -626,7 +626,6 @@ pub mod home_graph_api_service_server {
     #[doc = " For more details, see the [Home Graph developer"]
     #[doc = " guide](https://developers.google.com/assistant/smarthome/concepts/homegraph)."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct HomeGraphApiServiceServer<T: HomeGraphApiService> {
         inner: _Inner<T>,
     }
@@ -672,7 +671,7 @@ pub mod home_graph_api_service_server {
                             request: tonic::Request<super::RequestSyncDevicesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.request_sync_devices(request).await };
+                            let fut = async move { (*inner).request_sync_devices(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -706,8 +705,9 @@ pub mod home_graph_api_service_server {
                             request: tonic::Request<super::ReportStateAndNotificationRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut =
-                                async move { inner.report_state_and_notification(request).await };
+                            let fut = async move {
+                                (*inner).report_state_and_notification(request).await
+                            };
                             Box::pin(fut)
                         }
                     }
@@ -741,7 +741,7 @@ pub mod home_graph_api_service_server {
                             request: tonic::Request<super::DeleteAgentUserRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_agent_user(request).await };
+                            let fut = async move { (*inner).delete_agent_user(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -772,7 +772,7 @@ pub mod home_graph_api_service_server {
                             request: tonic::Request<super::QueryRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.query(request).await };
+                            let fut = async move { (*inner).query(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -803,7 +803,7 @@ pub mod home_graph_api_service_server {
                             request: tonic::Request<super::SyncRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.sync(request).await };
+                            let fut = async move { (*inner).sync(request).await };
                             Box::pin(fut)
                         }
                     }

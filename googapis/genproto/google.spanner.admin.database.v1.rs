@@ -1382,7 +1382,6 @@ pub mod database_admin_server {
     #[doc = " databases. It can be also used to create, delete and list backups for a"]
     #[doc = " database and to restore from an existing backup."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct DatabaseAdminServer<T: DatabaseAdmin> {
         inner: _Inner<T>,
     }
@@ -1427,7 +1426,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::ListDatabasesRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_databases(request).await };
+                            let fut = async move { (*inner).list_databases(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1460,7 +1459,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::CreateDatabaseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_database(request).await };
+                            let fut = async move { (*inner).create_database(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1493,7 +1492,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::GetDatabaseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_database(request).await };
+                            let fut = async move { (*inner).get_database(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1527,7 +1526,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::UpdateDatabaseDdlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_database_ddl(request).await };
+                            let fut = async move { (*inner).update_database_ddl(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1560,7 +1559,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::DropDatabaseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.drop_database(request).await };
+                            let fut = async move { (*inner).drop_database(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1593,7 +1592,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::GetDatabaseDdlRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_database_ddl(request).await };
+                            let fut = async move { (*inner).get_database_ddl(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1630,7 +1629,7 @@ pub mod database_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.set_iam_policy(request).await };
+                            let fut = async move { (*inner).set_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1667,7 +1666,7 @@ pub mod database_admin_server {
                             >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_iam_policy(request).await };
+                            let fut = async move { (*inner).get_iam_policy(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1703,7 +1702,7 @@ pub mod database_admin_server {
                             request : tonic :: Request < super :: super :: super :: super :: super :: iam :: v1 :: TestIamPermissionsRequest >,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.test_iam_permissions(request).await };
+                            let fut = async move { (*inner).test_iam_permissions(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1736,7 +1735,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::CreateBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_backup(request).await };
+                            let fut = async move { (*inner).create_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1767,7 +1766,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::GetBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.get_backup(request).await };
+                            let fut = async move { (*inner).get_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1800,7 +1799,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::UpdateBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.update_backup(request).await };
+                            let fut = async move { (*inner).update_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1833,7 +1832,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::DeleteBackupRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.delete_backup(request).await };
+                            let fut = async move { (*inner).delete_backup(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1866,7 +1865,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::ListBackupsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_backups(request).await };
+                            let fut = async move { (*inner).list_backups(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1900,7 +1899,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::RestoreDatabaseRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.restore_database(request).await };
+                            let fut = async move { (*inner).restore_database(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1934,7 +1933,8 @@ pub mod database_admin_server {
                             request: tonic::Request<super::ListDatabaseOperationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_database_operations(request).await };
+                            let fut =
+                                async move { (*inner).list_database_operations(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -1968,7 +1968,7 @@ pub mod database_admin_server {
                             request: tonic::Request<super::ListBackupOperationsRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.list_backup_operations(request).await };
+                            let fut = async move { (*inner).list_backup_operations(request).await };
                             Box::pin(fut)
                         }
                     }

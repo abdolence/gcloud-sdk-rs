@@ -6,7 +6,7 @@
 /// gaps or overlaps between spans in a trace.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Span {
-    /// The resource name of the span in the following format:
+    /// Required. The resource name of the span in the following format:
     ///
     ///     projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
     ///
@@ -17,14 +17,14 @@ pub struct Span {
     /// is a 16-character hexadecimal encoding of an 8-byte array.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// The [SPAN_ID] portion of the span's resource name.
+    /// Required. The [SPAN_ID] portion of the span's resource name.
     #[prost(string, tag = "2")]
     pub span_id: std::string::String,
     /// The [SPAN_ID] of this span's parent span. If this is a root span,
     /// then this field must be empty.
     #[prost(string, tag = "3")]
     pub parent_span_id: std::string::String,
-    /// A description of the span's operation (up to 128 bytes).
+    /// Required. A description of the span's operation (up to 128 bytes).
     /// Stackdriver Trace displays the description in the
     /// Google Cloud Platform Console.
     /// For example, the display name can be a qualified method name or a file name
@@ -33,12 +33,12 @@ pub struct Span {
     /// This makes it easier to correlate spans in different traces.
     #[prost(message, optional, tag = "4")]
     pub display_name: ::std::option::Option<TruncatableString>,
-    /// The start time of the span. On the client side, this is the time kept by
+    /// Required. The start time of the span. On the client side, this is the time kept by
     /// the local machine where the span execution starts. On the server side, this
     /// is the time when the server's application handler starts running.
     #[prost(message, optional, tag = "5")]
     pub start_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// The end time of the span. On the client side, this is the time kept by
+    /// Required. The end time of the span. On the client side, this is the time kept by
     /// the local machine where the span execution ends. On the server side, this
     /// is the time when the server application handler stops running.
     #[prost(message, optional, tag = "6")]
@@ -70,6 +70,11 @@ pub struct Span {
     /// was active. If set, allows implementation to detect missing child spans.
     #[prost(message, optional, tag = "13")]
     pub child_span_count: ::std::option::Option<i32>,
+    /// Optional. Distinguishes between spans generated in a particular context. For example,
+    /// two spans with the same name may be distinguished using `CLIENT` (caller)
+    /// and `SERVER` (callee) to identify an RPC call.
+    #[prost(enumeration = "span::SpanKind", tag = "14")]
+    pub span_kind: i32,
 }
 pub mod span {
     /// A set of attributes, each in the format `[KEY]:[VALUE]`.
@@ -79,10 +84,9 @@ pub mod span {
         /// long. The value can be a string up to 256 bytes, a signed 64-bit integer,
         /// or the Boolean values `true` and `false`. For example:
         ///
-        ///     "/instance_id": "my-instance"
-        ///     "/http/user_agent": ""
-        ///     "/http/request_bytes": 300
-        ///     "abc.com/myattribute": true
+        ///     "/instance_id": { "string_value": { "value": "my-instance" } }
+        ///     "/http/request_bytes": { "int_value": 300 }
+        ///     "abc.com/myattribute": { "bool_value": false }
         #[prost(map = "string, message", tag = "1")]
         pub attribute_map: ::std::collections::HashMap<std::string::String, super::AttributeValue>,
         /// The number of attributes that were discarded. Attributes can be discarded
@@ -224,6 +228,33 @@ pub mod span {
         /// this value is 0, then no links were dropped.
         #[prost(int32, tag = "2")]
         pub dropped_links_count: i32,
+    }
+    /// Type of span. Can be used to specify additional relationships between spans
+    /// in addition to a parent/child relationship.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SpanKind {
+        /// Unspecified. Do NOT use as default.
+        /// Implementations MAY assume SpanKind.INTERNAL to be default.
+        Unspecified = 0,
+        /// Indicates that the span is used internally. Default value.
+        Internal = 1,
+        /// Indicates that the span covers server-side handling of an RPC or other
+        /// remote network request.
+        Server = 2,
+        /// Indicates that the span covers the client-side wrapper around an RPC or
+        /// other remote request.
+        Client = 3,
+        /// Indicates that the span describes producer sending a message to a broker.
+        /// Unlike client and  server, there is no direct critical path latency
+        /// relationship between producer and consumer spans (e.g. publishing a
+        /// message to a pubsub service).
+        Producer = 4,
+        /// Indicates that the span describes consumer receiving a message from a
+        /// broker. Unlike client and  server, there is no direct critical path
+        /// latency relationship between producer and consumer spans (e.g. receiving
+        /// a message from a pubsub service subscription).
+        Consumer = 5,
     }
 }
 /// The allowed types for [VALUE] in a `[KEY]:[VALUE]` attribute.
@@ -452,7 +483,6 @@ pub mod trace_service_server {
     #[doc = " timed event which forms a node of the trace tree. A single trace may"]
     #[doc = " contain span(s) from multiple services."]
     #[derive(Debug)]
-    #[doc(hidden)]
     pub struct TraceServiceServer<T: TraceService> {
         inner: _Inner<T>,
     }
@@ -497,7 +527,7 @@ pub mod trace_service_server {
                             request: tonic::Request<super::BatchWriteSpansRequest>,
                         ) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.batch_write_spans(request).await };
+                            let fut = async move { (*inner).batch_write_spans(request).await };
                             Box::pin(fut)
                         }
                     }
@@ -525,7 +555,7 @@ pub mod trace_service_server {
                         type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
                         fn call(&mut self, request: tonic::Request<super::Span>) -> Self::Future {
                             let inner = self.0.clone();
-                            let fut = async move { inner.create_span(request).await };
+                            let fut = async move { (*inner).create_span(request).await };
                             Box::pin(fut)
                         }
                     }
