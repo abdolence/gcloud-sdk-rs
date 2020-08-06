@@ -56,8 +56,7 @@ pub struct ValidationResult {
 /// conversations required for your system.
 ///
 /// For more information about agents, see the
-/// [Agents
-/// documentation](https://cloud.google.com/dialogflow/docs/agents-overview).
+/// [Agent guide](https://cloud.google.com/dialogflow/docs/agents-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Agent {
     /// Required. The project of this agent.
@@ -560,6 +559,7 @@ pub struct SpeechContext {
     /// recognizer should recognize with higher likelihood.
     ///
     /// This list can be used to:
+    ///
     /// * improve accuracy for words and phrases you expect the user to say,
     ///   e.g. typical commands for your Dialogflow agent
     /// * add additional words to the speech recognizer vocabulary
@@ -866,7 +866,21 @@ pub enum OutputAudioEncoding {
     /// than MP3 while using approximately the same bitrate.
     OggOpus = 3,
 }
-/// Represents a context.
+/// Dialogflow contexts are similar to natural language context. If a person says
+/// to you "they are orange", you need context in order to understand what "they"
+/// is referring to. Similarly, for Dialogflow to handle an end-user expression
+/// like that, it needs to be provided with context in order to correctly match
+/// an intent.
+///
+/// Using contexts, you can control the flow of a conversation. You can configure
+/// contexts for an intent by setting input and output contexts, which are
+/// identified by string names. When an intent is matched, any configured output
+/// contexts for that intent become active. While any contexts are active,
+/// Dialogflow is more likely to match intents that are configured with input
+/// contexts that correspond to the currently active contexts.
+///
+/// For more information about context, see the
+/// [Contexts guide](https://cloud.google.com/dialogflow/docs/contexts-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Context {
     /// Required. The unique identifier of the context. Format:
@@ -1008,24 +1022,7 @@ pub struct DeleteAllContextsRequest {
 pub mod contexts_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " A context represents additional information included with user input or with"]
-    #[doc = " an intent returned by the Dialogflow API. Contexts are helpful for"]
-    #[doc = " differentiating user input which may be vague or have a different meaning"]
-    #[doc = " depending on additional details from your application such as user setting"]
-    #[doc = " and preferences, previous user input, where the user is in your application,"]
-    #[doc = " geographic location, and so on."]
-    #[doc = ""]
-    #[doc = " You can include contexts as input parameters of a"]
-    #[doc = " [DetectIntent][google.cloud.dialogflow.v2.Sessions.DetectIntent] (or"]
-    #[doc = " [StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]) request,"]
-    #[doc = " or as output contexts included in the returned intent."]
-    #[doc = " Contexts expire when an intent is matched, after the number of `DetectIntent`"]
-    #[doc = " requests specified by the `lifespan_count` parameter, or after 20 minutes"]
-    #[doc = " if no intents are matched for a `DetectIntent` request."]
-    #[doc = ""]
-    #[doc = " For more information about contexts, see the"]
-    #[doc = " [Dialogflow"]
-    #[doc = " documentation](https://cloud.google.com/dialogflow/docs/contexts-overview)."]
+    #[doc = " Service for managing [Contexts][google.cloud.dialogflow.v2.Context]."]
     pub struct ContextsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -1162,9 +1159,18 @@ pub mod contexts_client {
         }
     }
 }
-/// Represents an entity type.
-/// Entity types serve as a tool for extracting parameter values from natural
-/// language queries.
+/// Each intent parameter has a type, called the entity type, which dictates
+/// exactly how data from an end-user expression is extracted.
+///
+/// Dialogflow provides predefined system entities that can match many common
+/// types of data. For example, there are system entities for matching dates,
+/// times, colors, email addresses, and so on. You can also create your own
+/// custom entities for matching custom data. For example, you could define a
+/// vegetable entity that can match the types of vegetables available for
+/// purchase with a grocery store agent.
+///
+/// For more information, see the
+/// [Entity guide](https://cloud.google.com/dialogflow/docs/entities-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityType {
     /// The unique identifier of the entity type.
@@ -1479,34 +1485,7 @@ pub struct EntityTypeBatch {
 pub mod entity_types_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Entities are extracted from user input and represent parameters that are"]
-    #[doc = " meaningful to your application. For example, a date range, a proper name"]
-    #[doc = " such as a geographic location or landmark, and so on. Entities represent"]
-    #[doc = " actionable data for your application."]
-    #[doc = ""]
-    #[doc = " When you define an entity, you can also include synonyms that all map to"]
-    #[doc = " that entity. For example, \"soft drink\", \"soda\", \"pop\", and so on."]
-    #[doc = ""]
-    #[doc = " There are three types of entities:"]
-    #[doc = ""]
-    #[doc = " *   **System** - entities that are defined by the Dialogflow API for common"]
-    #[doc = "     data types such as date, time, currency, and so on. A system entity is"]
-    #[doc = "     represented by the `EntityType` type."]
-    #[doc = ""]
-    #[doc = " *   **Custom** - entities that are defined by you that represent"]
-    #[doc = "     actionable data that is meaningful to your application. For example,"]
-    #[doc = "     you could define a `pizza.sauce` entity for red or white pizza sauce,"]
-    #[doc = "     a `pizza.cheese` entity for the different types of cheese on a pizza,"]
-    #[doc = "     a `pizza.topping` entity for different toppings, and so on. A custom"]
-    #[doc = "     entity is represented by the `EntityType` type."]
-    #[doc = ""]
-    #[doc = " *   **User** - entities that are built for an individual user such as"]
-    #[doc = "     favorites, preferences, playlists, and so on. A user entity is"]
-    #[doc = "     represented by the [SessionEntityType][google.cloud.dialogflow.v2.SessionEntityType] type."]
-    #[doc = ""]
-    #[doc = " For more information about entity types, see the"]
-    #[doc = " [Dialogflow"]
-    #[doc = " documentation](https://cloud.google.com/dialogflow/docs/entities-overview)."]
+    #[doc = " Service for managing [EntityTypes][google.cloud.dialogflow.v2.EntityType]."]
     pub struct EntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -1738,7 +1717,24 @@ pub mod entity_types_client {
         }
     }
 }
-/// Represents an agent environment.
+/// You can create multiple versions of your agent and publish them to separate
+/// environments.
+///
+/// When you edit an agent, you are editing the draft agent. At any point, you
+/// can save the draft agent as an agent version, which is an immutable snapshot
+/// of your agent.
+///
+/// When you save the draft agent, it is published to the default environment.
+/// When you create agent versions, you can publish them to custom environments.
+/// You can create a variety of custom environments for:
+///
+/// - testing
+/// - development
+/// - production
+/// - etc.
+///
+/// For more information, see the [versions and environments
+/// guide](https://cloud.google.com/dialogflow/docs/agents-versions).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// Output only. The unique identifier of this agent environment.
@@ -1813,7 +1809,7 @@ pub struct ListEnvironmentsResponse {
 pub mod environments_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Manages agent environments."]
+    #[doc = " Service for managing [Environments][google.cloud.dialogflow.v2.Environment]."]
     pub struct EnvironmentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -1863,9 +1859,15 @@ pub mod environments_client {
         }
     }
 }
-/// Represents an intent.
-/// Intents convert a number of user expressions or patterns into an action. An
-/// action is an extraction of a user command or sentence semantics.
+/// An intent categorizes an end-user's intention for one conversation turn. For
+/// each agent, you define many intents, where your combined intents can handle a
+/// complete conversation. When an end-user writes or says something, referred to
+/// as an end-user expression or end-user input, Dialogflow matches the end-user
+/// input to the best intent in your agent. Matching an intent is also known as
+/// intent classification.
+///
+/// For more information, see the [intent
+/// guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Intent {
     /// Optional. The unique identifier of this intent.
@@ -2826,38 +2828,7 @@ pub enum IntentView {
 pub mod intents_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " An intent represents a mapping between input from a user and an action to"]
-    #[doc = " be taken by your application. When you pass user input to the"]
-    #[doc = " [DetectIntent][google.cloud.dialogflow.v2.Sessions.DetectIntent] (or"]
-    #[doc = " [StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]) method, the"]
-    #[doc = " Dialogflow API analyzes the input and searches"]
-    #[doc = " for a matching intent. If no match is found, the Dialogflow API returns a"]
-    #[doc = " fallback intent (`is_fallback` = true)."]
-    #[doc = ""]
-    #[doc = " You can provide additional information for the Dialogflow API to use to"]
-    #[doc = " match user input to an intent by adding the following to your intent."]
-    #[doc = ""]
-    #[doc = " *   **Contexts** - provide additional context for intent analysis. For"]
-    #[doc = "     example, if an intent is related to an object in your application that"]
-    #[doc = "     plays music, you can provide a context to determine when to match the"]
-    #[doc = "     intent if the user input is \"turn it off\". You can include a context"]
-    #[doc = "     that matches the intent when there is previous user input of"]
-    #[doc = "     \"play music\", and not when there is previous user input of"]
-    #[doc = "     \"turn on the light\"."]
-    #[doc = ""]
-    #[doc = " *   **Events** - allow for matching an intent by using an event name"]
-    #[doc = "     instead of user input. Your application can provide an event name and"]
-    #[doc = "     related parameters to the Dialogflow API to match an intent. For"]
-    #[doc = "     example, when your application starts, you can send a welcome event"]
-    #[doc = "     with a user name parameter to the Dialogflow API to match an intent with"]
-    #[doc = "     a personalized welcome message for the user."]
-    #[doc = ""]
-    #[doc = " *   **Training phrases** - provide examples of user input to train the"]
-    #[doc = "     Dialogflow API agent to better match intents."]
-    #[doc = ""]
-    #[doc = " For more information about intents, see the"]
-    #[doc = " [Dialogflow"]
-    #[doc = " documentation](https://cloud.google.com/dialogflow/docs/intents-overview)."]
+    #[doc = " Service for managing [Intents][google.cloud.dialogflow.v2.Intent]."]
     pub struct IntentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -3019,13 +2990,14 @@ pub mod intents_client {
         }
     }
 }
-/// Represents a session entity type.
+/// A session represents a conversation between a Dialogflow agent and an
+/// end-user. You can create special entities, called session entities, during a
+/// session. Session entities can extend or replace custom entity types and only
+/// exist during the session that they were created for. All session data,
+/// including session entities, is stored by Dialogflow for 20 minutes.
 ///
-/// Extends or replaces a custom entity type at the user session level (we
-/// refer to the entity types defined at the agent level as "custom entity
-/// types").
-///
-/// Note: session entity types apply to all queries, regardless of the language.
+/// For more information, see the [session entity
+/// guide](https://cloud.google.com/dialogflow/docs/entities-session).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionEntityType {
     /// Required. The unique identifier of this session entity type. Format:
@@ -3157,23 +3129,7 @@ pub struct DeleteSessionEntityTypeRequest {
 pub mod session_entity_types_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Entities are extracted from user input and represent parameters that are"]
-    #[doc = " meaningful to your application. For example, a date range, a proper name"]
-    #[doc = " such as a geographic location or landmark, and so on. Entities represent"]
-    #[doc = " actionable data for your application."]
-    #[doc = ""]
-    #[doc = " Session entity types are referred to as **User** entity types and are"]
-    #[doc = " entities that are built for an individual user such as"]
-    #[doc = " favorites, preferences, playlists, and so on. You can redefine a session"]
-    #[doc = " entity type at the session level."]
-    #[doc = ""]
-    #[doc = " Session entity methods do not work with Google Assistant integration."]
-    #[doc = " Contact Dialogflow support if you need to use session entities"]
-    #[doc = " with Google Assistant integration."]
-    #[doc = ""]
-    #[doc = " For more information about entity types, see the"]
-    #[doc = " [Dialogflow"]
-    #[doc = " documentation](https://cloud.google.com/dialogflow/docs/entities-overview)."]
+    #[doc = " Service for managing [SessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityType]."]
     pub struct SessionEntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -3326,6 +3282,9 @@ pub struct DetectIntentRequest {
     /// `User Id`. They can be a random number or some type of user and session
     /// identifiers (preferably hashed). The length of the `Session ID` and
     /// `User ID` must not exceed 36 characters.
+    ///
+    /// For more information, see the [API interactions
+    /// guide](https://cloud.google.com/dialogflow/docs/api-overview).
     #[prost(string, tag = "1")]
     pub session: std::string::String,
     /// The parameters of this query.
@@ -3607,6 +3566,9 @@ pub struct StreamingDetectIntentRequest {
     /// `User Id`. They can be a random number or some type of user and session
     /// identifiers (preferably hashed). The length of the `Session ID` and
     /// `User ID` must not exceed 36 characters.
+    ///
+    /// For more information, see the [API interactions
+    /// guide](https://cloud.google.com/dialogflow/docs/api-overview).
     #[prost(string, tag = "1")]
     pub session: std::string::String,
     /// The parameters of this query.
@@ -3837,8 +3799,16 @@ pub struct SentimentAnalysisRequestConfig {
     #[prost(bool, tag = "1")]
     pub analyze_query_text_sentiment: bool,
 }
-/// The result of sentiment analysis as configured by
-/// `sentiment_analysis_request_config`.
+/// The result of sentiment analysis. Sentiment analysis inspects user input
+/// and identifies the prevailing subjective opinion, especially to determine a
+/// user's attitude as positive, negative, or neutral.
+/// For [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent], it needs to be configured in
+/// [DetectIntentRequest.query_params][google.cloud.dialogflow.v2.DetectIntentRequest.query_params]. For
+/// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent], it needs to be configured in
+/// [StreamingDetectIntentRequest.query_params][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params].
+/// And for [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent] and
+/// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent], it needs to be configured in
+/// [ConversationProfile.human_agent_assistant_config][google.cloud.dialogflow.v2.ConversationProfile.human_agent_assistant_config]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SentimentAnalysisResult {
     /// The sentiment analysis result for `query_text`.
@@ -3862,10 +3832,10 @@ pub struct Sentiment {
 pub mod sessions_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " A session represents an interaction with a user. You retrieve user input"]
-    #[doc = " and pass it to the [DetectIntent][google.cloud.dialogflow.v2.Sessions.DetectIntent] (or"]
-    #[doc = " [StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]) method to determine"]
-    #[doc = " user intent and respond."]
+    #[doc = " A service used for session interactions."]
+    #[doc = ""]
+    #[doc = " For more information, see the [API interactions"]
+    #[doc = " guide](https://cloud.google.com/dialogflow/docs/api-overview)."]
     pub struct SessionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }

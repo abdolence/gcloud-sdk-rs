@@ -6,6 +6,7 @@ pub struct SpeechContext {
     /// recognizer should recognize with higher likelihood.
     ///
     /// This list can be used to:
+    ///
     /// * improve accuracy for words and phrases you expect the user to say,
     ///   e.g. typical commands for your Dialogflow agent
     /// * add additional words to the speech recognizer vocabulary
@@ -1561,6 +1562,19 @@ pub mod reload_document_request {
         #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
     }
+}
+/// Response message for [Documents.AutoApproveSmartMessagingEntries].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoApproveSmartMessagingEntriesResponse {
+    /// Number of smart messaging entries enabled.
+    #[prost(int32, tag = "1")]
+    pub enabled_count: i32,
+    /// Number of smart messaging entries disabled.
+    #[prost(int32, tag = "2")]
+    pub disabled_count: i32,
+    /// Number of smart messaging entries unreviewed.
+    #[prost(int32, tag = "3")]
+    pub unreviewed_count: i32,
 }
 #[doc = r" Generated client implementations."]
 pub mod documents_client {

@@ -49,6 +49,24 @@ pub struct SynthesizeSpeechRequest {
     /// Required. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "3")]
     pub audio_config: ::std::option::Option<AudioConfig>,
+    /// Whether and what timepoints should be returned in the response.
+    #[prost(
+        enumeration = "synthesize_speech_request::TimepointType",
+        repeated,
+        tag = "4"
+    )]
+    pub enable_time_pointing: ::std::vec::Vec<i32>,
+}
+pub mod synthesize_speech_request {
+    /// The type of timepoint information that is returned in the response.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum TimepointType {
+        /// Not specified. No timepoint information will be returned.
+        Unspecified = 0,
+        /// Timepoint information of `<mark>` tags in SSML input will be returned.
+        SsmlMark = 1,
+    }
 }
 /// Contains text input to be synthesized. Either `text` or `ssml` must be
 /// supplied. Supplying both or neither returns
@@ -158,6 +176,24 @@ pub struct SynthesizeSpeechResponse {
     /// whereas JSON representations use base64.
     #[prost(bytes, tag = "1")]
     pub audio_content: std::vec::Vec<u8>,
+    /// A link between a position in the original request input and a corresponding
+    /// time in the output audio. It's only supported via `<mark>` of SSML input.
+    #[prost(message, repeated, tag = "2")]
+    pub timepoints: ::std::vec::Vec<Timepoint>,
+    /// The audio metadata of `audio_content`.
+    #[prost(message, optional, tag = "4")]
+    pub audio_config: ::std::option::Option<AudioConfig>,
+}
+/// This contains a mapping between a certain point in the input text and a
+/// corresponding time in the output audio.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Timepoint {
+    /// Timepoint name as received from the client within `<mark>` tag.
+    #[prost(string, tag = "4")]
+    pub mark_name: std::string::String,
+    /// Time offset in seconds from the start of the synthesized audio.
+    #[prost(double, tag = "3")]
+    pub time_seconds: f64,
 }
 /// Gender of the voice as described in
 /// [SSML voice element](https://www.w3.org/TR/speech-synthesis11/#edef_voice).
@@ -174,7 +210,7 @@ pub enum SsmlVoiceGender {
     Male = 1,
     /// A female voice.
     Female = 2,
-    /// A gender-neutral voice.
+    /// A gender-neutral voice. This voice is not yet supported.
     Neutral = 3,
 }
 /// Configuration to set up audio encoder. The encoding determines the output
@@ -189,11 +225,16 @@ pub enum AudioEncoding {
     Linear16 = 1,
     /// MP3 audio at 32kbps.
     Mp3 = 2,
+    /// MP3 at 64kbps.
+    Mp364Kbps = 4,
     /// Opus encoded audio wrapped in an ogg container. The result will be a
     /// file which can be played natively on Android, and in browsers (at least
     /// Chrome and Firefox). The quality of the encoding is considerably higher
     /// than MP3 while using approximately the same bitrate.
     OggOpus = 3,
+    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
+    /// Audio content returned as MULAW also contains a WAV header.
+    Mulaw = 5,
 }
 #[doc = r" Generated client implementations."]
 pub mod text_to_speech_client {

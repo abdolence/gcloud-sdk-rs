@@ -267,11 +267,13 @@ pub mod google {
             feature = "google-cloud-datalabeling-v1beta1",
             feature = "google-cloud-dataproc-v1",
             feature = "google-cloud-dataproc-v1beta2",
+            feature = "google-cloud-dialogflow-cx-v3beta1",
             feature = "google-cloud-dialogflow-v2",
             feature = "google-cloud-dialogflow-v2beta1",
             feature = "google-cloud-documentai-v1beta1",
             feature = "google-cloud-documentai-v1beta2",
             feature = "google-cloud-functions-v1",
+            feature = "google-cloud-gaming-v1",
             feature = "google-cloud-gaming-v1beta",
             feature = "google-cloud-iot-v1",
             feature = "google-cloud-irm-v1alpha2",
@@ -284,6 +286,7 @@ pub mod google {
             feature = "google-cloud-managedidentities-v1beta1",
             feature = "google-cloud-mediatranslation-v1beta1",
             feature = "google-cloud-memcache-v1beta2",
+            feature = "google-cloud-metastore-v1alpha",
             feature = "google-cloud-ml-v1",
             feature = "google-cloud-notebooks-v1beta1",
             feature = "google-cloud-orgpolicy-v1",
@@ -331,6 +334,7 @@ pub mod google {
             feature = "google-cloud-texttospeech-v1beta1",
             feature = "google-cloud-translation-v3",
             feature = "google-cloud-translation-v3beta1",
+            feature = "google-cloud-video-transcoder-v1beta1",
             feature = "google-cloud-videointelligence-v1",
             feature = "google-cloud-videointelligence-v1beta2",
             feature = "google-cloud-videointelligence-v1p1beta1",
@@ -654,6 +658,12 @@ pub mod google {
             }
         }
         pub mod dialogflow {
+            pub mod cx {
+                pub mod v3beta1 {
+                    #[cfg(any(feature = "google-cloud-dialogflow-cx-v3beta1",))]
+                    include_proto!("google.cloud.dialogflow.cx.v3beta1");
+                }
+            }
             pub mod v2 {
                 #[cfg(any(feature = "google-cloud-dialogflow-v2",))]
                 include_proto!("google.cloud.dialogflow.v2");
@@ -680,6 +690,10 @@ pub mod google {
             }
         }
         pub mod gaming {
+            pub mod v1 {
+                #[cfg(any(feature = "google-cloud-gaming-v1",))]
+                include_proto!("google.cloud.gaming.v1");
+            }
             pub mod v1beta {
                 #[cfg(any(feature = "google-cloud-gaming-v1beta",))]
                 include_proto!("google.cloud.gaming.v1beta");
@@ -741,6 +755,12 @@ pub mod google {
             pub mod v1beta2 {
                 #[cfg(any(feature = "google-cloud-memcache-v1beta2",))]
                 include_proto!("google.cloud.memcache.v1beta2");
+            }
+        }
+        pub mod metastore {
+            pub mod v1alpha {
+                #[cfg(any(feature = "google-cloud-metastore-v1alpha",))]
+                include_proto!("google.cloud.metastore.v1alpha");
             }
         }
         pub mod ml {
@@ -1007,6 +1027,14 @@ pub mod google {
             pub mod v3beta1 {
                 #[cfg(any(feature = "google-cloud-translation-v3beta1",))]
                 include_proto!("google.cloud.translation.v3beta1");
+            }
+        }
+        pub mod video {
+            pub mod transcoder {
+                pub mod v1beta1 {
+                    #[cfg(any(feature = "google-cloud-video-transcoder-v1beta1",))]
+                    include_proto!("google.cloud.video.transcoder.v1beta1");
+                }
             }
         }
         pub mod videointelligence {
@@ -1378,15 +1406,18 @@ pub mod google {
             feature = "google-cloud-datalabeling-v1beta1",
             feature = "google-cloud-dataproc-v1",
             feature = "google-cloud-dataproc-v1beta2",
+            feature = "google-cloud-dialogflow-cx-v3beta1",
             feature = "google-cloud-dialogflow-v2",
             feature = "google-cloud-dialogflow-v2beta1",
             feature = "google-cloud-documentai-v1beta1",
             feature = "google-cloud-documentai-v1beta2",
             feature = "google-cloud-functions-v1",
+            feature = "google-cloud-gaming-v1",
             feature = "google-cloud-gaming-v1beta",
             feature = "google-cloud-managedidentities-v1",
             feature = "google-cloud-managedidentities-v1beta1",
             feature = "google-cloud-memcache-v1beta2",
+            feature = "google-cloud-metastore-v1alpha",
             feature = "google-cloud-ml-v1",
             feature = "google-cloud-notebooks-v1beta1",
             feature = "google-cloud-recommendationengine-v1beta1",
@@ -1517,6 +1548,7 @@ pub mod google {
             feature = "google-cloud-billing-v1",
             feature = "google-cloud-datacatalog-v1",
             feature = "google-cloud-datacatalog-v1beta1",
+            feature = "google-cloud-dialogflow-cx-v3beta1",
             feature = "google-cloud-dialogflow-v2",
             feature = "google-cloud-dialogflow-v2beta1",
             feature = "google-cloud-documentai-v1beta1",
@@ -1612,17 +1644,20 @@ pub mod google {
             feature = "google-cloud-datalabeling-v1beta1",
             feature = "google-cloud-dataproc-v1",
             feature = "google-cloud-dataproc-v1beta2",
+            feature = "google-cloud-dialogflow-cx-v3beta1",
             feature = "google-cloud-dialogflow-v2",
             feature = "google-cloud-dialogflow-v2beta1",
             feature = "google-cloud-documentai-v1beta1",
             feature = "google-cloud-documentai-v1beta2",
             feature = "google-cloud-functions-v1",
+            feature = "google-cloud-gaming-v1",
             feature = "google-cloud-gaming-v1beta",
             feature = "google-cloud-iot-v1",
             feature = "google-cloud-managedidentities-v1",
             feature = "google-cloud-managedidentities-v1beta1",
             feature = "google-cloud-mediatranslation-v1beta1",
             feature = "google-cloud-memcache-v1beta2",
+            feature = "google-cloud-metastore-v1alpha",
             feature = "google-cloud-ml-v1",
             feature = "google-cloud-notebooks-v1beta1",
             feature = "google-cloud-recommendationengine-v1beta1",

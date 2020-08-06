@@ -907,7 +907,7 @@ pub struct BuildOptions {
     #[prost(enumeration = "build_options::LogStreamingOption", tag = "5")]
     pub log_streaming_option: i32,
     /// Option to specify a `WorkerPool` for the build.
-    /// Format: projects/{project}/workerPools/{workerPool}
+    /// Format: projects/{project}/locations/{location}/workerPools/{workerPool}
     ///
     /// This field is experimental.
     #[prost(string, tag = "7")]
@@ -1170,7 +1170,7 @@ pub struct UpdateWorkerPoolRequest {
     #[prost(message, optional, tag = "3")]
     pub worker_pool: ::std::option::Option<WorkerPool>,
 }
-/// Request to list `WorkerPool`s.
+/// Request to list `WorkerPools`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkerPoolsRequest {
     /// ID of the parent project.
@@ -1532,7 +1532,7 @@ pub mod cloud_build_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List project's `WorkerPool`s."]
+        #[doc = " List project's `WorkerPools`."]
         #[doc = ""]
         #[doc = " This API is experimental."]
         pub async fn list_worker_pools(

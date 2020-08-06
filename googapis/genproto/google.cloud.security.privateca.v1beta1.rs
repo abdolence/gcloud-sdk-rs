@@ -121,11 +121,6 @@ pub mod certificate_authority {
         /// truncated.
         #[prost(message, optional, tag = "6")]
         pub maximum_lifetime: ::std::option::Option<::prost_types::Duration>,
-        /// Optional. If specified, use a Cloud Function to implement custom certificate policy
-        /// for certificate issuance.
-        #[prost(message, optional, tag = "7")]
-        pub cloud_function_policy:
-            ::std::option::Option<certificate_authority_policy::CloudFunctionPolicy>,
         /// Allowed configurations or a single configuration for all issued
         /// certificates.
         #[prost(oneof = "certificate_authority_policy::ConfigPolicy", tags = "1, 2")]
@@ -177,15 +172,6 @@ pub mod certificate_authority {
             /// Optional. Specifies if to allow custom X509Extension values.
             #[prost(bool, tag = "6")]
             pub allow_custom_sans: bool,
-        }
-        /// [CloudFunctionPolicy][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.CloudFunctionPolicy] specifies the Cloud Function custom certificate
-        /// policy for certificate issuance.
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct CloudFunctionPolicy {
-            /// Required. The resource name of the Cloud Function to invoke, in the format
-            /// `projects/*/locations/*/functions/*`.
-            #[prost(string, tag = "1")]
-            pub name: std::string::String,
         }
         /// Allowed configurations or a single configuration for all issued
         /// certificates.

@@ -1,6 +1,6 @@
-/// User specified security marks that are attached to the parent Cloud Security
-/// Command Center (Cloud SCC) resource. Security marks are scoped within a Cloud
-/// SCC organization -- they can be modified and viewed by all users who have
+/// User specified security marks that are attached to the parent Security
+/// Command Center resource. Security marks are scoped within a Security Command
+/// Center organization -- they can be modified and viewed by all users who have
 /// proper permissions on the organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityMarks {
@@ -22,12 +22,13 @@ pub struct SecurityMarks {
     #[prost(map = "string, string", tag = "2")]
     pub marks: ::std::collections::HashMap<std::string::String, std::string::String>,
 }
-/// Cloud Security Command Center's (Cloud SCC) representation of a Google Cloud
-/// Platform (GCP) resource.
+/// Security Command Center representation of a Google Cloud
+/// resource.
 ///
-/// The Asset is a Cloud SCC resource that captures information about a single
-/// GCP resource. All modifications to an Asset are only within the context of
-/// Cloud SCC and don't affect the referenced GCP resource.
+/// The Asset is a Security Command Center resource that captures information
+/// about a single Google Cloud resource. All modifications to an Asset are only
+/// within the context of Security Command Center and don't affect the referenced
+/// Google Cloud resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The relative resource name of this asset. See:
@@ -36,40 +37,40 @@ pub struct Asset {
     /// "organizations/{organization_id}/assets/{asset_id}".
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Cloud SCC managed properties. These properties are managed by
-    /// Cloud SCC and cannot be modified by the user.
+    /// Security Command Center managed properties. These properties are managed by
+    /// Security Command Center and cannot be modified by the user.
     #[prost(message, optional, tag = "2")]
     pub security_center_properties: ::std::option::Option<asset::SecurityCenterProperties>,
     /// Resource managed properties. These properties are managed and defined by
-    /// the GCP resource and cannot be modified by the user.
+    /// the Google Cloud resource and cannot be modified by the user.
     #[prost(map = "string, message", tag = "7")]
     pub resource_properties: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
     /// User specified security marks. These marks are entirely managed by the user
     /// and come from the SecurityMarks resource that belongs to the asset.
     #[prost(message, optional, tag = "8")]
     pub security_marks: ::std::option::Option<SecurityMarks>,
-    /// The time at which the asset was created in Cloud SCC.
+    /// The time at which the asset was created in Security Command Center.
     #[prost(message, optional, tag = "9")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// The time at which the asset was last updated, added, or deleted in Cloud
-    /// SCC.
+    /// The time at which the asset was last updated, added, or deleted in Security
+    /// Command Center.
     #[prost(message, optional, tag = "10")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
 }
 pub mod asset {
-    /// Cloud SCC managed properties. These properties are managed by Cloud SCC and
-    /// cannot be modified by the user.
+    /// Security Command Center managed properties. These properties are managed by
+    /// Security Command Center and cannot be modified by the user.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SecurityCenterProperties {
-        /// Immutable. The full resource name of the GCP resource this asset
+        /// Immutable. The full resource name of the Google Cloud resource this asset
         /// represents. This field is immutable after create time. See:
         /// https://cloud.google.com/apis/design/resource_names#full_resource_name
         #[prost(string, tag = "1")]
         pub resource_name: std::string::String,
-        /// The type of the GCP resource. Examples include: APPLICATION,
+        /// The type of the Google Cloud resource. Examples include: APPLICATION,
         /// PROJECT, and ORGANIZATION. This is a case insensitive field defined by
-        /// Cloud SCC and/or the producer of the resource and is immutable
-        /// after create time.
+        /// Security Command Center and/or the producer of the resource and is
+        /// immutable after create time.
         #[prost(string, tag = "2")]
         pub resource_type: std::string::String,
         /// The full resource name of the immediate parent of the resource. See:
@@ -85,12 +86,12 @@ pub mod asset {
         pub resource_owners: ::std::vec::Vec<std::string::String>,
     }
 }
-/// Cloud Security Command Center (Cloud SCC) finding.
+/// Security Command Center finding.
 ///
 /// A finding is a record of assessment data (security, risk, health or privacy)
-/// ingested into Cloud SCC for presentation, notification, analysis,
-/// policy testing, and enforcement. For example, an XSS vulnerability in an
-/// App Engine application is a finding.
+/// ingested into Security Command Center for presentation, notification,
+/// analysis, policy testing, and enforcement. For example, an XSS vulnerability
+/// in an App Engine application is a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// The relative resource name of this finding. See:
@@ -106,12 +107,12 @@ pub struct Finding {
     /// "organizations/{organization_id}/sources/{source_id}"
     #[prost(string, tag = "2")]
     pub parent: std::string::String,
-    /// For findings on Google Cloud Platform (GCP) resources, the full resource
-    /// name of the GCP resource this finding is for. See:
+    /// For findings on Google Cloud resources, the full resource
+    /// name of the Google Cloud resource this finding is for. See:
     /// https://cloud.google.com/apis/design/resource_names#full_resource_name
-    /// When the finding is for a non-GCP resource, the resourceName can be a
-    /// customer or partner defined string.
-    /// This field is immutable after creation time.
+    /// When the finding is for a non-Google Cloud resource, the resourceName can
+    /// be a customer or partner defined string. This field is immutable after
+    /// creation time.
     #[prost(string, tag = "3")]
     pub resource_name: std::string::String,
     /// The state of the finding.
@@ -122,9 +123,9 @@ pub struct Finding {
     /// Example: "XSS_FLASH_INJECTION"
     #[prost(string, tag = "5")]
     pub category: std::string::String,
-    /// The URI that, if available, points to a web page outside of Cloud SCC
-    /// where additional information about the finding can be found. This field is
-    /// guaranteed to be either empty or a well formed URL.
+    /// The URI that, if available, points to a web page outside of Security
+    /// Command Center where additional information about the finding can be found.
+    /// This field is guaranteed to be either empty or a well formed URL.
     #[prost(string, tag = "6")]
     pub external_uri: std::string::String,
     /// Source specific properties. These properties are managed by the source
@@ -143,7 +144,7 @@ pub struct Finding {
     /// the firewall became open. The accuracy is determined by the detector.
     #[prost(message, optional, tag = "9")]
     pub event_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// The time at which the finding was created in Cloud SCC.
+    /// The time at which the finding was created in Security Command Center.
     #[prost(message, optional, tag = "10")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
 }
@@ -161,8 +162,8 @@ pub mod finding {
         Inactive = 2,
     }
 }
-/// User specified settings that are attached to the Cloud Security Command
-/// Center (Cloud SCC) organization.
+/// User specified settings that are attached to the Security Command
+/// Center organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationSettings {
     /// The relative resource name of the settings. See:
@@ -242,7 +243,7 @@ pub mod run_asset_discovery_response {
         Terminated = 3,
     }
 }
-/// Cloud Security Command Center's (Cloud SCC) finding source. A finding source
+/// Security Command Center finding source. A finding source
 /// is an entity or a mechanism that can produce a finding. A source is like a
 /// container of findings that come from the same scanner, logger, monitor, etc.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -262,7 +263,7 @@ pub struct Source {
     pub display_name: std::string::String,
     /// The description of the source (max of 1024 characters).
     /// Example:
-    /// "Cloud Security Scanner is a web security scanner for common
+    /// "Web Security Scanner is a web security scanner for common
     /// vulnerabilities in App Engine applications. It can automatically
     /// scan and detect four common vulnerabilities, including cross-site-scripting
     /// (XSS), Flash injection, mixed content (HTTP in HTTPS), and

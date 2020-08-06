@@ -655,6 +655,9 @@ pub struct RouteMatrixElement {
     /// Error status code for this element.
     #[prost(message, optional, tag = "3")]
     pub status: ::std::option::Option<super::super::super::rpc::Status>,
+    /// Indicates whether the route was found or not. Independent of status.
+    #[prost(enumeration = "RouteMatrixElementCondition", tag = "9")]
+    pub condition: i32,
     /// The travel distance of the route, in meters.
     #[prost(int32, tag = "4")]
     pub distance_meters: i32,
@@ -680,6 +683,19 @@ pub struct RouteMatrixElement {
     /// Otherwise this field is unset.
     #[prost(message, optional, tag = "8")]
     pub fallback_info: ::std::option::Option<FallbackInfo>,
+}
+/// The condition of the route being returned.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RouteMatrixElementCondition {
+    /// Not used.
+    Unspecified = 0,
+    /// A route was found, and the corresponding information was filled out for the
+    /// element.
+    RouteExists = 1,
+    /// No route could be found. Fields containing route information, such as
+    /// distance_meters or duration, will not be filled out in the element.
+    RouteNotFound = 2,
 }
 #[doc = r" Generated client implementations."]
 pub mod routes_preferred_client {

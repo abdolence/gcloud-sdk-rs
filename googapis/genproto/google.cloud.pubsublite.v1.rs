@@ -69,13 +69,35 @@ pub mod topic {
         /// The number of partitions in the topic. Must be at least 1.
         #[prost(int64, tag = "1")]
         pub count: i64,
-        /// Every partition in the topic is allocated throughput equivalent to
-        /// `scale` times the standard partition throughput (4 MiB/s). This is also
-        /// reflected in the cost of this topic; a topic with `scale` of 2 and count
-        /// of 10 is charged for 20 partitions. This value must be in the range
-        /// [1,4].
-        #[prost(int32, tag = "2")]
-        pub scale: i32,
+        #[prost(oneof = "partition_config::Dimension", tags = "2, 3")]
+        pub dimension: ::std::option::Option<partition_config::Dimension>,
+    }
+    pub mod partition_config {
+        /// The throughput capacity configuration for each partition.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Capacity {
+            /// Publish throughput capacity per partition in MiB/s.
+            /// Must be >= 4 and <= 16.
+            #[prost(int32, tag = "1")]
+            pub publish_mib_per_sec: i32,
+            /// Subscribe throughput capacity per partition in MiB/s.
+            /// Must be >= 4 and <= 32.
+            #[prost(int32, tag = "2")]
+            pub subscribe_mib_per_sec: i32,
+        }
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Dimension {
+            /// Every partition in the topic is allocated throughput equivalent to
+            /// `scale` times the standard partition throughput (4 MiB/s). This is also
+            /// reflected in the cost of this topic; a topic with `scale` of 2 and
+            /// count of 10 is charged for 20 partitions. This value must be in the
+            /// range [1,4].
+            #[prost(int32, tag = "2")]
+            Scale(i32),
+            /// The capacity configuration.
+            #[prost(message, tag = "3")]
+            Capacity(Capacity),
+        }
     }
     /// The settings for a topic's message retention.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -120,39 +142,15 @@ pub mod subscription {
     }
     pub mod delivery_config {
         /// When this subscription should send messages to subscribers relative to
-        /// messages persistence in storage.
+        /// messages persistence in storage. For details, see [Creating Lite
+        /// subscriptions](https://cloud.google.com/pubsub/lite/docs/subscriptions#creating_lite_subscriptions).
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum DeliveryRequirement {
             /// Default value. This value is unused.
             Unspecified = 0,
             /// The server does not wait for a published message to be successfully
-            /// written to storage before delivering it to subscribers. As such, a
-            /// subscriber may receive a message for which the write to storage failed.
-            /// If the subscriber re-reads the offset of that message later on (e.g.,
-            /// after a `Seek` operation), there may be a gap at that offset. Even if
-            /// not re-reading messages, the delivery of messages for which the write
-            /// to storage fails may be inconsistent across subscriptions, with some
-            /// receiving the message (e.g., those connected at the time the message is
-            /// published) and others not receiving it (e.g., those disconnected at
-            /// publish time). Note that offsets are never reused, so even if
-            /// DELIVER_IMMEDIATELY is used, subscribers will not receive different
-            /// messages when re-reading, they will just see gaps. EXAMPLE:
-            ///   (0) Topic 'topic1' is created with a single partition.
-            ///   (1) Two subscriptions 'sub1' and 'sub2' are created on topic1. sub1
-            ///       has 'DELIVER_IMMEDIATELY', sub2 has 'DELIVER_AFTER_STORED'.
-            ///   (2) A stream is opened for sub1 but not sub2.
-            ///   (3) A stream is opened for a publisher client using pub1.
-            ///   (4) pub1 successfully publishes m0 at offset 0 and m0 is delivered to
-            ///       sub1.
-            ///   (5) pub1 publishes m1 at offset 1 and m1 is delivered to sub1 but the
-            ///       write to storage fails (their stream then breaks).
-            ///   (6) A stream is reopened for pub1.
-            ///   (6) pub1 successfully publishes m2 at offset 2 and m2 is delivered to
-            ///       sub1.
-            ///   (some time elapses...)
-            ///   (7) A stream is opened for sub2 and it receives m0 and m2 but not m1.
-            ///   (8) sub1 seeks to offset 1 but only receives m2 and not m1.
+            /// written to storage before delivering it to subscribers.
             DeliverImmediately = 1,
             /// The server will not deliver a published message to subscribers until
             /// the message has been successfully written to storage. This will result
@@ -1071,6 +1069,59 @@ pub mod subscribe_response {
         Messages(super::MessageResponse),
     }
 }
+/// The first request that must be sent on a newly-opened stream. The client must
+/// wait for the response before sending subsequent requests on the stream.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InitialPartitionAssignmentRequest {
+    /// The subscription name. Structured like:
+    /// projects/<project number>/locations/<zone name>/subscriptions/<subscription
+    /// id>
+    #[prost(string, tag = "1")]
+    pub subscription: std::string::String,
+    /// An opaque, unique client identifier. This field must be exactly 16 bytes
+    /// long and is interpreted as an unsigned 128 bit integer. Other size values
+    /// will be rejected and the stream will be failed with a non-retryable error.
+    ///
+    /// This field is large enough to fit a uuid from standard uuid algorithms like
+    /// uuid1 or uuid4, which should be used to generate this number. The same
+    /// identifier should be reused following disconnections with retryable stream
+    /// errors.
+    #[prost(bytes, tag = "2")]
+    pub client_id: std::vec::Vec<u8>,
+}
+/// PartitionAssignments should not race with acknowledgements. There
+/// should be exactly one unacknowledged PartitionAssignment at a time. If not,
+/// the client must break the stream.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionAssignment {
+    /// The list of partition numbers this subscriber is assigned to.
+    #[prost(int64, repeated, tag = "1")]
+    pub partitions: ::std::vec::Vec<i64>,
+}
+/// Acknowledge receipt and handling of the previous assignment.
+/// If not sent within a short period after receiving the assignment,
+/// partitions may remain unassigned for a period of time until the
+/// client is known to be inactive, after which time the server will break the
+/// stream.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionAssignmentAck {}
+/// A request on the PartitionAssignment stream.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionAssignmentRequest {
+    #[prost(oneof = "partition_assignment_request::Request", tags = "1, 2")]
+    pub request: ::std::option::Option<partition_assignment_request::Request>,
+}
+pub mod partition_assignment_request {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Request {
+        /// Initial request on the stream.
+        #[prost(message, tag = "1")]
+        Initial(super::InitialPartitionAssignmentRequest),
+        /// Acknowledgement of a partition assignment.
+        #[prost(message, tag = "2")]
+        Ack(super::PartitionAssignmentAck),
+    }
+}
 #[doc = r" Generated client implementations."]
 pub mod subscriber_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
@@ -1126,6 +1177,168 @@ pub mod subscriber_service_client {
     impl<T> std::fmt::Debug for SubscriberServiceClient<T> {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "SubscriberServiceClient {{ ... }}")
+        }
+    }
+}
+#[doc = r" Generated client implementations."]
+pub mod partition_assignment_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " The service that a subscriber client application uses to determine which"]
+    #[doc = " partitions it should connect to."]
+    #[doc = ""]
+    #[doc = " This is an under development API being published to build client libraries."]
+    #[doc = " Users will not be able to access it until fully launched."]
+    pub struct PartitionAssignmentServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> PartitionAssignmentServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Assign partitions for this client to handle for the specified subscription."]
+        #[doc = ""]
+        #[doc = " The client must send an InitialPartitionAssignmentRequest first."]
+        #[doc = " The server will then send at most one unacknowledged PartitionAssignment"]
+        #[doc = " outstanding on the stream at a time."]
+        #[doc = " The client should send a PartitionAssignmentAck after updating the"]
+        #[doc = " partitions it is connected to to reflect the new assignment."]
+        pub async fn assign_partitions(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<Message = super::PartitionAssignmentRequest>,
+        ) -> Result<
+            tonic::Response<tonic::codec::Streaming<super::PartitionAssignment>>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.PartitionAssignmentService/AssignPartitions",
+            );
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
+        }
+    }
+    impl<T: Clone> Clone for PartitionAssignmentServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for PartitionAssignmentServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "PartitionAssignmentServiceClient {{ ... }}")
+        }
+    }
+}
+/// Compute statistics about a range of messages in a given topic and partition.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeMessageStatsRequest {
+    /// Required. The topic for which we should compute message stats.
+    #[prost(string, tag = "1")]
+    pub topic: std::string::String,
+    /// Required. The partition for which we should compute message stats.
+    #[prost(int64, tag = "2")]
+    pub partition: i64,
+    /// The inclusive start of the range.
+    #[prost(message, optional, tag = "3")]
+    pub start_cursor: ::std::option::Option<Cursor>,
+    /// The exclusive end of the range. The range is empty if end_cursor <=
+    /// start_cursor. Specifying a start_cursor before the first message and an
+    /// end_cursor after the last message will retrieve all messages.
+    #[prost(message, optional, tag = "4")]
+    pub end_cursor: ::std::option::Option<Cursor>,
+}
+/// Response containing stats for messages in the requested topic and partition.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeMessageStatsResponse {
+    /// The count of messages.
+    #[prost(int64, tag = "1")]
+    pub message_count: i64,
+    /// The number of quota bytes accounted to these messages.
+    #[prost(int64, tag = "2")]
+    pub message_bytes: i64,
+    /// The minimum publish timestamp across these messages. Note that publish
+    /// timestamps within a partition are non-decreasing. The timestamp will be
+    /// unset if there are no messages.
+    #[prost(message, optional, tag = "3")]
+    pub minimum_publish_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// The minimum event timestamp across these messages. For the purposes of this
+    /// computation, if a message does not have an event time, we use the publish
+    /// time. The timestamp will be unset if there are no messages.
+    #[prost(message, optional, tag = "4")]
+    pub minimum_event_time: ::std::option::Option<::prost_types::Timestamp>,
+}
+#[doc = r" Generated client implementations."]
+pub mod topic_stats_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " This service allows users to get stats about messages in their topic."]
+    pub struct TopicStatsServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> TopicStatsServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Compute statistics about a range of messages in a given topic and"]
+        #[doc = " partition."]
+        pub async fn compute_message_stats(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ComputeMessageStatsRequest>,
+        ) -> Result<tonic::Response<super::ComputeMessageStatsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.TopicStatsService/ComputeMessageStats",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for TopicStatsServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for TopicStatsServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "TopicStatsServiceClient {{ ... }}")
         }
     }
 }

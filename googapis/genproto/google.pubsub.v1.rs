@@ -20,8 +20,8 @@ pub struct Topic {
     /// must not start with `"goog"`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
-    /// managing labels</a>.
+    /// See [Creating and managing labels]
+    /// (https://cloud.google.com/pubsub/docs/labels).
     #[prost(map = "string, string", tag = "2")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// Policy constraining the set of Google Cloud Platform regions where messages
@@ -39,11 +39,11 @@ pub struct Topic {
 /// A message that is published by publishers and consumed by subscribers. The
 /// message must contain either a non-empty data field or at least one attribute.
 /// Note that client libraries represent this object differently
-/// depending on the language. See the corresponding
-/// <a href="https://cloud.google.com/pubsub/docs/reference/libraries">client
-/// library documentation</a> for more information. See
-/// <a href="https://cloud.google.com/pubsub/quotas">Quotas and limits</a>
-/// for more information about message limits.
+/// depending on the language. See the corresponding [client library
+/// documentation](https://cloud.google.com/pubsub/docs/reference/libraries) for
+/// more information. See [quotas and limits]
+/// (https://cloud.google.com/pubsub/quotas) for more information about message
+/// limits.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubMessage {
     /// The message data field. If this field is empty, the message must contain
@@ -72,9 +72,6 @@ pub struct PubsubMessage {
     /// delivered to subscribers in the order in which they are received by the
     /// Pub/Sub system. All `PubsubMessage`s published in a given `PublishRequest`
     /// must specify the same `ordering_key` value.
-    /// <b>EXPERIMENTAL:</b> This feature is part of a closed alpha release. This
-    /// API might be changed in backward-incompatible ways and is not recommended
-    /// for production use. It is not subject to any SLA or deprecation policy.
     #[prost(string, tag = "5")]
     pub ordering_key: std::string::String,
 }
@@ -269,10 +266,8 @@ pub struct Subscription {
     /// Indicates whether to retain acknowledged messages. If true, then
     /// messages are not expunged from the subscription's backlog, even if they are
     /// acknowledged, until they fall out of the `message_retention_duration`
-    /// window. This must be true if you would like to
-    /// <a
-    /// href="https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time">
-    /// Seek to a timestamp</a>.
+    /// window. This must be true if you would like to [Seek to a timestamp]
+    /// (https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time).
     #[prost(bool, tag = "7")]
     pub retain_acked_messages: bool,
     /// How long to retain unacknowledged messages in the subscription's backlog,
@@ -291,9 +286,6 @@ pub struct Subscription {
     /// will be delivered to the subscribers in the order in which they
     /// are received by the Pub/Sub system. Otherwise, they may be delivered in
     /// any order.
-    /// <b>EXPERIMENTAL:</b> This feature is part of a closed alpha release. This
-    /// API might be changed in backward-incompatible ways and is not recommended
-    /// for production use. It is not subject to any SLA or deprecation policy.
     #[prost(bool, tag = "10")]
     pub enable_message_ordering: bool,
     /// A policy that specifies the conditions for this subscription's expiration.
@@ -767,11 +759,10 @@ pub struct UpdateSnapshotRequest {
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
 /// A snapshot resource. Snapshots are used in
-/// <a href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
-/// operations, which allow
-/// you to manage message acknowledgments in bulk. That is, you can set the
-/// acknowledgment state of messages in an existing subscription to the state
-/// captured by a snapshot.
+/// [Seek](https://cloud.google.com/pubsub/docs/replay-overview)
+/// operations, which allow you to manage message acknowledgments in bulk. That
+/// is, you can set the acknowledgment state of messages in an existing
+/// subscription to the state captured by a snapshot.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Snapshot {
     /// The name of the snapshot.
@@ -792,8 +783,8 @@ pub struct Snapshot {
     /// snapshot that would expire in less than 1 hour after creation.
     #[prost(message, optional, tag = "3")]
     pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// See <a href="https://cloud.google.com/pubsub/docs/labels"> Creating and
-    /// managing labels</a>.
+    /// See [Creating and managing labels]
+    /// (https://cloud.google.com/pubsub/docs/labels).
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
 }
@@ -899,9 +890,8 @@ pub mod publisher_client {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
         }
-        #[doc = " Creates the given topic with the given name. See the"]
-        #[doc = " <a href=\"https://cloud.google.com/pubsub/docs/admin#resource_names\">"]
-        #[doc = " resource name rules</a>."]
+        #[doc = " Creates the given topic with the given name. See the [resource name rules]("]
+        #[doc = " https://cloud.google.com/pubsub/docs/admin#resource_names)."]
         pub async fn create_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::Topic>,
@@ -999,11 +989,10 @@ pub mod publisher_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists the names of the snapshots on this topic. Snapshots are used in"]
-        #[doc = " <a href=\"https://cloud.google.com/pubsub/docs/replay-overview\">Seek</a>"]
-        #[doc = " operations, which allow"]
-        #[doc = " you to manage message acknowledgments in bulk. That is, you can set the"]
-        #[doc = " acknowledgment state of messages in an existing subscription to the state"]
-        #[doc = " captured by a snapshot."]
+        #[doc = " [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,"]
+        #[doc = " which allow you to manage message acknowledgments in bulk. That is, you can"]
+        #[doc = " set the acknowledgment state of messages in an existing subscription to the"]
+        #[doc = " state captured by a snapshot."]
         pub async fn list_topic_snapshots(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTopicSnapshotsRequest>,
@@ -1099,19 +1088,17 @@ pub mod subscriber_client {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
         }
-        #[doc = " Creates a subscription to a given topic. See the"]
-        #[doc = " <a href=\"https://cloud.google.com/pubsub/docs/admin#resource_names\">"]
-        #[doc = " resource name rules</a>."]
+        #[doc = " Creates a subscription to a given topic. See the [resource name rules]"]
+        #[doc = " (https://cloud.google.com/pubsub/docs/admin#resource_names)."]
         #[doc = " If the subscription already exists, returns `ALREADY_EXISTS`."]
         #[doc = " If the corresponding topic doesn't exist, returns `NOT_FOUND`."]
         #[doc = ""]
         #[doc = " If the name is not provided in the request, the server will assign a random"]
         #[doc = " name for this subscription on the same project as the topic, conforming"]
-        #[doc = " to the"]
-        #[doc = " [resource name"]
-        #[doc = " format](https://cloud.google.com/pubsub/docs/admin#resource_names). The"]
-        #[doc = " generated name is populated in the returned Subscription object. Note that"]
-        #[doc = " for REST API requests, you must specify a name in the request."]
+        #[doc = " to the [resource name format]"]
+        #[doc = " (https://cloud.google.com/pubsub/docs/admin#resource_names). The generated"]
+        #[doc = " name is populated in the returned Subscription object. Note that for REST"]
+        #[doc = " API requests, you must specify a name in the request."]
         pub async fn create_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::Subscription>,
@@ -1330,12 +1317,11 @@ pub mod subscriber_client {
                 http::uri::PathAndQuery::from_static("/google.pubsub.v1.Subscriber/GetSnapshot");
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists the existing snapshots. Snapshots are used in"]
-        #[doc = " <a href=\"https://cloud.google.com/pubsub/docs/replay-overview\">Seek</a>"]
-        #[doc = " operations, which allow"]
-        #[doc = " you to manage message acknowledgments in bulk. That is, you can set the"]
-        #[doc = " acknowledgment state of messages in an existing subscription to the state"]
-        #[doc = " captured by a snapshot."]
+        #[doc = " Lists the existing snapshots. Snapshots are used in [Seek]("]
+        #[doc = " https://cloud.google.com/pubsub/docs/replay-overview) operations, which"]
+        #[doc = " allow you to manage message acknowledgments in bulk. That is, you can set"]
+        #[doc = " the acknowledgment state of messages in an existing subscription to the"]
+        #[doc = " state captured by a snapshot."]
         pub async fn list_snapshots(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSnapshotsRequest>,
@@ -1352,21 +1338,19 @@ pub mod subscriber_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a snapshot from the requested subscription. Snapshots are used in"]
-        #[doc = " <a href=\"https://cloud.google.com/pubsub/docs/replay-overview\">Seek</a>"]
-        #[doc = " operations, which allow"]
-        #[doc = " you to manage message acknowledgments in bulk. That is, you can set the"]
-        #[doc = " acknowledgment state of messages in an existing subscription to the state"]
-        #[doc = " captured by a snapshot."]
-        #[doc = " <br><br>If the snapshot already exists, returns `ALREADY_EXISTS`."]
+        #[doc = " [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,"]
+        #[doc = " which allow you to manage message acknowledgments in bulk. That is, you can"]
+        #[doc = " set the acknowledgment state of messages in an existing subscription to the"]
+        #[doc = " state captured by a snapshot."]
+        #[doc = " If the snapshot already exists, returns `ALREADY_EXISTS`."]
         #[doc = " If the requested subscription doesn't exist, returns `NOT_FOUND`."]
         #[doc = " If the backlog in the subscription is too old -- and the resulting snapshot"]
         #[doc = " would expire in less than 1 hour -- then `FAILED_PRECONDITION` is returned."]
         #[doc = " See also the `Snapshot.expire_time` field. If the name is not provided in"]
         #[doc = " the request, the server will assign a random"]
         #[doc = " name for this snapshot on the same project as the subscription, conforming"]
-        #[doc = " to the"]
-        #[doc = " [resource name"]
-        #[doc = " format](https://cloud.google.com/pubsub/docs/admin#resource_names). The"]
+        #[doc = " to the [resource name format]"]
+        #[doc = " (https://cloud.google.com/pubsub/docs/admin#resource_names). The"]
         #[doc = " generated name is populated in the returned Snapshot object. Note that for"]
         #[doc = " REST API requests, you must specify a name in the request."]
         pub async fn create_snapshot(
@@ -1405,12 +1389,11 @@ pub mod subscriber_client {
                 http::uri::PathAndQuery::from_static("/google.pubsub.v1.Subscriber/UpdateSnapshot");
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Removes an existing snapshot. Snapshots are used in"]
-        #[doc = " <a href=\"https://cloud.google.com/pubsub/docs/replay-overview\">Seek</a>"]
-        #[doc = " operations, which allow"]
-        #[doc = " you to manage message acknowledgments in bulk. That is, you can set the"]
-        #[doc = " acknowledgment state of messages in an existing subscription to the state"]
-        #[doc = " captured by a snapshot.<br><br>"]
+        #[doc = " Removes an existing snapshot. Snapshots are used in [Seek]"]
+        #[doc = " (https://cloud.google.com/pubsub/docs/replay-overview) operations, which"]
+        #[doc = " allow you to manage message acknowledgments in bulk. That is, you can set"]
+        #[doc = " the acknowledgment state of messages in an existing subscription to the"]
+        #[doc = " state captured by a snapshot."]
         #[doc = " When the snapshot is deleted, all messages retained in the snapshot"]
         #[doc = " are immediately dropped. After a snapshot is deleted, a new one may be"]
         #[doc = " created with the same name, but the new one has no association with the old"]
@@ -1431,13 +1414,12 @@ pub mod subscriber_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Seeks an existing subscription to a point in time or to a given snapshot,"]
-        #[doc = " whichever is provided in the request. Snapshots are used in"]
-        #[doc = " <a href=\"https://cloud.google.com/pubsub/docs/replay-overview\">Seek</a>"]
-        #[doc = " operations, which allow"]
-        #[doc = " you to manage message acknowledgments in bulk. That is, you can set the"]
-        #[doc = " acknowledgment state of messages in an existing subscription to the state"]
-        #[doc = " captured by a snapshot. Note that both the subscription and the snapshot"]
-        #[doc = " must be on the same topic."]
+        #[doc = " whichever is provided in the request. Snapshots are used in [Seek]("]
+        #[doc = " https://cloud.google.com/pubsub/docs/replay-overview) operations, which"]
+        #[doc = " allow you to manage message acknowledgments in bulk. That is, you can set"]
+        #[doc = " the acknowledgment state of messages in an existing subscription to the"]
+        #[doc = " state captured by a snapshot. Note that both the subscription and the"]
+        #[doc = " snapshot must be on the same topic."]
         pub async fn seek(
             &mut self,
             request: impl tonic::IntoRequest<super::SeekRequest>,

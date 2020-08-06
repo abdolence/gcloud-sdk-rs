@@ -63,20 +63,26 @@ pub struct BasicYarnAutoscalingConfig {
     /// Bounds: [0s, 1d].
     #[prost(message, optional, tag = "5")]
     pub graceful_decommission_timeout: ::std::option::Option<::prost_types::Duration>,
-    /// Required. Fraction of average pending memory in the last cooldown period
+    /// Required. Fraction of average YARN pending memory in the last cooldown period
     /// for which to add workers. A scale-up factor of 1.0 will result in scaling
     /// up so that there is no pending memory remaining after the update (more
     /// aggressive scaling). A scale-up factor closer to 0 will result in a smaller
     /// magnitude of scaling up (less aggressive scaling).
+    /// See [How autoscaling
+    /// works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+    /// for more information.
     ///
     /// Bounds: [0.0, 1.0].
     #[prost(double, tag = "1")]
     pub scale_up_factor: f64,
-    /// Required. Fraction of average pending memory in the last cooldown period
+    /// Required. Fraction of average YARN pending memory in the last cooldown period
     /// for which to remove workers. A scale-down factor of 1 will result in
     /// scaling down so that there is no available memory remaining after the
     /// update (more aggressive scaling). A scale-down factor of 0 disables
     /// removing workers, which can be beneficial for autoscaling a single job.
+    /// See [How autoscaling
+    /// works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+    /// for more information.
     ///
     /// Bounds: [0.0, 1.0].
     #[prost(double, tag = "2")]
@@ -366,7 +372,7 @@ pub mod autoscaling_policy_service_client {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Component {
-    /// Unspecified component.
+    /// Unspecified component. Specifying this will cause Cluster creation to fail.
     Unspecified = 0,
     /// The Anaconda python distribution.
     Anaconda = 5,
@@ -436,6 +442,17 @@ pub struct ClusterConfig {
     /// bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)).
     #[prost(string, tag = "1")]
     pub config_bucket: std::string::String,
+    /// Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data,
+    /// such as Spark and MapReduce history files.
+    /// If you do not specify a temp bucket,
+    /// Dataproc will determine a Cloud Storage location (US,
+    /// ASIA, or EU) for your cluster's temp bucket according to the
+    /// Compute Engine zone where your cluster is deployed, and then create
+    /// and manage this project-level, per-location bucket. The default bucket has
+    /// a TTL of 90 days, but you can use any TTL (or none) if you specify a
+    /// bucket.
+    #[prost(string, tag = "2")]
+    pub temp_bucket: std::string::String,
     /// Optional. The shared Compute Engine config settings for
     /// all instances in a cluster.
     #[prost(message, optional, tag = "8")]
@@ -483,6 +500,21 @@ pub struct ClusterConfig {
     /// Optional. Lifecycle setting for the cluster.
     #[prost(message, optional, tag = "17")]
     pub lifecycle_config: ::std::option::Option<LifecycleConfig>,
+    /// Optional. Port/endpoint configuration for this cluster
+    #[prost(message, optional, tag = "19")]
+    pub endpoint_config: ::std::option::Option<EndpointConfig>,
+}
+/// Endpoint config for this cluster
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EndpointConfig {
+    /// Output only. The map of port descriptions to URLs. Will only be populated
+    /// if enable_http_port_access is true.
+    #[prost(map = "string, string", tag = "1")]
+    pub http_ports: ::std::collections::HashMap<std::string::String, std::string::String>,
+    /// Optional. If true, enable http access to specific ports on the cluster
+    /// from external sources. Defaults to false.
+    #[prost(bool, tag = "2")]
+    pub enable_http_port_access: bool,
 }
 /// Autoscaling Policy config associated with the cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -557,7 +589,7 @@ pub struct GceClusterConfig {
     #[prost(bool, tag = "7")]
     pub internal_ip_only: bool,
     /// Optional. The [Dataproc service
-    /// account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_cloud_dataproc)
+    /// account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc)
     /// (also see [VM Data Plane
     /// identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity))
     /// used by Dataproc cluster VM instances to access Google Cloud Platform
@@ -652,6 +684,15 @@ pub struct InstanceGroupConfig {
     /// instances.
     #[prost(bool, tag = "6")]
     pub is_preemptible: bool,
+    /// Optional. Specifies the preemptibility of the instance group.
+    ///
+    /// The default value for master and worker groups is
+    /// `NON_PREEMPTIBLE`. This default cannot be changed.
+    ///
+    /// The default value for secondary instances is
+    /// `PREEMPTIBLE`.
+    #[prost(enumeration = "instance_group_config::Preemptibility", tag = "10")]
+    pub preemptibility: i32,
     /// Output only. The config for Compute Engine Instance Group
     /// Manager that manages this group.
     /// This is only used for preemptible instance groups.
@@ -666,6 +707,28 @@ pub struct InstanceGroupConfig {
     /// Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
     #[prost(string, tag = "9")]
     pub min_cpu_platform: std::string::String,
+}
+pub mod instance_group_config {
+    /// Controls the use of
+    /// [preemptible instances]
+    /// (https://cloud.google.com/compute/docs/instances/preemptible)
+    /// within the group.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Preemptibility {
+        /// Preemptibility is unspecified, the system will choose the
+        /// appropriate setting for each instance group.
+        Unspecified = 0,
+        /// Instances are non-preemptible.
+        ///
+        /// This option is allowed for all instance groups and is the only valid
+        /// value for Master and Worker instance groups.
+        NonPreemptible = 1,
+        /// Instances are preemptible.
+        ///
+        /// This option is allowed only for secondary worker groups.
+        Preemptible = 2,
+    }
 }
 /// Specifies the resources used to actively manage an instance group.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -880,7 +943,7 @@ pub struct KerberosConfig {
 pub struct SoftwareConfig {
     /// Optional. The version of software inside the cluster. It must be one of the
     /// supported [Dataproc
-    /// Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_cloud_dataproc_versions),
+    /// Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions),
     /// such as "1.2" (including a subminor version, such as "1.2.29"), or the
     /// ["preview"
     /// version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions).
@@ -1506,12 +1569,12 @@ pub struct SparkJob {
     /// Spark driver and tasks.
     #[prost(string, repeated, tag = "4")]
     pub jar_file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of files to be copied to the working directory of
-    /// Spark drivers and distributed tasks. Useful for naively parallel tasks.
+    /// Optional. HCFS URIs of files to be placed in the working directory of
+    /// each executor. Useful for naively parallel tasks.
     #[prost(string, repeated, tag = "5")]
     pub file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of archives to be extracted in the working directory
-    /// of Spark drivers and tasks. Supported file types:
+    /// Optional. HCFS URIs of archives to be extracted into the working directory
+    /// of each executor. Supported file types:
     /// .jar, .tar, .tar.gz, .tgz, and .zip.
     #[prost(string, repeated, tag = "6")]
     pub archive_uris: ::std::vec::Vec<std::string::String>,
@@ -1572,11 +1635,12 @@ pub struct PySparkJob {
     /// Python driver and tasks.
     #[prost(string, repeated, tag = "4")]
     pub jar_file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of files to be copied to the working directory of
-    /// Python drivers and distributed tasks. Useful for naively parallel tasks.
+    /// Optional. HCFS URIs of files to be placed in the working directory of
+    /// each executor. Useful for naively parallel tasks.
     #[prost(string, repeated, tag = "5")]
     pub file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of archives to be extracted in the working directory of
+    /// Optional. HCFS URIs of archives to be extracted into the working directory
+    /// of each executor. Supported file types:
     /// .jar, .tar, .tar.gz, .tgz, and .zip.
     #[prost(string, repeated, tag = "6")]
     pub archive_uris: ::std::vec::Vec<std::string::String>,
@@ -1747,12 +1811,12 @@ pub struct SparkRJob {
     /// occur that causes an incorrect job submission.
     #[prost(string, repeated, tag = "2")]
     pub args: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of files to be copied to the working directory of
-    /// R drivers and distributed tasks. Useful for naively parallel tasks.
+    /// Optional. HCFS URIs of files to be placed in the working directory of
+    /// each executor. Useful for naively parallel tasks.
     #[prost(string, repeated, tag = "3")]
     pub file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of archives to be extracted in the working directory of
-    /// Spark drivers and tasks. Supported file types:
+    /// Optional. HCFS URIs of archives to be extracted into the working directory
+    /// of each executor. Supported file types:
     /// .jar, .tar, .tar.gz, .tgz, and .zip.
     #[prost(string, repeated, tag = "4")]
     pub archive_uris: ::std::vec::Vec<std::string::String>,
@@ -1898,8 +1962,8 @@ pub mod job_status {
 /// Encapsulates the full scoping used to reference a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobReference {
-    /// Required. The ID of the Google Cloud Platform project that the job
-    /// belongs to.
+    /// Optional. The ID of the Google Cloud Platform project that the job belongs to. If
+    /// specified, must match the request project ID.
     #[prost(string, tag = "1")]
     pub project_id: std::string::String,
     /// Optional. The job ID, which must be unique within the project.
@@ -2524,7 +2588,7 @@ pub struct WorkflowTemplate {
     /// Required. The Directed Acyclic Graph of Jobs to submit.
     #[prost(message, repeated, tag = "8")]
     pub jobs: ::std::vec::Vec<OrderedJob>,
-    /// Optional. emplate parameters whose values are substituted into the
+    /// Optional. Template parameters whose values are substituted into the
     /// template. Values for parameters must be provided when the template is
     /// instantiated.
     #[prost(message, repeated, tag = "9")]
@@ -2641,22 +2705,28 @@ pub mod ordered_job {
     /// Required. The job definition.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum JobType {
+        /// Optional. Job is a Hadoop job.
         #[prost(message, tag = "2")]
         HadoopJob(super::HadoopJob),
+        /// Optional. Job is a Spark job.
         #[prost(message, tag = "3")]
         SparkJob(super::SparkJob),
+        /// Optional. Job is a PySpark job.
         #[prost(message, tag = "4")]
         PysparkJob(super::PySparkJob),
+        /// Optional. Job is a Hive job.
         #[prost(message, tag = "5")]
         HiveJob(super::HiveJob),
+        /// Optional. Job is a Pig job.
         #[prost(message, tag = "6")]
         PigJob(super::PigJob),
-        /// Spark R job
+        /// Optional. Job is a SparkR job.
         #[prost(message, tag = "11")]
         SparkRJob(super::SparkRJob),
+        /// Optional. Job is a SparkSql job.
         #[prost(message, tag = "7")]
         SparkSqlJob(super::SparkSqlJob),
-        /// Presto job
+        /// Optional. Job is a Presto job.
         #[prost(message, tag = "12")]
         PrestoJob(super::PrestoJob),
     }
