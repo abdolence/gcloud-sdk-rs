@@ -1,6 +1,6 @@
 [package]
 name = "googapis"
-version = "0.3.0+20200719"
+version = "0.3.0+20200806"
 authors = ["mechiru <u9053u6d41@gmail.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
