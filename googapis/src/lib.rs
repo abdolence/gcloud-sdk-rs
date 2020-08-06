@@ -8,7 +8,7 @@
 //! [dependencies]
 //! googapis = { version = "0.1", features = ["google-spanner-admin-database-v1"] }
 //! gouth = { version = "0.1" }
-//! tonic = { version = "0.2", features = ["tls"] }
+//! tonic = { version = "0.3", features = ["tls"] }
 //! prost = { version = "0.6" }
 //! prost-types = { version = "0.6" }
 //! tokio = { version = "0.2", features = ["rt-threaded", "time", "stream", "fs", "macros", "uds"] }
