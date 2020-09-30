@@ -355,7 +355,11 @@ pub fn feature_gates(protos: &[Proto]) -> String {
 }
 
 pub fn proto_path(protos: &[Proto]) -> Vec<PathBuf> {
-    let mut ret = protos.iter().map(|p| p.path.clone()).collect::<Vec<_>>();
+    let mut ret = protos
+        .iter()
+        .map(|p| p.path.clone())
+        .filter(|p| !p.to_str().unwrap().contains("google/ads/googleads/v5"))
+        .collect::<Vec<_>>();
     ret.sort();
     ret
 }
