@@ -35,20 +35,24 @@ pub struct CertificateAuthority {
     /// from this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[prost(message, optional, tag = "8")]
     pub issuing_options: ::std::option::Option<certificate_authority::IssuingOptions>,
-    /// Optional. This [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s issuer chain. If self-signed, will be the
-    /// same as 'pem_cert'. This may be updated (e.g., if an issuer's cert was
-    /// replaced). Expected to be in issuer-to-root order according to RFC 5246.
-    #[prost(string, repeated, tag = "9")]
-    pub pem_issuer_cert_chain: ::std::vec::Vec<std::string::String>,
+    /// Optional. If this is a subordinate [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority], this field will be set
+    /// with the subordinate configuration, which describes its issuers. This may
+    /// be updated, but this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] must continue to validate.
+    #[prost(message, optional, tag = "19")]
+    pub subordinate_config: ::std::option::Option<SubordinateConfig>,
     /// Output only. The [State][google.cloud.security.privateca.v1beta1.CertificateAuthority.State] for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[prost(enumeration = "certificate_authority::State", tag = "10")]
     pub state: i32,
-    /// Output only. This [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s CA certificate.
-    #[prost(string, tag = "11")]
-    pub pem_certificate: std::string::String,
-    /// Output only. A structured description of this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s CA cert.
-    #[prost(message, optional, tag = "12")]
-    pub ca_certificate_description: ::std::option::Option<CertificateDescription>,
+    /// Output only. This [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s certificate chain, including the current
+    /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s certificate. Ordered such that the root issuer
+    /// is the final element (consistent with RFC 5246). For a self-signed CA, this
+    /// will only list the current [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s certificate.
+    #[prost(string, repeated, tag = "9")]
+    pub pem_ca_certificates: ::std::vec::Vec<std::string::String>,
+    /// Output only. A structured description of this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s CA certificate
+    /// and its issuers. Ordered as self-to-root.
+    #[prost(message, repeated, tag = "12")]
+    pub ca_certificate_descriptions: ::std::vec::Vec<CertificateDescription>,
     /// Immutable. The name of a Cloud Storage bucket where this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] will
     /// publish content, such as the CA certificate and CRLs. This must be a bucket
     /// name, without any prefixes (such as `gs://`) or suffixes (such as
@@ -70,7 +74,7 @@ pub struct CertificateAuthority {
     /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] will be deleted, if
     /// scheduled for deletion.
     #[prost(message, optional, tag = "17")]
-    pub deletion_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub delete_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
     #[prost(map = "string, string", tag = "18")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
@@ -121,6 +125,11 @@ pub mod certificate_authority {
         /// truncated.
         #[prost(message, optional, tag = "6")]
         pub maximum_lifetime: ::std::option::Option<::prost_types::Duration>,
+        /// Optional. If specified, then only methods allowed in the [IssuanceModes][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.IssuanceModes] may be
+        /// used to issue [Certificates][google.cloud.security.privateca.v1beta1.Certificate].
+        #[prost(message, optional, tag = "8")]
+        pub allowed_issuance_modes:
+            ::std::option::Option<certificate_authority_policy::IssuanceModes>,
         /// Allowed configurations or a single configuration for all issued
         /// certificates.
         #[prost(oneof = "certificate_authority_policy::ConfigPolicy", tags = "1, 2")]
@@ -172,6 +181,20 @@ pub mod certificate_authority {
             /// Optional. Specifies if to allow custom X509Extension values.
             #[prost(bool, tag = "6")]
             pub allow_custom_sans: bool,
+        }
+        /// [IssuanceModes][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.IssuanceModes] specifies the allowed ways in which
+        /// [Certificates][google.cloud.security.privateca.v1beta1.Certificate] may be requested from this
+        /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct IssuanceModes {
+            /// Required. When true, allows callers to create [Certificates][google.cloud.security.privateca.v1beta1.Certificate] by
+            /// specifying a CSR.
+            #[prost(bool, tag = "1")]
+            pub allow_csr_based_issuance: bool,
+            /// Required. When true, allows callers to create [Certificates][google.cloud.security.privateca.v1beta1.Certificate] by
+            /// specifying a [CertificateConfig][google.cloud.security.privateca.v1beta1.CertificateConfig].
+            #[prost(bool, tag = "2")]
+            pub allow_config_based_issuance: bool,
         }
         /// Allowed configurations or a single configuration for all issued
         /// certificates.
@@ -273,18 +296,16 @@ pub mod certificate_authority {
     pub enum SignHashAlgorithm {
         /// Not specified.
         Unspecified = 0,
-        /// maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_2048_SHA256
-        Rsa2048Sha256 = 1,
-        /// maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_3072_SHA256
-        Rsa3072Sha256 = 2,
-        /// maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_4096_SHA256
-        Rsa4096Sha256 = 3,
+        /// maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_2048_SHA256
+        RsaPss2048Sha256 = 1,
+        /// maps to CryptoKeyVersionAlgorithm. RSA_SIGN_PSS_3072_SHA256
+        RsaPss3072Sha256 = 2,
+        /// maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_4096_SHA256
+        RsaPss4096Sha256 = 3,
         /// maps to CryptoKeyVersionAlgorithm.EC_SIGN_P256_SHA256
         EcP256Sha256 = 4,
-        /// maps to CryptoKeyVersionAlgorithm.EC_SIGN_P384_SHA256
-        EcP384Sha256 = 5,
-        /// maps to CryptoKeyVersionAlgorithm.EC_SIGN_P521_SHA256
-        EcP521Sha256 = 6,
+        /// maps to CryptoKeyVersionAlgorithm.EC_SIGN_P384_SHA384
+        EcP384Sha384 = 5,
     }
 }
 /// A [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] corresponds to a signed X.509 certificate
@@ -505,6 +526,36 @@ pub mod reusable_config_wrapper {
         ReusableConfigValues(super::ReusableConfigValues),
     }
 }
+/// Describes a subordinate CA's issuers. This is either a resource path to a
+/// known issuing [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority], or a PEM issuer certificate chain.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubordinateConfig {
+    #[prost(oneof = "subordinate_config::SubordinateConfig", tags = "1, 2")]
+    pub subordinate_config: ::std::option::Option<subordinate_config::SubordinateConfig>,
+}
+pub mod subordinate_config {
+    /// This message describes a subordinate CA's issuer certificate chain. This
+    /// wrapper exists for compatibility reasons.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SubordinateConfigChain {
+        /// Required. Expected to be in leaf-to-root order according to RFC 5246.
+        #[prost(string, repeated, tag = "1")]
+        pub pem_certificates: ::std::vec::Vec<std::string::String>,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SubordinateConfig {
+        /// Required. This can refer to a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the same project that
+        /// was used to create a subordinate [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]. This field
+        /// is used for information and usability purposes only. The resource name
+        /// is in the format `projects/*/locations/*/certificateAuthorities/*`.
+        #[prost(string, tag = "1")]
+        CertificateAuthority(std::string::String),
+        /// Required. Contains the PEM certificate chain for the issuers of this
+        /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority], but not pem certificate for this CA itself.
+        #[prost(message, tag = "2")]
+        PemIssuerChain(SubordinateConfigChain),
+    }
+}
 /// A [PublicKey][google.cloud.security.privateca.v1beta1.PublicKey] describes a public key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKey {
@@ -596,6 +647,9 @@ pub struct CertificateDescription {
     /// "Authority Information Access" extension in the certificate.
     #[prost(string, repeated, tag = "7")]
     pub aia_issuing_certificate_urls: ::std::vec::Vec<std::string::String>,
+    /// The hash of the x.509 certificate.
+    #[prost(message, optional, tag = "8")]
+    pub cert_fingerprint: ::std::option::Option<certificate_description::CertificateFingerprint>,
 }
 pub mod certificate_description {
     /// These values describe fields in an issued X.509 certificate such as the
@@ -633,6 +687,13 @@ pub mod certificate_description {
         /// likely the 160 bit SHA-1 hash of the public key.
         #[prost(string, tag = "1")]
         pub key_id: std::string::String,
+    }
+    /// A group of fingerprints for the x509 certificate.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CertificateFingerprint {
+        /// The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate.
+        #[prost(string, tag = "1")]
+        pub sha256_hash: std::string::String,
     }
 }
 /// An [ObjectId][google.cloud.security.privateca.v1beta1.ObjectId] specifies an object identifier (OID). These provide context
@@ -817,61 +878,46 @@ pub enum RevocationReason {
     /// may have been compromised.
     AttributeAuthorityCompromise = 8,
 }
-/// Request message for
-/// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities].
+/// Request message for [CertificateAuthorityService.CreateCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificate].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListCertificateAuthoritiesRequest {
-    /// Required. The resource name of the location associated with the
-    /// [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority], in the format
-    /// `projects/*/locations/*`.
+pub struct CreateCertificateRequest {
+    /// Required. The resource name of the location and [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
+    /// associated with the [Certificate][google.cloud.security.privateca.v1beta1.Certificate], in the format
+    /// `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Optional. Limit on the number of [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority] to
-    /// include in the response.
-    /// Further [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority] can subsequently be
-    /// obtained by including the
-    /// [ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateAuthoritiesResponse.next_page_token] in a subsequent
-    /// request. If unspecified, the server will pick an appropriate default.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Pagination token, returned earlier via
-    /// [ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateAuthoritiesResponse.next_page_token].
-    #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
-    /// Optional. Only include resources that match the filter in the response.
+    /// Optional. It must be unique within a location and match the regular
+    /// expression `[a-zA-Z0-9-]{1,63}`. This field is required when using a
+    /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the Enterprise [CertificateAuthority.Tier][google.cloud.security.privateca.v1beta1.CertificateAuthority.Tier],
+    /// but is optional and its value is ignored otherwise.
+    #[prost(string, tag = "2")]
+    pub certificate_id: std::string::String,
+    /// Required. A [Certificate][google.cloud.security.privateca.v1beta1.Certificate] with initial field values.
+    #[prost(message, optional, tag = "3")]
+    pub certificate: ::std::option::Option<Certificate>,
+    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
+    /// retry your request, the server will know to ignore the request if it has
+    /// already been completed. The server will guarantee that for at least 60
+    /// minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
-    /// Optional. Specify how the results should be sorted.
-    #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub request_id: std::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists].
+/// [CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificate].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListCertificateRevocationListsRequest {
-    /// Required. The resource name of the location associated with the
-    /// [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList], in the format
-    /// `projects/*/locations/*/certificateauthorities/*`.
+pub struct GetCertificateRequest {
+    /// Required. The [name][google.cloud.security.privateca.v1beta1.Certificate.name] of the [Certificate][google.cloud.security.privateca.v1beta1.Certificate] to get.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Optional. Limit on the number of
-    /// [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList] to include in the
-    /// response. Further [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
-    /// can subsequently be obtained by including the
-    /// [ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateRevocationListsResponse.next_page_token] in a subsequent
-    /// request. If unspecified, the server will pick an appropriate default.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Pagination token, returned earlier via
-    /// [ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateRevocationListsResponse.next_page_token].
-    #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
-    /// Optional. Only include resources that match the filter in the response.
-    #[prost(string, tag = "4")]
-    pub filter: std::string::String,
-    /// Optional. Specify how the results should be sorted.
-    #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub name: std::string::String,
 }
 /// Request message for [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificates].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -900,66 +946,6 @@ pub struct ListCertificatesRequest {
     #[prost(string, tag = "5")]
     pub order_by: std::string::String,
 }
-/// Request message for
-/// [CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListReusableConfigsRequest {
-    /// Required. The resource name of the location associated with the
-    /// [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig], in the format
-    /// `projects/*/locations/*`.
-    #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Optional. Limit on the number of
-    /// [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig] to include in the response.
-    /// Further [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig] can subsequently be
-    /// obtained by including the
-    /// [ListReusableConfigsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListReusableConfigsResponse.next_page_token] in a subsequent request. If
-    /// unspecified, the server will pick an appropriate default.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Pagination token, returned earlier via
-    /// [ListReusableConfigsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListReusableConfigsResponse.next_page_token].
-    #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
-    /// Optional. Only include resources that match the filter in the response.
-    #[prost(string, tag = "4")]
-    pub filter: std::string::String,
-    /// Optional. Specify how the results should be sorted.
-    #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
-}
-/// Response message for
-/// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListCertificateAuthoritiesResponse {
-    /// The list of [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-    #[prost(message, repeated, tag = "1")]
-    pub certificate_authorities: ::std::vec::Vec<CertificateAuthority>,
-    /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateAuthoritiesRequest.next_page_token][] to retrieve the next
-    /// page of results.
-    #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
-    /// A list of locations (e.g. "us-west1") that could not be reached.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
-}
-/// Response message for
-/// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListCertificateRevocationListsResponse {
-    /// The list of [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
-    #[prost(message, repeated, tag = "1")]
-    pub certificate_revocation_lists: ::std::vec::Vec<CertificateRevocationList>,
-    /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateRevocationListsRequest.next_page_token][] to retrieve the
-    /// next page of results.
-    #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
-    /// A list of locations (e.g. "us-west1") that could not be reached.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
-}
 /// Response message for [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificates].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesResponse {
@@ -975,218 +961,17 @@ pub struct ListCertificatesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::std::vec::Vec<std::string::String>,
 }
-/// Response message for
-/// [CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs].
+/// Request message for
+/// [CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.RevokeCertificate].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListReusableConfigsResponse {
-    /// The list of [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig].
-    #[prost(message, repeated, tag = "1")]
-    pub reusable_configs: ::std::vec::Vec<ReusableConfig>,
-    /// A token to retrieve next page of results. Pass this value in
-    /// [ListReusableConfigsRequest.next_page_token][] to retrieve
-    /// the next page of results.
-    #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
-    /// A list of locations (e.g. "us-west1") that could not be reached.
-    #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
-}
-/// Request message for [CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateAuthority].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetCertificateAuthorityRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1beta1.CertificateAuthority.name] of the [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] to
-    /// get.
+pub struct RevokeCertificateRequest {
+    /// Required. The resource name for this [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in the
+    /// format `projects/*/locations/*/certificateAuthorities/*/certificates/*`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateRevocationList].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetCertificateRevocationListRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1beta1.CertificateRevocationList.name] of the
-    /// [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] to get.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificate].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetCertificateRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1beta1.Certificate.name] of the [Certificate][google.cloud.security.privateca.v1beta1.Certificate] to get.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.GetReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetReusableConfig].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetReusableConfigRequest {
-    /// Required. The [name][ReusableConfigs.name] of the [ReusableConfigs][] to get.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateAuthority].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateCertificateAuthorityRequest {
-    /// Required. The resource name of the location associated with the
-    /// [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority], in the format
-    /// `projects/*/locations/*`.
-    #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Required. It must be unique within a location and match the regular
-    /// expression `[a-zA-Z0-9-]{1,63}`
-    #[prost(string, tag = "2")]
-    pub certificate_authority_id: std::string::String,
-    /// Required. A [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] with initial field values.
-    #[prost(message, optional, tag = "3")]
-    pub certificate_authority: ::std::option::Option<CertificateAuthority>,
-    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
-    /// retry your request, the server will know to ignore the request if it has
-    /// already been completed. The server will guarantee that for at least 60
-    /// minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.CreateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateRevocationList].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateCertificateRevocationListRequest {
-    /// Required. The resource name of the location and [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
-    /// associated with the [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList], in the format
-    /// `projects/*/locations/*/certificateAuthorities/*`.
-    #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Required. It must be unique within a location and match the regular expression
-    /// `[a-zA-Z0-9-]{1,63}`
-    #[prost(string, tag = "2")]
-    pub certificate_revocation_list_id: std::string::String,
-    /// Required. A [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] with initial field values.
-    #[prost(message, optional, tag = "3")]
-    pub certificate_revocation_list: ::std::option::Option<CertificateRevocationList>,
-    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
-    /// retry your request, the server will know to ignore the request if it has
-    /// already been completed. The server will guarantee that for at least 60
-    /// minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
-}
-/// Request message for [CertificateAuthorityService.CreateCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificate].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateCertificateRequest {
-    /// Required. The resource name of the location and [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
-    /// associated with the [Certificate][google.cloud.security.privateca.v1beta1.Certificate], in the format
-    /// `projects/*/locations/*/certificateAuthorities/*`.
-    #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Required. It must be unique within a location and match the regular
-    /// expression `[a-zA-Z0-9-]{1,63}`
-    #[prost(string, tag = "2")]
-    pub certificate_id: std::string::String,
-    /// Required. A [Certificate][google.cloud.security.privateca.v1beta1.Certificate] with initial field values.
-    #[prost(message, optional, tag = "3")]
-    pub certificate: ::std::option::Option<Certificate>,
-    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
-    /// retry your request, the server will know to ignore the request if it has
-    /// already been completed. The server will guarantee that for at least 60
-    /// minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.CreateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateReusableConfig].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateReusableConfigRequest {
-    /// Required. The resource name of the location associated with the
-    /// [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig], in the format
-    /// `projects/*/locations/*`.
-    #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Required. It must be unique within a location and match the regular
-    /// expression `[a-zA-Z0-9-]{1,63}`
-    #[prost(string, tag = "2")]
-    pub reusable_config_id: std::string::String,
-    /// Required. A [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] with initial field values.
-    #[prost(message, optional, tag = "3")]
-    pub reusable_config: ::std::option::Option<ReusableConfig>,
-    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
-    /// retry your request, the server will know to ignore the request if it has
-    /// already been completed. The server will guarantee that for at least 60
-    /// minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateAuthority].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateCertificateAuthorityRequest {
-    /// Required. [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] with updated values.
-    #[prost(message, optional, tag = "1")]
-    pub certificate_authority: ::std::option::Option<CertificateAuthority>,
-    /// Required. A list of fields to be updated in this request.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
-    /// retry your request, the server will know to ignore the request if it has
-    /// already been completed. The server will guarantee that for at least 60
-    /// minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateRevocationList].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateCertificateRevocationListRequest {
-    /// Required. [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] with updated values.
-    #[prost(message, optional, tag = "1")]
-    pub certificate_revocation_list: ::std::option::Option<CertificateRevocationList>,
-    /// Required. A list of fields to be updated in this request.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// Required. The [RevocationReason][google.cloud.security.privateca.v1beta1.RevocationReason] for revoking this certificate.
+    #[prost(enumeration = "RevocationReason", tag = "2")]
+    pub reason: i32,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1229,15 +1014,21 @@ pub struct UpdateCertificateRequest {
     pub request_id: std::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.UpdateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateReusableConfig].
+/// [CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ActivateCertificateAuthority].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateReusableConfigRequest {
-    /// Required. [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] with updated values.
-    #[prost(message, optional, tag = "1")]
-    pub reusable_config: ::std::option::Option<ReusableConfig>,
-    /// Required. A list of fields to be updated in this request.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+pub struct ActivateCertificateAuthorityRequest {
+    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
+    /// format `projects/*/locations/*/certificateAuthorities/*`.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Required. The signed CA certificate issued from
+    /// [FetchCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1beta1.FetchCertificateAuthorityCsrResponse.pem_csr].
+    #[prost(string, tag = "2")]
+    pub pem_ca_certificate: std::string::String,
+    /// Required. Must include information about the issuer of 'pem_ca_certificate', and any
+    /// further issuers until the self-signed CA.
+    #[prost(message, optional, tag = "3")]
+    pub subordinate_config: ::std::option::Option<SubordinateConfig>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1251,43 +1042,25 @@ pub struct UpdateReusableConfigRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "3")]
+    #[prost(string, tag = "4")]
     pub request_id: std::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.GetCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateAuthorityCsr].
+/// [CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateAuthority].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetCertificateAuthorityCsrRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
-    /// format `projects/*/locations/*/certificateAuthorities/*`.
+pub struct CreateCertificateAuthorityRequest {
+    /// Required. The resource name of the location associated with the
+    /// [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority], in the format
+    /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
-}
-/// Response message for
-/// [CertificateAuthorityService.GetCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateAuthorityCsr].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetCertificateAuthorityCsrResponse {
-    /// Output only. The PEM-encoded signed certificate signing request (CSR).
-    #[prost(string, tag = "1")]
-    pub pem_csr: std::string::String,
-}
-/// Request message for
-/// [CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ActivateCertificateAuthority].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ActivateCertificateAuthorityRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
-    /// format `projects/*/locations/*/certificateAuthorities/*`.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// Required. The signed CA certificate issued from
-    /// [GetCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1beta1.GetCertificateAuthorityCsrResponse.pem_csr].
+    pub parent: std::string::String,
+    /// Required. It must be unique within a location and match the regular
+    /// expression `[a-zA-Z0-9-]{1,63}`
     #[prost(string, tag = "2")]
-    pub pem_ca_certificate: std::string::String,
-    /// Required. Must include the issuer of 'pem_ca_certificate', and any further issuers
-    /// until the self-signed CA. Expected to be in issuer-to-root order according
-    /// to RFC 5246.
-    #[prost(string, repeated, tag = "3")]
-    pub pem_ca_certificate_chain: ::std::vec::Vec<std::string::String>,
+    pub certificate_authority_id: std::string::String,
+    /// Required. A [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] with initial field values.
+    #[prost(message, optional, tag = "3")]
+    pub certificate_authority: ::std::option::Option<CertificateAuthority>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1353,28 +1126,73 @@ pub struct EnableCertificateAuthorityRequest {
     pub request_id: std::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.ScheduleDeleteCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ScheduleDeleteCertificateAuthority].
+/// [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ScheduleDeleteCertificateAuthorityRequest {
+pub struct FetchCertificateAuthorityCsrRequest {
     /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
-    /// retry your request, the server will know to ignore the request if it has
-    /// already been completed. The server will guarantee that for at least 60
-    /// minutes since the first request.
-    ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
-    ///
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+}
+/// Response message for
+/// [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchCertificateAuthorityCsrResponse {
+    /// Output only. The PEM-encoded signed certificate signing request (CSR).
+    #[prost(string, tag = "1")]
+    pub pem_csr: std::string::String,
+}
+/// Request message for [CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateAuthority].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCertificateAuthorityRequest {
+    /// Required. The [name][google.cloud.security.privateca.v1beta1.CertificateAuthority.name] of the [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] to
+    /// get.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCertificateAuthoritiesRequest {
+    /// Required. The resource name of the location associated with the
+    /// [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority], in the format
+    /// `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Optional. Limit on the number of [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority] to
+    /// include in the response.
+    /// Further [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority] can subsequently be
+    /// obtained by including the
+    /// [ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateAuthoritiesResponse.next_page_token] in a subsequent
+    /// request. If unspecified, the server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Pagination token, returned earlier via
+    /// [ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateAuthoritiesResponse.next_page_token].
+    #[prost(string, tag = "3")]
+    pub page_token: std::string::String,
+    /// Optional. Only include resources that match the filter in the response.
+    #[prost(string, tag = "4")]
+    pub filter: std::string::String,
+    /// Optional. Specify how the results should be sorted.
+    #[prost(string, tag = "5")]
+    pub order_by: std::string::String,
+}
+/// Response message for
+/// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCertificateAuthoritiesResponse {
+    /// The list of [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority].
+    #[prost(message, repeated, tag = "1")]
+    pub certificate_authorities: ::std::vec::Vec<CertificateAuthority>,
+    /// A token to retrieve next page of results. Pass this value in
+    /// [ListCertificateAuthoritiesRequest.next_page_token][] to retrieve the next
+    /// page of results.
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub next_page_token: std::string::String,
+    /// A list of locations (e.g. "us-west1") that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::std::vec::Vec<std::string::String>,
 }
 /// Request message for
 /// [CertificateAuthorityService.RestoreCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.RestoreCertificateAuthority].
@@ -1401,16 +1219,284 @@ pub struct RestoreCertificateAuthorityRequest {
     pub request_id: std::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.RevokeCertificate].
+/// [CertificateAuthorityService.ScheduleDeleteCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ScheduleDeleteCertificateAuthority].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RevokeCertificateRequest {
-    /// Required. The resource name for this [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in the
-    /// format `projects/*/locations/*/certificateAuthorities/*/certificates/*`.
+pub struct ScheduleDeleteCertificateAuthorityRequest {
+    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
+    /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Required. The [RevocationReason][google.cloud.security.privateca.v1beta1.RevocationReason] for revoking this certificate.
-    #[prost(enumeration = "RevocationReason", tag = "2")]
-    pub reason: i32,
+    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
+    /// retry your request, the server will know to ignore the request if it has
+    /// already been completed. The server will guarantee that for at least 60
+    /// minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateAuthority].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCertificateAuthorityRequest {
+    /// Required. [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] with updated values.
+    #[prost(message, optional, tag = "1")]
+    pub certificate_authority: ::std::option::Option<CertificateAuthority>,
+    /// Required. A list of fields to be updated in this request.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
+    /// retry your request, the server will know to ignore the request if it has
+    /// already been completed. The server will guarantee that for at least 60
+    /// minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.CreateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateRevocationList].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCertificateRevocationListRequest {
+    /// Required. The resource name of the location and [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
+    /// associated with the [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList], in the format
+    /// `projects/*/locations/*/certificateAuthorities/*`.
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Required. It must be unique within a location and match the regular expression
+    /// `[a-zA-Z0-9-]{1,63}`
+    #[prost(string, tag = "2")]
+    pub certificate_revocation_list_id: std::string::String,
+    /// Required. A [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] with initial field values.
+    #[prost(message, optional, tag = "3")]
+    pub certificate_revocation_list: ::std::option::Option<CertificateRevocationList>,
+    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
+    /// retry your request, the server will know to ignore the request if it has
+    /// already been completed. The server will guarantee that for at least 60
+    /// minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateRevocationList].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCertificateRevocationListRequest {
+    /// Required. The [name][google.cloud.security.privateca.v1beta1.CertificateRevocationList.name] of the
+    /// [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] to get.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCertificateRevocationListsRequest {
+    /// Required. The resource name of the location associated with the
+    /// [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList], in the format
+    /// `projects/*/locations/*/certificateauthorities/*`.
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Optional. Limit on the number of
+    /// [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList] to include in the
+    /// response. Further [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
+    /// can subsequently be obtained by including the
+    /// [ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateRevocationListsResponse.next_page_token] in a subsequent
+    /// request. If unspecified, the server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Pagination token, returned earlier via
+    /// [ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateRevocationListsResponse.next_page_token].
+    #[prost(string, tag = "3")]
+    pub page_token: std::string::String,
+    /// Optional. Only include resources that match the filter in the response.
+    #[prost(string, tag = "4")]
+    pub filter: std::string::String,
+    /// Optional. Specify how the results should be sorted.
+    #[prost(string, tag = "5")]
+    pub order_by: std::string::String,
+}
+/// Response message for
+/// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCertificateRevocationListsResponse {
+    /// The list of [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
+    #[prost(message, repeated, tag = "1")]
+    pub certificate_revocation_lists: ::std::vec::Vec<CertificateRevocationList>,
+    /// A token to retrieve next page of results. Pass this value in
+    /// [ListCertificateRevocationListsRequest.next_page_token][] to retrieve the
+    /// next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+    /// A list of locations (e.g. "us-west1") that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::std::vec::Vec<std::string::String>,
+}
+/// Request message for
+/// [CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateRevocationList].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCertificateRevocationListRequest {
+    /// Required. [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] with updated values.
+    #[prost(message, optional, tag = "1")]
+    pub certificate_revocation_list: ::std::option::Option<CertificateRevocationList>,
+    /// Required. A list of fields to be updated in this request.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
+    /// retry your request, the server will know to ignore the request if it has
+    /// already been completed. The server will guarantee that for at least 60
+    /// minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.CreateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateReusableConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateReusableConfigRequest {
+    /// Required. The resource name of the location associated with the
+    /// [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig], in the format
+    /// `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Required. It must be unique within a location and match the regular
+    /// expression `[a-zA-Z0-9-]{1,63}`
+    #[prost(string, tag = "2")]
+    pub reusable_config_id: std::string::String,
+    /// Required. A [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] with initial field values.
+    #[prost(message, optional, tag = "3")]
+    pub reusable_config: ::std::option::Option<ReusableConfig>,
+    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
+    /// retry your request, the server will know to ignore the request if it has
+    /// already been completed. The server will guarantee that for at least 60
+    /// minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.DeleteReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.DeleteReusableConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteReusableConfigRequest {
+    /// Required. The resource name for this [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] in the format
+    /// `projects/*/locations/*/reusableConfigs/*`.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
+    /// retry your request, the server will know to ignore the request if it has
+    /// already been completed. The server will guarantee that for at least 60
+    /// minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.GetReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetReusableConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetReusableConfigRequest {
+    /// Required. The [name][ReusableConfigs.name] of the [ReusableConfigs][] to get.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+}
+/// Request message for
+/// [CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReusableConfigsRequest {
+    /// Required. The resource name of the location associated with the
+    /// [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig], in the format
+    /// `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Optional. Limit on the number of
+    /// [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig] to include in the response.
+    /// Further [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig] can subsequently be
+    /// obtained by including the
+    /// [ListReusableConfigsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListReusableConfigsResponse.next_page_token] in a subsequent request. If
+    /// unspecified, the server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Pagination token, returned earlier via
+    /// [ListReusableConfigsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListReusableConfigsResponse.next_page_token].
+    #[prost(string, tag = "3")]
+    pub page_token: std::string::String,
+    /// Optional. Only include resources that match the filter in the response.
+    #[prost(string, tag = "4")]
+    pub filter: std::string::String,
+    /// Optional. Specify how the results should be sorted.
+    #[prost(string, tag = "5")]
+    pub order_by: std::string::String,
+}
+/// Response message for
+/// [CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReusableConfigsResponse {
+    /// The list of [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig].
+    #[prost(message, repeated, tag = "1")]
+    pub reusable_configs: ::std::vec::Vec<ReusableConfig>,
+    /// A token to retrieve next page of results. Pass this value in
+    /// [ListReusableConfigsRequest.next_page_token][] to retrieve
+    /// the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+    /// A list of locations (e.g. "us-west1") that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::std::vec::Vec<std::string::String>,
+}
+/// Request message for
+/// [CertificateAuthorityService.UpdateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateReusableConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateReusableConfigRequest {
+    /// Required. [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] with updated values.
+    #[prost(message, optional, tag = "1")]
+    pub reusable_config: ::std::option::Option<ReusableConfig>,
+    /// Required. A list of fields to be updated in this request.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1479,12 +1565,12 @@ pub mod certificate_authority_service_client {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
         }
-        #[doc = " Lists [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
-        pub async fn list_certificate_authorities(
+        #[doc = " Create a new [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in a given Project, Location from a particular"]
+        #[doc = " [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
+        pub async fn create_certificate(
             &mut self,
-            request: impl tonic::IntoRequest<super::ListCertificateAuthoritiesRequest>,
-        ) -> Result<tonic::Response<super::ListCertificateAuthoritiesResponse>, tonic::Status>
-        {
+            request: impl tonic::IntoRequest<super::CreateCertificateRequest>,
+        ) -> Result<tonic::Response<super::Certificate>, tonic::Status> {
             self.inner.ready().await.map_err(|e| {
                 tonic::Status::new(
                     tonic::Code::Unknown,
@@ -1492,83 +1578,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateAuthorities" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Lists [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
-        pub async fn list_certificate_revocation_lists(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListCertificateRevocationListsRequest>,
-        ) -> Result<tonic::Response<super::ListCertificateRevocationListsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateRevocationLists" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Lists [Certificates][google.cloud.security.privateca.v1beta1.Certificate]."]
-        pub async fn list_certificates(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListCertificatesRequest>,
-        ) -> Result<tonic::Response<super::ListCertificatesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificates" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Lists [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
-        pub async fn list_reusable_configs(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListReusableConfigsRequest>,
-        ) -> Result<tonic::Response<super::ListReusableConfigsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListReusableConfigs" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
-        pub async fn get_certificate_authority(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetCertificateAuthorityRequest>,
-        ) -> Result<tonic::Response<super::CertificateAuthority>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateAuthority" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns a [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
-        pub async fn get_certificate_revocation_list(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetCertificateRevocationListRequest>,
-        ) -> Result<tonic::Response<super::CertificateRevocationList>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateRevocationList" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificate" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]."]
@@ -1586,11 +1596,11 @@ pub mod certificate_authority_service_client {
             let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificate" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns a [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
-        pub async fn get_reusable_config(
+        #[doc = " Lists [Certificates][google.cloud.security.privateca.v1beta1.Certificate]."]
+        pub async fn list_certificates(
             &mut self,
-            request: impl tonic::IntoRequest<super::GetReusableConfigRequest>,
-        ) -> Result<tonic::Response<super::ReusableConfig>, tonic::Status> {
+            request: impl tonic::IntoRequest<super::ListCertificatesRequest>,
+        ) -> Result<tonic::Response<super::ListCertificatesResponse>, tonic::Status> {
             self.inner.ready().await.map_err(|e| {
                 tonic::Status::new(
                     tonic::Code::Unknown,
@@ -1598,7 +1608,60 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetReusableConfig" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificates" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Revoke a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]."]
+        pub async fn revoke_certificate(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RevokeCertificateRequest>,
+        ) -> Result<tonic::Response<super::Certificate>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RevokeCertificate" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Update a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]."]
+        pub async fn update_certificate(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCertificateRequest>,
+        ) -> Result<tonic::Response<super::Certificate>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificate" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Activate a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] that is in state"]
+        #[doc = " [PENDING_ACTIVATION][google.cloud.security.privateca.v1beta1.CertificateAuthority.State.PENDING_ACTIVATION] and is"]
+        #[doc = " of type [SUBORDINATE][google.cloud.security.privateca.v1beta1.CertificateAuthority.Type.SUBORDINATE]. After the"]
+        #[doc = " parent Certificate Authority signs a certificate signing request from"]
+        #[doc = " [FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr], this method can complete the activation"]
+        #[doc = " process."]
+        pub async fn activate_certificate_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ActivateCertificateAuthorityRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ActivateCertificateAuthority" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Create a new [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in a given Project and Location."]
@@ -1617,162 +1680,6 @@ pub mod certificate_authority_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificateAuthority" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Create a new [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] in a given Project, Location"]
-        #[doc = " for a particular [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
-        pub async fn create_certificate_revocation_list(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateCertificateRevocationListRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificateRevocationList" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Create a new [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in a given Project, Location from a particular"]
-        #[doc = " [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
-        pub async fn create_certificate(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateCertificateRequest>,
-        ) -> Result<tonic::Response<super::Certificate>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificate" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Create a new [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] in a given Project and Location."]
-        pub async fn create_reusable_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateReusableConfigRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateReusableConfig" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Update a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
-        pub async fn update_certificate_authority(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateCertificateAuthorityRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateAuthority" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Update a [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
-        pub async fn update_certificate_revocation_list(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateCertificateRevocationListRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateRevocationList" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Update a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]."]
-        pub async fn update_certificate(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateCertificateRequest>,
-        ) -> Result<tonic::Response<super::Certificate>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificate" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Update a [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
-        pub async fn update_reusable_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateReusableConfigRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateReusableConfig" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Get the CSR for a pending [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
-        pub async fn get_certificate_authority_csr(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetCertificateAuthorityCsrRequest>,
-        ) -> Result<tonic::Response<super::GetCertificateAuthorityCsrResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateAuthorityCsr" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Activate a pending [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
-        pub async fn activate_certificate_authority(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ActivateCertificateAuthorityRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ActivateCertificateAuthority" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Disable a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
@@ -1811,14 +1718,18 @@ pub mod certificate_authority_service_client {
             let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/EnableCertificateAuthority" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Schedule a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] for deletion."]
-        pub async fn schedule_delete_certificate_authority(
+        #[doc = " Fetch a certificate signing request (CSR) from a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]"]
+        #[doc = " that is in state"]
+        #[doc = " [PENDING_ACTIVATION][google.cloud.security.privateca.v1beta1.CertificateAuthority.State.PENDING_ACTIVATION] and is"]
+        #[doc = " of type [SUBORDINATE][google.cloud.security.privateca.v1beta1.CertificateAuthority.Type.SUBORDINATE]. The CSR must"]
+        #[doc = " then be signed by the desired parent Certificate Authority, which could be"]
+        #[doc = " another [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] resource, or could be an on-prem"]
+        #[doc = " certificate authority. See also [ActivateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ActivateCertificateAuthority]."]
+        pub async fn fetch_certificate_authority_csr(
             &mut self,
-            request: impl tonic::IntoRequest<super::ScheduleDeleteCertificateAuthorityRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
+            request: impl tonic::IntoRequest<super::FetchCertificateAuthorityCsrRequest>,
+        ) -> Result<tonic::Response<super::FetchCertificateAuthorityCsrResponse>, tonic::Status>
+        {
             self.inner.ready().await.map_err(|e| {
                 tonic::Status::new(
                     tonic::Code::Unknown,
@@ -1826,7 +1737,38 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ScheduleDeleteCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/FetchCertificateAuthorityCsr" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
+        pub async fn get_certificate_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCertificateAuthorityRequest>,
+        ) -> Result<tonic::Response<super::CertificateAuthority>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateAuthority" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
+        pub async fn list_certificate_authorities(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCertificateAuthoritiesRequest>,
+        ) -> Result<tonic::Response<super::ListCertificateAuthoritiesResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateAuthorities" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Restore a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] that is scheduled for deletion."]
@@ -1847,11 +1789,14 @@ pub mod certificate_authority_service_client {
             let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RestoreCertificateAuthority" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Revoke a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]."]
-        pub async fn revoke_certificate(
+        #[doc = " Schedule a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] for deletion."]
+        pub async fn schedule_delete_certificate_authority(
             &mut self,
-            request: impl tonic::IntoRequest<super::RevokeCertificateRequest>,
-        ) -> Result<tonic::Response<super::Certificate>, tonic::Status> {
+            request: impl tonic::IntoRequest<super::ScheduleDeleteCertificateAuthorityRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
             self.inner.ready().await.map_err(|e| {
                 tonic::Status::new(
                     tonic::Code::Unknown,
@@ -1859,7 +1804,177 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RevokeCertificate" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ScheduleDeleteCertificateAuthority" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Update a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
+        pub async fn update_certificate_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCertificateAuthorityRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateAuthority" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Create a new [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] in a given Project, Location"]
+        #[doc = " for a particular [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
+        pub async fn create_certificate_revocation_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCertificateRevocationListRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificateRevocationList" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns a [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
+        pub async fn get_certificate_revocation_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCertificateRevocationListRequest>,
+        ) -> Result<tonic::Response<super::CertificateRevocationList>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateRevocationList" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
+        pub async fn list_certificate_revocation_lists(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCertificateRevocationListsRequest>,
+        ) -> Result<tonic::Response<super::ListCertificateRevocationListsResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateRevocationLists" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Update a [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
+        pub async fn update_certificate_revocation_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCertificateRevocationListRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateRevocationList" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Create a new [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] in a given Project and Location."]
+        pub async fn create_reusable_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateReusableConfigRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateReusableConfig" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " DeleteReusableConfig deletes a [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
+        pub async fn delete_reusable_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteReusableConfigRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/DeleteReusableConfig" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns a [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
+        pub async fn get_reusable_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetReusableConfigRequest>,
+        ) -> Result<tonic::Response<super::ReusableConfig>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetReusableConfig" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
+        pub async fn list_reusable_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListReusableConfigsRequest>,
+        ) -> Result<tonic::Response<super::ListReusableConfigsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListReusableConfigs" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Update a [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
+        pub async fn update_reusable_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateReusableConfigRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateReusableConfig" ) ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

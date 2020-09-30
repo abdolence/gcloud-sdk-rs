@@ -622,7 +622,8 @@ pub mod ad_group_error_enum {
         /// Ad groups of AdGroupType.SEARCH_DYNAMIC_ADS can only be added to
         /// campaigns that have DynamicSearchAdsSetting attached.
         CannotAddAdgroupOfTypeDsaToCampaignWithoutDsaSetting = 14,
-        /// Promoted hotels ad groups are only available to whitelisted customers.
+        /// Promoted hotels ad groups are only available to customers on the
+        /// allow-list.
         PromotedHotelAdGroupsNotAvailableForCustomer = 15,
     }
 }
@@ -733,7 +734,7 @@ pub mod asset_error_enum {
         Unspecified = 0,
         /// The received error code is not known in this version.
         Unknown = 1,
-        /// The customer is not whitelisted for this asset type.
+        /// The customer is not on the allow-list for this asset type.
         CustomerNotWhitelistedForAssetType = 2,
         /// Assets are duplicated across operations.
         DuplicateAsset = 3,
@@ -841,7 +842,7 @@ pub mod authorization_error_enum {
         /// `login-customer-id` header. Learn more at
         /// https://developers.google.com/google-ads/api/docs/concepts/call-structure#cid
         UserPermissionDenied = 2,
-        /// The developer token is not whitelisted.
+        /// The developer token is not on the allow-list.
         DeveloperTokenNotWhitelisted = 3,
         /// The developer token is not allowed with the project sent in the request.
         DeveloperTokenProhibited = 4,
@@ -896,9 +897,10 @@ pub mod bidding_error_enum {
         InvalidBid = 17,
         /// Bidding strategy is not available for the account type.
         BiddingStrategyNotAvailableForAccountType = 18,
-        /// Conversion tracking is not enabled for the campaign for VBB transition.
+        /// Conversion tracking is not enabled in the campaign that has YouTube
+        /// Video Builder transitions.
         ConversionTrackingNotEnabled = 19,
-        /// Not enough conversions tracked for VBB transitions.
+        /// Not enough conversions tracked for YouTube Video Builder transitions.
         NotEnoughConversions = 20,
         /// Campaign can not be created with given bidding strategy. It can be
         /// transitioned to the strategy, once eligible.
@@ -910,7 +912,7 @@ pub mod bidding_error_enum {
         /// for campaigns with AdSchedule targeting.
         BiddingStrategyNotSupportedWithAdSchedule = 24,
         /// Pay per conversion is not available to all the customer, only few
-        /// whitelisted customers can use this.
+        /// customers on the allow-list can use this.
         PayPerConversionNotAvailableForCustomer = 25,
         /// Pay per conversion is not allowed with Target CPA.
         PayPerConversionNotAllowedWithTargetCpa = 26,
@@ -1048,7 +1050,7 @@ pub mod campaign_budget_error_enum {
         /// The campaign budget is associated with at least one campaign, and so the
         /// campaign budget cannot be removed.
         CampaignBudgetInUse = 3,
-        /// Customer is not whitelisted for this campaign budget period.
+        /// Customer is not on the allow-list for this campaign budget period.
         CampaignBudgetPeriodNotAvailable = 4,
         /// This field is not mutable on implicitly shared campaign budgets
         CannotModifyFieldOfImplicitlySharedCampaignBudget = 6,
@@ -1649,7 +1651,7 @@ pub mod criterion_error_enum {
         PlacementUrlHasIllegalChar = 13,
         /// Indicates the URL contains multiple comma separated URLs.
         PlacementUrlHasMultipleSitesInLine = 14,
-        /// Indicates the domain is blacklisted.
+        /// Indicates the domain is blocked.
         PlacementIsNotAvailableForTargetingOrExclusion = 15,
         /// Invalid topic path.
         InvalidTopicPath = 16,
@@ -2208,7 +2210,8 @@ pub mod extension_feed_item_error_enum {
         VanityPhoneNumberNotAllowed = 13,
         /// Call conversion action provided for a call extension is invalid.
         InvalidCallConversionAction = 14,
-        /// For a call extension, the customer is not whitelisted for call tracking.
+        /// For a call extension, the customer is not on the allow-list for call
+        /// tracking.
         CustomerNotWhitelistedForCalltracking = 15,
         /// Call tracking is not supported for the given country for a call
         /// extension.
@@ -2223,7 +2226,7 @@ pub mod extension_feed_item_error_enum {
         QuotesInReviewExtensionSnippet = 19,
         /// Hyphen character present in the review text for a review extension.
         HyphensInReviewExtensionSnippet = 20,
-        /// A blacklisted review source name or url was provided for a review
+        /// A denylisted review source name or url was provided for a review
         /// extension.
         ReviewExtensionSourceIneligible = 21,
         /// Review source name should not be found in the review text.
@@ -2359,7 +2362,8 @@ pub mod extension_setting_error_enum {
         InvalidCountryCode = 27,
         /// Call conversion type id provided for a call extension is invalid.
         InvalidCallConversionTypeId = 28,
-        /// For a call extension, the customer is not whitelisted for call tracking.
+        /// For a call extension, the customer is not on the allow-list for call
+        /// tracking.
         CustomerNotWhitelistedForCalltracking = 29,
         /// Call tracking is not supported for the given country for a call
         /// extension.
@@ -2370,7 +2374,7 @@ pub mod extension_setting_error_enum {
         QuotesInReviewExtensionSnippet = 32,
         /// Hyphen character present in the review text for a review extension.
         HyphensInReviewExtensionSnippet = 33,
-        /// A blacklisted review source name or url was provided for a review
+        /// A blocked review source name or url was provided for a review
         /// extension.
         ReviewExtensionSourceNotEligible = 34,
         /// Review source name should not be found in the review text.
@@ -2633,7 +2637,7 @@ pub mod feed_item_validation_error_enum {
         ValueOutOfRange = 10,
         /// Call tracking is not supported in the selected country.
         CalltrackingNotSupportedForCountry = 11,
-        /// Customer is not whitelisted for call tracking.
+        /// Customer is not on the allow-list for call tracking.
         CustomerNotWhitelistedForCalltracking = 12,
         /// Country code is invalid.
         InvalidCountryCode = 13,
@@ -2908,7 +2912,7 @@ pub mod field_error_enum {
         RequiredNonemptyList = 6,
         /// The field cannot be cleared.
         FieldCannotBeCleared = 7,
-        /// The field's value is on a blacklist for this field.
+        /// The field's value is on a deny-list for this field.
         BlacklistedValue = 8,
     }
 }
@@ -3872,7 +3876,7 @@ pub mod offline_user_data_job_error_enum {
         InvalidUserListId = 3,
         /// Type of the user list is not applicable for the job.
         InvalidUserListType = 4,
-        /// Customer is not whitelisted for using user ID in upload data.
+        /// Customer is not on the allow-list for using user ID in upload data.
         NotWhitelistedForUserId = 5,
         /// Upload data is not compatible with the upload key type of the associated
         /// user list.
@@ -3883,7 +3887,7 @@ pub mod offline_user_data_job_error_enum {
         InvalidMobileIdFormat = 8,
         /// Request is exceeding the maximum number of user identifiers allowed.
         TooManyUserIdentifiers = 9,
-        /// Customer is not whitelisted for store sales direct data.
+        /// Customer is not on the allow-list for store sales direct data.
         NotWhitelistedForStoreSalesDirect = 10,
         /// The partner ID in store sales direct metadata is invalid.
         InvalidPartnerId = 11,
@@ -4863,8 +4867,8 @@ pub mod user_list_error_enum {
         /// Name of the user list is reserved for system generated lists and cannot
         /// be used.
         UserlistNameIsReservedForSystemList = 32,
-        /// Advertiser needs to be whitelisted to use remarketing lists created from
-        /// advertiser uploaded data (e.g., Customer Match lists).
+        /// Advertiser needs to be on the allow-list to use remarketing lists created
+        /// from advertiser uploaded data (e.g., Customer Match lists).
         AdvertiserNotWhitelistedForUsingUploadedData = 33,
         /// The provided rule_type is not supported for the user list.
         RuleTypeIsNotSupported = 34,
@@ -5533,7 +5537,7 @@ pub mod error_location {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorDetails {
     /// The error code that should have been returned, but wasn't. This is used
-    /// when the error code is InternalError.ERROR_CODE_NOT_PUBLISHED.
+    /// when the error code is not published in the client specified version.
     #[prost(string, tag = "1")]
     pub unpublished_error_code: std::string::String,
     /// Describes an ad policy violation.

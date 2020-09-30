@@ -12,8 +12,8 @@ pub struct KeyRing {
 /// A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
 /// operations.
 ///
-/// A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up of one or more [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-/// represent the actual key material used in cryptographic operations.
+/// A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up of zero or more [versions][google.cloud.kms.v1.CryptoKeyVersion],
+/// which represent the actual key material used in cryptographic operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoKey {
     /// Output only. The resource name for this [CryptoKey][google.cloud.kms.v1.CryptoKey] in the format
@@ -371,6 +371,27 @@ pub struct PublicKey {
         tag = "2"
     )]
     pub algorithm: i32,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem]. An integrity check of [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] can be performed
+    /// by computing the CRC32C checksum of [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] and
+    /// comparing your results to this field. Discard the response in case of
+    /// non-matching checksum values, and perform a limited number of retries. A
+    /// persistent mismatch may indicate an issue in your computation of the CRC32C
+    /// checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "3")]
+    pub pem_crc32c: ::std::option::Option<i64>,
+    /// The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key.
+    /// Provided here for verification.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(string, tag = "4")]
+    pub name: std::string::String,
 }
 /// An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
 /// [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] using pre-existing key material,
@@ -917,6 +938,41 @@ pub struct EncryptRequest {
     /// 8KiB.
     #[prost(bytes, tag = "3")]
     pub additional_authenticated_data: std::vec::Vec<u8>,
+    /// Optional. An optional CRC32C checksum of the [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext]. If
+    /// specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
+    /// received [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext] using this checksum.
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will report an error if the checksum verification
+    /// fails. If you receive a checksum error, your client should verify that
+    /// CRC32C([EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext]) is equal to
+    /// [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c], and if so, perform a limited number of
+    /// retries. A persistent mismatch may indicate an issue in your computation of
+    /// the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "7")]
+    pub plaintext_crc32c: ::std::option::Option<i64>,
+    /// Optional. An optional CRC32C checksum of the
+    /// [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data]. If specified,
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the received
+    /// [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data] using this checksum.
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will report an error if the checksum verification
+    /// fails. If you receive a checksum error, your client should verify that
+    /// CRC32C([EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data]) is equal to
+    /// [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c], and if so, perform
+    /// a limited number of retries. A persistent mismatch may indicate an issue in
+    /// your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "8")]
+    pub additional_authenticated_data_crc32c: ::std::option::Option<i64>,
 }
 /// Request message for [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -933,6 +989,41 @@ pub struct DecryptRequest {
     /// [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data].
     #[prost(bytes, tag = "3")]
     pub additional_authenticated_data: std::vec::Vec<u8>,
+    /// Optional. An optional CRC32C checksum of the [DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext]. If
+    /// specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
+    /// received [DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext] using this checksum.
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will report an error if the checksum verification
+    /// fails. If you receive a checksum error, your client should verify that
+    /// CRC32C([DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext]) is equal to
+    /// [DecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.DecryptRequest.ciphertext_crc32c], and if so, perform a limited number
+    /// of retries. A persistent mismatch may indicate an issue in your computation
+    /// of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "5")]
+    pub ciphertext_crc32c: ::std::option::Option<i64>,
+    /// Optional. An optional CRC32C checksum of the
+    /// [DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data]. If specified,
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the received
+    /// [DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data] using this checksum.
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will report an error if the checksum verification
+    /// fails. If you receive a checksum error, your client should verify that
+    /// CRC32C([DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data]) is equal to
+    /// [DecryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data_crc32c], and if so, perform
+    /// a limited number of retries. A persistent mismatch may indicate an issue in
+    /// your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "6")]
+    pub additional_authenticated_data_crc32c: ::std::option::Option<i64>,
 }
 /// Request message for [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -945,6 +1036,23 @@ pub struct AsymmetricSignRequest {
     /// [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
     #[prost(message, optional, tag = "3")]
     pub digest: ::std::option::Option<Digest>,
+    /// Optional. An optional CRC32C checksum of the [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest]. If
+    /// specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
+    /// received [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest] using this checksum.
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will report an error if the checksum verification
+    /// fails. If you receive a checksum error, your client should verify that
+    /// CRC32C([AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest]) is equal to
+    /// [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c], and if so, perform a limited
+    /// number of retries. A persistent mismatch may indicate an issue in your
+    /// computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "4")]
+    pub digest_crc32c: ::std::option::Option<i64>,
 }
 /// Request message for [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -957,6 +1065,23 @@ pub struct AsymmetricDecryptRequest {
     /// key using OAEP.
     #[prost(bytes, tag = "3")]
     pub ciphertext: std::vec::Vec<u8>,
+    /// Optional. An optional CRC32C checksum of the [AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext].
+    /// If specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
+    /// received [AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext] using this checksum.
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will report an error if the checksum verification
+    /// fails. If you receive a checksum error, your client should verify that
+    /// CRC32C([AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext]) is equal to
+    /// [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c], and if so, perform a
+    /// limited number of retries. A persistent mismatch may indicate an issue in
+    /// your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "4")]
+    pub ciphertext_crc32c: ::std::option::Option<i64>,
 }
 /// Response message for [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -964,6 +1089,23 @@ pub struct DecryptResponse {
     /// The decrypted data originally supplied in [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext].
     #[prost(bytes, tag = "1")]
     pub plaintext: std::vec::Vec<u8>,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext]. An integrity check of
+    /// [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext] can be performed by computing the CRC32C
+    /// checksum of [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext] and comparing your results to
+    /// this field. Discard the response in case of non-matching checksum values,
+    /// and perform a limited number of retries. A persistent mismatch may indicate
+    /// an issue in your computation of the CRC32C checksum. Note: receiving this
+    /// response message indicates that [KeyManagementService][google.cloud.kms.v1.KeyManagementService] is able to
+    /// successfully decrypt the [ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext].
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "2")]
+    pub plaintext_crc32c: ::std::option::Option<i64>,
 }
 /// Response message for [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -975,6 +1117,46 @@ pub struct EncryptResponse {
     /// The encrypted data.
     #[prost(bytes, tag = "2")]
     pub ciphertext: std::vec::Vec<u8>,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext]. An integrity check of
+    /// [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext] can be performed by computing the CRC32C
+    /// checksum of [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext] and comparing your results to
+    /// this field. Discard the response in case of non-matching checksum values,
+    /// and perform a limited number of retries. A persistent mismatch may indicate
+    /// an issue in your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "4")]
+    pub ciphertext_crc32c: ::std::option::Option<i64>,
+    /// Integrity verification field. A flag indicating whether
+    /// [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c] was received by
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] and used for the integrity verification of the
+    /// [plaintext][google.cloud.kms.v1.EncryptRequest.plaintext]. A false value of this field
+    /// indicates either that [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c] was left unset or
+    /// that it was not delivered to [KeyManagementService][google.cloud.kms.v1.KeyManagementService]. If you've set
+    /// [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c] but this field is still false, discard
+    /// the response and perform a limited number of retries.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(bool, tag = "5")]
+    pub verified_plaintext_crc32c: bool,
+    /// Integrity verification field. A flag indicating whether
+    /// [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c] was received by
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] and used for the integrity verification of the
+    /// [AAD][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data]. A false value of this
+    /// field indicates either that
+    /// [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c] was left unset or
+    /// that it was not delivered to [KeyManagementService][google.cloud.kms.v1.KeyManagementService]. If you've set
+    /// [EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c] but this field is
+    /// still false, discard the response and perform a limited number of retries.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(bool, tag = "6")]
+    pub verified_additional_authenticated_data_crc32c: bool,
 }
 /// Response message for [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -982,6 +1164,39 @@ pub struct AsymmetricSignResponse {
     /// The created signature.
     #[prost(bytes, tag = "1")]
     pub signature: std::vec::Vec<u8>,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature]. An integrity check of
+    /// [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature] can be performed by computing the
+    /// CRC32C checksum of [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature] and comparing your
+    /// results to this field. Discard the response in case of non-matching
+    /// checksum values, and perform a limited number of retries. A persistent
+    /// mismatch may indicate an issue in your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "2")]
+    pub signature_crc32c: ::std::option::Option<i64>,
+    /// Integrity verification field. A flag indicating whether
+    /// [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c] was received by
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] and used for the integrity verification of the
+    /// [digest][google.cloud.kms.v1.AsymmetricSignRequest.digest]. A false value of this field
+    /// indicates either that [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c] was left
+    /// unset or that it was not delivered to [KeyManagementService][google.cloud.kms.v1.KeyManagementService]. If you've
+    /// set [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c] but this field is still false,
+    /// discard the response and perform a limited number of retries.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(bool, tag = "3")]
+    pub verified_digest_crc32c: bool,
+    /// The resource name of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] used for signing. Check
+    /// this field to verify that the intended resource was used for signing.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(string, tag = "4")]
+    pub name: std::string::String,
 }
 /// Response message for [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -989,6 +1204,33 @@ pub struct AsymmetricDecryptResponse {
     /// The decrypted data originally encrypted with the matching public key.
     #[prost(bytes, tag = "1")]
     pub plaintext: std::vec::Vec<u8>,
+    /// Integrity verification field. A CRC32C checksum of the returned
+    /// [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext]. An integrity check of
+    /// [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext] can be performed by computing the
+    /// CRC32C checksum of [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext] and comparing
+    /// your results to this field. Discard the response in case of non-matching
+    /// checksum values, and perform a limited number of retries. A persistent
+    /// mismatch may indicate an issue in your computation of the CRC32C checksum.
+    /// Note: This field is defined as int64 for reasons of compatibility across
+    /// different languages. However, it is a non-negative integer, which will
+    /// never exceed 2^32-1, and can be safely downconverted to uint32 in languages
+    /// that support this type.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(message, optional, tag = "2")]
+    pub plaintext_crc32c: ::std::option::Option<i64>,
+    /// Integrity verification field. A flag indicating whether
+    /// [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c] was received by
+    /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] and used for the integrity verification of the
+    /// [ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext]. A false value of this
+    /// field indicates either that [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c]
+    /// was left unset or that it was not delivered to [KeyManagementService][google.cloud.kms.v1.KeyManagementService]. If
+    /// you've set [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c] but this field is
+    /// still false, discard the response and perform a limited number of retries.
+    ///
+    /// NOTE: This field is in Beta.
+    #[prost(bool, tag = "3")]
+    pub verified_ciphertext_crc32c: bool,
 }
 /// Request message for [KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]

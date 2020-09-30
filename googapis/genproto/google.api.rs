@@ -572,6 +572,11 @@ pub struct ResourceDescriptor {
     /// Such as "project" for the `resourcemanager.googleapis.com/Project` type.
     #[prost(string, tag = "6")]
     pub singular: std::string::String,
+    /// Style flag(s) for this resource.
+    /// These indicate that a resource is expected to conform to a given
+    /// style. See the specific style flags for additional information.
+    #[prost(enumeration = "resource_descriptor::Style", repeated, tag = "10")]
+    pub style: ::std::vec::Vec<i32>,
 }
 pub mod resource_descriptor {
     /// A description of the historical or future-looking state of the
@@ -588,6 +593,22 @@ pub mod resource_descriptor {
         /// later. (This is the inverse of ORIGINALLY_SINGLE_PATTERN, and prevents
         /// that from being necessary once there are multiple patterns.)
         FutureMultiPattern = 2,
+    }
+    /// A flag representing a specific style that a resource claims to conform to.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Style {
+        /// The unspecified value. Do not use.
+        Unspecified = 0,
+        /// This resource is intended to be "declarative-friendly".
+        ///
+        /// Declarative-friendly resources must be more strictly consistent, and
+        /// setting this to true communicates to tools that this resource should
+        /// adhere to declarative-friendly expectations.
+        ///
+        /// Note: This is used by the API linter (linter.aip.dev) to enable
+        /// additional checks.
+        DeclarativeFriendly = 1,
     }
 }
 /// Defines a proto annotation that describes a string field that refers to

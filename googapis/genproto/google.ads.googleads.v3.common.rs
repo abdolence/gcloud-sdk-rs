@@ -781,7 +781,6 @@ pub struct TargetCpm {}
 /// An automated bidding strategy that sets bids so that a certain percentage of
 /// search ads are shown at the top of the first page (or other targeted
 /// location).
-/// next tag = 4
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShare {
     /// The targeted location on the search results page.
@@ -2251,11 +2250,11 @@ pub struct Metrics {
     /// divided by the number of ad interactions.
     #[prost(message, optional, tag = "65")]
     pub all_conversions_from_interactions_rate: ::std::option::Option<f64>,
-    /// The total value of all conversions.
+    /// The value of all conversions.
     #[prost(message, optional, tag = "66")]
     pub all_conversions_value: ::std::option::Option<f64>,
-    /// The total number of conversions. This only includes conversion actions
-    /// which include_in_conversions_metric attribute is set to true.
+    /// The total number of conversions. This includes all conversions regardless
+    /// of the value of include_in_conversions_metric.
     #[prost(message, optional, tag = "7")]
     pub all_conversions: ::std::option::Option<f64>,
     /// The value of all conversions divided by the total cost of ad interactions
@@ -2390,25 +2389,33 @@ pub struct Metrics {
     /// Conversions from interactions divided by the number of ad interactions
     /// (such as clicks for text ads or views for video ads). This only includes
     /// conversion actions which include_in_conversions_metric attribute is set to
-    /// true.
+    /// true. If you use conversion-based bidding, your bid strategies will
+    /// optimize for these conversions.
     #[prost(message, optional, tag = "69")]
     pub conversions_from_interactions_rate: ::std::option::Option<f64>,
-    /// The total value of conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// The value of conversions. This only includes conversion actions which
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "70")]
     pub conversions_value: ::std::option::Option<f64>,
     /// The value of conversions divided by the cost of ad interactions. This only
     /// includes conversion actions which include_in_conversions_metric attribute
-    /// is set to true.
+    /// is set to true. If you use conversion-based bidding, your bid strategies
+    /// will optimize for these conversions.
     #[prost(message, optional, tag = "71")]
     pub conversions_value_per_cost: ::std::option::Option<f64>,
     /// The value of conversions from interactions divided by the number of ad
     /// interactions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "72")]
     pub conversions_from_interactions_value_per_interaction: ::std::option::Option<f64>,
     /// The number of conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "25")]
     pub conversions: ::std::option::Option<f64>,
     /// The sum of your cost-per-click (CPC) and cost-per-thousand impressions
@@ -2420,12 +2427,15 @@ pub struct Metrics {
     pub cost_per_all_conversions: ::std::option::Option<f64>,
     /// The cost of ad interactions divided by conversions. This only includes
     /// conversion actions which include_in_conversions_metric attribute is set to
-    /// true.
+    /// true. If you use conversion-based bidding, your bid strategies will
+    /// optimize for these conversions.
     #[prost(message, optional, tag = "28")]
     pub cost_per_conversion: ::std::option::Option<f64>,
     /// The cost of ad interactions divided by current model attributed
     /// conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "106")]
     pub cost_per_current_model_attributed_conversion: ::std::option::Option<f64>,
     /// Conversions from when a customer clicks on a Google Ads ad on one device,
@@ -2439,29 +2449,38 @@ pub struct Metrics {
     pub ctr: ::std::option::Option<f64>,
     /// Shows how your historic conversions data would look under the attribution
     /// model you've currently selected. This only includes conversion actions
-    /// which include_in_conversions_metric attribute is set to true.
+    /// which include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "101")]
     pub current_model_attributed_conversions: ::std::option::Option<f64>,
     /// Current model attributed conversions from interactions divided by the
     /// number of ad interactions (such as clicks for text ads or views for video
     /// ads). This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "102")]
     pub current_model_attributed_conversions_from_interactions_rate: ::std::option::Option<f64>,
     /// The value of current model attributed conversions from interactions divided
     /// by the number of ad interactions. This only includes conversion actions
-    /// which include_in_conversions_metric attribute is set to true.
+    /// which include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "103")]
     pub current_model_attributed_conversions_from_interactions_value_per_interaction:
         ::std::option::Option<f64>,
-    /// The total value of current model attributed conversions. This only includes
+    /// The value of current model attributed conversions. This only includes
     /// conversion actions which include_in_conversions_metric attribute is set to
-    /// true.
+    /// true. If you use conversion-based bidding, your bid strategies will
+    /// optimize for these conversions.
     #[prost(message, optional, tag = "104")]
     pub current_model_attributed_conversions_value: ::std::option::Option<f64>,
     /// The value of current model attributed conversions divided by the cost of ad
     /// interactions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "105")]
     pub current_model_attributed_conversions_value_per_cost: ::std::option::Option<f64>,
     /// How often people engage with your ad after it's shown to them. This is the
@@ -2693,12 +2712,15 @@ pub struct Metrics {
     pub value_per_all_conversions: ::std::option::Option<f64>,
     /// The value of conversions divided by the number of conversions. This only
     /// includes conversion actions which include_in_conversions_metric attribute
-    /// is set to true.
+    /// is set to true. If you use conversion-based bidding, your bid strategies
+    /// will optimize for these conversions.
     #[prost(message, optional, tag = "53")]
     pub value_per_conversion: ::std::option::Option<f64>,
     /// The value of current model attributed conversions divided by the number of
     /// the conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "94")]
     pub value_per_current_model_attributed_conversion: ::std::option::Option<f64>,
     /// Percentage of impressions where the viewer watched all of your video.
@@ -2804,15 +2826,15 @@ pub struct TransactionAttribute {
     #[prost(message, optional, tag = "4")]
     pub conversion_action: ::std::option::Option<::std::string::String>,
     /// Transaction order id.
-    /// Accessible to whitelisted customers only.
+    /// Accessible only to customers on the allow-list.
     #[prost(message, optional, tag = "5")]
     pub order_id: ::std::option::Option<::std::string::String>,
     /// Store attributes of the transaction.
-    /// Accessible to whitelisted customers only.
+    /// Accessible only to customers on the allow-list.
     #[prost(message, optional, tag = "6")]
     pub store_attribute: ::std::option::Option<StoreAttribute>,
     /// Value of the custom variable for each transaction.
-    /// Accessible to whitelisted customers only.
+    /// Accessible only to customers on the allow-list.
     #[prost(message, optional, tag = "7")]
     pub custom_value: ::std::option::Option<::std::string::String>,
 }
@@ -2861,8 +2883,8 @@ pub struct StoreSalesMetadata {
     pub transaction_upload_fraction: ::std::option::Option<f64>,
     /// Name of the store sales custom variable key. A predefined key that
     /// can be applied to the transaction and then later used for custom
-    /// segementation in reporting.
-    /// Accessible to whitelisted customers only.
+    /// segmentation in reporting.
+    /// Accessible only to customers on the allow-list.
     #[prost(message, optional, tag = "4")]
     pub custom_key: ::std::option::Option<::std::string::String>,
     /// Metadata for a third party Store Sales upload.
@@ -2870,8 +2892,9 @@ pub struct StoreSalesMetadata {
     pub third_party_metadata: ::std::option::Option<StoreSalesThirdPartyMetadata>,
 }
 /// Metadata for a third party Store Sales.
-/// This is a whitelisted only product. Please contact your Google business
-/// development representative for details on the upload configuration.
+/// This product is only for customers on the allow-list. Please contact your
+/// Google business development representative for details on the upload
+/// configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoreSalesThirdPartyMetadata {
     /// Time the advertiser uploaded the data to the partner. Required.
@@ -3763,7 +3786,7 @@ pub struct CrmBasedUserListInfo {
     )]
     pub upload_key_type: i32,
     /// Data source of the list. Default value is FIRST_PARTY.
-    /// Only whitelisted customers can create third-party sourced CRM lists.
+    /// Only customers on the allow-list can create third-party sourced CRM lists.
     #[prost(
         enumeration = "super::enums::user_list_crm_data_source_type_enum::UserListCrmDataSourceType",
         tag = "3"

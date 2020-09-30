@@ -363,6 +363,13 @@ pub mod structured_query {
             GreaterThanOrEqual = 4,
             /// The given `field` is equal to the given `value`.
             Equal = 5,
+            /// The given `field` is not equal to the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * No other `NOT_EQUAL`, `NOT_IN`, `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            NotEqual = 6,
             /// The given `field` is an array that contains the given `value`.
             ArrayContains = 7,
             /// The given `field` is equal to at least one value in the given array.
@@ -370,7 +377,7 @@ pub mod structured_query {
             /// Requires:
             ///
             /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, or `NOT_IN`.
+            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
             In = 8,
             /// The given `field` is an array that contains any of the values in the
             /// given array.
@@ -378,8 +385,17 @@ pub mod structured_query {
             /// Requires:
             ///
             /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
-            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, or `NOT_IN`.
+            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
             ArrayContainsAny = 9,
+            /// The value of the `field` is not in the given array.
+            ///
+            /// Requires:
+            ///
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
+            ///   `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            NotIn = 10,
         }
     }
     /// A filter with a single operand.
@@ -403,6 +419,20 @@ pub mod structured_query {
             IsNan = 2,
             /// The given `field` is equal to `NULL`.
             IsNull = 3,
+            /// The given `field` is not equal to `NaN`.
+            ///
+            /// Requires:
+            ///
+            /// * No other `NOT_EQUAL`, `NOT_IN`, `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            IsNotNan = 4,
+            /// The given `field` is not equal to `NULL`.
+            ///
+            /// Requires:
+            ///
+            /// * A single `NOT_EQUAL`, `NOT_IN`, `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            IsNotNull = 5,
         }
         /// The argument to the filter.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -411,6 +441,16 @@ pub mod structured_query {
             #[prost(message, tag = "2")]
             Field(super::FieldReference),
         }
+    }
+    /// An order on a field.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Order {
+        /// The field to order by.
+        #[prost(message, optional, tag = "1")]
+        pub field: ::std::option::Option<FieldReference>,
+        /// The direction to order by. Defaults to `ASCENDING`.
+        #[prost(enumeration = "Direction", tag = "2")]
+        pub direction: i32,
     }
     /// A reference to a field, such as `max(messages.time) as max_time`.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -427,16 +467,6 @@ pub mod structured_query {
         /// of the document, use `['__name__']`.
         #[prost(message, repeated, tag = "2")]
         pub fields: ::std::vec::Vec<FieldReference>,
-    }
-    /// An order on a field.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Order {
-        /// The field to order by.
-        #[prost(message, optional, tag = "1")]
-        pub field: ::std::option::Option<FieldReference>,
-        /// The direction to order by. Defaults to `ASCENDING`.
-        #[prost(enumeration = "Direction", tag = "2")]
-        pub direction: i32,
     }
     /// A sort direction.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1103,7 +1133,7 @@ pub struct PartitionQueryRequest {
     pub parent: std::string::String,
     /// The desired maximum number of partition points.
     /// The partitions may be returned across multiple pages of results.
-    /// The number must be strictly positive. The actual number of partitions
+    /// The number must be positive. The actual number of partitions
     /// returned may be fewer.
     ///
     /// For example, this may be set to one fewer than the number of parallel
@@ -1144,8 +1174,9 @@ pub mod partition_query_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum QueryType {
         /// A structured query.
-        /// Filters, order bys, limits, offsets, and start/end cursors are not
-        /// supported.
+        /// Query must specify collection with all descendants and be ordered by name
+        /// ascending. Other filters, order bys, limits, offsets, and start/end
+        /// cursors are not supported.
         #[prost(message, tag = "2")]
         StructuredQuery(super::StructuredQuery),
     }
@@ -1167,6 +1198,9 @@ pub struct PartitionQueryResponse {
     ///  * query, end_at A
     ///  * query, start_at A, end_at B
     ///  * query, start_at B
+    ///
+    /// An empty result may indicate that the query has too few results to be
+    /// partitioned.
     #[prost(message, repeated, tag = "1")]
     pub partitions: ::std::vec::Vec<Cursor>,
     /// A page token that may be used to request an additional set of results, up

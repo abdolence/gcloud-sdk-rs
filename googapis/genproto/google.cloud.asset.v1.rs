@@ -183,7 +183,7 @@ pub struct Resource {
     #[prost(string, tag = "8")]
     pub location: std::string::String,
 }
-/// A result of Resource Search, containing information of a cloud resoure.
+/// A result of Resource Search, containing information of a cloud resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceSearchResult {
     /// The full resource name of this resource. Example:
@@ -194,8 +194,8 @@ pub struct ResourceSearchResult {
     ///
     /// To search against the `name`:
     ///
-    /// * use a field query. Example: `name : "instance1"`
-    /// * use a free text query. Example: `"instance1"`
+    /// * use a field query. Example: `name:instance1`
+    /// * use a free text query. Example: `instance1`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The type of this resource. Example: `compute.googleapis.com/Disk`.
@@ -217,7 +217,7 @@ pub struct ResourceSearchResult {
     ///
     /// To search against the `display_name`:
     ///
-    /// * use a field query. Example: `displayName : "My Instance"`
+    /// * use a field query. Example: `displayName:"My Instance"`
     /// * use a free text query. Example: `"My Instance"`
     #[prost(string, tag = "4")]
     pub display_name: std::string::String,
@@ -226,7 +226,7 @@ pub struct ResourceSearchResult {
     ///
     /// To search against the `description`:
     ///
-    /// * use a field query. Example: `description : "*important instance*"`
+    /// * use a field query. Example: `description:"*important instance*"`
     /// * use a free text query. Example: `"*important instance*"`
     #[prost(string, tag = "5")]
     pub description: std::string::String,
@@ -235,8 +235,8 @@ pub struct ResourceSearchResult {
     ///
     /// To search against the `location`:
     ///
-    /// * use a field query. Example: `location : "us-west*"`
-    /// * use a free text query. Example: `"us-west*"`
+    /// * use a field query. Example: `location:us-west*`
+    /// * use a free text query. Example: `us-west*`
     #[prost(string, tag = "6")]
     pub location: std::string::String,
     /// Labels associated with this resource. See [Labelling and grouping GCP
@@ -245,11 +245,11 @@ pub struct ResourceSearchResult {
     ///
     /// To search against the `labels`:
     ///
-    /// * use a field query, as following:
-    ///     - query on any label's key or value. Example: `labels : "prod"`
-    ///     - query by a given label. Example: `labels.env : "prod"`
-    ///     - query by a given label'sexistence. Example: `labels.env : *`
-    /// * use a free text query. Example: `"prod"`
+    /// * use a field query:
+    ///     - query on any label's key or value. Example: `labels:prod`
+    ///     - query by a given label. Example: `labels.env:prod`
+    ///     - query by a given label's existence. Example: `labels.env:*`
+    /// * use a free text query. Example: `prod`
     #[prost(map = "string, string", tag = "7")]
     pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     /// Network tags associated with this resource. Like labels, network tags are a
@@ -259,19 +259,29 @@ pub struct ResourceSearchResult {
     ///
     /// To search against the `network_tags`:
     ///
-    /// * use a field query. Example: `networkTags : "internal"`
-    /// * use a free text query. Example: `"internal"`
+    /// * use a field query. Example: `networkTags:internal`
+    /// * use a free text query. Example: `internal`
     #[prost(string, repeated, tag = "8")]
     pub network_tags: ::std::vec::Vec<std::string::String>,
-    /// The additional attributes of this resource. The attributes may vary from
-    /// one resource type to another. Examples: `projectId` for Project,
-    /// `dnsName` for DNS ManagedZone.
+    /// The additional searchable attributes of this resource. The attributes may
+    /// vary from one resource type to another. Examples: `projectId` for Project,
+    /// `dnsName` for DNS ManagedZone. This field contains a subset of the resource
+    /// metadata fields that are returned by the List or Get APIs provided by the
+    /// corresponding GCP service (e.g., Compute Engine). see [API references and
+    /// supported searchable
+    /// attributes](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types)
+    /// for more information.
+    ///
+    /// You can search values of these fields through free text search. However,
+    /// you should not consume the field programically as the field names and
+    /// values may change as the GCP service updates to a new incompatible API
+    /// version.
     ///
     /// To search against the `additional_attributes`:
     ///
     /// * use a free text query to match the attributes values. Example: to search
     ///   `additional_attributes = { dnsName: "foobar" }`, you can issue a query
-    ///   `"foobar"`.
+    ///   `foobar`.
     #[prost(message, optional, tag = "9")]
     pub additional_attributes: ::std::option::Option<::prost_types::Struct>,
 }
@@ -287,7 +297,7 @@ pub struct IamPolicySearchResult {
     ///
     /// To search against the `resource`:
     ///
-    /// * use a field query. Example: `resource : "organizations/123"`
+    /// * use a field query. Example: `resource:organizations/123`
     #[prost(string, tag = "1")]
     pub resource: std::string::String,
     /// The project that the associated GCP resource belongs to, in the form of
@@ -308,13 +318,13 @@ pub struct IamPolicySearchResult {
     ///
     /// To search against the `policy` bindings:
     ///
-    /// * use a field query, as following:
+    /// * use a field query:
     ///     - query by the policy contained members. Example:
-    ///       `policy : "amy@gmail.com"`
+    ///       `policy:amy@gmail.com`
     ///     - query by the policy contained roles. Example:
-    ///       `policy : "roles/compute.admin"`
-    ///     - query by the policy contained roles' implied permissions. Example:
-    ///       `policy.role.permissions : "compute.instances.create"`
+    ///       `policy:roles/compute.admin`
+    ///     - query by the policy contained roles' included permissions. Example:
+    ///       `policy.role.permissions:compute.instances.create`
     #[prost(message, optional, tag = "3")]
     pub policy: ::std::option::Option<super::super::super::iam::v1::Policy>,
     /// Explanation about the IAM policy search result. It contains additional
@@ -328,7 +338,7 @@ pub mod iam_policy_search_result {
     pub struct Explanation {
         /// The map from roles to their included permissions that match the
         /// permission query (i.e., a query containing `policy.role.permissions:`).
-        /// Example: if query `policy.role.permissions : "compute.disk.get"`
+        /// Example: if query `policy.role.permissions:compute.disk.get`
         /// matches a policy binding that contains owner role, the
         /// matched_permissions will be `{"roles/owner": ["compute.disk.get"]}`. The
         /// roles can also be found in the returned `policy` bindings. Note that the
@@ -363,9 +373,22 @@ pub struct ExportAssetsRequest {
     /// running the same query may get different results.
     #[prost(message, optional, tag = "2")]
     pub read_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// A list of asset types of which to take a snapshot for. Example:
-    /// "compute.googleapis.com/Disk". If specified, only matching assets will be
-    /// returned. See [Introduction to Cloud Asset
+    /// A list of asset types to take a snapshot for. For example:
+    /// "compute.googleapis.com/Disk".
+    ///
+    /// Regular expressions are also supported. For example:
+    ///
+    /// * "compute.googleapis.com.*" snapshots resources whose asset type starts
+    /// with "compute.googleapis.com".
+    /// * ".*Instance" snapshots resources whose asset type ends with "Instance".
+    /// * ".*Instance.*" snapshots resources whose asset type contains "Instance".
+    ///
+    /// See [RE2](https://github.com/google/re2/wiki/Syntax) for all supported
+    /// regular expression syntax. If the regular expression does not match any
+    /// supported asset type, an INVALID_ARGUMENT error will be returned.
+    ///
+    /// If specified, only matching assets will be returned, otherwise, it will
+    /// snapshot all asset types. See [Introduction to Cloud Asset
     /// Inventory](https://cloud.google.com/asset-inventory/docs/overview)
     /// for all supported asset types.
     #[prost(string, repeated, tag = "3")]
@@ -374,16 +397,13 @@ pub struct ExportAssetsRequest {
     /// returned.
     #[prost(enumeration = "ContentType", tag = "4")]
     pub content_type: i32,
-    /// Required. Output configuration indicating where the results will be output
-    /// to.
+    /// Required. Output configuration indicating where the results will be output to.
     #[prost(message, optional, tag = "5")]
     pub output_config: ::std::option::Option<OutputConfig>,
 }
 /// The export asset response. This message is returned by the
-/// [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
-/// method in the returned
-/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
-/// field.
+/// [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation] method in the returned
+/// [google.longrunning.Operation.response][google.longrunning.Operation.response] field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAssetsResponse {
     /// Time the snapshot was taken.
@@ -392,6 +412,13 @@ pub struct ExportAssetsResponse {
     /// Output configuration indicating where the results were output to.
     #[prost(message, optional, tag = "2")]
     pub output_config: ::std::option::Option<OutputConfig>,
+    /// Output result indicating where the assets were exported to. For example, a
+    /// set of actual Google Cloud Storage object uris where the assets are
+    /// exported to. The uris can be different from what [output_config] has
+    /// specified, as the service will split the output object into multiple ones
+    /// once it exceeds a single Google Cloud Storage object limit.
+    #[prost(message, optional, tag = "3")]
+    pub output_result: ::std::option::Option<OutputResult>,
 }
 /// Batch get assets history request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -444,8 +471,9 @@ pub struct CreateFeedRequest {
     /// be unique under a specific parent project/folder/organization.
     #[prost(string, tag = "2")]
     pub feed_id: std::string::String,
-    /// Required. The feed details. The field `name` must be empty and it will be
-    /// generated in the format of: projects/project_number/feeds/feed_id
+    /// Required. The feed details. The field `name` must be empty and it will be generated
+    /// in the format of:
+    /// projects/project_number/feeds/feed_id
     /// folders/folder_number/feeds/feed_id
     /// organizations/organization_number/feeds/feed_id
     #[prost(message, optional, tag = "3")]
@@ -479,8 +507,8 @@ pub struct ListFeedsResponse {
 /// Update asset feed request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeedRequest {
-    /// Required. The new values of feed details. It must match an existing feed
-    /// and the field `name` must be in the format of:
+    /// Required. The new values of feed details. It must match an existing feed and the
+    /// field `name` must be in the format of:
     /// projects/project_number/feeds/feed_id or
     /// folders/folder_number/feeds/feed_id or
     /// organizations/organization_number/feeds/feed_id.
@@ -520,6 +548,30 @@ pub mod output_config {
         #[prost(message, tag = "2")]
         BigqueryDestination(super::BigQueryDestination),
     }
+}
+/// Output result of export assets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OutputResult {
+    /// Asset export result.
+    #[prost(oneof = "output_result::Result", tags = "1")]
+    pub result: ::std::option::Option<output_result::Result>,
+}
+pub mod output_result {
+    /// Asset export result.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Export result on Cloud Storage.
+        #[prost(message, tag = "1")]
+        GcsResult(super::GcsOutputResult),
+    }
+}
+/// A Cloud Storage output result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsOutputResult {
+    /// List of uris of the Cloud Storage objects. Example:
+    /// "gs://bucket_name/object_name".
+    #[prost(string, repeated, tag = "1")]
+    pub uris: ::std::vec::Vec<std::string::String>,
 }
 /// A Cloud Storage location.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -572,6 +624,85 @@ pub struct BigQueryDestination {
     /// call returns an INVALID_ARGUMEMT error.
     #[prost(bool, tag = "3")]
     pub force: bool,
+    /// [partition_spec] determines whether to export to partitioned table(s) and
+    /// how to partition the data.
+    ///
+    /// If [partition_spec] is unset or [partition_spec.partion_key] is unset or
+    /// `PARTITION_KEY_UNSPECIFIED`, the snapshot results will be exported to
+    /// non-partitioned table(s). [force] will decide whether to overwrite existing
+    /// table(s).
+    ///
+    /// If [partition_spec] is specified. First, the snapshot results will be
+    /// written to partitioned table(s) with two additional timestamp columns,
+    /// readTime and requestTime, one of which will be the partition key. Secondly,
+    /// in the case when any destination table already exists, it will first try to
+    /// update existing table's schema as necessary by appending additional
+    /// columns. Then, if [force] is `TRUE`, the corresponding partition will be
+    /// overwritten by the snapshot results (data in different partitions will
+    /// remain intact); if [force] is unset or `FALSE`, it will append the data. An
+    /// error will be returned if the schema update or data appension fails.
+    #[prost(message, optional, tag = "4")]
+    pub partition_spec: ::std::option::Option<PartitionSpec>,
+    /// If this flag is `TRUE`, the snapshot results will be written to one or
+    /// multiple tables, each of which contains results of one asset type. The
+    /// [force] and [partition_spec] fields will apply to each of them.
+    ///
+    /// Field [table] will be concatenated with "_" and the asset type names (see
+    /// https://cloud.google.com/asset-inventory/docs/supported-asset-types for
+    /// supported asset types) to construct per-asset-type table names, in which
+    /// all non-alphanumeric characters like "." and "/" will be substituted by
+    /// "_". Example: if field [table] is "mytable" and snapshot results
+    /// contain "storage.googleapis.com/Bucket" assets, the corresponding table
+    /// name will be "mytable_storage_googleapis_com_Bucket". If any of these
+    /// tables does not exist, a new table with the concatenated name will be
+    /// created.
+    ///
+    /// When [content_type] in the ExportAssetsRequest is `RESOURCE`, the schema of
+    /// each table will include RECORD-type columns mapped to the nested fields in
+    /// the Asset.resource.data field of that asset type (up to the 15 nested level
+    /// BigQuery supports
+    /// (https://cloud.google.com/bigquery/docs/nested-repeated#limitations)). The
+    /// fields in >15 nested levels will be stored in JSON format string as a child
+    /// column of its parent RECORD column.
+    ///
+    /// If error occurs when exporting to any table, the whole export call will
+    /// return an error but the export results that already succeed will persist.
+    /// Example: if exporting to table_type_A succeeds when exporting to
+    /// table_type_B fails during one export call, the results in table_type_A will
+    /// persist and there will not be partial results persisting in a table.
+    #[prost(bool, tag = "5")]
+    pub separate_tables_per_asset_type: bool,
+}
+/// Specifications of BigQuery partitioned table as export destination.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionSpec {
+    /// The partition key for BigQuery partitioned table.
+    #[prost(enumeration = "partition_spec::PartitionKey", tag = "1")]
+    pub partition_key: i32,
+}
+pub mod partition_spec {
+    /// This enum is used to determine the partition key column when exporting
+    /// assets to BigQuery partitioned table(s). Note that, if the partition key is
+    /// a timestamp column, the actual partition is based on its date value
+    /// (expressed in UTC. see details in
+    /// https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PartitionKey {
+        /// Unspecified partition key. If used, it means using non-partitioned table.
+        Unspecified = 0,
+        /// The time when the snapshot is taken. If specified as partition key, the
+        /// result table(s) is partitoned by the additional timestamp column,
+        /// readTime. If [read_time] in ExportAssetsRequest is specified, the
+        /// readTime column's value will be the same as it. Otherwise, its value will
+        /// be the current time that is used to take the snapshot.
+        ReadTime = 1,
+        /// The time when the request is received and started to be processed. If
+        /// specified as partition key, the result table(s) is partitoned by the
+        /// requestTime column, an additional timestamp column representing when the
+        /// request was received.
+        RequestTime = 2,
+    }
 }
 /// A Pub/Sub destination.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -647,83 +778,93 @@ pub struct Feed {
     /// When set, `expression` field in the `Expr` must be a valid [CEL expression]
     /// (https://github.com/google/cel-spec) on a TemporalAsset with name
     /// `temporal_asset`. Example: a Feed with expression ("temporal_asset.deleted
-    /// == true") will only publish Asset deletions. Other fields in `Expr` are
+    /// == true") will only publish Asset deletions. Other fields of `Expr` are
     /// optional.
+    ///
+    /// See our [user
+    /// guide](https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes#feed_with_condition)
+    /// for detailed instructions.
     #[prost(message, optional, tag = "6")]
     pub condition: ::std::option::Option<super::super::super::r#type::Expr>,
 }
 /// Search all resources request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllResourcesRequest {
-    /// Required. A scope can be a project, a folder or an organization. The search
-    /// is limited to the resources within the `scope`.
+    /// Required. A scope can be a project, a folder, or an organization. The search is
+    /// limited to the resources within the `scope`. The caller must be granted the
+    /// [`cloudasset.assets.searchAllResources`](http://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
+    /// permission on the desired scope.
     ///
     /// The allowed values are:
     ///
-    /// * projects/{PROJECT_ID}
-    /// * projects/{PROJECT_NUMBER}
-    /// * folders/{FOLDER_NUMBER}
-    /// * organizations/{ORGANIZATION_NUMBER}
+    /// * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+    /// * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+    /// * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+    /// * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
     #[prost(string, tag = "1")]
     pub scope: std::string::String,
-    /// Optional. The query statement. An empty query can be specified to search
-    /// all the resources of certain `asset_types` within the given `scope`.
+    /// Optional. The query statement. See [how to construct a
+    /// query](http://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query)
+    /// for more information. If not specified or empty, it will search all the
+    /// resources within the specified `scope`. Note that the query string is
+    /// compared against each Cloud IAM policy binding, including its members,
+    /// roles, and Cloud IAM conditions. The returned Cloud IAM policies will only
+    /// contain the bindings that match your query. To learn more about the IAM
+    /// policy structure, see [IAM policy
+    /// doc](https://cloud.google.com/iam/docs/policies#structure).
     ///
     /// Examples:
     ///
-    /// * `name : "Important"` to find Cloud resources whose name contains
+    /// * `name:Important` to find Cloud resources whose name contains
     ///   "Important" as a word.
-    /// * `displayName : "Impor*"` to find Cloud resources whose display name
-    ///   contains "Impor" as a word prefix.
-    /// * `description : "*por*"` to find Cloud resources whose description
+    /// * `displayName:Impor*` to find Cloud resources whose display name
+    ///   contains "Impor" as a prefix.
+    /// * `description:*por*` to find Cloud resources whose description
     ///   contains "por" as a substring.
-    /// * `location : "us-west*"` to find Cloud resources whose location is
+    /// * `location:us-west*` to find Cloud resources whose location is
     ///   prefixed with "us-west".
-    /// * `labels : "prod"` to find Cloud resources whose labels contain "prod" as
+    /// * `labels:prod` to find Cloud resources whose labels contain "prod" as
     ///   a key or value.
-    /// * `labels.env : "prod"` to find Cloud resources which have a label "env"
+    /// * `labels.env:prod` to find Cloud resources that have a label "env"
     ///   and its value is "prod".
-    /// * `labels.env : *` to find Cloud resources which have a label "env".
-    /// * `"Important"` to find Cloud resources which contain "Important" as a word
+    /// * `labels.env:*` to find Cloud resources that have a label "env".
+    /// * `Important` to find Cloud resources that contain "Important" as a word
     ///   in any of the searchable fields.
-    /// * `"Impor*"` to find Cloud resources which contain "Impor" as a word prefix
+    /// * `Impor*` to find Cloud resources that contain "Impor" as a prefix
     ///   in any of the searchable fields.
-    /// * `"*por*"` to find Cloud resources which contain "por" as a substring in
+    /// * `*por*` to find Cloud resources that contain "por" as a substring in
     ///   any of the searchable fields.
-    /// * `("Important" AND location : ("us-west1" OR "global"))` to find Cloud
-    ///   resources which contain "Important" as a word in any of the searchable
+    /// * `Important location:(us-west1 OR global)` to find Cloud
+    ///   resources that contain "Important" as a word in any of the searchable
     ///   fields and are also located in the "us-west1" region or the "global"
     ///   location.
-    ///
-    /// See [how to construct a
-    /// query](https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query)
-    /// for more details.
     #[prost(string, tag = "2")]
     pub query: std::string::String,
-    /// Optional. A list of asset types that this request searches for. If empty,
-    /// it will search all the [searchable asset
+    /// Optional. A list of asset types that this request searches for. If empty, it will
+    /// search all the [searchable asset
     /// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
     #[prost(string, repeated, tag = "3")]
     pub asset_types: ::std::vec::Vec<std::string::String>,
-    /// Optional. The page size for search result pagination. Page size is capped
-    /// at 500 even if a larger value is given. If set to zero, server will pick an
-    /// appropriate default. Returned results may be fewer than requested. When
-    /// this happens, there could be more results as long as `next_page_token` is
-    /// returned.
+    /// Optional. The page size for search result pagination. Page size is capped at 500 even
+    /// if a larger value is given. If set to zero, server will pick an appropriate
+    /// default. Returned results may be fewer than requested. When this happens,
+    /// there could be more results as long as `next_page_token` is returned.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
-    /// Optional. If present, then retrieve the next batch of results from the
-    /// preceding call to this method. `page_token` must be the value of
-    /// `next_page_token` from the previous response. The values of all other
-    /// method parameters, must be identical to those in the previous call.
+    /// Optional. If present, then retrieve the next batch of results from the preceding call
+    /// to this method. `page_token` must be the value of `next_page_token` from
+    /// the previous response. The values of all other method parameters, must be
+    /// identical to those in the previous call.
     #[prost(string, tag = "5")]
     pub page_token: std::string::String,
-    /// Optional. A comma separated list of fields specifying the sorting order of
-    /// the results. The default order is ascending. Add " DESC" after the field
-    /// name to indicate descending order. Redundant space characters are ignored.
-    /// Example: "location DESC, name". See [supported resource metadata
-    /// fields](https://cloud.google.com/asset-inventory/docs/searching-resources#query_on_resource_metadata_fields)
-    /// for more details.
+    /// Optional. A comma separated list of fields specifying the sorting order of the
+    /// results. The default order is ascending. Add " DESC" after the field name
+    /// to indicate descending order. Redundant space characters are ignored.
+    /// Example: "location DESC, name". Only string fields in the response are
+    /// sortable, including `name`, `displayName`, `description`, `location`. All
+    /// the other fields such as repeated fields (e.g., `networkTags`), map
+    /// fields (e.g., `labels`) and struct fields (e.g., `additionalAttributes`)
+    /// are not supported.
     #[prost(string, tag = "6")]
     pub order_by: std::string::String,
 }
@@ -743,51 +884,58 @@ pub struct SearchAllResourcesResponse {
 /// Search all IAM policies request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllIamPoliciesRequest {
-    /// Required. A scope can be a project, a folder or an organization. The search
-    /// is limited to the IAM policies within the `scope`.
+    /// Required. A scope can be a project, a folder, or an organization. The search is
+    /// limited to the IAM policies within the `scope`. The caller must be granted
+    /// the
+    /// [`cloudasset.assets.searchAllIamPolicies`](http://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
+    /// permission on the desired scope.
     ///
     /// The allowed values are:
     ///
-    /// * projects/{PROJECT_ID}
-    /// * projects/{PROJECT_NUMBER}
-    /// * folders/{FOLDER_NUMBER}
-    /// * organizations/{ORGANIZATION_NUMBER}
+    /// * projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+    /// * projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+    /// * folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+    /// * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
     #[prost(string, tag = "1")]
     pub scope: std::string::String,
-    /// Optional. The query statement. An empty query can be specified to search
-    /// all the IAM policies within the given `scope`.
+    /// Optional. The query statement. See [how to construct a
+    /// query](https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query)
+    /// for more information. If not specified or empty, it will search all the
+    /// IAM policies within the specified `scope`.
     ///
     /// Examples:
     ///
-    /// * `policy : "amy@gmail.com"` to find Cloud IAM policy bindings that
-    ///   specify user "amy@gmail.com".
-    /// * `policy : "roles/compute.admin"` to find Cloud IAM policy bindings that
-    ///   specify the Compute Admin role.
-    /// * `policy.role.permissions : "storage.buckets.update"` to find Cloud IAM
-    ///   policy bindings that specify a role containing "storage.buckets.update"
-    ///   permission.
-    /// * `resource : "organizations/123"` to find Cloud IAM policy bindings that
-    ///   are set on "organizations/123".
-    /// * `(resource : ("organizations/123" OR "folders/1234") AND policy : "amy")`
-    ///   to find Cloud IAM policy bindings that are set on "organizations/123" or
-    ///   "folders/1234", and also specify user "amy".
-    ///
-    /// See [how to construct a
-    /// query](https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query)
-    /// for more details.
+    /// * `policy:amy@gmail.com` to find IAM policy bindings that specify user
+    ///   "amy@gmail.com".
+    /// * `policy:roles/compute.admin` to find IAM policy bindings that specify
+    ///   the Compute Admin role.
+    /// * `policy.role.permissions:storage.buckets.update` to find IAM policy
+    ///   bindings that specify a role containing "storage.buckets.update"
+    ///   permission. Note that if callers don't have `iam.roles.get` access to a
+    ///   role's included permissions, policy bindings that specify this role will
+    ///   be dropped from the search results.
+    /// * `resource:organizations/123456` to find IAM policy bindings
+    ///   that are set on "organizations/123456".
+    /// * `Important` to find IAM policy bindings that contain "Important" as a
+    ///   word in any of the searchable fields (except for the included
+    ///   permissions).
+    /// * `*por*` to find IAM policy bindings that contain "por" as a substring
+    ///   in any of the searchable fields (except for the included permissions).
+    /// * `resource:(instance1 OR instance2) policy:amy` to find
+    ///   IAM policy bindings that are set on resources "instance1" or
+    ///   "instance2" and also specify user "amy".
     #[prost(string, tag = "2")]
     pub query: std::string::String,
-    /// Optional. The page size for search result pagination. Page size is capped
-    /// at 500 even if a larger value is given. If set to zero, server will pick an
-    /// appropriate default. Returned results may be fewer than requested. When
-    /// this happens, there could be more results as long as `next_page_token` is
-    /// returned.
+    /// Optional. The page size for search result pagination. Page size is capped at 500 even
+    /// if a larger value is given. If set to zero, server will pick an appropriate
+    /// default. Returned results may be fewer than requested. When this happens,
+    /// there could be more results as long as `next_page_token` is returned.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Optional. If present, retrieve the next batch of results from the preceding
-    /// call to this method. `page_token` must be the value of `next_page_token`
-    /// from the previous response. The values of all other method parameters must
-    /// be identical to those in the previous call.
+    /// Optional. If present, retrieve the next batch of results from the preceding call to
+    /// this method. `page_token` must be the value of `next_page_token` from the
+    /// previous response. The values of all other method parameters must be
+    /// identical to those in the previous call.
     #[prost(string, tag = "4")]
     pub page_token: std::string::String,
 }
@@ -816,7 +964,7 @@ pub enum ContentType {
     IamPolicy = 2,
     /// The Cloud Organization Policy set on an asset.
     OrgPolicy = 4,
-    /// The Cloud Access context mananger Policy set on an asset.
+    /// The Cloud Access context manager Policy set on an asset.
     AccessPolicy = 5,
 }
 #[doc = r" Generated client implementations."]
@@ -845,14 +993,13 @@ pub mod asset_service_client {
         #[doc = " Exports assets with time and resource types to a given Cloud Storage"]
         #[doc = " location/BigQuery table. For Cloud Storage location destinations, the"]
         #[doc = " output format is newline-delimited JSON. Each line represents a"]
-        #[doc = " [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset] in the JSON"]
-        #[doc = " format; for BigQuery table destinations, the output table stores the fields"]
-        #[doc = " in asset proto as columns. This API implements the"]
-        #[doc = " [google.longrunning.Operation][google.longrunning.Operation] API , which"]
-        #[doc = " allows you to keep track of the export. We recommend intervals of at least"]
-        #[doc = " 2 seconds with exponential retry to poll the export operation result. For"]
-        #[doc = " regular-size resource parent, the export operation usually finishes within"]
-        #[doc = " 5 minutes."]
+        #[doc = " [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset] in the JSON format; for BigQuery table"]
+        #[doc = " destinations, the output table stores the fields in asset proto as columns."]
+        #[doc = " This API implements the [google.longrunning.Operation][google.longrunning.Operation] API"]
+        #[doc = " , which allows you to keep track of the export. We recommend intervals of"]
+        #[doc = " at least 2 seconds with exponential retry to poll the export operation"]
+        #[doc = " result. For regular-size resource parent, the export operation usually"]
+        #[doc = " finishes within 5 minutes."]
         pub async fn export_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportAssetsRequest>,
@@ -980,9 +1127,9 @@ pub mod asset_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Searches all the resources within the given accessible scope (e.g., a"]
-        #[doc = " project, a folder or an organization). Callers should have"]
-        #[doc = " cloud.assets.SearchAllResources permission upon the requested scope,"]
+        #[doc = " Searches all Cloud resources within the specified scope, such as a project,"]
+        #[doc = " folder, or organization. The caller must be granted the"]
+        #[doc = " `cloudasset.assets.searchAllResources` permission on the desired scope,"]
         #[doc = " otherwise the request will be rejected."]
         pub async fn search_all_resources(
             &mut self,
@@ -1000,9 +1147,9 @@ pub mod asset_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Searches all the IAM policies within the given accessible scope (e.g., a"]
-        #[doc = " project, a folder or an organization). Callers should have"]
-        #[doc = " cloud.assets.SearchAllIamPolicies permission upon the requested scope,"]
+        #[doc = " Searches all IAM policies within the specified scope, such as a project,"]
+        #[doc = " folder, or organization. The caller must be granted the"]
+        #[doc = " `cloudasset.assets.searchAllIamPolicies` permission on the desired scope,"]
         #[doc = " otherwise the request will be rejected."]
         pub async fn search_all_iam_policies(
             &mut self,

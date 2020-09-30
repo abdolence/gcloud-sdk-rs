@@ -20,7 +20,7 @@ pub struct ResponseMessage {
     /// Required. The rich response message.
     #[prost(
         oneof = "response_message::Message",
-        tags = "1, 2, 6, 9, 8, 10, 11, 12, 13"
+        tags = "1, 2, 9, 8, 10, 11, 12, 13"
     )]
     pub message: ::std::option::Option<response_message::Message>,
 }
@@ -31,30 +31,11 @@ pub mod response_message {
         /// Required. A collection of text responses.
         #[prost(string, repeated, tag = "1")]
         pub text: ::std::vec::Vec<std::string::String>,
-        /// Whether the playback of this message can be interrupted by the end
-        /// user's speech and the client can then starts the next Dialogflow
+        /// Output only. Whether the playback of this message can be interrupted by
+        /// the end user's speech and the client can then starts the next Dialogflow
         /// request.
         #[prost(bool, tag = "2")]
         pub allow_playback_interruption: bool,
-    }
-    /// Indicates that the conversation should be handed off to a human agent.
-    ///
-    /// Dialogflow only uses this to determine which conversations were handed off
-    /// to a human agent for measurement purposes. What else to do with this signal
-    /// is up to you and your handoff procedures.
-    ///
-    /// You may set this, for example:
-    /// * In the [entry_fulfillment][google.cloud.dialogflow.cx.v3beta1.Page.entry_fulfillment] of a [Page][google.cloud.dialogflow.cx.v3beta1.Page] if
-    ///   entering the page indicates something went extremely wrong in the
-    ///   conversation.
-    /// * In a webhook response when you determine that the customer issue can only
-    ///   be handled by a human.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct HumanAgentHandoff {
-        /// Custom metadata for your handoff procedure. Dialogflow doesn't impose
-        /// any structure on this.
-        #[prost(message, optional, tag = "1")]
-        pub metadata: ::std::option::Option<::prost_types::Struct>,
     }
     /// Indicates that the conversation should be handed off to a live agent.
     ///
@@ -63,7 +44,9 @@ pub mod response_message {
     /// is up to you and your handoff procedures.
     ///
     /// You may set this, for example:
-    /// * In the [entry_fulfillment][google.cloud.dialogflow.cx.v3beta1.Page.entry_fulfillment] of a [Page][google.cloud.dialogflow.cx.v3beta1.Page] if
+    /// * In the
+    /// [entry_fulfillment][google.cloud.dialogflow.cx.v3beta1.Page.entry_fulfillment]
+    /// of a [Page][google.cloud.dialogflow.cx.v3beta1.Page] if
     ///   entering the page indicates something went extremely wrong in the
     ///   conversation.
     /// * In a webhook response when you determine that the customer issue can only
@@ -85,7 +68,9 @@ pub mod response_message {
     /// [ConversationSuccess][google.cloud.dialogflow.cx.v3beta1.ResponseMessage.ConversationSuccess].
     ///
     /// You may set this, for example:
-    /// * In the [entry_fulfillment][google.cloud.dialogflow.cx.v3beta1.Page.entry_fulfillment] of a [Page][google.cloud.dialogflow.cx.v3beta1.Page] if
+    /// * In the
+    /// [entry_fulfillment][google.cloud.dialogflow.cx.v3beta1.Page.entry_fulfillment]
+    /// of a [Page][google.cloud.dialogflow.cx.v3beta1.Page] if
     ///   entering the page indicates that the conversation succeeded.
     /// * In a webhook response when you determine that you handled the customer
     ///   issue.
@@ -94,19 +79,6 @@ pub mod response_message {
         /// Custom metadata. Dialogflow doesn't impose any structure on this.
         #[prost(message, optional, tag = "1")]
         pub metadata: ::std::option::Option<::prost_types::Struct>,
-    }
-    /// Specifies an audio clip to be played by the client as part of the response.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PlayAudio {
-        /// Required. URI of the audio clip. Dialogflow does not impose any validation on this
-        /// value. It is specific to the client that reads it.
-        #[prost(string, tag = "1")]
-        pub audio_uri: std::string::String,
-        /// Whether the playback of this message can be interrupted by the end
-        /// user's speech and the client can then starts the next Dialogflow
-        /// request.
-        #[prost(bool, tag = "2")]
-        pub allow_playback_interruption: bool,
     }
     /// A text or ssml response that is preferentially used for TTS output audio
     /// synthesis, as described in the comment on the ResponseMessage message.
@@ -151,9 +123,9 @@ pub mod response_message {
         /// Represents one segment of audio.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Segment {
-            /// Whether the playback of this segment can be interrupted by the end
-            /// user's speech and the client should then start the next Dialogflow
-            /// request.
+            /// Output only. Whether the playback of this segment can be interrupted by
+            /// the end user's speech and the client should then start the next
+            /// Dialogflow request.
             #[prost(bool, tag = "3")]
             pub allow_playback_interruption: bool,
             /// Content of the segment.
@@ -175,6 +147,19 @@ pub mod response_message {
             }
         }
     }
+    /// Specifies an audio clip to be played by the client as part of the response.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PlayAudio {
+        /// Required. URI of the audio clip. Dialogflow does not impose any
+        /// validation on this value. It is specific to the client that reads it.
+        #[prost(string, tag = "1")]
+        pub audio_uri: std::string::String,
+        /// Output only. Whether the playback of this message can be interrupted by
+        /// the end user's speech and the client can then starts the next Dialogflow
+        /// request.
+        #[prost(bool, tag = "2")]
+        pub allow_playback_interruption: bool,
+    }
     /// Required. The rich response message.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Message {
@@ -184,9 +169,6 @@ pub mod response_message {
         /// Returns a response containing a custom, platform-specific payload.
         #[prost(message, tag = "2")]
         Payload(::prost_types::Struct),
-        /// Hands off conversation to a human agent.
-        #[prost(message, tag = "6")]
-        HumanAgentHandoff(HumanAgentHandoff),
         /// Indicates that the conversation succeeded.
         #[prost(message, tag = "9")]
         ConversationSuccess(ConversationSuccess),
@@ -197,22 +179,22 @@ pub mod response_message {
         /// Hands off conversation to a human agent.
         #[prost(message, tag = "10")]
         LiveAgentHandoff(LiveAgentHandoff),
-        /// Output only. A signal that indicates the interaction with the Dialogflow agent has
-        /// ended.
-        /// This message is generated by Dialogflow only when the conversation
-        /// reaches `END_SESSION` or `END_PAGE` page. It is not supposed to be
-        /// defined by the user.
-        /// It's guaranteed that there is at most one such message in each response.
+        /// Output only. A signal that indicates the interaction with the Dialogflow
+        /// agent has ended. This message is generated by Dialogflow only when the
+        /// conversation reaches `END_SESSION` or `END_PAGE` page. It is not supposed
+        /// to be defined by the user. It's guaranteed that there is at most one such
+        /// message in each response.
         #[prost(message, tag = "11")]
         EndInteraction(EndInteraction),
         /// Signal that the client should play an audio clip hosted at a
         /// client-specific URI. Dialogflow uses this to construct
-        /// [mixed_audio][google.cloud.dialogflow.cx.v3beta1.ResponseMessage.mixed_audio]. However, Dialogflow itself
-        /// does not try to read or process the URI in any way.
+        /// [mixed_audio][google.cloud.dialogflow.cx.v3beta1.ResponseMessage.mixed_audio].
+        /// However, Dialogflow itself does not try to read or process the URI in any
+        /// way.
         #[prost(message, tag = "12")]
         PlayAudio(PlayAudio),
-        /// Output only. An audio response message composed of both the synthesized Dialogflow
-        /// agent responses and responses defined via
+        /// Output only. An audio response message composed of both the synthesized
+        /// Dialogflow agent responses and responses defined via
         /// [play_audio][google.cloud.dialogflow.cx.v3beta1.ResponseMessage.play_audio].
         /// This message is generated by Dialogflow only and not supposed to be
         /// defined by the user.
@@ -331,7 +313,10 @@ pub mod fulfillment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Page {
     /// The unique identifier of the page.
-    /// Required for the [Pages.UpdatePage][google.cloud.dialogflow.cx.v3beta1.Pages.UpdatePage] method. [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage]
+    /// Required for the
+    /// [Pages.UpdatePage][google.cloud.dialogflow.cx.v3beta1.Pages.UpdatePage]
+    /// method.
+    /// [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage]
     /// populates the name automatically.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
     /// ID>/flows/<Flow ID>/pages/<Page ID>`.
@@ -347,8 +332,10 @@ pub struct Page {
     /// relevant to the page.
     #[prost(message, optional, tag = "4")]
     pub form: ::std::option::Option<Form>,
-    /// Ordered list of [`TransitionRouteGroups`][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup] associated
-    /// with the page. Transition route groups must be unique within a page.
+    /// Ordered list of
+    /// [`TransitionRouteGroups`][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
+    /// associated with the page. Transition route groups must be unique within a
+    /// page.
     ///
     /// *   If multiple transition routes within a page scope refer to the same
     ///     intent, then the precedence order is: page's transition route -> page's
@@ -370,7 +357,8 @@ pub struct Page {
     ///
     /// *   TransitionRoutes defined in the page with intent specified.
     /// *   TransitionRoutes defined in the
-    /// [transition route groups][google.cloud.dialogflow.cx.v3beta1.Page.transition_route_groups].
+    /// [transition route
+    /// groups][google.cloud.dialogflow.cx.v3beta1.Page.transition_route_groups].
     /// *   TransitionRoutes defined in flow with intent specified.
     /// *   TransitionRoutes defined in the page with only condition specified.
     #[prost(message, repeated, tag = "9")]
@@ -383,8 +371,9 @@ pub struct Page {
 /// A form is a data model that groups related parameters that can be collected
 /// from the user. The process in which the agent prompts the user and collects
 /// parameter values from the user is called form filling. A form can be added to
-/// a [page][google.cloud.dialogflow.cx.v3beta1.Page]. When form filling is done, the filled parameters will be
-/// written to the [session][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
+/// a [page][google.cloud.dialogflow.cx.v3beta1.Page]. When form filling is done,
+/// the filled parameters will be written to the
+/// [session][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Form {
     /// Parameters to collect from the user.
@@ -468,17 +457,22 @@ pub mod form {
         }
     }
 }
-/// An event handler specifies an [event][google.cloud.dialogflow.cx.v3beta1.EventHandler.event] that can be handled
-/// during a session. When the specified event happens, the following actions are
-/// taken in order:
+/// An event handler specifies an
+/// [event][google.cloud.dialogflow.cx.v3beta1.EventHandler.event] that can be
+/// handled during a session. When the specified event happens, the following
+/// actions are taken in order:
 ///
 /// *   If there is a
-/// [`trigger_fulfillment`][google.cloud.dialogflow.cx.v3beta1.EventHandler.trigger_fulfillment] associated with
-/// the event, it will be called.
-/// *   If there is a [`target_page`][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_page] associated
-/// with the event, the session will transition into the specified page.
-/// *   If there is a [`target_flow`][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_flow] associated
-/// with the event, the session will transition into the specified flow.
+/// [`trigger_fulfillment`][google.cloud.dialogflow.cx.v3beta1.EventHandler.trigger_fulfillment]
+/// associated with the event, it will be called.
+/// *   If there is a
+/// [`target_page`][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_page]
+/// associated with the event, the session will transition into the specified
+/// page.
+/// *   If there is a
+/// [`target_flow`][google.cloud.dialogflow.cx.v3beta1.EventHandler.target_flow]
+/// associated with the event, the session will transition into the specified
+/// flow.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventHandler {
     /// Output only. The unique identifier of this event handler.
@@ -494,13 +488,17 @@ pub struct EventHandler {
     #[prost(message, optional, tag = "5")]
     pub trigger_fulfillment: ::std::option::Option<Fulfillment>,
     /// The target to transition to, either a page in the same host flow (the flow
-    /// that owns this [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or another flow in the same agent.
+    /// that owns this
+    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or
+    /// another flow in the same agent.
     #[prost(oneof = "event_handler::Target", tags = "2, 3")]
     pub target: ::std::option::Option<event_handler::Target>,
 }
 pub mod event_handler {
     /// The target to transition to, either a page in the same host flow (the flow
-    /// that owns this [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or another flow in the same agent.
+    /// that owns this
+    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or
+    /// another flow in the same agent.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// The target page to transition to.
@@ -515,24 +513,30 @@ pub mod event_handler {
         TargetFlow(std::string::String),
     }
 }
-/// A transition route specifies a [intent][google.cloud.dialogflow.cx.v3beta1.Intent] that can be matched and/or a
-/// data condition that can be evaluated during a session. When a specified
-/// transition is matched, the following actions are taken in order:
+/// A transition route specifies a
+/// [intent][google.cloud.dialogflow.cx.v3beta1.Intent] that can be matched
+/// and/or a data condition that can be evaluated during a session. When a
+/// specified transition is matched, the following actions are taken in order:
 ///
 /// *   If there is a
-/// [`trigger_fulfillment`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.trigger_fulfillment] associated with
-/// the transition, it will be called.
-/// *   If there is a [`target_page`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_page] associated
-/// with the transition, the session will transition into the specified page.
-/// *   If there is a [`target_flow`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_flow] associated
-/// with the transition, the session will transition into the specified flow.
+/// [`trigger_fulfillment`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.trigger_fulfillment]
+/// associated with the transition, it will be called.
+/// *   If there is a
+/// [`target_page`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_page]
+/// associated with the transition, the session will transition into the
+/// specified page.
+/// *   If there is a
+/// [`target_flow`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.target_flow]
+/// associated with the transition, the session will transition into the
+/// specified flow.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitionRoute {
     /// Output only. The unique identifier of this transition route.
     #[prost(string, tag = "6")]
     pub name: std::string::String,
-    /// The unique identifier of an [Intent][google.cloud.dialogflow.cx.v3beta1.Intent].
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// The unique identifier of an
+    /// [Intent][google.cloud.dialogflow.cx.v3beta1.Intent]. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
     /// ID>/intents/<Intent ID>`.
     /// Indicates that the transition can only happen when the given intent is
     /// matched.
@@ -541,8 +545,9 @@ pub struct TransitionRoute {
     /// when both are fulfilled.
     #[prost(string, tag = "1")]
     pub intent: std::string::String,
-    /// The condition to evaluate against [form parameters][google.cloud.dialogflow.cx.v3beta1.Form.parameters] or
-    /// [session parameters][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
+    /// The condition to evaluate against [form
+    /// parameters][google.cloud.dialogflow.cx.v3beta1.Form.parameters] or [session
+    /// parameters][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
     ///
     /// See the [conditions
     /// reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
@@ -557,13 +562,17 @@ pub struct TransitionRoute {
     #[prost(message, optional, tag = "3")]
     pub trigger_fulfillment: ::std::option::Option<Fulfillment>,
     /// The target to transition to, either a page in the same host flow (the flow
-    /// that owns this [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or another flow in the same agent.
+    /// that owns this
+    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or
+    /// another flow in the same agent.
     #[prost(oneof = "transition_route::Target", tags = "4, 5")]
     pub target: ::std::option::Option<transition_route::Target>,
 }
 pub mod transition_route {
     /// The target to transition to, either a page in the same host flow (the flow
-    /// that owns this [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or another flow in the same agent.
+    /// that owns this
+    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]), or
+    /// another flow in the same agent.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// The target page to transition to.
@@ -578,7 +587,8 @@ pub mod transition_route {
         TargetFlow(std::string::String),
     }
 }
-/// The request message for [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
+/// The request message for
+/// [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPagesRequest {
     /// Required. The flow to list all pages for.
@@ -592,7 +602,7 @@ pub struct ListPagesRequest {
     /// *  `Page.entry_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_route.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
     /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
     ///
@@ -611,7 +621,8 @@ pub struct ListPagesRequest {
     #[prost(string, tag = "4")]
     pub page_token: std::string::String,
 }
-/// The response message for [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
+/// The response message for
+/// [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPagesResponse {
     /// The list of pages. There will be a maximum number of items returned based
@@ -623,7 +634,8 @@ pub struct ListPagesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
 }
-/// The request message for [Pages.GetPage][google.cloud.dialogflow.cx.v3beta1.Pages.GetPage].
+/// The request message for
+/// [Pages.GetPage][google.cloud.dialogflow.cx.v3beta1.Pages.GetPage].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPageRequest {
     /// Required. The name of the page.
@@ -637,7 +649,7 @@ pub struct GetPageRequest {
     /// *  `Page.entry_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_route.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
     /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
     ///
@@ -649,7 +661,8 @@ pub struct GetPageRequest {
     #[prost(string, tag = "2")]
     pub language_code: std::string::String,
 }
-/// The request message for [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage].
+/// The request message for
+/// [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePageRequest {
     /// Required. The flow to create a page for.
@@ -665,7 +678,7 @@ pub struct CreatePageRequest {
     /// *  `Page.entry_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_route.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
     /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
     ///
@@ -677,7 +690,8 @@ pub struct CreatePageRequest {
     #[prost(string, tag = "3")]
     pub language_code: std::string::String,
 }
-/// The request message for [Pages.UpdatePage][google.cloud.dialogflow.cx.v3beta1.Pages.UpdatePage].
+/// The request message for
+/// [Pages.UpdatePage][google.cloud.dialogflow.cx.v3beta1.Pages.UpdatePage].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePageRequest {
     /// Required. The page to update.
@@ -688,7 +702,7 @@ pub struct UpdatePageRequest {
     /// *  `Page.entry_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
     /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_route.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
     /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
     ///
@@ -704,7 +718,8 @@ pub struct UpdatePageRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [Pages.DeletePage][google.cloud.dialogflow.cx.v3beta1.Pages.DeletePage].
+/// The request message for
+/// [Pages.DeletePage][google.cloud.dialogflow.cx.v3beta1.Pages.DeletePage].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePageRequest {
     /// Required. The name of the page to delete.
@@ -718,7 +733,10 @@ pub struct DeletePageRequest {
     /// *  If `force` is set to false, an error will be returned with message
     ///    indicating the incoming transitions.
     /// *  If `force` is set to true, Dialogflow will remove the page, as well as
-    ///    any transitions to the page.
+    ///    any transitions to the page (i.e. [Target
+    ///    page][EventHandler.target_page] in event handlers or [Target
+    ///    page][TransitionRoute.target_page] in transition routes that point to
+    ///    this page will be cleared).
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
@@ -875,8 +893,6 @@ pub mod nlu_settings {
         Unspecified = 0,
         /// Use standard NLU model.
         Standard = 1,
-        /// Use custom NLU model.
-        Custom = 2,
         /// Use advanced NLU model.
         Advanced = 3,
     }
@@ -949,16 +965,18 @@ pub struct Flow {
     /// regardless of the current page. Event handlers defined in the page
     /// have higher priority than those defined in the flow.
     ///
-    /// Unlike [transition_routes][google.cloud.dialogflow.cx.v3beta1.Flow.transition_routes], these handlers are
-    /// evaluated on a first-match basis. The first one that matches the event
-    /// get executed, with the rest being ignored.
+    /// Unlike
+    /// [transition_routes][google.cloud.dialogflow.cx.v3beta1.Flow.transition_routes],
+    /// these handlers are evaluated on a first-match basis. The first one that
+    /// matches the event get executed, with the rest being ignored.
     #[prost(message, repeated, tag = "10")]
     pub event_handlers: ::std::vec::Vec<EventHandler>,
     /// NLU related settings of the flow.
     #[prost(message, optional, tag = "11")]
     pub nlu_settings: ::std::option::Option<NluSettings>,
 }
-/// The request message for [Flows.CreateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.CreateFlow].
+/// The request message for
+/// [Flows.CreateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.CreateFlow].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFlowRequest {
     /// Required. The agent to create a flow for.
@@ -981,7 +999,8 @@ pub struct CreateFlowRequest {
     #[prost(string, tag = "3")]
     pub language_code: std::string::String,
 }
-/// The request message for [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3beta1.Flows.DeleteFlow].
+/// The request message for
+/// [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3beta1.Flows.DeleteFlow].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFlowRequest {
     /// Required. The name of the flow to delete.
@@ -995,11 +1014,15 @@ pub struct DeleteFlowRequest {
     /// *  If `force` is set to false, an error will be returned with message
     ///    indicating the incoming transitions.
     /// *  If `force` is set to true, Dialogflow will remove the flow, as well as
-    ///    any transitions to the flow.
+    ///    any transitions to the flow (i.e. [Target
+    ///    flow][EventHandler.target_flow] in event handlers or [Target
+    ///    flow][TransitionRoute.target_flow] in transition routes that point to
+    ///    this flow will be cleared).
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
-/// The request message for [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
+/// The request message for
+/// [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFlowsRequest {
     /// Required. The agent containing the flows.
@@ -1027,7 +1050,8 @@ pub struct ListFlowsRequest {
     #[prost(string, tag = "4")]
     pub language_code: std::string::String,
 }
-/// The response message for [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
+/// The response message for
+/// [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFlowsResponse {
     /// The list of flows. There will be a maximum number of items returned based
@@ -1039,7 +1063,8 @@ pub struct ListFlowsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
 }
-/// The response message for [Flows.GetFlow][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlow].
+/// The response message for
+/// [Flows.GetFlow][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlow].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFlowRequest {
     /// Required. The name of the flow to get.
@@ -1061,14 +1086,15 @@ pub struct GetFlowRequest {
     #[prost(string, tag = "2")]
     pub language_code: std::string::String,
 }
-/// The request message for [Flows.UpdateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.UpdateFlow].
+/// The request message for
+/// [Flows.UpdateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.UpdateFlow].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFlowRequest {
     /// Required. The flow to update.
     #[prost(message, optional, tag = "1")]
     pub flow: ::std::option::Option<Flow>,
-    /// Required. The mask to control which fields get updated. If `update_mask` is not
-    /// specified, an error will be returned.
+    /// Required. The mask to control which fields get updated. If `update_mask` is
+    /// not specified, an error will be returned.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
     /// The language of the following fields in `flow`:
@@ -1084,7 +1110,8 @@ pub struct UpdateFlowRequest {
     #[prost(string, tag = "3")]
     pub language_code: std::string::String,
 }
-/// The request message for [Flows.TrainFlow][google.cloud.dialogflow.cx.v3beta1.Flows.TrainFlow].
+/// The request message for
+/// [Flows.TrainFlow][google.cloud.dialogflow.cx.v3beta1.Flows.TrainFlow].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainFlowRequest {
     /// Required. The flow to train.
@@ -1630,10 +1657,12 @@ pub struct InputAudioConfig {
     /// more details.
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
-    /// Optional. If `true`, Dialogflow returns [SpeechWordInfo][google.cloud.dialogflow.cx.v3beta1.SpeechWordInfo] in
-    /// [StreamingRecognitionResult][google.cloud.dialogflow.cx.v3beta1.StreamingRecognitionResult] with information about the recognized speech
-    /// words, e.g. start and end time offsets. If false or unspecified, Speech
-    /// doesn't return any word-level information.
+    /// Optional. If `true`, Dialogflow returns
+    /// [SpeechWordInfo][google.cloud.dialogflow.cx.v3beta1.SpeechWordInfo] in
+    /// [StreamingRecognitionResult][google.cloud.dialogflow.cx.v3beta1.StreamingRecognitionResult]
+    /// with information about the recognized speech words, e.g. start and end time
+    /// offsets. If false or unspecified, Speech doesn't return any word-level
+    /// information.
     #[prost(bool, tag = "13")]
     pub enable_word_info: bool,
     /// Optional. A list of strings containing words and phrases that the speech
@@ -1657,7 +1686,8 @@ pub struct InputAudioConfig {
     /// for more details.
     #[prost(string, tag = "7")]
     pub model: std::string::String,
-    /// Optional. Which variant of the [Speech model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model] to use.
+    /// Optional. Which variant of the [Speech
+    /// model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model] to use.
     #[prost(enumeration = "SpeechModelVariant", tag = "10")]
     pub model_variant: i32,
     /// Optional. If `false` (default), recognition does not cease until the
@@ -1681,9 +1711,10 @@ pub struct VoiceSelectionParams {
     pub name: std::string::String,
     /// Optional. The preferred gender of the voice. If not set, the service will
     /// choose a voice based on the other parameters such as language_code and
-    /// [name][google.cloud.dialogflow.cx.v3beta1.VoiceSelectionParams.name]. Note that this is only a preference, not requirement. If a
-    /// voice of the appropriate gender is not available, the synthesizer should
-    /// substitute a voice with a different gender rather than failing the request.
+    /// [name][google.cloud.dialogflow.cx.v3beta1.VoiceSelectionParams.name]. Note
+    /// that this is only a preference, not requirement. If a voice of the
+    /// appropriate gender is not available, the synthesizer should substitute a
+    /// voice with a different gender rather than failing the request.
     #[prost(enumeration = "SsmlVoiceGender", tag = "2")]
     pub ssml_gender: i32,
 }
@@ -1780,7 +1811,8 @@ pub enum AudioEncoding {
     /// wideband is supported. `sample_rate_hertz` must be 16000.
     SpeexWithHeaderByte = 7,
 }
-/// Variant of the specified [Speech model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model] to use.
+/// Variant of the specified [Speech
+/// model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model] to use.
 ///
 /// See the [Cloud Speech
 /// documentation](https://cloud.google.com/speech-to-text/docs/enhanced-models)
@@ -1808,8 +1840,8 @@ pub enum SpeechModelVariant {
     /// Use an enhanced model variant:
     ///
     /// * If an enhanced variant does not exist for the given
-    ///   [model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model] and request language, Dialogflow falls
-    ///   back to the standard variant.
+    ///   [model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model] and
+    ///   request language, Dialogflow falls back to the standard variant.
     ///
     ///   The [Cloud Speech
     ///   documentation](https://cloud.google.com/speech-to-text/docs/enhanced-models)
@@ -1880,19 +1912,23 @@ pub enum OutputAudioEncoding {
 ///
 /// *   **User** - entities that are built for an individual user such as
 ///     favorites, preferences, playlists, and so on. A user entity is
-///     represented by the [SessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityType] type.
+///     represented by the
+///     [SessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityType]
+///     type.
 ///
 /// For more information about entity types, see the [Dialogflow
 /// documentation](https://cloud.google.com/dialogflow/docs/entities-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityType {
     /// The unique identifier of the entity type.
-    /// Required for [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.UpdateEntityType].
+    /// Required for
+    /// [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.UpdateEntityType].
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
     /// ID>/entityTypes/<Entity Type ID>`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Required. The human-readable name of the entity type, unique within the agent.
+    /// Required. The human-readable name of the entity type, unique within the
+    /// agent.
     #[prost(string, tag = "2")]
     pub display_name: std::string::String,
     /// Required. Indicates the kind of entity type.
@@ -1981,7 +2017,8 @@ pub mod entity_type {
         Default = 1,
     }
 }
-/// The request message for [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityTypes.ListEntityTypes].
+/// The request message for
+/// [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityTypes.ListEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesRequest {
     /// Required. The agent to list all entity types for.
@@ -2010,7 +2047,8 @@ pub struct ListEntityTypesRequest {
     #[prost(string, tag = "4")]
     pub page_token: std::string::String,
 }
-/// The response message for [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityTypes.ListEntityTypes].
+/// The response message for
+/// [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityTypes.ListEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesResponse {
     /// The list of entity types. There will be a maximum number of items returned
@@ -2022,7 +2060,8 @@ pub struct ListEntityTypesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
 }
-/// The request message for [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.GetEntityType].
+/// The request message for
+/// [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.GetEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityTypeRequest {
     /// Required. The name of the entity type.
@@ -2045,7 +2084,8 @@ pub struct GetEntityTypeRequest {
     #[prost(string, tag = "2")]
     pub language_code: std::string::String,
 }
-/// The request message for [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.CreateEntityType].
+/// The request message for
+/// [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.CreateEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityTypeRequest {
     /// Required. The agent to create a entity type for.
@@ -2069,7 +2109,8 @@ pub struct CreateEntityTypeRequest {
     #[prost(string, tag = "3")]
     pub language_code: std::string::String,
 }
-/// The request message for [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.UpdateEntityType].
+/// The request message for
+/// [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.UpdateEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntityTypeRequest {
     /// Required. The entity type to update.
@@ -2092,7 +2133,8 @@ pub struct UpdateEntityTypeRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.DeleteEntityType].
+/// The request message for
+/// [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.DeleteEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityTypeRequest {
     /// Required. The name of the entity type to delete.
@@ -2100,12 +2142,27 @@ pub struct DeleteEntityTypeRequest {
     /// ID>/entityTypes/<Entity Type ID>`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
+    /// This field has no effect for entity type not being used.
+    /// For entity types that are used by intents or pages:
+    ///
+    /// *  If `force` is set to false, an error will be returned with message
+    ///    indicating the referencing resources.
+    /// *  If `force` is set to true, Dialogflow will remove the entity type, as
+    ///    well as any references to the entity type (i.e. Page
+    ///    [parameter][google.cloud.dialogflow.cx.v3beta1.Form.Parameter] of the
+    ///    entity type will be changed to
+    ///    '@sys.any' and intent
+    ///    [parameter][google.cloud.dialogflow.cx.v3beta1.Intent.Parameter] of the
+    ///    entity type will be removed).
+    #[prost(bool, tag = "2")]
+    pub force: bool,
 }
 #[doc = r" Generated client implementations."]
 pub mod entity_types_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Service for managing [EntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityType]."]
+    #[doc = " Service for managing"]
+    #[doc = " [EntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityType]."]
     pub struct EntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -2873,9 +2930,9 @@ pub mod intents_client {
 /// preferences, playlists, and so on.
 ///
 /// You can redefine a session entity type at the session level to extend or
-/// replace a [custom entity type][google.cloud.dialogflow.cx.v3beta1.EntityType] at the user session level (we
-/// refer to the entity types defined at the agent level as "custom entity
-/// types").
+/// replace a [custom entity type][google.cloud.dialogflow.cx.v3beta1.EntityType]
+/// at the user session level (we refer to the entity types defined at the agent
+/// level as "custom entity types").
 ///
 /// Note: session entity types apply to all queries, regardless of the language.
 ///
@@ -2886,15 +2943,18 @@ pub struct SessionEntityType {
     /// Required. The unique identifier of the session entity type.
     /// Format: `projects/<Project ID>/locations/<Location
     /// ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type
-    /// ID>`.
+    /// ID>` or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
+    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Required. Indicates whether the additional data should override or supplement the
-    /// custom entity type definition.
+    /// Required. Indicates whether the additional data should override or
+    /// supplement the custom entity type definition.
     #[prost(enumeration = "session_entity_type::EntityOverrideMode", tag = "3")]
     pub entity_override_mode: i32,
-    /// Required. The collection of entities to override or supplement the custom entity
-    /// type.
+    /// Required. The collection of entities to override or supplement the custom
+    /// entity type.
     #[prost(message, repeated, tag = "4")]
     pub entities: ::std::vec::Vec<entity_type::Entity>,
 }
@@ -2915,17 +2975,22 @@ pub mod session_entity_type {
         /// `GetSessionEntityType`, `CreateSessionEntityType` and
         /// `UpdateSessionEntityType` only return the additional entities added in
         /// this session entity type. If you want to get the supplemented list,
-        /// please call [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.GetEntityType] on the custom entity type
-        /// and merge.
+        /// please call
+        /// [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.GetEntityType]
+        /// on the custom entity type and merge.
         Supplement = 2,
     }
 }
-/// The request message for [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
+/// The request message for
+/// [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionEntityTypesRequest {
     /// Required. The session to list all session entity types from.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>`.
+    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -2936,7 +3001,8 @@ pub struct ListSessionEntityTypesRequest {
     #[prost(string, tag = "3")]
     pub page_token: std::string::String,
 }
-/// The response message for [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
+/// The response message for
+/// [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionEntityTypesResponse {
     /// The list of session entity types. There will be a maximum number of items
@@ -2948,45 +3014,64 @@ pub struct ListSessionEntityTypesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
 }
-/// The request message for [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.GetSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.GetSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSessionEntityTypeRequest {
     /// Required. The name of the session entity type.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>`.
+    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>` or
+    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
+    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
-/// The request message for [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.CreateSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.CreateSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSessionEntityTypeRequest {
     /// Required. The session to create a session entity type for.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>`.
+    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The session entity type to create.
     #[prost(message, optional, tag = "2")]
     pub session_entity_type: ::std::option::Option<SessionEntityType>,
 }
-/// The request message for [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.UpdateSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.UpdateSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSessionEntityTypeRequest {
     /// Required. The session entity type to update.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>`.
+    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>` or
+    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
+    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     #[prost(message, optional, tag = "1")]
     pub session_entity_type: ::std::option::Option<SessionEntityType>,
     /// The mask to control which fields get updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.DeleteSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.DeleteSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSessionEntityTypeRequest {
     /// Required. The name of the session entity type to delete.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>`.
+    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>` or
+    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
+    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -2994,7 +3079,8 @@ pub struct DeleteSessionEntityTypeRequest {
 pub mod session_entity_types_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Service for managing [SessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityType]."]
+    #[doc = " Service for managing"]
+    #[doc = " [SessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityType]."]
     pub struct SessionEntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -3120,7 +3206,10 @@ pub mod session_entity_types_client {
 pub struct DetectIntentRequest {
     /// Required. The name of the session this query is sent to.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>`.
+    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     /// It's up to the API caller to choose an appropriate `Session ID`. It can be
     /// a random number or some type of session identifiers (preferably hashed).
     /// The length of the `Session ID` must not exceed 36 characters.
@@ -3149,9 +3238,9 @@ pub struct DetectIntentResponse {
     /// The audio data bytes encoded as specified in the request.
     /// Note: The output audio is generated based on the values of default platform
     /// text responses found in the
-    /// [`query_result.response_messages`][google.cloud.dialogflow.cx.v3beta1.QueryResult.response_messages] field. If
-    /// multiple default text responses exist, they will be concatenated when
-    /// generating audio. If no default platform text responses exist, the
+    /// [`query_result.response_messages`][google.cloud.dialogflow.cx.v3beta1.QueryResult.response_messages]
+    /// field. If multiple default text responses exist, they will be concatenated
+    /// when generating audio. If no default platform text responses exist, the
     /// generated audio content will be empty.
     ///
     /// In some scenarios, multiple output audio fields may be present in the
@@ -3164,24 +3253,29 @@ pub struct DetectIntentResponse {
     pub output_audio_config: ::std::option::Option<OutputAudioConfig>,
 }
 /// The top-level message sent by the client to the
-/// [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.StreamingDetectIntent] method.
+/// [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.StreamingDetectIntent]
+/// method.
 ///
 /// Multiple request messages should be sent in order:
 ///
 /// 1.  The first message must contain
 /// [session][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.session],
-///     [query_input][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_input] plus optionally
-///     [query_params][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_params]. If the client
-///     wants to receive an audio response, it should also contain
+///     [query_input][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_input]
+///     plus optionally
+///     [query_params][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_params].
+///     If the client wants to receive an audio response, it should also contain
 ///     [output_audio_config][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.output_audio_config].
 ///
-/// 2.  If [query_input][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_input] was set to
-///     [query_input.audio.config][google.cloud.dialogflow.cx.v3beta1.AudioInput.config], all subsequent messages
-///     must contain [query_input.audio.audio][google.cloud.dialogflow.cx.v3beta1.AudioInput.audio] to continue with
-///     Speech recognition.
-///     If you decide to rather detect an intent from text
-///     input after you already started Speech recognition, please send a message
-///     with [query_input.text][google.cloud.dialogflow.cx.v3beta1.QueryInput.text].
+/// 2.  If
+/// [query_input][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_input]
+/// was set to
+///     [query_input.audio.config][google.cloud.dialogflow.cx.v3beta1.AudioInput.config],
+///     all subsequent messages must contain
+///     [query_input.audio.audio][google.cloud.dialogflow.cx.v3beta1.AudioInput.audio]
+///     to continue with Speech recognition. If you decide to rather detect an
+///     intent from text input after you already started Speech recognition,
+///     please send a message with
+///     [query_input.text][google.cloud.dialogflow.cx.v3beta1.QueryInput.text].
 ///
 ///     However, note that:
 ///
@@ -3195,7 +3289,10 @@ pub struct DetectIntentResponse {
 pub struct StreamingDetectIntentRequest {
     /// The name of the session this query is sent to.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>`.
+    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     /// It's up to the API caller to choose an appropriate `Session ID`. It can be
     /// a random number or some type of session identifiers (preferably hashed).
     /// The length of the `Session ID` must not exceed 36 characters.
@@ -3307,7 +3404,8 @@ pub struct StreamingRecognitionResult {
     #[prost(float, tag = "6")]
     pub stability: f32,
     /// Word-specific information for the words recognized by Speech in
-    /// [transcript][google.cloud.dialogflow.cx.v3beta1.StreamingRecognitionResult.transcript]. Populated if and only if `message_type` = `TRANSCRIPT` and
+    /// [transcript][google.cloud.dialogflow.cx.v3beta1.StreamingRecognitionResult.transcript].
+    /// Populated if and only if `message_type` = `TRANSCRIPT` and
     /// [InputAudioConfig.enable_word_info] is set.
     #[prost(message, repeated, tag = "7")]
     pub speech_word_info: ::std::vec::Vec<SpeechWordInfo>,
@@ -3332,8 +3430,8 @@ pub mod streaming_recognition_result {
         /// additional results). The client should stop sending additional audio
         /// data, half-close the gRPC connection, and wait for any additional results
         /// until the server closes the gRPC connection. This message is only sent if
-        /// [`single_utterance`][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.single_utterance] was set to
-        /// `true`, and is not used otherwise.
+        /// [`single_utterance`][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.single_utterance]
+        /// was set to `true`, and is not used otherwise.
         EndOfSingleUtterance = 2,
     }
 }
@@ -3420,7 +3518,8 @@ pub struct QueryResult {
     /// for a list of the currently supported language codes.
     #[prost(string, tag = "2")]
     pub language_code: std::string::String,
-    /// The collected [session parameters][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
+    /// The collected [session
+    /// parameters][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
     ///
     /// Depending on your protocol or client library language, this is a
     /// map, associative array, symbol table, dictionary, or JSON object
@@ -3445,19 +3544,23 @@ pub struct QueryResult {
     /// The list of webhook call status in the order of call sequence.
     #[prost(message, repeated, tag = "13")]
     pub webhook_statuses: ::std::vec::Vec<super::super::super::super::rpc::Status>,
-    /// The list of webhook payload in [WebhookResponse.payload][google.cloud.dialogflow.cx.v3beta1.WebhookResponse.payload], in
-    /// the order of call sequence. If some webhook call fails or doesn't return
+    /// The list of webhook payload in
+    /// [WebhookResponse.payload][google.cloud.dialogflow.cx.v3beta1.WebhookResponse.payload],
+    /// in the order of call sequence. If some webhook call fails or doesn't return
     /// any payload, an empty `Struct` would be used instead.
     #[prost(message, repeated, tag = "6")]
     pub webhook_payloads: ::std::vec::Vec<::prost_types::Struct>,
-    /// The current [Page][google.cloud.dialogflow.cx.v3beta1.Page]. Some, not all fields are filled in this message,
-    /// including but not limited to `name` and `display_name`.
+    /// The current [Page][google.cloud.dialogflow.cx.v3beta1.Page]. Some, not all
+    /// fields are filled in this message, including but not limited to `name` and
+    /// `display_name`.
     #[prost(message, optional, tag = "7")]
     pub current_page: ::std::option::Option<Page>,
-    /// The [Intent][google.cloud.dialogflow.cx.v3beta1.Intent] that matched the conversational query. Some, not all fields
-    /// are filled in this message, including but not limited to: `name` and
-    /// `display_name`.
-    /// This field is deprecated, please use [QueryResult.match][google.cloud.dialogflow.cx.v3beta1.QueryResult.match] instead.
+    /// The [Intent][google.cloud.dialogflow.cx.v3beta1.Intent] that matched the
+    /// conversational query. Some, not all fields are filled in this message,
+    /// including but not limited to: `name` and `display_name`. This field is
+    /// deprecated, please use
+    /// [QueryResult.match][google.cloud.dialogflow.cx.v3beta1.QueryResult.match]
+    /// instead.
     #[prost(message, optional, tag = "8")]
     pub intent: ::std::option::Option<Intent>,
     /// The intent detection confidence. Values range from 0.0 (completely
@@ -3466,7 +3569,9 @@ pub struct QueryResult {
     /// help match the best intent within the classification threshold.
     /// This value may change for the same end-user expression at any time due to a
     /// model retraining or change in implementation.
-    /// This field is deprecated, please use [QueryResult.match][google.cloud.dialogflow.cx.v3beta1.QueryResult.match] instead.
+    /// This field is deprecated, please use
+    /// [QueryResult.match][google.cloud.dialogflow.cx.v3beta1.QueryResult.match]
+    /// instead.
     #[prost(float, tag = "9")]
     pub intent_detection_confidence: f32,
     /// Intent match result, could be an intent or an event.
@@ -3485,20 +3590,22 @@ pub mod query_result {
     /// The original conversational query.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Query {
-        /// If [natural language text][google.cloud.dialogflow.cx.v3beta1.TextInput] was provided as input, this field
-        /// will contain a copy of the text.
+        /// If [natural language text][google.cloud.dialogflow.cx.v3beta1.TextInput]
+        /// was provided as input, this field will contain a copy of the text.
         #[prost(string, tag = "1")]
         Text(std::string::String),
-        /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was provided as input, this field will
-        /// contain a copy of the intent identifier.
+        /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
+        /// provided as input, this field will contain a copy of the intent
+        /// identifier.
         #[prost(string, tag = "11")]
         TriggerIntent(std::string::String),
-        /// If [natural language speech audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was provided as input,
-        /// this field will contain the trascript for the audio.
+        /// If [natural language speech
+        /// audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was provided as
+        /// input, this field will contain the trascript for the audio.
         #[prost(string, tag = "12")]
         Transcript(std::string::String),
-        /// If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput] was provided as input, this field will contain
-        /// the name of the event.
+        /// If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput] was provided
+        /// as input, this field will contain the name of the event.
         #[prost(string, tag = "14")]
         TriggerEvent(std::string::String),
     }
@@ -3506,8 +3613,8 @@ pub mod query_result {
 /// Represents the natural language text to be processed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextInput {
-    /// Required. The UTF-8 encoded natural language text to be processed. Text length must
-    /// not exceed 256 characters.
+    /// Required. The UTF-8 encoded natural language text to be processed. Text
+    /// length must not exceed 256 characters.
     #[prost(string, tag = "1")]
     pub text: std::string::String,
 }
@@ -3529,8 +3636,9 @@ pub struct AudioInput {
     pub config: ::std::option::Option<InputAudioConfig>,
     /// The natural language speech audio to be processed.
     /// A single request can contain up to 1 minute of speech audio data.
-    /// The [transcribed text][google.cloud.dialogflow.cx.v3beta1.QueryResult.transcript] cannot contain more than 256
-    /// bytes.
+    /// The [transcribed
+    /// text][google.cloud.dialogflow.cx.v3beta1.QueryResult.transcript] cannot
+    /// contain more than 256 bytes.
     ///
     /// For non-streaming audio detect intent, both `config` and `audio` must be
     /// provided.
@@ -3542,9 +3650,10 @@ pub struct AudioInput {
 /// Represents one match result of [MatchIntent][].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Match {
-    /// The [Intent][google.cloud.dialogflow.cx.v3beta1.Intent] that matched the query. Some, not all fields are filled in
-    /// this message, including but not limited to: `name` and `display_name`. Only
-    /// filled for [`INTENT`][google.cloud.dialogflow.cx.v3beta1.Match.MatchType] match type.
+    /// The [Intent][google.cloud.dialogflow.cx.v3beta1.Intent] that matched the
+    /// query. Some, not all fields are filled in this message, including but not
+    /// limited to: `name` and `display_name`. Only filled for
+    /// [`INTENT`][google.cloud.dialogflow.cx.v3beta1.Match.MatchType] match type.
     #[prost(message, optional, tag = "1")]
     pub intent: ::std::option::Option<Intent>,
     /// The collection of parameters extracted from the query.
@@ -3605,7 +3714,10 @@ pub mod r#match {
 pub struct MatchIntentRequest {
     /// Required. The name of the session this query is sent to.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>`.
+    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
+    /// environment.
     /// It's up to the API caller to choose an appropriate `Session ID`. It can be
     /// a random number or some type of session identifiers (preferably hashed).
     /// The length of the `Session ID` must not exceed 36 characters.
@@ -3625,8 +3737,9 @@ pub struct MatchIntentResponse {
     /// we have that the particular intent matches the query.
     #[prost(message, repeated, tag = "4")]
     pub matches: ::std::vec::Vec<Match>,
-    /// The current [Page][google.cloud.dialogflow.cx.v3beta1.Page]. Some, not all fields are filled in this message,
-    /// including but not limited to `name` and `display_name`.
+    /// The current [Page][google.cloud.dialogflow.cx.v3beta1.Page]. Some, not all
+    /// fields are filled in this message, including but not limited to `name` and
+    /// `display_name`.
     #[prost(message, optional, tag = "5")]
     pub current_page: ::std::option::Option<Page>,
     /// The original conversational query.
@@ -3637,16 +3750,18 @@ pub mod match_intent_response {
     /// The original conversational query.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Query {
-        /// If [natural language text][google.cloud.dialogflow.cx.v3beta1.TextInput] was provided as input, this field
-        /// will contain a copy of the text.
+        /// If [natural language text][google.cloud.dialogflow.cx.v3beta1.TextInput]
+        /// was provided as input, this field will contain a copy of the text.
         #[prost(string, tag = "1")]
         Text(std::string::String),
-        /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was provided as input, this field will
-        /// contain a copy of the intent identifier.
+        /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
+        /// provided as input, this field will contain a copy of the intent
+        /// identifier.
         #[prost(string, tag = "2")]
         TriggerIntent(std::string::String),
-        /// If [natural language speech audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was provided as input,
-        /// this field will contain the trascript for the audio.
+        /// If [natural language speech
+        /// audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was provided as
+        /// input, this field will contain the trascript for the audio.
         #[prost(string, tag = "3")]
         Transcript(std::string::String),
     }
@@ -3678,9 +3793,9 @@ pub struct FulfillIntentResponse {
     /// The audio data bytes encoded as specified in the request.
     /// Note: The output audio is generated based on the values of default platform
     /// text responses found in the
-    /// [`query_result.response_messages`][google.cloud.dialogflow.cx.v3beta1.QueryResult.response_messages] field. If
-    /// multiple default text responses exist, they will be concatenated when
-    /// generating audio. If no default platform text responses exist, the
+    /// [`query_result.response_messages`][google.cloud.dialogflow.cx.v3beta1.QueryResult.response_messages]
+    /// field. If multiple default text responses exist, they will be concatenated
+    /// when generating audio. If no default platform text responses exist, the
     /// generated audio content will be empty.
     ///
     /// In some scenarios, multiple output audio fields may be present in the
@@ -3697,8 +3812,9 @@ pub mod sessions_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = " A session represents an interaction with a user. You retrieve user input"]
-    #[doc = " and pass it to the [DetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.DetectIntent] method to determine"]
-    #[doc = " user intent and respond."]
+    #[doc = " and pass it to the"]
+    #[doc = " [DetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.DetectIntent]"]
+    #[doc = " method to determine user intent and respond."]
     pub struct SessionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -3779,9 +3895,13 @@ pub mod sessions_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fulfills a matched intent returned by [MatchIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.MatchIntent]."]
-        #[doc = " Must be called after [MatchIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.MatchIntent], with input from"]
-        #[doc = " [MatchIntentResponse][google.cloud.dialogflow.cx.v3beta1.MatchIntentResponse]. Otherwise, the behavior is undefined."]
+        #[doc = " Fulfills a matched intent returned by"]
+        #[doc = " [MatchIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.MatchIntent]."]
+        #[doc = " Must be called after"]
+        #[doc = " [MatchIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.MatchIntent],"]
+        #[doc = " with input from"]
+        #[doc = " [MatchIntentResponse][google.cloud.dialogflow.cx.v3beta1.MatchIntentResponse]."]
+        #[doc = " Otherwise, the behavior is undefined."]
         pub async fn fulfill_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::FulfillIntentRequest>,
@@ -4362,10 +4482,12 @@ pub mod versions_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Webhook {
     /// The unique identifier of the webhook.
-    /// Required for the [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook] method.
-    /// [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook] populates the name automatically.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/webhooks/<Webhook ID>`.
+    /// Required for the
+    /// [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook]
+    /// method.
+    /// [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook]
+    /// populates the name automatically. Format: `projects/<Project
+    /// ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Required. The human-readable name of the webhook, unique within the agent.
@@ -4387,7 +4509,8 @@ pub mod webhook {
     /// Represents configuration for a generic web service.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GenericWebService {
-        /// Required. The webhook URI for receiving POST requests. It must use https protocol.
+        /// Required. The webhook URI for receiving POST requests. It must use https
+        /// protocol.
         #[prost(string, tag = "1")]
         pub uri: std::string::String,
         /// The user name for HTTP Basic authentication.
@@ -4409,7 +4532,8 @@ pub mod webhook {
         GenericWebService(GenericWebService),
     }
 }
-/// The request message for [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
+/// The request message for
+/// [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWebhooksRequest {
     /// Required. The agent to list all webhooks for.
@@ -4424,7 +4548,8 @@ pub struct ListWebhooksRequest {
     #[prost(string, tag = "3")]
     pub page_token: std::string::String,
 }
-/// The response message for [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
+/// The response message for
+/// [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWebhooksResponse {
     /// The list of webhooks. There will be a maximum number of items returned
@@ -4436,7 +4561,8 @@ pub struct ListWebhooksResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
 }
-/// The request message for [Webhooks.GetWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.GetWebhook].
+/// The request message for
+/// [Webhooks.GetWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.GetWebhook].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWebhookRequest {
     /// Required. The name of the webhook.
@@ -4445,7 +4571,8 @@ pub struct GetWebhookRequest {
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
-/// The request message for [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook].
+/// The request message for
+/// [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWebhookRequest {
     /// Required. The agent to create a webhook for.
@@ -4456,7 +4583,8 @@ pub struct CreateWebhookRequest {
     #[prost(message, optional, tag = "2")]
     pub webhook: ::std::option::Option<Webhook>,
 }
-/// The request message for [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook].
+/// The request message for
+/// [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWebhookRequest {
     /// Required. The webhook to update.
@@ -4467,7 +4595,8 @@ pub struct UpdateWebhookRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [Webhooks.DeleteWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.DeleteWebhook].
+/// The request message for
+/// [Webhooks.DeleteWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.DeleteWebhook].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWebhookRequest {
     /// Required. The name of the webhook to delete.
@@ -4475,12 +4604,25 @@ pub struct DeleteWebhookRequest {
     /// ID>/webhooks/<Webhook ID>`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
+    /// This field has no effect for webhook not being used.
+    /// For webhooks that are used by pages/flows/transition route groups:
+    ///
+    /// *  If `force` is set to false, an error will be returned with message
+    ///    indicating the referenced resources.
+    /// *  If `force` is set to true, Dialogflow will remove the webhook, as well
+    ///    as any references to the webhook (i.e.
+    ///    [Webhook][google.cloud.dialogflow.cx.v3beta1.Fulfillment.webhook] and
+    ///    [tag][google.cloud.dialogflow.cx.v3beta1.Fulfillment.tag]in fulfillments
+    ///    that point to this webhook will be removed).
+    #[prost(bool, tag = "2")]
+    pub force: bool,
 }
 /// The request message for a webhook call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebhookRequest {
-    /// Always present. The unique identifier of the [DetectIntentResponse][google.cloud.dialogflow.cx.v3beta1.DetectIntentResponse] that
-    /// will be returned to the API caller.
+    /// Always present. The unique identifier of the
+    /// [DetectIntentResponse][google.cloud.dialogflow.cx.v3beta1.DetectIntentResponse]
+    /// that will be returned to the API caller.
     #[prost(string, tag = "1")]
     pub detect_intent_response_id: std::string::String,
     /// Always present. Information about the fulfillment that triggered this
@@ -4501,7 +4643,8 @@ pub struct WebhookRequest {
     /// [WebhookResponse.fulfillment_response][google.cloud.dialogflow.cx.v3beta1.WebhookResponse.fulfillment_response];
     #[prost(message, repeated, tag = "7")]
     pub messages: ::std::vec::Vec<ResponseMessage>,
-    /// Custom data set in [QueryParameters.payload][google.cloud.dialogflow.cx.v3beta1.QueryParameters.payload].
+    /// Custom data set in
+    /// [QueryParameters.payload][google.cloud.dialogflow.cx.v3beta1.QueryParameters.payload].
     #[prost(message, optional, tag = "8")]
     pub payload: ::std::option::Option<::prost_types::Struct>,
 }
@@ -4518,8 +4661,9 @@ pub mod webhook_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IntentInfo {
         /// Always present. The unique identifier of the last matched
-        /// [intent][google.cloud.dialogflow.cx.v3beta1.Intent]. Format: `projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/intents/<Intent ID>`.
+        /// [intent][google.cloud.dialogflow.cx.v3beta1.Intent]. Format:
+        /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>/intents/<Intent ID>`.
         #[prost(string, tag = "1")]
         pub last_matched_intent: std::string::String,
         /// Parameters identified as a result of intent matching. This is a map of
@@ -4559,7 +4703,8 @@ pub struct WebhookResponse {
     /// if it does not intend to modify session status.
     #[prost(message, optional, tag = "3")]
     pub session_info: ::std::option::Option<SessionInfo>,
-    /// Value to append directly to [QueryResult.webhook_payloads][google.cloud.dialogflow.cx.v3beta1.QueryResult.webhook_payloads].
+    /// Value to append directly to
+    /// [QueryResult.webhook_payloads][google.cloud.dialogflow.cx.v3beta1.QueryResult.webhook_payloads].
     #[prost(message, optional, tag = "4")]
     pub payload: ::std::option::Option<::prost_types::Struct>,
     /// The target to transition to. This can be set optionally to indicate an
@@ -4614,13 +4759,18 @@ pub mod webhook_response {
 /// Represents page information communicated to and from the webhook.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PageInfo {
-    /// Always present for [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]. Ignored for [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
-    /// The unique identifier of the current page.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    /// Always present for
+    /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
+    /// Ignored for
+    /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse]. The
+    /// unique identifier of the current page. Format: `projects/<Project
+    /// ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page
+    /// ID>`.
     #[prost(string, tag = "1")]
     pub current_page: std::string::String,
-    /// Optional for both [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
+    /// Optional for both
+    /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and
+    /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
     /// Information about the form.
     #[prost(message, optional, tag = "3")]
     pub form_info: ::std::option::Option<page_info::FormInfo>,
@@ -4629,7 +4779,9 @@ pub mod page_info {
     /// Represents form information.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FormInfo {
-        /// Optional for both [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
+        /// Optional for both
+        /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and
+        /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
         /// The parameters contained in the form. Note that the webhook cannot add
         /// or remove any form parameter.
         #[prost(message, repeated, tag = "2")]
@@ -4639,31 +4791,43 @@ pub mod page_info {
         /// Represents parameter information.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ParameterInfo {
-            /// Always present for [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]. Required for
+            /// Always present for
+            /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
+            /// Required for
             /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
             /// The human-readable name of the parameter, unique within the form. This
             /// field cannot be modified by the webhook.
             #[prost(string, tag = "1")]
             pub display_name: std::string::String,
-            /// Optional for both [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
+            /// Optional for both
+            /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and
+            /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
             /// Indicates whether the parameter is required. Optional parameters will
             /// not trigger prompts; however, they are filled if the user specifies
             /// them. Required parameters must be filled before form filling concludes.
             #[prost(bool, tag = "2")]
             pub required: bool,
-            /// Always present for [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]. Required for
-            /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse]. The state of the parameter. This field can be set
-            /// to [INVALID][google.cloud.dialogflow.cx.v3beta1.PageInfo.FormInfo.ParameterInfo.ParameterState.INVALID] by
-            /// the webhook to invalidate the parameter; other values set by the
+            /// Always present for
+            /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
+            /// Required for
+            /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
+            /// The state of the parameter. This field can be set to
+            /// [INVALID][google.cloud.dialogflow.cx.v3beta1.PageInfo.FormInfo.ParameterInfo.ParameterState.INVALID]
+            /// by the webhook to invalidate the parameter; other values set by the
             /// webhook will be ignored.
             #[prost(enumeration = "parameter_info::ParameterState", tag = "3")]
             pub state: i32,
-            /// Optional for both [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
+            /// Optional for both
+            /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest] and
+            /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
             /// The value of the parameter. This field can be set by the webhook to
             /// change the parameter value.
             #[prost(message, optional, tag = "4")]
             pub value: ::std::option::Option<::prost_types::Value>,
-            /// Optional for [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]. Ignored for [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
+            /// Optional for
+            /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
+            /// Ignored for
+            /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
             /// Indicates if the parameter value was just collected on the last
             /// conversation turn.
             #[prost(bool, tag = "5")]
@@ -4693,19 +4857,27 @@ pub mod page_info {
 /// Represents session information communicated to and from the webhook.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionInfo {
-    /// Always present for [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]. Ignored for [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
-    /// The unique identifier of the [session][google.cloud.dialogflow.cx.v3beta1.DetectIntentRequest.session]. This
-    /// field can be used by the webhook to identify a user.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// Always present for
+    /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
+    /// Ignored for
+    /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse]. The
+    /// unique identifier of the
+    /// [session][google.cloud.dialogflow.cx.v3beta1.DetectIntentRequest.session].
+    /// This field can be used by the webhook to identify a user. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
     /// ID>/sessions/<Session ID>`.
     #[prost(string, tag = "1")]
     pub session: std::string::String,
-    /// Optional for [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]. Optional for [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
-    /// All parameters collected from forms and intents during the session.
-    /// Parameters can be created, updated, or removed by the webhook. To remove a
-    /// parameter from the session, the webhook should explicitly set the parameter
-    /// value to null in [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse]. The map is keyed by parameters'
-    /// display names.
+    /// Optional for
+    /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
+    /// Optional for
+    /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse]. All
+    /// parameters collected from forms and intents during the session. Parameters
+    /// can be created, updated, or removed by the webhook. To remove a parameter
+    /// from the session, the webhook should explicitly set the parameter value to
+    /// null in
+    /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse]. The
+    /// map is keyed by parameters' display names.
     #[prost(map = "string, message", tag = "2")]
     pub parameters: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
 }

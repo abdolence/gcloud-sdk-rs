@@ -375,16 +375,17 @@ pub struct Pivot {
     #[prost(string, repeated, tag = "1")]
     pub field_names: ::std::vec::Vec<std::string::String>,
     /// Specifies how dimensions are ordered in the pivot. In the first Pivot, the
-    /// OrderBys determine Row and DimensionHeader ordering; in subsequent Pivots,
-    /// the OrderBys determine only DimensionHeader ordering. Dimensions specified
-    /// in these OrderBys must be a subset of Pivot.field_names.
+    /// OrderBys determine Row and PivotDimensionHeader ordering; in subsequent
+    /// Pivots, the OrderBys determine only PivotDimensionHeader ordering.
+    /// Dimensions specified in these OrderBys must be a subset of
+    /// Pivot.field_names.
     #[prost(message, repeated, tag = "2")]
     pub order_bys: ::std::vec::Vec<OrderBy>,
     /// The row count of the start row. The first row is counted as row 0.
     #[prost(int64, tag = "3")]
     pub offset: i64,
-    /// The number of rows to return in this pivot.
-    /// If zero or unspecified, all rows are returned.
+    /// The number of rows to return in this pivot. If unspecified, 10 rows are
+    /// returned. If -1, all rows are returned.
     #[prost(int64, tag = "4")]
     pub limit: i64,
     /// Aggregate the metrics by dimensions in this pivot using the specified
@@ -411,7 +412,9 @@ pub struct CohortSpec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cohort {
     /// Assigns a name to this cohort. The dimension `cohort` is valued to this
-    /// name in a report response. If not set, a cohort is named the empty string.
+    /// name in a report response. If set, cannot begin with `cohort_` or
+    /// `RESERVED_`. If not set, cohorts are named by their zero based index
+    /// `cohort_0`, `cohort_1`, etc.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The dimension used by cohort. Only supports `firstTouchDate` for retention
@@ -419,12 +422,14 @@ pub struct Cohort {
     #[prost(string, tag = "2")]
     pub dimension: std::string::String,
     /// The cohort selects users whose first visit date is between start date
-    /// and end date defined in the date_range. The date range should be aligned
-    /// with the cohort's granularity.
-    /// If CohortsRange uses daily granularity, the date range can be aligned to
-    /// any day.
-    /// If CohortsRange uses weekly granularity, the date range should be aligned
-    /// to the week boundary, starting at Sunday and ending Saturday. If
+    /// and end date defined in the `dateRange`. In a cohort request, this
+    /// `dateRange` is required and the `dateRanges` in the `RunReportRequest` or
+    /// `RunPivotReportRequest` must be unspecified.
+    ///
+    /// The date range should be aligned with the cohort's granularity. If
+    /// CohortsRange uses daily granularity, the date range can be aligned to any
+    /// day. If CohortsRange uses weekly granularity, the date range should be
+    /// aligned to the week boundary, starting at Sunday and ending Saturday. If
     /// CohortsRange uses monthly granularity, the date range should be aligned to
     /// the month, starting at the first and ending on the last day of the month.
     #[prost(message, optional, tag = "3")]
@@ -433,18 +438,10 @@ pub struct Cohort {
 /// Settings of a cohort report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CohortReportSettings {
-    /// If true, accumulates the result from first visit day to the end day.
+    /// If true, accumulates the result from first visit day to the end day. Not
+    /// supported in `RunReportRequest`.
     #[prost(bool, tag = "1")]
     pub accumulate: bool,
-    /// If true, the report is for lifetime value report and should pivot on user
-    /// event.
-    #[prost(bool, tag = "2")]
-    pub pivot_on_user_event: bool,
-    /// If some values are missing while computing ratios, we want to compute the
-    /// ratios only based on non-missing values.
-    /// This field should be set to true only for a totals request.
-    #[prost(bool, tag = "4")]
-    pub missing_value_as_zero: bool,
 }
 /// Describes date range for a cohort report.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -485,30 +482,43 @@ pub struct ResponseMetaData {
     #[prost(bool, tag = "3")]
     pub data_loss_from_other_row: bool,
 }
-/// Describes the metric column in the report.
+/// Describes a dimension column in the report. Dimensions requested in a report
+/// produce column entries within rows and DimensionHeaders. However, dimensions
+/// used exclusively within filters or expressions do not produce columns in a
+/// report; correspondingly, those dimensions do not produce headers.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MetricHeader {
-    /// Metric name.
+pub struct DimensionHeader {
+    /// The dimension's name.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Metric data type.
+}
+/// Describes a metric column in the report. Visible metrics requested in a
+/// report produce column entries within rows and MetricHeaders. However,
+/// metrics used exclusively within filters or expressions do not produce columns
+/// in a report; correspondingly, those metrics do not produce headers.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricHeader {
+    /// The metric's name.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// The metric's data type.
     #[prost(enumeration = "MetricType", tag = "2")]
     pub r#type: i32,
 }
-/// Dimensions' values in a pivot.
+/// Dimensions' values in a single pivot.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PivotHeader {
     /// The size is the same as the cardinality of the corresponding dimension
     /// combinations.
     #[prost(message, repeated, tag = "1")]
-    pub dimension_headers: ::std::vec::Vec<DimensionHeader>,
+    pub pivot_dimension_headers: ::std::vec::Vec<PivotDimensionHeader>,
     /// The cardinality of the pivot as if offset = 0 and limit = -1.
     #[prost(int32, tag = "2")]
     pub row_count: i32,
 }
-/// The header for the dimensions.
+/// Summarizes dimension values from a row for this pivot.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DimensionHeader {
+pub struct PivotDimensionHeader {
     /// Values of multiple dimensions in a pivot.
     #[prost(message, repeated, tag = "1")]
     pub dimension_values: ::std::vec::Vec<DimensionValue>,
@@ -633,6 +643,56 @@ pub struct QuotaStatus {
     #[prost(int32, tag = "2")]
     pub remaining: i32,
 }
+/// Explains a dimension.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DimensionMetadata {
+    /// This dimension's name. Useable in [Dimension](#Dimension)'s `name`. For
+    /// example, `eventName`.
+    #[prost(string, tag = "1")]
+    pub api_name: std::string::String,
+    /// This dimension's name within the Google Analytics user interface. For
+    /// example, `Event name`.
+    #[prost(string, tag = "2")]
+    pub ui_name: std::string::String,
+    /// Description of how this dimension is used and calculated.
+    #[prost(string, tag = "3")]
+    pub description: std::string::String,
+    /// Still usable but deprecated names for this dimension. If populated, this
+    /// dimension is available by either `apiName` or one of `deprecatedApiNames`
+    /// for a period of time. After the deprecation period, the dimension will be
+    /// available only by `apiName`.
+    #[prost(string, repeated, tag = "4")]
+    pub deprecated_api_names: ::std::vec::Vec<std::string::String>,
+}
+/// Explains a metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricMetadata {
+    /// A metric name. Useable in [Metric](#Metric)'s `name`. For example,
+    /// `eventCount`.
+    #[prost(string, tag = "1")]
+    pub api_name: std::string::String,
+    /// This metric's name within the Google Analytics user interface. For example,
+    /// `Event count`.
+    #[prost(string, tag = "2")]
+    pub ui_name: std::string::String,
+    /// Description of how this metric is used and calculated.
+    #[prost(string, tag = "3")]
+    pub description: std::string::String,
+    /// Still usable but deprecated names for this metric. If populated, this
+    /// metric is available by either `apiName` or one of `deprecatedApiNames`
+    /// for a period of time. After the deprecation period, the metric will be
+    /// available only by `apiName`.
+    #[prost(string, repeated, tag = "4")]
+    pub deprecated_api_names: ::std::vec::Vec<std::string::String>,
+    /// The type of this metric.
+    #[prost(enumeration = "MetricType", tag = "5")]
+    pub r#type: i32,
+    /// The mathematical expression for this derived metric. Can be used in
+    /// [Metric](#Metric)'s `expression` field for equivalent reports. Most metrics
+    /// are not expressions, and for non-expressions, this field is empty.
+    #[prost(string, tag = "6")]
+    pub expression: std::string::String,
+}
 /// Represents aggregation of metrics.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -648,7 +708,7 @@ pub enum MetricAggregation {
     /// Count operator.
     Count = 4,
 }
-/// Type of a metric value.
+/// A metric's value type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MetricType {
@@ -658,6 +718,23 @@ pub enum MetricType {
     TypeInteger = 1,
     /// Floating point type.
     TypeFloat = 2,
+    /// A duration of seconds; a special floating point type.
+    TypeSeconds = 4,
+    /// An amount of money; a special floating point type.
+    TypeCurrency = 9,
+}
+/// The dimensions and metrics currently accepted in reporting methods.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metadata {
+    /// Resource name of this metadata.
+    #[prost(string, tag = "3")]
+    pub name: std::string::String,
+    /// The dimensions descriptions.
+    #[prost(message, repeated, tag = "1")]
+    pub dimensions: ::std::vec::Vec<DimensionMetadata>,
+    /// The metric descriptions.
+    #[prost(message, repeated, tag = "2")]
+    pub metrics: ::std::vec::Vec<MetricMetadata>,
 }
 /// The request to generate a report.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -675,25 +752,28 @@ pub struct RunReportRequest {
     /// Date ranges of data to read. If multiple date ranges are requested, each
     /// response row will contain a zero based date range index. If two date
     /// ranges overlap, the event data for the overlapping days is included in the
-    /// response rows for both date ranges.
+    /// response rows for both date ranges. In a cohort request, this `dateRanges`
+    /// must be unspecified.
     #[prost(message, repeated, tag = "4")]
     pub date_ranges: ::std::vec::Vec<DateRange>,
     /// The row count of the start row. The first row is counted as row 0.
     #[prost(int64, tag = "5")]
     pub offset: i64,
-    /// The number of rows to return.
-    /// If zero or unspecified, all rows are returned.
+    /// The number of rows to return. If unspecified, 10 rows are returned. If
+    /// -1, all rows are returned.
     #[prost(int64, tag = "6")]
     pub limit: i64,
     /// Aggregation of metrics. Aggregated metric values will be shown in rows
     /// where the dimension_values are set to "RESERVED_(MetricAggregation)".
     #[prost(enumeration = "MetricAggregation", repeated, tag = "7")]
     pub metric_aggregations: ::std::vec::Vec<i32>,
-    /// The filter clause of dimensions.
+    /// The filter clause of dimensions. Dimensions must be requested to be used in
+    /// this filter. Metrics cannot be used in this filter.
     #[prost(message, optional, tag = "8")]
     pub dimension_filter: ::std::option::Option<FilterExpression>,
     /// The filter clause of metrics. Applied at post aggregation phase, similar to
-    /// SQL having-clause.
+    /// SQL having-clause. Metrics must be requested to be used in this filter.
+    /// Dimensions cannot be used in this filter.
     #[prost(message, optional, tag = "9")]
     pub metric_filter: ::std::option::Option<FilterExpression>,
     /// Specifies how rows are ordered in the response.
@@ -707,7 +787,9 @@ pub struct RunReportRequest {
     /// in the request the 'cohort' dimension must be present.
     #[prost(message, optional, tag = "12")]
     pub cohort_spec: ::std::option::Option<CohortSpec>,
-    /// If false, rows with metrics being 0 will not be returned.
+    /// If false or unspecified, each row with all metrics equal to 0 will not be
+    /// returned. If true, these rows will be returned if they are not separately
+    /// removed by a filter.
     #[prost(bool, tag = "13")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
@@ -718,7 +800,12 @@ pub struct RunReportRequest {
 /// The response report table corresponding to a request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunReportResponse {
-    /// Describes metric columns.
+    /// Describes dimension columns. The number of DimensionHeaders and ordering of
+    /// DimensionHeaders matches the dimensions present in rows.
+    #[prost(message, repeated, tag = "11")]
+    pub dimension_headers: ::std::vec::Vec<DimensionHeader>,
+    /// Describes metric columns. The number of MetricHeaders and ordering of
+    /// MetricHeaders matches the metrics present in rows.
     #[prost(message, repeated, tag = "1")]
     pub metric_headers: ::std::vec::Vec<MetricHeader>,
     /// Rows of dimension value combinations and metric values in the report.
@@ -756,14 +843,13 @@ pub struct RunPivotReportRequest {
     /// metric_filter, order_bys.
     #[prost(message, repeated, tag = "3")]
     pub metrics: ::std::vec::Vec<Metric>,
-    /// The filter clause of dimensions. Requests are validated that all
-    /// field_names in the dimension_filter are dimensions and are defined in
-    /// Dimensions.
+    /// The filter clause of dimensions. Dimensions must be requested to be used in
+    /// this filter. Metrics cannot be used in this filter.
     #[prost(message, optional, tag = "4")]
     pub dimension_filter: ::std::option::Option<FilterExpression>,
     /// The filter clause of metrics. Applied at post aggregation phase, similar to
-    /// SQL having-clause. Requests are validated that all field_names in the
-    /// metric_filter are metrics and are defined in Metrics.
+    /// SQL having-clause. Metrics must be requested to be used in this filter.
+    /// Dimensions cannot be used in this filter.
     #[prost(message, optional, tag = "5")]
     pub metric_filter: ::std::option::Option<FilterExpression>,
     /// Describes the visual format of the report's dimensions in columns or rows.
@@ -776,7 +862,7 @@ pub struct RunPivotReportRequest {
     /// ranges are specified, event data from each date range is used in the
     /// report. A special dimension with field name "dateRange" can be included in
     /// a Pivot's field names; if included, the report compares between date
-    /// ranges. This dateRanges field is not used in cohorts reports.
+    /// ranges. In a cohort request, this `dateRanges` must be unspecified.
     #[prost(message, repeated, tag = "7")]
     pub date_ranges: ::std::vec::Vec<DateRange>,
     /// A currency code in ISO4217 format, such as "AED", "USD", "JPY".
@@ -787,7 +873,9 @@ pub struct RunPivotReportRequest {
     /// in the request the 'cohort' dimension must be present.
     #[prost(message, optional, tag = "9")]
     pub cohort_spec: ::std::option::Option<CohortSpec>,
-    /// If false, rows with metrics being 0 will not be returned.
+    /// If false or unspecified, each row with all metrics equal to 0 will not be
+    /// returned. If true, these rows will be returned if they are not separately
+    /// removed by a filter.
     #[prost(bool, tag = "10")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
@@ -836,7 +924,12 @@ pub struct RunPivotReportResponse {
     ///     }]
     #[prost(message, repeated, tag = "1")]
     pub pivot_headers: ::std::vec::Vec<PivotHeader>,
-    /// Describes metric columns.
+    /// Describes dimension columns. The number of DimensionHeaders and ordering of
+    /// DimensionHeaders matches the dimensions present in rows.
+    #[prost(message, repeated, tag = "7")]
+    pub dimension_headers: ::std::vec::Vec<DimensionHeader>,
+    /// Describes metric columns. The number of MetricHeaders and ordering of
+    /// MetricHeaders matches the metrics present in rows.
     #[prost(message, repeated, tag = "2")]
     pub metric_headers: ::std::vec::Vec<MetricHeader>,
     /// Rows of dimension value combinations and metric values in the report.
@@ -894,6 +987,16 @@ pub struct BatchRunPivotReportsResponse {
     /// Individual responses. Each response has a separate pivot report request.
     #[prost(message, repeated, tag = "1")]
     pub pivot_reports: ::std::vec::Vec<RunPivotReportResponse>,
+}
+/// Request for dimension and metric metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetMetadataRequest {
+    /// Required. The name of the metadata to retrieve. Either has the form
+    /// 'metadata' or 'properties/{property}/metadata'. This name field is
+    /// specified in the URL path and not URL parameters. Property is a numeric
+    /// Google Analytics App + Web Property Id.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod alpha_analytics_data_client {
@@ -995,6 +1098,25 @@ pub mod alpha_analytics_data_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/BatchRunPivotReports",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns metadata for dimensions and metrics available in reporting methods."]
+        #[doc = " Used to explore the dimensions and metrics. Dimensions and metrics will be"]
+        #[doc = " mostly added over time, but renames and deletions may occur."]
+        pub async fn get_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetMetadataRequest>,
+        ) -> Result<tonic::Response<super::Metadata>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetMetadata",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

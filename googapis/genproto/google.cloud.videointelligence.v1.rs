@@ -2,20 +2,21 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoRequest {
     /// Input video location. Currently, only
-    /// [Google Cloud Storage](https://cloud.google.com/storage/) URIs are
-    /// supported, which must be specified in the following format:
+    /// [Cloud Storage](https://cloud.google.com/storage/) URIs are
+    /// supported. URIs must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see
-    /// [Request URIs](https://cloud.google.com/storage/docs/request-endpoints).
-    /// A video URI may include wildcards in `object-id`, and thus identify
-    /// multiple videos. Supported wildcards: '*' to match 0 or more characters;
+    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// more information, see [Request
+    /// URIs](https://cloud.google.com/storage/docs/request-endpoints). To identify
+    /// multiple videos, a video URI may include wildcards in the `object-id`.
+    /// Supported wildcards: '*' to match 0 or more characters;
     /// '?' to match 1 character. If unset, the input video should be embedded
-    /// in the request as `input_content`. If set, `input_content` should be unset.
+    /// in the request as `input_content`. If set, `input_content` must be unset.
     #[prost(string, tag = "1")]
     pub input_uri: std::string::String,
     /// The video data bytes.
-    /// If unset, the input video(s) should be specified via `input_uri`.
-    /// If set, `input_uri` should be unset.
+    /// If unset, the input video(s) should be specified via the `input_uri`.
+    /// If set, `input_uri` must be unset.
     #[prost(bytes, tag = "6")]
     pub input_content: std::vec::Vec<u8>,
     /// Required. Requested video annotation features.
@@ -25,16 +26,18 @@ pub struct AnnotateVideoRequest {
     #[prost(message, optional, tag = "3")]
     pub video_context: ::std::option::Option<VideoContext>,
     /// Optional. Location where the output (in JSON format) should be stored.
-    /// Currently, only [Google Cloud Storage](https://cloud.google.com/storage/)
-    /// URIs are supported, which must be specified in the following format:
+    /// Currently, only [Cloud Storage](https://cloud.google.com/storage/)
+    /// URIs are supported. These must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see
-    /// [Request URIs](https://cloud.google.com/storage/docs/request-endpoints).
+    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// more information, see [Request
+    /// URIs](https://cloud.google.com/storage/docs/request-endpoints).
     #[prost(string, tag = "4")]
     pub output_uri: std::string::String,
     /// Optional. Cloud region where annotation should take place. Supported cloud
-    /// regions: `us-east1`, `us-west1`, `europe-west1`, `asia-east1`. If no region
-    /// is specified, a region will be determined based on video file location.
+    /// regions are: `us-east1`, `us-west1`, `europe-west1`, `asia-east1`. If no
+    /// region is specified, the region will be determined based on video file
+    /// location.
     #[prost(string, tag = "5")]
     pub location_id: std::string::String,
 }
@@ -64,6 +67,9 @@ pub struct VideoContext {
     /// Config for TEXT_DETECTION.
     #[prost(message, optional, tag = "8")]
     pub text_detection_config: ::std::option::Option<TextDetectionConfig>,
+    /// Config for PERSON_DETECTION.
+    #[prost(message, optional, tag = "11")]
+    pub person_detection_config: ::std::option::Option<PersonDetectionConfig>,
     /// Config for OBJECT_TRACKING.
     #[prost(message, optional, tag = "13")]
     pub object_tracking_config: ::std::option::Option<ObjectTrackingConfig>,
@@ -76,9 +82,9 @@ pub struct LabelDetectionConfig {
     /// If unspecified, defaults to `SHOT_MODE`.
     #[prost(enumeration = "LabelDetectionMode", tag = "1")]
     pub label_detection_mode: i32,
-    /// Whether the video has been shot from a stationary (i.e. non-moving) camera.
-    /// When set to true, might improve detection accuracy for moving objects.
-    /// Should be used with `SHOT_AND_FRAME_MODE` enabled.
+    /// Whether the video has been shot from a stationary (i.e., non-moving)
+    /// camera. When set to true, might improve detection accuracy for moving
+    /// objects. Should be used with `SHOT_AND_FRAME_MODE` enabled.
     #[prost(bool, tag = "2")]
     pub stationary_camera: bool,
     /// Model to use for label detection.
@@ -90,15 +96,15 @@ pub struct LabelDetectionConfig {
     /// frame-level detection. If not set, it is set to 0.4 by default. The valid
     /// range for this threshold is [0.1, 0.9]. Any value set outside of this
     /// range will be clipped.
-    /// Note: for best results please follow the default threshold. We will update
+    /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
     #[prost(float, tag = "4")]
     pub frame_confidence_threshold: f32,
     /// The confidence threshold we perform filtering on the labels from
-    /// video-level and shot-level detections. If not set, it is set to 0.3 by
+    /// video-level and shot-level detections. If not set, it's set to 0.3 by
     /// default. The valid range for this threshold is [0.1, 0.9]. Any value set
     /// outside of this range will be clipped.
-    /// Note: for best results please follow the default threshold. We will update
+    /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
     #[prost(float, tag = "5")]
     pub video_confidence_threshold: f32,
@@ -129,9 +135,31 @@ pub struct FaceDetectionConfig {
     /// "builtin/latest".
     #[prost(string, tag = "1")]
     pub model: std::string::String,
-    /// Whether bounding boxes be included in the face annotation output.
+    /// Whether bounding boxes are included in the face annotation output.
     #[prost(bool, tag = "2")]
     pub include_bounding_boxes: bool,
+    /// Whether to enable face attributes detection, such as glasses, dark_glasses,
+    /// mouth_open etc. Ignored if 'include_bounding_boxes' is set to false.
+    #[prost(bool, tag = "5")]
+    pub include_attributes: bool,
+}
+/// Config for PERSON_DETECTION.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersonDetectionConfig {
+    /// Whether bounding boxes are included in the person detection annotation
+    /// output.
+    #[prost(bool, tag = "1")]
+    pub include_bounding_boxes: bool,
+    /// Whether to enable pose landmarks detection. Ignored if
+    /// 'include_bounding_boxes' is set to false.
+    #[prost(bool, tag = "2")]
+    pub include_pose_landmarks: bool,
+    /// Whether to enable person attributes detection, such as cloth color (black,
+    /// blue, etc), type (coat, dress, etc), pattern (plain, floral, etc), hair,
+    /// etc.
+    /// Ignored if 'include_bounding_boxes' is set to false.
+    #[prost(bool, tag = "3")]
+    pub include_attributes: bool,
 }
 /// Config for EXPLICIT_CONTENT_DETECTION.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -199,7 +227,7 @@ pub struct Entity {
     /// API](https://developers.google.com/knowledge-graph/).
     #[prost(string, tag = "1")]
     pub entity_id: std::string::String,
-    /// Textual description, e.g. `Fixed-gear bicycle`.
+    /// Textual description, e.g., `Fixed-gear bicycle`.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
     /// Language code for `description` in BCP-47 format.
@@ -213,9 +241,9 @@ pub struct LabelAnnotation {
     #[prost(message, optional, tag = "1")]
     pub entity: ::std::option::Option<Entity>,
     /// Common categories for the detected entity.
-    /// E.g. when the label is `Terrier` the category is likely `dog`. And in some
-    /// cases there might be more than one categories e.g. `Terrier` could also be
-    /// a `pet`.
+    /// For example, when the label is `Terrier`, the category is likely `dog`. And
+    /// in some cases there might be more than one categories e.g., `Terrier` could
+    /// also be a `pet`.
     #[prost(message, repeated, tag = "2")]
     pub category_entities: ::std::vec::Vec<Entity>,
     /// All video segments where a label was detected.
@@ -224,6 +252,9 @@ pub struct LabelAnnotation {
     /// All video frames where a label was detected.
     #[prost(message, repeated, tag = "4")]
     pub frames: ::std::vec::Vec<LabelFrame>,
+    /// Feature version.
+    #[prost(string, tag = "5")]
+    pub version: std::string::String,
 }
 /// Video frame level annotation results for explicit content.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -244,6 +275,9 @@ pub struct ExplicitContentAnnotation {
     /// All video frames where explicit content was detected.
     #[prost(message, repeated, tag = "1")]
     pub frames: ::std::vec::Vec<ExplicitContentFrame>,
+    /// Feature version.
+    #[prost(string, tag = "2")]
+    pub version: std::string::String,
 }
 /// Normalized bounding box.
 /// The normalized vertex coordinates are relative to the original image.
@@ -263,6 +297,23 @@ pub struct NormalizedBoundingBox {
     #[prost(float, tag = "4")]
     pub bottom: f32,
 }
+/// Face detection annotation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FaceDetectionAnnotation {
+    /// Feature version.
+    #[prost(string, tag = "5")]
+    pub version: std::string::String,
+}
+/// Person detection annotation per video.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersonDetectionAnnotation {
+    /// The detected tracks of a person.
+    #[prost(message, repeated, tag = "1")]
+    pub tracks: ::std::vec::Vec<Track>,
+    /// Feature version.
+    #[prost(string, tag = "2")]
+    pub version: std::string::String,
+}
 /// Video segment level annotation results for face detection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceSegment {
@@ -270,7 +321,7 @@ pub struct FaceSegment {
     #[prost(message, optional, tag = "1")]
     pub segment: ::std::option::Option<VideoSegment>,
 }
-/// Video frame level annotation results for face detection.
+/// Deprecated. No effect.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceFrame {
     /// Normalized Bounding boxes in a frame.
@@ -283,7 +334,7 @@ pub struct FaceFrame {
     #[prost(message, optional, tag = "2")]
     pub time_offset: ::std::option::Option<::prost_types::Duration>,
 }
-/// Face annotation.
+/// Deprecated. No effect.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceAnnotation {
     /// Thumbnail of a representative face view (in JPEG format).
@@ -334,7 +385,7 @@ pub struct Track {
 /// A generic detected attribute represented by name in string format.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectedAttribute {
-    /// The name of the attribute, i.e. glasses, dark_glasses, mouth_open etc.
+    /// The name of the attribute, for example, glasses, dark_glasses, mouth_open.
     /// A full list of supported type names will be provided in the document.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -350,7 +401,7 @@ pub struct DetectedAttribute {
 /// location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectedLandmark {
-    /// The name of this landmark, i.e. left_hand, right_shoulder.
+    /// The name of this landmark, for example, left_hand, right_shoulder.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The 2D point of the detected landmark using the normalized image
@@ -365,17 +416,17 @@ pub struct DetectedLandmark {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationResults {
     /// Video file location in
-    /// [Google Cloud Storage](https://cloud.google.com/storage/).
+    /// [Cloud Storage](https://cloud.google.com/storage/).
     #[prost(string, tag = "1")]
     pub input_uri: std::string::String,
     /// Video segment on which the annotation is run.
     #[prost(message, optional, tag = "10")]
     pub segment: ::std::option::Option<VideoSegment>,
-    /// Topical label annotations on video level or user specified segment level.
+    /// Topical label annotations on video level or user-specified segment level.
     /// There is exactly one element for each unique label.
     #[prost(message, repeated, tag = "2")]
     pub segment_label_annotations: ::std::vec::Vec<LabelAnnotation>,
-    /// Presence label annotations on video level or user specified segment level.
+    /// Presence label annotations on video level or user-specified segment level.
     /// There is exactly one element for each unique label. Compared to the
     /// existing topical `segment_label_annotations`, this field presents more
     /// fine-grained, segment-level labels detected in video content and is made
@@ -398,9 +449,12 @@ pub struct VideoAnnotationResults {
     /// There is exactly one element for each unique label.
     #[prost(message, repeated, tag = "4")]
     pub frame_label_annotations: ::std::vec::Vec<LabelAnnotation>,
-    /// Face annotations. There is exactly one element for each unique face.
+    /// Deprecated. Please use `face_detection_annotations` instead.
     #[prost(message, repeated, tag = "5")]
     pub face_annotations: ::std::vec::Vec<FaceAnnotation>,
+    /// Face detection annotations.
+    #[prost(message, repeated, tag = "13")]
+    pub face_detection_annotations: ::std::vec::Vec<FaceDetectionAnnotation>,
     /// Shot annotations. Each shot is represented as a video segment.
     #[prost(message, repeated, tag = "6")]
     pub shot_annotations: ::std::vec::Vec<VideoSegment>,
@@ -421,6 +475,9 @@ pub struct VideoAnnotationResults {
     /// Annotations for list of logos detected, tracked and recognized in video.
     #[prost(message, repeated, tag = "19")]
     pub logo_recognition_annotations: ::std::vec::Vec<LogoRecognitionAnnotation>,
+    /// Person detection annotations.
+    #[prost(message, repeated, tag = "20")]
+    pub person_detection_annotations: ::std::vec::Vec<PersonDetectionAnnotation>,
     /// If set, indicates an error. Note that for a single `AnnotateVideoRequest`
     /// some videos may succeed and some may fail.
     #[prost(message, optional, tag = "9")]
@@ -439,7 +496,7 @@ pub struct AnnotateVideoResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Video file location in
-    /// [Google Cloud Storage](https://cloud.google.com/storage/).
+    /// [Cloud Storage](https://cloud.google.com/storage/).
     #[prost(string, tag = "1")]
     pub input_uri: std::string::String,
     /// Approximate percentage processed thus far. Guaranteed to be
@@ -453,11 +510,11 @@ pub struct VideoAnnotationProgress {
     #[prost(message, optional, tag = "4")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Specifies which feature is being tracked if the request contains more than
-    /// one features.
+    /// one feature.
     #[prost(enumeration = "Feature", tag = "5")]
     pub feature: i32,
     /// Specifies which segment is being tracked if the request contains more than
-    /// one segments.
+    /// one segment.
     #[prost(message, optional, tag = "6")]
     pub segment: ::std::option::Option<VideoSegment>,
 }
@@ -512,14 +569,14 @@ pub struct SpeechTranscriptionConfig {
     /// the top alternative of the recognition result using a speaker_tag provided
     /// in the WordInfo.
     /// Note: When this is true, we send all the words from the beginning of the
-    /// audio for the top alternative in every consecutive responses.
+    /// audio for the top alternative in every consecutive response.
     /// This is done in order to improve our speaker tags as our models learn to
     /// identify the speakers in the conversation over time.
     #[prost(bool, tag = "7")]
     pub enable_speaker_diarization: bool,
-    /// Optional. If set, specifies the estimated number of speakers in the conversation.
-    /// If not set, defaults to '2'.
-    /// Ignored unless enable_speaker_diarization is set to true.
+    /// Optional. If set, specifies the estimated number of speakers in the
+    /// conversation. If not set, defaults to '2'. Ignored unless
+    /// enable_speaker_diarization is set to true.
     #[prost(int32, tag = "8")]
     pub diarization_speaker_count: i32,
     /// Optional. If `true`, the top result includes a list of words and the
@@ -550,9 +607,9 @@ pub struct SpeechTranscription {
     /// ranked by the recognizer.
     #[prost(message, repeated, tag = "1")]
     pub alternatives: ::std::vec::Vec<SpeechRecognitionAlternative>,
-    /// Output only. The [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag of
-    /// the language in this result. This language code was detected to have the
-    /// most likelihood of being spoken in the audio.
+    /// Output only. The [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt)
+    /// language tag of the language in this result. This language code was
+    /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "2")]
     pub language_code: std::string::String,
 }
@@ -571,8 +628,8 @@ pub struct SpeechRecognitionAlternative {
     #[prost(float, tag = "2")]
     pub confidence: f32,
     /// Output only. A list of word-specific information for each recognized word.
-    /// Note: When `enable_speaker_diarization` is true, you will see all the words
-    /// from the beginning of the audio.
+    /// Note: When `enable_speaker_diarization` is set to true, you will see all
+    /// the words from the beginning of the audio.
     #[prost(message, repeated, tag = "3")]
     pub words: ::std::vec::Vec<WordInfo>,
 }
@@ -683,6 +740,9 @@ pub struct TextAnnotation {
     /// All video segments where OCR detected text appears.
     #[prost(message, repeated, tag = "2")]
     pub segments: ::std::vec::Vec<TextSegment>,
+    /// Feature version.
+    #[prost(string, tag = "3")]
+    pub version: std::string::String,
 }
 /// Video frame level annotations for object detection and tracking. This field
 /// stores per frame location, time offset, and confidence.
@@ -710,6 +770,9 @@ pub struct ObjectTrackingAnnotation {
     /// Streaming mode: it can only be one ObjectTrackingFrame message in frames.
     #[prost(message, repeated, tag = "2")]
     pub frames: ::std::vec::Vec<ObjectTrackingFrame>,
+    /// Feature version.
+    #[prost(string, tag = "6")]
+    pub version: std::string::String,
     /// Different representation of tracking info in non-streaming batch
     /// and streaming modes.
     #[prost(oneof = "object_tracking_annotation::TrackInfo", tags = "3, 5")]
@@ -762,7 +825,7 @@ pub enum Feature {
     ShotChangeDetection = 2,
     /// Explicit content detection.
     ExplicitContentDetection = 3,
-    /// Human face detection and tracking.
+    /// Human face detection.
     FaceDetection = 4,
     /// Speech transcription.
     SpeechTranscription = 6,
@@ -772,6 +835,8 @@ pub enum Feature {
     ObjectTracking = 9,
     /// Logo detection, tracking, and recognition.
     LogoRecognition = 12,
+    /// Person detection.
+    PersonDetection = 14,
 }
 /// Label detection mode.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -807,7 +872,7 @@ pub enum Likelihood {
 pub mod video_intelligence_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Service that implements Google Cloud Video Intelligence API."]
+    #[doc = " Service that implements the Video Intelligence API."]
     pub struct VideoIntelligenceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }

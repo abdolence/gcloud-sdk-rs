@@ -257,6 +257,12 @@ pub mod instance {
         Stopped = 5,
         /// The instance is deleted.
         Deleted = 6,
+        /// The instance is upgrading.
+        Upgrading = 7,
+        /// The instance is being created.
+        Initializing = 8,
+        /// The instance is getting registered.
+        Registering = 9,
     }
     /// Possible disk types for notebook instances.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -268,6 +274,8 @@ pub mod instance {
         PdStandard = 1,
         /// SSD persistent disk type.
         PdSsd = 2,
+        /// Balanced persistent disk type.
+        PdBalanced = 3,
     }
     /// Definition of the disk encryption options.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -318,6 +326,9 @@ pub struct OperationMetadata {
     /// API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: std::string::String,
+    /// API endpoint name of this operation.
+    #[prost(string, tag = "8")]
+    pub endpoint: std::string::String,
 }
 /// Request for listing notebook instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -398,8 +409,8 @@ pub struct SetInstanceAcceleratorRequest {
     pub r#type: i32,
     /// Required. Count of cores of this accelerator. Note that not all combinations
     /// of `type` and `core_count` are valid. Check [GPUs on
-    /// Compute Engine](/compute/docs/gpus/#gpus-list) to find a valid
-    /// combination. TPUs are not supported.
+    /// Compute Engine](https://cloud.google.com/compute/docs/gpus/#gpus-list) to
+    /// find a valid combination. TPUs are not supported.
     #[prost(int64, tag = "3")]
     pub core_count: i64,
 }
@@ -410,7 +421,8 @@ pub struct SetInstanceMachineTypeRequest {
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Required. The [Compute Engine machine type](/compute/docs/machine-types).
+    /// Required. The [Compute Engine machine
+    /// type](https://cloud.google.com/compute/docs/machine-types).
     #[prost(string, tag = "2")]
     pub machine_type: std::string::String,
 }
@@ -492,6 +504,9 @@ pub struct IsInstanceUpgradeableResponse {
     /// endpoint. This field will only be populated if field upgradeable is true.
     #[prost(string, tag = "2")]
     pub upgrade_version: std::string::String,
+    /// Additional information about upgrade.
+    #[prost(string, tag = "3")]
+    pub upgrade_info: std::string::String,
 }
 /// Request for upgrading a notebook instance
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -577,7 +592,7 @@ pub struct DeleteEnvironmentRequest {
 pub mod notebook_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " API service for Cloud AI Platform Notebooks."]
+    #[doc = " API v1beta1 service for Cloud AI Platform Notebooks."]
     pub struct NotebookServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }

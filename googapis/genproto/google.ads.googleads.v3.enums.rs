@@ -2557,6 +2557,9 @@ pub mod access_role_enum {
         Standard = 3,
         /// Can view campaigns and account changes, but cannot make edits.
         ReadOnly = 4,
+        /// Role for \"email only\" access. Represents an email recipient rather than
+        /// a true User entity.
+        EmailOnly = 5,
     }
 }
 // Proto file describing AccountBudgetProposal statuses.
@@ -4407,7 +4410,7 @@ pub mod education_placeholder_field_enum {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtensionSettingDeviceEnum {}
 pub mod extension_setting_device_enum {
-    /// Possbile device types for an extension setting.
+    /// Possible device types for an extension setting.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ExtensionSettingDevice {
@@ -5241,32 +5244,6 @@ pub mod label_status_enum {
         Enabled = 2,
         /// Label is removed.
         Removed = 3,
-    }
-}
-// Proto file describing listing custom attributes.
-
-/// Container for enum describing the index of the listing custom attribute.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingCustomAttributeIndexEnum {}
-pub mod listing_custom_attribute_index_enum {
-    /// The index of the listing custom attribute.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum ListingCustomAttributeIndex {
-        /// Not specified.
-        Unspecified = 0,
-        /// Used for return value only. Represents value unknown in this version.
-        Unknown = 1,
-        /// First listing custom attribute.
-        Index0 = 7,
-        /// Second listing custom attribute.
-        Index1 = 8,
-        /// Third listing custom attribute.
-        Index2 = 9,
-        /// Fourth listing custom attribute.
-        Index3 = 10,
-        /// Fifth listing custom attribute.
-        Index4 = 11,
     }
 }
 // Proto file describing Local placeholder fields.
@@ -6227,7 +6204,10 @@ pub mod recommendation_type_enum {
         Unspecified = 0,
         /// Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        /// Budget recommendation for budget constrained campaigns.
+        /// Budget recommendation for campaigns that are currently budget-constrained
+        /// (as opposed to the FORECASTING_CAMPAIGN_BUDGET recommendation, which
+        /// applies to campaigns that are expected to become budget-constrained in
+        /// the future).
         CampaignBudget = 2,
         /// Keyword recommendation.
         Keyword = 3,
@@ -6367,11 +6347,11 @@ pub mod simulation_type_enum {
         Unspecified = 0,
         /// Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        /// The simulation is for a cpc bid.
+        /// The simulation is for a CPC bid.
         CpcBid = 2,
-        /// The simulation is for a cpv bid.
+        /// The simulation is for a CPV bid.
         CpvBid = 3,
-        /// The simulation is for a cpa target.
+        /// The simulation is for a CPA target.
         TargetCpa = 4,
         /// The simulation is for a bid modifier.
         BidModifier = 5,

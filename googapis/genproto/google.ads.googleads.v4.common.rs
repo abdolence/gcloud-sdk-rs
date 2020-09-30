@@ -694,361 +694,226 @@ pub mod display_upload_ad_info {
         MediaBundle(super::AdMediaBundleAsset),
     }
 }
-// Proto file describing CustomParameter and operation
+// Proto file containing info messages for specific asset types.
 
-/// A mapping that can be used by custom parameter tags in a
-/// `tracking_url_template`, `final_urls`, or `mobile_final_urls`.
+/// A YouTube asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomParameter {
-    /// The key matching the parameter tag name.
+pub struct YoutubeVideoAsset {
+    /// YouTube video id. This is the 11 character string value used in the
+    /// YouTube video URL.
     #[prost(message, optional, tag = "1")]
-    pub key: ::std::option::Option<::std::string::String>,
-    /// The value to be substituted.
-    #[prost(message, optional, tag = "2")]
-    pub value: ::std::option::Option<::std::string::String>,
+    pub youtube_video_id: ::std::option::Option<::std::string::String>,
 }
-// Proto file FinalAppUrl type.
-
-/// A URL for deep linking into an app for the given operating system.
+/// A MediaBundle asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FinalAppUrl {
-    /// The operating system targeted by this URL. Required.
-    #[prost(
-        enumeration = "super::enums::app_url_operating_system_type_enum::AppUrlOperatingSystemType",
-        tag = "1"
-    )]
-    pub os_type: i32,
-    /// The app deep link URL. Deep links specify a location in an app that
-    /// corresponds to the content you'd like to show, and should be of the form
-    /// {scheme}://{host_path}
-    /// The scheme identifies which app to open. For your app, you can use a custom
-    /// scheme that starts with the app's name. The host and path specify the
-    /// unique location in the app where your content exists.
-    /// Example: "exampleapp://productid_1234". Required.
+pub struct MediaBundleAsset {
+    /// Media bundle (ZIP file) asset data. The format of the uploaded ZIP file
+    /// depends on the ad field where it will be used. For more information on the
+    /// format, see the documentation of the ad field where you plan on using the
+    /// MediaBundleAsset. This field is mutate only.
+    #[prost(message, optional, tag = "1")]
+    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
+}
+/// An Image asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageAsset {
+    /// The raw bytes data of an image. This field is mutate only.
+    #[prost(message, optional, tag = "1")]
+    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
+    /// File size of the image asset in bytes.
     #[prost(message, optional, tag = "2")]
+    pub file_size: ::std::option::Option<i64>,
+    /// MIME type of the image asset.
+    #[prost(enumeration = "super::enums::mime_type_enum::MimeType", tag = "3")]
+    pub mime_type: i32,
+    /// Metadata for this image at its original size.
+    #[prost(message, optional, tag = "4")]
+    pub full_size: ::std::option::Option<ImageDimension>,
+}
+/// Metadata for an image at a certain size, either original or resized.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageDimension {
+    /// Height of the image.
+    #[prost(message, optional, tag = "1")]
+    pub height_pixels: ::std::option::Option<i64>,
+    /// Width of the image.
+    #[prost(message, optional, tag = "2")]
+    pub width_pixels: ::std::option::Option<i64>,
+    /// A URL that returns the image with this height and width.
+    #[prost(message, optional, tag = "3")]
     pub url: ::std::option::Option<::std::string::String>,
 }
-// Proto file UrlCollection type.
-
-/// Collection of urls that is tagged with a unique identifier.
+/// A Text asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UrlCollection {
-    /// Unique identifier for this UrlCollection instance.
+pub struct TextAsset {
+    /// Text content of the text asset.
     #[prost(message, optional, tag = "1")]
-    pub url_collection_id: ::std::option::Option<::std::string::String>,
-    /// A list of possible final URLs.
-    #[prost(message, repeated, tag = "2")]
-    pub final_urls: ::std::vec::Vec<::std::string::String>,
-    /// A list of possible final mobile URLs.
-    #[prost(message, repeated, tag = "3")]
-    pub final_mobile_urls: ::std::vec::Vec<::std::string::String>,
-    /// URL template for constructing a tracking URL.
-    #[prost(message, optional, tag = "4")]
-    pub tracking_url_template: ::std::option::Option<::std::string::String>,
+    pub text: ::std::option::Option<::std::string::String>,
 }
-// Proto file describing ExplorerAutoOptimizerSetting
-
-/// Settings for the Display Campaign Optimizer, initially named "Explorer".
-/// Learn more about
-/// [automatic targeting](https://support.google.com/google-ads/answer/190596).
+/// A Book on Google asset. Used to redirect user to book through Google.
+/// Book on Google will change the redirect url to book directly through
+/// Google.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplorerAutoOptimizerSetting {
-    /// Indicates whether the optimizer is turned on.
+pub struct BookOnGoogleAsset {}
+// Proto file describing bidding schemes.
+
+/// Commission is an automatic bidding strategy in which the advertiser pays a
+/// certain portion of the conversion value.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Commission {
+    /// Commission rate defines the portion of the conversion value that the
+    /// advertiser will be billed. A commission rate of x should be passed into
+    /// this field as (x * 1,000,000). For example, 106,000 represents a commission
+    /// rate of 0.106 (10.6%).
     #[prost(message, optional, tag = "1")]
-    pub opt_in: ::std::option::Option<bool>,
+    pub commission_rate_micros: ::std::option::Option<i64>,
 }
-// Proto file describing TargetingSetting
-
-/// Settings for the targeting-related features, at the campaign and ad group
-/// levels. For more details about the targeting setting, visit
-/// https://support.google.com/google-ads/answer/7365594
+/// An automated bidding strategy that raises bids for clicks
+/// that seem more likely to lead to a conversion and lowers
+/// them for clicks where they seem less likely.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetingSetting {
-    /// The per-targeting-dimension setting to restrict the reach of your campaign
-    /// or ad group.
-    #[prost(message, repeated, tag = "1")]
-    pub target_restrictions: ::std::vec::Vec<TargetRestriction>,
-    /// The list of operations changing the target restrictions.
-    ///
-    /// Adding a target restriction with a targeting dimension that already exists
-    /// causes the existing target restriction to be replaced with the new value.
-    #[prost(message, repeated, tag = "2")]
-    pub target_restriction_operations: ::std::vec::Vec<TargetRestrictionOperation>,
+pub struct EnhancedCpc {}
+/// Manual click-based bidding where user pays per click.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ManualCpc {
+    /// Whether bids are to be enhanced based on conversion optimizer data.
+    #[prost(message, optional, tag = "1")]
+    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
 }
-/// The list of per-targeting-dimension targeting settings.
+/// Manual impression-based bidding where user pays per thousand impressions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetRestriction {
-    /// The targeting dimension that these settings apply to.
+pub struct ManualCpm {}
+/// View based bidding where user pays per video view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ManualCpv {}
+/// An automated bidding strategy that sets bids to help get the most conversions
+/// for your campaign while spending your budget.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaximizeConversions {}
+/// An automated bidding strategy which tries to maximize conversion value
+/// given a daily budget.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaximizeConversionValue {
+    /// The target return on ad spend (ROAS) option. If set, the bid strategy will
+    /// maximize revenue while averaging the target return on ad spend. If the
+    /// target ROAS is high, the bid strategy may not be able to spend the full
+    /// budget. If the target ROAS is not set, the bid strategy will aim to
+    /// achieve the highest possible ROAS for the budget.
+    #[prost(message, optional, tag = "1")]
+    pub target_roas: ::std::option::Option<f64>,
+}
+/// An automated bid strategy that sets bids to help get as many conversions as
+/// possible at the target cost-per-acquisition (CPA) you set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpa {
+    /// Average CPA target.
+    /// This target should be greater than or equal to minimum billable unit based
+    /// on the currency for the account.
+    #[prost(message, optional, tag = "1")]
+    pub target_cpa_micros: ::std::option::Option<i64>,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "2")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Minimum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "3")]
+    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
+}
+/// Target CPM (cost per thousand impressions) is an automated bidding strategy
+/// that sets bids to optimize performance given the target CPM you set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpm {}
+/// An automated bidding strategy that sets bids so that a certain percentage of
+/// search ads are shown at the top of the first page (or other targeted
+/// location).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetImpressionShare {
+    /// The targeted location on the search results page.
     #[prost(
-        enumeration = "super::enums::targeting_dimension_enum::TargetingDimension",
+        enumeration = "super::enums::target_impression_share_location_enum::TargetImpressionShareLocation",
         tag = "1"
     )]
-    pub targeting_dimension: i32,
-    /// Indicates whether to restrict your ads to show only for the criteria you
-    /// have selected for this targeting_dimension, or to target all values for
-    /// this targeting_dimension and show ads based on your targeting in other
-    /// TargetingDimensions. A value of `true` means that these criteria will only
-    /// apply bid modifiers, and not affect targeting. A value of `false` means
-    /// that these criteria will restrict targeting as well as applying bid
-    /// modifiers.
+    pub location: i32,
+    /// The desired fraction of ads to be shown in the targeted location in micros.
+    /// E.g. 1% equals 10,000.
     #[prost(message, optional, tag = "2")]
-    pub bid_only: ::std::option::Option<bool>,
+    pub location_fraction_micros: ::std::option::Option<i64>,
+    /// The highest CPC bid the automated bidding system is permitted to specify.
+    /// This is a required field entered by the advertiser that sets the ceiling
+    /// and specified in local micros.
+    #[prost(message, optional, tag = "3")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
 }
-/// Operation to be performed on a target restriction list in a mutate.
+/// An automated bidding strategy that helps you maximize revenue while
+/// averaging a specific target return on ad spend (ROAS).
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetRestrictionOperation {
-    /// Type of list operation to perform.
-    #[prost(enumeration = "target_restriction_operation::Operator", tag = "1")]
-    pub operator: i32,
-    /// The target restriction being added to or removed from the list.
+pub struct TargetRoas {
+    /// Required. The desired revenue (based on conversion data) per unit of spend.
+    /// Value must be between 0.01 and 1000.0, inclusive.
+    #[prost(message, optional, tag = "1")]
+    pub target_roas: ::std::option::Option<f64>,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
     #[prost(message, optional, tag = "2")]
-    pub value: ::std::option::Option<TargetRestriction>,
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Minimum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "3")]
+    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
 }
-pub mod target_restriction_operation {
-    /// The operator.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum Operator {
-        /// Unspecified.
-        Unspecified = 0,
-        /// Used for return value only. Represents value unknown in this version.
-        Unknown = 1,
-        /// Add the restriction to the existing restrictions.
-        Add = 2,
-        /// Remove the restriction from the existing restrictions.
-        Remove = 3,
-    }
+/// An automated bid strategy that sets your bids to help get as many clicks
+/// as possible within your budget.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetSpend {
+    /// The spend target under which to maximize clicks.
+    /// A TargetSpend bidder will attempt to spend the smaller of this value
+    /// or the natural throttling spend amount.
+    /// If not specified, the budget is used as the spend target.
+    #[prost(message, optional, tag = "1")]
+    pub target_spend_micros: ::std::option::Option<i64>,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "2")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
 }
-// Proto file describing policy information.
+/// A bidding strategy where bids are a fraction of the advertised price for
+/// some good or service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PercentCpc {
+    /// Maximum bid limit that can be set by the bid strategy. This is
+    /// an optional field entered by the advertiser and specified in local micros.
+    /// Note: A zero value is interpreted in the same way as having bid_ceiling
+    /// undefined.
+    #[prost(message, optional, tag = "1")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Adjusts the bid for each auction upward or downward, depending on the
+    /// likelihood of a conversion. Individual bids may exceed
+    /// cpc_bid_ceiling_micros, but the average bid amount for a campaign should
+    /// not.
+    #[prost(message, optional, tag = "2")]
+    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
+}
+// Proto file describing a ClickLocation.
 
-/// Key of the violation. The key is used for referring to a violation
-/// when filing an exemption request.
+/// Location criteria associated with a click.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyViolationKey {
-    /// Unique ID of the violated policy.
+pub struct ClickLocation {
+    /// The city location criterion associated with the impression.
     #[prost(message, optional, tag = "1")]
-    pub policy_name: ::std::option::Option<::std::string::String>,
-    /// The text that violates the policy if specified.
-    /// Otherwise, refers to the policy in general
-    /// (e.g., when requesting to be exempt from the whole policy).
-    /// If not specified for criterion exemptions, the whole policy is implied.
-    /// Must be specified for ad exemptions.
+    pub city: ::std::option::Option<::std::string::String>,
+    /// The country location criterion associated with the impression.
     #[prost(message, optional, tag = "2")]
-    pub violating_text: ::std::option::Option<::std::string::String>,
-}
-/// Parameter for controlling how policy exemption is done. Ignorable policy
-/// topics are only usable with expanded text ads and responsive search ads. All
-/// other ad types must use policy violation keys.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyValidationParameter {
-    /// The list of policy topics that should not cause a PolicyFindingError to
-    /// be reported. This field is currently only compatible with Enhanced Text Ad.
-    /// It corresponds to the PolicyTopicEntry.topic field.
-    ///
-    /// Resources violating these policies will be saved, but will not be eligible
-    /// to serve. They may begin serving at a later time due to a change in
-    /// policies, re-review of the resource, or a change in advertiser
-    /// certificates.
-    #[prost(message, repeated, tag = "1")]
-    pub ignorable_policy_topics: ::std::vec::Vec<::std::string::String>,
-    /// The list of policy violation keys that should not cause a
-    /// PolicyViolationError to be reported. Not all policy violations are
-    /// exemptable, please refer to the is_exemptible field in the returned
-    /// PolicyViolationError.
-    ///
-    /// Resources violating these polices will be saved, but will not be eligible
-    /// to serve. They may begin serving at a later time due to a change in
-    /// policies, re-review of the resource, or a change in advertiser
-    /// certificates.
-    #[prost(message, repeated, tag = "2")]
-    pub exempt_policy_violation_keys: ::std::vec::Vec<PolicyViolationKey>,
-}
-/// Policy finding attached to a resource (e.g. alcohol policy associated with
-/// a site that sells alcohol).
-///
-/// Each PolicyTopicEntry has a topic that indicates the specific ads policy
-/// the entry is about and a type to indicate the effect that the entry will have
-/// on serving. It may optionally have one or more evidences that indicate the
-/// reason for the finding. It may also optionally have one or more constraints
-/// that provide details about how serving may be restricted.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEntry {
-    /// Policy topic this finding refers to. For example, "ALCOHOL",
-    /// "TRADEMARKS_IN_AD_TEXT", or "DESTINATION_NOT_WORKING". The set of possible
-    /// policy topics is not fixed for a particular API version and may change
-    /// at any time.
-    #[prost(message, optional, tag = "1")]
-    pub topic: ::std::option::Option<::std::string::String>,
-    /// Describes the negative or positive effect this policy will have on serving.
-    #[prost(
-        enumeration = "super::enums::policy_topic_entry_type_enum::PolicyTopicEntryType",
-        tag = "2"
-    )]
-    pub r#type: i32,
-    /// Additional information that explains policy finding
-    /// (e.g. the brand name for a trademark finding).
-    #[prost(message, repeated, tag = "3")]
-    pub evidences: ::std::vec::Vec<PolicyTopicEvidence>,
-    /// Indicates how serving of this resource may be affected (e.g. not serving
-    /// in a country).
-    #[prost(message, repeated, tag = "4")]
-    pub constraints: ::std::vec::Vec<PolicyTopicConstraint>,
-}
-/// Additional information that explains a policy finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidence {
-    /// Specific evidence information depending on the evidence type.
-    #[prost(oneof = "policy_topic_evidence::Value", tags = "3, 4, 5, 6, 7, 8")]
-    pub value: ::std::option::Option<policy_topic_evidence::Value>,
-}
-pub mod policy_topic_evidence {
-    /// A list of fragments of text that violated a policy.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct TextList {
-        /// The fragments of text from the resource that caused the policy finding.
-        #[prost(message, repeated, tag = "1")]
-        pub texts: ::std::vec::Vec<::std::string::String>,
-    }
-    /// A list of websites that caused a policy finding. Used for
-    /// ONE_WEBSITE_PER_AD_GROUP policy topic, for example. In case there are more
-    /// than five websites, only the top five (those that appear in resources the
-    /// most) will be listed here.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct WebsiteList {
-        /// Websites that caused the policy finding.
-        #[prost(message, repeated, tag = "1")]
-        pub websites: ::std::vec::Vec<::std::string::String>,
-    }
-    /// A list of strings found in a destination page that caused a policy
-    /// finding.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DestinationTextList {
-        /// List of text found in the resource's destination page.
-        #[prost(message, repeated, tag = "1")]
-        pub destination_texts: ::std::vec::Vec<::std::string::String>,
-    }
-    /// Evidence of mismatches between the URLs of a resource.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DestinationMismatch {
-        /// The set of URLs that did not match each other.
-        #[prost(
-            enumeration = "super::super::enums::policy_topic_evidence_destination_mismatch_url_type_enum::PolicyTopicEvidenceDestinationMismatchUrlType",
-            repeated,
-            tag = "1"
-        )]
-        pub url_types: ::std::vec::Vec<i32>,
-    }
-    /// Evidence details when the destination is returning an HTTP error
-    /// code or isn't functional in all locations for commonly used devices.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DestinationNotWorking {
-        /// The full URL that didn't work.
-        #[prost(message, optional, tag = "3")]
-        pub expanded_url: ::std::option::Option<::std::string::String>,
-        /// The type of device that failed to load the URL.
-        #[prost(
-            enumeration = "super::super::enums::policy_topic_evidence_destination_not_working_device_enum::PolicyTopicEvidenceDestinationNotWorkingDevice",
-            tag = "4"
-        )]
-        pub device: i32,
-        /// The time the URL was last checked.
-        /// The format is "YYYY-MM-DD HH:MM:SS".
-        /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
-        #[prost(message, optional, tag = "5")]
-        pub last_checked_date_time: ::std::option::Option<::std::string::String>,
-        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
-        #[prost(oneof = "destination_not_working::Reason", tags = "1, 2")]
-        pub reason: ::std::option::Option<destination_not_working::Reason>,
-    }
-    pub mod destination_not_working {
-        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum Reason {
-            /// The type of DNS error.
-            #[prost(
-                enumeration = "super::super::super::enums::policy_topic_evidence_destination_not_working_dns_error_type_enum::PolicyTopicEvidenceDestinationNotWorkingDnsErrorType",
-                tag = "1"
-            )]
-            DnsErrorType(i32),
-            /// The HTTP error code.
-            #[prost(message, tag = "2")]
-            HttpErrorCode(i64),
-        }
-    }
-    /// Specific evidence information depending on the evidence type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Value {
-        /// List of websites linked with this resource.
-        #[prost(message, tag = "3")]
-        WebsiteList(WebsiteList),
-        /// List of evidence found in the text of a resource.
-        #[prost(message, tag = "4")]
-        TextList(TextList),
-        /// The language the resource was detected to be written in.
-        /// This is an IETF language tag such as "en-US".
-        #[prost(message, tag = "5")]
-        LanguageCode(::std::string::String),
-        /// The text in the destination of the resource that is causing a policy
-        /// finding.
-        #[prost(message, tag = "6")]
-        DestinationTextList(DestinationTextList),
-        /// Mismatch between the destinations of a resource's URLs.
-        #[prost(message, tag = "7")]
-        DestinationMismatch(DestinationMismatch),
-        /// Details when the destination is returning an HTTP error code or isn't
-        /// functional in all locations for commonly used devices.
-        #[prost(message, tag = "8")]
-        DestinationNotWorking(DestinationNotWorking),
-    }
-}
-/// Describes the effect on serving that a policy topic entry will have.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicConstraint {
-    /// Specific information about the constraint.
-    #[prost(oneof = "policy_topic_constraint::Value", tags = "1, 2, 3, 4")]
-    pub value: ::std::option::Option<policy_topic_constraint::Value>,
-}
-pub mod policy_topic_constraint {
-    /// A list of countries where a resource's serving is constrained.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CountryConstraintList {
-        /// Total number of countries targeted by the resource.
-        #[prost(message, optional, tag = "1")]
-        pub total_targeted_countries: ::std::option::Option<i32>,
-        /// Countries in which serving is restricted.
-        #[prost(message, repeated, tag = "2")]
-        pub countries: ::std::vec::Vec<CountryConstraint>,
-    }
-    /// Indicates that a policy topic was constrained due to disapproval of the
-    /// website for reseller purposes.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ResellerConstraint {}
-    /// Indicates that a resource's ability to serve in a particular country is
-    /// constrained.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CountryConstraint {
-        /// Geo target constant resource name of the country in which serving is
-        /// constrained.
-        #[prost(message, optional, tag = "1")]
-        pub country_criterion: ::std::option::Option<::std::string::String>,
-    }
-    /// Specific information about the constraint.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Value {
-        /// Countries where the resource cannot serve.
-        #[prost(message, tag = "1")]
-        CountryConstraintList(CountryConstraintList),
-        /// Reseller constraint.
-        #[prost(message, tag = "2")]
-        ResellerConstraint(ResellerConstraint),
-        /// Countries where a certificate is required for serving.
-        #[prost(message, tag = "3")]
-        CertificateMissingInCountryList(CountryConstraintList),
-        /// Countries where the resource's domain is not covered by the
-        /// certificates associated with it.
-        #[prost(message, tag = "4")]
-        CertificateDomainMismatchInCountryList(CountryConstraintList),
-    }
+    pub country: ::std::option::Option<::std::string::String>,
+    /// The metro location criterion associated with the impression.
+    #[prost(message, optional, tag = "3")]
+    pub metro: ::std::option::Option<::std::string::String>,
+    /// The most specific location criterion associated with the impression.
+    #[prost(message, optional, tag = "4")]
+    pub most_specific: ::std::option::Option<::std::string::String>,
+    /// The region location criterion associated with the impression.
+    #[prost(message, optional, tag = "5")]
+    pub region: ::std::option::Option<::std::string::String>,
 }
 // Proto file describing criteria types.
 
@@ -1716,608 +1581,107 @@ pub struct LocationGroupInfo {
     )]
     pub radius_units: i32,
 }
-// Proto file describing simulation points.
+// Proto file describing criterion category availability information.
 
-/// A container for simulation points for simulations of type BID_MODIFIER.
+/// Information of category availability, per advertising channel.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BidModifierSimulationPointList {
-    /// Projected metrics for a series of bid modifier amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<BidModifierSimulationPoint>,
-}
-/// A container for simulation points for simulations of type CPC_BID.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpcBidSimulationPointList {
-    /// Projected metrics for a series of CPC bid amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<CpcBidSimulationPoint>,
-}
-/// A container for simulation points for simulations of type CPV_BID.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpvBidSimulationPointList {
-    /// Projected metrics for a series of CPV bid amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<CpvBidSimulationPoint>,
-}
-/// A container for simulation points for simulations of type TARGET_CPA.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpaSimulationPointList {
-    /// Projected metrics for a series of target CPA amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<TargetCpaSimulationPoint>,
-}
-/// A container for simulation points for simulations of type TARGET_ROAS.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetRoasSimulationPointList {
-    /// Projected metrics for a series of target ROAS amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<TargetRoasSimulationPoint>,
-}
-/// Projected metrics for a specific bid modifier amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BidModifierSimulationPoint {
-    /// The simulated bid modifier upon which projected metrics are based.
+pub struct CriterionCategoryAvailability {
+    /// Channel types and subtypes that are available to the category.
     #[prost(message, optional, tag = "1")]
-    pub bid_modifier: ::std::option::Option<f64>,
-    /// Projected number of biddable conversions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "2")]
-    pub biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "3")]
-    pub biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks.
-    #[prost(message, optional, tag = "4")]
-    pub clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "5")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "6")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "7")]
-    pub top_slot_impressions: ::std::option::Option<i64>,
-    /// Projected number of biddable conversions for the parent resource.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "8")]
-    pub parent_biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions for the parent resource.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "9")]
-    pub parent_biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks for the parent resource.
-    #[prost(message, optional, tag = "10")]
-    pub parent_clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros for the parent resource.
-    #[prost(message, optional, tag = "11")]
-    pub parent_cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions for the parent resource.
-    #[prost(message, optional, tag = "12")]
-    pub parent_impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions for the parent resource.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "13")]
-    pub parent_top_slot_impressions: ::std::option::Option<i64>,
-    /// Projected minimum daily budget that must be available to the parent
-    /// resource to realize this simulation.
-    #[prost(message, optional, tag = "14")]
-    pub parent_required_budget_micros: ::std::option::Option<i64>,
-}
-/// Projected metrics for a specific CPC bid amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpcBidSimulationPoint {
-    /// The simulated CPC bid upon which projected metrics are based.
-    #[prost(message, optional, tag = "1")]
-    pub cpc_bid_micros: ::std::option::Option<i64>,
-    /// Projected number of biddable conversions.
-    #[prost(message, optional, tag = "2")]
-    pub biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions.
-    #[prost(message, optional, tag = "3")]
-    pub biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks.
-    #[prost(message, optional, tag = "4")]
-    pub clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "5")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "6")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "7")]
-    pub top_slot_impressions: ::std::option::Option<i64>,
-}
-/// Projected metrics for a specific CPV bid amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpvBidSimulationPoint {
-    /// The simulated CPV bid upon which projected metrics are based.
-    #[prost(message, optional, tag = "1")]
-    pub cpv_bid_micros: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "2")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "3")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of views.
-    #[prost(message, optional, tag = "4")]
-    pub views: ::std::option::Option<i64>,
-}
-/// Projected metrics for a specific target CPA amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpaSimulationPoint {
-    /// The simulated target CPA upon which projected metrics are based.
-    #[prost(message, optional, tag = "1")]
-    pub target_cpa_micros: ::std::option::Option<i64>,
-    /// Projected number of biddable conversions.
-    #[prost(message, optional, tag = "2")]
-    pub biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions.
-    #[prost(message, optional, tag = "3")]
-    pub biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks.
-    #[prost(message, optional, tag = "4")]
-    pub clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "5")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "6")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "7")]
-    pub top_slot_impressions: ::std::option::Option<i64>,
-}
-/// Projected metrics for a specific target ROAS amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetRoasSimulationPoint {
-    /// The simulated target ROAS upon which projected metrics are based.
-    #[prost(message, optional, tag = "1")]
-    pub target_roas: ::std::option::Option<f64>,
-    /// Projected number of biddable conversions.
-    #[prost(message, optional, tag = "2")]
-    pub biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions.
-    #[prost(message, optional, tag = "3")]
-    pub biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks.
-    #[prost(message, optional, tag = "4")]
-    pub clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "5")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "6")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions.
-    /// Only Search advertising channel type supports this field.
-    #[prost(message, optional, tag = "7")]
-    pub top_slot_impressions: ::std::option::Option<i64>,
-}
-// Proto file describing a matching function.
-
-/// Matching function associated with a
-/// CustomerFeed, CampaignFeed, or AdGroupFeed. The matching function is used
-/// to filter the set of feed items selected.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MatchingFunction {
-    /// String representation of the Function.
-    ///
-    /// Examples:
-    ///
-    /// 1. IDENTITY(true) or IDENTITY(false). All or no feed items served.
-    /// 2. EQUALS(CONTEXT.DEVICE,"Mobile")
-    /// 3. IN(FEED_ITEM_ID,{1000001,1000002,1000003})
-    /// 4. CONTAINS_ANY(FeedAttribute[12345678,0],{"Mars cruise","Venus cruise"})
-    /// 5. AND(IN(FEED_ITEM_ID,{10001,10002}),EQUALS(CONTEXT.DEVICE,"Mobile"))
-    ///
-    /// For more details, visit
-    /// https://developers.google.com/adwords/api/docs/guides/feed-matching-functions
-    ///
-    /// Note that because multiple strings may represent the same underlying
-    /// function (whitespace and single versus double quotation marks, for
-    /// example), the value returned may not be identical to the string sent in a
-    /// mutate request.
-    #[prost(message, optional, tag = "1")]
-    pub function_string: ::std::option::Option<::std::string::String>,
-    /// Operator for a function.
-    #[prost(
-        enumeration = "super::enums::matching_function_operator_enum::MatchingFunctionOperator",
-        tag = "4"
-    )]
-    pub operator: i32,
-    /// The operands on the left hand side of the equation. This is also the
-    /// operand to be used for single operand expressions such as NOT.
+    pub channel: ::std::option::Option<CriterionCategoryChannelAvailability>,
+    /// Locales that are available to the category for the channel.
     #[prost(message, repeated, tag = "2")]
-    pub left_operands: ::std::vec::Vec<Operand>,
-    /// The operands on the right hand side of the equation.
-    #[prost(message, repeated, tag = "3")]
-    pub right_operands: ::std::vec::Vec<Operand>,
+    pub locale: ::std::vec::Vec<CriterionCategoryLocaleAvailability>,
 }
-/// An operand in a matching function.
+/// Information of advertising channel type and subtypes a category is available
+/// in.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Operand {
-    /// Different operands that can be used in a matching function. Required.
-    #[prost(oneof = "operand::FunctionArgumentOperand", tags = "1, 2, 3, 4")]
-    pub function_argument_operand: ::std::option::Option<operand::FunctionArgumentOperand>,
-}
-pub mod operand {
-    /// A constant operand in a matching function.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ConstantOperand {
-        /// Constant operand values. Required.
-        #[prost(oneof = "constant_operand::ConstantOperandValue", tags = "1, 2, 3, 4")]
-        pub constant_operand_value: ::std::option::Option<constant_operand::ConstantOperandValue>,
-    }
-    pub mod constant_operand {
-        /// Constant operand values. Required.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum ConstantOperandValue {
-            /// String value of the operand if it is a string type.
-            #[prost(message, tag = "1")]
-            StringValue(::std::string::String),
-            /// Int64 value of the operand if it is a int64 type.
-            #[prost(message, tag = "2")]
-            LongValue(i64),
-            /// Boolean value of the operand if it is a boolean type.
-            #[prost(message, tag = "3")]
-            BooleanValue(bool),
-            /// Double value of the operand if it is a double type.
-            #[prost(message, tag = "4")]
-            DoubleValue(f64),
-        }
-    }
-    /// A feed attribute operand in a matching function.
-    /// Used to represent a feed attribute in feed.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct FeedAttributeOperand {
-        /// The associated feed. Required.
-        #[prost(message, optional, tag = "1")]
-        pub feed_id: ::std::option::Option<i64>,
-        /// Id of the referenced feed attribute. Required.
-        #[prost(message, optional, tag = "2")]
-        pub feed_attribute_id: ::std::option::Option<i64>,
-    }
-    /// A function operand in a matching function.
-    /// Used to represent nested functions.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct FunctionOperand {
-        /// The matching function held in this operand.
-        #[prost(message, optional, tag = "1")]
-        pub matching_function: ::std::option::Option<super::MatchingFunction>,
-    }
-    /// An operand in a function referring to a value in the request context.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RequestContextOperand {
-        /// Type of value to be referred in the request context.
-        #[prost(
-            enumeration = "super::super::enums::matching_function_context_type_enum::MatchingFunctionContextType",
-            tag = "1"
-        )]
-        pub context_type: i32,
-    }
-    /// Different operands that can be used in a matching function. Required.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum FunctionArgumentOperand {
-        /// A constant operand in a matching function.
-        #[prost(message, tag = "1")]
-        ConstantOperand(ConstantOperand),
-        /// This operand specifies a feed attribute in feed.
-        #[prost(message, tag = "2")]
-        FeedAttributeOperand(FeedAttributeOperand),
-        /// A function operand in a matching function.
-        /// Used to represent nested functions.
-        #[prost(message, tag = "3")]
-        FunctionOperand(FunctionOperand),
-        /// An operand in a function referring to a value in the request context.
-        #[prost(message, tag = "4")]
-        RequestContextOperand(RequestContextOperand),
-    }
-}
-// Proto file containing info messages for specific asset types.
-
-/// A YouTube asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct YoutubeVideoAsset {
-    /// YouTube video id. This is the 11 character string value used in the
-    /// YouTube video URL.
-    #[prost(message, optional, tag = "1")]
-    pub youtube_video_id: ::std::option::Option<::std::string::String>,
-}
-/// A MediaBundle asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaBundleAsset {
-    /// Media bundle (ZIP file) asset data. The format of the uploaded ZIP file
-    /// depends on the ad field where it will be used. For more information on the
-    /// format, see the documentation of the ad field where you plan on using the
-    /// MediaBundleAsset. This field is mutate only.
-    #[prost(message, optional, tag = "1")]
-    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
-}
-/// An Image asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImageAsset {
-    /// The raw bytes data of an image. This field is mutate only.
-    #[prost(message, optional, tag = "1")]
-    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
-    /// File size of the image asset in bytes.
-    #[prost(message, optional, tag = "2")]
-    pub file_size: ::std::option::Option<i64>,
-    /// MIME type of the image asset.
-    #[prost(enumeration = "super::enums::mime_type_enum::MimeType", tag = "3")]
-    pub mime_type: i32,
-    /// Metadata for this image at its original size.
-    #[prost(message, optional, tag = "4")]
-    pub full_size: ::std::option::Option<ImageDimension>,
-}
-/// Metadata for an image at a certain size, either original or resized.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImageDimension {
-    /// Height of the image.
-    #[prost(message, optional, tag = "1")]
-    pub height_pixels: ::std::option::Option<i64>,
-    /// Width of the image.
-    #[prost(message, optional, tag = "2")]
-    pub width_pixels: ::std::option::Option<i64>,
-    /// A URL that returns the image with this height and width.
-    #[prost(message, optional, tag = "3")]
-    pub url: ::std::option::Option<::std::string::String>,
-}
-/// A Text asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextAsset {
-    /// Text content of the text asset.
-    #[prost(message, optional, tag = "1")]
-    pub text: ::std::option::Option<::std::string::String>,
-}
-/// A Book on Google asset. Used to redirect user to book through Google.
-/// Book on Google will change the redirect url to book directly through
-/// Google.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BookOnGoogleAsset {}
-// Proto file describing bidding schemes.
-
-/// Commission is an automatic bidding strategy in which the advertiser pays a
-/// certain portion of the conversion value.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Commission {
-    /// Commission rate defines the portion of the conversion value that the
-    /// advertiser will be billed. A commission rate of x should be passed into
-    /// this field as (x * 1,000,000). For example, 106,000 represents a commission
-    /// rate of 0.106 (10.6%).
-    #[prost(message, optional, tag = "1")]
-    pub commission_rate_micros: ::std::option::Option<i64>,
-}
-/// An automated bidding strategy that raises bids for clicks
-/// that seem more likely to lead to a conversion and lowers
-/// them for clicks where they seem less likely.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EnhancedCpc {}
-/// Manual click-based bidding where user pays per click.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManualCpc {
-    /// Whether bids are to be enhanced based on conversion optimizer data.
-    #[prost(message, optional, tag = "1")]
-    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
-}
-/// Manual impression-based bidding where user pays per thousand impressions.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManualCpm {}
-/// View based bidding where user pays per video view.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManualCpv {}
-/// An automated bidding strategy that sets bids to help get the most conversions
-/// for your campaign while spending your budget.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MaximizeConversions {}
-/// An automated bidding strategy which tries to maximize conversion value
-/// given a daily budget.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MaximizeConversionValue {
-    /// The target return on ad spend (ROAS) option. If set, the bid strategy will
-    /// maximize revenue while averaging the target return on ad spend. If the
-    /// target ROAS is high, the bid strategy may not be able to spend the full
-    /// budget. If the target ROAS is not set, the bid strategy will aim to
-    /// achieve the highest possible ROAS for the budget.
-    #[prost(message, optional, tag = "1")]
-    pub target_roas: ::std::option::Option<f64>,
-}
-/// An automated bid strategy that sets bids to help get as many conversions as
-/// possible at the target cost-per-acquisition (CPA) you set.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpa {
-    /// Average CPA target.
-    /// This target should be greater than or equal to minimum billable unit based
-    /// on the currency for the account.
-    #[prost(message, optional, tag = "1")]
-    pub target_cpa_micros: ::std::option::Option<i64>,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "2")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Minimum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "3")]
-    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
-}
-/// Target CPM (cost per thousand impressions) is an automated bidding strategy
-/// that sets bids to optimize performance given the target CPM you set.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpm {}
-/// An automated bidding strategy that sets bids so that a certain percentage of
-/// search ads are shown at the top of the first page (or other targeted
-/// location).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetImpressionShare {
-    /// The targeted location on the search results page.
+pub struct CriterionCategoryChannelAvailability {
+    /// Format of the channel availability. Can be ALL_CHANNELS (the rest of the
+    /// fields will not be set), CHANNEL_TYPE (only advertising_channel_type type
+    /// will be set, the category is available to all sub types under it) or
+    /// CHANNEL_TYPE_AND_SUBTYPES (advertising_channel_type,
+    /// advertising_channel_sub_type, and include_default_channel_sub_type will all
+    /// be set).
     #[prost(
-        enumeration = "super::enums::target_impression_share_location_enum::TargetImpressionShareLocation",
+        enumeration = "super::enums::criterion_category_channel_availability_mode_enum::CriterionCategoryChannelAvailabilityMode",
         tag = "1"
     )]
-    pub location: i32,
-    /// The desired fraction of ads to be shown in the targeted location in micros.
-    /// E.g. 1% equals 10,000.
-    #[prost(message, optional, tag = "2")]
-    pub location_fraction_micros: ::std::option::Option<i64>,
-    /// The highest CPC bid the automated bidding system is permitted to specify.
-    /// This is a required field entered by the advertiser that sets the ceiling
-    /// and specified in local micros.
-    #[prost(message, optional, tag = "3")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-}
-/// An automated bidding strategy that helps you maximize revenue while
-/// averaging a specific target return on ad spend (ROAS).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetRoas {
-    /// Required. The desired revenue (based on conversion data) per unit of spend.
-    /// Value must be between 0.01 and 1000.0, inclusive.
-    #[prost(message, optional, tag = "1")]
-    pub target_roas: ::std::option::Option<f64>,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "2")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Minimum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "3")]
-    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
-}
-/// An automated bid strategy that sets your bids to help get as many clicks
-/// as possible within your budget.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetSpend {
-    /// The spend target under which to maximize clicks.
-    /// A TargetSpend bidder will attempt to spend the smaller of this value
-    /// or the natural throttling spend amount.
-    /// If not specified, the budget is used as the spend target.
-    #[prost(message, optional, tag = "1")]
-    pub target_spend_micros: ::std::option::Option<i64>,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "2")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-}
-/// A bidding strategy where bids are a fraction of the advertised price for
-/// some good or service.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PercentCpc {
-    /// Maximum bid limit that can be set by the bid strategy. This is
-    /// an optional field entered by the advertiser and specified in local micros.
-    /// Note: A zero value is interpreted in the same way as having bid_ceiling
-    /// undefined.
-    #[prost(message, optional, tag = "1")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Adjusts the bid for each auction upward or downward, depending on the
-    /// likelihood of a conversion. Individual bids may exceed
-    /// cpc_bid_ceiling_micros, but the average bid amount for a campaign should
-    /// not.
-    #[prost(message, optional, tag = "2")]
-    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
-}
-// Proto file describing frequency caps.
-
-/// A rule specifying the maximum number of times an ad (or some set of ads) can
-/// be shown to a user over a particular time period.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapEntry {
-    /// The key of a particular frequency cap. There can be no more
-    /// than one frequency cap with the same key.
-    #[prost(message, optional, tag = "1")]
-    pub key: ::std::option::Option<FrequencyCapKey>,
-    /// Maximum number of events allowed during the time range by this cap.
-    #[prost(message, optional, tag = "2")]
-    pub cap: ::std::option::Option<i32>,
-}
-/// A group of fields used as keys for a frequency cap.
-/// There can be no more than one frequency cap with the same key.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapKey {
-    /// The level on which the cap is to be applied (e.g. ad group ad, ad group).
-    /// The cap is applied to all the entities of this level.
+    pub availability_mode: i32,
+    /// Channel type the category is available to.
     #[prost(
-        enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel",
-        tag = "1"
+        enumeration = "super::enums::advertising_channel_type_enum::AdvertisingChannelType",
+        tag = "2"
     )]
-    pub level: i32,
-    /// The type of event that the cap applies to (e.g. impression).
+    pub advertising_channel_type: i32,
+    /// Channel subtypes under the channel type the category is available to.
     #[prost(
-        enumeration = "super::enums::frequency_cap_event_type_enum::FrequencyCapEventType",
+        enumeration = "super::enums::advertising_channel_sub_type_enum::AdvertisingChannelSubType",
+        repeated,
         tag = "3"
     )]
-    pub event_type: i32,
-    /// Unit of time the cap is defined at (e.g. day, week).
-    #[prost(
-        enumeration = "super::enums::frequency_cap_time_unit_enum::FrequencyCapTimeUnit",
-        tag = "2"
-    )]
-    pub time_unit: i32,
-    /// Number of time units the cap lasts.
+    pub advertising_channel_sub_type: ::std::vec::Vec<i32>,
+    /// Whether default channel sub type is included. For example,
+    /// advertising_channel_type being DISPLAY and include_default_channel_sub_type
+    /// being false means that the default display campaign where channel sub type
+    /// is not set is not included in this availability configuration.
     #[prost(message, optional, tag = "4")]
-    pub time_length: ::std::option::Option<i32>,
+    pub include_default_channel_sub_type: ::std::option::Option<bool>,
 }
-// Proto file describing RealTimeBiddingSetting
-
-/// Settings for Real-Time Bidding, a feature only available for campaigns
-/// targeting the Ad Exchange network.
+/// Information about which locales a category is available in.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RealTimeBiddingSetting {
-    /// Whether the campaign is opted in to real-time bidding.
-    #[prost(message, optional, tag = "1")]
-    pub opt_in: ::std::option::Option<bool>,
-}
-// Proto file describing a ClickLocation.
-
-/// Location criteria associated with a click.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClickLocation {
-    /// The city location criterion associated with the impression.
-    #[prost(message, optional, tag = "1")]
-    pub city: ::std::option::Option<::std::string::String>,
-    /// The country location criterion associated with the impression.
-    #[prost(message, optional, tag = "2")]
-    pub country: ::std::option::Option<::std::string::String>,
-    /// The metro location criterion associated with the impression.
-    #[prost(message, optional, tag = "3")]
-    pub metro: ::std::option::Option<::std::string::String>,
-    /// The most specific location criterion associated with the impression.
-    #[prost(message, optional, tag = "4")]
-    pub most_specific: ::std::option::Option<::std::string::String>,
-    /// The region location criterion associated with the impression.
-    #[prost(message, optional, tag = "5")]
-    pub region: ::std::option::Option<::std::string::String>,
-}
-// Proto file describing TagSnippet
-
-/// The site tag and event snippet pair for a TrackingCodeType.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TagSnippet {
-    /// The type of the generated tag snippets for tracking conversions.
+pub struct CriterionCategoryLocaleAvailability {
+    /// Format of the locale availability. Can be LAUNCHED_TO_ALL (both country and
+    /// language will be empty), COUNTRY (only country will be set), LANGUAGE (only
+    /// language wil be set), COUNTRY_AND_LANGUAGE (both country and language will
+    /// be set).
     #[prost(
-        enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType",
+        enumeration = "super::enums::criterion_category_locale_availability_mode_enum::CriterionCategoryLocaleAvailabilityMode",
         tag = "1"
     )]
-    pub r#type: i32,
-    /// The format of the web page where the tracking tag and snippet will be
-    /// installed, e.g. HTML.
-    #[prost(
-        enumeration = "super::enums::tracking_code_page_format_enum::TrackingCodePageFormat",
-        tag = "2"
-    )]
-    pub page_format: i32,
-    /// The site tag that adds visitors to your basic remarketing lists and sets
-    /// new cookies on your domain.
+    pub availability_mode: i32,
+    /// Code of the country.
+    #[prost(message, optional, tag = "2")]
+    pub country_code: ::std::option::Option<::std::string::String>,
+    /// Code of the language.
     #[prost(message, optional, tag = "3")]
-    pub global_site_tag: ::std::option::Option<::std::string::String>,
-    /// The event snippet that works with the site tag to track actions that
-    /// should be counted as conversions.
-    #[prost(message, optional, tag = "4")]
-    pub event_snippet: ::std::option::Option<::std::string::String>,
+    pub language_code: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing CustomParameter and operation
+
+/// A mapping that can be used by custom parameter tags in a
+/// `tracking_url_template`, `final_urls`, or `mobile_final_urls`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomParameter {
+    /// The key matching the parameter tag name.
+    #[prost(message, optional, tag = "1")]
+    pub key: ::std::option::Option<::std::string::String>,
+    /// The value to be substituted.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing date range message.
+
+/// A date range.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DateRange {
+    /// The start date, in yyyy-mm-dd format. This date is inclusive.
+    #[prost(message, optional, tag = "1")]
+    pub start_date: ::std::option::Option<::std::string::String>,
+    /// The end date, in yyyy-mm-dd format. This date is inclusive.
+    #[prost(message, optional, tag = "2")]
+    pub end_date: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing ExplorerAutoOptimizerSetting
+
+/// Settings for the Display Campaign Optimizer, initially named "Explorer".
+/// Learn more about
+/// [automatic targeting](https://support.google.com/google-ads/answer/190596).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplorerAutoOptimizerSetting {
+    /// Indicates whether the optimizer is turned on.
+    #[prost(message, optional, tag = "1")]
+    pub opt_in: ::std::option::Option<bool>,
 }
 // Proto file describing common feed proto messages.
 
@@ -2691,590 +2055,239 @@ pub struct HotelCalloutFeedItem {
     #[prost(message, optional, tag = "2")]
     pub language_code: ::std::option::Option<::std::string::String>,
 }
-// Proto file describing date range message.
+// Proto file FinalAppUrl type.
 
-/// A date range.
+/// A URL for deep linking into an app for the given operating system.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DateRange {
-    /// The start date, in yyyy-mm-dd format. This date is inclusive.
-    #[prost(message, optional, tag = "1")]
-    pub start_date: ::std::option::Option<::std::string::String>,
-    /// The end date, in yyyy-mm-dd format. This date is inclusive.
-    #[prost(message, optional, tag = "2")]
-    pub end_date: ::std::option::Option<::std::string::String>,
-}
-/// A type of label displaying text on a colored background.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextLabel {
-    /// Background color of the label in RGB format. This string must match the
-    /// regular expression '^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'.
-    /// Note: The background color may not be visible for manager accounts.
-    #[prost(message, optional, tag = "1")]
-    pub background_color: ::std::option::Option<::std::string::String>,
-    /// A short description of the label. The length must be no more than 200
-    /// characters.
-    #[prost(message, optional, tag = "2")]
-    pub description: ::std::option::Option<::std::string::String>,
-}
-// Proto file describing offline user data.
-
-/// Address identifier of offline data.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserAddressInfo {
-    /// First name of the user, which is hashed as SHA-256 after normalized
-    /// (Lowercase all characters; Remove any extra spaces before, after, and in
-    /// between).
-    #[prost(message, optional, tag = "1")]
-    pub hashed_first_name: ::std::option::Option<::std::string::String>,
-    /// Last name of the user, which is hashed as SHA-256 after normalized (lower
-    /// case only and no punctuation).
-    #[prost(message, optional, tag = "2")]
-    pub hashed_last_name: ::std::option::Option<::std::string::String>,
-    /// City of the address. Only accepted for Store Sales Direct data.
-    #[prost(message, optional, tag = "3")]
-    pub city: ::std::option::Option<::std::string::String>,
-    /// State code of the address. Only accepted for Store Sales Direct data.
-    #[prost(message, optional, tag = "4")]
-    pub state: ::std::option::Option<::std::string::String>,
-    /// 2-letter country code in ISO-3166-1 alpha-2 of the user's address.
-    #[prost(message, optional, tag = "5")]
-    pub country_code: ::std::option::Option<::std::string::String>,
-    /// Postal code of the user's address.
-    #[prost(message, optional, tag = "6")]
-    pub postal_code: ::std::option::Option<::std::string::String>,
-}
-/// Hashed user identifying information.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserIdentifier {
-    /// Exactly one must be specified.
-    #[prost(oneof = "user_identifier::Identifier", tags = "1, 2, 3, 4, 5")]
-    pub identifier: ::std::option::Option<user_identifier::Identifier>,
-}
-pub mod user_identifier {
-    /// Exactly one must be specified.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Identifier {
-        /// Hashed email address using SHA-256 hash function after normalization.
-        #[prost(message, tag = "1")]
-        HashedEmail(::std::string::String),
-        /// Hashed phone number using SHA-256 hash function after normalization
-        /// (E164 standard).
-        #[prost(message, tag = "2")]
-        HashedPhoneNumber(::std::string::String),
-        /// Mobile device ID (advertising ID/IDFA).
-        #[prost(message, tag = "3")]
-        MobileId(::std::string::String),
-        /// Advertiser-assigned user ID for Customer Match upload, or
-        /// third-party-assigned user ID for SSD.
-        #[prost(message, tag = "4")]
-        ThirdPartyUserId(::std::string::String),
-        /// Address information.
-        #[prost(message, tag = "5")]
-        AddressInfo(super::OfflineUserAddressInfo),
-    }
-}
-/// Attribute of the store sales transaction.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TransactionAttribute {
-    /// Timestamp when transaction occurred. Required.
-    /// The format is "YYYY-MM-DD HH:MM:SS".
-    /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
-    #[prost(message, optional, tag = "1")]
-    pub transaction_date_time: ::std::option::Option<::std::string::String>,
-    /// Transaction amount in micros. Required.
-    #[prost(message, optional, tag = "2")]
-    pub transaction_amount_micros: ::std::option::Option<f64>,
-    /// Transaction currency code. ISO 4217 three-letter code is used. Required.
-    #[prost(message, optional, tag = "3")]
-    pub currency_code: ::std::option::Option<::std::string::String>,
-    /// The resource name of conversion action to report conversions to.
-    /// Required.
-    #[prost(message, optional, tag = "4")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
-    /// Transaction order id.
-    /// Accessible to whitelisted customers only.
-    #[prost(message, optional, tag = "5")]
-    pub order_id: ::std::option::Option<::std::string::String>,
-    /// Store attributes of the transaction.
-    /// Accessible to whitelisted customers only.
-    #[prost(message, optional, tag = "6")]
-    pub store_attribute: ::std::option::Option<StoreAttribute>,
-    /// Value of the custom variable for each transaction.
-    /// Accessible to whitelisted customers only.
-    #[prost(message, optional, tag = "7")]
-    pub custom_value: ::std::option::Option<::std::string::String>,
-}
-/// Store attributes of the transaction.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StoreAttribute {
-    /// Store code from
-    /// https://support.google.com/business/answer/3370250#storecode
-    #[prost(message, optional, tag = "1")]
-    pub store_code: ::std::option::Option<::std::string::String>,
-}
-/// User data holding user identifiers and attributes.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserData {
-    /// User identification info. Required.
-    #[prost(message, repeated, tag = "1")]
-    pub user_identifiers: ::std::vec::Vec<UserIdentifier>,
-    /// Additional transactions/attributes associated with the user.
-    /// Required when updating store sales data.
-    #[prost(message, optional, tag = "2")]
-    pub transaction_attribute: ::std::option::Option<TransactionAttribute>,
-}
-/// Metadata for customer match user list.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerMatchUserListMetadata {
-    /// The resource name of remarketing list to update data.
-    /// Required for job of CUSTOMER_MATCH_USER_LIST type.
-    #[prost(message, optional, tag = "1")]
-    pub user_list: ::std::option::Option<::std::string::String>,
-}
-/// Metadata for Store Sales Direct.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StoreSalesMetadata {
-    /// This is the fraction of all transactions that are identifiable (i.e.,
-    /// associated with any form of customer information).
-    /// Required.
-    /// The fraction needs to be between 0 and 1 (excluding 0).
-    #[prost(message, optional, tag = "1")]
-    pub loyalty_fraction: ::std::option::Option<f64>,
-    /// This is the ratio of sales being uploaded compared to the overall sales
-    /// that can be associated with a customer. Required.
-    /// The fraction needs to be between 0 and 1 (excluding 0). For example, if you
-    /// upload half the sales that you are able to associate with a customer, this
-    /// would be 0.5.
-    #[prost(message, optional, tag = "2")]
-    pub transaction_upload_fraction: ::std::option::Option<f64>,
-    /// Name of the store sales custom variable key. A predefined key that
-    /// can be applied to the transaction and then later used for custom
-    /// segmentation in reporting.
-    /// Accessible to whitelisted customers only.
-    #[prost(message, optional, tag = "4")]
-    pub custom_key: ::std::option::Option<::std::string::String>,
-    /// Metadata for a third party Store Sales upload.
-    #[prost(message, optional, tag = "3")]
-    pub third_party_metadata: ::std::option::Option<StoreSalesThirdPartyMetadata>,
-}
-/// Metadata for a third party Store Sales.
-/// This is a whitelisted only product. Please contact your Google business
-/// development representative for details on the upload configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StoreSalesThirdPartyMetadata {
-    /// Time the advertiser uploaded the data to the partner. Required.
-    /// The format is "YYYY-MM-DD HH:MM:SS".
-    /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
-    #[prost(message, optional, tag = "1")]
-    pub advertiser_upload_date_time: ::std::option::Option<::std::string::String>,
-    /// The fraction of transactions that are valid. Invalid transactions may
-    /// include invalid formats or values.
-    /// Required.
-    /// The fraction needs to be between 0 and 1 (excluding 0).
-    #[prost(message, optional, tag = "2")]
-    pub valid_transaction_fraction: ::std::option::Option<f64>,
-    /// The fraction of valid transactions that are matched to a third party
-    /// assigned user ID on the partner side.
-    /// Required.
-    /// The fraction needs to be between 0 and 1 (excluding 0).
-    #[prost(message, optional, tag = "3")]
-    pub partner_match_fraction: ::std::option::Option<f64>,
-    /// The fraction of valid transactions that are uploaded by the partner to
-    /// Google.
-    /// Required.
-    /// The fraction needs to be between 0 and 1 (excluding 0).
-    #[prost(message, optional, tag = "4")]
-    pub partner_upload_fraction: ::std::option::Option<f64>,
-    /// Version of partner IDs to be used for uploads. Required.
-    #[prost(message, optional, tag = "5")]
-    pub bridge_map_version_id: ::std::option::Option<::std::string::String>,
-    /// ID of the third party partner updating the transaction feed.
-    #[prost(message, optional, tag = "6")]
-    pub partner_id: ::std::option::Option<i64>,
-}
-// Proto file describing criterion category availability information.
-
-/// Information of category availability, per advertising channel.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryAvailability {
-    /// Channel types and subtypes that are available to the category.
-    #[prost(message, optional, tag = "1")]
-    pub channel: ::std::option::Option<CriterionCategoryChannelAvailability>,
-    /// Locales that are available to the category for the channel.
-    #[prost(message, repeated, tag = "2")]
-    pub locale: ::std::vec::Vec<CriterionCategoryLocaleAvailability>,
-}
-/// Information of advertising channel type and subtypes a category is available
-/// in.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryChannelAvailability {
-    /// Format of the channel availability. Can be ALL_CHANNELS (the rest of the
-    /// fields will not be set), CHANNEL_TYPE (only advertising_channel_type type
-    /// will be set, the category is available to all sub types under it) or
-    /// CHANNEL_TYPE_AND_SUBTYPES (advertising_channel_type,
-    /// advertising_channel_sub_type, and include_default_channel_sub_type will all
-    /// be set).
+pub struct FinalAppUrl {
+    /// The operating system targeted by this URL. Required.
     #[prost(
-        enumeration = "super::enums::criterion_category_channel_availability_mode_enum::CriterionCategoryChannelAvailabilityMode",
+        enumeration = "super::enums::app_url_operating_system_type_enum::AppUrlOperatingSystemType",
         tag = "1"
     )]
-    pub availability_mode: i32,
-    /// Channel type the category is available to.
+    pub os_type: i32,
+    /// The app deep link URL. Deep links specify a location in an app that
+    /// corresponds to the content you'd like to show, and should be of the form
+    /// {scheme}://{host_path}
+    /// The scheme identifies which app to open. For your app, you can use a custom
+    /// scheme that starts with the app's name. The host and path specify the
+    /// unique location in the app where your content exists.
+    /// Example: "exampleapp://productid_1234". Required.
+    #[prost(message, optional, tag = "2")]
+    pub url: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing frequency caps.
+
+/// A rule specifying the maximum number of times an ad (or some set of ads) can
+/// be shown to a user over a particular time period.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FrequencyCapEntry {
+    /// The key of a particular frequency cap. There can be no more
+    /// than one frequency cap with the same key.
+    #[prost(message, optional, tag = "1")]
+    pub key: ::std::option::Option<FrequencyCapKey>,
+    /// Maximum number of events allowed during the time range by this cap.
+    #[prost(message, optional, tag = "2")]
+    pub cap: ::std::option::Option<i32>,
+}
+/// A group of fields used as keys for a frequency cap.
+/// There can be no more than one frequency cap with the same key.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FrequencyCapKey {
+    /// The level on which the cap is to be applied (e.g. ad group ad, ad group).
+    /// The cap is applied to all the entities of this level.
     #[prost(
-        enumeration = "super::enums::advertising_channel_type_enum::AdvertisingChannelType",
+        enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel",
+        tag = "1"
+    )]
+    pub level: i32,
+    /// The type of event that the cap applies to (e.g. impression).
+    #[prost(
+        enumeration = "super::enums::frequency_cap_event_type_enum::FrequencyCapEventType",
+        tag = "3"
+    )]
+    pub event_type: i32,
+    /// Unit of time the cap is defined at (e.g. day, week).
+    #[prost(
+        enumeration = "super::enums::frequency_cap_time_unit_enum::FrequencyCapTimeUnit",
         tag = "2"
     )]
-    pub advertising_channel_type: i32,
-    /// Channel subtypes under the channel type the category is available to.
-    #[prost(
-        enumeration = "super::enums::advertising_channel_sub_type_enum::AdvertisingChannelSubType",
-        repeated,
-        tag = "3"
-    )]
-    pub advertising_channel_sub_type: ::std::vec::Vec<i32>,
-    /// Whether default channel sub type is included. For example,
-    /// advertising_channel_type being DISPLAY and include_default_channel_sub_type
-    /// being false means that the default display campaign where channel sub type
-    /// is not set is not included in this availability configuration.
+    pub time_unit: i32,
+    /// Number of time units the cap lasts.
     #[prost(message, optional, tag = "4")]
-    pub include_default_channel_sub_type: ::std::option::Option<bool>,
+    pub time_length: ::std::option::Option<i32>,
 }
-/// Information about which locales a category is available in.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryLocaleAvailability {
-    /// Format of the locale availability. Can be LAUNCHED_TO_ALL (both country and
-    /// language will be empty), COUNTRY (only country will be set), LANGUAGE (only
-    /// language wil be set), COUNTRY_AND_LANGUAGE (both country and language will
-    /// be set).
-    #[prost(
-        enumeration = "super::enums::criterion_category_locale_availability_mode_enum::CriterionCategoryLocaleAvailabilityMode",
-        tag = "1"
-    )]
-    pub availability_mode: i32,
-    /// Code of the country.
-    #[prost(message, optional, tag = "2")]
-    pub country_code: ::std::option::Option<::std::string::String>,
-    /// Code of the language.
-    #[prost(message, optional, tag = "3")]
-    pub language_code: ::std::option::Option<::std::string::String>,
-}
-// Proto file describing user list types.
+// Proto file describing Keyword Planner messages.
 
-/// SimilarUserList is a list of users which are similar to users from another
-/// UserList. These lists are read-only and automatically created by Google.
+/// Historical metrics specific to the targeting options selected.
+/// Targeting options include geographies, network, etc.
+/// Refer to https://support.google.com/google-ads/answer/3022575 for more
+/// details.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SimilarUserListInfo {
-    /// Seed UserList from which this list is derived.
+pub struct KeywordPlanHistoricalMetrics {
+    /// Approximate number of monthly searches on this query averaged
+    /// for the past 12 months.
     #[prost(message, optional, tag = "1")]
-    pub seed_user_list: ::std::option::Option<::std::string::String>,
-}
-/// UserList of CRM users provided by the advertiser.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CrmBasedUserListInfo {
-    /// A string that uniquely identifies a mobile application from which the data
-    /// was collected to the Google Ads API.
-    /// For iOS, the ID string is the 9 digit string that appears at the end of an
-    /// App Store URL (e.g., "476943146" for "Flood-It! 2" whose App Store link is
-    /// http://itunes.apple.com/us/app/flood-it!-2/id476943146).
-    /// For Android, the ID string is the application's package name
-    /// (e.g., "com.labpixies.colordrips" for "Color Drips" given Google Play link
-    /// https://play.google.com/store/apps/details?id=com.labpixies.colordrips).
-    /// Required when creating CrmBasedUserList for uploading mobile advertising
-    /// IDs.
-    #[prost(message, optional, tag = "1")]
-    pub app_id: ::std::option::Option<::std::string::String>,
-    /// Matching key type of the list.
-    /// Mixed data types are not allowed on the same list.
-    /// This field is required for an ADD operation.
+    pub avg_monthly_searches: ::std::option::Option<i64>,
+    /// Approximate number of searches on this query for the past twelve months.
+    #[prost(message, repeated, tag = "6")]
+    pub monthly_search_volumes: ::std::vec::Vec<MonthlySearchVolume>,
+    /// The competition level for the query.
     #[prost(
-        enumeration = "super::enums::customer_match_upload_key_type_enum::CustomerMatchUploadKeyType",
+        enumeration = "super::enums::keyword_plan_competition_level_enum::KeywordPlanCompetitionLevel",
         tag = "2"
     )]
-    pub upload_key_type: i32,
-    /// Data source of the list. Default value is FIRST_PARTY.
-    /// Only whitelisted customers can create third-party sourced CRM lists.
-    #[prost(
-        enumeration = "super::enums::user_list_crm_data_source_type_enum::UserListCrmDataSourceType",
-        tag = "3"
-    )]
-    pub data_source_type: i32,
-}
-/// A client defined rule based on custom parameters sent by web sites or
-/// uploaded by the advertiser.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListRuleInfo {
-    /// Rule type is used to determine how to group rule items.
-    ///
-    /// The default is OR of ANDs (disjunctive normal form).
-    /// That is, rule items will be ANDed together within rule item groups and the
-    /// groups themselves will be ORed together.
-    ///
-    /// Currently AND of ORs (conjunctive normal form) is only supported for
-    /// ExpressionRuleUserList.
-    #[prost(
-        enumeration = "super::enums::user_list_rule_type_enum::UserListRuleType",
-        tag = "1"
-    )]
-    pub rule_type: i32,
-    /// List of rule item groups that defines this rule.
-    /// Rule item groups are grouped together based on rule_type.
-    #[prost(message, repeated, tag = "2")]
-    pub rule_item_groups: ::std::vec::Vec<UserListRuleItemGroupInfo>,
-}
-/// A group of rule items.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListRuleItemGroupInfo {
-    /// Rule items that will be grouped together based on rule_type.
-    #[prost(message, repeated, tag = "1")]
-    pub rule_items: ::std::vec::Vec<UserListRuleItemInfo>,
-}
-/// An atomic rule item.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListRuleItemInfo {
-    /// Rule variable name. It should match the corresponding key name fired
-    /// by the pixel.
-    /// A name must begin with US-ascii letters or underscore or UTF8 code that is
-    /// greater than 127 and consist of US-ascii letters or digits or underscore or
-    /// UTF8 code that is greater than 127.
-    /// For websites, there are two built-in variable URL (name = 'url__') and
-    /// referrer URL (name = 'ref_url__').
-    /// This field must be populated when creating a new rule item.
-    #[prost(message, optional, tag = "1")]
-    pub name: ::std::option::Option<::std::string::String>,
-    /// An atomic rule item.
-    #[prost(oneof = "user_list_rule_item_info::RuleItem", tags = "2, 3, 4")]
-    pub rule_item: ::std::option::Option<user_list_rule_item_info::RuleItem>,
-}
-pub mod user_list_rule_item_info {
-    /// An atomic rule item.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum RuleItem {
-        /// An atomic rule item composed of a number operation.
-        #[prost(message, tag = "2")]
-        NumberRuleItem(super::UserListNumberRuleItemInfo),
-        /// An atomic rule item composed of a string operation.
-        #[prost(message, tag = "3")]
-        StringRuleItem(super::UserListStringRuleItemInfo),
-        /// An atomic rule item composed of a date operation.
-        #[prost(message, tag = "4")]
-        DateRuleItem(super::UserListDateRuleItemInfo),
-    }
-}
-/// A rule item composed of a date operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListDateRuleItemInfo {
-    /// Date comparison operator.
-    /// This field is required and must be populated when creating new date
-    /// rule item.
-    #[prost(
-        enumeration = "super::enums::user_list_date_rule_item_operator_enum::UserListDateRuleItemOperator",
-        tag = "1"
-    )]
-    pub operator: i32,
-    /// String representing date value to be compared with the rule variable.
-    /// Supported date format is YYYY-MM-DD.
-    /// Times are reported in the customer's time zone.
-    #[prost(message, optional, tag = "2")]
-    pub value: ::std::option::Option<::std::string::String>,
-    /// The relative date value of the right hand side denoted by number of days
-    /// offset from now. The value field will override this field when both are
-    /// present.
+    pub competition: i32,
+    /// The competition index for the query in the range [0, 100].
+    /// Shows how competitive ad placement is for a keyword.
+    /// The level of competition from 0-100 is determined by the number of ad slots
+    /// filled divided by the total number of ad slots available. If not enough
+    /// data is available, null is returned.
     #[prost(message, optional, tag = "3")]
-    pub offset_in_days: ::std::option::Option<i64>,
+    pub competition_index: ::std::option::Option<i64>,
+    /// Top of page bid low range (20th percentile) in micros for the keyword.
+    #[prost(message, optional, tag = "4")]
+    pub low_top_of_page_bid_micros: ::std::option::Option<i64>,
+    /// Top of page bid high range (80th percentile) in micros for the keyword.
+    #[prost(message, optional, tag = "5")]
+    pub high_top_of_page_bid_micros: ::std::option::Option<i64>,
 }
-/// A rule item composed of a number operation.
+/// Monthly search volume.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListNumberRuleItemInfo {
-    /// Number comparison operator.
-    /// This field is required and must be populated when creating a new number
-    /// rule item.
-    #[prost(
-        enumeration = "super::enums::user_list_number_rule_item_operator_enum::UserListNumberRuleItemOperator",
-        tag = "1"
-    )]
-    pub operator: i32,
-    /// Number value to be compared with the variable.
-    /// This field is required and must be populated when creating a new number
-    /// rule item.
-    #[prost(message, optional, tag = "2")]
-    pub value: ::std::option::Option<f64>,
-}
-/// A rule item composed of a string operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListStringRuleItemInfo {
-    /// String comparison operator.
-    /// This field is required and must be populated when creating a new string
-    /// rule item.
-    #[prost(
-        enumeration = "super::enums::user_list_string_rule_item_operator_enum::UserListStringRuleItemOperator",
-        tag = "1"
-    )]
-    pub operator: i32,
-    /// The right hand side of the string rule item. For URLs or referrer URLs,
-    /// the value can not contain illegal URL chars such as newlines, quotes,
-    /// tabs, or parentheses. This field is required and must be populated when
-    /// creating a new string rule item.
-    #[prost(message, optional, tag = "2")]
-    pub value: ::std::option::Option<::std::string::String>,
-}
-/// User lists defined by combining two rules, left operand and right operand.
-/// There are two operators: AND where left operand and right operand have to be
-/// true; AND_NOT where left operand is true but right operand is false.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CombinedRuleUserListInfo {
-    /// Left operand of the combined rule.
-    /// This field is required and must be populated when creating new combined
-    /// rule based user list.
+pub struct MonthlySearchVolume {
+    /// The year of the search volume (e.g. 2020).
     #[prost(message, optional, tag = "1")]
-    pub left_operand: ::std::option::Option<UserListRuleInfo>,
-    /// Right operand of the combined rule.
-    /// This field is required and must be populated when creating new combined
-    /// rule based user list.
-    #[prost(message, optional, tag = "2")]
-    pub right_operand: ::std::option::Option<UserListRuleInfo>,
-    /// Operator to connect the two operands.
-    ///
-    /// Required for creating a combined rule user list.
+    pub year: ::std::option::Option<i64>,
+    /// The month of the search volume.
     #[prost(
-        enumeration = "super::enums::user_list_combined_rule_operator_enum::UserListCombinedRuleOperator",
-        tag = "3"
+        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
+        tag = "2"
     )]
-    pub rule_operator: i32,
-}
-/// Visitors of a page during specific dates.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DateSpecificRuleUserListInfo {
-    /// Boolean rule that defines visitor of a page.
-    ///
-    /// Required for creating a date specific rule user list.
-    #[prost(message, optional, tag = "1")]
-    pub rule: ::std::option::Option<UserListRuleInfo>,
-    /// Start date of users visit. If set to 2000-01-01, then the list includes all
-    /// users before end_date. The date's format should be YYYY-MM-DD.
-    ///
-    /// Required for creating a data specific rule user list.
-    #[prost(message, optional, tag = "2")]
-    pub start_date: ::std::option::Option<::std::string::String>,
-    /// End date of users visit. If set to 2037-12-30, then the list includes all
-    /// users after start_date. The date's format should be YYYY-MM-DD.
-    ///
-    /// Required for creating a data specific rule user list.
+    pub month: i32,
+    /// Approximate number of searches for the month.
+    /// A null value indicates the search volume is unavailable for
+    /// that month.
     #[prost(message, optional, tag = "3")]
-    pub end_date: ::std::option::Option<::std::string::String>,
+    pub monthly_searches: ::std::option::Option<i64>,
 }
-/// Visitors of a page. The page visit is defined by one boolean rule expression.
+// Proto file describing a matching function.
+
+/// Matching function associated with a
+/// CustomerFeed, CampaignFeed, or AdGroupFeed. The matching function is used
+/// to filter the set of feed items selected.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExpressionRuleUserListInfo {
-    /// Boolean rule that defines this user list. The rule consists of a list of
-    /// rule item groups and each rule item group consists of a list of rule items.
-    /// All the rule item groups are ORed or ANDed together for evaluation based on
-    /// rule.rule_type.
+pub struct MatchingFunction {
+    /// String representation of the Function.
     ///
-    /// Required for creating an expression rule user list.
+    /// Examples:
+    ///
+    /// 1. IDENTITY(true) or IDENTITY(false). All or no feed items served.
+    /// 2. EQUALS(CONTEXT.DEVICE,"Mobile")
+    /// 3. IN(FEED_ITEM_ID,{1000001,1000002,1000003})
+    /// 4. CONTAINS_ANY(FeedAttribute[12345678,0],{"Mars cruise","Venus cruise"})
+    /// 5. AND(IN(FEED_ITEM_ID,{10001,10002}),EQUALS(CONTEXT.DEVICE,"Mobile"))
+    ///
+    /// For more details, visit
+    /// https://developers.google.com/adwords/api/docs/guides/feed-matching-functions
+    ///
+    /// Note that because multiple strings may represent the same underlying
+    /// function (whitespace and single versus double quotation marks, for
+    /// example), the value returned may not be identical to the string sent in a
+    /// mutate request.
     #[prost(message, optional, tag = "1")]
-    pub rule: ::std::option::Option<UserListRuleInfo>,
-}
-/// Representation of a userlist that is generated by a rule.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RuleBasedUserListInfo {
-    /// The status of pre-population. The field is default to NONE if not set which
-    /// means the previous users will not be considered. If set to REQUESTED, past
-    /// site visitors or app users who match the list definition will be included
-    /// in the list (works on the Display Network only). This will only
-    /// add past users from within the last 30 days, depending on the
-    /// list's membership duration and the date when the remarketing tag is added.
-    /// The status will be updated to FINISHED once request is processed, or FAILED
-    /// if the request fails.
+    pub function_string: ::std::option::Option<::std::string::String>,
+    /// Operator for a function.
     #[prost(
-        enumeration = "super::enums::user_list_prepopulation_status_enum::UserListPrepopulationStatus",
-        tag = "1"
-    )]
-    pub prepopulation_status: i32,
-    /// Subtypes of rule based user lists.
-    #[prost(
-        oneof = "rule_based_user_list_info::RuleBasedUserList",
-        tags = "2, 3, 4"
-    )]
-    pub rule_based_user_list: ::std::option::Option<rule_based_user_list_info::RuleBasedUserList>,
-}
-pub mod rule_based_user_list_info {
-    /// Subtypes of rule based user lists.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum RuleBasedUserList {
-        /// User lists defined by combining two rules.
-        /// There are two operators: AND, where the left and right operands have to
-        /// be true; AND_NOT where left operand is true but right operand is false.
-        #[prost(message, tag = "2")]
-        CombinedRuleUserList(super::CombinedRuleUserListInfo),
-        /// Visitors of a page during specific dates. The visiting periods are
-        /// defined as follows:
-        /// Between start_date (inclusive) and end_date (inclusive);
-        /// Before end_date (exclusive) with start_date = 2000-01-01;
-        /// After start_date (exclusive) with end_date = 2037-12-30.
-        #[prost(message, tag = "3")]
-        DateSpecificRuleUserList(super::DateSpecificRuleUserListInfo),
-        /// Visitors of a page. The page visit is defined by one boolean rule
-        /// expression.
-        #[prost(message, tag = "4")]
-        ExpressionRuleUserList(super::ExpressionRuleUserListInfo),
-    }
-}
-/// Represents a user list that is a custom combination of user lists.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LogicalUserListInfo {
-    /// Logical list rules that define this user list. The rules are defined as a
-    /// logical operator (ALL/ANY/NONE) and a list of user lists. All the rules are
-    /// ANDed when they are evaluated.
-    ///
-    /// Required for creating a logical user list.
-    #[prost(message, repeated, tag = "1")]
-    pub rules: ::std::vec::Vec<UserListLogicalRuleInfo>,
-}
-/// A user list logical rule. A rule has a logical operator (and/or/not) and a
-/// list of user lists as operands.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListLogicalRuleInfo {
-    /// The logical operator of the rule.
-    #[prost(
-        enumeration = "super::enums::user_list_logical_rule_operator_enum::UserListLogicalRuleOperator",
-        tag = "1"
+        enumeration = "super::enums::matching_function_operator_enum::MatchingFunctionOperator",
+        tag = "4"
     )]
     pub operator: i32,
-    /// The list of operands of the rule.
+    /// The operands on the left hand side of the equation. This is also the
+    /// operand to be used for single operand expressions such as NOT.
     #[prost(message, repeated, tag = "2")]
-    pub rule_operands: ::std::vec::Vec<LogicalUserListOperandInfo>,
+    pub left_operands: ::std::vec::Vec<Operand>,
+    /// The operands on the right hand side of the equation.
+    #[prost(message, repeated, tag = "3")]
+    pub right_operands: ::std::vec::Vec<Operand>,
 }
-/// Operand of logical user list that consists of a user list.
+/// An operand in a matching function.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LogicalUserListOperandInfo {
-    /// Resource name of a user list as an operand.
-    #[prost(message, optional, tag = "1")]
-    pub user_list: ::std::option::Option<::std::string::String>,
+pub struct Operand {
+    /// Different operands that can be used in a matching function. Required.
+    #[prost(oneof = "operand::FunctionArgumentOperand", tags = "1, 2, 3, 4")]
+    pub function_argument_operand: ::std::option::Option<operand::FunctionArgumentOperand>,
 }
-/// User list targeting as a collection of conversions or remarketing actions.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BasicUserListInfo {
-    /// Actions associated with this user list.
-    #[prost(message, repeated, tag = "1")]
-    pub actions: ::std::vec::Vec<UserListActionInfo>,
-}
-/// Represents an action type used for building remarketing user lists.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListActionInfo {
-    /// Subtypes of user list action.
-    #[prost(oneof = "user_list_action_info::UserListAction", tags = "1, 2")]
-    pub user_list_action: ::std::option::Option<user_list_action_info::UserListAction>,
-}
-pub mod user_list_action_info {
-    /// Subtypes of user list action.
+pub mod operand {
+    /// A constant operand in a matching function.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConstantOperand {
+        /// Constant operand values. Required.
+        #[prost(oneof = "constant_operand::ConstantOperandValue", tags = "1, 2, 3, 4")]
+        pub constant_operand_value: ::std::option::Option<constant_operand::ConstantOperandValue>,
+    }
+    pub mod constant_operand {
+        /// Constant operand values. Required.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum ConstantOperandValue {
+            /// String value of the operand if it is a string type.
+            #[prost(message, tag = "1")]
+            StringValue(::std::string::String),
+            /// Int64 value of the operand if it is a int64 type.
+            #[prost(message, tag = "2")]
+            LongValue(i64),
+            /// Boolean value of the operand if it is a boolean type.
+            #[prost(message, tag = "3")]
+            BooleanValue(bool),
+            /// Double value of the operand if it is a double type.
+            #[prost(message, tag = "4")]
+            DoubleValue(f64),
+        }
+    }
+    /// A feed attribute operand in a matching function.
+    /// Used to represent a feed attribute in feed.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FeedAttributeOperand {
+        /// The associated feed. Required.
+        #[prost(message, optional, tag = "1")]
+        pub feed_id: ::std::option::Option<i64>,
+        /// Id of the referenced feed attribute. Required.
+        #[prost(message, optional, tag = "2")]
+        pub feed_attribute_id: ::std::option::Option<i64>,
+    }
+    /// A function operand in a matching function.
+    /// Used to represent nested functions.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FunctionOperand {
+        /// The matching function held in this operand.
+        #[prost(message, optional, tag = "1")]
+        pub matching_function: ::std::option::Option<super::MatchingFunction>,
+    }
+    /// An operand in a function referring to a value in the request context.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RequestContextOperand {
+        /// Type of value to be referred in the request context.
+        #[prost(
+            enumeration = "super::super::enums::matching_function_context_type_enum::MatchingFunctionContextType",
+            tag = "1"
+        )]
+        pub context_type: i32,
+    }
+    /// Different operands that can be used in a matching function. Required.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum UserListAction {
-        /// A conversion action that's not generated from remarketing.
+    pub enum FunctionArgumentOperand {
+        /// A constant operand in a matching function.
         #[prost(message, tag = "1")]
-        ConversionAction(::std::string::String),
-        /// A remarketing action.
+        ConstantOperand(ConstantOperand),
+        /// This operand specifies a feed attribute in feed.
         #[prost(message, tag = "2")]
-        RemarketingAction(::std::string::String),
+        FeedAttributeOperand(FeedAttributeOperand),
+        /// A function operand in a matching function.
+        /// Used to represent nested functions.
+        #[prost(message, tag = "3")]
+        FunctionOperand(FunctionOperand),
+        /// An operand in a function referring to a value in the request context.
+        #[prost(message, tag = "4")]
+        RequestContextOperand(RequestContextOperand),
     }
 }
 // Proto file describing metrics.
@@ -3821,6 +2834,424 @@ pub struct Metrics {
     #[prost(message, optional, tag = "60")]
     pub view_through_conversions: ::std::option::Option<i64>,
 }
+// Proto file describing offline user data.
+
+/// Address identifier of offline data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OfflineUserAddressInfo {
+    /// First name of the user, which is hashed as SHA-256 after normalized
+    /// (Lowercase all characters; Remove any extra spaces before, after, and in
+    /// between).
+    #[prost(message, optional, tag = "1")]
+    pub hashed_first_name: ::std::option::Option<::std::string::String>,
+    /// Last name of the user, which is hashed as SHA-256 after normalized (lower
+    /// case only and no punctuation).
+    #[prost(message, optional, tag = "2")]
+    pub hashed_last_name: ::std::option::Option<::std::string::String>,
+    /// City of the address. Only accepted for Store Sales Direct data.
+    #[prost(message, optional, tag = "3")]
+    pub city: ::std::option::Option<::std::string::String>,
+    /// State code of the address. Only accepted for Store Sales Direct data.
+    #[prost(message, optional, tag = "4")]
+    pub state: ::std::option::Option<::std::string::String>,
+    /// 2-letter country code in ISO-3166-1 alpha-2 of the user's address.
+    #[prost(message, optional, tag = "5")]
+    pub country_code: ::std::option::Option<::std::string::String>,
+    /// Postal code of the user's address.
+    #[prost(message, optional, tag = "6")]
+    pub postal_code: ::std::option::Option<::std::string::String>,
+}
+/// Hashed user identifying information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserIdentifier {
+    /// Exactly one must be specified.
+    #[prost(oneof = "user_identifier::Identifier", tags = "1, 2, 3, 4, 5")]
+    pub identifier: ::std::option::Option<user_identifier::Identifier>,
+}
+pub mod user_identifier {
+    /// Exactly one must be specified.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Identifier {
+        /// Hashed email address using SHA-256 hash function after normalization.
+        #[prost(message, tag = "1")]
+        HashedEmail(::std::string::String),
+        /// Hashed phone number using SHA-256 hash function after normalization
+        /// (E164 standard).
+        #[prost(message, tag = "2")]
+        HashedPhoneNumber(::std::string::String),
+        /// Mobile device ID (advertising ID/IDFA).
+        #[prost(message, tag = "3")]
+        MobileId(::std::string::String),
+        /// Advertiser-assigned user ID for Customer Match upload, or
+        /// third-party-assigned user ID for SSD.
+        #[prost(message, tag = "4")]
+        ThirdPartyUserId(::std::string::String),
+        /// Address information.
+        #[prost(message, tag = "5")]
+        AddressInfo(super::OfflineUserAddressInfo),
+    }
+}
+/// Attribute of the store sales transaction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransactionAttribute {
+    /// Timestamp when transaction occurred. Required.
+    /// The format is "YYYY-MM-DD HH:MM:SS".
+    /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
+    #[prost(message, optional, tag = "1")]
+    pub transaction_date_time: ::std::option::Option<::std::string::String>,
+    /// Transaction amount in micros. Required.
+    #[prost(message, optional, tag = "2")]
+    pub transaction_amount_micros: ::std::option::Option<f64>,
+    /// Transaction currency code. ISO 4217 three-letter code is used. Required.
+    #[prost(message, optional, tag = "3")]
+    pub currency_code: ::std::option::Option<::std::string::String>,
+    /// The resource name of conversion action to report conversions to.
+    /// Required.
+    #[prost(message, optional, tag = "4")]
+    pub conversion_action: ::std::option::Option<::std::string::String>,
+    /// Transaction order id.
+    /// Accessible only to customers on the allow-list.
+    #[prost(message, optional, tag = "5")]
+    pub order_id: ::std::option::Option<::std::string::String>,
+    /// Store attributes of the transaction.
+    /// Accessible only to customers on the allow-list.
+    #[prost(message, optional, tag = "6")]
+    pub store_attribute: ::std::option::Option<StoreAttribute>,
+    /// Value of the custom variable for each transaction.
+    /// Accessible only to customers on the allow-list.
+    #[prost(message, optional, tag = "7")]
+    pub custom_value: ::std::option::Option<::std::string::String>,
+}
+/// Store attributes of the transaction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoreAttribute {
+    /// Store code from
+    /// https://support.google.com/business/answer/3370250#storecode
+    #[prost(message, optional, tag = "1")]
+    pub store_code: ::std::option::Option<::std::string::String>,
+}
+/// User data holding user identifiers and attributes.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserData {
+    /// User identification info. Required.
+    #[prost(message, repeated, tag = "1")]
+    pub user_identifiers: ::std::vec::Vec<UserIdentifier>,
+    /// Additional transactions/attributes associated with the user.
+    /// Required when updating store sales data.
+    #[prost(message, optional, tag = "2")]
+    pub transaction_attribute: ::std::option::Option<TransactionAttribute>,
+}
+/// Metadata for customer match user list.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerMatchUserListMetadata {
+    /// The resource name of remarketing list to update data.
+    /// Required for job of CUSTOMER_MATCH_USER_LIST type.
+    #[prost(message, optional, tag = "1")]
+    pub user_list: ::std::option::Option<::std::string::String>,
+}
+/// Metadata for Store Sales Direct.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoreSalesMetadata {
+    /// This is the fraction of all transactions that are identifiable (i.e.,
+    /// associated with any form of customer information).
+    /// Required.
+    /// The fraction needs to be between 0 and 1 (excluding 0).
+    #[prost(message, optional, tag = "1")]
+    pub loyalty_fraction: ::std::option::Option<f64>,
+    /// This is the ratio of sales being uploaded compared to the overall sales
+    /// that can be associated with a customer. Required.
+    /// The fraction needs to be between 0 and 1 (excluding 0). For example, if you
+    /// upload half the sales that you are able to associate with a customer, this
+    /// would be 0.5.
+    #[prost(message, optional, tag = "2")]
+    pub transaction_upload_fraction: ::std::option::Option<f64>,
+    /// Name of the store sales custom variable key. A predefined key that
+    /// can be applied to the transaction and then later used for custom
+    /// segmentation in reporting.
+    /// Accessible only to customers on the allow-list.
+    #[prost(message, optional, tag = "4")]
+    pub custom_key: ::std::option::Option<::std::string::String>,
+    /// Metadata for a third party Store Sales upload.
+    #[prost(message, optional, tag = "3")]
+    pub third_party_metadata: ::std::option::Option<StoreSalesThirdPartyMetadata>,
+}
+/// Metadata for a third party Store Sales.
+/// This product is only for customers on the allow-list. Please contact your
+/// Google business development representative for details on the upload
+/// configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoreSalesThirdPartyMetadata {
+    /// Time the advertiser uploaded the data to the partner. Required.
+    /// The format is "YYYY-MM-DD HH:MM:SS".
+    /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
+    #[prost(message, optional, tag = "1")]
+    pub advertiser_upload_date_time: ::std::option::Option<::std::string::String>,
+    /// The fraction of transactions that are valid. Invalid transactions may
+    /// include invalid formats or values.
+    /// Required.
+    /// The fraction needs to be between 0 and 1 (excluding 0).
+    #[prost(message, optional, tag = "2")]
+    pub valid_transaction_fraction: ::std::option::Option<f64>,
+    /// The fraction of valid transactions that are matched to a third party
+    /// assigned user ID on the partner side.
+    /// Required.
+    /// The fraction needs to be between 0 and 1 (excluding 0).
+    #[prost(message, optional, tag = "3")]
+    pub partner_match_fraction: ::std::option::Option<f64>,
+    /// The fraction of valid transactions that are uploaded by the partner to
+    /// Google.
+    /// Required.
+    /// The fraction needs to be between 0 and 1 (excluding 0).
+    #[prost(message, optional, tag = "4")]
+    pub partner_upload_fraction: ::std::option::Option<f64>,
+    /// Version of partner IDs to be used for uploads. Required.
+    #[prost(message, optional, tag = "5")]
+    pub bridge_map_version_id: ::std::option::Option<::std::string::String>,
+    /// ID of the third party partner updating the transaction feed.
+    #[prost(message, optional, tag = "6")]
+    pub partner_id: ::std::option::Option<i64>,
+}
+// Proto file describing policy information.
+
+/// Key of the violation. The key is used for referring to a violation
+/// when filing an exemption request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyViolationKey {
+    /// Unique ID of the violated policy.
+    #[prost(message, optional, tag = "1")]
+    pub policy_name: ::std::option::Option<::std::string::String>,
+    /// The text that violates the policy if specified.
+    /// Otherwise, refers to the policy in general
+    /// (e.g., when requesting to be exempt from the whole policy).
+    /// If not specified for criterion exemptions, the whole policy is implied.
+    /// Must be specified for ad exemptions.
+    #[prost(message, optional, tag = "2")]
+    pub violating_text: ::std::option::Option<::std::string::String>,
+}
+/// Parameter for controlling how policy exemption is done. Ignorable policy
+/// topics are only usable with expanded text ads and responsive search ads. All
+/// other ad types must use policy violation keys.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyValidationParameter {
+    /// The list of policy topics that should not cause a PolicyFindingError to
+    /// be reported. This field is currently only compatible with Enhanced Text Ad.
+    /// It corresponds to the PolicyTopicEntry.topic field.
+    ///
+    /// Resources violating these policies will be saved, but will not be eligible
+    /// to serve. They may begin serving at a later time due to a change in
+    /// policies, re-review of the resource, or a change in advertiser
+    /// certificates.
+    #[prost(message, repeated, tag = "1")]
+    pub ignorable_policy_topics: ::std::vec::Vec<::std::string::String>,
+    /// The list of policy violation keys that should not cause a
+    /// PolicyViolationError to be reported. Not all policy violations are
+    /// exemptable, please refer to the is_exemptible field in the returned
+    /// PolicyViolationError.
+    ///
+    /// Resources violating these polices will be saved, but will not be eligible
+    /// to serve. They may begin serving at a later time due to a change in
+    /// policies, re-review of the resource, or a change in advertiser
+    /// certificates.
+    #[prost(message, repeated, tag = "2")]
+    pub exempt_policy_violation_keys: ::std::vec::Vec<PolicyViolationKey>,
+}
+/// Policy finding attached to a resource (e.g. alcohol policy associated with
+/// a site that sells alcohol).
+///
+/// Each PolicyTopicEntry has a topic that indicates the specific ads policy
+/// the entry is about and a type to indicate the effect that the entry will have
+/// on serving. It may optionally have one or more evidences that indicate the
+/// reason for the finding. It may also optionally have one or more constraints
+/// that provide details about how serving may be restricted.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyTopicEntry {
+    /// Policy topic this finding refers to. For example, "ALCOHOL",
+    /// "TRADEMARKS_IN_AD_TEXT", or "DESTINATION_NOT_WORKING". The set of possible
+    /// policy topics is not fixed for a particular API version and may change
+    /// at any time.
+    #[prost(message, optional, tag = "1")]
+    pub topic: ::std::option::Option<::std::string::String>,
+    /// Describes the negative or positive effect this policy will have on serving.
+    #[prost(
+        enumeration = "super::enums::policy_topic_entry_type_enum::PolicyTopicEntryType",
+        tag = "2"
+    )]
+    pub r#type: i32,
+    /// Additional information that explains policy finding
+    /// (e.g. the brand name for a trademark finding).
+    #[prost(message, repeated, tag = "3")]
+    pub evidences: ::std::vec::Vec<PolicyTopicEvidence>,
+    /// Indicates how serving of this resource may be affected (e.g. not serving
+    /// in a country).
+    #[prost(message, repeated, tag = "4")]
+    pub constraints: ::std::vec::Vec<PolicyTopicConstraint>,
+}
+/// Additional information that explains a policy finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyTopicEvidence {
+    /// Specific evidence information depending on the evidence type.
+    #[prost(oneof = "policy_topic_evidence::Value", tags = "3, 4, 5, 6, 7, 8")]
+    pub value: ::std::option::Option<policy_topic_evidence::Value>,
+}
+pub mod policy_topic_evidence {
+    /// A list of fragments of text that violated a policy.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TextList {
+        /// The fragments of text from the resource that caused the policy finding.
+        #[prost(message, repeated, tag = "1")]
+        pub texts: ::std::vec::Vec<::std::string::String>,
+    }
+    /// A list of websites that caused a policy finding. Used for
+    /// ONE_WEBSITE_PER_AD_GROUP policy topic, for example. In case there are more
+    /// than five websites, only the top five (those that appear in resources the
+    /// most) will be listed here.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WebsiteList {
+        /// Websites that caused the policy finding.
+        #[prost(message, repeated, tag = "1")]
+        pub websites: ::std::vec::Vec<::std::string::String>,
+    }
+    /// A list of strings found in a destination page that caused a policy
+    /// finding.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DestinationTextList {
+        /// List of text found in the resource's destination page.
+        #[prost(message, repeated, tag = "1")]
+        pub destination_texts: ::std::vec::Vec<::std::string::String>,
+    }
+    /// Evidence of mismatches between the URLs of a resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DestinationMismatch {
+        /// The set of URLs that did not match each other.
+        #[prost(
+            enumeration = "super::super::enums::policy_topic_evidence_destination_mismatch_url_type_enum::PolicyTopicEvidenceDestinationMismatchUrlType",
+            repeated,
+            tag = "1"
+        )]
+        pub url_types: ::std::vec::Vec<i32>,
+    }
+    /// Evidence details when the destination is returning an HTTP error
+    /// code or isn't functional in all locations for commonly used devices.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DestinationNotWorking {
+        /// The full URL that didn't work.
+        #[prost(message, optional, tag = "3")]
+        pub expanded_url: ::std::option::Option<::std::string::String>,
+        /// The type of device that failed to load the URL.
+        #[prost(
+            enumeration = "super::super::enums::policy_topic_evidence_destination_not_working_device_enum::PolicyTopicEvidenceDestinationNotWorkingDevice",
+            tag = "4"
+        )]
+        pub device: i32,
+        /// The time the URL was last checked.
+        /// The format is "YYYY-MM-DD HH:MM:SS".
+        /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
+        #[prost(message, optional, tag = "5")]
+        pub last_checked_date_time: ::std::option::Option<::std::string::String>,
+        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
+        #[prost(oneof = "destination_not_working::Reason", tags = "1, 2")]
+        pub reason: ::std::option::Option<destination_not_working::Reason>,
+    }
+    pub mod destination_not_working {
+        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Reason {
+            /// The type of DNS error.
+            #[prost(
+                enumeration = "super::super::super::enums::policy_topic_evidence_destination_not_working_dns_error_type_enum::PolicyTopicEvidenceDestinationNotWorkingDnsErrorType",
+                tag = "1"
+            )]
+            DnsErrorType(i32),
+            /// The HTTP error code.
+            #[prost(message, tag = "2")]
+            HttpErrorCode(i64),
+        }
+    }
+    /// Specific evidence information depending on the evidence type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// List of websites linked with this resource.
+        #[prost(message, tag = "3")]
+        WebsiteList(WebsiteList),
+        /// List of evidence found in the text of a resource.
+        #[prost(message, tag = "4")]
+        TextList(TextList),
+        /// The language the resource was detected to be written in.
+        /// This is an IETF language tag such as "en-US".
+        #[prost(message, tag = "5")]
+        LanguageCode(::std::string::String),
+        /// The text in the destination of the resource that is causing a policy
+        /// finding.
+        #[prost(message, tag = "6")]
+        DestinationTextList(DestinationTextList),
+        /// Mismatch between the destinations of a resource's URLs.
+        #[prost(message, tag = "7")]
+        DestinationMismatch(DestinationMismatch),
+        /// Details when the destination is returning an HTTP error code or isn't
+        /// functional in all locations for commonly used devices.
+        #[prost(message, tag = "8")]
+        DestinationNotWorking(DestinationNotWorking),
+    }
+}
+/// Describes the effect on serving that a policy topic entry will have.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyTopicConstraint {
+    /// Specific information about the constraint.
+    #[prost(oneof = "policy_topic_constraint::Value", tags = "1, 2, 3, 4")]
+    pub value: ::std::option::Option<policy_topic_constraint::Value>,
+}
+pub mod policy_topic_constraint {
+    /// A list of countries where a resource's serving is constrained.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CountryConstraintList {
+        /// Total number of countries targeted by the resource.
+        #[prost(message, optional, tag = "1")]
+        pub total_targeted_countries: ::std::option::Option<i32>,
+        /// Countries in which serving is restricted.
+        #[prost(message, repeated, tag = "2")]
+        pub countries: ::std::vec::Vec<CountryConstraint>,
+    }
+    /// Indicates that a policy topic was constrained due to disapproval of the
+    /// website for reseller purposes.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ResellerConstraint {}
+    /// Indicates that a resource's ability to serve in a particular country is
+    /// constrained.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CountryConstraint {
+        /// Geo target constant resource name of the country in which serving is
+        /// constrained.
+        #[prost(message, optional, tag = "1")]
+        pub country_criterion: ::std::option::Option<::std::string::String>,
+    }
+    /// Specific information about the constraint.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// Countries where the resource cannot serve.
+        #[prost(message, tag = "1")]
+        CountryConstraintList(CountryConstraintList),
+        /// Reseller constraint.
+        #[prost(message, tag = "2")]
+        ResellerConstraint(ResellerConstraint),
+        /// Countries where a certificate is required for serving.
+        #[prost(message, tag = "3")]
+        CertificateMissingInCountryList(CountryConstraintList),
+        /// Countries where the resource's domain is not covered by the
+        /// certificates associated with it.
+        #[prost(message, tag = "4")]
+        CertificateDomainMismatchInCountryList(CountryConstraintList),
+    }
+}
+// Proto file describing RealTimeBiddingSetting
+
+/// Settings for Real-Time Bidding, a feature only available for campaigns
+/// targeting the Ad Exchange network.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealTimeBiddingSetting {
+    /// Whether the campaign is opted in to real-time bidding.
+    #[prost(message, optional, tag = "1")]
+    pub opt_in: ::std::option::Option<bool>,
+}
 // Proto file describing segment only fields.
 
 /// Segment only fields.
@@ -4134,56 +3565,656 @@ pub struct Keyword {
     #[prost(message, optional, tag = "2")]
     pub info: ::std::option::Option<KeywordInfo>,
 }
-// Proto file describing Keyword Planner messages.
+// Proto file describing simulation points.
 
-/// Historical metrics specific to the targeting options selected.
-/// Targeting options include geographies, network, etc.
-/// Refer to https://support.google.com/google-ads/answer/3022575 for more
-/// details.
+/// A container for simulation points for simulations of type BID_MODIFIER.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanHistoricalMetrics {
-    /// Approximate number of monthly searches on this query averaged
-    /// for the past 12 months.
-    #[prost(message, optional, tag = "1")]
-    pub avg_monthly_searches: ::std::option::Option<i64>,
-    /// Approximate number of searches on this query for the past twelve months.
-    #[prost(message, repeated, tag = "6")]
-    pub monthly_search_volumes: ::std::vec::Vec<MonthlySearchVolume>,
-    /// The competition level for the query.
-    #[prost(
-        enumeration = "super::enums::keyword_plan_competition_level_enum::KeywordPlanCompetitionLevel",
-        tag = "2"
-    )]
-    pub competition: i32,
-    /// The competition index for the query in the range [0, 100].
-    /// Shows how competitive ad placement is for a keyword.
-    /// The level of competition from 0-100 is determined by the number of ad slots
-    /// filled divided by the total number of ad slots available. If not enough
-    /// data is available, null is returned.
-    #[prost(message, optional, tag = "3")]
-    pub competition_index: ::std::option::Option<i64>,
-    /// Top of page bid low range (20th percentile) in micros for the keyword.
-    #[prost(message, optional, tag = "4")]
-    pub low_top_of_page_bid_micros: ::std::option::Option<i64>,
-    /// Top of page bid high range (80th percentile) in micros for the keyword.
-    #[prost(message, optional, tag = "5")]
-    pub high_top_of_page_bid_micros: ::std::option::Option<i64>,
+pub struct BidModifierSimulationPointList {
+    /// Projected metrics for a series of bid modifier amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<BidModifierSimulationPoint>,
 }
-/// Monthly search volume.
+/// A container for simulation points for simulations of type CPC_BID.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MonthlySearchVolume {
-    /// The year of the search volume (e.g. 2020).
+pub struct CpcBidSimulationPointList {
+    /// Projected metrics for a series of CPC bid amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<CpcBidSimulationPoint>,
+}
+/// A container for simulation points for simulations of type CPV_BID.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CpvBidSimulationPointList {
+    /// Projected metrics for a series of CPV bid amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<CpvBidSimulationPoint>,
+}
+/// A container for simulation points for simulations of type TARGET_CPA.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpaSimulationPointList {
+    /// Projected metrics for a series of target CPA amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<TargetCpaSimulationPoint>,
+}
+/// A container for simulation points for simulations of type TARGET_ROAS.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetRoasSimulationPointList {
+    /// Projected metrics for a series of target ROAS amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<TargetRoasSimulationPoint>,
+}
+/// Projected metrics for a specific bid modifier amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidModifierSimulationPoint {
+    /// The simulated bid modifier upon which projected metrics are based.
     #[prost(message, optional, tag = "1")]
-    pub year: ::std::option::Option<i64>,
-    /// The month of the search volume.
+    pub bid_modifier: ::std::option::Option<f64>,
+    /// Projected number of biddable conversions.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "2")]
+    pub biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "3")]
+    pub biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks.
+    #[prost(message, optional, tag = "4")]
+    pub clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "5")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "6")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "7")]
+    pub top_slot_impressions: ::std::option::Option<i64>,
+    /// Projected number of biddable conversions for the parent resource.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "8")]
+    pub parent_biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions for the parent resource.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "9")]
+    pub parent_biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks for the parent resource.
+    #[prost(message, optional, tag = "10")]
+    pub parent_clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros for the parent resource.
+    #[prost(message, optional, tag = "11")]
+    pub parent_cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions for the parent resource.
+    #[prost(message, optional, tag = "12")]
+    pub parent_impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions for the parent resource.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "13")]
+    pub parent_top_slot_impressions: ::std::option::Option<i64>,
+    /// Projected minimum daily budget that must be available to the parent
+    /// resource to realize this simulation.
+    #[prost(message, optional, tag = "14")]
+    pub parent_required_budget_micros: ::std::option::Option<i64>,
+}
+/// Projected metrics for a specific CPC bid amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CpcBidSimulationPoint {
+    /// The simulated CPC bid upon which projected metrics are based.
+    #[prost(message, optional, tag = "1")]
+    pub cpc_bid_micros: ::std::option::Option<i64>,
+    /// Projected number of biddable conversions.
+    #[prost(message, optional, tag = "2")]
+    pub biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions.
+    #[prost(message, optional, tag = "3")]
+    pub biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks.
+    #[prost(message, optional, tag = "4")]
+    pub clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "5")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "6")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "7")]
+    pub top_slot_impressions: ::std::option::Option<i64>,
+}
+/// Projected metrics for a specific CPV bid amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CpvBidSimulationPoint {
+    /// The simulated CPV bid upon which projected metrics are based.
+    #[prost(message, optional, tag = "1")]
+    pub cpv_bid_micros: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "2")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "3")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of views.
+    #[prost(message, optional, tag = "4")]
+    pub views: ::std::option::Option<i64>,
+}
+/// Projected metrics for a specific target CPA amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpaSimulationPoint {
+    /// The simulated target CPA upon which projected metrics are based.
+    #[prost(message, optional, tag = "1")]
+    pub target_cpa_micros: ::std::option::Option<i64>,
+    /// Projected number of biddable conversions.
+    #[prost(message, optional, tag = "2")]
+    pub biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions.
+    #[prost(message, optional, tag = "3")]
+    pub biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks.
+    #[prost(message, optional, tag = "4")]
+    pub clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "5")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "6")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "7")]
+    pub top_slot_impressions: ::std::option::Option<i64>,
+}
+/// Projected metrics for a specific target ROAS amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetRoasSimulationPoint {
+    /// The simulated target ROAS upon which projected metrics are based.
+    #[prost(message, optional, tag = "1")]
+    pub target_roas: ::std::option::Option<f64>,
+    /// Projected number of biddable conversions.
+    #[prost(message, optional, tag = "2")]
+    pub biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions.
+    #[prost(message, optional, tag = "3")]
+    pub biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks.
+    #[prost(message, optional, tag = "4")]
+    pub clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "5")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "6")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions.
+    /// Only Search advertising channel type supports this field.
+    #[prost(message, optional, tag = "7")]
+    pub top_slot_impressions: ::std::option::Option<i64>,
+}
+// Proto file describing TagSnippet
+
+/// The site tag and event snippet pair for a TrackingCodeType.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TagSnippet {
+    /// The type of the generated tag snippets for tracking conversions.
     #[prost(
-        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
+        enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType",
+        tag = "1"
+    )]
+    pub r#type: i32,
+    /// The format of the web page where the tracking tag and snippet will be
+    /// installed, e.g. HTML.
+    #[prost(
+        enumeration = "super::enums::tracking_code_page_format_enum::TrackingCodePageFormat",
         tag = "2"
     )]
-    pub month: i32,
-    /// Approximate number of searches for the month.
-    /// A null value indicates the search volume is unavailable for
-    /// that month.
+    pub page_format: i32,
+    /// The site tag that adds visitors to your basic remarketing lists and sets
+    /// new cookies on your domain.
     #[prost(message, optional, tag = "3")]
-    pub monthly_searches: ::std::option::Option<i64>,
+    pub global_site_tag: ::std::option::Option<::std::string::String>,
+    /// The event snippet that works with the site tag to track actions that
+    /// should be counted as conversions.
+    #[prost(message, optional, tag = "4")]
+    pub event_snippet: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing TargetingSetting
+
+/// Settings for the targeting-related features, at the campaign and ad group
+/// levels. For more details about the targeting setting, visit
+/// https://support.google.com/google-ads/answer/7365594
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetingSetting {
+    /// The per-targeting-dimension setting to restrict the reach of your campaign
+    /// or ad group.
+    #[prost(message, repeated, tag = "1")]
+    pub target_restrictions: ::std::vec::Vec<TargetRestriction>,
+    /// The list of operations changing the target restrictions.
+    ///
+    /// Adding a target restriction with a targeting dimension that already exists
+    /// causes the existing target restriction to be replaced with the new value.
+    #[prost(message, repeated, tag = "2")]
+    pub target_restriction_operations: ::std::vec::Vec<TargetRestrictionOperation>,
+}
+/// The list of per-targeting-dimension targeting settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetRestriction {
+    /// The targeting dimension that these settings apply to.
+    #[prost(
+        enumeration = "super::enums::targeting_dimension_enum::TargetingDimension",
+        tag = "1"
+    )]
+    pub targeting_dimension: i32,
+    /// Indicates whether to restrict your ads to show only for the criteria you
+    /// have selected for this targeting_dimension, or to target all values for
+    /// this targeting_dimension and show ads based on your targeting in other
+    /// TargetingDimensions. A value of `true` means that these criteria will only
+    /// apply bid modifiers, and not affect targeting. A value of `false` means
+    /// that these criteria will restrict targeting as well as applying bid
+    /// modifiers.
+    #[prost(message, optional, tag = "2")]
+    pub bid_only: ::std::option::Option<bool>,
+}
+/// Operation to be performed on a target restriction list in a mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetRestrictionOperation {
+    /// Type of list operation to perform.
+    #[prost(enumeration = "target_restriction_operation::Operator", tag = "1")]
+    pub operator: i32,
+    /// The target restriction being added to or removed from the list.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::std::option::Option<TargetRestriction>,
+}
+pub mod target_restriction_operation {
+    /// The operator.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Operator {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Add the restriction to the existing restrictions.
+        Add = 2,
+        /// Remove the restriction from the existing restrictions.
+        Remove = 3,
+    }
+}
+/// A type of label displaying text on a colored background.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextLabel {
+    /// Background color of the label in RGB format. This string must match the
+    /// regular expression '^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'.
+    /// Note: The background color may not be visible for manager accounts.
+    #[prost(message, optional, tag = "1")]
+    pub background_color: ::std::option::Option<::std::string::String>,
+    /// A short description of the label. The length must be no more than 200
+    /// characters.
+    #[prost(message, optional, tag = "2")]
+    pub description: ::std::option::Option<::std::string::String>,
+}
+// Proto file UrlCollection type.
+
+/// Collection of urls that is tagged with a unique identifier.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UrlCollection {
+    /// Unique identifier for this UrlCollection instance.
+    #[prost(message, optional, tag = "1")]
+    pub url_collection_id: ::std::option::Option<::std::string::String>,
+    /// A list of possible final URLs.
+    #[prost(message, repeated, tag = "2")]
+    pub final_urls: ::std::vec::Vec<::std::string::String>,
+    /// A list of possible final mobile URLs.
+    #[prost(message, repeated, tag = "3")]
+    pub final_mobile_urls: ::std::vec::Vec<::std::string::String>,
+    /// URL template for constructing a tracking URL.
+    #[prost(message, optional, tag = "4")]
+    pub tracking_url_template: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing user list types.
+
+/// SimilarUserList is a list of users which are similar to users from another
+/// UserList. These lists are read-only and automatically created by Google.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SimilarUserListInfo {
+    /// Seed UserList from which this list is derived.
+    #[prost(message, optional, tag = "1")]
+    pub seed_user_list: ::std::option::Option<::std::string::String>,
+}
+/// UserList of CRM users provided by the advertiser.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CrmBasedUserListInfo {
+    /// A string that uniquely identifies a mobile application from which the data
+    /// was collected to the Google Ads API.
+    /// For iOS, the ID string is the 9 digit string that appears at the end of an
+    /// App Store URL (e.g., "476943146" for "Flood-It! 2" whose App Store link is
+    /// http://itunes.apple.com/us/app/flood-it!-2/id476943146).
+    /// For Android, the ID string is the application's package name
+    /// (e.g., "com.labpixies.colordrips" for "Color Drips" given Google Play link
+    /// https://play.google.com/store/apps/details?id=com.labpixies.colordrips).
+    /// Required when creating CrmBasedUserList for uploading mobile advertising
+    /// IDs.
+    #[prost(message, optional, tag = "1")]
+    pub app_id: ::std::option::Option<::std::string::String>,
+    /// Matching key type of the list.
+    /// Mixed data types are not allowed on the same list.
+    /// This field is required for an ADD operation.
+    #[prost(
+        enumeration = "super::enums::customer_match_upload_key_type_enum::CustomerMatchUploadKeyType",
+        tag = "2"
+    )]
+    pub upload_key_type: i32,
+    /// Data source of the list. Default value is FIRST_PARTY.
+    /// Only customers on the allow-list can create third-party sourced CRM lists.
+    #[prost(
+        enumeration = "super::enums::user_list_crm_data_source_type_enum::UserListCrmDataSourceType",
+        tag = "3"
+    )]
+    pub data_source_type: i32,
+}
+/// A client defined rule based on custom parameters sent by web sites or
+/// uploaded by the advertiser.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListRuleInfo {
+    /// Rule type is used to determine how to group rule items.
+    ///
+    /// The default is OR of ANDs (disjunctive normal form).
+    /// That is, rule items will be ANDed together within rule item groups and the
+    /// groups themselves will be ORed together.
+    ///
+    /// Currently AND of ORs (conjunctive normal form) is only supported for
+    /// ExpressionRuleUserList.
+    #[prost(
+        enumeration = "super::enums::user_list_rule_type_enum::UserListRuleType",
+        tag = "1"
+    )]
+    pub rule_type: i32,
+    /// List of rule item groups that defines this rule.
+    /// Rule item groups are grouped together based on rule_type.
+    #[prost(message, repeated, tag = "2")]
+    pub rule_item_groups: ::std::vec::Vec<UserListRuleItemGroupInfo>,
+}
+/// A group of rule items.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListRuleItemGroupInfo {
+    /// Rule items that will be grouped together based on rule_type.
+    #[prost(message, repeated, tag = "1")]
+    pub rule_items: ::std::vec::Vec<UserListRuleItemInfo>,
+}
+/// An atomic rule item.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListRuleItemInfo {
+    /// Rule variable name. It should match the corresponding key name fired
+    /// by the pixel.
+    /// A name must begin with US-ascii letters or underscore or UTF8 code that is
+    /// greater than 127 and consist of US-ascii letters or digits or underscore or
+    /// UTF8 code that is greater than 127.
+    /// For websites, there are two built-in variable URL (name = 'url__') and
+    /// referrer URL (name = 'ref_url__').
+    /// This field must be populated when creating a new rule item.
+    #[prost(message, optional, tag = "1")]
+    pub name: ::std::option::Option<::std::string::String>,
+    /// An atomic rule item.
+    #[prost(oneof = "user_list_rule_item_info::RuleItem", tags = "2, 3, 4")]
+    pub rule_item: ::std::option::Option<user_list_rule_item_info::RuleItem>,
+}
+pub mod user_list_rule_item_info {
+    /// An atomic rule item.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RuleItem {
+        /// An atomic rule item composed of a number operation.
+        #[prost(message, tag = "2")]
+        NumberRuleItem(super::UserListNumberRuleItemInfo),
+        /// An atomic rule item composed of a string operation.
+        #[prost(message, tag = "3")]
+        StringRuleItem(super::UserListStringRuleItemInfo),
+        /// An atomic rule item composed of a date operation.
+        #[prost(message, tag = "4")]
+        DateRuleItem(super::UserListDateRuleItemInfo),
+    }
+}
+/// A rule item composed of a date operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListDateRuleItemInfo {
+    /// Date comparison operator.
+    /// This field is required and must be populated when creating new date
+    /// rule item.
+    #[prost(
+        enumeration = "super::enums::user_list_date_rule_item_operator_enum::UserListDateRuleItemOperator",
+        tag = "1"
+    )]
+    pub operator: i32,
+    /// String representing date value to be compared with the rule variable.
+    /// Supported date format is YYYY-MM-DD.
+    /// Times are reported in the customer's time zone.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::std::option::Option<::std::string::String>,
+    /// The relative date value of the right hand side denoted by number of days
+    /// offset from now. The value field will override this field when both are
+    /// present.
+    #[prost(message, optional, tag = "3")]
+    pub offset_in_days: ::std::option::Option<i64>,
+}
+/// A rule item composed of a number operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListNumberRuleItemInfo {
+    /// Number comparison operator.
+    /// This field is required and must be populated when creating a new number
+    /// rule item.
+    #[prost(
+        enumeration = "super::enums::user_list_number_rule_item_operator_enum::UserListNumberRuleItemOperator",
+        tag = "1"
+    )]
+    pub operator: i32,
+    /// Number value to be compared with the variable.
+    /// This field is required and must be populated when creating a new number
+    /// rule item.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::std::option::Option<f64>,
+}
+/// A rule item composed of a string operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListStringRuleItemInfo {
+    /// String comparison operator.
+    /// This field is required and must be populated when creating a new string
+    /// rule item.
+    #[prost(
+        enumeration = "super::enums::user_list_string_rule_item_operator_enum::UserListStringRuleItemOperator",
+        tag = "1"
+    )]
+    pub operator: i32,
+    /// The right hand side of the string rule item. For URLs or referrer URLs,
+    /// the value can not contain illegal URL chars such as newlines, quotes,
+    /// tabs, or parentheses. This field is required and must be populated when
+    /// creating a new string rule item.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::std::option::Option<::std::string::String>,
+}
+/// User lists defined by combining two rules, left operand and right operand.
+/// There are two operators: AND where left operand and right operand have to be
+/// true; AND_NOT where left operand is true but right operand is false.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CombinedRuleUserListInfo {
+    /// Left operand of the combined rule.
+    /// This field is required and must be populated when creating new combined
+    /// rule based user list.
+    #[prost(message, optional, tag = "1")]
+    pub left_operand: ::std::option::Option<UserListRuleInfo>,
+    /// Right operand of the combined rule.
+    /// This field is required and must be populated when creating new combined
+    /// rule based user list.
+    #[prost(message, optional, tag = "2")]
+    pub right_operand: ::std::option::Option<UserListRuleInfo>,
+    /// Operator to connect the two operands.
+    ///
+    /// Required for creating a combined rule user list.
+    #[prost(
+        enumeration = "super::enums::user_list_combined_rule_operator_enum::UserListCombinedRuleOperator",
+        tag = "3"
+    )]
+    pub rule_operator: i32,
+}
+/// Visitors of a page during specific dates.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DateSpecificRuleUserListInfo {
+    /// Boolean rule that defines visitor of a page.
+    ///
+    /// Required for creating a date specific rule user list.
+    #[prost(message, optional, tag = "1")]
+    pub rule: ::std::option::Option<UserListRuleInfo>,
+    /// Start date of users visit. If set to 2000-01-01, then the list includes all
+    /// users before end_date. The date's format should be YYYY-MM-DD.
+    ///
+    /// Required for creating a data specific rule user list.
+    #[prost(message, optional, tag = "2")]
+    pub start_date: ::std::option::Option<::std::string::String>,
+    /// End date of users visit. If set to 2037-12-30, then the list includes all
+    /// users after start_date. The date's format should be YYYY-MM-DD.
+    ///
+    /// Required for creating a data specific rule user list.
+    #[prost(message, optional, tag = "3")]
+    pub end_date: ::std::option::Option<::std::string::String>,
+}
+/// Visitors of a page. The page visit is defined by one boolean rule expression.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExpressionRuleUserListInfo {
+    /// Boolean rule that defines this user list. The rule consists of a list of
+    /// rule item groups and each rule item group consists of a list of rule items.
+    /// All the rule item groups are ORed or ANDed together for evaluation based on
+    /// rule.rule_type.
+    ///
+    /// Required for creating an expression rule user list.
+    #[prost(message, optional, tag = "1")]
+    pub rule: ::std::option::Option<UserListRuleInfo>,
+}
+/// Representation of a userlist that is generated by a rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RuleBasedUserListInfo {
+    /// The status of pre-population. The field is default to NONE if not set which
+    /// means the previous users will not be considered. If set to REQUESTED, past
+    /// site visitors or app users who match the list definition will be included
+    /// in the list (works on the Display Network only). This will only
+    /// add past users from within the last 30 days, depending on the
+    /// list's membership duration and the date when the remarketing tag is added.
+    /// The status will be updated to FINISHED once request is processed, or FAILED
+    /// if the request fails.
+    #[prost(
+        enumeration = "super::enums::user_list_prepopulation_status_enum::UserListPrepopulationStatus",
+        tag = "1"
+    )]
+    pub prepopulation_status: i32,
+    /// Subtypes of rule based user lists.
+    #[prost(
+        oneof = "rule_based_user_list_info::RuleBasedUserList",
+        tags = "2, 3, 4"
+    )]
+    pub rule_based_user_list: ::std::option::Option<rule_based_user_list_info::RuleBasedUserList>,
+}
+pub mod rule_based_user_list_info {
+    /// Subtypes of rule based user lists.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RuleBasedUserList {
+        /// User lists defined by combining two rules.
+        /// There are two operators: AND, where the left and right operands have to
+        /// be true; AND_NOT where left operand is true but right operand is false.
+        #[prost(message, tag = "2")]
+        CombinedRuleUserList(super::CombinedRuleUserListInfo),
+        /// Visitors of a page during specific dates. The visiting periods are
+        /// defined as follows:
+        /// Between start_date (inclusive) and end_date (inclusive);
+        /// Before end_date (exclusive) with start_date = 2000-01-01;
+        /// After start_date (exclusive) with end_date = 2037-12-30.
+        #[prost(message, tag = "3")]
+        DateSpecificRuleUserList(super::DateSpecificRuleUserListInfo),
+        /// Visitors of a page. The page visit is defined by one boolean rule
+        /// expression.
+        #[prost(message, tag = "4")]
+        ExpressionRuleUserList(super::ExpressionRuleUserListInfo),
+    }
+}
+/// Represents a user list that is a custom combination of user lists.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LogicalUserListInfo {
+    /// Logical list rules that define this user list. The rules are defined as a
+    /// logical operator (ALL/ANY/NONE) and a list of user lists. All the rules are
+    /// ANDed when they are evaluated.
+    ///
+    /// Required for creating a logical user list.
+    #[prost(message, repeated, tag = "1")]
+    pub rules: ::std::vec::Vec<UserListLogicalRuleInfo>,
+}
+/// A user list logical rule. A rule has a logical operator (and/or/not) and a
+/// list of user lists as operands.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListLogicalRuleInfo {
+    /// The logical operator of the rule.
+    #[prost(
+        enumeration = "super::enums::user_list_logical_rule_operator_enum::UserListLogicalRuleOperator",
+        tag = "1"
+    )]
+    pub operator: i32,
+    /// The list of operands of the rule.
+    #[prost(message, repeated, tag = "2")]
+    pub rule_operands: ::std::vec::Vec<LogicalUserListOperandInfo>,
+}
+/// Operand of logical user list that consists of a user list.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LogicalUserListOperandInfo {
+    /// Resource name of a user list as an operand.
+    #[prost(message, optional, tag = "1")]
+    pub user_list: ::std::option::Option<::std::string::String>,
+}
+/// User list targeting as a collection of conversions or remarketing actions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BasicUserListInfo {
+    /// Actions associated with this user list.
+    #[prost(message, repeated, tag = "1")]
+    pub actions: ::std::vec::Vec<UserListActionInfo>,
+}
+/// Represents an action type used for building remarketing user lists.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListActionInfo {
+    /// Subtypes of user list action.
+    #[prost(oneof = "user_list_action_info::UserListAction", tags = "1, 2")]
+    pub user_list_action: ::std::option::Option<user_list_action_info::UserListAction>,
+}
+pub mod user_list_action_info {
+    /// Subtypes of user list action.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum UserListAction {
+        /// A conversion action that's not generated from remarketing.
+        #[prost(message, tag = "1")]
+        ConversionAction(::std::string::String),
+        /// A remarketing action.
+        #[prost(message, tag = "2")]
+        RemarketingAction(::std::string::String),
+    }
+}
+// Proto file describing value types
+
+/// A generic data container.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Value {
+    /// A value.
+    #[prost(oneof = "value::Value", tags = "1, 2, 3, 4, 5")]
+    pub value: ::std::option::Option<value::Value>,
+}
+pub mod value {
+    /// A value.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// A boolean.
+        #[prost(bool, tag = "1")]
+        BooleanValue(bool),
+        /// An int64.
+        #[prost(int64, tag = "2")]
+        Int64Value(i64),
+        /// A float.
+        #[prost(float, tag = "3")]
+        FloatValue(f32),
+        /// A double.
+        #[prost(double, tag = "4")]
+        DoubleValue(f64),
+        /// A string.
+        #[prost(string, tag = "5")]
+        StringValue(std::string::String),
+    }
 }
