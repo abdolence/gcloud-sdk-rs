@@ -51,6 +51,9 @@ pub struct SecretVersion {
     /// Output only. The current state of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(enumeration = "secret_version::State", tag = "4")]
     pub state: i32,
+    /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    #[prost(message, optional, tag = "5")]
+    pub replication_status: ::std::option::Option<ReplicationStatus>,
 }
 pub mod secret_version {
     /// The state of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion], indicating if it can be accessed.
@@ -70,8 +73,7 @@ pub mod secret_version {
         Destroyed = 3,
     }
 }
-/// A policy that defines the replication configuration of data.
-///
+/// A policy that defines the replication and encryption configuration of data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Replication {
     /// The replication policy for this secret.
@@ -82,7 +84,16 @@ pub mod replication {
     /// A replication policy that replicates the [Secret][google.cloud.secretmanager.v1.Secret] payload without any
     /// restrictions.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Automatic {}
+    pub struct Automatic {
+        /// Optional. The customer-managed encryption configuration of the [Secret][google.cloud.secretmanager.v1.Secret]. If no
+        /// configuration is provided, Google-managed default encryption is used.
+        ///
+        /// Updates to the [Secret][google.cloud.secretmanager.v1.Secret] encryption configuration only apply to
+        /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added afterwards. They do not apply
+        /// retroactively to existing [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+        #[prost(message, optional, tag = "1")]
+        pub customer_managed_encryption: ::std::option::Option<super::CustomerManagedEncryption>,
+    }
     /// A replication policy that replicates the [Secret][google.cloud.secretmanager.v1.Secret] payload into the
     /// locations specified in [Secret.replication.user_managed.replicas][]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -101,6 +112,16 @@ pub mod replication {
             /// For example: `"us-east1"`.
             #[prost(string, tag = "1")]
             pub location: std::string::String,
+            /// Optional. The customer-managed encryption configuration of the [User-Managed
+            /// Replica][Replication.UserManaged.Replica]. If no configuration is
+            /// provided, Google-managed default encryption is used.
+            ///
+            /// Updates to the [Secret][google.cloud.secretmanager.v1.Secret] encryption configuration only apply to
+            /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added afterwards. They do not apply
+            /// retroactively to existing [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+            #[prost(message, optional, tag = "2")]
+            pub customer_managed_encryption:
+                ::std::option::Option<super::super::CustomerManagedEncryption>,
         }
     }
     /// The replication policy for this secret.
@@ -113,6 +134,98 @@ pub mod replication {
         #[prost(message, tag = "2")]
         UserManaged(UserManaged),
     }
+}
+/// Configuration for encrypting secret payloads using customer-managed
+/// encryption keys (CMEK).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerManagedEncryption {
+    /// Required. The resource name of the Cloud KMS CryptoKey used to encrypt secret
+    /// payloads.
+    ///
+    /// For secrets using the [UserManaged][google.cloud.secretmanager.v1.Replication.UserManaged] replication
+    /// policy type, Cloud KMS CryptoKeys must reside in the same location as the
+    /// [replica location][Secret.UserManaged.Replica.location].
+    ///
+    /// For secrets using the [Automatic][google.cloud.secretmanager.v1.Replication.Automatic] replication policy
+    /// type, Cloud KMS CryptoKeys must reside in `global`.
+    ///
+    /// The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+    #[prost(string, tag = "1")]
+    pub kms_key_name: std::string::String,
+}
+/// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReplicationStatus {
+    /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    #[prost(oneof = "replication_status::ReplicationStatus", tags = "1, 2")]
+    pub replication_status: ::std::option::Option<replication_status::ReplicationStatus>,
+}
+pub mod replication_status {
+    /// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using automatic replication.
+    ///
+    /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has an automatic replication
+    /// policy.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutomaticStatus {
+        /// Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
+        /// populated if customer-managed encryption is used.
+        #[prost(message, optional, tag = "1")]
+        pub customer_managed_encryption:
+            ::std::option::Option<super::CustomerManagedEncryptionStatus>,
+    }
+    /// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using user-managed
+    /// replication.
+    ///
+    /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has a user-managed replication
+    /// policy.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UserManagedStatus {
+        /// Output only. The list of replica statuses for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+        #[prost(message, repeated, tag = "1")]
+        pub replicas: ::std::vec::Vec<user_managed_status::ReplicaStatus>,
+    }
+    pub mod user_managed_status {
+        /// Describes the status of a user-managed replica for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ReplicaStatus {
+            /// Output only. The canonical ID of the replica location.
+            /// For example: `"us-east1"`.
+            #[prost(string, tag = "1")]
+            pub location: std::string::String,
+            /// Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
+            /// populated if customer-managed encryption is used.
+            #[prost(message, optional, tag = "2")]
+            pub customer_managed_encryption:
+                ::std::option::Option<super::super::CustomerManagedEncryptionStatus>,
+        }
+    }
+    /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ReplicationStatus {
+        /// Describes the replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+        /// automatic replication.
+        ///
+        /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has an automatic replication
+        /// policy.
+        #[prost(message, tag = "1")]
+        Automatic(AutomaticStatus),
+        /// Describes the replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+        /// user-managed replication.
+        ///
+        /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has a user-managed replication
+        /// policy.
+        #[prost(message, tag = "2")]
+        UserManaged(UserManagedStatus),
+    }
+}
+/// Describes the status of customer-managed encryption.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerManagedEncryptionStatus {
+    /// Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the
+    /// secret payload, in the following format:
+    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.
+    #[prost(string, tag = "1")]
+    pub kms_key_version_name: std::string::String,
 }
 /// A secret payload resource in the Secret Manager API. This contains the
 /// sensitive secret payload that is associated with a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].

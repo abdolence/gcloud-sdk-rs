@@ -1,3 +1,926 @@
+// Proto file describing assets used inside an ad.
+
+/// A text asset used inside an ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdTextAsset {
+    /// Asset text.
+    #[prost(message, optional, tag = "1")]
+    pub text: ::std::option::Option<::std::string::String>,
+    /// The pinned field of the asset. This restricts the asset to only serve
+    /// within this field. Multiple assets can be pinned to the same field. An
+    /// asset that is unpinned or pinned to a different field will not serve in a
+    /// field where some other asset has been pinned.
+    #[prost(
+        enumeration = "super::enums::served_asset_field_type_enum::ServedAssetFieldType",
+        tag = "2"
+    )]
+    pub pinned_field: i32,
+}
+/// An image asset used inside an ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdImageAsset {
+    /// The Asset resource name of this image.
+    #[prost(message, optional, tag = "1")]
+    pub asset: ::std::option::Option<::std::string::String>,
+}
+/// A video asset used inside an ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdVideoAsset {
+    /// The Asset resource name of this video.
+    #[prost(message, optional, tag = "1")]
+    pub asset: ::std::option::Option<::std::string::String>,
+}
+/// A media bundle asset used inside an ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdMediaBundleAsset {
+    /// The Asset resource name of this media bundle.
+    #[prost(message, optional, tag = "1")]
+    pub asset: ::std::option::Option<::std::string::String>,
+}
+// Proto file containing info messages for specific ad types.
+
+/// A text ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextAdInfo {
+    /// The headline of the ad.
+    #[prost(message, optional, tag = "1")]
+    pub headline: ::std::option::Option<::std::string::String>,
+    /// The first line of the ad's description.
+    #[prost(message, optional, tag = "2")]
+    pub description1: ::std::option::Option<::std::string::String>,
+    /// The second line of the ad's description.
+    #[prost(message, optional, tag = "3")]
+    pub description2: ::std::option::Option<::std::string::String>,
+}
+/// An expanded text ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExpandedTextAdInfo {
+    /// The first part of the ad's headline.
+    #[prost(message, optional, tag = "1")]
+    pub headline_part1: ::std::option::Option<::std::string::String>,
+    /// The second part of the ad's headline.
+    #[prost(message, optional, tag = "2")]
+    pub headline_part2: ::std::option::Option<::std::string::String>,
+    /// The third part of the ad's headline.
+    #[prost(message, optional, tag = "6")]
+    pub headline_part3: ::std::option::Option<::std::string::String>,
+    /// The description of the ad.
+    #[prost(message, optional, tag = "3")]
+    pub description: ::std::option::Option<::std::string::String>,
+    /// The second description of the ad.
+    #[prost(message, optional, tag = "7")]
+    pub description2: ::std::option::Option<::std::string::String>,
+    /// The text that can appear alongside the ad's displayed URL.
+    #[prost(message, optional, tag = "4")]
+    pub path1: ::std::option::Option<::std::string::String>,
+    /// Additional text that can appear alongside the ad's displayed URL.
+    #[prost(message, optional, tag = "5")]
+    pub path2: ::std::option::Option<::std::string::String>,
+}
+/// A call-only ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CallOnlyAdInfo {
+    /// The country code in the ad.
+    #[prost(message, optional, tag = "1")]
+    pub country_code: ::std::option::Option<::std::string::String>,
+    /// The phone number in the ad.
+    #[prost(message, optional, tag = "2")]
+    pub phone_number: ::std::option::Option<::std::string::String>,
+    /// The business name in the ad.
+    #[prost(message, optional, tag = "3")]
+    pub business_name: ::std::option::Option<::std::string::String>,
+    /// First headline in the ad.
+    #[prost(message, optional, tag = "11")]
+    pub headline1: ::std::option::Option<::std::string::String>,
+    /// Second headline in the ad.
+    #[prost(message, optional, tag = "12")]
+    pub headline2: ::std::option::Option<::std::string::String>,
+    /// The first line of the ad's description.
+    #[prost(message, optional, tag = "4")]
+    pub description1: ::std::option::Option<::std::string::String>,
+    /// The second line of the ad's description.
+    #[prost(message, optional, tag = "5")]
+    pub description2: ::std::option::Option<::std::string::String>,
+    /// Whether to enable call tracking for the creative. Enabling call
+    /// tracking also enables call conversions.
+    #[prost(message, optional, tag = "6")]
+    pub call_tracked: ::std::option::Option<bool>,
+    /// Whether to disable call conversion for the creative.
+    /// If set to `true`, disables call conversions even when `call_tracked` is
+    /// `true`.
+    /// If `call_tracked` is `false`, this field is ignored.
+    #[prost(message, optional, tag = "7")]
+    pub disable_call_conversion: ::std::option::Option<bool>,
+    /// The URL to be used for phone number verification.
+    #[prost(message, optional, tag = "8")]
+    pub phone_number_verification_url: ::std::option::Option<::std::string::String>,
+    /// The conversion action to attribute a call conversion to. If not set a
+    /// default conversion action is used. This field only has effect if
+    /// call_tracked is set to true. Otherwise this field is ignored.
+    #[prost(message, optional, tag = "9")]
+    pub conversion_action: ::std::option::Option<::std::string::String>,
+    /// The call conversion behavior of this call only ad. It can use its own call
+    /// conversion setting, inherit the account level setting, or be disabled.
+    #[prost(
+        enumeration = "super::enums::call_conversion_reporting_state_enum::CallConversionReportingState",
+        tag = "10"
+    )]
+    pub conversion_reporting_state: i32,
+}
+/// An expanded dynamic search ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExpandedDynamicSearchAdInfo {
+    /// The description of the ad.
+    #[prost(message, optional, tag = "1")]
+    pub description: ::std::option::Option<::std::string::String>,
+    /// The second description of the ad.
+    #[prost(message, optional, tag = "2")]
+    pub description2: ::std::option::Option<::std::string::String>,
+}
+/// A hotel ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HotelAdInfo {}
+/// A Smart Shopping ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShoppingSmartAdInfo {}
+/// A standard Shopping ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShoppingProductAdInfo {}
+/// A Shopping Comparison Listing ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShoppingComparisonListingAdInfo {
+    /// Headline of the ad. This field is required. Allowed length is between 25
+    /// and 45 characters.
+    #[prost(message, optional, tag = "1")]
+    pub headline: ::std::option::Option<::std::string::String>,
+}
+/// A Gmail ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GmailAdInfo {
+    /// The Gmail teaser.
+    #[prost(message, optional, tag = "1")]
+    pub teaser: ::std::option::Option<GmailTeaser>,
+    /// The MediaFile resource name of the header image. Valid image types are GIF,
+    /// JPEG and PNG. The minimum size is 300x100 pixels and the aspect ratio must
+    /// be between 3:1 and 5:1 (+-1%).
+    #[prost(message, optional, tag = "2")]
+    pub header_image: ::std::option::Option<::std::string::String>,
+    /// The MediaFile resource name of the marketing image. Valid image types are
+    /// GIF, JPEG and PNG. The image must either be landscape with a minimum size
+    /// of 600x314 pixels and aspect ratio of 600:314 (+-1%) or square with a
+    /// minimum size of 300x300 pixels and aspect ratio of 1:1 (+-1%)
+    #[prost(message, optional, tag = "3")]
+    pub marketing_image: ::std::option::Option<::std::string::String>,
+    /// Headline of the marketing image.
+    #[prost(message, optional, tag = "4")]
+    pub marketing_image_headline: ::std::option::Option<::std::string::String>,
+    /// Description of the marketing image.
+    #[prost(message, optional, tag = "5")]
+    pub marketing_image_description: ::std::option::Option<::std::string::String>,
+    /// Display-call-to-action of the marketing image.
+    #[prost(message, optional, tag = "6")]
+    pub marketing_image_display_call_to_action: ::std::option::Option<DisplayCallToAction>,
+    /// Product images. Up to 15 images are supported.
+    #[prost(message, repeated, tag = "7")]
+    pub product_images: ::std::vec::Vec<ProductImage>,
+    /// Product videos. Up to 7 videos are supported. At least one product video
+    /// or a marketing image must be specified.
+    #[prost(message, repeated, tag = "8")]
+    pub product_videos: ::std::vec::Vec<ProductVideo>,
+}
+/// Gmail teaser data. The teaser is a small header that acts as an invitation
+/// to view the rest of the ad (the body).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GmailTeaser {
+    /// Headline of the teaser.
+    #[prost(message, optional, tag = "1")]
+    pub headline: ::std::option::Option<::std::string::String>,
+    /// Description of the teaser.
+    #[prost(message, optional, tag = "2")]
+    pub description: ::std::option::Option<::std::string::String>,
+    /// Business name of the advertiser.
+    #[prost(message, optional, tag = "3")]
+    pub business_name: ::std::option::Option<::std::string::String>,
+    /// The MediaFile resource name of the logo image. Valid image types are GIF,
+    /// JPEG and PNG. The minimum size is 144x144 pixels and the aspect ratio must
+    /// be 1:1 (+-1%).
+    #[prost(message, optional, tag = "4")]
+    pub logo_image: ::std::option::Option<::std::string::String>,
+}
+/// Data for display call to action. The call to action is a piece of the ad
+/// that prompts the user to do something. Like clicking a link or making a phone
+/// call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisplayCallToAction {
+    /// Text for the display-call-to-action.
+    #[prost(message, optional, tag = "1")]
+    pub text: ::std::option::Option<::std::string::String>,
+    /// Text color for the display-call-to-action in hexadecimal, e.g. #ffffff for
+    /// white.
+    #[prost(message, optional, tag = "2")]
+    pub text_color: ::std::option::Option<::std::string::String>,
+    /// Identifies the url collection in the ad.url_collections field. If not set
+    /// the url defaults to final_url.
+    #[prost(message, optional, tag = "3")]
+    pub url_collection_id: ::std::option::Option<::std::string::String>,
+}
+/// Product image specific data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProductImage {
+    /// The MediaFile resource name of the product image. Valid image types are
+    /// GIF, JPEG and PNG. The minimum size is 300x300 pixels and the aspect ratio
+    /// must be 1:1 (+-1%).
+    #[prost(message, optional, tag = "1")]
+    pub product_image: ::std::option::Option<::std::string::String>,
+    /// Description of the product.
+    #[prost(message, optional, tag = "2")]
+    pub description: ::std::option::Option<::std::string::String>,
+    /// Display-call-to-action of the product image.
+    #[prost(message, optional, tag = "3")]
+    pub display_call_to_action: ::std::option::Option<DisplayCallToAction>,
+}
+/// Product video specific data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProductVideo {
+    /// The MediaFile resource name of a video which must be hosted on YouTube.
+    #[prost(message, optional, tag = "1")]
+    pub product_video: ::std::option::Option<::std::string::String>,
+}
+/// An image ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageAdInfo {
+    /// Width in pixels of the full size image.
+    #[prost(message, optional, tag = "4")]
+    pub pixel_width: ::std::option::Option<i64>,
+    /// Height in pixels of the full size image.
+    #[prost(message, optional, tag = "5")]
+    pub pixel_height: ::std::option::Option<i64>,
+    /// URL of the full size image.
+    #[prost(message, optional, tag = "6")]
+    pub image_url: ::std::option::Option<::std::string::String>,
+    /// Width in pixels of the preview size image.
+    #[prost(message, optional, tag = "7")]
+    pub preview_pixel_width: ::std::option::Option<i64>,
+    /// Height in pixels of the preview size image.
+    #[prost(message, optional, tag = "8")]
+    pub preview_pixel_height: ::std::option::Option<i64>,
+    /// URL of the preview size image.
+    #[prost(message, optional, tag = "9")]
+    pub preview_image_url: ::std::option::Option<::std::string::String>,
+    /// The mime type of the image.
+    #[prost(enumeration = "super::enums::mime_type_enum::MimeType", tag = "10")]
+    pub mime_type: i32,
+    /// The name of the image. If the image was created from a MediaFile, this is
+    /// the MediaFile's name. If the image was created from bytes, this is empty.
+    #[prost(message, optional, tag = "11")]
+    pub name: ::std::option::Option<::std::string::String>,
+    /// The image to create the ImageAd from. This can be specified in one of
+    /// two ways.
+    /// 1. An existing MediaFile resource.
+    /// 2. The raw image data as bytes.
+    #[prost(oneof = "image_ad_info::Image", tags = "1, 2, 3")]
+    pub image: ::std::option::Option<image_ad_info::Image>,
+}
+pub mod image_ad_info {
+    /// The image to create the ImageAd from. This can be specified in one of
+    /// two ways.
+    /// 1. An existing MediaFile resource.
+    /// 2. The raw image data as bytes.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Image {
+        /// The MediaFile resource to use for the image.
+        #[prost(message, tag = "1")]
+        MediaFile(::std::string::String),
+        /// Raw image data as bytes.
+        #[prost(message, tag = "2")]
+        Data(::std::vec::Vec<u8>),
+        /// An ad ID to copy the image from.
+        #[prost(message, tag = "3")]
+        AdIdToCopyImageFrom(i64),
+    }
+}
+/// Representation of video bumper in-stream ad format (very short in-stream
+/// non-skippable video ad).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VideoBumperInStreamAdInfo {
+    /// The MediaFile resource name of the companion banner used with the ad.
+    #[prost(message, optional, tag = "1")]
+    pub companion_banner: ::std::option::Option<::std::string::String>,
+}
+/// Representation of video non-skippable in-stream ad format (15 second
+/// in-stream non-skippable video ad).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VideoNonSkippableInStreamAdInfo {
+    /// The MediaFile resource name of the companion banner used with the ad.
+    #[prost(message, optional, tag = "1")]
+    pub companion_banner: ::std::option::Option<::std::string::String>,
+}
+/// Representation of video TrueView in-stream ad format (ad shown during video
+/// playback, often at beginning, which displays a skip button a few seconds into
+/// the video).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VideoTrueViewInStreamAdInfo {
+    /// Label on the CTA (call-to-action) button taking the user to the video ad's
+    /// final URL.
+    /// Required for TrueView for action campaigns, optional otherwise.
+    #[prost(message, optional, tag = "1")]
+    pub action_button_label: ::std::option::Option<::std::string::String>,
+    /// Additional text displayed with the CTA (call-to-action) button to give
+    /// context and encourage clicking on the button.
+    #[prost(message, optional, tag = "2")]
+    pub action_headline: ::std::option::Option<::std::string::String>,
+    /// The MediaFile resource name of the companion banner used with the ad.
+    #[prost(message, optional, tag = "3")]
+    pub companion_banner: ::std::option::Option<::std::string::String>,
+}
+/// Representation of video out-stream ad format (ad shown alongside a feed
+/// with automatic playback, without sound).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VideoOutstreamAdInfo {
+    /// The headline of the ad.
+    #[prost(message, optional, tag = "1")]
+    pub headline: ::std::option::Option<::std::string::String>,
+    /// The description line.
+    #[prost(message, optional, tag = "2")]
+    pub description: ::std::option::Option<::std::string::String>,
+}
+/// A video ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VideoAdInfo {
+    /// The MediaFile resource to use for the video.
+    #[prost(message, optional, tag = "1")]
+    pub media_file: ::std::option::Option<::std::string::String>,
+    /// Format-specific schema for the different video formats.
+    #[prost(oneof = "video_ad_info::Format", tags = "2, 3, 4, 5")]
+    pub format: ::std::option::Option<video_ad_info::Format>,
+}
+pub mod video_ad_info {
+    /// Format-specific schema for the different video formats.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Format {
+        /// Video TrueView in-stream ad format.
+        #[prost(message, tag = "2")]
+        InStream(super::VideoTrueViewInStreamAdInfo),
+        /// Video bumper in-stream ad format.
+        #[prost(message, tag = "3")]
+        Bumper(super::VideoBumperInStreamAdInfo),
+        /// Video out-stream ad format.
+        #[prost(message, tag = "4")]
+        OutStream(super::VideoOutstreamAdInfo),
+        /// Video non-skippable in-stream ad format.
+        #[prost(message, tag = "5")]
+        NonSkippable(super::VideoNonSkippableInStreamAdInfo),
+    }
+}
+/// A responsive search ad.
+///
+/// Responsive search ads let you create an ad that adapts to show more text, and
+/// more relevant messages, to your customers. Enter multiple headlines and
+/// descriptions when creating a responsive search ad, and over time, Google Ads
+/// will automatically test different combinations and learn which combinations
+/// perform best. By adapting your ad's content to more closely match potential
+/// customers' search terms, responsive search ads may improve your campaign's
+/// performance.
+///
+/// More information at https://support.google.com/google-ads/answer/7684791
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResponsiveSearchAdInfo {
+    /// List of text assets for headlines. When the ad serves the headlines will
+    /// be selected from this list.
+    #[prost(message, repeated, tag = "1")]
+    pub headlines: ::std::vec::Vec<AdTextAsset>,
+    /// List of text assets for descriptions. When the ad serves the descriptions
+    /// will be selected from this list.
+    #[prost(message, repeated, tag = "2")]
+    pub descriptions: ::std::vec::Vec<AdTextAsset>,
+    /// First part of text that may appear appended to the url displayed in the ad.
+    #[prost(message, optional, tag = "3")]
+    pub path1: ::std::option::Option<::std::string::String>,
+    /// Second part of text that may appear appended to the url displayed in the
+    /// ad. This field can only be set when path1 is also set.
+    #[prost(message, optional, tag = "4")]
+    pub path2: ::std::option::Option<::std::string::String>,
+}
+/// A legacy responsive display ad. Ads of this type are labeled 'Responsive ads'
+/// in the Google Ads UI.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LegacyResponsiveDisplayAdInfo {
+    /// The short version of the ad's headline.
+    #[prost(message, optional, tag = "1")]
+    pub short_headline: ::std::option::Option<::std::string::String>,
+    /// The long version of the ad's headline.
+    #[prost(message, optional, tag = "2")]
+    pub long_headline: ::std::option::Option<::std::string::String>,
+    /// The description of the ad.
+    #[prost(message, optional, tag = "3")]
+    pub description: ::std::option::Option<::std::string::String>,
+    /// The business name in the ad.
+    #[prost(message, optional, tag = "4")]
+    pub business_name: ::std::option::Option<::std::string::String>,
+    /// Advertiser's consent to allow flexible color. When true, the ad may be
+    /// served with different color if necessary. When false, the ad will be served
+    /// with the specified colors or a neutral color.
+    /// The default value is true.
+    /// Must be true if main_color and accent_color are not set.
+    #[prost(message, optional, tag = "5")]
+    pub allow_flexible_color: ::std::option::Option<bool>,
+    /// The accent color of the ad in hexadecimal, e.g. #ffffff for white.
+    /// If one of main_color and accent_color is set, the other is required as
+    /// well.
+    #[prost(message, optional, tag = "6")]
+    pub accent_color: ::std::option::Option<::std::string::String>,
+    /// The main color of the ad in hexadecimal, e.g. #ffffff for white.
+    /// If one of main_color and accent_color is set, the other is required as
+    /// well.
+    #[prost(message, optional, tag = "7")]
+    pub main_color: ::std::option::Option<::std::string::String>,
+    /// The call-to-action text for the ad.
+    #[prost(message, optional, tag = "8")]
+    pub call_to_action_text: ::std::option::Option<::std::string::String>,
+    /// The MediaFile resource name of the logo image used in the ad.
+    #[prost(message, optional, tag = "9")]
+    pub logo_image: ::std::option::Option<::std::string::String>,
+    /// The MediaFile resource name of the square logo image used in the ad.
+    #[prost(message, optional, tag = "10")]
+    pub square_logo_image: ::std::option::Option<::std::string::String>,
+    /// The MediaFile resource name of the marketing image used in the ad.
+    #[prost(message, optional, tag = "11")]
+    pub marketing_image: ::std::option::Option<::std::string::String>,
+    /// The MediaFile resource name of the square marketing image used in the ad.
+    #[prost(message, optional, tag = "12")]
+    pub square_marketing_image: ::std::option::Option<::std::string::String>,
+    /// Specifies which format the ad will be served in. Default is ALL_FORMATS.
+    #[prost(
+        enumeration = "super::enums::display_ad_format_setting_enum::DisplayAdFormatSetting",
+        tag = "13"
+    )]
+    pub format_setting: i32,
+    /// Prefix before price. E.g. 'as low as'.
+    #[prost(message, optional, tag = "14")]
+    pub price_prefix: ::std::option::Option<::std::string::String>,
+    /// Promotion text used for dyanmic formats of responsive ads. For example
+    /// 'Free two-day shipping'.
+    #[prost(message, optional, tag = "15")]
+    pub promo_text: ::std::option::Option<::std::string::String>,
+}
+/// An app ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AppAdInfo {
+    /// An optional text asset that, if specified, must always be displayed when
+    /// the ad is served.
+    #[prost(message, optional, tag = "1")]
+    pub mandatory_ad_text: ::std::option::Option<AdTextAsset>,
+    /// List of text assets for headlines. When the ad serves the headlines will
+    /// be selected from this list.
+    #[prost(message, repeated, tag = "2")]
+    pub headlines: ::std::vec::Vec<AdTextAsset>,
+    /// List of text assets for descriptions. When the ad serves the descriptions
+    /// will be selected from this list.
+    #[prost(message, repeated, tag = "3")]
+    pub descriptions: ::std::vec::Vec<AdTextAsset>,
+    /// List of image assets that may be displayed with the ad.
+    #[prost(message, repeated, tag = "4")]
+    pub images: ::std::vec::Vec<AdImageAsset>,
+    /// List of YouTube video assets that may be displayed with the ad.
+    #[prost(message, repeated, tag = "5")]
+    pub youtube_videos: ::std::vec::Vec<AdVideoAsset>,
+    /// List of media bundle assets that may be used with the ad.
+    #[prost(message, repeated, tag = "6")]
+    pub html5_media_bundles: ::std::vec::Vec<AdMediaBundleAsset>,
+}
+/// App engagement ads allow you to write text encouraging a specific action in
+/// the app, like checking in, making a purchase, or booking a flight.
+/// They allow you to send users to a specific part of your app where they can
+/// find what they're looking for easier and faster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AppEngagementAdInfo {
+    /// List of text assets for headlines. When the ad serves the headlines will
+    /// be selected from this list.
+    #[prost(message, repeated, tag = "1")]
+    pub headlines: ::std::vec::Vec<AdTextAsset>,
+    /// List of text assets for descriptions. When the ad serves the descriptions
+    /// will be selected from this list.
+    #[prost(message, repeated, tag = "2")]
+    pub descriptions: ::std::vec::Vec<AdTextAsset>,
+    /// List of image assets that may be displayed with the ad.
+    #[prost(message, repeated, tag = "3")]
+    pub images: ::std::vec::Vec<AdImageAsset>,
+    /// List of video assets that may be displayed with the ad.
+    #[prost(message, repeated, tag = "4")]
+    pub videos: ::std::vec::Vec<AdVideoAsset>,
+}
+/// A legacy app install ad that only can be used by a few select customers.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LegacyAppInstallAdInfo {
+    /// The id of the mobile app.
+    #[prost(message, optional, tag = "1")]
+    pub app_id: ::std::option::Option<::std::string::String>,
+    /// The app store the mobile app is available in.
+    #[prost(
+        enumeration = "super::enums::legacy_app_install_ad_app_store_enum::LegacyAppInstallAdAppStore",
+        tag = "2"
+    )]
+    pub app_store: i32,
+    /// The headline of the ad.
+    #[prost(message, optional, tag = "3")]
+    pub headline: ::std::option::Option<::std::string::String>,
+    /// The first description line of the ad.
+    #[prost(message, optional, tag = "4")]
+    pub description1: ::std::option::Option<::std::string::String>,
+    /// The second description line of the ad.
+    #[prost(message, optional, tag = "5")]
+    pub description2: ::std::option::Option<::std::string::String>,
+}
+/// A responsive display ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResponsiveDisplayAdInfo {
+    /// Marketing images to be used in the ad. Valid image types are GIF,
+    /// JPEG, and PNG. The minimum size is 600x314 and the aspect ratio must
+    /// be 1.91:1 (+-1%). At least one marketing_image is required. Combined with
+    /// square_marketing_images the maximum is 15.
+    #[prost(message, repeated, tag = "1")]
+    pub marketing_images: ::std::vec::Vec<AdImageAsset>,
+    /// Square marketing images to be used in the ad. Valid image types are GIF,
+    /// JPEG, and PNG. The minimum size is 300x300 and the aspect ratio must
+    /// be 1:1 (+-1%). At least one square marketing_image is required. Combined
+    /// with marketing_images the maximum is 15.
+    #[prost(message, repeated, tag = "2")]
+    pub square_marketing_images: ::std::vec::Vec<AdImageAsset>,
+    /// Logo images to be used in the ad. Valid image types are GIF,
+    /// JPEG, and PNG. The minimum size is 512x128 and the aspect ratio must
+    /// be 4:1 (+-1%). Combined with square_logo_images the maximum is 5.
+    #[prost(message, repeated, tag = "3")]
+    pub logo_images: ::std::vec::Vec<AdImageAsset>,
+    /// Square logo images to be used in the ad. Valid image types are GIF,
+    /// JPEG, and PNG. The minimum size is 128x128 and the aspect ratio must
+    /// be 1:1 (+-1%). Combined with square_logo_images the maximum is 5.
+    #[prost(message, repeated, tag = "4")]
+    pub square_logo_images: ::std::vec::Vec<AdImageAsset>,
+    /// Short format headlines for the ad. The maximum length is 30 characters.
+    /// At least 1 and max 5 headlines can be specified.
+    #[prost(message, repeated, tag = "5")]
+    pub headlines: ::std::vec::Vec<AdTextAsset>,
+    /// A required long format headline. The maximum length is 90 characters.
+    #[prost(message, optional, tag = "6")]
+    pub long_headline: ::std::option::Option<AdTextAsset>,
+    /// Descriptive texts for the ad. The maximum length is 90 characters. At
+    /// least 1 and max 5 headlines can be specified.
+    #[prost(message, repeated, tag = "7")]
+    pub descriptions: ::std::vec::Vec<AdTextAsset>,
+    /// Optional YouTube videos for the ad. A maximum of 5 videos can be specified.
+    #[prost(message, repeated, tag = "8")]
+    pub youtube_videos: ::std::vec::Vec<AdVideoAsset>,
+    /// The advertiser/brand name. Maximum display width is 25.
+    #[prost(message, optional, tag = "9")]
+    pub business_name: ::std::option::Option<::std::string::String>,
+    /// The main color of the ad in hexadecimal, e.g. #ffffff for white.
+    /// If one of main_color and accent_color is set, the other is required as
+    /// well.
+    #[prost(message, optional, tag = "10")]
+    pub main_color: ::std::option::Option<::std::string::String>,
+    /// The accent color of the ad in hexadecimal, e.g. #ffffff for white.
+    /// If one of main_color and accent_color is set, the other is required as
+    /// well.
+    #[prost(message, optional, tag = "11")]
+    pub accent_color: ::std::option::Option<::std::string::String>,
+    /// Advertiser's consent to allow flexible color. When true, the ad may be
+    /// served with different color if necessary. When false, the ad will be served
+    /// with the specified colors or a neutral color.
+    /// The default value is true.
+    /// Must be true if main_color and accent_color are not set.
+    #[prost(message, optional, tag = "12")]
+    pub allow_flexible_color: ::std::option::Option<bool>,
+    /// The call-to-action text for the ad. Maximum display width is 30.
+    #[prost(message, optional, tag = "13")]
+    pub call_to_action_text: ::std::option::Option<::std::string::String>,
+    /// Prefix before price. E.g. 'as low as'.
+    #[prost(message, optional, tag = "14")]
+    pub price_prefix: ::std::option::Option<::std::string::String>,
+    /// Promotion text used for dyanmic formats of responsive ads. For example
+    /// 'Free two-day shipping'.
+    #[prost(message, optional, tag = "15")]
+    pub promo_text: ::std::option::Option<::std::string::String>,
+    /// Specifies which format the ad will be served in. Default is ALL_FORMATS.
+    #[prost(
+        enumeration = "super::enums::display_ad_format_setting_enum::DisplayAdFormatSetting",
+        tag = "16"
+    )]
+    pub format_setting: i32,
+}
+/// A generic type of display ad. The exact ad format is controlled by the
+/// display_upload_product_type field, which determines what kinds of data
+/// need to be included with the ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisplayUploadAdInfo {
+    /// The product type of this ad. See comments on the enum for details.
+    #[prost(
+        enumeration = "super::enums::display_upload_product_type_enum::DisplayUploadProductType",
+        tag = "1"
+    )]
+    pub display_upload_product_type: i32,
+    /// The asset data that makes up the ad.
+    #[prost(oneof = "display_upload_ad_info::MediaAsset", tags = "2")]
+    pub media_asset: ::std::option::Option<display_upload_ad_info::MediaAsset>,
+}
+pub mod display_upload_ad_info {
+    /// The asset data that makes up the ad.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MediaAsset {
+        /// A media bundle asset to be used in the ad. For information about the
+        /// media bundle for HTML5_UPLOAD_AD see
+        /// https://support.google.com/google-ads/answer/1722096
+        /// Media bundles that are part of dynamic product types use a special format
+        /// that needs to be created through the Google Web Designer. See
+        /// https://support.google.com/webdesigner/answer/7543898 for more
+        /// information.
+        #[prost(message, tag = "2")]
+        MediaBundle(super::AdMediaBundleAsset),
+    }
+}
+// Proto file containing info messages for specific asset types.
+
+/// A YouTube asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct YoutubeVideoAsset {
+    /// YouTube video id. This is the 11 character string value used in the
+    /// YouTube video URL.
+    #[prost(message, optional, tag = "1")]
+    pub youtube_video_id: ::std::option::Option<::std::string::String>,
+}
+/// A MediaBundle asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MediaBundleAsset {
+    /// Media bundle (ZIP file) asset data. The format of the uploaded ZIP file
+    /// depends on the ad field where it will be used. For more information on the
+    /// format, see the documentation of the ad field where you plan on using the
+    /// MediaBundleAsset. This field is mutate only.
+    #[prost(message, optional, tag = "1")]
+    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
+}
+/// An Image asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageAsset {
+    /// The raw bytes data of an image. This field is mutate only.
+    #[prost(message, optional, tag = "1")]
+    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
+    /// File size of the image asset in bytes.
+    #[prost(message, optional, tag = "2")]
+    pub file_size: ::std::option::Option<i64>,
+    /// MIME type of the image asset.
+    #[prost(enumeration = "super::enums::mime_type_enum::MimeType", tag = "3")]
+    pub mime_type: i32,
+    /// Metadata for this image at its original size.
+    #[prost(message, optional, tag = "4")]
+    pub full_size: ::std::option::Option<ImageDimension>,
+}
+/// Metadata for an image at a certain size, either original or resized.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageDimension {
+    /// Height of the image.
+    #[prost(message, optional, tag = "1")]
+    pub height_pixels: ::std::option::Option<i64>,
+    /// Width of the image.
+    #[prost(message, optional, tag = "2")]
+    pub width_pixels: ::std::option::Option<i64>,
+    /// A URL that returns the image with this height and width.
+    #[prost(message, optional, tag = "3")]
+    pub url: ::std::option::Option<::std::string::String>,
+}
+/// A Text asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextAsset {
+    /// Text content of the text asset.
+    #[prost(message, optional, tag = "1")]
+    pub text: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing bidding schemes.
+
+/// Commission is an automatic bidding strategy in which the advertiser pays a
+/// certain portion of the conversion value.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Commission {
+    /// Commission rate defines the portion of the conversion value that the
+    /// advertiser will be billed. A commission rate of x should be passed into
+    /// this field as (x * 1,000,000). For example, 106,000 represents a commission
+    /// rate of 0.106 (10.6%).
+    #[prost(message, optional, tag = "1")]
+    pub commission_rate_micros: ::std::option::Option<i64>,
+}
+/// An automated bidding strategy that raises bids for clicks
+/// that seem more likely to lead to a conversion and lowers
+/// them for clicks where they seem less likely.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnhancedCpc {}
+/// Manual click-based bidding where user pays per click.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ManualCpc {
+    /// Whether bids are to be enhanced based on conversion optimizer data.
+    #[prost(message, optional, tag = "1")]
+    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
+}
+/// Manual impression-based bidding where user pays per thousand impressions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ManualCpm {}
+/// View based bidding where user pays per video view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ManualCpv {}
+/// An automated bidding strategy that sets bids to help get the most conversions
+/// for your campaign while spending your budget.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaximizeConversions {}
+/// An automated bidding strategy which tries to maximize conversion value
+/// given a daily budget.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaximizeConversionValue {
+    /// The target return on ad spend (ROAS) option. If set, the bid strategy will
+    /// maximize revenue while averaging the target return on ad spend. If the
+    /// target ROAS is high, the bid strategy may not be able to spend the full
+    /// budget. If the target ROAS is not set, the bid strategy will aim to
+    /// achieve the highest possible ROAS for the budget.
+    #[prost(message, optional, tag = "1")]
+    pub target_roas: ::std::option::Option<f64>,
+}
+/// An automated bidding strategy which sets CPC bids to target impressions on
+/// page one, or page one promoted slots on google.com.
+/// This strategy is deprecated.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PageOnePromoted {
+    /// The strategy goal of where impressions are desired to be shown on
+    /// search result pages.
+    #[prost(
+        enumeration = "super::enums::page_one_promoted_strategy_goal_enum::PageOnePromotedStrategyGoal",
+        tag = "1"
+    )]
+    pub strategy_goal: i32,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "2")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Bid multiplier to be applied to the relevant bid estimate (depending on
+    /// the `strategy_goal`) in determining a keyword's new CPC bid.
+    #[prost(message, optional, tag = "3")]
+    pub bid_modifier: ::std::option::Option<f64>,
+    /// Whether the strategy should always follow bid estimate changes, or only
+    /// increase.
+    /// If false, always sets a keyword's new bid to the current bid estimate.
+    /// If true, only updates a keyword's bid if the current bid estimate is
+    /// greater than the current bid.
+    #[prost(message, optional, tag = "4")]
+    pub only_raise_cpc_bids: ::std::option::Option<bool>,
+    /// Whether the strategy is allowed to raise bids when the throttling
+    /// rate of the budget it is serving out of rises above a threshold.
+    #[prost(message, optional, tag = "5")]
+    pub raise_cpc_bid_when_budget_constrained: ::std::option::Option<bool>,
+    /// Whether the strategy is allowed to raise bids on keywords with
+    /// lower-range quality scores.
+    #[prost(message, optional, tag = "6")]
+    pub raise_cpc_bid_when_quality_score_is_low: ::std::option::Option<bool>,
+}
+/// An automated bid strategy that sets bids to help get as many conversions as
+/// possible at the target cost-per-acquisition (CPA) you set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpa {
+    /// Average CPA target.
+    /// This target should be greater than or equal to minimum billable unit based
+    /// on the currency for the account.
+    #[prost(message, optional, tag = "1")]
+    pub target_cpa_micros: ::std::option::Option<i64>,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "2")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Minimum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "3")]
+    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
+}
+/// Target CPM (cost per thousand impressions) is an automated bidding strategy
+/// that sets bids to optimize performance given the target CPM you set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpm {}
+/// An automated bidding strategy that sets bids so that a certain percentage of
+/// search ads are shown at the top of the first page (or other targeted
+/// location).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetImpressionShare {
+    /// The targeted location on the search results page.
+    #[prost(
+        enumeration = "super::enums::target_impression_share_location_enum::TargetImpressionShareLocation",
+        tag = "1"
+    )]
+    pub location: i32,
+    /// The desired fraction of ads to be shown in the targeted location in micros.
+    /// E.g. 1% equals 10,000.
+    #[prost(message, optional, tag = "2")]
+    pub location_fraction_micros: ::std::option::Option<i64>,
+    /// The highest CPC bid the automated bidding system is permitted to specify.
+    /// This is a required field entered by the advertiser that sets the ceiling
+    /// and specified in local micros.
+    #[prost(message, optional, tag = "3")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+}
+/// An automated bidding strategy that sets bids based on the target fraction of
+/// auctions where the advertiser should outrank a specific competitor.
+/// This strategy is deprecated.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetOutrankShare {
+    /// The target fraction of auctions where the advertiser should outrank the
+    /// competitor.
+    /// The advertiser outranks the competitor in an auction if either the
+    /// advertiser appears above the competitor in the search results, or appears
+    /// in the search results when the competitor does not.
+    /// Value must be between 1 and 1000000, inclusive.
+    #[prost(message, optional, tag = "1")]
+    pub target_outrank_share_micros: ::std::option::Option<i32>,
+    /// Competitor's visible domain URL.
+    #[prost(message, optional, tag = "2")]
+    pub competitor_domain: ::std::option::Option<::std::string::String>,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "3")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Whether the strategy should always follow bid estimate changes,
+    /// or only increase.
+    /// If false, always set a keyword's new bid to the current bid estimate.
+    /// If true, only updates a keyword's bid if the current bid estimate is
+    /// greater than the current bid.
+    #[prost(message, optional, tag = "4")]
+    pub only_raise_cpc_bids: ::std::option::Option<bool>,
+    /// Whether the strategy is allowed to raise bids on keywords with
+    /// lower-range quality scores.
+    #[prost(message, optional, tag = "5")]
+    pub raise_cpc_bid_when_quality_score_is_low: ::std::option::Option<bool>,
+}
+/// An automated bidding strategy that helps you maximize revenue while
+/// averaging a specific target return on ad spend (ROAS).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetRoas {
+    /// Required. The desired revenue (based on conversion data) per unit of spend.
+    /// Value must be between 0.01 and 1000.0, inclusive.
+    #[prost(message, optional, tag = "1")]
+    pub target_roas: ::std::option::Option<f64>,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "2")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Minimum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "3")]
+    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
+}
+/// An automated bid strategy that sets your bids to help get as many clicks
+/// as possible within your budget.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetSpend {
+    /// The spend target under which to maximize clicks.
+    /// A TargetSpend bidder will attempt to spend the smaller of this value
+    /// or the natural throttling spend amount.
+    /// If not specified, the budget is used as the spend target.
+    #[prost(message, optional, tag = "1")]
+    pub target_spend_micros: ::std::option::Option<i64>,
+    /// Maximum bid limit that can be set by the bid strategy.
+    /// The limit applies to all keywords managed by the strategy.
+    #[prost(message, optional, tag = "2")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+}
+/// A bidding strategy where bids are a fraction of the advertised price for
+/// some good or service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PercentCpc {
+    /// Maximum bid limit that can be set by the bid strategy. This is
+    /// an optional field entered by the advertiser and specified in local micros.
+    /// Note: A zero value is interpreted in the same way as having bid_ceiling
+    /// undefined.
+    #[prost(message, optional, tag = "1")]
+    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
+    /// Adjusts the bid for each auction upward or downward, depending on the
+    /// likelihood of a conversion. Individual bids may exceed
+    /// cpc_bid_ceiling_micros, but the average bid amount for a campaign should
+    /// not.
+    #[prost(message, optional, tag = "2")]
+    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
+}
+// Proto file describing a ClickLocation.
+
+/// Location criteria associated with a click.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClickLocation {
+    /// The city location criterion associated with the impression.
+    #[prost(message, optional, tag = "1")]
+    pub city: ::std::option::Option<::std::string::String>,
+    /// The country location criterion associated with the impression.
+    #[prost(message, optional, tag = "2")]
+    pub country: ::std::option::Option<::std::string::String>,
+    /// The metro location criterion associated with the impression.
+    #[prost(message, optional, tag = "3")]
+    pub metro: ::std::option::Option<::std::string::String>,
+    /// The most specific location criterion associated with the impression.
+    #[prost(message, optional, tag = "4")]
+    pub most_specific: ::std::option::Option<::std::string::String>,
+    /// The region location criterion associated with the impression.
+    #[prost(message, optional, tag = "5")]
+    pub region: ::std::option::Option<::std::string::String>,
+}
 // Proto file describing criteria types.
 
 /// A keyword criterion.
@@ -664,484 +1587,71 @@ pub struct LocationGroupInfo {
     )]
     pub radius_units: i32,
 }
-// Proto file describing simulation points.
+// Proto file describing criterion category availability information.
 
-/// A container for simulation points for simulations of type BID_MODIFIER.
+/// Information of category availability, per advertising channel.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BidModifierSimulationPointList {
-    /// Projected metrics for a series of bid modifier amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<BidModifierSimulationPoint>,
-}
-/// A container for simulation points for simulations of type CPC_BID.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpcBidSimulationPointList {
-    /// Projected metrics for a series of CPC bid amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<CpcBidSimulationPoint>,
-}
-/// A container for simulation points for simulations of type CPV_BID.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpvBidSimulationPointList {
-    /// Projected metrics for a series of CPV bid amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<CpvBidSimulationPoint>,
-}
-/// A container for simulation points for simulations of type TARGET_CPA.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpaSimulationPointList {
-    /// Projected metrics for a series of target CPA amounts.
-    #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<TargetCpaSimulationPoint>,
-}
-/// Projected metrics for a specific bid modifier amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BidModifierSimulationPoint {
-    /// The simulated bid modifier upon which projected metrics are based.
+pub struct CriterionCategoryAvailability {
+    /// Channel types and subtypes that are available to the category.
     #[prost(message, optional, tag = "1")]
-    pub bid_modifier: ::std::option::Option<f64>,
-    /// Projected number of biddable conversions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "2")]
-    pub biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "3")]
-    pub biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks.
-    #[prost(message, optional, tag = "4")]
-    pub clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "5")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "6")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "7")]
-    pub top_slot_impressions: ::std::option::Option<i64>,
-    /// Projected number of biddable conversions for the parent resource.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "8")]
-    pub parent_biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions for the parent resource.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "9")]
-    pub parent_biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks for the parent resource.
-    #[prost(message, optional, tag = "10")]
-    pub parent_clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros for the parent resource.
-    #[prost(message, optional, tag = "11")]
-    pub parent_cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions for the parent resource.
-    #[prost(message, optional, tag = "12")]
-    pub parent_impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions for the parent resource.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "13")]
-    pub parent_top_slot_impressions: ::std::option::Option<i64>,
-    /// Projected minimum daily budget that must be available to the parent
-    /// resource to realize this simulation.
-    #[prost(message, optional, tag = "14")]
-    pub parent_required_budget_micros: ::std::option::Option<i64>,
-}
-/// Projected metrics for a specific CPC bid amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpcBidSimulationPoint {
-    /// The simulated CPC bid upon which projected metrics are based.
-    #[prost(message, optional, tag = "1")]
-    pub cpc_bid_micros: ::std::option::Option<i64>,
-    /// Projected number of biddable conversions.
-    #[prost(message, optional, tag = "2")]
-    pub biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions.
-    #[prost(message, optional, tag = "3")]
-    pub biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks.
-    #[prost(message, optional, tag = "4")]
-    pub clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "5")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "6")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "7")]
-    pub top_slot_impressions: ::std::option::Option<i64>,
-}
-/// Projected metrics for a specific CPV bid amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CpvBidSimulationPoint {
-    /// The simulated CPV bid upon which projected metrics are based.
-    #[prost(message, optional, tag = "1")]
-    pub cpv_bid_micros: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "2")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "3")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of views.
-    #[prost(message, optional, tag = "4")]
-    pub views: ::std::option::Option<i64>,
-}
-/// Projected metrics for a specific target CPA amount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpaSimulationPoint {
-    /// The simulated target CPA upon which projected metrics are based.
-    #[prost(message, optional, tag = "1")]
-    pub target_cpa_micros: ::std::option::Option<i64>,
-    /// Projected number of biddable conversions.
-    #[prost(message, optional, tag = "2")]
-    pub biddable_conversions: ::std::option::Option<f64>,
-    /// Projected total value of biddable conversions.
-    #[prost(message, optional, tag = "3")]
-    pub biddable_conversions_value: ::std::option::Option<f64>,
-    /// Projected number of clicks.
-    #[prost(message, optional, tag = "4")]
-    pub clicks: ::std::option::Option<i64>,
-    /// Projected cost in micros.
-    #[prost(message, optional, tag = "5")]
-    pub cost_micros: ::std::option::Option<i64>,
-    /// Projected number of impressions.
-    #[prost(message, optional, tag = "6")]
-    pub impressions: ::std::option::Option<i64>,
-    /// Projected number of top slot impressions.
-    /// Only search advertising channel type supports this field.
-    #[prost(message, optional, tag = "7")]
-    pub top_slot_impressions: ::std::option::Option<i64>,
-}
-// Proto file describing a matching function.
-
-/// Matching function associated with a
-/// CustomerFeed, CampaignFeed, or AdGroupFeed. The matching function is used
-/// to filter the set of feed items selected.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MatchingFunction {
-    /// String representation of the Function.
-    ///
-    /// Examples:
-    ///
-    /// 1. IDENTITY(true) or IDENTITY(false). All or no feed items served.
-    /// 2. EQUALS(CONTEXT.DEVICE,"Mobile")
-    /// 3. IN(FEED_ITEM_ID,{1000001,1000002,1000003})
-    /// 4. CONTAINS_ANY(FeedAttribute[12345678,0],{"Mars cruise","Venus cruise"})
-    /// 5. AND(IN(FEED_ITEM_ID,{10001,10002}),EQUALS(CONTEXT.DEVICE,"Mobile"))
-    ///
-    /// For more details, visit
-    /// https://developers.google.com/adwords/api/docs/guides/feed-matching-functions
-    ///
-    /// Note that because multiple strings may represent the same underlying
-    /// function (whitespace and single versus double quotation marks, for
-    /// example), the value returned may not be identical to the string sent in a
-    /// mutate request.
-    #[prost(message, optional, tag = "1")]
-    pub function_string: ::std::option::Option<::std::string::String>,
-    /// Operator for a function.
-    #[prost(
-        enumeration = "super::enums::matching_function_operator_enum::MatchingFunctionOperator",
-        tag = "4"
-    )]
-    pub operator: i32,
-    /// The operands on the left hand side of the equation. This is also the
-    /// operand to be used for single operand expressions such as NOT.
+    pub channel: ::std::option::Option<CriterionCategoryChannelAvailability>,
+    /// Locales that are available to the category for the channel.
     #[prost(message, repeated, tag = "2")]
-    pub left_operands: ::std::vec::Vec<Operand>,
-    /// The operands on the right hand side of the equation.
-    #[prost(message, repeated, tag = "3")]
-    pub right_operands: ::std::vec::Vec<Operand>,
+    pub locale: ::std::vec::Vec<CriterionCategoryLocaleAvailability>,
 }
-/// An operand in a matching function.
+/// Information of advertising channel type and subtypes a category is available
+/// in.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Operand {
-    /// Different operands that can be used in a matching function. Required.
-    #[prost(oneof = "operand::FunctionArgumentOperand", tags = "1, 2, 3, 4")]
-    pub function_argument_operand: ::std::option::Option<operand::FunctionArgumentOperand>,
-}
-pub mod operand {
-    /// A constant operand in a matching function.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ConstantOperand {
-        /// Constant operand values. Required.
-        #[prost(oneof = "constant_operand::ConstantOperandValue", tags = "1, 2, 3, 4")]
-        pub constant_operand_value: ::std::option::Option<constant_operand::ConstantOperandValue>,
-    }
-    pub mod constant_operand {
-        /// Constant operand values. Required.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum ConstantOperandValue {
-            /// String value of the operand if it is a string type.
-            #[prost(message, tag = "1")]
-            StringValue(::std::string::String),
-            /// Int64 value of the operand if it is a int64 type.
-            #[prost(message, tag = "2")]
-            LongValue(i64),
-            /// Boolean value of the operand if it is a boolean type.
-            #[prost(message, tag = "3")]
-            BooleanValue(bool),
-            /// Double value of the operand if it is a double type.
-            #[prost(message, tag = "4")]
-            DoubleValue(f64),
-        }
-    }
-    /// A feed attribute operand in a matching function.
-    /// Used to represent a feed attribute in feed.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct FeedAttributeOperand {
-        /// The associated feed. Required.
-        #[prost(message, optional, tag = "1")]
-        pub feed_id: ::std::option::Option<i64>,
-        /// Id of the referenced feed attribute. Required.
-        #[prost(message, optional, tag = "2")]
-        pub feed_attribute_id: ::std::option::Option<i64>,
-    }
-    /// A function operand in a matching function.
-    /// Used to represent nested functions.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct FunctionOperand {
-        /// The matching function held in this operand.
-        #[prost(message, optional, tag = "1")]
-        pub matching_function: ::std::option::Option<super::MatchingFunction>,
-    }
-    /// An operand in a function referring to a value in the request context.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RequestContextOperand {
-        /// Type of value to be referred in the request context.
-        #[prost(
-            enumeration = "super::super::enums::matching_function_context_type_enum::MatchingFunctionContextType",
-            tag = "1"
-        )]
-        pub context_type: i32,
-    }
-    /// Different operands that can be used in a matching function. Required.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum FunctionArgumentOperand {
-        /// A constant operand in a matching function.
-        #[prost(message, tag = "1")]
-        ConstantOperand(ConstantOperand),
-        /// This operand specifies a feed attribute in feed.
-        #[prost(message, tag = "2")]
-        FeedAttributeOperand(FeedAttributeOperand),
-        /// A function operand in a matching function.
-        /// Used to represent nested functions.
-        #[prost(message, tag = "3")]
-        FunctionOperand(FunctionOperand),
-        /// An operand in a function referring to a value in the request context.
-        #[prost(message, tag = "4")]
-        RequestContextOperand(RequestContextOperand),
-    }
-}
-// Proto file describing bidding schemes.
-
-/// Commission is an automatic bidding strategy in which the advertiser pays a
-/// certain portion of the conversion value.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Commission {
-    /// Commission rate defines the portion of the conversion value that the
-    /// advertiser will be billed. A commission rate of x should be passed into
-    /// this field as (x * 1,000,000). For example, 106,000 represents a commission
-    /// rate of 0.106 (10.6%).
-    #[prost(message, optional, tag = "1")]
-    pub commission_rate_micros: ::std::option::Option<i64>,
-}
-/// An automated bidding strategy that raises bids for clicks
-/// that seem more likely to lead to a conversion and lowers
-/// them for clicks where they seem less likely.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EnhancedCpc {}
-/// Manual click-based bidding where user pays per click.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManualCpc {
-    /// Whether bids are to be enhanced based on conversion optimizer data.
-    #[prost(message, optional, tag = "1")]
-    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
-}
-/// Manual impression-based bidding where user pays per thousand impressions.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManualCpm {}
-/// View based bidding where user pays per video view.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManualCpv {}
-/// An automated bidding strategy that sets bids to help get the most conversions
-/// for your campaign while spending your budget.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MaximizeConversions {}
-/// An automated bidding strategy which tries to maximize conversion value
-/// given a daily budget.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MaximizeConversionValue {
-    /// The target return on ad spend (ROAS) option. If set, the bid strategy will
-    /// maximize revenue while averaging the target return on ad spend. If the
-    /// target ROAS is high, the bid strategy may not be able to spend the full
-    /// budget. If the target ROAS is not set, the bid strategy will aim to
-    /// achieve the highest possible ROAS for the budget.
-    #[prost(message, optional, tag = "1")]
-    pub target_roas: ::std::option::Option<f64>,
-}
-/// An automated bidding strategy which sets CPC bids to target impressions on
-/// page one, or page one promoted slots on google.com.
-/// This strategy is deprecated.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PageOnePromoted {
-    /// The strategy goal of where impressions are desired to be shown on
-    /// search result pages.
+pub struct CriterionCategoryChannelAvailability {
+    /// Format of the channel availability. Can be ALL_CHANNELS (the rest of the
+    /// fields will not be set), CHANNEL_TYPE (only advertising_channel_type type
+    /// will be set, the category is available to all sub types under it) or
+    /// CHANNEL_TYPE_AND_SUBTYPES (advertising_channel_type,
+    /// advertising_channel_sub_type, and include_default_channel_sub_type will all
+    /// be set).
     #[prost(
-        enumeration = "super::enums::page_one_promoted_strategy_goal_enum::PageOnePromotedStrategyGoal",
+        enumeration = "super::enums::criterion_category_channel_availability_mode_enum::CriterionCategoryChannelAvailabilityMode",
         tag = "1"
     )]
-    pub strategy_goal: i32,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "2")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Bid multiplier to be applied to the relevant bid estimate (depending on
-    /// the `strategy_goal`) in determining a keyword's new CPC bid.
-    #[prost(message, optional, tag = "3")]
-    pub bid_modifier: ::std::option::Option<f64>,
-    /// Whether the strategy should always follow bid estimate changes, or only
-    /// increase.
-    /// If false, always sets a keyword's new bid to the current bid estimate.
-    /// If true, only updates a keyword's bid if the current bid estimate is
-    /// greater than the current bid.
-    #[prost(message, optional, tag = "4")]
-    pub only_raise_cpc_bids: ::std::option::Option<bool>,
-    /// Whether the strategy is allowed to raise bids when the throttling
-    /// rate of the budget it is serving out of rises above a threshold.
-    #[prost(message, optional, tag = "5")]
-    pub raise_cpc_bid_when_budget_constrained: ::std::option::Option<bool>,
-    /// Whether the strategy is allowed to raise bids on keywords with
-    /// lower-range quality scores.
-    #[prost(message, optional, tag = "6")]
-    pub raise_cpc_bid_when_quality_score_is_low: ::std::option::Option<bool>,
-}
-/// An automated bid strategy that sets bids to help get as many conversions as
-/// possible at the target cost-per-acquisition (CPA) you set.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpa {
-    /// Average CPA target.
-    /// This target should be greater than or equal to minimum billable unit based
-    /// on the currency for the account.
-    #[prost(message, optional, tag = "1")]
-    pub target_cpa_micros: ::std::option::Option<i64>,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "2")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Minimum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "3")]
-    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
-}
-/// Target CPM (cost per thousand impressions) is an automated bidding strategy
-/// that sets bids to optimize performance given the target CPM you set.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpm {}
-/// An automated bidding strategy that sets bids so that a certain percentage of
-/// search ads are shown at the top of the first page (or other targeted
-/// location).
-/// next tag = 4
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetImpressionShare {
-    /// The targeted location on the search results page.
+    pub availability_mode: i32,
+    /// Channel type the category is available to.
     #[prost(
-        enumeration = "super::enums::target_impression_share_location_enum::TargetImpressionShareLocation",
+        enumeration = "super::enums::advertising_channel_type_enum::AdvertisingChannelType",
+        tag = "2"
+    )]
+    pub advertising_channel_type: i32,
+    /// Channel subtypes under the channel type the category is available to.
+    #[prost(
+        enumeration = "super::enums::advertising_channel_sub_type_enum::AdvertisingChannelSubType",
+        repeated,
+        tag = "3"
+    )]
+    pub advertising_channel_sub_type: ::std::vec::Vec<i32>,
+    /// Whether default channel sub type is included. For example,
+    /// advertising_channel_type being DISPLAY and include_default_channel_sub_type
+    /// being false means that the default display campaign where channel sub type
+    /// is not set is not included in this availability configuration.
+    #[prost(message, optional, tag = "4")]
+    pub include_default_channel_sub_type: ::std::option::Option<bool>,
+}
+/// Information about which locales a category is available in.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CriterionCategoryLocaleAvailability {
+    /// Format of the locale availability. Can be LAUNCHED_TO_ALL (both country and
+    /// language will be empty), COUNTRY (only country will be set), LANGUAGE (only
+    /// language wil be set), COUNTRY_AND_LANGUAGE (both country and language will
+    /// be set).
+    #[prost(
+        enumeration = "super::enums::criterion_category_locale_availability_mode_enum::CriterionCategoryLocaleAvailabilityMode",
         tag = "1"
     )]
-    pub location: i32,
-    /// The desired fraction of ads to be shown in the targeted location in micros.
-    /// E.g. 1% equals 10,000.
+    pub availability_mode: i32,
+    /// Code of the country.
     #[prost(message, optional, tag = "2")]
-    pub location_fraction_micros: ::std::option::Option<i64>,
-    /// The highest CPC bid the automated bidding system is permitted to specify.
-    /// This is a required field entered by the advertiser that sets the ceiling
-    /// and specified in local micros.
+    pub country_code: ::std::option::Option<::std::string::String>,
+    /// Code of the language.
     #[prost(message, optional, tag = "3")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-}
-/// An automated bidding strategy that sets bids based on the target fraction of
-/// auctions where the advertiser should outrank a specific competitor.
-/// This strategy is deprecated.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetOutrankShare {
-    /// The target fraction of auctions where the advertiser should outrank the
-    /// competitor.
-    /// The advertiser outranks the competitor in an auction if either the
-    /// advertiser appears above the competitor in the search results, or appears
-    /// in the search results when the competitor does not.
-    /// Value must be between 1 and 1000000, inclusive.
-    #[prost(message, optional, tag = "1")]
-    pub target_outrank_share_micros: ::std::option::Option<i32>,
-    /// Competitor's visible domain URL.
-    #[prost(message, optional, tag = "2")]
-    pub competitor_domain: ::std::option::Option<::std::string::String>,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "3")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Whether the strategy should always follow bid estimate changes,
-    /// or only increase.
-    /// If false, always set a keyword's new bid to the current bid estimate.
-    /// If true, only updates a keyword's bid if the current bid estimate is
-    /// greater than the current bid.
-    #[prost(message, optional, tag = "4")]
-    pub only_raise_cpc_bids: ::std::option::Option<bool>,
-    /// Whether the strategy is allowed to raise bids on keywords with
-    /// lower-range quality scores.
-    #[prost(message, optional, tag = "5")]
-    pub raise_cpc_bid_when_quality_score_is_low: ::std::option::Option<bool>,
-}
-/// An automated bidding strategy that helps you maximize revenue while
-/// averaging a specific target return on ad spend (ROAS).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetRoas {
-    /// Required. The desired revenue (based on conversion data) per unit of spend.
-    /// Value must be between 0.01 and 1000.0, inclusive.
-    #[prost(message, optional, tag = "1")]
-    pub target_roas: ::std::option::Option<f64>,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "2")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Minimum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "3")]
-    pub cpc_bid_floor_micros: ::std::option::Option<i64>,
-}
-/// An automated bid strategy that sets your bids to help get as many clicks
-/// as possible within your budget.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetSpend {
-    /// The spend target under which to maximize clicks.
-    /// A TargetSpend bidder will attempt to spend the smaller of this value
-    /// or the natural throttling spend amount.
-    /// If not specified, the budget is used as the spend target.
-    #[prost(message, optional, tag = "1")]
-    pub target_spend_micros: ::std::option::Option<i64>,
-    /// Maximum bid limit that can be set by the bid strategy.
-    /// The limit applies to all keywords managed by the strategy.
-    #[prost(message, optional, tag = "2")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-}
-/// A bidding strategy where bids are a fraction of the advertised price for
-/// some good or service.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PercentCpc {
-    /// Maximum bid limit that can be set by the bid strategy. This is
-    /// an optional field entered by the advertiser and specified in local micros.
-    /// Note: A zero value is interpreted in the same way as having bid_ceiling
-    /// undefined.
-    #[prost(message, optional, tag = "1")]
-    pub cpc_bid_ceiling_micros: ::std::option::Option<i64>,
-    /// Adjusts the bid for each auction upward or downward, depending on the
-    /// likelihood of a conversion. Individual bids may exceed
-    /// cpc_bid_ceiling_micros, but the average bid amount for a campaign should
-    /// not.
-    #[prost(message, optional, tag = "2")]
-    pub enhanced_cpc_enabled: ::std::option::Option<bool>,
+    pub language_code: ::std::option::Option<::std::string::String>,
 }
 // Proto file describing CustomParameter and operation
 
@@ -1156,135 +1666,28 @@ pub struct CustomParameter {
     #[prost(message, optional, tag = "2")]
     pub value: ::std::option::Option<::std::string::String>,
 }
-// Proto file describing frequency caps.
+// Proto file describing date range message.
 
-/// A rule specifying the maximum number of times an ad (or some set of ads) can
-/// be shown to a user over a particular time period.
+/// A date range.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapEntry {
-    /// The key of a particular frequency cap. There can be no more
-    /// than one frequency cap with the same key.
+pub struct DateRange {
+    /// The start date, in yyyy-mm-dd format. This date is inclusive.
     #[prost(message, optional, tag = "1")]
-    pub key: ::std::option::Option<FrequencyCapKey>,
-    /// Maximum number of events allowed during the time range by this cap.
+    pub start_date: ::std::option::Option<::std::string::String>,
+    /// The end date, in yyyy-mm-dd format. This date is inclusive.
     #[prost(message, optional, tag = "2")]
-    pub cap: ::std::option::Option<i32>,
+    pub end_date: ::std::option::Option<::std::string::String>,
 }
-/// A group of fields used as keys for a frequency cap.
-/// There can be no more than one frequency cap with the same key.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapKey {
-    /// The level on which the cap is to be applied (e.g. ad group ad, ad group).
-    /// The cap is applied to all the entities of this level.
-    #[prost(
-        enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel",
-        tag = "1"
-    )]
-    pub level: i32,
-    /// The type of event that the cap applies to (e.g. impression).
-    #[prost(
-        enumeration = "super::enums::frequency_cap_event_type_enum::FrequencyCapEventType",
-        tag = "3"
-    )]
-    pub event_type: i32,
-    /// Unit of time the cap is defined at (e.g. day, week).
-    #[prost(
-        enumeration = "super::enums::frequency_cap_time_unit_enum::FrequencyCapTimeUnit",
-        tag = "2"
-    )]
-    pub time_unit: i32,
-    /// Number of time units the cap lasts.
-    #[prost(message, optional, tag = "4")]
-    pub time_length: ::std::option::Option<i32>,
-}
-// Proto file describing RealTimeBiddingSetting
+// Proto file describing ExplorerAutoOptimizerSetting
 
-/// Settings for Real-Time Bidding, a feature only available for campaigns
-/// targeting the Ad Exchange network.
+/// Settings for the Display Campaign Optimizer, initially named "Explorer".
+/// Learn more about
+/// [automatic targeting](https://support.google.com/google-ads/answer/190596).
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RealTimeBiddingSetting {
-    /// Whether the campaign is opted in to real-time bidding.
+pub struct ExplorerAutoOptimizerSetting {
+    /// Indicates whether the optimizer is turned on.
     #[prost(message, optional, tag = "1")]
     pub opt_in: ::std::option::Option<bool>,
-}
-// Proto file describing TargetingSetting
-
-/// Settings for the targeting-related features, at the campaign and ad group
-/// levels. For more details about the targeting setting, visit
-/// https://support.google.com/google-ads/answer/7365594
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetingSetting {
-    /// The per-targeting-dimension setting to restrict the reach of your campaign
-    /// or ad group.
-    #[prost(message, repeated, tag = "1")]
-    pub target_restrictions: ::std::vec::Vec<TargetRestriction>,
-}
-/// The list of per-targeting-dimension targeting settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetRestriction {
-    /// The targeting dimension that these settings apply to.
-    #[prost(
-        enumeration = "super::enums::targeting_dimension_enum::TargetingDimension",
-        tag = "1"
-    )]
-    pub targeting_dimension: i32,
-    /// Indicates whether to restrict your ads to show only for the criteria you
-    /// have selected for this targeting_dimension, or to target all values for
-    /// this targeting_dimension and show ads based on your targeting in other
-    /// TargetingDimensions. A value of `true` means that these criteria will only
-    /// apply bid modifiers, and not affect targeting. A value of `false` means
-    /// that these criteria will restrict targeting as well as applying bid
-    /// modifiers.
-    #[prost(message, optional, tag = "2")]
-    pub bid_only: ::std::option::Option<bool>,
-}
-// Proto file describing a ClickLocation.
-
-/// Location criteria associated with a click.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClickLocation {
-    /// The city location criterion associated with the impression.
-    #[prost(message, optional, tag = "1")]
-    pub city: ::std::option::Option<::std::string::String>,
-    /// The country location criterion associated with the impression.
-    #[prost(message, optional, tag = "2")]
-    pub country: ::std::option::Option<::std::string::String>,
-    /// The metro location criterion associated with the impression.
-    #[prost(message, optional, tag = "3")]
-    pub metro: ::std::option::Option<::std::string::String>,
-    /// The most specific location criterion associated with the impression.
-    #[prost(message, optional, tag = "4")]
-    pub most_specific: ::std::option::Option<::std::string::String>,
-    /// The region location criterion associated with the impression.
-    #[prost(message, optional, tag = "5")]
-    pub region: ::std::option::Option<::std::string::String>,
-}
-// Proto file describing TagSnippet
-
-/// The site tag and event snippet pair for a TrackingCodeType.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TagSnippet {
-    /// The type of the generated tag snippets for tracking conversions.
-    #[prost(
-        enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType",
-        tag = "1"
-    )]
-    pub r#type: i32,
-    /// The format of the web page where the tracking tag and snippet will be
-    /// installed, e.g. HTML.
-    #[prost(
-        enumeration = "super::enums::tracking_code_page_format_enum::TrackingCodePageFormat",
-        tag = "2"
-    )]
-    pub page_format: i32,
-    /// The site tag that adds visitors to your basic remarketing lists and sets
-    /// new cookies on your domain.
-    #[prost(message, optional, tag = "3")]
-    pub global_site_tag: ::std::option::Option<::std::string::String>,
-    /// The event snippet that works with the site tag to track actions that
-    /// should be counted as conversions.
-    #[prost(message, optional, tag = "4")]
-    pub event_snippet: ::std::option::Option<::std::string::String>,
 }
 // Proto file describing common feed proto messages.
 
@@ -1658,235 +2061,205 @@ pub struct HotelCalloutFeedItem {
     #[prost(message, optional, tag = "2")]
     pub language_code: ::std::option::Option<::std::string::String>,
 }
-// Proto file describing policy information.
+// Proto file FinalAppUrl type.
 
-/// Key of the violation. The key is used for referring to a violation
-/// when filing an exemption request.
+/// A URL for deep linking into an app for the given operating system.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyViolationKey {
-    /// Unique ID of the violated policy.
-    #[prost(message, optional, tag = "1")]
-    pub policy_name: ::std::option::Option<::std::string::String>,
-    /// The text that violates the policy if specified.
-    /// Otherwise, refers to the policy in general
-    /// (e.g., when requesting to be exempt from the whole policy).
-    /// If not specified for criterion exemptions, the whole policy is implied.
-    /// Must be specified for ad exemptions.
-    #[prost(message, optional, tag = "2")]
-    pub violating_text: ::std::option::Option<::std::string::String>,
-}
-/// Parameter for controlling how policy exemption is done. Ignorable policy
-/// topics are only usable with expanded text ads and responsive search ads. All
-/// other ad types must use policy violation keys.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyValidationParameter {
-    /// The list of policy topics that should not cause a PolicyFindingError to
-    /// be reported. This field is currently only compatible with Enhanced Text Ad.
-    /// It corresponds to the PolicyTopicEntry.topic field.
-    ///
-    /// Resources violating these policies will be saved, but will not be eligible
-    /// to serve. They may begin serving at a later time due to a change in
-    /// policies, re-review of the resource, or a change in advertiser
-    /// certificates.
-    #[prost(message, repeated, tag = "1")]
-    pub ignorable_policy_topics: ::std::vec::Vec<::std::string::String>,
-    /// The list of policy violation keys that should not cause a
-    /// PolicyViolationError to be reported. Not all policy violations are
-    /// exemptable, please refer to the is_exemptible field in the returned
-    /// PolicyViolationError.
-    ///
-    /// Resources violating these polices will be saved, but will not be eligible
-    /// to serve. They may begin serving at a later time due to a change in
-    /// policies, re-review of the resource, or a change in advertiser
-    /// certificates.
-    #[prost(message, repeated, tag = "2")]
-    pub exempt_policy_violation_keys: ::std::vec::Vec<PolicyViolationKey>,
-}
-/// Policy finding attached to a resource (e.g. alcohol policy associated with
-/// a site that sells alcohol).
-///
-/// Each PolicyTopicEntry has a topic that indicates the specific ads policy
-/// the entry is about and a type to indicate the effect that the entry will have
-/// on serving. It may optionally have one or more evidences that indicate the
-/// reason for the finding. It may also optionally have one or more constraints
-/// that provide details about how serving may be restricted.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEntry {
-    /// Policy topic this finding refers to. For example, "ALCOHOL",
-    /// "TRADEMARKS_IN_AD_TEXT", or "DESTINATION_NOT_WORKING". The set of possible
-    /// policy topics is not fixed for a particular API version and may change
-    /// at any time.
-    #[prost(message, optional, tag = "1")]
-    pub topic: ::std::option::Option<::std::string::String>,
-    /// Describes the negative or positive effect this policy will have on serving.
+pub struct FinalAppUrl {
+    /// The operating system targeted by this URL. Required.
     #[prost(
-        enumeration = "super::enums::policy_topic_entry_type_enum::PolicyTopicEntryType",
+        enumeration = "super::enums::app_url_operating_system_type_enum::AppUrlOperatingSystemType",
+        tag = "1"
+    )]
+    pub os_type: i32,
+    /// The app deep link URL. Deep links specify a location in an app that
+    /// corresponds to the content you'd like to show, and should be of the form
+    /// {scheme}://{host_path}
+    /// The scheme identifies which app to open. For your app, you can use a custom
+    /// scheme that starts with the app's name. The host and path specify the
+    /// unique location in the app where your content exists.
+    /// Example: "exampleapp://productid_1234". Required.
+    #[prost(message, optional, tag = "2")]
+    pub url: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing frequency caps.
+
+/// A rule specifying the maximum number of times an ad (or some set of ads) can
+/// be shown to a user over a particular time period.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FrequencyCapEntry {
+    /// The key of a particular frequency cap. There can be no more
+    /// than one frequency cap with the same key.
+    #[prost(message, optional, tag = "1")]
+    pub key: ::std::option::Option<FrequencyCapKey>,
+    /// Maximum number of events allowed during the time range by this cap.
+    #[prost(message, optional, tag = "2")]
+    pub cap: ::std::option::Option<i32>,
+}
+/// A group of fields used as keys for a frequency cap.
+/// There can be no more than one frequency cap with the same key.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FrequencyCapKey {
+    /// The level on which the cap is to be applied (e.g. ad group ad, ad group).
+    /// The cap is applied to all the entities of this level.
+    #[prost(
+        enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel",
+        tag = "1"
+    )]
+    pub level: i32,
+    /// The type of event that the cap applies to (e.g. impression).
+    #[prost(
+        enumeration = "super::enums::frequency_cap_event_type_enum::FrequencyCapEventType",
+        tag = "3"
+    )]
+    pub event_type: i32,
+    /// Unit of time the cap is defined at (e.g. day, week).
+    #[prost(
+        enumeration = "super::enums::frequency_cap_time_unit_enum::FrequencyCapTimeUnit",
         tag = "2"
     )]
-    pub r#type: i32,
-    /// Additional information that explains policy finding
-    /// (e.g. the brand name for a trademark finding).
-    #[prost(message, repeated, tag = "3")]
-    pub evidences: ::std::vec::Vec<PolicyTopicEvidence>,
-    /// Indicates how serving of this resource may be affected (e.g. not serving
-    /// in a country).
-    #[prost(message, repeated, tag = "4")]
-    pub constraints: ::std::vec::Vec<PolicyTopicConstraint>,
+    pub time_unit: i32,
+    /// Number of time units the cap lasts.
+    #[prost(message, optional, tag = "4")]
+    pub time_length: ::std::option::Option<i32>,
 }
-/// Additional information that explains a policy finding.
+// Proto file describing Keyword Planner messages.
+
+/// Historical metrics specific to the targeting options selected.
+/// Targeting options include geographies, network, etc.
+/// Refer to https://support.google.com/google-ads/answer/3022575 for more
+/// details.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidence {
-    /// Specific evidence information depending on the evidence type.
-    #[prost(oneof = "policy_topic_evidence::Value", tags = "3, 4, 5, 6, 7, 8")]
-    pub value: ::std::option::Option<policy_topic_evidence::Value>,
+pub struct KeywordPlanHistoricalMetrics {
+    /// Approximate number of monthly searches on this query averaged
+    /// for the past 12 months.
+    #[prost(message, optional, tag = "1")]
+    pub avg_monthly_searches: ::std::option::Option<i64>,
+    /// The competition level for the query.
+    #[prost(
+        enumeration = "super::enums::keyword_plan_competition_level_enum::KeywordPlanCompetitionLevel",
+        tag = "2"
+    )]
+    pub competition: i32,
 }
-pub mod policy_topic_evidence {
-    /// A list of fragments of text that violated a policy.
+// Proto file describing a matching function.
+
+/// Matching function associated with a
+/// CustomerFeed, CampaignFeed, or AdGroupFeed. The matching function is used
+/// to filter the set of feed items selected.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MatchingFunction {
+    /// String representation of the Function.
+    ///
+    /// Examples:
+    ///
+    /// 1. IDENTITY(true) or IDENTITY(false). All or no feed items served.
+    /// 2. EQUALS(CONTEXT.DEVICE,"Mobile")
+    /// 3. IN(FEED_ITEM_ID,{1000001,1000002,1000003})
+    /// 4. CONTAINS_ANY(FeedAttribute[12345678,0],{"Mars cruise","Venus cruise"})
+    /// 5. AND(IN(FEED_ITEM_ID,{10001,10002}),EQUALS(CONTEXT.DEVICE,"Mobile"))
+    ///
+    /// For more details, visit
+    /// https://developers.google.com/adwords/api/docs/guides/feed-matching-functions
+    ///
+    /// Note that because multiple strings may represent the same underlying
+    /// function (whitespace and single versus double quotation marks, for
+    /// example), the value returned may not be identical to the string sent in a
+    /// mutate request.
+    #[prost(message, optional, tag = "1")]
+    pub function_string: ::std::option::Option<::std::string::String>,
+    /// Operator for a function.
+    #[prost(
+        enumeration = "super::enums::matching_function_operator_enum::MatchingFunctionOperator",
+        tag = "4"
+    )]
+    pub operator: i32,
+    /// The operands on the left hand side of the equation. This is also the
+    /// operand to be used for single operand expressions such as NOT.
+    #[prost(message, repeated, tag = "2")]
+    pub left_operands: ::std::vec::Vec<Operand>,
+    /// The operands on the right hand side of the equation.
+    #[prost(message, repeated, tag = "3")]
+    pub right_operands: ::std::vec::Vec<Operand>,
+}
+/// An operand in a matching function.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Operand {
+    /// Different operands that can be used in a matching function. Required.
+    #[prost(oneof = "operand::FunctionArgumentOperand", tags = "1, 2, 3, 4")]
+    pub function_argument_operand: ::std::option::Option<operand::FunctionArgumentOperand>,
+}
+pub mod operand {
+    /// A constant operand in a matching function.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct TextList {
-        /// The fragments of text from the resource that caused the policy finding.
-        #[prost(message, repeated, tag = "1")]
-        pub texts: ::std::vec::Vec<::std::string::String>,
+    pub struct ConstantOperand {
+        /// Constant operand values. Required.
+        #[prost(oneof = "constant_operand::ConstantOperandValue", tags = "1, 2, 3, 4")]
+        pub constant_operand_value: ::std::option::Option<constant_operand::ConstantOperandValue>,
     }
-    /// A list of websites that caused a policy finding. Used for
-    /// ONE_WEBSITE_PER_AD_GROUP policy topic, for example. In case there are more
-    /// than five websites, only the top five (those that appear in resources the
-    /// most) will be listed here.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct WebsiteList {
-        /// Websites that caused the policy finding.
-        #[prost(message, repeated, tag = "1")]
-        pub websites: ::std::vec::Vec<::std::string::String>,
-    }
-    /// A list of strings found in a destination page that caused a policy
-    /// finding.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DestinationTextList {
-        /// List of text found in the resource's destination page.
-        #[prost(message, repeated, tag = "1")]
-        pub destination_texts: ::std::vec::Vec<::std::string::String>,
-    }
-    /// Evidence of mismatches between the URLs of a resource.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DestinationMismatch {
-        /// The set of URLs that did not match each other.
-        #[prost(
-            enumeration = "super::super::enums::policy_topic_evidence_destination_mismatch_url_type_enum::PolicyTopicEvidenceDestinationMismatchUrlType",
-            repeated,
-            tag = "1"
-        )]
-        pub url_types: ::std::vec::Vec<i32>,
-    }
-    /// Evidence details when the destination is returning an HTTP error
-    /// code or isn't functional in all locations for commonly used devices.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DestinationNotWorking {
-        /// The full URL that didn't work.
-        #[prost(message, optional, tag = "3")]
-        pub expanded_url: ::std::option::Option<::std::string::String>,
-        /// The type of device that failed to load the URL.
-        #[prost(
-            enumeration = "super::super::enums::policy_topic_evidence_destination_not_working_device_enum::PolicyTopicEvidenceDestinationNotWorkingDevice",
-            tag = "4"
-        )]
-        pub device: i32,
-        /// The time the URL was last checked.
-        /// The format is "YYYY-MM-DD HH:MM:SS".
-        /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
-        #[prost(message, optional, tag = "5")]
-        pub last_checked_date_time: ::std::option::Option<::std::string::String>,
-        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
-        #[prost(oneof = "destination_not_working::Reason", tags = "1, 2")]
-        pub reason: ::std::option::Option<destination_not_working::Reason>,
-    }
-    pub mod destination_not_working {
-        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
+    pub mod constant_operand {
+        /// Constant operand values. Required.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum Reason {
-            /// The type of DNS error.
-            #[prost(
-                enumeration = "super::super::super::enums::policy_topic_evidence_destination_not_working_dns_error_type_enum::PolicyTopicEvidenceDestinationNotWorkingDnsErrorType",
-                tag = "1"
-            )]
-            DnsErrorType(i32),
-            /// The HTTP error code.
+        pub enum ConstantOperandValue {
+            /// String value of the operand if it is a string type.
+            #[prost(message, tag = "1")]
+            StringValue(::std::string::String),
+            /// Int64 value of the operand if it is a int64 type.
             #[prost(message, tag = "2")]
-            HttpErrorCode(i64),
+            LongValue(i64),
+            /// Boolean value of the operand if it is a boolean type.
+            #[prost(message, tag = "3")]
+            BooleanValue(bool),
+            /// Double value of the operand if it is a double type.
+            #[prost(message, tag = "4")]
+            DoubleValue(f64),
         }
     }
-    /// Specific evidence information depending on the evidence type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Value {
-        /// List of websites linked with this resource.
-        #[prost(message, tag = "3")]
-        WebsiteList(WebsiteList),
-        /// List of evidence found in the text of a resource.
-        #[prost(message, tag = "4")]
-        TextList(TextList),
-        /// The language the resource was detected to be written in.
-        /// This is an IETF language tag such as "en-US".
-        #[prost(message, tag = "5")]
-        LanguageCode(::std::string::String),
-        /// The text in the destination of the resource that is causing a policy
-        /// finding.
-        #[prost(message, tag = "6")]
-        DestinationTextList(DestinationTextList),
-        /// Mismatch between the destinations of a resource's URLs.
-        #[prost(message, tag = "7")]
-        DestinationMismatch(DestinationMismatch),
-        /// Details when the destination is returning an HTTP error code or isn't
-        /// functional in all locations for commonly used devices.
-        #[prost(message, tag = "8")]
-        DestinationNotWorking(DestinationNotWorking),
-    }
-}
-/// Describes the effect on serving that a policy topic entry will have.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicConstraint {
-    /// Specific information about the constraint.
-    #[prost(oneof = "policy_topic_constraint::Value", tags = "1, 2, 3, 4")]
-    pub value: ::std::option::Option<policy_topic_constraint::Value>,
-}
-pub mod policy_topic_constraint {
-    /// A list of countries where a resource's serving is constrained.
+    /// A feed attribute operand in a matching function.
+    /// Used to represent a feed attribute in feed.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CountryConstraintList {
-        /// Total number of countries targeted by the resource.
+    pub struct FeedAttributeOperand {
+        /// The associated feed. Required.
         #[prost(message, optional, tag = "1")]
-        pub total_targeted_countries: ::std::option::Option<i32>,
-        /// Countries in which serving is restricted.
-        #[prost(message, repeated, tag = "2")]
-        pub countries: ::std::vec::Vec<CountryConstraint>,
+        pub feed_id: ::std::option::Option<i64>,
+        /// Id of the referenced feed attribute. Required.
+        #[prost(message, optional, tag = "2")]
+        pub feed_attribute_id: ::std::option::Option<i64>,
     }
-    /// Indicates that a policy topic was constrained due to disapproval of the
-    /// website for reseller purposes.
+    /// A function operand in a matching function.
+    /// Used to represent nested functions.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ResellerConstraint {}
-    /// Indicates that a resource's ability to serve in a particular country is
-    /// constrained.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CountryConstraint {
-        /// Geo target constant resource name of the country in which serving is
-        /// constrained.
+    pub struct FunctionOperand {
+        /// The matching function held in this operand.
         #[prost(message, optional, tag = "1")]
-        pub country_criterion: ::std::option::Option<::std::string::String>,
+        pub matching_function: ::std::option::Option<super::MatchingFunction>,
     }
-    /// Specific information about the constraint.
+    /// An operand in a function referring to a value in the request context.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RequestContextOperand {
+        /// Type of value to be referred in the request context.
+        #[prost(
+            enumeration = "super::super::enums::matching_function_context_type_enum::MatchingFunctionContextType",
+            tag = "1"
+        )]
+        pub context_type: i32,
+    }
+    /// Different operands that can be used in a matching function. Required.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Value {
-        /// Countries where the resource cannot serve.
+    pub enum FunctionArgumentOperand {
+        /// A constant operand in a matching function.
         #[prost(message, tag = "1")]
-        CountryConstraintList(CountryConstraintList),
-        /// Reseller constraint.
+        ConstantOperand(ConstantOperand),
+        /// This operand specifies a feed attribute in feed.
         #[prost(message, tag = "2")]
-        ResellerConstraint(ResellerConstraint),
-        /// Countries where a certificate is required for serving.
+        FeedAttributeOperand(FeedAttributeOperand),
+        /// A function operand in a matching function.
+        /// Used to represent nested functions.
         #[prost(message, tag = "3")]
-        CertificateMissingInCountryList(CountryConstraintList),
-        /// Countries where the resource's domain is not covered by the
-        /// certificates associated with it.
+        FunctionOperand(FunctionOperand),
+        /// An operand in a function referring to a value in the request context.
         #[prost(message, tag = "4")]
-        CertificateDomainMismatchInCountryList(CountryConstraintList),
+        RequestContextOperand(RequestContextOperand),
     }
 }
 // Proto file describing metrics.
@@ -1929,11 +2302,11 @@ pub struct Metrics {
     /// divided by the number of ad interactions.
     #[prost(message, optional, tag = "65")]
     pub all_conversions_from_interactions_rate: ::std::option::Option<f64>,
-    /// The total value of all conversions.
+    /// The value of all conversions.
     #[prost(message, optional, tag = "66")]
     pub all_conversions_value: ::std::option::Option<f64>,
-    /// The total number of conversions. This only includes conversion actions
-    /// which include_in_conversions_metric attribute is set to true.
+    /// The total number of conversions. This includes all conversions regardless
+    /// of the value of include_in_conversions_metric.
     #[prost(message, optional, tag = "7")]
     pub all_conversions: ::std::option::Option<f64>,
     /// The value of all conversions divided by the total cost of ad interactions
@@ -2068,25 +2441,33 @@ pub struct Metrics {
     /// Conversions from interactions divided by the number of ad interactions
     /// (such as clicks for text ads or views for video ads). This only includes
     /// conversion actions which include_in_conversions_metric attribute is set to
-    /// true.
+    /// true. If you use conversion-based bidding, your bid strategies will
+    /// optimize for these conversions.
     #[prost(message, optional, tag = "69")]
     pub conversions_from_interactions_rate: ::std::option::Option<f64>,
-    /// The total value of conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// The value of conversions. This only includes conversion actions which
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "70")]
     pub conversions_value: ::std::option::Option<f64>,
     /// The value of conversions divided by the cost of ad interactions. This only
     /// includes conversion actions which include_in_conversions_metric attribute
-    /// is set to true.
+    /// is set to true. If you use conversion-based bidding, your bid strategies
+    /// will optimize for these conversions.
     #[prost(message, optional, tag = "71")]
     pub conversions_value_per_cost: ::std::option::Option<f64>,
     /// The value of conversions from interactions divided by the number of ad
     /// interactions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "72")]
     pub conversions_from_interactions_value_per_interaction: ::std::option::Option<f64>,
     /// The number of conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "25")]
     pub conversions: ::std::option::Option<f64>,
     /// The sum of your cost-per-click (CPC) and cost-per-thousand impressions
@@ -2098,12 +2479,15 @@ pub struct Metrics {
     pub cost_per_all_conversions: ::std::option::Option<f64>,
     /// The cost of ad interactions divided by conversions. This only includes
     /// conversion actions which include_in_conversions_metric attribute is set to
-    /// true.
+    /// true. If you use conversion-based bidding, your bid strategies will
+    /// optimize for these conversions.
     #[prost(message, optional, tag = "28")]
     pub cost_per_conversion: ::std::option::Option<f64>,
     /// The cost of ad interactions divided by current model attributed
     /// conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "106")]
     pub cost_per_current_model_attributed_conversion: ::std::option::Option<f64>,
     /// Conversions from when a customer clicks on a Google Ads ad on one device,
@@ -2117,29 +2501,38 @@ pub struct Metrics {
     pub ctr: ::std::option::Option<f64>,
     /// Shows how your historic conversions data would look under the attribution
     /// model you've currently selected. This only includes conversion actions
-    /// which include_in_conversions_metric attribute is set to true.
+    /// which include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "101")]
     pub current_model_attributed_conversions: ::std::option::Option<f64>,
     /// Current model attributed conversions from interactions divided by the
     /// number of ad interactions (such as clicks for text ads or views for video
     /// ads). This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "102")]
     pub current_model_attributed_conversions_from_interactions_rate: ::std::option::Option<f64>,
     /// The value of current model attributed conversions from interactions divided
     /// by the number of ad interactions. This only includes conversion actions
-    /// which include_in_conversions_metric attribute is set to true.
+    /// which include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "103")]
     pub current_model_attributed_conversions_from_interactions_value_per_interaction:
         ::std::option::Option<f64>,
-    /// The total value of current model attributed conversions. This only includes
+    /// The value of current model attributed conversions. This only includes
     /// conversion actions which include_in_conversions_metric attribute is set to
-    /// true.
+    /// true. If you use conversion-based bidding, your bid strategies will
+    /// optimize for these conversions.
     #[prost(message, optional, tag = "104")]
     pub current_model_attributed_conversions_value: ::std::option::Option<f64>,
     /// The value of current model attributed conversions divided by the cost of ad
     /// interactions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "105")]
     pub current_model_attributed_conversions_value_per_cost: ::std::option::Option<f64>,
     /// How often people engage with your ad after it's shown to them. This is the
@@ -2371,12 +2764,15 @@ pub struct Metrics {
     pub value_per_all_conversions: ::std::option::Option<f64>,
     /// The value of conversions divided by the number of conversions. This only
     /// includes conversion actions which include_in_conversions_metric attribute
-    /// is set to true.
+    /// is set to true. If you use conversion-based bidding, your bid strategies
+    /// will optimize for these conversions.
     #[prost(message, optional, tag = "53")]
     pub value_per_conversion: ::std::option::Option<f64>,
     /// The value of current model attributed conversions divided by the number of
     /// the conversions. This only includes conversion actions which
-    /// include_in_conversions_metric attribute is set to true.
+    /// include_in_conversions_metric attribute is set to true. If you use
+    /// conversion-based bidding, your bid strategies will optimize for these
+    /// conversions.
     #[prost(message, optional, tag = "94")]
     pub value_per_current_model_attributed_conversion: ::std::option::Option<f64>,
     /// Percentage of impressions where the viewer watched all of your video.
@@ -2405,6 +2801,247 @@ pub struct Metrics {
     /// clicking on) another ad.
     #[prost(message, optional, tag = "60")]
     pub view_through_conversions: ::std::option::Option<i64>,
+}
+// Proto file describing policy information.
+
+/// Key of the violation. The key is used for referring to a violation
+/// when filing an exemption request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyViolationKey {
+    /// Unique ID of the violated policy.
+    #[prost(message, optional, tag = "1")]
+    pub policy_name: ::std::option::Option<::std::string::String>,
+    /// The text that violates the policy if specified.
+    /// Otherwise, refers to the policy in general
+    /// (e.g., when requesting to be exempt from the whole policy).
+    /// If not specified for criterion exemptions, the whole policy is implied.
+    /// Must be specified for ad exemptions.
+    #[prost(message, optional, tag = "2")]
+    pub violating_text: ::std::option::Option<::std::string::String>,
+}
+/// Parameter for controlling how policy exemption is done. Ignorable policy
+/// topics are only usable with expanded text ads and responsive search ads. All
+/// other ad types must use policy violation keys.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyValidationParameter {
+    /// The list of policy topics that should not cause a PolicyFindingError to
+    /// be reported. This field is currently only compatible with Enhanced Text Ad.
+    /// It corresponds to the PolicyTopicEntry.topic field.
+    ///
+    /// Resources violating these policies will be saved, but will not be eligible
+    /// to serve. They may begin serving at a later time due to a change in
+    /// policies, re-review of the resource, or a change in advertiser
+    /// certificates.
+    #[prost(message, repeated, tag = "1")]
+    pub ignorable_policy_topics: ::std::vec::Vec<::std::string::String>,
+    /// The list of policy violation keys that should not cause a
+    /// PolicyViolationError to be reported. Not all policy violations are
+    /// exemptable, please refer to the is_exemptible field in the returned
+    /// PolicyViolationError.
+    ///
+    /// Resources violating these polices will be saved, but will not be eligible
+    /// to serve. They may begin serving at a later time due to a change in
+    /// policies, re-review of the resource, or a change in advertiser
+    /// certificates.
+    #[prost(message, repeated, tag = "2")]
+    pub exempt_policy_violation_keys: ::std::vec::Vec<PolicyViolationKey>,
+}
+/// Policy finding attached to a resource (e.g. alcohol policy associated with
+/// a site that sells alcohol).
+///
+/// Each PolicyTopicEntry has a topic that indicates the specific ads policy
+/// the entry is about and a type to indicate the effect that the entry will have
+/// on serving. It may optionally have one or more evidences that indicate the
+/// reason for the finding. It may also optionally have one or more constraints
+/// that provide details about how serving may be restricted.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyTopicEntry {
+    /// Policy topic this finding refers to. For example, "ALCOHOL",
+    /// "TRADEMARKS_IN_AD_TEXT", or "DESTINATION_NOT_WORKING". The set of possible
+    /// policy topics is not fixed for a particular API version and may change
+    /// at any time.
+    #[prost(message, optional, tag = "1")]
+    pub topic: ::std::option::Option<::std::string::String>,
+    /// Describes the negative or positive effect this policy will have on serving.
+    #[prost(
+        enumeration = "super::enums::policy_topic_entry_type_enum::PolicyTopicEntryType",
+        tag = "2"
+    )]
+    pub r#type: i32,
+    /// Additional information that explains policy finding
+    /// (e.g. the brand name for a trademark finding).
+    #[prost(message, repeated, tag = "3")]
+    pub evidences: ::std::vec::Vec<PolicyTopicEvidence>,
+    /// Indicates how serving of this resource may be affected (e.g. not serving
+    /// in a country).
+    #[prost(message, repeated, tag = "4")]
+    pub constraints: ::std::vec::Vec<PolicyTopicConstraint>,
+}
+/// Additional information that explains a policy finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyTopicEvidence {
+    /// Specific evidence information depending on the evidence type.
+    #[prost(oneof = "policy_topic_evidence::Value", tags = "3, 4, 5, 6, 7, 8")]
+    pub value: ::std::option::Option<policy_topic_evidence::Value>,
+}
+pub mod policy_topic_evidence {
+    /// A list of fragments of text that violated a policy.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TextList {
+        /// The fragments of text from the resource that caused the policy finding.
+        #[prost(message, repeated, tag = "1")]
+        pub texts: ::std::vec::Vec<::std::string::String>,
+    }
+    /// A list of websites that caused a policy finding. Used for
+    /// ONE_WEBSITE_PER_AD_GROUP policy topic, for example. In case there are more
+    /// than five websites, only the top five (those that appear in resources the
+    /// most) will be listed here.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WebsiteList {
+        /// Websites that caused the policy finding.
+        #[prost(message, repeated, tag = "1")]
+        pub websites: ::std::vec::Vec<::std::string::String>,
+    }
+    /// A list of strings found in a destination page that caused a policy
+    /// finding.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DestinationTextList {
+        /// List of text found in the resource's destination page.
+        #[prost(message, repeated, tag = "1")]
+        pub destination_texts: ::std::vec::Vec<::std::string::String>,
+    }
+    /// Evidence of mismatches between the URLs of a resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DestinationMismatch {
+        /// The set of URLs that did not match each other.
+        #[prost(
+            enumeration = "super::super::enums::policy_topic_evidence_destination_mismatch_url_type_enum::PolicyTopicEvidenceDestinationMismatchUrlType",
+            repeated,
+            tag = "1"
+        )]
+        pub url_types: ::std::vec::Vec<i32>,
+    }
+    /// Evidence details when the destination is returning an HTTP error
+    /// code or isn't functional in all locations for commonly used devices.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DestinationNotWorking {
+        /// The full URL that didn't work.
+        #[prost(message, optional, tag = "3")]
+        pub expanded_url: ::std::option::Option<::std::string::String>,
+        /// The type of device that failed to load the URL.
+        #[prost(
+            enumeration = "super::super::enums::policy_topic_evidence_destination_not_working_device_enum::PolicyTopicEvidenceDestinationNotWorkingDevice",
+            tag = "4"
+        )]
+        pub device: i32,
+        /// The time the URL was last checked.
+        /// The format is "YYYY-MM-DD HH:MM:SS".
+        /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30"
+        #[prost(message, optional, tag = "5")]
+        pub last_checked_date_time: ::std::option::Option<::std::string::String>,
+        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
+        #[prost(oneof = "destination_not_working::Reason", tags = "1, 2")]
+        pub reason: ::std::option::Option<destination_not_working::Reason>,
+    }
+    pub mod destination_not_working {
+        /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Reason {
+            /// The type of DNS error.
+            #[prost(
+                enumeration = "super::super::super::enums::policy_topic_evidence_destination_not_working_dns_error_type_enum::PolicyTopicEvidenceDestinationNotWorkingDnsErrorType",
+                tag = "1"
+            )]
+            DnsErrorType(i32),
+            /// The HTTP error code.
+            #[prost(message, tag = "2")]
+            HttpErrorCode(i64),
+        }
+    }
+    /// Specific evidence information depending on the evidence type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// List of websites linked with this resource.
+        #[prost(message, tag = "3")]
+        WebsiteList(WebsiteList),
+        /// List of evidence found in the text of a resource.
+        #[prost(message, tag = "4")]
+        TextList(TextList),
+        /// The language the resource was detected to be written in.
+        /// This is an IETF language tag such as "en-US".
+        #[prost(message, tag = "5")]
+        LanguageCode(::std::string::String),
+        /// The text in the destination of the resource that is causing a policy
+        /// finding.
+        #[prost(message, tag = "6")]
+        DestinationTextList(DestinationTextList),
+        /// Mismatch between the destinations of a resource's URLs.
+        #[prost(message, tag = "7")]
+        DestinationMismatch(DestinationMismatch),
+        /// Details when the destination is returning an HTTP error code or isn't
+        /// functional in all locations for commonly used devices.
+        #[prost(message, tag = "8")]
+        DestinationNotWorking(DestinationNotWorking),
+    }
+}
+/// Describes the effect on serving that a policy topic entry will have.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyTopicConstraint {
+    /// Specific information about the constraint.
+    #[prost(oneof = "policy_topic_constraint::Value", tags = "1, 2, 3, 4")]
+    pub value: ::std::option::Option<policy_topic_constraint::Value>,
+}
+pub mod policy_topic_constraint {
+    /// A list of countries where a resource's serving is constrained.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CountryConstraintList {
+        /// Total number of countries targeted by the resource.
+        #[prost(message, optional, tag = "1")]
+        pub total_targeted_countries: ::std::option::Option<i32>,
+        /// Countries in which serving is restricted.
+        #[prost(message, repeated, tag = "2")]
+        pub countries: ::std::vec::Vec<CountryConstraint>,
+    }
+    /// Indicates that a policy topic was constrained due to disapproval of the
+    /// website for reseller purposes.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ResellerConstraint {}
+    /// Indicates that a resource's ability to serve in a particular country is
+    /// constrained.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CountryConstraint {
+        /// Geo target constant resource name of the country in which serving is
+        /// constrained.
+        #[prost(message, optional, tag = "1")]
+        pub country_criterion: ::std::option::Option<::std::string::String>,
+    }
+    /// Specific information about the constraint.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// Countries where the resource cannot serve.
+        #[prost(message, tag = "1")]
+        CountryConstraintList(CountryConstraintList),
+        /// Reseller constraint.
+        #[prost(message, tag = "2")]
+        ResellerConstraint(ResellerConstraint),
+        /// Countries where a certificate is required for serving.
+        #[prost(message, tag = "3")]
+        CertificateMissingInCountryList(CountryConstraintList),
+        /// Countries where the resource's domain is not covered by the
+        /// certificates associated with it.
+        #[prost(message, tag = "4")]
+        CertificateDomainMismatchInCountryList(CountryConstraintList),
+    }
+}
+// Proto file describing RealTimeBiddingSetting
+
+/// Settings for Real-Time Bidding, a feature only available for campaigns
+/// targeting the Ad Exchange network.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealTimeBiddingSetting {
+    /// Whether the campaign is opted in to real-time bidding.
+    #[prost(message, optional, tag = "1")]
+    pub opt_in: ::std::option::Option<bool>,
 }
 // Proto file describing segment only fields.
 
@@ -2719,676 +3356,227 @@ pub struct Keyword {
     #[prost(message, optional, tag = "2")]
     pub info: ::std::option::Option<KeywordInfo>,
 }
-// Proto file describing ExplorerAutoOptimizerSetting
+// Proto file describing simulation points.
 
-/// Settings for the Display Campaign Optimizer, initially named "Explorer".
-/// Learn more about
-/// [automatic targeting](https://support.google.com/google-ads/answer/190596).
+/// A container for simulation points for simulations of type BID_MODIFIER.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplorerAutoOptimizerSetting {
-    /// Indicates whether the optimizer is turned on.
-    #[prost(message, optional, tag = "1")]
-    pub opt_in: ::std::option::Option<bool>,
-}
-// Proto file describing assets used inside an ad.
-
-/// A text asset used inside an ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdTextAsset {
-    /// Asset text.
-    #[prost(message, optional, tag = "1")]
-    pub text: ::std::option::Option<::std::string::String>,
-    /// The pinned field of the asset. This restricts the asset to only serve
-    /// within this field. Multiple assets can be pinned to the same field. An
-    /// asset that is unpinned or pinned to a different field will not serve in a
-    /// field where some other asset has been pinned.
-    #[prost(
-        enumeration = "super::enums::served_asset_field_type_enum::ServedAssetFieldType",
-        tag = "2"
-    )]
-    pub pinned_field: i32,
-}
-/// An image asset used inside an ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdImageAsset {
-    /// The Asset resource name of this image.
-    #[prost(message, optional, tag = "1")]
-    pub asset: ::std::option::Option<::std::string::String>,
-}
-/// A video asset used inside an ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdVideoAsset {
-    /// The Asset resource name of this video.
-    #[prost(message, optional, tag = "1")]
-    pub asset: ::std::option::Option<::std::string::String>,
-}
-/// A media bundle asset used inside an ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdMediaBundleAsset {
-    /// The Asset resource name of this media bundle.
-    #[prost(message, optional, tag = "1")]
-    pub asset: ::std::option::Option<::std::string::String>,
-}
-// Proto file containing info messages for specific ad types.
-
-/// A text ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextAdInfo {
-    /// The headline of the ad.
-    #[prost(message, optional, tag = "1")]
-    pub headline: ::std::option::Option<::std::string::String>,
-    /// The first line of the ad's description.
-    #[prost(message, optional, tag = "2")]
-    pub description1: ::std::option::Option<::std::string::String>,
-    /// The second line of the ad's description.
-    #[prost(message, optional, tag = "3")]
-    pub description2: ::std::option::Option<::std::string::String>,
-}
-/// An expanded text ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExpandedTextAdInfo {
-    /// The first part of the ad's headline.
-    #[prost(message, optional, tag = "1")]
-    pub headline_part1: ::std::option::Option<::std::string::String>,
-    /// The second part of the ad's headline.
-    #[prost(message, optional, tag = "2")]
-    pub headline_part2: ::std::option::Option<::std::string::String>,
-    /// The third part of the ad's headline.
-    #[prost(message, optional, tag = "6")]
-    pub headline_part3: ::std::option::Option<::std::string::String>,
-    /// The description of the ad.
-    #[prost(message, optional, tag = "3")]
-    pub description: ::std::option::Option<::std::string::String>,
-    /// The second description of the ad.
-    #[prost(message, optional, tag = "7")]
-    pub description2: ::std::option::Option<::std::string::String>,
-    /// The text that can appear alongside the ad's displayed URL.
-    #[prost(message, optional, tag = "4")]
-    pub path1: ::std::option::Option<::std::string::String>,
-    /// Additional text that can appear alongside the ad's displayed URL.
-    #[prost(message, optional, tag = "5")]
-    pub path2: ::std::option::Option<::std::string::String>,
-}
-/// A call-only ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallOnlyAdInfo {
-    /// The country code in the ad.
-    #[prost(message, optional, tag = "1")]
-    pub country_code: ::std::option::Option<::std::string::String>,
-    /// The phone number in the ad.
-    #[prost(message, optional, tag = "2")]
-    pub phone_number: ::std::option::Option<::std::string::String>,
-    /// The business name in the ad.
-    #[prost(message, optional, tag = "3")]
-    pub business_name: ::std::option::Option<::std::string::String>,
-    /// First headline in the ad.
-    #[prost(message, optional, tag = "11")]
-    pub headline1: ::std::option::Option<::std::string::String>,
-    /// Second headline in the ad.
-    #[prost(message, optional, tag = "12")]
-    pub headline2: ::std::option::Option<::std::string::String>,
-    /// The first line of the ad's description.
-    #[prost(message, optional, tag = "4")]
-    pub description1: ::std::option::Option<::std::string::String>,
-    /// The second line of the ad's description.
-    #[prost(message, optional, tag = "5")]
-    pub description2: ::std::option::Option<::std::string::String>,
-    /// Whether to enable call tracking for the creative. Enabling call
-    /// tracking also enables call conversions.
-    #[prost(message, optional, tag = "6")]
-    pub call_tracked: ::std::option::Option<bool>,
-    /// Whether to disable call conversion for the creative.
-    /// If set to `true`, disables call conversions even when `call_tracked` is
-    /// `true`.
-    /// If `call_tracked` is `false`, this field is ignored.
-    #[prost(message, optional, tag = "7")]
-    pub disable_call_conversion: ::std::option::Option<bool>,
-    /// The URL to be used for phone number verification.
-    #[prost(message, optional, tag = "8")]
-    pub phone_number_verification_url: ::std::option::Option<::std::string::String>,
-    /// The conversion action to attribute a call conversion to. If not set a
-    /// default conversion action is used. This field only has effect if
-    /// call_tracked is set to true. Otherwise this field is ignored.
-    #[prost(message, optional, tag = "9")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
-    /// The call conversion behavior of this call only ad. It can use its own call
-    /// conversion setting, inherit the account level setting, or be disabled.
-    #[prost(
-        enumeration = "super::enums::call_conversion_reporting_state_enum::CallConversionReportingState",
-        tag = "10"
-    )]
-    pub conversion_reporting_state: i32,
-}
-/// An expanded dynamic search ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExpandedDynamicSearchAdInfo {
-    /// The description of the ad.
-    #[prost(message, optional, tag = "1")]
-    pub description: ::std::option::Option<::std::string::String>,
-    /// The second description of the ad.
-    #[prost(message, optional, tag = "2")]
-    pub description2: ::std::option::Option<::std::string::String>,
-}
-/// A hotel ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelAdInfo {}
-/// A Smart Shopping ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ShoppingSmartAdInfo {}
-/// A standard Shopping ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ShoppingProductAdInfo {}
-/// A Shopping Comparison Listing ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ShoppingComparisonListingAdInfo {
-    /// Headline of the ad. This field is required. Allowed length is between 25
-    /// and 45 characters.
-    #[prost(message, optional, tag = "1")]
-    pub headline: ::std::option::Option<::std::string::String>,
-}
-/// A Gmail ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GmailAdInfo {
-    /// The Gmail teaser.
-    #[prost(message, optional, tag = "1")]
-    pub teaser: ::std::option::Option<GmailTeaser>,
-    /// The MediaFile resource name of the header image. Valid image types are GIF,
-    /// JPEG and PNG. The minimum size is 300x100 pixels and the aspect ratio must
-    /// be between 3:1 and 5:1 (+-1%).
-    #[prost(message, optional, tag = "2")]
-    pub header_image: ::std::option::Option<::std::string::String>,
-    /// The MediaFile resource name of the marketing image. Valid image types are
-    /// GIF, JPEG and PNG. The image must either be landscape with a minimum size
-    /// of 600x314 pixels and aspect ratio of 600:314 (+-1%) or square with a
-    /// minimum size of 300x300 pixels and aspect ratio of 1:1 (+-1%)
-    #[prost(message, optional, tag = "3")]
-    pub marketing_image: ::std::option::Option<::std::string::String>,
-    /// Headline of the marketing image.
-    #[prost(message, optional, tag = "4")]
-    pub marketing_image_headline: ::std::option::Option<::std::string::String>,
-    /// Description of the marketing image.
-    #[prost(message, optional, tag = "5")]
-    pub marketing_image_description: ::std::option::Option<::std::string::String>,
-    /// Display-call-to-action of the marketing image.
-    #[prost(message, optional, tag = "6")]
-    pub marketing_image_display_call_to_action: ::std::option::Option<DisplayCallToAction>,
-    /// Product images. Up to 15 images are supported.
-    #[prost(message, repeated, tag = "7")]
-    pub product_images: ::std::vec::Vec<ProductImage>,
-    /// Product videos. Up to 7 videos are supported. At least one product video
-    /// or a marketing image must be specified.
-    #[prost(message, repeated, tag = "8")]
-    pub product_videos: ::std::vec::Vec<ProductVideo>,
-}
-/// Gmail teaser data. The teaser is a small header that acts as an invitation
-/// to view the rest of the ad (the body).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GmailTeaser {
-    /// Headline of the teaser.
-    #[prost(message, optional, tag = "1")]
-    pub headline: ::std::option::Option<::std::string::String>,
-    /// Description of the teaser.
-    #[prost(message, optional, tag = "2")]
-    pub description: ::std::option::Option<::std::string::String>,
-    /// Business name of the advertiser.
-    #[prost(message, optional, tag = "3")]
-    pub business_name: ::std::option::Option<::std::string::String>,
-    /// The MediaFile resource name of the logo image. Valid image types are GIF,
-    /// JPEG and PNG. The minimum size is 144x144 pixels and the aspect ratio must
-    /// be 1:1 (+-1%).
-    #[prost(message, optional, tag = "4")]
-    pub logo_image: ::std::option::Option<::std::string::String>,
-}
-/// Data for display call to action. The call to action is a piece of the ad
-/// that prompts the user to do something. Like clicking a link or making a phone
-/// call.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DisplayCallToAction {
-    /// Text for the display-call-to-action.
-    #[prost(message, optional, tag = "1")]
-    pub text: ::std::option::Option<::std::string::String>,
-    /// Text color for the display-call-to-action in hexadecimal, e.g. #ffffff for
-    /// white.
-    #[prost(message, optional, tag = "2")]
-    pub text_color: ::std::option::Option<::std::string::String>,
-    /// Identifies the url collection in the ad.url_collections field. If not set
-    /// the url defaults to final_url.
-    #[prost(message, optional, tag = "3")]
-    pub url_collection_id: ::std::option::Option<::std::string::String>,
-}
-/// Product image specific data.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductImage {
-    /// The MediaFile resource name of the product image. Valid image types are
-    /// GIF, JPEG and PNG. The minimum size is 300x300 pixels and the aspect ratio
-    /// must be 1:1 (+-1%).
-    #[prost(message, optional, tag = "1")]
-    pub product_image: ::std::option::Option<::std::string::String>,
-    /// Description of the product.
-    #[prost(message, optional, tag = "2")]
-    pub description: ::std::option::Option<::std::string::String>,
-    /// Display-call-to-action of the product image.
-    #[prost(message, optional, tag = "3")]
-    pub display_call_to_action: ::std::option::Option<DisplayCallToAction>,
-}
-/// Product video specific data.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductVideo {
-    /// The MediaFile resource name of a video which must be hosted on YouTube.
-    #[prost(message, optional, tag = "1")]
-    pub product_video: ::std::option::Option<::std::string::String>,
-}
-/// An image ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImageAdInfo {
-    /// Width in pixels of the full size image.
-    #[prost(message, optional, tag = "4")]
-    pub pixel_width: ::std::option::Option<i64>,
-    /// Height in pixels of the full size image.
-    #[prost(message, optional, tag = "5")]
-    pub pixel_height: ::std::option::Option<i64>,
-    /// URL of the full size image.
-    #[prost(message, optional, tag = "6")]
-    pub image_url: ::std::option::Option<::std::string::String>,
-    /// Width in pixels of the preview size image.
-    #[prost(message, optional, tag = "7")]
-    pub preview_pixel_width: ::std::option::Option<i64>,
-    /// Height in pixels of the preview size image.
-    #[prost(message, optional, tag = "8")]
-    pub preview_pixel_height: ::std::option::Option<i64>,
-    /// URL of the preview size image.
-    #[prost(message, optional, tag = "9")]
-    pub preview_image_url: ::std::option::Option<::std::string::String>,
-    /// The mime type of the image.
-    #[prost(enumeration = "super::enums::mime_type_enum::MimeType", tag = "10")]
-    pub mime_type: i32,
-    /// The name of the image. If the image was created from a MediaFile, this is
-    /// the MediaFile's name. If the image was created from bytes, this is empty.
-    #[prost(message, optional, tag = "11")]
-    pub name: ::std::option::Option<::std::string::String>,
-    /// The image to create the ImageAd from. This can be specified in one of
-    /// two ways.
-    /// 1. An existing MediaFile resource.
-    /// 2. The raw image data as bytes.
-    #[prost(oneof = "image_ad_info::Image", tags = "1, 2, 3")]
-    pub image: ::std::option::Option<image_ad_info::Image>,
-}
-pub mod image_ad_info {
-    /// The image to create the ImageAd from. This can be specified in one of
-    /// two ways.
-    /// 1. An existing MediaFile resource.
-    /// 2. The raw image data as bytes.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Image {
-        /// The MediaFile resource to use for the image.
-        #[prost(message, tag = "1")]
-        MediaFile(::std::string::String),
-        /// Raw image data as bytes.
-        #[prost(message, tag = "2")]
-        Data(::std::vec::Vec<u8>),
-        /// An ad ID to copy the image from.
-        #[prost(message, tag = "3")]
-        AdIdToCopyImageFrom(i64),
-    }
-}
-/// Representation of video bumper in-stream ad format (very short in-stream
-/// non-skippable video ad).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VideoBumperInStreamAdInfo {
-    /// The MediaFile resource name of the companion banner used with the ad.
-    #[prost(message, optional, tag = "1")]
-    pub companion_banner: ::std::option::Option<::std::string::String>,
-}
-/// Representation of video non-skippable in-stream ad format (15 second
-/// in-stream non-skippable video ad).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VideoNonSkippableInStreamAdInfo {
-    /// The MediaFile resource name of the companion banner used with the ad.
-    #[prost(message, optional, tag = "1")]
-    pub companion_banner: ::std::option::Option<::std::string::String>,
-}
-/// Representation of video TrueView in-stream ad format (ad shown during video
-/// playback, often at beginning, which displays a skip button a few seconds into
-/// the video).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VideoTrueViewInStreamAdInfo {
-    /// Label on the CTA (call-to-action) button taking the user to the video ad's
-    /// final URL.
-    /// Required for TrueView for action campaigns, optional otherwise.
-    #[prost(message, optional, tag = "1")]
-    pub action_button_label: ::std::option::Option<::std::string::String>,
-    /// Additional text displayed with the CTA (call-to-action) button to give
-    /// context and encourage clicking on the button.
-    #[prost(message, optional, tag = "2")]
-    pub action_headline: ::std::option::Option<::std::string::String>,
-    /// The MediaFile resource name of the companion banner used with the ad.
-    #[prost(message, optional, tag = "3")]
-    pub companion_banner: ::std::option::Option<::std::string::String>,
-}
-/// Representation of video out-stream ad format (ad shown alongside a feed
-/// with automatic playback, without sound).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VideoOutstreamAdInfo {
-    /// The headline of the ad.
-    #[prost(message, optional, tag = "1")]
-    pub headline: ::std::option::Option<::std::string::String>,
-    /// The description line.
-    #[prost(message, optional, tag = "2")]
-    pub description: ::std::option::Option<::std::string::String>,
-}
-/// A video ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VideoAdInfo {
-    /// The MediaFile resource to use for the video.
-    #[prost(message, optional, tag = "1")]
-    pub media_file: ::std::option::Option<::std::string::String>,
-    /// Format-specific schema for the different video formats.
-    #[prost(oneof = "video_ad_info::Format", tags = "2, 3, 4, 5")]
-    pub format: ::std::option::Option<video_ad_info::Format>,
-}
-pub mod video_ad_info {
-    /// Format-specific schema for the different video formats.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Format {
-        /// Video TrueView in-stream ad format.
-        #[prost(message, tag = "2")]
-        InStream(super::VideoTrueViewInStreamAdInfo),
-        /// Video bumper in-stream ad format.
-        #[prost(message, tag = "3")]
-        Bumper(super::VideoBumperInStreamAdInfo),
-        /// Video out-stream ad format.
-        #[prost(message, tag = "4")]
-        OutStream(super::VideoOutstreamAdInfo),
-        /// Video non-skippable in-stream ad format.
-        #[prost(message, tag = "5")]
-        NonSkippable(super::VideoNonSkippableInStreamAdInfo),
-    }
-}
-/// A responsive search ad.
-///
-/// Responsive search ads let you create an ad that adapts to show more text, and
-/// more relevant messages, to your customers. Enter multiple headlines and
-/// descriptions when creating a responsive search ad, and over time, Google Ads
-/// will automatically test different combinations and learn which combinations
-/// perform best. By adapting your ad's content to more closely match potential
-/// customers' search terms, responsive search ads may improve your campaign's
-/// performance.
-///
-/// More information at https://support.google.com/google-ads/answer/7684791
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResponsiveSearchAdInfo {
-    /// List of text assets for headlines. When the ad serves the headlines will
-    /// be selected from this list.
+pub struct BidModifierSimulationPointList {
+    /// Projected metrics for a series of bid modifier amounts.
     #[prost(message, repeated, tag = "1")]
-    pub headlines: ::std::vec::Vec<AdTextAsset>,
-    /// List of text assets for descriptions. When the ad serves the descriptions
-    /// will be selected from this list.
-    #[prost(message, repeated, tag = "2")]
-    pub descriptions: ::std::vec::Vec<AdTextAsset>,
-    /// First part of text that may appear appended to the url displayed in the ad.
-    #[prost(message, optional, tag = "3")]
-    pub path1: ::std::option::Option<::std::string::String>,
-    /// Second part of text that may appear appended to the url displayed in the
-    /// ad. This field can only be set when path1 is also set.
-    #[prost(message, optional, tag = "4")]
-    pub path2: ::std::option::Option<::std::string::String>,
+    pub points: ::std::vec::Vec<BidModifierSimulationPoint>,
 }
-/// A legacy responsive display ad. Ads of this type are labeled 'Responsive ads'
-/// in the Google Ads UI.
+/// A container for simulation points for simulations of type CPC_BID.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LegacyResponsiveDisplayAdInfo {
-    /// The short version of the ad's headline.
+pub struct CpcBidSimulationPointList {
+    /// Projected metrics for a series of CPC bid amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<CpcBidSimulationPoint>,
+}
+/// A container for simulation points for simulations of type CPV_BID.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CpvBidSimulationPointList {
+    /// Projected metrics for a series of CPV bid amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<CpvBidSimulationPoint>,
+}
+/// A container for simulation points for simulations of type TARGET_CPA.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpaSimulationPointList {
+    /// Projected metrics for a series of target CPA amounts.
+    #[prost(message, repeated, tag = "1")]
+    pub points: ::std::vec::Vec<TargetCpaSimulationPoint>,
+}
+/// Projected metrics for a specific bid modifier amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidModifierSimulationPoint {
+    /// The simulated bid modifier upon which projected metrics are based.
     #[prost(message, optional, tag = "1")]
-    pub short_headline: ::std::option::Option<::std::string::String>,
-    /// The long version of the ad's headline.
+    pub bid_modifier: ::std::option::Option<f64>,
+    /// Projected number of biddable conversions.
+    /// Only search advertising channel type supports this field.
     #[prost(message, optional, tag = "2")]
-    pub long_headline: ::std::option::Option<::std::string::String>,
-    /// The description of the ad.
+    pub biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions.
+    /// Only search advertising channel type supports this field.
     #[prost(message, optional, tag = "3")]
-    pub description: ::std::option::Option<::std::string::String>,
-    /// The business name in the ad.
+    pub biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks.
     #[prost(message, optional, tag = "4")]
-    pub business_name: ::std::option::Option<::std::string::String>,
-    /// Advertiser's consent to allow flexible color. When true, the ad may be
-    /// served with different color if necessary. When false, the ad will be served
-    /// with the specified colors or a neutral color.
-    /// The default value is true.
-    /// Must be true if main_color and accent_color are not set.
+    pub clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros.
     #[prost(message, optional, tag = "5")]
-    pub allow_flexible_color: ::std::option::Option<bool>,
-    /// The accent color of the ad in hexadecimal, e.g. #ffffff for white.
-    /// If one of main_color and accent_color is set, the other is required as
-    /// well.
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
     #[prost(message, optional, tag = "6")]
-    pub accent_color: ::std::option::Option<::std::string::String>,
-    /// The main color of the ad in hexadecimal, e.g. #ffffff for white.
-    /// If one of main_color and accent_color is set, the other is required as
-    /// well.
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions.
+    /// Only search advertising channel type supports this field.
     #[prost(message, optional, tag = "7")]
-    pub main_color: ::std::option::Option<::std::string::String>,
-    /// The call-to-action text for the ad.
+    pub top_slot_impressions: ::std::option::Option<i64>,
+    /// Projected number of biddable conversions for the parent resource.
+    /// Only search advertising channel type supports this field.
     #[prost(message, optional, tag = "8")]
-    pub call_to_action_text: ::std::option::Option<::std::string::String>,
-    /// The MediaFile resource name of the logo image used in the ad.
+    pub parent_biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions for the parent resource.
+    /// Only search advertising channel type supports this field.
     #[prost(message, optional, tag = "9")]
-    pub logo_image: ::std::option::Option<::std::string::String>,
-    /// The MediaFile resource name of the square logo image used in the ad.
+    pub parent_biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks for the parent resource.
     #[prost(message, optional, tag = "10")]
-    pub square_logo_image: ::std::option::Option<::std::string::String>,
-    /// The MediaFile resource name of the marketing image used in the ad.
+    pub parent_clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros for the parent resource.
     #[prost(message, optional, tag = "11")]
-    pub marketing_image: ::std::option::Option<::std::string::String>,
-    /// The MediaFile resource name of the square marketing image used in the ad.
+    pub parent_cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions for the parent resource.
     #[prost(message, optional, tag = "12")]
-    pub square_marketing_image: ::std::option::Option<::std::string::String>,
-    /// Specifies which format the ad will be served in. Default is ALL_FORMATS.
-    #[prost(
-        enumeration = "super::enums::display_ad_format_setting_enum::DisplayAdFormatSetting",
-        tag = "13"
-    )]
-    pub format_setting: i32,
-    /// Prefix before price. E.g. 'as low as'.
-    #[prost(message, optional, tag = "14")]
-    pub price_prefix: ::std::option::Option<::std::string::String>,
-    /// Promotion text used for dyanmic formats of responsive ads. For example
-    /// 'Free two-day shipping'.
-    #[prost(message, optional, tag = "15")]
-    pub promo_text: ::std::option::Option<::std::string::String>,
-}
-/// An app ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppAdInfo {
-    /// An optional text asset that, if specified, must always be displayed when
-    /// the ad is served.
-    #[prost(message, optional, tag = "1")]
-    pub mandatory_ad_text: ::std::option::Option<AdTextAsset>,
-    /// List of text assets for headlines. When the ad serves the headlines will
-    /// be selected from this list.
-    #[prost(message, repeated, tag = "2")]
-    pub headlines: ::std::vec::Vec<AdTextAsset>,
-    /// List of text assets for descriptions. When the ad serves the descriptions
-    /// will be selected from this list.
-    #[prost(message, repeated, tag = "3")]
-    pub descriptions: ::std::vec::Vec<AdTextAsset>,
-    /// List of image assets that may be displayed with the ad.
-    #[prost(message, repeated, tag = "4")]
-    pub images: ::std::vec::Vec<AdImageAsset>,
-    /// List of YouTube video assets that may be displayed with the ad.
-    #[prost(message, repeated, tag = "5")]
-    pub youtube_videos: ::std::vec::Vec<AdVideoAsset>,
-    /// List of media bundle assets that may be used with the ad.
-    #[prost(message, repeated, tag = "6")]
-    pub html5_media_bundles: ::std::vec::Vec<AdMediaBundleAsset>,
-}
-/// App engagement ads allow you to write text encouraging a specific action in
-/// the app, like checking in, making a purchase, or booking a flight.
-/// They allow you to send users to a specific part of your app where they can
-/// find what they're looking for easier and faster.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppEngagementAdInfo {
-    /// List of text assets for headlines. When the ad serves the headlines will
-    /// be selected from this list.
-    #[prost(message, repeated, tag = "1")]
-    pub headlines: ::std::vec::Vec<AdTextAsset>,
-    /// List of text assets for descriptions. When the ad serves the descriptions
-    /// will be selected from this list.
-    #[prost(message, repeated, tag = "2")]
-    pub descriptions: ::std::vec::Vec<AdTextAsset>,
-    /// List of image assets that may be displayed with the ad.
-    #[prost(message, repeated, tag = "3")]
-    pub images: ::std::vec::Vec<AdImageAsset>,
-    /// List of video assets that may be displayed with the ad.
-    #[prost(message, repeated, tag = "4")]
-    pub videos: ::std::vec::Vec<AdVideoAsset>,
-}
-/// A legacy app install ad that only can be used by a few select customers.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LegacyAppInstallAdInfo {
-    /// The id of the mobile app.
-    #[prost(message, optional, tag = "1")]
-    pub app_id: ::std::option::Option<::std::string::String>,
-    /// The app store the mobile app is available in.
-    #[prost(
-        enumeration = "super::enums::legacy_app_install_ad_app_store_enum::LegacyAppInstallAdAppStore",
-        tag = "2"
-    )]
-    pub app_store: i32,
-    /// The headline of the ad.
-    #[prost(message, optional, tag = "3")]
-    pub headline: ::std::option::Option<::std::string::String>,
-    /// The first description line of the ad.
-    #[prost(message, optional, tag = "4")]
-    pub description1: ::std::option::Option<::std::string::String>,
-    /// The second description line of the ad.
-    #[prost(message, optional, tag = "5")]
-    pub description2: ::std::option::Option<::std::string::String>,
-}
-/// A responsive display ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResponsiveDisplayAdInfo {
-    /// Marketing images to be used in the ad. Valid image types are GIF,
-    /// JPEG, and PNG. The minimum size is 600x314 and the aspect ratio must
-    /// be 1.91:1 (+-1%). At least one marketing_image is required. Combined with
-    /// square_marketing_images the maximum is 15.
-    #[prost(message, repeated, tag = "1")]
-    pub marketing_images: ::std::vec::Vec<AdImageAsset>,
-    /// Square marketing images to be used in the ad. Valid image types are GIF,
-    /// JPEG, and PNG. The minimum size is 300x300 and the aspect ratio must
-    /// be 1:1 (+-1%). At least one square marketing_image is required. Combined
-    /// with marketing_images the maximum is 15.
-    #[prost(message, repeated, tag = "2")]
-    pub square_marketing_images: ::std::vec::Vec<AdImageAsset>,
-    /// Logo images to be used in the ad. Valid image types are GIF,
-    /// JPEG, and PNG. The minimum size is 512x128 and the aspect ratio must
-    /// be 4:1 (+-1%). Combined with square_logo_images the maximum is 5.
-    #[prost(message, repeated, tag = "3")]
-    pub logo_images: ::std::vec::Vec<AdImageAsset>,
-    /// Square logo images to be used in the ad. Valid image types are GIF,
-    /// JPEG, and PNG. The minimum size is 128x128 and the aspect ratio must
-    /// be 1:1 (+-1%). Combined with square_logo_images the maximum is 5.
-    #[prost(message, repeated, tag = "4")]
-    pub square_logo_images: ::std::vec::Vec<AdImageAsset>,
-    /// Short format headlines for the ad. The maximum length is 30 characters.
-    /// At least 1 and max 5 headlines can be specified.
-    #[prost(message, repeated, tag = "5")]
-    pub headlines: ::std::vec::Vec<AdTextAsset>,
-    /// A required long format headline. The maximum length is 90 characters.
-    #[prost(message, optional, tag = "6")]
-    pub long_headline: ::std::option::Option<AdTextAsset>,
-    /// Descriptive texts for the ad. The maximum length is 90 characters. At
-    /// least 1 and max 5 headlines can be specified.
-    #[prost(message, repeated, tag = "7")]
-    pub descriptions: ::std::vec::Vec<AdTextAsset>,
-    /// Optional YouTube videos for the ad. A maximum of 5 videos can be specified.
-    #[prost(message, repeated, tag = "8")]
-    pub youtube_videos: ::std::vec::Vec<AdVideoAsset>,
-    /// The advertiser/brand name. Maximum display width is 25.
-    #[prost(message, optional, tag = "9")]
-    pub business_name: ::std::option::Option<::std::string::String>,
-    /// The main color of the ad in hexadecimal, e.g. #ffffff for white.
-    /// If one of main_color and accent_color is set, the other is required as
-    /// well.
-    #[prost(message, optional, tag = "10")]
-    pub main_color: ::std::option::Option<::std::string::String>,
-    /// The accent color of the ad in hexadecimal, e.g. #ffffff for white.
-    /// If one of main_color and accent_color is set, the other is required as
-    /// well.
-    #[prost(message, optional, tag = "11")]
-    pub accent_color: ::std::option::Option<::std::string::String>,
-    /// Advertiser's consent to allow flexible color. When true, the ad may be
-    /// served with different color if necessary. When false, the ad will be served
-    /// with the specified colors or a neutral color.
-    /// The default value is true.
-    /// Must be true if main_color and accent_color are not set.
-    #[prost(message, optional, tag = "12")]
-    pub allow_flexible_color: ::std::option::Option<bool>,
-    /// The call-to-action text for the ad. Maximum display width is 30.
+    pub parent_impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions for the parent resource.
+    /// Only search advertising channel type supports this field.
     #[prost(message, optional, tag = "13")]
-    pub call_to_action_text: ::std::option::Option<::std::string::String>,
-    /// Prefix before price. E.g. 'as low as'.
+    pub parent_top_slot_impressions: ::std::option::Option<i64>,
+    /// Projected minimum daily budget that must be available to the parent
+    /// resource to realize this simulation.
     #[prost(message, optional, tag = "14")]
-    pub price_prefix: ::std::option::Option<::std::string::String>,
-    /// Promotion text used for dyanmic formats of responsive ads. For example
-    /// 'Free two-day shipping'.
-    #[prost(message, optional, tag = "15")]
-    pub promo_text: ::std::option::Option<::std::string::String>,
-    /// Specifies which format the ad will be served in. Default is ALL_FORMATS.
-    #[prost(
-        enumeration = "super::enums::display_ad_format_setting_enum::DisplayAdFormatSetting",
-        tag = "16"
-    )]
-    pub format_setting: i32,
+    pub parent_required_budget_micros: ::std::option::Option<i64>,
 }
-/// A generic type of display ad. The exact ad format is controlled by the
-/// display_upload_product_type field, which determines what kinds of data
-/// need to be included with the ad.
+/// Projected metrics for a specific CPC bid amount.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DisplayUploadAdInfo {
-    /// The product type of this ad. See comments on the enum for details.
-    #[prost(
-        enumeration = "super::enums::display_upload_product_type_enum::DisplayUploadProductType",
-        tag = "1"
-    )]
-    pub display_upload_product_type: i32,
-    /// The asset data that makes up the ad.
-    #[prost(oneof = "display_upload_ad_info::MediaAsset", tags = "2")]
-    pub media_asset: ::std::option::Option<display_upload_ad_info::MediaAsset>,
-}
-pub mod display_upload_ad_info {
-    /// The asset data that makes up the ad.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum MediaAsset {
-        /// A media bundle asset to be used in the ad. For information about the
-        /// media bundle for HTML5_UPLOAD_AD see
-        /// https://support.google.com/google-ads/answer/1722096
-        /// Media bundles that are part of dynamic product types use a special format
-        /// that needs to be created through the Google Web Designer. See
-        /// https://support.google.com/webdesigner/answer/7543898 for more
-        /// information.
-        #[prost(message, tag = "2")]
-        MediaBundle(super::AdMediaBundleAsset),
-    }
-}
-// Proto file FinalAppUrl type.
-
-/// A URL for deep linking into an app for the given operating system.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FinalAppUrl {
-    /// The operating system targeted by this URL. Required.
-    #[prost(
-        enumeration = "super::enums::app_url_operating_system_type_enum::AppUrlOperatingSystemType",
-        tag = "1"
-    )]
-    pub os_type: i32,
-    /// The app deep link URL. Deep links specify a location in an app that
-    /// corresponds to the content you'd like to show, and should be of the form
-    /// {scheme}://{host_path}
-    /// The scheme identifies which app to open. For your app, you can use a custom
-    /// scheme that starts with the app's name. The host and path specify the
-    /// unique location in the app where your content exists.
-    /// Example: "exampleapp://productid_1234". Required.
+pub struct CpcBidSimulationPoint {
+    /// The simulated CPC bid upon which projected metrics are based.
+    #[prost(message, optional, tag = "1")]
+    pub cpc_bid_micros: ::std::option::Option<i64>,
+    /// Projected number of biddable conversions.
     #[prost(message, optional, tag = "2")]
-    pub url: ::std::option::Option<::std::string::String>,
+    pub biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions.
+    #[prost(message, optional, tag = "3")]
+    pub biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks.
+    #[prost(message, optional, tag = "4")]
+    pub clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "5")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "6")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "7")]
+    pub top_slot_impressions: ::std::option::Option<i64>,
+}
+/// Projected metrics for a specific CPV bid amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CpvBidSimulationPoint {
+    /// The simulated CPV bid upon which projected metrics are based.
+    #[prost(message, optional, tag = "1")]
+    pub cpv_bid_micros: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "2")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "3")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of views.
+    #[prost(message, optional, tag = "4")]
+    pub views: ::std::option::Option<i64>,
+}
+/// Projected metrics for a specific target CPA amount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetCpaSimulationPoint {
+    /// The simulated target CPA upon which projected metrics are based.
+    #[prost(message, optional, tag = "1")]
+    pub target_cpa_micros: ::std::option::Option<i64>,
+    /// Projected number of biddable conversions.
+    #[prost(message, optional, tag = "2")]
+    pub biddable_conversions: ::std::option::Option<f64>,
+    /// Projected total value of biddable conversions.
+    #[prost(message, optional, tag = "3")]
+    pub biddable_conversions_value: ::std::option::Option<f64>,
+    /// Projected number of clicks.
+    #[prost(message, optional, tag = "4")]
+    pub clicks: ::std::option::Option<i64>,
+    /// Projected cost in micros.
+    #[prost(message, optional, tag = "5")]
+    pub cost_micros: ::std::option::Option<i64>,
+    /// Projected number of impressions.
+    #[prost(message, optional, tag = "6")]
+    pub impressions: ::std::option::Option<i64>,
+    /// Projected number of top slot impressions.
+    /// Only search advertising channel type supports this field.
+    #[prost(message, optional, tag = "7")]
+    pub top_slot_impressions: ::std::option::Option<i64>,
+}
+// Proto file describing TagSnippet
+
+/// The site tag and event snippet pair for a TrackingCodeType.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TagSnippet {
+    /// The type of the generated tag snippets for tracking conversions.
+    #[prost(
+        enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType",
+        tag = "1"
+    )]
+    pub r#type: i32,
+    /// The format of the web page where the tracking tag and snippet will be
+    /// installed, e.g. HTML.
+    #[prost(
+        enumeration = "super::enums::tracking_code_page_format_enum::TrackingCodePageFormat",
+        tag = "2"
+    )]
+    pub page_format: i32,
+    /// The site tag that adds visitors to your basic remarketing lists and sets
+    /// new cookies on your domain.
+    #[prost(message, optional, tag = "3")]
+    pub global_site_tag: ::std::option::Option<::std::string::String>,
+    /// The event snippet that works with the site tag to track actions that
+    /// should be counted as conversions.
+    #[prost(message, optional, tag = "4")]
+    pub event_snippet: ::std::option::Option<::std::string::String>,
+}
+// Proto file describing TargetingSetting
+
+/// Settings for the targeting-related features, at the campaign and ad group
+/// levels. For more details about the targeting setting, visit
+/// https://support.google.com/google-ads/answer/7365594
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetingSetting {
+    /// The per-targeting-dimension setting to restrict the reach of your campaign
+    /// or ad group.
+    #[prost(message, repeated, tag = "1")]
+    pub target_restrictions: ::std::vec::Vec<TargetRestriction>,
+}
+/// The list of per-targeting-dimension targeting settings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetRestriction {
+    /// The targeting dimension that these settings apply to.
+    #[prost(
+        enumeration = "super::enums::targeting_dimension_enum::TargetingDimension",
+        tag = "1"
+    )]
+    pub targeting_dimension: i32,
+    /// Indicates whether to restrict your ads to show only for the criteria you
+    /// have selected for this targeting_dimension, or to target all values for
+    /// this targeting_dimension and show ads based on your targeting in other
+    /// TargetingDimensions. A value of `true` means that these criteria will only
+    /// apply bid modifiers, and not affect targeting. A value of `false` means
+    /// that these criteria will restrict targeting as well as applying bid
+    /// modifiers.
+    #[prost(message, optional, tag = "2")]
+    pub bid_only: ::std::option::Option<bool>,
+}
+/// A type of label displaying text on a colored background.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextLabel {
+    /// Background color of the label in RGB format. This string must match the
+    /// regular expression '^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'.
+    /// Note: The background color may not be visible for manager accounts.
+    #[prost(message, optional, tag = "1")]
+    pub background_color: ::std::option::Option<::std::string::String>,
+    /// A short description of the label. The length must be no more than 200
+    /// characters.
+    #[prost(message, optional, tag = "2")]
+    pub description: ::std::option::Option<::std::string::String>,
 }
 // Proto file UrlCollection type.
 
@@ -3407,153 +3595,6 @@ pub struct UrlCollection {
     /// URL template for constructing a tracking URL.
     #[prost(message, optional, tag = "4")]
     pub tracking_url_template: ::std::option::Option<::std::string::String>,
-}
-// Proto file containing info messages for specific asset types.
-
-/// A YouTube asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct YoutubeVideoAsset {
-    /// YouTube video id. This is the 11 character string value used in the
-    /// YouTube video URL.
-    #[prost(message, optional, tag = "1")]
-    pub youtube_video_id: ::std::option::Option<::std::string::String>,
-}
-/// A MediaBundle asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaBundleAsset {
-    /// Media bundle (ZIP file) asset data. The format of the uploaded ZIP file
-    /// depends on the ad field where it will be used. For more information on the
-    /// format, see the documentation of the ad field where you plan on using the
-    /// MediaBundleAsset. This field is mutate only.
-    #[prost(message, optional, tag = "1")]
-    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
-}
-/// An Image asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImageAsset {
-    /// The raw bytes data of an image. This field is mutate only.
-    #[prost(message, optional, tag = "1")]
-    pub data: ::std::option::Option<::std::vec::Vec<u8>>,
-    /// File size of the image asset in bytes.
-    #[prost(message, optional, tag = "2")]
-    pub file_size: ::std::option::Option<i64>,
-    /// MIME type of the image asset.
-    #[prost(enumeration = "super::enums::mime_type_enum::MimeType", tag = "3")]
-    pub mime_type: i32,
-    /// Metadata for this image at its original size.
-    #[prost(message, optional, tag = "4")]
-    pub full_size: ::std::option::Option<ImageDimension>,
-}
-/// Metadata for an image at a certain size, either original or resized.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImageDimension {
-    /// Height of the image.
-    #[prost(message, optional, tag = "1")]
-    pub height_pixels: ::std::option::Option<i64>,
-    /// Width of the image.
-    #[prost(message, optional, tag = "2")]
-    pub width_pixels: ::std::option::Option<i64>,
-    /// A URL that returns the image with this height and width.
-    #[prost(message, optional, tag = "3")]
-    pub url: ::std::option::Option<::std::string::String>,
-}
-/// A Text asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextAsset {
-    /// Text content of the text asset.
-    #[prost(message, optional, tag = "1")]
-    pub text: ::std::option::Option<::std::string::String>,
-}
-// Proto file describing date range message.
-
-/// A date range.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DateRange {
-    /// The start date, in yyyy-mm-dd format. This date is inclusive.
-    #[prost(message, optional, tag = "1")]
-    pub start_date: ::std::option::Option<::std::string::String>,
-    /// The end date, in yyyy-mm-dd format. This date is inclusive.
-    #[prost(message, optional, tag = "2")]
-    pub end_date: ::std::option::Option<::std::string::String>,
-}
-/// A type of label displaying text on a colored background.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextLabel {
-    /// Background color of the label in RGB format. This string must match the
-    /// regular expression '^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'.
-    /// Note: The background color may not be visible for manager accounts.
-    #[prost(message, optional, tag = "1")]
-    pub background_color: ::std::option::Option<::std::string::String>,
-    /// A short description of the label. The length must be no more than 200
-    /// characters.
-    #[prost(message, optional, tag = "2")]
-    pub description: ::std::option::Option<::std::string::String>,
-}
-// Proto file describing criterion category availability information.
-
-/// Information of category availability, per advertising channel.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryAvailability {
-    /// Channel types and subtypes that are available to the category.
-    #[prost(message, optional, tag = "1")]
-    pub channel: ::std::option::Option<CriterionCategoryChannelAvailability>,
-    /// Locales that are available to the category for the channel.
-    #[prost(message, repeated, tag = "2")]
-    pub locale: ::std::vec::Vec<CriterionCategoryLocaleAvailability>,
-}
-/// Information of advertising channel type and subtypes a category is available
-/// in.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryChannelAvailability {
-    /// Format of the channel availability. Can be ALL_CHANNELS (the rest of the
-    /// fields will not be set), CHANNEL_TYPE (only advertising_channel_type type
-    /// will be set, the category is available to all sub types under it) or
-    /// CHANNEL_TYPE_AND_SUBTYPES (advertising_channel_type,
-    /// advertising_channel_sub_type, and include_default_channel_sub_type will all
-    /// be set).
-    #[prost(
-        enumeration = "super::enums::criterion_category_channel_availability_mode_enum::CriterionCategoryChannelAvailabilityMode",
-        tag = "1"
-    )]
-    pub availability_mode: i32,
-    /// Channel type the category is available to.
-    #[prost(
-        enumeration = "super::enums::advertising_channel_type_enum::AdvertisingChannelType",
-        tag = "2"
-    )]
-    pub advertising_channel_type: i32,
-    /// Channel subtypes under the channel type the category is available to.
-    #[prost(
-        enumeration = "super::enums::advertising_channel_sub_type_enum::AdvertisingChannelSubType",
-        repeated,
-        tag = "3"
-    )]
-    pub advertising_channel_sub_type: ::std::vec::Vec<i32>,
-    /// Whether default channel sub type is included. For example,
-    /// advertising_channel_type being DISPLAY and include_default_channel_sub_type
-    /// being false means that the default display campaign where channel sub type
-    /// is not set is not included in this availability configuration.
-    #[prost(message, optional, tag = "4")]
-    pub include_default_channel_sub_type: ::std::option::Option<bool>,
-}
-/// Information about which locales a category is available in.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryLocaleAvailability {
-    /// Format of the locale availability. Can be LAUNCHED_TO_ALL (both country and
-    /// language will be empty), COUNTRY (only country will be set), LANGUAGE (only
-    /// language wil be set), COUNTRY_AND_LANGUAGE (both country and language will
-    /// be set).
-    #[prost(
-        enumeration = "super::enums::criterion_category_locale_availability_mode_enum::CriterionCategoryLocaleAvailabilityMode",
-        tag = "1"
-    )]
-    pub availability_mode: i32,
-    /// Code of the country.
-    #[prost(message, optional, tag = "2")]
-    pub country_code: ::std::option::Option<::std::string::String>,
-    /// Code of the language.
-    #[prost(message, optional, tag = "3")]
-    pub language_code: ::std::option::Option<::std::string::String>,
 }
 // Proto file describing user list types.
 
@@ -3589,7 +3630,7 @@ pub struct CrmBasedUserListInfo {
     )]
     pub upload_key_type: i32,
     /// Data source of the list. Default value is FIRST_PARTY.
-    /// Only whitelisted customers can create third-party sourced CRM lists.
+    /// Only customers on the allow-list can create third-party sourced CRM lists.
     #[prost(
         enumeration = "super::enums::user_list_crm_data_source_type_enum::UserListCrmDataSourceType",
         tag = "3"
@@ -3874,22 +3915,33 @@ pub mod user_list_action_info {
         RemarketingAction(::std::string::String),
     }
 }
-// Proto file describing Keyword Planner messages.
+// Proto file describing value types
 
-/// Historical metrics specific to the targeting options selected.
-/// Targeting options include geographies, network, etc.
-/// Refer to https://support.google.com/google-ads/answer/3022575 for more
-/// details.
+/// A generic data container.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanHistoricalMetrics {
-    /// Approximate number of monthly searches on this query averaged
-    /// for the past 12 months.
-    #[prost(message, optional, tag = "1")]
-    pub avg_monthly_searches: ::std::option::Option<i64>,
-    /// The competition level for the query.
-    #[prost(
-        enumeration = "super::enums::keyword_plan_competition_level_enum::KeywordPlanCompetitionLevel",
-        tag = "2"
-    )]
-    pub competition: i32,
+pub struct Value {
+    /// A value.
+    #[prost(oneof = "value::Value", tags = "1, 2, 3, 4, 5")]
+    pub value: ::std::option::Option<value::Value>,
+}
+pub mod value {
+    /// A value.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Value {
+        /// A boolean.
+        #[prost(bool, tag = "1")]
+        BooleanValue(bool),
+        /// An int64.
+        #[prost(int64, tag = "2")]
+        Int64Value(i64),
+        /// A float.
+        #[prost(float, tag = "3")]
+        FloatValue(f32),
+        /// A double.
+        #[prost(double, tag = "4")]
+        DoubleValue(f64),
+        /// A string.
+        #[prost(string, tag = "5")]
+        StringValue(std::string::String),
+    }
 }

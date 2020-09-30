@@ -31,6 +31,7 @@ pub struct Cursor {
     #[prost(int64, tag = "1")]
     pub offset: i64,
 }
+/// A message that has been stored and sequenced by the Pub/Sub Lite system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SequencedMessage {
     /// The position of a message within the partition where it is stored.
@@ -69,6 +70,7 @@ pub mod topic {
         /// The number of partitions in the topic. Must be at least 1.
         #[prost(int64, tag = "1")]
         pub count: i64,
+        /// The throughput dimension of this topic.
         #[prost(oneof = "partition_config::Dimension", tags = "2, 3")]
         pub dimension: ::std::option::Option<partition_config::Dimension>,
     }
@@ -85,8 +87,12 @@ pub mod topic {
             #[prost(int32, tag = "2")]
             pub subscribe_mib_per_sec: i32,
         }
+        /// The throughput dimension of this topic.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Dimension {
+            /// DEPRECATED: Use capacity instead which can express a superset of
+            /// configurations.
+            ///
             /// Every partition in the topic is allocated throughput equivalent to
             /// `scale` times the standard partition throughput (4 MiB/s). This is also
             /// reflected in the cost of this topic; a topic with `scale` of 2 and
@@ -629,10 +635,12 @@ pub struct SequencedCommitCursorResponse {
 /// A request sent from the client to the server on a stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingCommitCursorRequest {
+    /// The type of request this is.
     #[prost(oneof = "streaming_commit_cursor_request::Request", tags = "1, 2")]
     pub request: ::std::option::Option<streaming_commit_cursor_request::Request>,
 }
 pub mod streaming_commit_cursor_request {
+    /// The type of request this is.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Initial request on the stream.
@@ -646,10 +654,12 @@ pub mod streaming_commit_cursor_request {
 /// Response to a StreamingCommitCursorRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingCommitCursorResponse {
+    /// The type of request this is.
     #[prost(oneof = "streaming_commit_cursor_response::Request", tags = "1, 2")]
     pub request: ::std::option::Option<streaming_commit_cursor_response::Request>,
 }
 pub mod streaming_commit_cursor_response {
+    /// The type of request this is.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Initial response on the stream.
@@ -832,6 +842,7 @@ pub struct InitialPublishResponse {}
 /// Request to publish messages to the topic.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessagePublishRequest {
+    /// The messages to publish.
     #[prost(message, repeated, tag = "1")]
     pub messages: ::std::vec::Vec<PubSubMessage>,
 }
@@ -846,10 +857,12 @@ pub struct MessagePublishResponse {
 /// Request sent from the client to the server on a stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishRequest {
+    /// The type of request this is.
     #[prost(oneof = "publish_request::RequestType", tags = "1, 2")]
     pub request_type: ::std::option::Option<publish_request::RequestType>,
 }
 pub mod publish_request {
+    /// The type of request this is.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RequestType {
         /// Initial request on the stream.
@@ -863,10 +876,12 @@ pub mod publish_request {
 /// Response to a PublishRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishResponse {
+    /// The type of response this is.
     #[prost(oneof = "publish_response::ResponseType", tags = "1, 2")]
     pub response_type: ::std::option::Option<publish_response::ResponseType>,
 }
 pub mod publish_response {
+    /// The type of response this is.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResponseType {
         /// Initial response on the stream.
@@ -1020,10 +1035,12 @@ pub struct FlowControlRequest {
 /// A request sent from the client to the server on a stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeRequest {
+    /// The type of request this is.
     #[prost(oneof = "subscribe_request::Request", tags = "1, 2, 3")]
     pub request: ::std::option::Option<subscribe_request::Request>,
 }
 pub mod subscribe_request {
+    /// The type of request this is.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Initial request on the stream.
@@ -1052,10 +1069,12 @@ pub struct MessageResponse {
 /// Response to SubscribeRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeResponse {
+    /// The type of response this is.
     #[prost(oneof = "subscribe_response::Response", tags = "1, 2, 3")]
     pub response: ::std::option::Option<subscribe_response::Response>,
 }
 pub mod subscribe_response {
+    /// The type of response this is.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Initial response on the stream.
@@ -1108,10 +1127,12 @@ pub struct PartitionAssignmentAck {}
 /// A request on the PartitionAssignment stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionAssignmentRequest {
+    /// The type of request this is.
     #[prost(oneof = "partition_assignment_request::Request", tags = "1, 2")]
     pub request: ::std::option::Option<partition_assignment_request::Request>,
 }
 pub mod partition_assignment_request {
+    /// The type of request this is.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Initial request on the stream.
@@ -1186,9 +1207,6 @@ pub mod partition_assignment_service_client {
     use tonic::codegen::*;
     #[doc = " The service that a subscriber client application uses to determine which"]
     #[doc = " partitions it should connect to."]
-    #[doc = ""]
-    #[doc = " This is an under development API being published to build client libraries."]
-    #[doc = " Users will not be able to access it until fully launched."]
     pub struct PartitionAssignmentServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }

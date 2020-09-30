@@ -1,4 +1,2474 @@
 /// Request message for
+/// [AccountBudgetProposalService.GetAccountBudgetProposal][google.ads.googleads.v2.services.AccountBudgetProposalService.GetAccountBudgetProposal].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAccountBudgetProposalRequest {
+    /// Required. The resource name of the account-level budget proposal to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for
+/// [AccountBudgetProposalService.MutateAccountBudgetProposal][google.ads.googleads.v2.services.AccountBudgetProposalService.MutateAccountBudgetProposal].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAccountBudgetProposalRequest {
+    /// Required. The ID of the customer.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The operation to perform on an individual account-level budget proposal.
+    #[prost(message, optional, tag = "2")]
+    pub operation: ::std::option::Option<AccountBudgetProposalOperation>,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// A single operation to propose the creation of a new account-level budget or
+/// edit/end/remove an existing one.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccountBudgetProposalOperation {
+    /// FieldMask that determines which budget fields are modified.  While budgets
+    /// may be modified, proposals that propose such modifications are final.
+    /// Therefore, update operations are not supported for proposals.
+    ///
+    /// Proposals that modify budgets have the 'update' proposal type.  Specifying
+    /// a mask for any other proposal type is considered an error.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(oneof = "account_budget_proposal_operation::Operation", tags = "2, 1")]
+    pub operation: ::std::option::Option<account_budget_proposal_operation::Operation>,
+}
+pub mod account_budget_proposal_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: A new proposal to create a new budget, edit an
+        /// existing budget, end an actively running budget, or remove an approved
+        /// budget scheduled to start in the future.
+        /// No resource name is expected for the new proposal.
+        #[prost(message, tag = "2")]
+        Create(super::super::resources::AccountBudgetProposal),
+        /// Remove operation: A resource name for the removed proposal is expected,
+        /// in this format:
+        ///
+        /// `customers/{customer_id}/accountBudgetProposals/{account_budget_proposal_id}`
+        /// A request may be cancelled iff it is pending.
+        #[prost(string, tag = "1")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for account-level budget mutate operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAccountBudgetProposalResponse {
+    /// The result of the mutate.
+    #[prost(message, optional, tag = "2")]
+    pub result: ::std::option::Option<MutateAccountBudgetProposalResult>,
+}
+/// The result for the account budget proposal mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAccountBudgetProposalResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod account_budget_proposal_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " A service for managing account-level budgets via proposals."]
+    #[doc = ""]
+    #[doc = " A proposal is a request to create a new budget or make changes to an"]
+    #[doc = " existing one."]
+    #[doc = ""]
+    #[doc = " Reads for account-level budgets managed by these proposals will be"]
+    #[doc = " supported in a future version. Until then, please use the"]
+    #[doc = " BudgetOrderService from the AdWords API. Learn more at"]
+    #[doc = " https://developers.google.com/adwords/api/docs/guides/budget-order"]
+    #[doc = ""]
+    #[doc = " Mutates:"]
+    #[doc = " The CREATE operation creates a new proposal."]
+    #[doc = " UPDATE operations aren't supported."]
+    #[doc = " The REMOVE operation cancels a pending proposal."]
+    pub struct AccountBudgetProposalServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AccountBudgetProposalServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns an account-level budget proposal in full detail."]
+        pub async fn get_account_budget_proposal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAccountBudgetProposalRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AccountBudgetProposal>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AccountBudgetProposalService/GetAccountBudgetProposal" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes account budget proposals.  Operation statuses"]
+        #[doc = " are returned."]
+        pub async fn mutate_account_budget_proposal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAccountBudgetProposalRequest>,
+        ) -> Result<tonic::Response<super::MutateAccountBudgetProposalResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AccountBudgetProposalService/MutateAccountBudgetProposal" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AccountBudgetProposalServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AccountBudgetProposalServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AccountBudgetProposalServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for
+/// [AccountBudgetService.GetAccountBudget][google.ads.googleads.v2.services.AccountBudgetService.GetAccountBudget].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAccountBudgetRequest {
+    /// Required. The resource name of the account-level budget to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod account_budget_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " A service for fetching an account-level budget."]
+    #[doc = ""]
+    #[doc = " Account-level budgets are mutated by creating proposal resources."]
+    pub struct AccountBudgetServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AccountBudgetServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns an account-level budget in full detail."]
+        pub async fn get_account_budget(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAccountBudgetRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AccountBudget>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AccountBudgetService/GetAccountBudget",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AccountBudgetServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AccountBudgetServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AccountBudgetServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupAdAssetViewService.GetAdGroupAdAssetView][google.ads.googleads.v2.services.AdGroupAdAssetViewService.GetAdGroupAdAssetView].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupAdAssetViewRequest {
+    /// Required. The resource name of the ad group ad asset view to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_ad_asset_view_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to fetch ad group ad asset views."]
+    pub struct AdGroupAdAssetViewServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupAdAssetViewServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group ad asset view in full detail."]
+        pub async fn get_ad_group_ad_asset_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupAdAssetViewRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupAdAssetView>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupAdAssetViewService/GetAdGroupAdAssetView",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupAdAssetViewServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupAdAssetViewServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupAdAssetViewServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupAdLabelService.GetAdGroupAdLabel][google.ads.googleads.v2.services.AdGroupAdLabelService.GetAdGroupAdLabel].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupAdLabelRequest {
+    /// Required. The resource name of the ad group ad label to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdGroupAdLabelService.MutateAdGroupAdLabels][google.ads.googleads.v2.services.AdGroupAdLabelService.MutateAdGroupAdLabels].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupAdLabelsRequest {
+    /// Required. ID of the customer whose ad group ad labels are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on ad group ad labels.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupAdLabelOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, remove) on an ad group ad label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupAdLabelOperation {
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_ad_label_operation::Operation", tags = "1, 2")]
+    pub operation: ::std::option::Option<ad_group_ad_label_operation::Operation>,
+}
+pub mod ad_group_ad_label_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad group ad
+        /// label.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupAdLabel),
+        /// Remove operation: A resource name for the ad group ad label
+        /// being removed, in this format:
+        ///
+        /// `customers/{customer_id}/adGroupAdLabels/{ad_group_id}~{ad_id}
+        /// _{label_id}`
+        #[prost(string, tag = "2")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group ad labels mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupAdLabelsResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupAdLabelResult>,
+}
+/// The result for an ad group ad label mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupAdLabelResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_ad_label_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage labels on ad group ads."]
+    pub struct AdGroupAdLabelServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupAdLabelServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group ad label in full detail."]
+        pub async fn get_ad_group_ad_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupAdLabelRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupAdLabel>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupAdLabelService/GetAdGroupAdLabel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates and removes ad group ad labels."]
+        #[doc = " Operation statuses are returned."]
+        pub async fn mutate_ad_group_ad_labels(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupAdLabelsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupAdLabelsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupAdLabelService/MutateAdGroupAdLabels",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupAdLabelServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupAdLabelServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupAdLabelServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupAdService.GetAdGroupAd][google.ads.googleads.v2.services.AdGroupAdService.GetAdGroupAd].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupAdRequest {
+    /// Required. The resource name of the ad to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdGroupAdService.MutateAdGroupAds][google.ads.googleads.v2.services.AdGroupAdService.MutateAdGroupAds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupAdsRequest {
+    /// Required. The ID of the customer whose ads are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual ads.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupAdOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, update, remove) on an ad group ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupAdOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// Configuration for how policies are validated.
+    #[prost(message, optional, tag = "5")]
+    pub policy_validation_parameter:
+        ::std::option::Option<super::common::PolicyValidationParameter>,
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_ad_operation::Operation", tags = "1, 2, 3")]
+    pub operation: ::std::option::Option<ad_group_ad_operation::Operation>,
+}
+pub mod ad_group_ad_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupAd),
+        /// Update operation: The ad is expected to have a valid resource name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::AdGroupAd),
+        /// Remove operation: A resource name for the removed ad is expected,
+        /// in this format:
+        ///
+        /// `customers/{customer_id}/adGroupAds/{ad_group_id}~{ad_id}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group ad mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupAdsResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupAdResult>,
+}
+/// The result for the ad mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupAdResult {
+    /// The resource name returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_ad_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ads in an ad group."]
+    pub struct AdGroupAdServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupAdServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad in full detail."]
+        pub async fn get_ad_group_ad(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupAdRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupAd>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupAdService/GetAdGroupAd",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes ads. Operation statuses are returned."]
+        pub async fn mutate_ad_group_ads(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupAdsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupAdsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupAdService/MutateAdGroupAds",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupAdServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupAdServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupAdServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupAudienceViewService.GetAdGroupAudienceView][google.ads.googleads.v2.services.AdGroupAudienceViewService.GetAdGroupAudienceView].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupAudienceViewRequest {
+    /// Required. The resource name of the ad group audience view to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_audience_view_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ad group audience views."]
+    pub struct AdGroupAudienceViewServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupAudienceViewServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group audience view in full detail."]
+        pub async fn get_ad_group_audience_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupAudienceViewRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupAudienceView>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupAudienceViewService/GetAdGroupAudienceView" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupAudienceViewServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupAudienceViewServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupAudienceViewServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupBidModifierService.GetAdGroupBidModifier][google.ads.googleads.v2.services.AdGroupBidModifierService.GetAdGroupBidModifier].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupBidModifierRequest {
+    /// Required. The resource name of the ad group bid modifier to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdGroupBidModifierService.MutateAdGroupBidModifiers][google.ads.googleads.v2.services.AdGroupBidModifierService.MutateAdGroupBidModifiers].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupBidModifiersRequest {
+    /// Required. ID of the customer whose ad group bid modifiers are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual ad group bid modifiers.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupBidModifierOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, remove, update) on an ad group bid modifier.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupBidModifierOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_bid_modifier_operation::Operation", tags = "1, 2, 3")]
+    pub operation: ::std::option::Option<ad_group_bid_modifier_operation::Operation>,
+}
+pub mod ad_group_bid_modifier_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad group bid
+        /// modifier.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupBidModifier),
+        /// Update operation: The ad group bid modifier is expected to have a valid
+        /// resource name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::AdGroupBidModifier),
+        /// Remove operation: A resource name for the removed ad group bid modifier
+        /// is expected, in this format:
+        ///
+        /// `customers/{customer_id}/adGroupBidModifiers/{ad_group_id}~{criterion_id}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for ad group bid modifiers mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupBidModifiersResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupBidModifierResult>,
+}
+/// The result for the criterion mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupBidModifierResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_bid_modifier_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ad group bid modifiers."]
+    pub struct AdGroupBidModifierServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupBidModifierServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group bid modifier in full detail."]
+        pub async fn get_ad_group_bid_modifier(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupBidModifierRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupBidModifier>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupBidModifierService/GetAdGroupBidModifier",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes ad group bid modifiers."]
+        #[doc = " Operation statuses are returned."]
+        pub async fn mutate_ad_group_bid_modifiers(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupBidModifiersRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupBidModifiersResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupBidModifierService/MutateAdGroupBidModifiers" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupBidModifierServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupBidModifierServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupBidModifierServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for
+/// [AdGroupCriterionLabelService.GetAdGroupCriterionLabel][google.ads.googleads.v2.services.AdGroupCriterionLabelService.GetAdGroupCriterionLabel].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupCriterionLabelRequest {
+    /// Required. The resource name of the ad group criterion label to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for
+/// [AdGroupCriterionLabelService.MutateAdGroupCriterionLabels][google.ads.googleads.v2.services.AdGroupCriterionLabelService.MutateAdGroupCriterionLabels].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupCriterionLabelsRequest {
+    /// Required. ID of the customer whose ad group criterion labels are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on ad group criterion labels.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupCriterionLabelOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, remove) on an ad group criterion label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupCriterionLabelOperation {
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_criterion_label_operation::Operation", tags = "1, 2")]
+    pub operation: ::std::option::Option<ad_group_criterion_label_operation::Operation>,
+}
+pub mod ad_group_criterion_label_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad group
+        /// label.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupCriterionLabel),
+        /// Remove operation: A resource name for the ad group criterion label
+        /// being removed, in this format:
+        ///
+        /// `customers/{customer_id}/adGroupCriterionLabels/{ad_group_id}~{criterion_id}~{label_id}`
+        #[prost(string, tag = "2")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group criterion labels mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupCriterionLabelsResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupCriterionLabelResult>,
+}
+/// The result for an ad group criterion label mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupCriterionLabelResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_criterion_label_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage labels on ad group criteria."]
+    pub struct AdGroupCriterionLabelServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupCriterionLabelServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group criterion label in full detail."]
+        pub async fn get_ad_group_criterion_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupCriterionLabelRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupCriterionLabel>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupCriterionLabelService/GetAdGroupCriterionLabel" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates and removes ad group criterion labels."]
+        #[doc = " Operation statuses are returned."]
+        pub async fn mutate_ad_group_criterion_labels(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupCriterionLabelsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupCriterionLabelsResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupCriterionLabelService/MutateAdGroupCriterionLabels" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupCriterionLabelServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupCriterionLabelServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupCriterionLabelServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupCriterionService.GetAdGroupCriterion][google.ads.googleads.v2.services.AdGroupCriterionService.GetAdGroupCriterion].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupCriterionRequest {
+    /// Required. The resource name of the criterion to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdGroupCriterionService.MutateAdGroupCriteria][google.ads.googleads.v2.services.AdGroupCriterionService.MutateAdGroupCriteria].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupCriteriaRequest {
+    /// Required. ID of the customer whose criteria are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual criteria.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupCriterionOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, remove, update) on an ad group criterion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupCriterionOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The list of policy violation keys that should not cause a
+    /// PolicyViolationError to be reported. Not all policy violations are
+    /// exemptable, please refer to the is_exemptible field in the returned
+    /// PolicyViolationError.
+    ///
+    /// Resources violating these polices will be saved, but will not be eligible
+    /// to serve. They may begin serving at a later time due to a change in
+    /// policies, re-review of the resource, or a change in advertiser
+    /// certificates.
+    #[prost(message, repeated, tag = "5")]
+    pub exempt_policy_violation_keys: ::std::vec::Vec<super::common::PolicyViolationKey>,
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_criterion_operation::Operation", tags = "1, 2, 3")]
+    pub operation: ::std::option::Option<ad_group_criterion_operation::Operation>,
+}
+pub mod ad_group_criterion_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new criterion.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupCriterion),
+        /// Update operation: The criterion is expected to have a valid resource
+        /// name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::AdGroupCriterion),
+        /// Remove operation: A resource name for the removed criterion is expected,
+        /// in this format:
+        ///
+        /// `customers/{customer_id}/adGroupCriteria/{ad_group_id}~{criterion_id}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group criterion mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupCriteriaResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupCriterionResult>,
+}
+/// The result for the criterion mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupCriterionResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_criterion_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ad group criteria."]
+    pub struct AdGroupCriterionServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupCriterionServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested criterion in full detail."]
+        pub async fn get_ad_group_criterion(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupCriterionRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupCriterion>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupCriterionService/GetAdGroupCriterion",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes criteria. Operation statuses are returned."]
+        pub async fn mutate_ad_group_criteria(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupCriteriaRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupCriteriaResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupCriterionService/MutateAdGroupCriteria",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupCriterionServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupCriterionServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupCriterionServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for
+/// [AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation][google.ads.googleads.v2.services.AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupCriterionSimulationRequest {
+    /// Required. The resource name of the ad group criterion simulation to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_criterion_simulation_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to fetch ad group criterion simulations."]
+    pub struct AdGroupCriterionSimulationServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupCriterionSimulationServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group criterion simulation in full detail."]
+        pub async fn get_ad_group_criterion_simulation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupCriterionSimulationRequest>,
+        ) -> Result<
+            tonic::Response<super::super::resources::AdGroupCriterionSimulation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupCriterionSimulationService/GetAdGroupCriterionSimulation" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupCriterionSimulationServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupCriterionSimulationServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupCriterionSimulationServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for
+/// [AdGroupExtensionSettingService.GetAdGroupExtensionSetting][google.ads.googleads.v2.services.AdGroupExtensionSettingService.GetAdGroupExtensionSetting].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupExtensionSettingRequest {
+    /// Required. The resource name of the ad group extension setting to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for
+/// [AdGroupExtensionSettingService.MutateAdGroupExtensionSettings][google.ads.googleads.v2.services.AdGroupExtensionSettingService.MutateAdGroupExtensionSettings].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupExtensionSettingsRequest {
+    /// Required. The ID of the customer whose ad group extension settings are being
+    /// modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual ad group extension
+    /// settings.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupExtensionSettingOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, update, remove) on an ad group extension setting.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupExtensionSettingOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(
+        oneof = "ad_group_extension_setting_operation::Operation",
+        tags = "1, 2, 3"
+    )]
+    pub operation: ::std::option::Option<ad_group_extension_setting_operation::Operation>,
+}
+pub mod ad_group_extension_setting_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad group
+        /// extension setting.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupExtensionSetting),
+        /// Update operation: The ad group extension setting is expected to have a
+        /// valid resource name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::AdGroupExtensionSetting),
+        /// Remove operation: A resource name for the removed ad group extension
+        /// setting is expected, in this format:
+        ///
+        /// `customers/{customer_id}/adGroupExtensionSettings/{ad_group_id}~{extension_type}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group extension setting mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupExtensionSettingsResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupExtensionSettingResult>,
+}
+/// The result for the ad group extension setting mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupExtensionSettingResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_extension_setting_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ad group extension settings."]
+    pub struct AdGroupExtensionSettingServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupExtensionSettingServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group extension setting in full detail."]
+        pub async fn get_ad_group_extension_setting(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupExtensionSettingRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupExtensionSetting>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupExtensionSettingService/GetAdGroupExtensionSetting" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes ad group extension settings. Operation"]
+        #[doc = " statuses are returned."]
+        pub async fn mutate_ad_group_extension_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupExtensionSettingsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupExtensionSettingsResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupExtensionSettingService/MutateAdGroupExtensionSettings" ) ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupExtensionSettingServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupExtensionSettingServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupExtensionSettingServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupFeedService.GetAdGroupFeed][google.ads.googleads.v2.services.AdGroupFeedService.GetAdGroupFeed].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupFeedRequest {
+    /// Required. The resource name of the ad group feed to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdGroupFeedService.MutateAdGroupFeeds][google.ads.googleads.v2.services.AdGroupFeedService.MutateAdGroupFeeds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupFeedsRequest {
+    /// Required. The ID of the customer whose ad group feeds are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual ad group feeds.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupFeedOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, update, remove) on an ad group feed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupFeedOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_feed_operation::Operation", tags = "1, 2, 3")]
+    pub operation: ::std::option::Option<ad_group_feed_operation::Operation>,
+}
+pub mod ad_group_feed_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad group feed.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupFeed),
+        /// Update operation: The ad group feed is expected to have a valid resource
+        /// name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::AdGroupFeed),
+        /// Remove operation: A resource name for the removed ad group feed is
+        /// expected, in this format:
+        ///
+        /// `customers/{customer_id}/adGroupFeeds/{ad_group_id}~{feed_id}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group feed mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupFeedsResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupFeedResult>,
+}
+/// The result for the ad group feed mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupFeedResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_feed_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ad group feeds."]
+    pub struct AdGroupFeedServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupFeedServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group feed in full detail."]
+        pub async fn get_ad_group_feed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupFeedRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupFeed>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupFeedService/GetAdGroupFeed",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes ad group feeds. Operation statuses are"]
+        #[doc = " returned."]
+        pub async fn mutate_ad_group_feeds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupFeedsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupFeedsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupFeedService/MutateAdGroupFeeds",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupFeedServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupFeedServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupFeedServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupLabelService.GetAdGroupLabel][google.ads.googleads.v2.services.AdGroupLabelService.GetAdGroupLabel].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupLabelRequest {
+    /// Required. The resource name of the ad group label to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdGroupLabelService.MutateAdGroupLabels][google.ads.googleads.v2.services.AdGroupLabelService.MutateAdGroupLabels].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupLabelsRequest {
+    /// Required. ID of the customer whose ad group labels are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on ad group labels.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupLabelOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, remove) on an ad group label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupLabelOperation {
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_label_operation::Operation", tags = "1, 2")]
+    pub operation: ::std::option::Option<ad_group_label_operation::Operation>,
+}
+pub mod ad_group_label_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad group
+        /// label.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroupLabel),
+        /// Remove operation: A resource name for the ad group label
+        /// being removed, in this format:
+        ///
+        /// `customers/{customer_id}/adGroupLabels/{ad_group_id}~{label_id}`
+        #[prost(string, tag = "2")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group labels mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupLabelsResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupLabelResult>,
+}
+/// The result for an ad group label mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupLabelResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_label_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage labels on ad groups."]
+    pub struct AdGroupLabelServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupLabelServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group label in full detail."]
+        pub async fn get_ad_group_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupLabelRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupLabel>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupLabelService/GetAdGroupLabel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates and removes ad group labels."]
+        #[doc = " Operation statuses are returned."]
+        pub async fn mutate_ad_group_labels(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupLabelsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupLabelsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupLabelService/MutateAdGroupLabels",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupLabelServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupLabelServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupLabelServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupService.GetAdGroup][google.ads.googleads.v2.services.AdGroupService.GetAdGroup].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupRequest {
+    /// Required. The resource name of the ad group to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdGroupService.MutateAdGroups][google.ads.googleads.v2.services.AdGroupService.MutateAdGroups].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupsRequest {
+    /// Required. The ID of the customer whose ad groups are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual ad groups.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdGroupOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, update, remove) on an ad group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(oneof = "ad_group_operation::Operation", tags = "1, 2, 3")]
+    pub operation: ::std::option::Option<ad_group_operation::Operation>,
+}
+pub mod ad_group_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad group.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdGroup),
+        /// Update operation: The ad group is expected to have a valid resource name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::AdGroup),
+        /// Remove operation: A resource name for the removed ad group is expected,
+        /// in this format:
+        ///
+        /// `customers/{customer_id}/adGroups/{ad_group_id}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad group mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupsResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdGroupResult>,
+}
+/// The result for the ad group mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdGroupResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ad groups."]
+    pub struct AdGroupServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group in full detail."]
+        pub async fn get_ad_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroup>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupService/GetAdGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes ad groups. Operation statuses are returned."]
+        pub async fn mutate_ad_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdGroupsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdGroupsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupService/MutateAdGroups",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdGroupSimulationService.GetAdGroupSimulation][google.ads.googleads.v2.services.AdGroupSimulationService.GetAdGroupSimulation].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdGroupSimulationRequest {
+    /// Required. The resource name of the ad group simulation to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_group_simulation_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to fetch ad group simulations."]
+    pub struct AdGroupSimulationServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdGroupSimulationServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad group simulation in full detail."]
+        pub async fn get_ad_group_simulation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdGroupSimulationRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdGroupSimulation>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdGroupSimulationService/GetAdGroupSimulation",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdGroupSimulationServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdGroupSimulationServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdGroupSimulationServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdParameterService.GetAdParameter][google.ads.googleads.v2.services.AdParameterService.GetAdParameter]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdParameterRequest {
+    /// Required. The resource name of the ad parameter to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdParameterService.MutateAdParameters][google.ads.googleads.v2.services.AdParameterService.MutateAdParameters]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdParametersRequest {
+    /// Required. The ID of the customer whose ad parameters are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual ad parameters.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdParameterOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, update, remove) on ad parameter.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdParameterOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(oneof = "ad_parameter_operation::Operation", tags = "1, 2, 3")]
+    pub operation: ::std::option::Option<ad_parameter_operation::Operation>,
+}
+pub mod ad_parameter_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new ad parameter.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::AdParameter),
+        /// Update operation: The ad parameter is expected to have a valid resource
+        /// name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::AdParameter),
+        /// Remove operation: A resource name for the ad parameter to remove is
+        /// expected in this format:
+        ///
+        /// `customers/{customer_id}/adParameters/{ad_group_id}~{criterion_id}~{parameter_index}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for an ad parameter mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdParametersResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdParameterResult>,
+}
+/// The result for the ad parameter mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdParameterResult {
+    /// The resource name returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_parameter_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ad parameters."]
+    pub struct AdParameterServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdParameterServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad parameter in full detail."]
+        pub async fn get_ad_parameter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdParameterRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdParameter>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdParameterService/GetAdParameter",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes ad parameters. Operation statuses are"]
+        #[doc = " returned."]
+        pub async fn mutate_ad_parameters(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdParametersRequest>,
+        ) -> Result<tonic::Response<super::MutateAdParametersResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdParameterService/MutateAdParameters",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdParameterServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdParameterServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdParameterServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdScheduleViewService.GetAdScheduleView][google.ads.googleads.v2.services.AdScheduleViewService.GetAdScheduleView].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdScheduleViewRequest {
+    /// Required. The resource name of the ad schedule view to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_schedule_view_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to fetch ad schedule views."]
+    pub struct AdScheduleViewServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdScheduleViewServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad schedule view in full detail."]
+        pub async fn get_ad_schedule_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdScheduleViewRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AdScheduleView>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdScheduleViewService/GetAdScheduleView",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdScheduleViewServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdScheduleViewServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdScheduleViewServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AdService.GetAd][google.ads.googleads.v2.services.AdService.GetAd].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdRequest {
+    /// Required. The resource name of the ad to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AdService.MutateAds][google.ads.googleads.v2.services.AdService.MutateAds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdsRequest {
+    /// Required. The ID of the customer whose ads are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual ads.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AdOperation>,
+}
+/// A single update operation on an ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(oneof = "ad_operation::Operation", tags = "1")]
+    pub operation: ::std::option::Option<ad_operation::Operation>,
+}
+pub mod ad_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Update operation: The ad is expected to have a valid resource name
+        /// in this format:
+        ///
+        /// `customers/{customer_id}/ads/{ad_id}`
+        #[prost(message, tag = "1")]
+        Update(super::super::resources::Ad),
+    }
+}
+/// Response message for an ad mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdsResponse {
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAdResult>,
+}
+/// The result for the ad mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAdResult {
+    /// The resource name returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod ad_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage ads."]
+    pub struct AdServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AdServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested ad in full detail."]
+        pub async fn get_ad(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdRequest>,
+        ) -> Result<tonic::Response<super::super::resources::Ad>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdService/GetAd",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates ads. Operation statuses are returned. Updating ads is not supported"]
+        #[doc = " for TextAd, ExpandedDynamicSearchAd, GmailAd and ImageAd."]
+        pub async fn mutate_ads(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAdsRequest>,
+        ) -> Result<tonic::Response<super::MutateAdsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AdService/MutateAds",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AdServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AdServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AdServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AgeRangeViewService.GetAgeRangeView][google.ads.googleads.v2.services.AgeRangeViewService.GetAgeRangeView].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAgeRangeViewRequest {
+    /// Required. The resource name of the age range view to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod age_range_view_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage age range views."]
+    pub struct AgeRangeViewServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AgeRangeViewServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested age range view in full detail."]
+        pub async fn get_age_range_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAgeRangeViewRequest>,
+        ) -> Result<tonic::Response<super::super::resources::AgeRangeView>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AgeRangeViewService/GetAgeRangeView",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AgeRangeViewServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AgeRangeViewServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AgeRangeViewServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [AssetService.GetAsset][google.ads.googleads.v2.services.AssetService.GetAsset]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAssetRequest {
+    /// Required. The resource name of the asset to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [AssetService.MutateAssets][google.ads.googleads.v2.services.AssetService.MutateAssets]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAssetsRequest {
+    /// Required. The ID of the customer whose assets are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual assets.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<AssetOperation>,
+}
+/// A single operation to create an asset. Supported asset types are
+/// YoutubeVideoAsset, MediaBundleAsset, ImageAsset, and LeadFormAsset. TextAsset
+/// should be created with Ad inline.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetOperation {
+    /// The mutate operation.
+    #[prost(oneof = "asset_operation::Operation", tags = "1")]
+    pub operation: ::std::option::Option<asset_operation::Operation>,
+}
+pub mod asset_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new asset.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::Asset),
+    }
+}
+/// Response message for an asset mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAssetsResponse {
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateAssetResult>,
+}
+/// The result for the asset mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateAssetResult {
+    /// The resource name returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod asset_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage assets. Asset types can be created with AssetService are"]
+    #[doc = " YoutubeVideoAsset, MediaBundleAsset and ImageAsset. TextAsset should be"]
+    #[doc = " created with Ad inline."]
+    pub struct AssetServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> AssetServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested asset in full detail."]
+        pub async fn get_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAssetRequest>,
+        ) -> Result<tonic::Response<super::super::resources::Asset>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AssetService/GetAsset",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates assets. Operation statuses are returned."]
+        pub async fn mutate_assets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateAssetsRequest>,
+        ) -> Result<tonic::Response<super::MutateAssetsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.AssetService/MutateAssets",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for AssetServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for AssetServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "AssetServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for [BiddingStrategyService.GetBiddingStrategy][google.ads.googleads.v2.services.BiddingStrategyService.GetBiddingStrategy].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBiddingStrategyRequest {
+    /// Required. The resource name of the bidding strategy to fetch.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+/// Request message for [BiddingStrategyService.MutateBiddingStrategies][google.ads.googleads.v2.services.BiddingStrategyService.MutateBiddingStrategies].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateBiddingStrategiesRequest {
+    /// Required. The ID of the customer whose bidding strategies are being modified.
+    #[prost(string, tag = "1")]
+    pub customer_id: std::string::String,
+    /// Required. The list of operations to perform on individual bidding strategies.
+    #[prost(message, repeated, tag = "2")]
+    pub operations: ::std::vec::Vec<BiddingStrategyOperation>,
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
+    #[prost(bool, tag = "3")]
+    pub partial_failure: bool,
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// A single operation (create, update, remove) on a bidding strategy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BiddingStrategyOperation {
+    /// FieldMask that determines which resource fields are modified in an update.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    /// The mutate operation.
+    #[prost(oneof = "bidding_strategy_operation::Operation", tags = "1, 2, 3")]
+    pub operation: ::std::option::Option<bidding_strategy_operation::Operation>,
+}
+pub mod bidding_strategy_operation {
+    /// The mutate operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Operation {
+        /// Create operation: No resource name is expected for the new bidding
+        /// strategy.
+        #[prost(message, tag = "1")]
+        Create(super::super::resources::BiddingStrategy),
+        /// Update operation: The bidding strategy is expected to have a valid
+        /// resource name.
+        #[prost(message, tag = "2")]
+        Update(super::super::resources::BiddingStrategy),
+        /// Remove operation: A resource name for the removed bidding strategy is
+        /// expected, in this format:
+        ///
+        /// `customers/{customer_id}/biddingStrategies/{bidding_strategy_id}`
+        #[prost(string, tag = "3")]
+        Remove(std::string::String),
+    }
+}
+/// Response message for bidding strategy mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateBiddingStrategiesResponse {
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
+    #[prost(message, optional, tag = "3")]
+    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    /// All results for the mutate.
+    #[prost(message, repeated, tag = "2")]
+    pub results: ::std::vec::Vec<MutateBiddingStrategyResult>,
+}
+/// The result for the bidding strategy mutate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MutateBiddingStrategyResult {
+    /// Returned for successful operations.
+    #[prost(string, tag = "1")]
+    pub resource_name: std::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod bidding_strategy_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " Service to manage bidding strategies."]
+    pub struct BiddingStrategyServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> BiddingStrategyServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Returns the requested bidding strategy in full detail."]
+        pub async fn get_bidding_strategy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBiddingStrategyRequest>,
+        ) -> Result<tonic::Response<super::super::resources::BiddingStrategy>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.BiddingStrategyService/GetBiddingStrategy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates, updates, or removes bidding strategies. Operation statuses are"]
+        #[doc = " returned."]
+        pub async fn mutate_bidding_strategies(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MutateBiddingStrategiesRequest>,
+        ) -> Result<tonic::Response<super::MutateBiddingStrategiesResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ads.googleads.v2.services.BiddingStrategyService/MutateBiddingStrategies",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for BiddingStrategyServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for BiddingStrategyServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "BiddingStrategyServiceClient {{ ... }}")
+        }
+    }
+}
+/// Request message for
 /// [BillingSetupService.GetBillingSetup][google.ads.googleads.v2.services.BillingSetupService.GetBillingSetup].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBillingSetupRequest {
@@ -202,7 +2672,8 @@ pub struct GetCampaignBidModifierRequest {
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
 }
-/// Request message for [CampaignBidModifierService.MutateCampaignBidModifier][].
+/// Request message for
+/// [CampaignBidModifierService.MutateCampaignBidModifiers][google.ads.googleads.v2.services.CampaignBidModifierService.MutateCampaignBidModifiers].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBidModifiersRequest {
     /// Required. ID of the customer whose campaign bid modifiers are being modified.
@@ -2364,6 +4835,9 @@ pub struct UploadConversionAdjustmentsRequest {
     /// operations will return errors. If false, all operations will be carried out
     /// in one transaction if and only if they are all valid. This should always be
     /// set to true.
+    /// See
+    /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
+    /// for more information about partial failure.
     #[prost(bool, tag = "3")]
     pub partial_failure: bool,
     /// If true, the request is validated but not executed. Only errors are
@@ -2379,6 +4853,9 @@ pub struct UploadConversionAdjustmentsResponse {
     /// failure mode. Returned when all errors occur inside the adjustments. If any
     /// errors occur outside the adjustments (e.g. auth errors), we return an RPC
     /// level error.
+    /// See
+    /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
+    /// for more information about partial failure.
     #[prost(message, optional, tag = "1")]
     pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
     /// Returned for successfully processed conversion adjustments. Proto will be
@@ -2410,6 +4887,10 @@ pub struct ConversionAdjustment {
     /// Information needed to restate the conversion's value.
     /// Required for restatements. Should not be supplied for retractions. An error
     /// will be returned if provided for a retraction.
+    /// NOTE: If you want to upload a second restatement with a different adjusted
+    /// value, it must have a new, more recent, adjustment occurrence time.
+    /// Otherwise, it will be treated as a duplicate of the previous restatement
+    /// and ignored.
     #[prost(message, optional, tag = "6")]
     pub restatement_value: ::std::option::Option<RestatementValue>,
     /// Identifies the conversion to be adjusted.
@@ -2437,6 +4918,10 @@ pub struct RestatementValue {
     /// The restated conversion value. This is the value of the conversion after
     /// restatement. For example, to change the value of a conversion from 100 to
     /// 70, an adjusted value of 70 should be reported.
+    /// NOTE: If you want to upload a second restatement with a different adjusted
+    /// value, it must have a new, more recent, adjustment occurrence time.
+    /// Otherwise, it will be treated as a duplicate of the previous restatement
+    /// and ignored.
     #[prost(message, optional, tag = "1")]
     pub adjusted_value: ::std::option::Option<f64>,
     /// The currency of the restated value. If not provided, then the default
@@ -2564,6 +5049,9 @@ pub struct UploadClickConversionsRequest {
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
     /// This should always be set to true.
+    /// See
+    /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
+    /// for more information about partial failure.
     #[prost(bool, tag = "3")]
     pub partial_failure: bool,
     /// If true, the request is validated but not executed. Only errors are
@@ -2577,6 +5065,9 @@ pub struct UploadClickConversionsResponse {
     /// Errors that pertain to conversion failures in the partial failure mode.
     /// Returned when all errors occur inside the conversions. If any errors occur
     /// outside the conversions (e.g. auth errors), we return an RPC level error.
+    /// See
+    /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
+    /// for more information about partial failure.
     #[prost(message, optional, tag = "1")]
     pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
     /// Returned for successfully processed conversions. Proto will be empty for
@@ -2598,6 +5089,9 @@ pub struct UploadCallConversionsRequest {
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
     /// This should always be set to true.
+    /// See
+    /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
+    /// for more information about partial failure.
     #[prost(bool, tag = "3")]
     pub partial_failure: bool,
     /// If true, the request is validated but not executed. Only errors are
@@ -2611,6 +5105,9 @@ pub struct UploadCallConversionsResponse {
     /// Errors that pertain to conversion failures in the partial failure mode.
     /// Returned when all errors occur inside the conversions. If any errors occur
     /// outside the conversions (e.g. auth errors), we return an RPC level error.
+    /// See
+    /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
+    /// for more information about partial failure.
     #[prost(message, optional, tag = "1")]
     pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
     /// Returned for successfully processed conversions. Proto will be empty for
@@ -3861,11 +6358,11 @@ pub struct CreateCustomerClientRequest {
     #[prost(message, optional, tag = "2")]
     pub customer_client: ::std::option::Option<super::resources::Customer>,
     /// Email address of the user who should be invited on the created client
-    /// customer. Accessible to whitelisted customers only.
+    /// customer. Accessible only to customers on the allow-list.
     #[prost(message, optional, tag = "3")]
     pub email_address: ::std::option::Option<::std::string::String>,
     /// The proposed role of user on the created client customer.
-    /// Accessible to whitelisted customers only.
+    /// Accessible only to customers on the allow-list.
     #[prost(enumeration = "super::enums::access_role_enum::AccessRole", tag = "4")]
     pub access_role: i32,
 }
@@ -5230,7 +7727,7 @@ pub struct GetGeoTargetConstantRequest {
     pub resource_name: std::string::String,
 }
 /// Request message for
-/// [GeoTargetConstantService.SuggestGeoTargetConstantsRequest][].
+/// [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v2.services.GeoTargetConstantService.SuggestGeoTargetConstants].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsRequest {
     /// If possible, returned geo targets are translated using this locale. If not,
@@ -5271,7 +7768,7 @@ pub mod suggest_geo_target_constants_request {
         GeoTargets(GeoTargets),
     }
 }
-/// Response message for [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v2.services.GeoTargetConstantService.SuggestGeoTargetConstants]
+/// Response message for [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v2.services.GeoTargetConstantService.SuggestGeoTargetConstants].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsResponse {
     /// Geo target constant suggestions.
@@ -5543,1761 +8040,6 @@ pub mod google_ads_field_service_client {
     impl<T> std::fmt::Debug for GoogleAdsFieldServiceClient<T> {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "GoogleAdsFieldServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdGroupAdLabelService.GetAdGroupAdLabel][google.ads.googleads.v2.services.AdGroupAdLabelService.GetAdGroupAdLabel].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupAdLabelRequest {
-    /// Required. The resource name of the ad group ad label to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdGroupAdLabelService.MutateAdGroupAdLabels][google.ads.googleads.v2.services.AdGroupAdLabelService.MutateAdGroupAdLabels].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupAdLabelsRequest {
-    /// Required. ID of the customer whose ad group ad labels are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on ad group ad labels.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupAdLabelOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, remove) on an ad group ad label.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupAdLabelOperation {
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_ad_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<ad_group_ad_label_operation::Operation>,
-}
-pub mod ad_group_ad_label_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad group ad
-        /// label.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupAdLabel),
-        /// Remove operation: A resource name for the ad group ad label
-        /// being removed, in this format:
-        ///
-        /// `customers/{customer_id}/adGroupAdLabels/{ad_group_id}~{ad_id}
-        /// _{label_id}`
-        #[prost(string, tag = "2")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group ad labels mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupAdLabelsResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupAdLabelResult>,
-}
-/// The result for an ad group ad label mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupAdLabelResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_ad_label_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage labels on ad group ads."]
-    pub struct AdGroupAdLabelServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupAdLabelServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad group ad label in full detail."]
-        pub async fn get_ad_group_ad_label(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupAdLabelRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupAdLabel>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupAdLabelService/GetAdGroupAdLabel",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates and removes ad group ad labels."]
-        #[doc = " Operation statuses are returned."]
-        pub async fn mutate_ad_group_ad_labels(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupAdLabelsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupAdLabelsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupAdLabelService/MutateAdGroupAdLabels",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupAdLabelServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupAdLabelServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupAdLabelServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdGroupAdService.GetAdGroupAd][google.ads.googleads.v2.services.AdGroupAdService.GetAdGroupAd].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupAdRequest {
-    /// Required. The resource name of the ad to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdGroupAdService.MutateAdGroupAds][google.ads.googleads.v2.services.AdGroupAdService.MutateAdGroupAds].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupAdsRequest {
-    /// Required. The ID of the customer whose ads are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual ads.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupAdOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, update, remove) on an ad group ad.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupAdOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// Configuration for how policies are validated.
-    #[prost(message, optional, tag = "5")]
-    pub policy_validation_parameter:
-        ::std::option::Option<super::common::PolicyValidationParameter>,
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_ad_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_ad_operation::Operation>,
-}
-pub mod ad_group_ad_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupAd),
-        /// Update operation: The ad is expected to have a valid resource name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::AdGroupAd),
-        /// Remove operation: A resource name for the removed ad is expected,
-        /// in this format:
-        ///
-        /// `customers/{customer_id}/adGroupAds/{ad_group_id}~{ad_id}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group ad mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupAdsResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupAdResult>,
-}
-/// The result for the ad mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupAdResult {
-    /// The resource name returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_ad_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage ads in an ad group."]
-    pub struct AdGroupAdServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupAdServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad in full detail."]
-        pub async fn get_ad_group_ad(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupAdRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupAd>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupAdService/GetAdGroupAd",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes ads. Operation statuses are returned."]
-        pub async fn mutate_ad_group_ads(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupAdsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupAdsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupAdService/MutateAdGroupAds",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupAdServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupAdServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupAdServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdGroupBidModifierService.GetAdGroupBidModifier][google.ads.googleads.v2.services.AdGroupBidModifierService.GetAdGroupBidModifier].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupBidModifierRequest {
-    /// Required. The resource name of the ad group bid modifier to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdGroupBidModifierService.MutateAdGroupBidModifiers][google.ads.googleads.v2.services.AdGroupBidModifierService.MutateAdGroupBidModifiers].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupBidModifiersRequest {
-    /// Required. ID of the customer whose ad group bid modifiers are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual ad group bid modifiers.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupBidModifierOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, remove, update) on an ad group bid modifier.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupBidModifierOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_bid_modifier_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_bid_modifier_operation::Operation>,
-}
-pub mod ad_group_bid_modifier_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad group bid
-        /// modifier.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupBidModifier),
-        /// Update operation: The ad group bid modifier is expected to have a valid
-        /// resource name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::AdGroupBidModifier),
-        /// Remove operation: A resource name for the removed ad group bid modifier
-        /// is expected, in this format:
-        ///
-        /// `customers/{customer_id}/adGroupBidModifiers/{ad_group_id}~{criterion_id}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for ad group bid modifiers mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupBidModifiersResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupBidModifierResult>,
-}
-/// The result for the criterion mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupBidModifierResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_bid_modifier_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage ad group bid modifiers."]
-    pub struct AdGroupBidModifierServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupBidModifierServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad group bid modifier in full detail."]
-        pub async fn get_ad_group_bid_modifier(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupBidModifierRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupBidModifier>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupBidModifierService/GetAdGroupBidModifier",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes ad group bid modifiers."]
-        #[doc = " Operation statuses are returned."]
-        pub async fn mutate_ad_group_bid_modifiers(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupBidModifiersRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupBidModifiersResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupBidModifierService/MutateAdGroupBidModifiers" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupBidModifierServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupBidModifierServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupBidModifierServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for
-/// [AdGroupCriterionLabelService.GetAdGroupCriterionLabel][google.ads.googleads.v2.services.AdGroupCriterionLabelService.GetAdGroupCriterionLabel].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupCriterionLabelRequest {
-    /// Required. The resource name of the ad group criterion label to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for
-/// [AdGroupCriterionLabelService.MutateAdGroupCriterionLabels][google.ads.googleads.v2.services.AdGroupCriterionLabelService.MutateAdGroupCriterionLabels].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupCriterionLabelsRequest {
-    /// Required. ID of the customer whose ad group criterion labels are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on ad group criterion labels.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupCriterionLabelOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, remove) on an ad group criterion label.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionLabelOperation {
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_criterion_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<ad_group_criterion_label_operation::Operation>,
-}
-pub mod ad_group_criterion_label_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad group
-        /// label.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupCriterionLabel),
-        /// Remove operation: A resource name for the ad group criterion label
-        /// being removed, in this format:
-        ///
-        /// `customers/{customer_id}/adGroupCriterionLabels/{ad_group_id}~{criterion_id}~{label_id}`
-        #[prost(string, tag = "2")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group criterion labels mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupCriterionLabelsResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupCriterionLabelResult>,
-}
-/// The result for an ad group criterion label mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupCriterionLabelResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_criterion_label_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage labels on ad group criteria."]
-    pub struct AdGroupCriterionLabelServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupCriterionLabelServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad group criterion label in full detail."]
-        pub async fn get_ad_group_criterion_label(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupCriterionLabelRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupCriterionLabel>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupCriterionLabelService/GetAdGroupCriterionLabel" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates and removes ad group criterion labels."]
-        #[doc = " Operation statuses are returned."]
-        pub async fn mutate_ad_group_criterion_labels(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupCriterionLabelsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupCriterionLabelsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupCriterionLabelService/MutateAdGroupCriterionLabels" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupCriterionLabelServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupCriterionLabelServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupCriterionLabelServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdGroupCriterionService.GetAdGroupCriterion][google.ads.googleads.v2.services.AdGroupCriterionService.GetAdGroupCriterion].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupCriterionRequest {
-    /// Required. The resource name of the criterion to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdGroupCriterionService.MutateAdGroupCriteria][google.ads.googleads.v2.services.AdGroupCriterionService.MutateAdGroupCriteria].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupCriteriaRequest {
-    /// Required. ID of the customer whose criteria are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual criteria.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupCriterionOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, remove, update) on an ad group criterion.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// The list of policy violation keys that should not cause a
-    /// PolicyViolationError to be reported. Not all policy violations are
-    /// exemptable, please refer to the is_exemptible field in the returned
-    /// PolicyViolationError.
-    ///
-    /// Resources violating these polices will be saved, but will not be eligible
-    /// to serve. They may begin serving at a later time due to a change in
-    /// policies, re-review of the resource, or a change in advertiser
-    /// certificates.
-    #[prost(message, repeated, tag = "5")]
-    pub exempt_policy_violation_keys: ::std::vec::Vec<super::common::PolicyViolationKey>,
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_criterion_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_criterion_operation::Operation>,
-}
-pub mod ad_group_criterion_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new criterion.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupCriterion),
-        /// Update operation: The criterion is expected to have a valid resource
-        /// name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::AdGroupCriterion),
-        /// Remove operation: A resource name for the removed criterion is expected,
-        /// in this format:
-        ///
-        /// `customers/{customer_id}/adGroupCriteria/{ad_group_id}~{criterion_id}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group criterion mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupCriteriaResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupCriterionResult>,
-}
-/// The result for the criterion mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupCriterionResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_criterion_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage ad group criteria."]
-    pub struct AdGroupCriterionServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupCriterionServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested criterion in full detail."]
-        pub async fn get_ad_group_criterion(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupCriterionRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupCriterion>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupCriterionService/GetAdGroupCriterion",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes criteria. Operation statuses are returned."]
-        pub async fn mutate_ad_group_criteria(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupCriteriaRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupCriteriaResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupCriterionService/MutateAdGroupCriteria",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupCriterionServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupCriterionServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupCriterionServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for
-/// [AdGroupExtensionSettingService.GetAdGroupExtensionSetting][google.ads.googleads.v2.services.AdGroupExtensionSettingService.GetAdGroupExtensionSetting].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupExtensionSettingRequest {
-    /// Required. The resource name of the ad group extension setting to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for
-/// [AdGroupExtensionSettingService.MutateAdGroupExtensionSettings][google.ads.googleads.v2.services.AdGroupExtensionSettingService.MutateAdGroupExtensionSettings].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupExtensionSettingsRequest {
-    /// Required. The ID of the customer whose ad group extension settings are being
-    /// modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual ad group extension
-    /// settings.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupExtensionSettingOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, update, remove) on an ad group extension setting.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupExtensionSettingOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// The mutate operation.
-    #[prost(
-        oneof = "ad_group_extension_setting_operation::Operation",
-        tags = "1, 2, 3"
-    )]
-    pub operation: ::std::option::Option<ad_group_extension_setting_operation::Operation>,
-}
-pub mod ad_group_extension_setting_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad group
-        /// extension setting.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupExtensionSetting),
-        /// Update operation: The ad group extension setting is expected to have a
-        /// valid resource name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::AdGroupExtensionSetting),
-        /// Remove operation: A resource name for the removed ad group extension
-        /// setting is expected, in this format:
-        ///
-        /// `customers/{customer_id}/adGroupExtensionSettings/{ad_group_id}~{extension_type}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group extension setting mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupExtensionSettingsResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupExtensionSettingResult>,
-}
-/// The result for the ad group extension setting mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupExtensionSettingResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_extension_setting_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage ad group extension settings."]
-    pub struct AdGroupExtensionSettingServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupExtensionSettingServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad group extension setting in full detail."]
-        pub async fn get_ad_group_extension_setting(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupExtensionSettingRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupExtensionSetting>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupExtensionSettingService/GetAdGroupExtensionSetting" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes ad group extension settings. Operation"]
-        #[doc = " statuses are returned."]
-        pub async fn mutate_ad_group_extension_settings(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupExtensionSettingsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupExtensionSettingsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v2.services.AdGroupExtensionSettingService/MutateAdGroupExtensionSettings" ) ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupExtensionSettingServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupExtensionSettingServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupExtensionSettingServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdGroupFeedService.GetAdGroupFeed][google.ads.googleads.v2.services.AdGroupFeedService.GetAdGroupFeed].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupFeedRequest {
-    /// Required. The resource name of the ad group feed to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdGroupFeedService.MutateAdGroupFeeds][google.ads.googleads.v2.services.AdGroupFeedService.MutateAdGroupFeeds].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupFeedsRequest {
-    /// Required. The ID of the customer whose ad group feeds are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual ad group feeds.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupFeedOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, update, remove) on an ad group feed.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupFeedOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_feed_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_feed_operation::Operation>,
-}
-pub mod ad_group_feed_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad group feed.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupFeed),
-        /// Update operation: The ad group feed is expected to have a valid resource
-        /// name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::AdGroupFeed),
-        /// Remove operation: A resource name for the removed ad group feed is
-        /// expected, in this format:
-        ///
-        /// `customers/{customer_id}/adGroupFeeds/{ad_group_id}~{feed_id}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group feed mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupFeedsResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupFeedResult>,
-}
-/// The result for the ad group feed mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupFeedResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_feed_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage ad group feeds."]
-    pub struct AdGroupFeedServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupFeedServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad group feed in full detail."]
-        pub async fn get_ad_group_feed(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupFeedRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupFeed>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupFeedService/GetAdGroupFeed",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes ad group feeds. Operation statuses are"]
-        #[doc = " returned."]
-        pub async fn mutate_ad_group_feeds(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupFeedsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupFeedsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupFeedService/MutateAdGroupFeeds",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupFeedServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupFeedServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupFeedServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdGroupLabelService.GetAdGroupLabel][google.ads.googleads.v2.services.AdGroupLabelService.GetAdGroupLabel].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupLabelRequest {
-    /// Required. The resource name of the ad group label to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdGroupLabelService.MutateAdGroupLabels][google.ads.googleads.v2.services.AdGroupLabelService.MutateAdGroupLabels].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupLabelsRequest {
-    /// Required. ID of the customer whose ad group labels are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on ad group labels.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupLabelOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, remove) on an ad group label.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupLabelOperation {
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<ad_group_label_operation::Operation>,
-}
-pub mod ad_group_label_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad group
-        /// label.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroupLabel),
-        /// Remove operation: A resource name for the ad group label
-        /// being removed, in this format:
-        ///
-        /// `customers/{customer_id}/adGroupLabels/{ad_group_id}~{label_id}`
-        #[prost(string, tag = "2")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group labels mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupLabelsResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupLabelResult>,
-}
-/// The result for an ad group label mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupLabelResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_label_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage labels on ad groups."]
-    pub struct AdGroupLabelServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupLabelServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad group label in full detail."]
-        pub async fn get_ad_group_label(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupLabelRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroupLabel>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupLabelService/GetAdGroupLabel",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates and removes ad group labels."]
-        #[doc = " Operation statuses are returned."]
-        pub async fn mutate_ad_group_labels(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupLabelsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupLabelsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupLabelService/MutateAdGroupLabels",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupLabelServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupLabelServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupLabelServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdGroupService.GetAdGroup][google.ads.googleads.v2.services.AdGroupService.GetAdGroup].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdGroupRequest {
-    /// Required. The resource name of the ad group to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdGroupService.MutateAdGroups][google.ads.googleads.v2.services.AdGroupService.MutateAdGroups].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupsRequest {
-    /// Required. The ID of the customer whose ad groups are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual ad groups.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, update, remove) on an ad group.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// The mutate operation.
-    #[prost(oneof = "ad_group_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_operation::Operation>,
-}
-pub mod ad_group_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad group.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdGroup),
-        /// Update operation: The ad group is expected to have a valid resource name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::AdGroup),
-        /// Remove operation: A resource name for the removed ad group is expected,
-        /// in this format:
-        ///
-        /// `customers/{customer_id}/adGroups/{ad_group_id}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad group mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupsResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupResult>,
-}
-/// The result for the ad group mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdGroupResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_group_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage ad groups."]
-    pub struct AdGroupServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdGroupServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad group in full detail."]
-        pub async fn get_ad_group(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdGroupRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdGroup>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupService/GetAdGroup",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes ad groups. Operation statuses are returned."]
-        pub async fn mutate_ad_groups(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdGroupsRequest>,
-        ) -> Result<tonic::Response<super::MutateAdGroupsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdGroupService/MutateAdGroups",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdGroupServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdGroupServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdGroupServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AdParameterService.GetAdParameter][google.ads.googleads.v2.services.AdParameterService.GetAdParameter]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAdParameterRequest {
-    /// Required. The resource name of the ad parameter to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AdParameterService.MutateAdParameters][google.ads.googleads.v2.services.AdParameterService.MutateAdParameters]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdParametersRequest {
-    /// Required. The ID of the customer whose ad parameters are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual ad parameters.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdParameterOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, update, remove) on ad parameter.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdParameterOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// The mutate operation.
-    #[prost(oneof = "ad_parameter_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_parameter_operation::Operation>,
-}
-pub mod ad_parameter_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new ad parameter.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::AdParameter),
-        /// Update operation: The ad parameter is expected to have a valid resource
-        /// name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::AdParameter),
-        /// Remove operation: A resource name for the ad parameter to remove is
-        /// expected in this format:
-        ///
-        /// `customers/{customer_id}/adParameters/{ad_group_id}~{criterion_id}~{parameter_index}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for an ad parameter mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdParametersResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdParameterResult>,
-}
-/// The result for the ad parameter mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAdParameterResult {
-    /// The resource name returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod ad_parameter_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage ad parameters."]
-    pub struct AdParameterServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AdParameterServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested ad parameter in full detail."]
-        pub async fn get_ad_parameter(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAdParameterRequest>,
-        ) -> Result<tonic::Response<super::super::resources::AdParameter>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdParameterService/GetAdParameter",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes ad parameters. Operation statuses are"]
-        #[doc = " returned."]
-        pub async fn mutate_ad_parameters(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAdParametersRequest>,
-        ) -> Result<tonic::Response<super::MutateAdParametersResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AdParameterService/MutateAdParameters",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdParameterServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdParameterServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdParameterServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [AssetService.GetAsset][google.ads.googleads.v2.services.AssetService.GetAsset]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAssetRequest {
-    /// Required. The resource name of the asset to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [AssetService.MutateAssets][google.ads.googleads.v2.services.AssetService.MutateAssets]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAssetsRequest {
-    /// Required. The ID of the customer whose assets are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual assets.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AssetOperation>,
-}
-/// A single operation to create an asset. Supported asset types are
-/// YoutubeVideoAsset, MediaBundleAsset, ImageAsset, and LeadFormAsset. TextAsset
-/// should be created with Ad inline.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetOperation {
-    /// The mutate operation.
-    #[prost(oneof = "asset_operation::Operation", tags = "1")]
-    pub operation: ::std::option::Option<asset_operation::Operation>,
-}
-pub mod asset_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new asset.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::Asset),
-    }
-}
-/// Response message for an asset mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAssetsResponse {
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAssetResult>,
-}
-/// The result for the asset mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateAssetResult {
-    /// The resource name returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod asset_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage assets. Asset types can be created with AssetService are"]
-    #[doc = " YoutubeVideoAsset, MediaBundleAsset and ImageAsset. TextAsset should be"]
-    #[doc = " created with Ad inline."]
-    pub struct AssetServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> AssetServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested asset in full detail."]
-        pub async fn get_asset(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAssetRequest>,
-        ) -> Result<tonic::Response<super::super::resources::Asset>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AssetService/GetAsset",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates assets. Operation statuses are returned."]
-        pub async fn mutate_assets(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateAssetsRequest>,
-        ) -> Result<tonic::Response<super::MutateAssetsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.AssetService/MutateAssets",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AssetServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AssetServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AssetServiceClient {{ ... }}")
-        }
-    }
-}
-/// Request message for [BiddingStrategyService.GetBiddingStrategy][google.ads.googleads.v2.services.BiddingStrategyService.GetBiddingStrategy].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetBiddingStrategyRequest {
-    /// Required. The resource name of the bidding strategy to fetch.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-/// Request message for [BiddingStrategyService.MutateBiddingStrategies][google.ads.googleads.v2.services.BiddingStrategyService.MutateBiddingStrategies].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateBiddingStrategiesRequest {
-    /// Required. The ID of the customer whose bidding strategies are being modified.
-    #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
-    /// Required. The list of operations to perform on individual bidding strategies.
-    #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<BiddingStrategyOperation>,
-    /// If true, successful operations will be carried out and invalid
-    /// operations will return errors. If false, all operations will be carried
-    /// out in one transaction if and only if they are all valid.
-    /// Default is false.
-    #[prost(bool, tag = "3")]
-    pub partial_failure: bool,
-    /// If true, the request is validated but not executed. Only errors are
-    /// returned, not results.
-    #[prost(bool, tag = "4")]
-    pub validate_only: bool,
-}
-/// A single operation (create, update, remove) on a bidding strategy.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingStrategyOperation {
-    /// FieldMask that determines which resource fields are modified in an update.
-    #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
-    /// The mutate operation.
-    #[prost(oneof = "bidding_strategy_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<bidding_strategy_operation::Operation>,
-}
-pub mod bidding_strategy_operation {
-    /// The mutate operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Operation {
-        /// Create operation: No resource name is expected for the new bidding
-        /// strategy.
-        #[prost(message, tag = "1")]
-        Create(super::super::resources::BiddingStrategy),
-        /// Update operation: The bidding strategy is expected to have a valid
-        /// resource name.
-        #[prost(message, tag = "2")]
-        Update(super::super::resources::BiddingStrategy),
-        /// Remove operation: A resource name for the removed bidding strategy is
-        /// expected, in this format:
-        ///
-        /// `customers/{customer_id}/biddingStrategies/{bidding_strategy_id}`
-        #[prost(string, tag = "3")]
-        Remove(std::string::String),
-    }
-}
-/// Response message for bidding strategy mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateBiddingStrategiesResponse {
-    /// Errors that pertain to operation failures in the partial failure mode.
-    /// Returned only when partial_failure = true and all errors occur inside the
-    /// operations. If any errors occur outside the operations (e.g. auth errors),
-    /// we return an RPC level error.
-    #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
-    #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateBiddingStrategyResult>,
-}
-/// The result for the bidding strategy mutate.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateBiddingStrategyResult {
-    /// Returned for successful operations.
-    #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
-}
-#[doc = r" Generated client implementations."]
-pub mod bidding_strategy_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service to manage bidding strategies."]
-    pub struct BiddingStrategyServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl<T> BiddingStrategyServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
-        #[doc = " Returns the requested bidding strategy in full detail."]
-        pub async fn get_bidding_strategy(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetBiddingStrategyRequest>,
-        ) -> Result<tonic::Response<super::super::resources::BiddingStrategy>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.BiddingStrategyService/GetBiddingStrategy",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates, updates, or removes bidding strategies. Operation statuses are"]
-        #[doc = " returned."]
-        pub async fn mutate_bidding_strategies(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MutateBiddingStrategiesRequest>,
-        ) -> Result<tonic::Response<super::MutateBiddingStrategiesResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.ads.googleads.v2.services.BiddingStrategyService/MutateBiddingStrategies",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for BiddingStrategyServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BiddingStrategyServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BiddingStrategyServiceClient {{ ... }}")
         }
     }
 }
@@ -9278,7 +10020,8 @@ pub struct MutateKeywordPlanAdGroupsResponse {
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
     pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
+    /// All results for the mutate. The order of the results is determined by the
+    /// order of the keywords in the original request.
     #[prost(message, repeated, tag = "2")]
     pub results: ::std::vec::Vec<MutateKeywordPlanAdGroupResult>,
 }
@@ -9510,7 +10253,7 @@ pub mod keyword_plan_campaign_service_client {
         }
     }
 }
-/// Request message for [KeywordIdeaService.GenerateKeywordIdeas][].
+/// Request message for [KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v2.services.KeywordPlanIdeaService.GenerateKeywordIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeasRequest {
     /// The ID of the customer with the recommendation.
@@ -9574,7 +10317,7 @@ pub struct UrlSeed {
     #[prost(message, optional, tag = "1")]
     pub url: ::std::option::Option<::std::string::String>,
 }
-/// Response message for [KeywordIdeaService.GenerateKeywordIdeas][].
+/// Response message for [KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v2.services.KeywordPlanIdeaService.GenerateKeywordIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeaResponse {
     /// Results of generating keyword ideas.
@@ -10132,7 +10875,9 @@ pub struct KeywordPlanKeywordHistoricalMetrics {
     /// Note that we de-dupe your keywords list, eliminating close variants before
     /// returning the plan's keywords as text. For example, if your plan originally
     /// contained the keywords 'car' and 'cars', the returned search query will
-    /// only contain 'car'.
+    /// only contain 'cars'.
+    /// Starting V5, the list of de-duped queries will be included in
+    /// close_variants field.
     #[prost(message, optional, tag = "1")]
     pub search_query: ::std::option::Option<::std::string::String>,
     /// The historical metrics for the query associated with one or more
@@ -11338,7 +12083,7 @@ pub mod payments_account_service_client {
     }
 }
 /// Request message for
-/// [ProductBiddingCategoryService.GetProductBiddingCategory][].
+/// [ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant][google.ads.googleads.v2.services.ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductBiddingCategoryConstantRequest {
     /// Required. Resource name of the Product Bidding Category to fetch.
@@ -11462,7 +12207,7 @@ pub mod product_group_view_service_client {
         }
     }
 }
-/// Request message for [ReachForecastService.ListPlannableLocations][]
+/// Request message for [ReachPlanService.ListPlannableLocations][google.ads.googleads.v2.services.ReachPlanService.ListPlannableLocations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableLocationsRequest {}
 /// The list of plannable locations.
@@ -11538,7 +12283,7 @@ pub struct PlannableTargeting {
     #[prost(message, repeated, tag = "3")]
     pub devices: ::std::vec::Vec<super::common::DeviceInfo>,
 }
-/// Request message for [ReachForecastService.GenerateProductMixIdeas][].
+/// Request message for [ReachPlanService.GenerateProductMixIdeas][google.ads.googleads.v2.services.ReachPlanService.GenerateProductMixIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateProductMixIdeasRequest {
     /// Required. The ID of the customer.
@@ -11627,7 +12372,10 @@ pub struct GenerateReachForecastRequest {
     /// This is equivalent to the frequency cap exposed in Google Ads when creating
     /// a campaign, it represents the maximum number of times an ad can be shown to
     /// the same user.
-    /// If not specified, no cap is applied.
+    /// If not specified no cap is applied.
+    ///
+    /// This field is deprecated in v4 and will eventually be removed.
+    /// Please use cookie_frequency_cap_setting instead.
     #[prost(message, optional, tag = "4")]
     pub cookie_frequency_cap: ::std::option::Option<i32>,
     /// Desired minimum effective frequency (the number of times a person was

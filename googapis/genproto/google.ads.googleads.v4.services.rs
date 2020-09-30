@@ -323,6 +323,9 @@ pub mod account_link_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates or removes an account link."]
+        #[doc = " From V5, create is not supported through"]
+        #[doc = " AccountLinkService.MutateAccountLink. Please use"]
+        #[doc = " AccountLinkService.CreateAccountLink instead."]
         pub async fn mutate_account_link(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateAccountLinkRequest>,
@@ -709,7 +712,7 @@ pub mod ad_group_ad_service_client {
         }
     }
 }
-/// Request message for [AdGroupAudienceViewService.GetAdGoupAudienceView][].
+/// Request message for [AdGroupAudienceViewService.GetAdGroupAudienceView][google.ads.googleads.v4.services.AdGroupAudienceViewService.GetAdGroupAudienceView].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupAudienceViewRequest {
     /// Required. The resource name of the ad group audience view to fetch.
@@ -2610,7 +2613,8 @@ pub struct GetCampaignBidModifierRequest {
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
 }
-/// Request message for [CampaignBidModifierService.MutateCampaignBidModifier][].
+/// Request message for
+/// [CampaignBidModifierService.MutateCampaignBidModifiers][google.ads.googleads.v4.services.CampaignBidModifierService.MutateCampaignBidModifiers].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBidModifiersRequest {
     /// Required. ID of the customer whose campaign bid modifiers are being modified.
@@ -5133,11 +5137,11 @@ pub struct CreateCustomerClientRequest {
     #[prost(message, optional, tag = "2")]
     pub customer_client: ::std::option::Option<super::resources::Customer>,
     /// Email address of the user who should be invited on the created client
-    /// customer. Accessible to whitelisted customers only.
+    /// customer. Accessible only to customers on the allow-list.
     #[prost(message, optional, tag = "3")]
     pub email_address: ::std::option::Option<::std::string::String>,
     /// The proposed role of user on the created client customer.
-    /// Accessible to whitelisted customers only.
+    /// Accessible only to customers on the allow-list.
     #[prost(enumeration = "super::enums::access_role_enum::AccessRole", tag = "4")]
     pub access_role: i32,
 }
@@ -6236,7 +6240,8 @@ pub struct MutateKeywordPlanAdGroupsResponse {
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
     pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
-    /// All results for the mutate.
+    /// All results for the mutate. The order of the results is determined by the
+    /// order of the keywords in the original request.
     #[prost(message, repeated, tag = "2")]
     pub results: ::std::vec::Vec<MutateKeywordPlanAdGroupResult>,
 }
@@ -6849,7 +6854,9 @@ pub struct KeywordPlanKeywordHistoricalMetrics {
     /// Note that we de-dupe your keywords list, eliminating close variants before
     /// returning the plan's keywords as text. For example, if your plan originally
     /// contained the keywords 'car' and 'cars', the returned search query will
-    /// only contain 'car'.
+    /// only contain 'cars'.
+    /// Starting V5, the list of de-duped queries will be included in
+    /// close_variants field.
     #[prost(message, optional, tag = "1")]
     pub search_query: ::std::option::Option<::std::string::String>,
     /// The historical metrics for the query associated with one or more
@@ -6917,8 +6924,7 @@ pub mod keyword_plan_service_client {
         }
         #[doc = " Returns the requested Keyword Plan forecast curve."]
         #[doc = " Only the bidding strategy is considered for generating forecast curve."]
-        #[doc = " The bidding strategy value (eg: max_cpc_bid_micros in maximize cpc bidding"]
-        #[doc = " strategy) specified in the plan is ignored."]
+        #[doc = " The bidding strategy value specified in the plan is ignored."]
         #[doc = ""]
         #[doc = " To generate a forecast at a value specified in the plan, use"]
         #[doc = " KeywordPlanService.GenerateForecastMetrics."]
@@ -8747,7 +8753,7 @@ pub mod google_ads_service_client {
         }
     }
 }
-/// Request message for [BatchJobService.MutateBatchJobRequest][]
+/// Request message for [BatchJobService.MutateBatchJob][google.ads.googleads.v4.services.BatchJobService.MutateBatchJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobRequest {
     /// Required. The ID of the customer for which to create a batch job.
@@ -8757,7 +8763,7 @@ pub struct MutateBatchJobRequest {
     #[prost(message, optional, tag = "2")]
     pub operation: ::std::option::Option<BatchJobOperation>,
 }
-/// A single operation (create or remove) on a batch job.
+/// A single operation on a batch job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchJobOperation {
     /// The mutate operation.
@@ -8779,7 +8785,7 @@ pub mod batch_job_operation {
         Remove(std::string::String),
     }
 }
-/// Response message for [BatchJobService.MutateBatchJobResponse][]
+/// Response message for [BatchJobService.MutateBatchJob][google.ads.googleads.v4.services.BatchJobService.MutateBatchJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobResponse {
     /// The result for the mutate.
@@ -8793,21 +8799,21 @@ pub struct MutateBatchJobResult {
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
 }
-/// Request message for [BatchJobService.GetBatchJob][google.ads.googleads.v4.services.BatchJobService.GetBatchJob]
+/// Request message for [BatchJobService.GetBatchJob][google.ads.googleads.v4.services.BatchJobService.GetBatchJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBatchJobRequest {
     /// Required. The resource name of the batch job to get.
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
 }
-/// Request message for [BatchJobService.RunBatchJob][google.ads.googleads.v4.services.BatchJobService.RunBatchJob]
+/// Request message for [BatchJobService.RunBatchJob][google.ads.googleads.v4.services.BatchJobService.RunBatchJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunBatchJobRequest {
     /// Required. The resource name of the BatchJob to run.
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
 }
-/// Request message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v4.services.BatchJobService.AddBatchJobOperations]
+/// Request message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v4.services.BatchJobService.AddBatchJobOperations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddBatchJobOperationsRequest {
     /// Required. The resource name of the batch job.
@@ -8833,7 +8839,7 @@ pub struct AddBatchJobOperationsRequest {
     #[prost(message, repeated, tag = "3")]
     pub mutate_operations: ::std::vec::Vec<MutateOperation>,
 }
-/// Response message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v4.services.BatchJobService.AddBatchJobOperations]
+/// Response message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v4.services.BatchJobService.AddBatchJobOperations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddBatchJobOperationsResponse {
     /// The total number of operations added so far for this batch job.
@@ -9530,6 +9536,10 @@ pub struct ConversionAdjustment {
     /// Information needed to restate the conversion's value.
     /// Required for restatements. Should not be supplied for retractions. An error
     /// will be returned if provided for a retraction.
+    /// NOTE: If you want to upload a second restatement with a different adjusted
+    /// value, it must have a new, more recent, adjustment occurrence time.
+    /// Otherwise, it will be treated as a duplicate of the previous restatement
+    /// and ignored.
     #[prost(message, optional, tag = "6")]
     pub restatement_value: ::std::option::Option<RestatementValue>,
     /// Identifies the conversion to be adjusted.
@@ -9557,6 +9567,10 @@ pub struct RestatementValue {
     /// The restated conversion value. This is the value of the conversion after
     /// restatement. For example, to change the value of a conversion from 100 to
     /// 70, an adjusted value of 70 should be reported.
+    /// NOTE: If you want to upload a second restatement with a different adjusted
+    /// value, it must have a new, more recent, adjustment occurrence time.
+    /// Otherwise, it will be treated as a duplicate of the previous restatement
+    /// and ignored.
     #[prost(message, optional, tag = "1")]
     pub adjusted_value: ::std::option::Option<f64>,
     /// The currency of the restated value. If not provided, then the default
@@ -10978,7 +10992,7 @@ pub struct GetGeoTargetConstantRequest {
     pub resource_name: std::string::String,
 }
 /// Request message for
-/// [GeoTargetConstantService.SuggestGeoTargetConstantsRequest][].
+/// [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v4.services.GeoTargetConstantService.SuggestGeoTargetConstants].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsRequest {
     /// If possible, returned geo targets are translated using this locale. If not,
@@ -11019,7 +11033,7 @@ pub mod suggest_geo_target_constants_request {
         GeoTargets(GeoTargets),
     }
 }
-/// Response message for [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v4.services.GeoTargetConstantService.SuggestGeoTargetConstants]
+/// Response message for [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v4.services.GeoTargetConstantService.SuggestGeoTargetConstants].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsResponse {
     /// Geo target constant suggestions.
@@ -11624,7 +11638,7 @@ pub mod invoice_service_client {
         }
     }
 }
-/// Request message for [KeywordIdeaService.GenerateKeywordIdeas][].
+/// Request message for [KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v4.services.KeywordPlanIdeaService.GenerateKeywordIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeasRequest {
     /// The ID of the customer with the recommendation.
@@ -11718,7 +11732,7 @@ pub struct UrlSeed {
     #[prost(message, optional, tag = "1")]
     pub url: ::std::option::Option<::std::string::String>,
 }
-/// Response message for [KeywordIdeaService.GenerateKeywordIdeas][].
+/// Response message for [KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v4.services.KeywordPlanIdeaService.GenerateKeywordIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeaResponse {
     /// Results of generating keyword ideas.
@@ -12391,7 +12405,7 @@ pub mod mobile_device_constant_service_client {
     }
 }
 /// Request message for
-/// [OfflineUserDataJobService.CreateOfflineUserDataJobRequest][]
+/// [OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.CreateOfflineUserDataJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineUserDataJobRequest {
     /// Required. The ID of the customer for which to create an offline user data job.
@@ -12402,21 +12416,21 @@ pub struct CreateOfflineUserDataJobRequest {
     pub job: ::std::option::Option<super::resources::OfflineUserDataJob>,
 }
 /// Response message for
-/// [OfflineUserDataJobService.CreateOfflineUserDataJobResponse][]
+/// [OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.CreateOfflineUserDataJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineUserDataJobResponse {
     /// The resource name of the OfflineUserDataJob.
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
 }
-/// Request message for [OfflineUserDataJobService.GetOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.GetOfflineUserDataJob]
+/// Request message for [OfflineUserDataJobService.GetOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.GetOfflineUserDataJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOfflineUserDataJobRequest {
     /// Required. The resource name of the OfflineUserDataJob to get.
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
 }
-/// Request message for [OfflineUserDataJobService.RunOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.RunOfflineUserDataJob]
+/// Request message for [OfflineUserDataJobService.RunOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.RunOfflineUserDataJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunOfflineUserDataJobRequest {
     /// Required. The resource name of the OfflineUserDataJob to run.
@@ -12424,7 +12438,7 @@ pub struct RunOfflineUserDataJobRequest {
     pub resource_name: std::string::String,
 }
 /// Request message for
-/// [OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v4.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations]
+/// [OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v4.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOfflineUserDataJobOperationsRequest {
     /// Required. The resource name of the OfflineUserDataJob.
@@ -12463,7 +12477,7 @@ pub mod offline_user_data_job_operation {
     }
 }
 /// Response message for
-/// [OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v4.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations]
+/// [OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v4.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOfflineUserDataJobOperationsResponse {
     /// Errors that pertain to operation failures in the partial failure mode.
@@ -12843,7 +12857,7 @@ pub mod payments_account_service_client {
     }
 }
 /// Request message for
-/// [ProductBiddingCategoryService.GetProductBiddingCategory][].
+/// [ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant][google.ads.googleads.v4.services.ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductBiddingCategoryConstantRequest {
     /// Required. Resource name of the Product Bidding Category to fetch.
@@ -12967,7 +12981,7 @@ pub mod product_group_view_service_client {
         }
     }
 }
-/// Request message for [ReachForecastService.ListPlannableLocations][]
+/// Request message for [ReachPlanService.ListPlannableLocations][google.ads.googleads.v4.services.ReachPlanService.ListPlannableLocations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableLocationsRequest {}
 /// The list of plannable locations.
@@ -13050,7 +13064,7 @@ pub struct PlannableTargeting {
     )]
     pub networks: ::std::vec::Vec<i32>,
 }
-/// Request message for [ReachForecastService.GenerateProductMixIdeas][].
+/// Request message for [ReachPlanService.GenerateProductMixIdeas][google.ads.googleads.v4.services.ReachPlanService.GenerateProductMixIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateProductMixIdeasRequest {
     /// Required. The ID of the customer.
@@ -14092,7 +14106,7 @@ pub mod user_data_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = " Service to manage user data uploads."]
-    #[doc = " Accessible to whitelisted customers only."]
+    #[doc = " Accessible only to customers on the allow-list."]
     pub struct UserDataServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }

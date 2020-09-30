@@ -4,8 +4,8 @@ pub struct InfoType {
     /// Name of the information type. Either a name of your choosing when
     /// creating a CustomInfoType, or one of the names listed
     /// at https://cloud.google.com/dlp/docs/infotypes-reference when specifying
-    /// a built-in type. InfoType names should conform to the pattern
-    /// `[a-zA-Z0-9_]{1,64}`.
+    /// a built-in type.  When sending Cloud DLP results to Data Catalog, infoType
+    /// names should conform to the pattern `[A-Za-z0-9$-_]{1,64}`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -445,14 +445,16 @@ pub struct BigQueryOptions {
 pub mod big_query_options {
     /// How to sample rows if not all rows are scanned. Meaningful only when used
     /// in conjunction with either rows_limit or rows_limit_percent. If not
-    /// specified, scanning would start from the top.
+    /// specified, rows are scanned in the order BigQuery reads them.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum SampleMethod {
         Unspecified = 0,
-        /// Scan from the top (default).
+        /// Scan groups of rows in the order BigQuery provides (default). Multiple
+        /// groups of rows may be scanned in parallel, so results may not appear in
+        /// the same order the rows are read.
         Top = 1,
-        /// Randomly pick the row to start scanning. The scanned rows are contiguous.
+        /// Randomly pick groups of rows to scan.
         RandomStart = 2,
     }
 }
@@ -1290,9 +1292,22 @@ pub struct BoundingBox {
 /// by covering it with a colored rectangle.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactImageRequest {
-    /// The parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// Parent resource name.
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Deprecated. This field has no effect.
@@ -1373,8 +1388,21 @@ pub struct RedactImageResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyContentRequest {
     /// Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the de-identification of the content item.
@@ -1421,9 +1449,22 @@ pub struct DeidentifyContentResponse {
 /// Request to re-identify an item.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReidentifyContentRequest {
-    /// Required. The parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    /// Required. Parent resource name.
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the re-identification of the content item.
@@ -1453,10 +1494,11 @@ pub struct ReidentifyContentRequest {
     pub inspect_template_name: std::string::String,
     /// Template to use. References an instance of `DeidentifyTemplate`.
     /// Any configuration directly specified in `reidentify_config` or
-    /// `inspect_config` will override those set in the template. Singular fields
-    /// that are set in this request will replace their corresponding fields in the
-    /// template. Repeated fields are appended. Singular sub-messages and groups
-    /// are recursively merged.
+    /// `inspect_config` will override those set in the template. The
+    /// `DeidentifyTemplate` used must include only reversible transformations.
+    /// Singular fields that are set in this request will replace their
+    /// corresponding fields in the template. Repeated fields are appended.
+    /// Singular sub-messages and groups are recursively merged.
     #[prost(string, tag = "6")]
     pub reidentify_template_name: std::string::String,
     /// Deprecated. This field has no effect.
@@ -1477,8 +1519,21 @@ pub struct ReidentifyContentResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectContentRequest {
     /// Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Configuration for the inspector. What specified here will override
@@ -1658,7 +1713,10 @@ pub struct InfoTypeDescription {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInfoTypesRequest {
     /// The parent resource name.
-    /// - Format:locations/[LOCATION-ID]
+    ///
+    /// The format of this value is as follows:
+    ///
+    ///     locations/<var>LOCATION_ID</var>
     #[prost(string, tag = "4")]
     pub parent: std::string::String,
     /// BCP-47 language code for localized infoType friendly
@@ -2824,6 +2882,9 @@ pub mod crypto_replace_ffx_fpe_config {
         /// Number of characters must be in the range [2, 95].
         /// This must be encoded as ASCII.
         /// The order of characters does not matter.
+        /// The full list of allowed characters is:
+        /// <code>0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+        /// ~`!@#$%^&*()_-+={[}]|\:;"'<,>.?/</code>
         #[prost(string, tag = "5")]
         CustomAlphabet(std::string::String),
         /// The native way to select the alphabet. Must be in the range [2, 95].
@@ -3426,10 +3487,25 @@ pub mod action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInspectTemplateRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization) and whether you have [specified a processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    /// + Organizations scope, location specified:<br/>
+    ///   `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Organizations scope, no location specified (defaults to global):<br/>
+    ///   `organizations/`<var>ORG_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The InspectTemplate to create.
@@ -3437,7 +3513,7 @@ pub struct CreateInspectTemplateRequest {
     pub inspect_template: ::std::option::Option<InspectTemplate>,
     /// The template id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\\d-_]+`. The maximum length is 100
+    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub template_id: std::string::String,
@@ -3473,10 +3549,25 @@ pub struct GetInspectTemplateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInspectTemplatesRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization) and whether you have [specified a processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    /// + Organizations scope, location specified:<br/>
+    ///   `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Organizations scope, no location specified (defaults to global):<br/>
+    ///   `organizations/`<var>ORG_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3530,8 +3621,21 @@ pub struct DeleteInspectTemplateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobTriggerRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The JobTrigger to create.
@@ -3539,7 +3643,7 @@ pub struct CreateJobTriggerRequest {
     pub job_trigger: ::std::option::Option<JobTrigger>,
     /// The trigger id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\\d-_]+`. The maximum length is 100
+    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub trigger_id: std::string::String,
@@ -3583,13 +3687,26 @@ pub struct GetJobTriggerRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDlpJobRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The job id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\\d-_]+`. The maximum length is 100
+    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "4")]
     pub job_id: std::string::String,
@@ -3616,8 +3733,21 @@ pub mod create_dlp_job_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTriggersRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -3788,8 +3918,21 @@ pub struct GetDlpJobRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDlpJobsRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on whether you have [specified a
+    /// processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "4")]
     pub parent: std::string::String,
     /// Allows filtering.
@@ -3885,10 +4028,25 @@ pub struct DeleteDlpJobRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeidentifyTemplateRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization) and whether you have [specified a processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    /// + Organizations scope, location specified:<br/>
+    ///   `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Organizations scope, no location specified (defaults to global):<br/>
+    ///   `organizations/`<var>ORG_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The DeidentifyTemplate to create.
@@ -3896,7 +4054,7 @@ pub struct CreateDeidentifyTemplateRequest {
     pub deidentify_template: ::std::option::Option<DeidentifyTemplate>,
     /// The template id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\\d-_]+`. The maximum length is 100
+    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub template_id: std::string::String,
@@ -3932,10 +4090,25 @@ pub struct GetDeidentifyTemplateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeidentifyTemplatesRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization) and whether you have [specified a processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    /// + Organizations scope, location specified:<br/>
+    ///   `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Organizations scope, no location specified (defaults to global):<br/>
+    ///   `organizations/`<var>ORG_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call
@@ -4120,10 +4293,25 @@ pub struct StoredInfoType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStoredInfoTypeRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization) and whether you have [specified a processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    /// + Organizations scope, location specified:<br/>
+    ///   `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Organizations scope, no location specified (defaults to global):<br/>
+    ///   `organizations/`<var>ORG_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. Configuration of the storedInfoType to create.
@@ -4131,7 +4319,7 @@ pub struct CreateStoredInfoTypeRequest {
     pub config: ::std::option::Option<StoredInfoTypeConfig>,
     /// The storedInfoType ID can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\\d-_]+`. The maximum length is 100
+    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub stored_info_type_id: std::string::String,
@@ -4169,10 +4357,25 @@ pub struct GetStoredInfoTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStoredInfoTypesRequest {
     /// Required. Parent resource name.
-    /// - Format:projects/[PROJECT-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]
-    /// - Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-    /// - Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization) and whether you have [specified a processing
+    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    ///
+    /// + Projects scope, location specified:<br/>
+    ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Projects scope, no location specified (defaults to global):<br/>
+    ///   `projects/`<var>PROJECT_ID</var>
+    /// + Organizations scope, location specified:<br/>
+    ///   `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// + Organizations scope, no location specified (defaults to global):<br/>
+    ///   `organizations/`<var>ORG_ID</var>
+    ///
+    /// The following example `parent` string specifies a parent project with the
+    /// identifier `example-project`, and specifies the `europe-west3` location
+    /// for processing data:
+    ///
+    ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Page token to continue retrieval. Comes from previous call

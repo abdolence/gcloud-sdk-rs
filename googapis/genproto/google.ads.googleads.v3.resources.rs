@@ -513,7 +513,7 @@ pub mod ad {
     /// Details pertinent to the ad type. Exactly one value must be set.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AdData {
-        /// Details pertaining to a text ad.
+        /// Immutable. Details pertaining to a text ad.
         #[prost(message, tag = "6")]
         TextAd(super::super::common::TextAdInfo),
         /// Details pertaining to an expanded text ad.
@@ -522,7 +522,7 @@ pub mod ad {
         /// Details pertaining to a call-only ad.
         #[prost(message, tag = "13")]
         CallOnlyAd(super::super::common::CallOnlyAdInfo),
-        /// Details pertaining to an Expanded Dynamic Search Ad.
+        /// Immutable. Details pertaining to an Expanded Dynamic Search Ad.
         /// This type of ad has its headline, final URLs, and display URL
         /// auto-generated at serving time according to domain name specific
         /// information provided by `dynamic_search_ads_setting` linked at the
@@ -538,10 +538,10 @@ pub mod ad {
         /// Details pertaining to a Shopping product ad.
         #[prost(message, tag = "18")]
         ShoppingProductAd(super::super::common::ShoppingProductAdInfo),
-        /// Details pertaining to a Gmail ad.
+        /// Immutable. Details pertaining to a Gmail ad.
         #[prost(message, tag = "21")]
         GmailAd(super::super::common::GmailAdInfo),
-        /// Details pertaining to an Image ad.
+        /// Immutable. Details pertaining to an Image ad.
         #[prost(message, tag = "22")]
         ImageAd(super::super::common::ImageAdInfo),
         /// Details pertaining to a Video ad.
@@ -762,9 +762,13 @@ pub struct AdGroupAdPolicySummary {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupAdAssetView {
     /// Output only. The resource name of the ad group ad asset view.
-    /// Ad group ad asset view resource names have the form:
+    /// Ad group ad asset view resource names have the form (Before V4):
     ///
-    /// `customers/{customer_id}/adGroupAdAssets/{AdGroupAdAsset.ad_group_id}~{AdGroupAdAsset.ad.ad_id}~{AdGroupAdAsset.asset_id}~{AdGroupAdAsset.asset_field_type}`
+    /// `customers/{customer_id}/adGroupAdAssets/{AdGroupAdAsset.ad_group_id}~{AdGroupAdAsset.ad.ad_id}~{AdGroupAdAsset.asset_id}~{AdGroupAdAsset.field_type}`
+    ///
+    /// Ad group ad asset view resource names have the form (Beginning from V4):
+    ///
+    /// `customers/{customer_id}/adGroupAdAssetViews/{AdGroupAdAsset.ad_group_id}~{AdGroupAdAsset.ad_id}~{AdGroupAdAsset.asset_id}~{AdGroupAdAsset.field_type}`
     #[prost(string, tag = "1")]
     pub resource_name: std::string::String,
     /// Output only. The ad group ad to which the asset is linked.
@@ -879,6 +883,8 @@ pub struct AdGroupBidModifier {
     )]
     pub bid_modifier_source: i32,
     /// The criterion of this ad group bid modifier.
+    ///
+    /// Required in create operations starting in V5.
     #[prost(
         oneof = "ad_group_bid_modifier::Criterion",
         tags = "5, 6, 7, 8, 11, 12"
@@ -887,6 +893,8 @@ pub struct AdGroupBidModifier {
 }
 pub mod ad_group_bid_modifier {
     /// The criterion of this ad group bid modifier.
+    ///
+    /// Required in create operations starting in V5.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Criterion {
         /// Immutable. Criterion for hotel date selection (default dates vs. user selected).
@@ -926,6 +934,15 @@ pub struct AdGroupCriterion {
     #[prost(message, optional, tag = "26")]
     pub criterion_id: ::std::option::Option<i64>,
     /// The status of the criterion.
+    ///
+    /// This is the status of the ad group criterion entity, set by the client.
+    /// Note: UI reports may incorporate additional information that affects
+    /// whether a criterion is eligible to run. In some cases a criterion that's
+    /// REMOVED in the API can still show as enabled in the UI.
+    /// For example, campaigns by default show to users of all age ranges unless
+    /// excluded. The UI will show each age range as "enabled", since they're
+    /// eligible to see the ads; but AdGroupCriterion.status will show "removed",
+    /// since no positive criterion was added.
     #[prost(
         enumeration = "super::enums::ad_group_criterion_status_enum::AdGroupCriterionStatus",
         tag = "3"
@@ -1330,11 +1347,12 @@ pub struct AdGroupLabel {
 /// 1. SEARCH - CPC_BID - DEFAULT
 /// 2. SEARCH - CPC_BID - UNIFORM
 /// 3. SEARCH - TARGET_CPA - UNIFORM
-/// 4. DISPLAY - CPC_BID - DEFAULT
-/// 5. DISPLAY - CPC_BID - UNIFORM
-/// 6. DISPLAY - TARGET_CPA - UNIFORM
-/// 7. VIDEO - CPV_BID - DEFAULT
-/// 8. VIDEO - CPV_BID - UNIFORM
+/// 4. SEARCH - TARGET_ROAS - UNIFORM
+/// 5. DISPLAY - CPC_BID - DEFAULT
+/// 6. DISPLAY - CPC_BID - UNIFORM
+/// 7. DISPLAY - TARGET_CPA - UNIFORM
+/// 8. VIDEO - CPV_BID - DEFAULT
+/// 9. VIDEO - CPV_BID - UNIFORM
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupSimulation {
     /// Output only. The resource name of the ad group simulation.
@@ -1820,12 +1838,10 @@ pub struct Campaign {
     )]
     pub bidding_strategy_type: i32,
     /// The date when campaign started.
-    ///
     /// This field must not be used in WHERE clauses.
     #[prost(message, optional, tag = "19")]
     pub start_date: ::std::option::Option<::std::string::String>,
     /// The date when campaign ended.
-    ///
     /// This field must not be used in WHERE clauses.
     #[prost(message, optional, tag = "20")]
     pub end_date: ::std::option::Option<::std::string::String>,
@@ -1907,43 +1923,6 @@ pub mod campaign {
         #[prost(message, optional, tag = "1")]
         pub hotel_center_id: ::std::option::Option<i64>,
     }
-    /// Campaign-level settings for App Campaigns.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct AppCampaignSetting {
-        /// Represents the goal which the bidding strategy of this app campaign
-        /// should optimize towards.
-        #[prost(
-            enumeration = "super::super::enums::app_campaign_bidding_strategy_goal_type_enum::AppCampaignBiddingStrategyGoalType",
-            tag = "1"
-        )]
-        pub bidding_strategy_goal_type: i32,
-        /// Immutable. A string that uniquely identifies a mobile application.
-        #[prost(message, optional, tag = "2")]
-        pub app_id: ::std::option::Option<::std::string::String>,
-        /// Immutable. The application store that distributes this specific app.
-        #[prost(
-            enumeration = "super::super::enums::app_campaign_app_store_enum::AppCampaignAppStore",
-            tag = "3"
-        )]
-        pub app_store: i32,
-    }
-    /// The setting for controlling Dynamic Search Ads (DSA).
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DynamicSearchAdsSetting {
-        /// The Internet domain name that this setting represents, e.g., "google.com"
-        /// or "www.google.com".
-        #[prost(message, optional, tag = "1")]
-        pub domain_name: ::std::option::Option<::std::string::String>,
-        /// The language code specifying the language of the domain, e.g., "en".
-        #[prost(message, optional, tag = "2")]
-        pub language_code: ::std::option::Option<::std::string::String>,
-        /// Whether the campaign uses advertiser supplied URLs exclusively.
-        #[prost(message, optional, tag = "3")]
-        pub use_supplied_urls_only: ::std::option::Option<bool>,
-        /// Output only. The list of page feeds associated with the campaign.
-        #[prost(message, repeated, tag = "5")]
-        pub feeds: ::std::vec::Vec<::std::string::String>,
-    }
     /// The setting for Shopping campaigns. Defines the universe of products that
     /// can be advertised by the campaign, and how this campaign interacts with
     /// other Shopping campaigns.
@@ -1972,29 +1951,29 @@ pub mod campaign {
         #[prost(message, optional, tag = "4")]
         pub enable_local: ::std::option::Option<bool>,
     }
-    /// Describes how unbranded pharma ads will be displayed.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct VanityPharma {
-        /// The display mode for vanity pharma URLs.
-        #[prost(
-            enumeration = "super::super::enums::vanity_pharma_display_url_mode_enum::VanityPharmaDisplayUrlMode",
-            tag = "1"
-        )]
-        pub vanity_pharma_display_url_mode: i32,
-        /// The text that will be displayed in display URL of the text ad when
-        /// website description is the selected display mode for vanity pharma URLs.
-        #[prost(
-            enumeration = "super::super::enums::vanity_pharma_text_enum::VanityPharmaText",
-            tag = "2"
-        )]
-        pub vanity_pharma_text: i32,
-    }
     /// Campaign-level settings for tracking information.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrackingSetting {
         /// Output only. The url used for dynamic tracking.
         #[prost(message, optional, tag = "1")]
         pub tracking_url: ::std::option::Option<::std::string::String>,
+    }
+    /// The setting for controlling Dynamic Search Ads (DSA).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DynamicSearchAdsSetting {
+        /// The Internet domain name that this setting represents, e.g., "google.com"
+        /// or "www.google.com".
+        #[prost(message, optional, tag = "1")]
+        pub domain_name: ::std::option::Option<::std::string::String>,
+        /// The language code specifying the language of the domain, e.g., "en".
+        #[prost(message, optional, tag = "2")]
+        pub language_code: ::std::option::Option<::std::string::String>,
+        /// Whether the campaign uses advertiser supplied URLs exclusively.
+        #[prost(message, optional, tag = "3")]
+        pub use_supplied_urls_only: ::std::option::Option<bool>,
+        /// Output only. The list of page feeds associated with the campaign.
+        #[prost(message, repeated, tag = "5")]
+        pub feeds: ::std::vec::Vec<::std::string::String>,
     }
     /// Represents a collection of settings related to ads geotargeting.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2011,6 +1990,43 @@ pub mod campaign {
             tag = "2"
         )]
         pub negative_geo_target_type: i32,
+    }
+    /// Campaign-level settings for App Campaigns.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AppCampaignSetting {
+        /// Represents the goal which the bidding strategy of this app campaign
+        /// should optimize towards.
+        #[prost(
+            enumeration = "super::super::enums::app_campaign_bidding_strategy_goal_type_enum::AppCampaignBiddingStrategyGoalType",
+            tag = "1"
+        )]
+        pub bidding_strategy_goal_type: i32,
+        /// Immutable. A string that uniquely identifies a mobile application.
+        #[prost(message, optional, tag = "2")]
+        pub app_id: ::std::option::Option<::std::string::String>,
+        /// Immutable. The application store that distributes this specific app.
+        #[prost(
+            enumeration = "super::super::enums::app_campaign_app_store_enum::AppCampaignAppStore",
+            tag = "3"
+        )]
+        pub app_store: i32,
+    }
+    /// Describes how unbranded pharma ads will be displayed.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VanityPharma {
+        /// The display mode for vanity pharma URLs.
+        #[prost(
+            enumeration = "super::super::enums::vanity_pharma_display_url_mode_enum::VanityPharmaDisplayUrlMode",
+            tag = "1"
+        )]
+        pub vanity_pharma_display_url_mode: i32,
+        /// The text that will be displayed in display URL of the text ad when
+        /// website description is the selected display mode for vanity pharma URLs.
+        #[prost(
+            enumeration = "super::super::enums::vanity_pharma_text_enum::VanityPharmaText",
+            tag = "2"
+        )]
+        pub vanity_pharma_text: i32,
     }
     /// Selective optimization setting for this campaign, which includes a set of
     /// conversion actions to optimize this campaign towards.
@@ -2119,11 +2135,15 @@ pub struct CampaignBidModifier {
     #[prost(message, optional, tag = "4")]
     pub bid_modifier: ::std::option::Option<f64>,
     /// The criterion of this campaign bid modifier.
+    ///
+    /// Required in create operations starting in V5.
     #[prost(oneof = "campaign_bid_modifier::Criterion", tags = "5")]
     pub criterion: ::std::option::Option<campaign_bid_modifier::Criterion>,
 }
 pub mod campaign_bid_modifier {
     /// The criterion of this campaign bid modifier.
+    ///
+    /// Required in create operations starting in V5.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Criterion {
         /// Immutable. Criterion for interaction type. Only supported for search campaigns.
@@ -3181,7 +3201,7 @@ pub struct CustomerClientLink {
     )]
     pub status: i32,
     /// The visibility of the link. Users can choose whether or not to see hidden
-    /// links in the AdWords UI.
+    /// links in the Google Ads UI.
     /// Default value is false
     #[prost(message, optional, tag = "6")]
     pub hidden: ::std::option::Option<bool>,
@@ -4581,7 +4601,6 @@ pub struct Invoice {
     /// Output only. The resource name of the original invoice corrected, wrote off, or canceled
     /// by this invoice, if applicable. If `corrected_invoice` is set,
     /// `replaced_invoices` will not be set.
-    ///
     /// Invoice resource names have the form:
     ///
     /// `customers/{customer_id}/invoices/{invoice_id}`
@@ -5417,7 +5436,7 @@ pub struct Recommendation {
     /// the recommendation affects a single campaign budget.
     ///
     /// This field will be set for the following recommendation types:
-    /// CAMPAIGN_BUDGET, MOVE_UNUSED_BUDGET
+    /// CAMPAIGN_BUDGET, FORECASTING_CAMPAIGN_BUDGET, MOVE_UNUSED_BUDGET
     #[prost(message, optional, tag = "5")]
     pub campaign_budget: ::std::option::Option<::std::string::String>,
     /// Output only. The campaign targeted by this recommendation. This will be set only when
@@ -5427,7 +5446,7 @@ pub struct Recommendation {
     /// CALL_EXTENSION, CALLOUT_EXTENSION, ENHANCED_CPC_OPT_IN, KEYWORD,
     /// KEYWORD_MATCH_TYPE, MAXIMIZE_CLICKS_OPT_IN, MAXIMIZE_CONVERSIONS_OPT_IN,
     /// OPTIMIZE_AD_ROTATION, SEARCH_PARTNERS_OPT_IN, SITELINK_EXTENSION,
-    /// TARGET_CPA_OPT_IN, TEXT_AD
+    /// TARGET_CPA_OPT_IN, TARGET_ROAS_OPT_IN, TEXT_AD
     #[prost(message, optional, tag = "6")]
     pub campaign: ::std::option::Option<::std::string::String>,
     /// Output only. The ad group targeted by this recommendation. This will be set only when
@@ -5517,6 +5536,9 @@ pub mod recommendation {
         #[prost(message, optional, tag = "2")]
         pub recommended_cpc_bid_micros: ::std::option::Option<i64>,
     }
+    /// The Optimize Ad Rotation recommendation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OptimizeAdRotationRecommendation {}
     /// The text ad recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextAdRecommendation {
@@ -5569,13 +5591,9 @@ pub mod recommendation {
             pub impact: ::std::option::Option<super::RecommendationImpact>,
         }
     }
-    /// The Maximize Conversions Opt-In recommendation.
+    /// The Enhanced Cost-Per-Click Opt-In recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct MaximizeConversionsOptInRecommendation {
-        /// Output only. The recommended new budget amount.
-        #[prost(message, optional, tag = "1")]
-        pub recommended_budget_amount_micros: ::std::option::Option<i64>,
-    }
+    pub struct EnhancedCpcOptInRecommendation {}
     /// The Maximize Clicks opt-in recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MaximizeClicksOptInRecommendation {
@@ -5584,6 +5602,23 @@ pub mod recommendation {
         #[prost(message, optional, tag = "1")]
         pub recommended_budget_amount_micros: ::std::option::Option<i64>,
     }
+    /// The Maximize Conversions Opt-In recommendation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MaximizeConversionsOptInRecommendation {
+        /// Output only. The recommended new budget amount.
+        #[prost(message, optional, tag = "1")]
+        pub recommended_budget_amount_micros: ::std::option::Option<i64>,
+    }
+    /// The Call extension recommendation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CallExtensionRecommendation {
+        /// Output only. Call extensions recommended to be added.
+        #[prost(message, repeated, tag = "1")]
+        pub recommended_extensions: ::std::vec::Vec<super::super::common::CallFeedItem>,
+    }
+    /// The Search Partners Opt-In recommendation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SearchPartnersOptInRecommendation {}
     /// The Callout extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CalloutExtensionRecommendation {
@@ -5591,19 +5626,13 @@ pub mod recommendation {
         #[prost(message, repeated, tag = "1")]
         pub recommended_extensions: ::std::vec::Vec<super::super::common::CalloutFeedItem>,
     }
-    /// The move unused budget recommendation.
+    /// The Sitelink extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct MoveUnusedBudgetRecommendation {
-        /// Output only. The excess budget's resource_name.
-        #[prost(message, optional, tag = "1")]
-        pub excess_campaign_budget: ::std::option::Option<::std::string::String>,
-        /// Output only. The recommendation for the constrained budget to increase.
-        #[prost(message, optional, tag = "2")]
-        pub budget_recommendation: ::std::option::Option<CampaignBudgetRecommendation>,
+    pub struct SitelinkExtensionRecommendation {
+        /// Output only. Sitelink extensions recommended to be added.
+        #[prost(message, repeated, tag = "1")]
+        pub recommended_extensions: ::std::vec::Vec<super::super::common::SitelinkFeedItem>,
     }
-    /// The Enhanced Cost-Per-Click Opt-In recommendation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct EnhancedCpcOptInRecommendation {}
     /// The keyword match type recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeywordMatchTypeRecommendation {
@@ -5617,25 +5646,15 @@ pub mod recommendation {
         )]
         pub recommended_match_type: i32,
     }
-    /// The Search Partners Opt-In recommendation.
+    /// The move unused budget recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SearchPartnersOptInRecommendation {}
-    /// The Call extension recommendation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CallExtensionRecommendation {
-        /// Output only. Call extensions recommended to be added.
-        #[prost(message, repeated, tag = "1")]
-        pub recommended_extensions: ::std::vec::Vec<super::super::common::CallFeedItem>,
-    }
-    /// The Optimize Ad Rotation recommendation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct OptimizeAdRotationRecommendation {}
-    /// The Sitelink extension recommendation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SitelinkExtensionRecommendation {
-        /// Output only. Sitelink extensions recommended to be added.
-        #[prost(message, repeated, tag = "1")]
-        pub recommended_extensions: ::std::vec::Vec<super::super::common::SitelinkFeedItem>,
+    pub struct MoveUnusedBudgetRecommendation {
+        /// Output only. The excess budget's resource_name.
+        #[prost(message, optional, tag = "1")]
+        pub excess_campaign_budget: ::std::option::Option<::std::string::String>,
+        /// Output only. The recommendation for the constrained budget to increase.
+        #[prost(message, optional, tag = "2")]
+        pub budget_recommendation: ::std::option::Option<CampaignBudgetRecommendation>,
     }
     /// The details of recommendation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]

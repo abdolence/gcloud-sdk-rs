@@ -892,7 +892,7 @@ pub struct FailureDetail {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobRequest {
     /// Required. The parent location to create and process this job.
-    /// Format: projects/{project}/locations/{location}
+    /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. Parameters for creating transcoding job.
@@ -903,7 +903,7 @@ pub struct CreateJobRequest {
 /// The parent location from which to retrieve the collection of jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
-    /// Required. Format: projects/{project}/locations/{location}
+    /// Required. Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The maximum number of items to return.
@@ -918,7 +918,7 @@ pub struct ListJobsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The name of the job to retrieve.
-    /// Format: projects/{project}/locations/{location}/jobs/{job}
+    /// Format: `projects/{project}/locations/{location}/jobs/{job}`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -926,7 +926,7 @@ pub struct GetJobRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. The name of the job to delete.
-    /// Fromat: projects/{project}/locations/{location}/jobs/{job}
+    /// Format: `projects/{project}/locations/{location}/jobs/{job}`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -944,7 +944,7 @@ pub struct ListJobsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobTemplateRequest {
     /// Required. The parent location to create this job template.
-    /// Format: projects/{project}/locations/{location}
+    /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. Parameters for creating job template.
@@ -954,7 +954,7 @@ pub struct CreateJobTemplateRequest {
     /// of the job template's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /[a-zA-Z0-9_-_]/.
+    /// are `/[a-zA-Z0-9_-_]/`.
     #[prost(string, tag = "3")]
     pub job_template_id: std::string::String,
 }
@@ -962,7 +962,7 @@ pub struct CreateJobTemplateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTemplatesRequest {
     /// Required. The parent location from which to retrieve the collection of job templates.
-    /// Format: projects/{project}/locations/{location}
+    /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The maximum number of items to return.
@@ -978,7 +978,7 @@ pub struct ListJobTemplatesRequest {
 pub struct GetJobTemplateRequest {
     /// Required. The name of the job template to retrieve.
     /// Format:
-    /// projects/{project}/locations/{location}/jobTemplates/{job_template}
+    /// `projects/{project}/locations/{location}/jobTemplates/{job_template}`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -986,7 +986,7 @@ pub struct GetJobTemplateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobTemplateRequest {
     /// Required. The name of the job template to delete.
-    /// projects/{project}/locations/{location}/jobTemplates/{job_template}
+    /// `projects/{project}/locations/{location}/jobTemplates/{job_template}`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }

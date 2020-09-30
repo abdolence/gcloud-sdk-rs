@@ -1,3 +1,201 @@
+// OS Config Inventory is a service for collecting and reporting operating
+// system and package information on VM instances.
+
+/// The inventory details of a VM.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Inventory {
+    /// Base level operating system information for the VM.
+    #[prost(message, optional, tag = "1")]
+    pub os_info: ::std::option::Option<inventory::OsInfo>,
+    /// A list of installed packages currently on the VM.
+    #[prost(message, repeated, tag = "2")]
+    pub installed_packages: ::std::vec::Vec<inventory::SoftwarePackage>,
+    /// A list of software updates available for the VM as reported by the update
+    /// managers.
+    #[prost(message, repeated, tag = "3")]
+    pub available_packages: ::std::vec::Vec<inventory::SoftwarePackage>,
+}
+pub mod inventory {
+    /// Operating system information for the VM.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OsInfo {
+        /// The VM hostname.
+        #[prost(string, tag = "1")]
+        pub hostname: std::string::String,
+        /// The operating system long name.
+        /// For example 'Debian GNU/Linux 9' or 'Microsoft Window Server 2019
+        /// Datacenter'.
+        #[prost(string, tag = "2")]
+        pub long_name: std::string::String,
+        /// The operating system short name.
+        /// For example, 'windows' or 'debian'.
+        #[prost(string, tag = "3")]
+        pub short_name: std::string::String,
+        /// The version of the operating system.
+        #[prost(string, tag = "4")]
+        pub version: std::string::String,
+        /// The system architecture of the operating system.
+        #[prost(string, tag = "5")]
+        pub architecture: std::string::String,
+        /// The kernel version of the operating system.
+        #[prost(string, tag = "6")]
+        pub kernel_version: std::string::String,
+        /// The kernel release of the operating system.
+        #[prost(string, tag = "7")]
+        pub kernel_release: std::string::String,
+        /// The current version of the OS Config agent running on the VM.
+        #[prost(string, tag = "8")]
+        pub osconfig_agent_version: std::string::String,
+    }
+    /// Software package information of the operating system.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SoftwarePackage {
+        /// Information about the different types of software packages.
+        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7")]
+        pub details: ::std::option::Option<software_package::Details>,
+    }
+    pub mod software_package {
+        /// Information about the different types of software packages.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Details {
+            /// Yum package info.
+            /// For details about the yum package manager, see
+            /// https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
+            #[prost(message, tag = "1")]
+            YumPackage(super::VersionedPackage),
+            /// Details of an APT package.
+            /// For details about the apt package manager, see
+            /// https://wiki.debian.org/Apt.
+            #[prost(message, tag = "2")]
+            AptPackage(super::VersionedPackage),
+            /// Details of a Zypper package.
+            /// For details about the Zypper package manager, see
+            /// https://en.opensuse.org/SDB:Zypper_manual.
+            #[prost(message, tag = "3")]
+            ZypperPackage(super::VersionedPackage),
+            /// Details of a Googet package.
+            ///  For details about the googet package manager, see
+            ///  https://github.com/google/googet.
+            #[prost(message, tag = "4")]
+            GoogetPackage(super::VersionedPackage),
+            /// Details of a Zypper patch.
+            /// For details about the Zypper package manager, see
+            /// https://en.opensuse.org/SDB:Zypper_manual.
+            #[prost(message, tag = "5")]
+            ZypperPatch(super::ZypperPatch),
+            /// Details of a Windows Update package.
+            /// See https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
+            /// information about Windows Update.
+            #[prost(message, tag = "6")]
+            WuaPackage(super::WindowsUpdatePackage),
+            /// Details of a Windows Quick Fix engineering package.
+            /// See
+            /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+            /// for info in Windows Quick Fix Engineering.
+            #[prost(message, tag = "7")]
+            QfePackage(super::WindowsQuickFixEngineeringPackage),
+        }
+    }
+    /// Information related to the a standard versioned package.  This includes
+    /// package info for APT, Yum, Zypper, and Googet package managers.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VersionedPackage {
+        /// The name of the package.
+        #[prost(string, tag = "1")]
+        pub package_name: std::string::String,
+        /// The system architecture this package is intended for.
+        #[prost(string, tag = "2")]
+        pub architecture: std::string::String,
+        /// The version of the package.
+        #[prost(string, tag = "3")]
+        pub version: std::string::String,
+    }
+    /// Details related to a Windows Update package.
+    /// Field data and names are taken from Windows Update API IUpdate Interface:
+    /// https://docs.microsoft.com/en-us/windows/win32/api/_wua/
+    /// Descriptive fields like title, and description are localized based on
+    /// the locale of the VM being updated.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsUpdatePackage {
+        /// The localized title of the update package.
+        #[prost(string, tag = "1")]
+        pub title: std::string::String,
+        /// The localized description of the update package.
+        #[prost(string, tag = "2")]
+        pub description: std::string::String,
+        /// The categories that are associated with this update package.
+        #[prost(message, repeated, tag = "3")]
+        pub categories: ::std::vec::Vec<windows_update_package::WindowsUpdateCategory>,
+        /// A collection of Microsoft Knowledge Base article IDs that are associated
+        /// with the update package.
+        #[prost(string, repeated, tag = "4")]
+        pub kb_article_ids: ::std::vec::Vec<std::string::String>,
+        /// A hyperlink to the language-specific support information for the update.
+        #[prost(string, tag = "5")]
+        pub support_url: std::string::String,
+        /// A collection of URLs that provide more information about the update
+        /// package.
+        #[prost(string, repeated, tag = "6")]
+        pub more_info_urls: ::std::vec::Vec<std::string::String>,
+        /// Gets the identifier of an update package.  Stays the same across
+        /// revisions.
+        #[prost(string, tag = "7")]
+        pub update_id: std::string::String,
+        /// The revision number of this update package.
+        #[prost(int32, tag = "8")]
+        pub revision_number: i32,
+        /// The last published date of the update, in (UTC) date and time.
+        #[prost(message, optional, tag = "9")]
+        pub last_deployment_change_time: ::std::option::Option<::prost_types::Timestamp>,
+    }
+    pub mod windows_update_package {
+        /// Categories specified by the Windows Update.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct WindowsUpdateCategory {
+            /// The identifier of the windows update category.
+            #[prost(string, tag = "1")]
+            pub id: std::string::String,
+            /// The name of the windows update category.
+            #[prost(string, tag = "2")]
+            pub name: std::string::String,
+        }
+    }
+    /// Details related to a Zypper Patch.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ZypperPatch {
+        /// The name of the patch.
+        #[prost(string, tag = "1")]
+        pub patch_name: std::string::String,
+        /// The category of the patch.
+        #[prost(string, tag = "2")]
+        pub category: std::string::String,
+        /// The severity specified for this patch
+        #[prost(string, tag = "3")]
+        pub severity: std::string::String,
+        /// Any summary information provided about this patch.
+        #[prost(string, tag = "4")]
+        pub summary: std::string::String,
+    }
+    /// Information related to a Quick Fix Engineering package.
+    /// Fields are taken from Windows QuickFixEngineering Interface and match
+    /// the source names:
+    /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsQuickFixEngineeringPackage {
+        /// A short textual description of the QFE update.
+        #[prost(string, tag = "1")]
+        pub caption: std::string::String,
+        /// A textual description of the QFE update.
+        #[prost(string, tag = "2")]
+        pub description: std::string::String,
+        /// Unique identifier associated with a particular QFE update.
+        #[prost(string, tag = "3")]
+        pub hot_fix_id: std::string::String,
+        /// Date that the QFE update was installed.  Mapped from installed_on field.
+        #[prost(message, optional, tag = "4")]
+        pub install_time: ::std::option::Option<::prost_types::Timestamp>,
+    }
+}
 /// Patch configuration specifications. Contains details on how to
 /// apply patches to a VM instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -579,6 +777,32 @@ pub struct RegisterAgentRequest {
 /// The response message after the agent registered.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterAgentResponse {}
+/// The request message for having the agent report inventory.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportInventoryRequest {
+    /// Required. This is the Compute Engine instance identity token described in
+    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
+    #[prost(string, tag = "1")]
+    pub instance_id_token: std::string::String,
+    /// Required. This is a client created checksum that should be generated based on the
+    /// contents of the reported inventory.  This will be used by the service to
+    /// determine if it has the latest version of inventory.
+    #[prost(string, tag = "2")]
+    pub inventory_checksum: std::string::String,
+    /// Optional. This is the details of the inventory.  Should only be provided if the
+    /// inventory has changed since the last report, or if instructed by the
+    /// service to provide full inventory.
+    #[prost(message, optional, tag = "3")]
+    pub inventory: ::std::option::Option<Inventory>,
+}
+/// The response message after the agent has reported inventory.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportInventoryResponse {
+    /// If true, the full inventory should be reported back to the server.
+    #[prost(bool, tag = "1")]
+    pub report_full_inventory: bool,
+}
 #[doc = r" Generated client implementations."]
 pub mod agent_endpoint_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
@@ -688,6 +912,23 @@ pub mod agent_endpoint_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1.AgentEndpointService/RegisterAgent",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Reports the VMs current inventory."]
+        pub async fn report_inventory(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReportInventoryRequest>,
+        ) -> Result<tonic::Response<super::ReportInventoryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.agentendpoint.v1.AgentEndpointService/ReportInventory",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

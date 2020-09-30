@@ -100,7 +100,8 @@ pub struct Finding {
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}"
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Immutable. The relative resource name of the source the finding belongs to. See:
+    /// Immutable. The relative resource name of the source the finding belongs to.
+    /// See:
     /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
     /// This field is immutable after creation time.
     /// For example:
@@ -139,9 +140,11 @@ pub struct Finding {
     /// to the finding.
     #[prost(message, optional, tag = "8")]
     pub security_marks: ::std::option::Option<SecurityMarks>,
-    /// The time at which the event took place. For example, if the finding
-    /// represents an open firewall it would capture the time the detector believes
-    /// the firewall became open. The accuracy is determined by the detector.
+    /// The time at which the event took place, or when an update to the finding
+    /// occurred. For example, if the finding represents an open firewall it would
+    /// capture the time the detector believes the firewall became open. The
+    /// accuracy is determined by the detector. If the finding were to be resolved
+    /// afterward, this time would reflect when the finding was resolved.
     #[prost(message, optional, tag = "9")]
     pub event_time: ::std::option::Option<::prost_types::Timestamp>,
     /// The time at which the finding was created in Security Command Center.

@@ -197,6 +197,13 @@ pub struct OutputAudioConfig {
     #[prost(message, optional, tag = "3")]
     pub synthesize_speech_config: ::std::option::Option<SynthesizeSpeechConfig>,
 }
+/// A wrapper of repeated TelephonyDtmf digits.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TelephonyDtmfEvents {
+    /// A sequence of TelephonyDtmf digits.
+    #[prost(enumeration = "TelephonyDtmf", repeated, tag = "1")]
+    pub dtmf_events: ::std::vec::Vec<i32>,
+}
 /// Audio encoding of the audio content sent in the conversational query request.
 /// Refer to the
 /// [Cloud Speech API
@@ -313,6 +320,46 @@ pub enum OutputAudioEncoding {
     /// than MP3 while using approximately the same bitrate.
     OggOpus = 3,
 }
+/// [DTMF](https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling)
+/// digit in Telephony Gateway.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TelephonyDtmf {
+    /// Not specified. This value may be used to indicate an absent digit.
+    Unspecified = 0,
+    /// Number: '1'.
+    DtmfOne = 1,
+    /// Number: '2'.
+    DtmfTwo = 2,
+    /// Number: '3'.
+    DtmfThree = 3,
+    /// Number: '4'.
+    DtmfFour = 4,
+    /// Number: '5'.
+    DtmfFive = 5,
+    /// Number: '6'.
+    DtmfSix = 6,
+    /// Number: '7'.
+    DtmfSeven = 7,
+    /// Number: '8'.
+    DtmfEight = 8,
+    /// Number: '9'.
+    DtmfNine = 9,
+    /// Number: '0'.
+    DtmfZero = 10,
+    /// Letter: 'A'.
+    DtmfA = 11,
+    /// Letter: 'B'.
+    DtmfB = 12,
+    /// Letter: 'C'.
+    DtmfC = 13,
+    /// Letter: 'D'.
+    DtmfD = 14,
+    /// Asterisk/star: '*'.
+    DtmfStar = 15,
+    /// Pound/diamond/hash/square/gate/octothorpe: '#'.
+    DtmfPound = 16,
+}
 /// You can create multiple versions of your agent and publish them to separate
 /// environments.
 ///
@@ -334,10 +381,10 @@ pub enum OutputAudioEncoding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// Output only. The unique identifier of this agent environment.
-    /// Format:
+    /// Supported formats:
     /// - `projects/<Project Number / ID>/agent/environments/<Environment ID>`
     /// - `projects/<Project Number / ID>/locations/<Location
-    /// ID>/agent/environments/<Environment ID>`
+    ///   ID>/agent/environments/<Environment ID>`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Optional. The developer-provided description for this environment.
@@ -345,7 +392,10 @@ pub struct Environment {
     #[prost(string, tag = "2")]
     pub description: std::string::String,
     /// Optional. The agent version loaded into this environment.
-    /// Format: `projects/<Project ID>/agent/versions/<Version ID>`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/versions/<Version ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/versions/<Version
+    ///   ID>`
     #[prost(string, tag = "3")]
     pub agent_version: std::string::String,
     /// Output only. The state of this environment. This field is read-only, i.e., it cannot be
@@ -382,8 +432,7 @@ pub struct ListEnvironmentsRequest {
     /// Required. The agent to list all environments from.
     /// Format:
     /// - `projects/<Project Number / ID>/agent`
-    /// - `projects/<Project Number / ID>/locations/<Location
-    /// ID>/agent
+    /// - `projects/<Project Number / ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The maximum number of items to return in a single page. By default 100 and
@@ -522,7 +571,8 @@ pub struct ValidationResult {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Agent {
     /// Required. The project of this agent.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The name of this agent.
@@ -625,7 +675,8 @@ pub mod agent {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAgentRequest {
     /// Required. The project that the agent to fetch is associated with.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
 }
@@ -643,7 +694,8 @@ pub struct SetAgentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentRequest {
     /// Required. The project that the agent to delete is associated with.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
 }
@@ -651,7 +703,8 @@ pub struct DeleteAgentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubAgent {
     /// Required. The project of this agent.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub project: std::string::String,
     /// Optional. The unique identifier (`environment name` in dialogflow console)
@@ -664,7 +717,8 @@ pub struct SubAgent {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAgentsRequest {
     /// Required. The project to list agents from.
-    /// Format: `projects/<Project ID or '-'>`.
+    /// Format: `projects/<Project ID or '-'>` or
+    ///         `projects/<Project ID or '-'>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The maximum number of items to return in a single page. By
@@ -691,7 +745,8 @@ pub struct SearchAgentsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainAgentRequest {
     /// Required. The project that the agent to train is associated with.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
 }
@@ -699,7 +754,8 @@ pub struct TrainAgentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAgentRequest {
     /// Required. The project that the agent to export is associated with.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The
@@ -734,7 +790,8 @@ pub mod export_agent_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAgentRequest {
     /// Required. The project that the agent to import is associated with.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The agent to import.
@@ -758,7 +815,8 @@ pub mod import_agent_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreAgentRequest {
     /// Required. The project that the agent to restore is associated with.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The agent to restore.
@@ -782,7 +840,8 @@ pub mod restore_agent_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetValidationResultRequest {
     /// Required. The project that the agent is associated with.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>` or
+    ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The language for which you want a validation result. If not
@@ -1049,10 +1108,16 @@ pub mod agents_client {
 /// [Contexts guide](https://cloud.google.com/dialogflow/docs/contexts-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Context {
-    /// Required. The unique identifier of the context. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>`,
-    /// or `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>/contexts/<Context ID>`.
+    /// Required. The unique identifier of the context. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context
+    ///   ID>`,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>/contexts/<Context ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>/contexts/<Context ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>/contexts/<Context ID>`,
     ///
     /// The `Context ID` is always converted to lowercase, may only contain
     /// characters in a-zA-Z0-9_-% and may be at most 250 bytes long.
@@ -1095,12 +1160,19 @@ pub struct Context {
 /// The request message for [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContextsRequest {
-    /// Required. The session to list all contexts from.
-    /// Format: `projects/<Project ID>/agent/sessions/<Session ID>` or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>`. If `Environment ID` is not specified, we assume
-    /// default 'draft' environment. If `User ID` is not specified, we assume
-    /// default '-' user.
+    /// Required. The session to list all contexts from. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The maximum number of items to return in a single page. By
@@ -1126,24 +1198,39 @@ pub struct ListContextsResponse {
 /// The request message for [Contexts.GetContext][google.cloud.dialogflow.v2beta1.Contexts.GetContext].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetContextRequest {
-    /// Required. The name of the context. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>`
-    /// or `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>/contexts/<Context ID>`. If `Environment ID` is
-    /// not specified, we assume default 'draft' environment. If `User ID` is not
-    /// specified, we assume default '-' user.
+    /// Required. The name of the context. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context
+    ///   ID>`,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>/contexts/<Context ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>/contexts/<Context ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>/contexts/<Context ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
 /// The request message for [Contexts.CreateContext][google.cloud.dialogflow.v2beta1.Contexts.CreateContext].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateContextRequest {
-    /// Required. The session to create a context for.
-    /// Format: `projects/<Project ID>/agent/sessions/<Session ID>` or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>`. If `Environment ID` is not specified, we assume
-    /// default 'draft' environment. If `User ID` is not specified, we assume
-    /// default '-' user.
+    /// Required. The session to create a context for. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The context to create.
@@ -1163,23 +1250,39 @@ pub struct UpdateContextRequest {
 /// The request message for [Contexts.DeleteContext][google.cloud.dialogflow.v2beta1.Contexts.DeleteContext].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteContextRequest {
-    /// Required. The name of the context to delete. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context ID>`
-    /// or `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>/contexts/<Context ID>`. If `Environment ID` is
-    /// not specified, we assume default 'draft' environment. If `User ID` is not
-    /// specified, we assume default '-' user.
+    /// Required. The name of the context to delete. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>/contexts/<Context
+    ///   ID>`,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>/contexts/<Context ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>/contexts/<Context ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>/contexts/<Context ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
 /// The request message for [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2beta1.Contexts.DeleteAllContexts].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAllContextsRequest {
-    /// Required. The name of the session to delete all contexts from. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>` or `projects/<Project
-    /// ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
-    /// ID>`. If `Environment ID` is not specified we assume default 'draft'
-    /// environment. If `User ID` is not specified, we assume default '-' user.
+    /// Required. The name of the session to delete all contexts from. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified we assume default 'draft' environment. If
+    /// `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
 }
@@ -1765,7 +1868,10 @@ pub struct EntityType {
     /// The unique identifier of the entity type.
     /// Required for [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.UpdateEntityType] and
     /// [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes] methods.
-    /// Format: `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
+    ///   Type ID>`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Required. The name of the entity type.
@@ -1847,7 +1953,9 @@ pub mod entity_type {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesRequest {
     /// Required. The agent to list all entity types from.
-    /// Format: `projects/<Project ID>/agent`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The language used to access language-specific data.
@@ -1881,7 +1989,10 @@ pub struct ListEntityTypesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityTypeRequest {
     /// Required. The name of the entity type.
-    /// Format: `projects/<Project ID>/agent/entityTypes/<EntityType ID>`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
+    ///   Type ID>`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Optional. The language used to access language-specific data.
@@ -1896,7 +2007,9 @@ pub struct GetEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityTypeRequest {
     /// Required. The agent to create a entity type for.
-    /// Format: `projects/<Project ID>/agent`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The entity type to create.
@@ -1931,7 +2044,10 @@ pub struct UpdateEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityTypeRequest {
     /// Required. The name of the entity type to delete.
-    /// Format: `projects/<Project ID>/agent/entityTypes/<EntityType ID>`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
+    ///   Type ID>`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -1939,7 +2055,9 @@ pub struct DeleteEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateEntityTypesRequest {
     /// Required. The name of the agent to update or create entity types in.
-    /// Format: `projects/<Project ID>/agent`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The language used to access language-specific data.
@@ -1995,8 +2113,10 @@ pub struct BatchUpdateEntityTypesResponse {
 /// The request message for [EntityTypes.BatchDeleteEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteEntityTypesRequest {
-    /// Required. The name of the agent to delete all entities types for. Format:
-    /// `projects/<Project ID>/agent`.
+    /// Required. The name of the agent to delete all entities types for.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent`,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The names entity types to delete. All names must point to the
@@ -2007,8 +2127,11 @@ pub struct BatchDeleteEntityTypesRequest {
 /// The request message for [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateEntitiesRequest {
-    /// Required. The name of the entity type to create entities in. Format:
-    /// `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`.
+    /// Required. The name of the entity type to create entities in.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
+    ///   Type ID>`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The entities to create.
@@ -2026,7 +2149,10 @@ pub struct BatchCreateEntitiesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateEntitiesRequest {
     /// Required. The name of the entity type to update or create entities in.
-    /// Format: `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
+    ///   Type ID>`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The entities to update or create.
@@ -2046,8 +2172,11 @@ pub struct BatchUpdateEntitiesRequest {
 /// The request message for [EntityTypes.BatchDeleteEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntities].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteEntitiesRequest {
-    /// Required. The name of the entity type to delete entries for. Format:
-    /// `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`.
+    /// Required. The name of the entity type to delete entries for.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
+    ///   Type ID>`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The reference `values` of the entities to delete. Note that
@@ -2316,7 +2445,10 @@ pub struct Intent {
     /// Optional. The unique identifier of this intent.
     /// Required for [Intents.UpdateIntent][google.cloud.dialogflow.v2beta1.Intents.UpdateIntent] and [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents]
     /// methods.
-    /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
+    /// Supported formats:
+    ///
+    /// - `projects/<Project ID>/agent/intents/<Intent ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Required. The name of this intent.
@@ -2345,6 +2477,7 @@ pub struct Intent {
     /// DEPRECATED! Please use `ml_disabled` field instead.
     /// NOTE: If both `ml_enabled` and `ml_disabled` are either not set or false,
     /// then the default value is determined as follows:
+    ///
     /// - Before April 15th, 2018 the default is:
     ///   ml_enabled = false / ml_disabled = true.
     /// - After April 15th, 2018 the default is:
@@ -2364,7 +2497,11 @@ pub struct Intent {
     pub end_interaction: bool,
     /// Optional. The list of context names required for this intent to be
     /// triggered.
-    /// Format: `projects/<Project ID>/agent/sessions/-/contexts/<Context ID>`.
+    /// Formats:
+    ///
+    /// - `projects/<Project ID>/agent/sessions/-/contexts/<Context ID>`
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/sessions/-/contexts/<Context ID>`
     #[prost(string, repeated, tag = "7")]
     pub input_context_names: ::std::vec::Vec<std::string::String>,
     /// Optional. The collection of event names that trigger the intent.
@@ -3484,7 +3621,10 @@ pub struct ListIntentsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIntentRequest {
     /// Required. The name of the intent.
-    /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
+    /// Supported formats:
+    ///
+    /// - `projects/<Project ID>/agent/intents/<Intent ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Optional. The language used to access language-specific data.
@@ -3502,7 +3642,10 @@ pub struct GetIntentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIntentRequest {
     /// Required. The agent to create a intent for.
-    /// Format: `projects/<Project ID>/agent`.
+    /// Supported formats:
+    ///
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The intent to create.
@@ -3545,7 +3688,10 @@ pub struct DeleteIntentRequest {
     /// Required. The name of the intent to delete. If this intent has direct or
     /// indirect followup intents, we also delete them.
     ///
-    /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
+    /// Supported formats:
+    ///
+    /// - `projects/<Project ID>/agent/intents/<Intent ID>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>`
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -3553,7 +3699,10 @@ pub struct DeleteIntentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateIntentsRequest {
     /// Required. The name of the agent to update or create intents in.
-    /// Format: `projects/<Project ID>/agent`.
+    /// Supported formats:
+    ///
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The language used to access language-specific data.
@@ -3607,8 +3756,11 @@ pub struct BatchUpdateIntentsResponse {
 /// The request message for [Intents.BatchDeleteIntents][google.cloud.dialogflow.v2beta1.Intents.BatchDeleteIntents].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteIntentsRequest {
-    /// Required. The name of the agent to delete all entities types for. Format:
-    /// `projects/<Project ID>/agent`.
+    /// Required. The name of the agent to delete all entities types for.
+    /// Supported formats:
+    ///
+    /// - `projects/<Project ID>/agent`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The collection of intents to delete. Only intent `name` must be
@@ -3834,11 +3986,11 @@ pub struct ListKnowledgeBasesRequest {
     /// Format: `projects/<Project ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Optional. The maximum number of items to return in a single page. By
+    /// The maximum number of items to return in a single page. By
     /// default 10 and at most 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. The next_page_token value returned from a previous list request.
+    /// The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: std::string::String,
 }
@@ -4043,14 +4195,21 @@ pub mod knowledge_bases_client {
 /// guide](https://cloud.google.com/dialogflow/docs/entities-session).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionEntityType {
-    /// Required. The unique identifier of this session entity type. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
-    /// Display Name>`, or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>`.
-    /// If `Environment ID` is not specified, we assume default 'draft'
-    /// environment. If `User ID` is not specified, we assume default '-' user.
+    /// Required. The unique identifier of this session entity type. Supported
+    /// formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity
+    ///   Type Display Name>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>/entityTypes/<Entity Type Display Name>`
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/environments/
+    ///   <Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>/entityTypes/<Entity Type Display Name>`
     ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     /// `<Entity Type Display Name>` must be the display name of an existing entity
     /// type in the same agent that will be overridden or supplemented.
     #[prost(string, tag = "1")]
@@ -4090,11 +4249,19 @@ pub mod session_entity_type {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionEntityTypesRequest {
     /// Required. The session to list all session entity types from.
-    /// Format: `projects/<Project ID>/agent/sessions/<Session ID>` or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/
-    /// sessions/<Session ID>`.
-    /// If `Environment ID` is not specified, we assume default 'draft'
-    /// environment. If `User ID` is not specified, we assume default '-' user.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Optional. The maximum number of items to return in a single page. By
@@ -4120,12 +4287,20 @@ pub struct ListSessionEntityTypesResponse {
 /// The request message for [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.GetSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSessionEntityTypeRequest {
-    /// Required. The name of the session entity type. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
-    /// Display Name>` or `projects/<Project ID>/agent/environments/<Environment
-    /// ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
-    /// Name>`. If `Environment ID` is not specified, we assume default 'draft'
-    /// environment. If `User ID` is not specified, we assume default '-' user.
+    /// Required. The name of the session entity type. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity
+    ///   Type Display Name>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>/entityTypes/<Entity Type Display Name>`
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/environments/
+    ///   <Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>/entityTypes/<Entity Type Display Name>`
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -4133,11 +4308,19 @@ pub struct GetSessionEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSessionEntityTypeRequest {
     /// Required. The session to create a session entity type for.
-    /// Format: `projects/<Project ID>/agent/sessions/<Session ID>` or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/
-    /// sessions/<Session ID>`. If `Environment ID` is not specified, we assume
-    /// default 'draft' environment. If `User ID` is not specified, we assume
-    /// default '-' user.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. The session entity type to create.
@@ -4157,12 +4340,21 @@ pub struct UpdateSessionEntityTypeRequest {
 /// The request message for [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.DeleteSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSessionEntityTypeRequest {
-    /// Required. The name of the entity type to delete. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
-    /// Display Name>` or `projects/<Project ID>/agent/environments/<Environment
-    /// ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
-    /// Name>`. If `Environment ID` is not specified, we assume default 'draft'
-    /// environment. If `User ID` is not specified, we assume default '-' user.
+    /// Required. The name of the entity type to delete.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity
+    ///   Type Display Name>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>/entityTypes/<Entity Type Display Name>`
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>`
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/environments/
+    ///   <Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>/entityTypes/<Entity Type Display Name>`
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -4314,16 +4506,22 @@ pub mod session_entity_types_client {
 /// The request to detect user's intent.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectIntentRequest {
-    /// Required. The name of the session this query is sent to. Format:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>`, or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>`. If `Environment ID` is not specified, we assume
-    /// default 'draft' environment. If `User ID` is not specified, we are using
-    /// "-". It's up to the API caller to choose an appropriate `Session ID` and
-    /// `User Id`. They can be a random number or some type of user and session
-    /// identifiers (preferably hashed). The length of the `Session ID` and
-    /// `User ID` must not exceed 36 characters.
+    /// Required. The name of the session this query is sent to. Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
     ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we are using "-". It's up to the API caller
+    /// to choose an appropriate `Session ID` and `User Id`. They can be a random
+    /// number or some type of user and session identifiers (preferably hashed).
+    /// The length of the `Session ID` and `User ID` must not exceed 36 characters.
     /// For more information, see the [API interactions
     /// guide](https://cloud.google.com/dialogflow/docs/api-overview).
     #[prost(string, tag = "1")]
@@ -4439,7 +4637,7 @@ pub struct QueryParameters {
     pub knowledge_base_names: ::std::vec::Vec<std::string::String>,
     /// Configures the type of sentiment analysis to perform. If not
     /// provided, sentiment analysis is not performed.
-    /// Note: Sentiment Analysis is only currently available for Enterprise Edition
+    /// Note: Sentiment Analysis is only currently available for Essentials Edition
     /// agents.
     #[prost(message, optional, tag = "10")]
     pub sentiment_analysis_request_config: ::std::option::Option<SentimentAnalysisRequestConfig>,
@@ -4695,15 +4893,22 @@ pub mod knowledge_answers {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingDetectIntentRequest {
     /// Required. The name of the session the query is sent to.
-    /// Format of the session name:
-    /// `projects/<Project ID>/agent/sessions/<Session ID>`, or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>`. If `Environment ID` is not specified, we assume
-    /// default 'draft' environment. If `User ID` is not specified, we are using
-    /// "-". It's up to the API caller to choose an appropriate `Session ID` and
-    /// `User Id`. They can be a random number or some type of user and session
-    /// identifiers (preferably hashed). The length of the `Session ID` and
-    /// `User ID` must not exceed 36 characters.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
+    ///
+    /// If `Location ID` is not specified we assume default 'us' location. If
+    /// `Environment ID` is not specified, we assume default 'draft' environment.
+    /// If `User ID` is not specified, we are using "-". It's up to the API caller
+    /// to choose an appropriate `Session ID` and `User Id`. They can be a random
+    /// number or some type of user and session identifiers (preferably hashed).
+    /// The length of the `Session ID` and `User ID` must not exceed 36 characters.
     ///
     /// For more information, see the [API interactions
     /// guide](https://cloud.google.com/dialogflow/docs/api-overview).
@@ -4887,6 +5092,9 @@ pub struct StreamingRecognitionResult {
     /// beginning of the audio. Only populated for `message_type` = `TRANSCRIPT`.
     #[prost(message, optional, tag = "8")]
     pub speech_end_offset: ::std::option::Option<::prost_types::Duration>,
+    /// DTMF digits. Populated if and only if `message_type` = `DTMF_DIGITS`.
+    #[prost(message, optional, tag = "5")]
+    pub dtmf_digits: ::std::option::Option<TelephonyDtmfEvents>,
 }
 pub mod streaming_recognition_result {
     /// Type of the response message.
@@ -5082,9 +5290,15 @@ pub mod sessions_client {
 pub struct WebhookRequest {
     /// The unique identifier of detectIntent request session.
     /// Can be used to identify end-user inside webhook implementation.
-    /// Format: `projects/<Project ID>/agent/sessions/<Session ID>`, or
-    /// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-    /// ID>/sessions/<Session ID>`.
+    /// Supported formats:
+    /// - `projects/<Project ID>/agent/sessions/<Session ID>,
+    /// - `projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session
+    ///   ID>`,
+    /// - `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
+    ///   ID>/sessions/<Session ID>`,
+    /// - `projects/<Project ID>/locations/<Location
+    ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
+    ///   ID>`,
     #[prost(string, tag = "4")]
     pub session: std::string::String,
     /// The unique identifier of the response. Contains the same value as
@@ -5195,9 +5409,9 @@ pub struct OriginalDetectIntentRequest {
     ///    "caller_id": "+18558363987"
     ///  }
     /// }</pre>
-    /// Note: The caller ID field (`caller_id`) will be redacted for Standard
+    /// Note: The caller ID field (`caller_id`) will be redacted for Trial
     /// Edition agents and populated with the caller ID in [E.164
-    /// format](https://en.wikipedia.org/wiki/E.164) for Enterprise Edition agents.
+    /// format](https://en.wikipedia.org/wiki/E.164) for Essentials Edition agents.
     #[prost(message, optional, tag = "3")]
     pub payload: ::std::option::Option<::prost_types::Struct>,
 }

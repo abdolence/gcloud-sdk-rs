@@ -166,14 +166,20 @@ pub struct Finding {
     /// to the finding.
     #[prost(message, optional, tag = "8")]
     pub security_marks: ::std::option::Option<SecurityMarks>,
-    /// The time at which the event took place. For example, if the finding
-    /// represents an open firewall it would capture the time the detector believes
-    /// the firewall became open. The accuracy is determined by the detector.
+    /// The time at which the event took place, or when an update to the finding
+    /// occurred. For example, if the finding represents an open firewall it would
+    /// capture the time the detector believes the firewall became open. The
+    /// accuracy is determined by the detector. If the finding were to be resolved
+    /// afterward, this time would reflect when the finding was resolved.
     #[prost(message, optional, tag = "9")]
     pub event_time: ::std::option::Option<::prost_types::Timestamp>,
     /// The time at which the finding was created in Security Command Center.
     #[prost(message, optional, tag = "10")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// The severity of the finding. This field is managed by the source that
+    /// writes the finding.
+    #[prost(enumeration = "finding::Severity", tag = "13")]
+    pub severity: i32,
 }
 pub mod finding {
     /// The state of the finding.
@@ -187,6 +193,22 @@ pub mod finding {
         /// The finding has been fixed, triaged as a non-issue or otherwise addressed
         /// and is no longer active.
         Inactive = 2,
+    }
+    /// The severity of the finding. This field is managed by the source that
+    /// writes the finding.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Severity {
+        /// No severity specified. The default value.
+        Unspecified = 0,
+        /// Critical severity.
+        Critical = 1,
+        /// High severity.
+        High = 2,
+        /// Medium severity.
+        Medium = 3,
+        /// Low severity.
+        Low = 4,
     }
 }
 /// Security Command Center notification configs.
@@ -426,31 +448,27 @@ pub struct CreateFindingRequest {
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
-    /// It must be alphanumeric and less than or equal to 32 characters and
-    /// greater than 0 characters in length.
     #[prost(string, tag = "2")]
     pub finding_id: std::string::String,
-    /// Required. The Finding being created. The name and security_marks will be
-    /// ignored as they are both output only fields on this resource.
+    /// Required. The Finding being created. The name and security_marks will be ignored as
+    /// they are both output only fields on this resource.
     #[prost(message, optional, tag = "3")]
     pub finding: ::std::option::Option<Finding>,
 }
 /// Request message for creating a notification config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotificationConfigRequest {
-    /// Required. Resource name of the new notification config's parent. Its format
-    /// is "organizations/[organization_id]".
+    /// Required. Resource name of the new notification config's parent. Its format is
+    /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required.
-    /// Unique identifier provided by the client within the parent scope.
+    /// Required. Unique identifier provided by the client within the parent scope.
     /// It must be between 1 and 128 characters, and contains alphanumeric
     /// characters, underscores or hyphens only.
     #[prost(string, tag = "2")]
     pub config_id: std::string::String,
-    /// Required. The notification config being created. The name and the service
-    /// account will be ignored as they are both output only fields on this
-    /// resource.
+    /// Required. The notification config being created. The name and the service account
+    /// will be ignored as they are both output only fields on this resource.
     #[prost(message, optional, tag = "3")]
     pub notification_config: ::std::option::Option<NotificationConfig>,
 }
@@ -461,8 +479,8 @@ pub struct CreateSourceRequest {
     /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. The Source being created, only the display_name and description
-    /// will be used. All other fields will be ignored.
+    /// Required. The Source being created, only the display_name and description will be
+    /// used. All other fields will be ignored.
     #[prost(message, optional, tag = "2")]
     pub source: ::std::option::Option<Source>,
 }
@@ -485,8 +503,8 @@ pub struct GetNotificationConfigRequest {
 /// Request message for getting organization settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationSettingsRequest {
-    /// Required. Name of the organization to get organization settings for. Its
-    /// format is "organizations/[organization_id]/organizationSettings".
+    /// Required. Name of the organization to get organization settings for. Its format is
+    /// "organizations/[organization_id]/organizationSettings".
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
@@ -569,9 +587,9 @@ pub struct GroupAssetsRequest {
     /// property not existing: `-resource_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
-    /// Required. Expression that defines what assets fields to use for grouping.
-    /// The string value should follow SQL syntax: comma separated list of fields.
-    /// For example:
+    /// Required. Expression that defines what assets fields to use for grouping. The string
+    /// value should follow SQL syntax: comma separated list of fields. For
+    /// example:
     /// "security_center_properties.resource_project,security_center_properties.project".
     ///
     /// The following fields are supported when compare_duration is not set:
@@ -695,6 +713,7 @@ pub struct GroupFindingsRequest {
     /// * category: `=`, `:`
     /// * external_uri: `=`, `:`
     /// * event_time: `=`, `>`, `<`, `>=`, `<=`
+    /// * severity: `=`, `:`
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
@@ -713,9 +732,9 @@ pub struct GroupFindingsRequest {
     /// property not existing: `-source_properties.my_property : ""`
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
-    /// Required. Expression that defines what assets fields to use for grouping
-    /// (including `state_change`). The string value should follow SQL syntax:
-    /// comma separated list of fields. For example: "parent,resource_name".
+    /// Required. Expression that defines what assets fields to use for grouping (including
+    /// `state_change`). The string value should follow SQL syntax: comma separated
+    /// list of fields. For example: "parent,resource_name".
     ///
     /// The following fields are supported:
     ///
@@ -723,6 +742,7 @@ pub struct GroupFindingsRequest {
     /// * category
     /// * state
     /// * parent
+    /// * severity
     ///
     /// The following fields are supported when compare_duration is set:
     ///
@@ -839,8 +859,8 @@ pub struct ListNotificationConfigsResponse {
 /// Request message for listing sources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
-    /// Required. Resource name of the parent of sources to list. Its format should
-    /// be "organizations/[organization_id]".
+    /// Required. Resource name of the parent of sources to list. Its format should be
+    /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The value returned by the last `ListSourcesResponse`; indicates
@@ -990,7 +1010,6 @@ pub struct ListAssetsRequest {
     /// read_time.
     #[prost(message, optional, tag = "5")]
     pub compare_duration: ::std::option::Option<::prost_types::Duration>,
-    /// Optional.
     /// A field mask to specify the ListAssetsResult fields to be listed in the
     /// response.
     /// An empty field mask will list all fields.
@@ -1090,13 +1109,14 @@ pub struct ListFindingsRequest {
     ///
     /// The following field and operator combinations are supported:
     ///
-    /// name: `=`
-    /// parent: `=`, `:`
-    /// resource_name: `=`, `:`
-    /// state: `=`, `:`
-    /// category: `=`, `:`
-    /// external_uri: `=`, `:`
-    /// event_time: `=`, `>`, `<`, `>=`, `<=`
+    /// * name: `=`
+    /// * parent: `=`, `:`
+    /// * resource_name: `=`, `:`
+    /// * state: `=`, `:`
+    /// * category: `=`, `:`
+    /// * external_uri: `=`, `:`
+    /// * event_time: `=`, `>`, `<`, `>=`, `<=`
+    /// * severity: `=`, `:`
     ///
     ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
     ///   Examples:
@@ -1173,7 +1193,6 @@ pub struct ListFindingsRequest {
     /// read_time.
     #[prost(message, optional, tag = "5")]
     pub compare_duration: ::std::option::Option<::prost_types::Duration>,
-    /// Optional.
     /// A field mask to specify the Finding fields to be listed in the response.
     /// An empty field mask will list all fields.
     #[prost(message, optional, tag = "7")]
@@ -1287,16 +1306,16 @@ pub struct SetFindingStateRequest {
 /// Request message for running asset discovery for an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAssetDiscoveryRequest {
-    /// Required. Name of the organization to run asset discovery for. Its format
-    /// is "organizations/[organization_id]".
+    /// Required. Name of the organization to run asset discovery for. Its format is
+    /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
 }
 /// Request message for updating or creating a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFindingRequest {
-    /// Required. The finding resource to update or create if it does not already
-    /// exist. parent, security_marks, and update_time will be ignored.
+    /// Required. The finding resource to update or create if it does not already exist.
+    /// parent, security_marks, and update_time will be ignored.
     ///
     /// In the case of creation, the finding id portion of the name must be
     /// alphanumeric and less than or equal to 32 characters and greater than 0
@@ -1408,7 +1427,6 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = ""]
         #[doc = " Creates a finding. The corresponding source must exist for finding"]
         #[doc = " creation to succeed."]
         pub async fn create_finding(
@@ -1666,7 +1684,6 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = ""]
         #[doc = " Updates the state of a finding."]
         pub async fn set_finding_state(
             &mut self,
