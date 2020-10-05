@@ -12,11 +12,9 @@ pub struct TimestampRange {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The type of a location, which corresponds to the address lines field of
-    /// [google.type.PostalAddress][google.type.PostalAddress]. For example,
-    /// "Downtown, Atlanta, GA, USA" has a type of
-    /// [LocationType.NEIGHBORHOOD][google.cloud.talent.v4.Location.LocationType.NEIGHBORHOOD],
-    /// and "Kansas City, KS, USA" has a type of
-    /// [LocationType.LOCALITY][google.cloud.talent.v4.Location.LocationType.LOCALITY].
+    /// [google.type.PostalAddress][google.type.PostalAddress]. For example, "Downtown, Atlanta, GA, USA"
+    /// has a type of [LocationType.NEIGHBORHOOD][google.cloud.talent.v4.Location.LocationType.NEIGHBORHOOD], and "Kansas City, KS, USA"
+    /// has a type of [LocationType.LOCALITY][google.cloud.talent.v4.Location.LocationType.LOCALITY].
     #[prost(enumeration = "location::LocationType", tag = "1")]
     pub location_type: i32,
     /// Postal address of the location that includes human readable information,
@@ -30,9 +28,10 @@ pub struct Location {
     pub lat_lng: ::std::option::Option<super::super::super::r#type::LatLng>,
     /// Radius in miles of the job location. This value is derived from the
     /// location bounding box in which a circle with the specified radius
-    /// centered from [google.type.LatLng][google.type.LatLng] covers the area
-    /// associated with the job location. For example, currently, "Mountain View,
-    /// CA, USA" has a radius of 6.17 miles.
+    /// centered from [google.type.LatLng][google.type.LatLng] covers the area associated with the
+    /// job location.
+    /// For example, currently, "Mountain View, CA, USA" has a radius of
+    /// 6.17 miles.
     #[prost(double, tag = "4")]
     pub radius_miles: f64,
 }
@@ -74,9 +73,7 @@ pub mod location {
 /// performance of the service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMetadata {
-    /// Required if
-    /// [allow_missing_ids][google.cloud.talent.v4.RequestMetadata.allow_missing_ids]
-    /// is unset or `false`.
+    /// Required if [allow_missing_ids][google.cloud.talent.v4.RequestMetadata.allow_missing_ids] is unset or `false`.
     ///
     /// The client-defined scope or source of the service call, which typically
     /// is the domain on
@@ -93,9 +90,7 @@ pub struct RequestMetadata {
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "1")]
     pub domain: std::string::String,
-    /// Required if
-    /// [allow_missing_ids][google.cloud.talent.v4.RequestMetadata.allow_missing_ids]
-    /// is unset or `false`.
+    /// Required if [allow_missing_ids][google.cloud.talent.v4.RequestMetadata.allow_missing_ids] is unset or `false`.
     ///
     /// A unique session identification string. A session is defined as the
     /// duration of an end user's interaction with the service over a certain
@@ -109,9 +104,7 @@ pub struct RequestMetadata {
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "2")]
     pub session_id: std::string::String,
-    /// Required if
-    /// [allow_missing_ids][google.cloud.talent.v4.RequestMetadata.allow_missing_ids]
-    /// is unset or `false`.
+    /// Required if [allow_missing_ids][google.cloud.talent.v4.RequestMetadata.allow_missing_ids] is unset or `false`.
     ///
     /// A unique user identification string, as determined by the client.
     /// To have the strongest positive impact on search quality
@@ -125,15 +118,10 @@ pub struct RequestMetadata {
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "3")]
     pub user_id: std::string::String,
-    /// Only set when any of
-    /// [domain][google.cloud.talent.v4.RequestMetadata.domain],
-    /// [session_id][google.cloud.talent.v4.RequestMetadata.session_id] and
-    /// [user_id][google.cloud.talent.v4.RequestMetadata.user_id] isn't available
-    /// for some reason. It is highly recommended not to set this field and provide
-    /// accurate [domain][google.cloud.talent.v4.RequestMetadata.domain],
-    /// [session_id][google.cloud.talent.v4.RequestMetadata.session_id] and
-    /// [user_id][google.cloud.talent.v4.RequestMetadata.user_id] for the best
-    /// service experience.
+    /// Only set when any of [domain][google.cloud.talent.v4.RequestMetadata.domain], [session_id][google.cloud.talent.v4.RequestMetadata.session_id] and [user_id][google.cloud.talent.v4.RequestMetadata.user_id] isn't
+    /// available for some reason. It is highly recommended not to set this field
+    /// and provide accurate [domain][google.cloud.talent.v4.RequestMetadata.domain], [session_id][google.cloud.talent.v4.RequestMetadata.session_id] and [user_id][google.cloud.talent.v4.RequestMetadata.user_id] for the
+    /// best service experience.
     #[prost(bool, tag = "4")]
     pub allow_missing_ids: bool,
     /// The type of device used by the job seeker at the time of the call to the
@@ -189,10 +177,7 @@ pub mod device_info {
 /// Custom attribute values that are either filterable or non-filterable.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAttribute {
-    /// Exactly one of
-    /// [string_values][google.cloud.talent.v4.CustomAttribute.string_values] or
-    /// [long_values][google.cloud.talent.v4.CustomAttribute.long_values] must be
-    /// specified.
+    /// Exactly one of [string_values][google.cloud.talent.v4.CustomAttribute.string_values] or [long_values][google.cloud.talent.v4.CustomAttribute.long_values] must be specified.
     ///
     /// This field is used to perform a string match (`CASE_SENSITIVE_MATCH` or
     /// `CASE_INSENSITIVE_MATCH`) search.
@@ -204,22 +189,16 @@ pub struct CustomAttribute {
     /// Empty string isn't allowed.
     #[prost(string, repeated, tag = "1")]
     pub string_values: ::std::vec::Vec<std::string::String>,
-    /// Exactly one of
-    /// [string_values][google.cloud.talent.v4.CustomAttribute.string_values] or
-    /// [long_values][google.cloud.talent.v4.CustomAttribute.long_values] must be
-    /// specified.
+    /// Exactly one of [string_values][google.cloud.talent.v4.CustomAttribute.string_values] or [long_values][google.cloud.talent.v4.CustomAttribute.long_values] must be specified.
     ///
     /// This field is used to perform number range search.
     /// (`EQ`, `GT`, `GE`, `LE`, `LT`) over filterable `long_value`.
     ///
-    /// Currently at most 1
-    /// [long_values][google.cloud.talent.v4.CustomAttribute.long_values] is
-    /// supported.
+    /// Currently at most 1 [long_values][google.cloud.talent.v4.CustomAttribute.long_values] is supported.
     #[prost(int64, repeated, tag = "2")]
     pub long_values: ::std::vec::Vec<i64>,
     /// If the `filterable` flag is true, the custom field values may be used for
-    /// custom attribute filters
-    /// [JobQuery.custom_attribute_filter][google.cloud.talent.v4.JobQuery.custom_attribute_filter].
+    /// custom attribute filters [JobQuery.custom_attribute_filter][google.cloud.talent.v4.JobQuery.custom_attribute_filter].
     /// If false, these values may not be used for custom attribute filters.
     ///
     /// Default is false.
@@ -258,31 +237,23 @@ pub struct CompensationInfo {
     /// Job compensation information.
     ///
     /// At most one entry can be of type
-    /// [CompensationInfo.CompensationType.BASE][google.cloud.talent.v4.CompensationInfo.CompensationType.BASE],
-    /// which is referred as **base compensation entry** for the job.
+    /// [CompensationInfo.CompensationType.BASE][google.cloud.talent.v4.CompensationInfo.CompensationType.BASE], which is
+    /// referred as **base compensation entry** for the job.
     #[prost(message, repeated, tag = "1")]
     pub entries: ::std::vec::Vec<compensation_info::CompensationEntry>,
-    /// Output only. Annualized base compensation range. Computed as base
-    /// compensation entry's
-    /// [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-    /// times
+    /// Output only. Annualized base compensation range. Computed as base compensation entry's
+    /// [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount] times
     /// [CompensationEntry.expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
     ///
-    /// See
-    /// [CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry]
-    /// for explanation on compensation annualization.
+    /// See [CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry] for explanation on compensation annualization.
     #[prost(message, optional, tag = "2")]
     pub annualized_base_compensation_range:
         ::std::option::Option<compensation_info::CompensationRange>,
-    /// Output only. Annualized total compensation range. Computed as all
-    /// compensation entries'
-    /// [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-    /// times
+    /// Output only. Annualized total compensation range. Computed as all compensation entries'
+    /// [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount] times
     /// [CompensationEntry.expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
     ///
-    /// See
-    /// [CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry]
-    /// for explanation on compensation annualization.
+    /// See [CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry] for explanation on compensation annualization.
     #[prost(message, optional, tag = "3")]
     pub annualized_total_compensation_range:
         ::std::option::Option<compensation_info::CompensationRange>,
@@ -292,30 +263,20 @@ pub mod compensation_info {
     /// as base pay, bonus, or other compensation type.
     ///
     /// Annualization: One compensation entry can be annualized if
-    /// - it contains valid
-    /// [amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-    /// or
-    /// [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range].
-    /// - and its
-    /// [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year]
-    /// is set or can be derived. Its annualized range is determined as
-    /// ([amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-    /// or
-    /// [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range])
-    /// times
+    /// - it contains valid [amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount] or [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range].
+    /// - and its [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year] is set or can be derived.
+    /// Its annualized range is determined as ([amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount] or [range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range]) times
     /// [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompensationEntry {
         /// Compensation type.
         ///
-        /// Default is
-        /// [CompensationType.COMPENSATION_TYPE_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationType.COMPENSATION_TYPE_UNSPECIFIED].
+        /// Default is [CompensationType.COMPENSATION_TYPE_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationType.COMPENSATION_TYPE_UNSPECIFIED].
         #[prost(enumeration = "CompensationType", tag = "1")]
         pub r#type: i32,
         /// Frequency of the specified amount.
         ///
-        /// Default is
-        /// [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
+        /// Default is [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
         #[prost(enumeration = "CompensationUnit", tag = "2")]
         pub unit: i32,
         /// Compensation description.  For example, could
@@ -324,10 +285,8 @@ pub mod compensation_info {
         #[prost(string, tag = "5")]
         pub description: std::string::String,
         /// Expected number of units paid each year. If not specified, when
-        /// [Job.employment_types][google.cloud.talent.v4.Job.employment_types] is
-        /// FULLTIME, a default value is inferred based on
-        /// [unit][google.cloud.talent.v4.CompensationInfo.CompensationEntry.unit].
-        /// Default values:
+        /// [Job.employment_types][google.cloud.talent.v4.Job.employment_types] is FULLTIME, a default value is inferred
+        /// based on [unit][google.cloud.talent.v4.CompensationInfo.CompensationEntry.unit]. Default values:
         /// - HOURLY: 2080
         /// - DAILY: 260
         /// - WEEKLY: 52
@@ -369,30 +328,19 @@ pub mod compensation_info {
     /// The type of compensation.
     ///
     /// For compensation amounts specified in non-monetary amounts,
-    /// describe the compensation scheme in the
-    /// [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description].
+    /// describe the compensation scheme in the [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description].
     ///
     /// For example, tipping format is described in
-    /// [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description]
-    /// (for example, "expect 15-20% tips based on customer bill.") and an estimate
-    /// of the tips provided in
-    /// [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-    /// or
-    /// [CompensationEntry.range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range]
-    /// ($10 per hour).
+    /// [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description] (for example, "expect 15-20% tips based
+    /// on customer bill.") and an estimate of the tips provided in
+    /// [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount] or [CompensationEntry.range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range] ($10 per hour).
     ///
-    /// For example, equity is described in
-    /// [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description]
+    /// For example, equity is described in [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description]
     /// (for example, "1% - 2% equity vesting over 4 years, 1 year cliff") and
-    /// value estimated in
-    /// [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount]
-    /// or
-    /// [CompensationEntry.range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range].
-    /// If no value estimate is possible, units are
-    /// [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED]
-    /// and then further clarified in
-    /// [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description]
-    /// field.
+    /// value estimated in [CompensationEntry.amount][google.cloud.talent.v4.CompensationInfo.CompensationEntry.amount] or
+    /// [CompensationEntry.range][google.cloud.talent.v4.CompensationInfo.CompensationEntry.range]. If no value estimate is possible, units are
+    /// [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED] and then further
+    /// clarified in [CompensationEntry.description][google.cloud.talent.v4.CompensationInfo.CompensationEntry.description] field.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CompensationType {
@@ -441,8 +389,7 @@ pub mod compensation_info {
     }
 }
 /// Metadata used for long running operations returned by CTS batch APIs.
-/// It's used to replace
-/// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata].
+/// It's used to replace [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchOperationMetadata {
     /// The state of a long running operation.
@@ -464,13 +411,12 @@ pub struct BatchOperationMetadata {
     #[prost(message, optional, tag = "6")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
     /// The time when the batch operation status is updated. The metadata and the
-    /// [update_time][google.cloud.talent.v4.BatchOperationMetadata.update_time] is
-    /// refreshed every minute otherwise cached data is returned.
+    /// [update_time][google.cloud.talent.v4.BatchOperationMetadata.update_time] is refreshed every minute otherwise cached data is
+    /// returned.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
     /// The time when the batch operation is finished and
-    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
-    /// set to `true`.
+    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is set to `true`.
     #[prost(message, optional, tag = "8")]
     pub end_time: ::std::option::Option<::prost_types::Timestamp>,
 }
@@ -490,13 +436,11 @@ pub mod batch_operation_metadata {
         /// The batch operation is done and no item has been successfully processed.
         Failed = 4,
         /// The batch operation is in the process of cancelling after
-        /// [google.longrunning.Operations.CancelOperation][google.longrunning.Operations.CancelOperation]
-        /// is called.
+        /// [google.longrunning.Operations.CancelOperation][google.longrunning.Operations.CancelOperation] is called.
         Cancelling = 5,
         /// The batch operation is done after
-        /// [google.longrunning.Operations.CancelOperation][google.longrunning.Operations.CancelOperation]
-        /// is called. Any items processed before cancelling are returned in the
-        /// response.
+        /// [google.longrunning.Operations.CancelOperation][google.longrunning.Operations.CancelOperation] is called. Any items
+        /// processed before cancelling are returned in the response.
         Cancelled = 6,
     }
 }
@@ -622,8 +566,7 @@ pub enum EmploymentType {
     /// The job is offered as a contracted position with the understanding
     /// that it's converted into a full-time position at the end of the
     /// contract. Jobs of this type are also returned by a search for
-    /// [EmploymentType.CONTRACTOR][google.cloud.talent.v4.EmploymentType.CONTRACTOR]
-    /// jobs.
+    /// [EmploymentType.CONTRACTOR][google.cloud.talent.v4.EmploymentType.CONTRACTOR] jobs.
     ContractToHire = 4,
     /// The job is offered as a temporary employment opportunity, usually
     /// a short-term engagement.
@@ -744,10 +687,9 @@ pub enum PostingRegion {
     /// matches the [LocationFilter][google.cloud.talent.v4.LocationFilter].
     Unspecified = 0,
     /// In addition to exact location matching, job posting is returned when the
-    /// [LocationFilter][google.cloud.talent.v4.LocationFilter] in the search query
-    /// is in the same administrative area as the returned job posting. For
-    /// example, if a `ADMINISTRATIVE_AREA` job is posted in "CA, USA", it's
-    /// returned if [LocationFilter][google.cloud.talent.v4.LocationFilter] has
+    /// [LocationFilter][google.cloud.talent.v4.LocationFilter] in the search query is in the same administrative area
+    /// as the returned job posting. For example, if a `ADMINISTRATIVE_AREA` job
+    /// is posted in "CA, USA", it's returned if [LocationFilter][google.cloud.talent.v4.LocationFilter] has
     /// "Mountain View".
     ///
     /// Administrative area refers to top-level administrative subdivision of this
@@ -755,11 +697,9 @@ pub enum PostingRegion {
     /// JP prefecture.
     AdministrativeArea = 1,
     /// In addition to exact location matching, job is returned when
-    /// [LocationFilter][google.cloud.talent.v4.LocationFilter] in search query is
-    /// in the same country as this job. For example, if a `NATION_WIDE` job is
-    /// posted in "USA", it's returned if
-    /// [LocationFilter][google.cloud.talent.v4.LocationFilter] has 'Mountain
-    /// View'.
+    /// [LocationFilter][google.cloud.talent.v4.LocationFilter] in search query is in the same country as this job.
+    /// For example, if a `NATION_WIDE` job is posted in "USA", it's
+    /// returned if [LocationFilter][google.cloud.talent.v4.LocationFilter] has 'Mountain View'.
     Nation = 2,
     /// Job allows employees to work remotely (telecommute).
     /// If locations are provided with this value, the job is
@@ -808,10 +748,6 @@ pub enum CommuteMethod {
     /// Commute time is calculated based on public transit including bus, metro,
     /// subway, and so on.
     Transit = 2,
-    /// Commute time is calculated based on walking time.
-    Walking = 3,
-    /// Commute time is calculated based on biking time.
-    Cycling = 4,
 }
 /// A Company resource represents a company in the service. A company is the
 /// entity that owns job postings, that is, the hiring entity responsible for
@@ -843,8 +779,7 @@ pub struct Company {
     /// The street address of the company's main headquarters, which may be
     /// different from the job location. The service attempts
     /// to geolocate the provided address, and populates a more specific
-    /// location wherever possible in
-    /// [DerivedInfo.headquarters_location][google.cloud.talent.v4.Company.DerivedInfo.headquarters_location].
+    /// location wherever possible in [DerivedInfo.headquarters_location][google.cloud.talent.v4.Company.DerivedInfo.headquarters_location].
     #[prost(string, tag = "5")]
     pub headquarters_address: std::string::String,
     /// Set to true if it is the hiring agency that post jobs for other
@@ -873,9 +808,8 @@ pub struct Company {
     /// A URI that hosts the employer's company logo.
     #[prost(string, tag = "10")]
     pub image_uri: std::string::String,
-    /// A list of keys of filterable
-    /// [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes],
-    /// whose corresponding `string_values` are used in keyword searches. Jobs with
+    /// A list of keys of filterable [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes], whose
+    /// corresponding `string_values` are used in keyword searches. Jobs with
     /// `string_values` under these specified field keys are returned if any
     /// of the values match the search keyword. Custom field values with
     /// parenthesis, brackets and special symbols are not searchable as-is,
@@ -896,8 +830,7 @@ pub mod company {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DerivedInfo {
         /// A structured headquarters location of the company, resolved from
-        /// [Company.headquarters_address][google.cloud.talent.v4.Company.headquarters_address]
-        /// if provided.
+        /// [Company.headquarters_address][google.cloud.talent.v4.Company.headquarters_address] if provided.
         #[prost(message, optional, tag = "1")]
         pub headquarters_location: ::std::option::Option<super::Location>,
     }
@@ -929,20 +862,16 @@ pub struct GetCompanyRequest {
 /// Request for updating a specified company.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCompanyRequest {
-    /// Required. The company resource to replace the current resource in the
-    /// system.
+    /// Required. The company resource to replace the current resource in the system.
     #[prost(message, optional, tag = "1")]
     pub company: ::std::option::Option<Company>,
     /// Strongly recommended for the best service experience.
     ///
-    /// If [update_mask][google.cloud.talent.v4.UpdateCompanyRequest.update_mask]
-    /// is provided, only the specified fields in
-    /// [company][google.cloud.talent.v4.UpdateCompanyRequest.company] are updated.
-    /// Otherwise all the fields are updated.
+    /// If [update_mask][google.cloud.talent.v4.UpdateCompanyRequest.update_mask] is provided, only the specified fields in
+    /// [company][google.cloud.talent.v4.UpdateCompanyRequest.company] are updated. Otherwise all the fields are updated.
     ///
     /// A field mask to specify the company fields to be updated. Only
-    /// top level fields of [Company][google.cloud.talent.v4.Company] are
-    /// supported.
+    /// top level fields of [Company][google.cloud.talent.v4.Company] are supported.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
@@ -977,9 +906,8 @@ pub struct ListCompaniesRequest {
     ///
     /// Defaults to false.
     ///
-    /// If true, at most
-    /// [page_size][google.cloud.talent.v4.ListCompaniesRequest.page_size] of
-    /// companies are fetched, among which only those with open jobs are returned.
+    /// If true, at most [page_size][google.cloud.talent.v4.ListCompaniesRequest.page_size] of companies are fetched, among which
+    /// only those with open jobs are returned.
     #[prost(bool, tag = "4")]
     pub require_open_jobs: bool,
 }
@@ -1154,12 +1082,10 @@ pub struct CompleteQueryRequest {
     /// example, "projects/foo/tenants/bar/companies/baz".
     #[prost(string, tag = "5")]
     pub company: std::string::String,
-    /// The scope of the completion. The defaults is
-    /// [CompletionScope.PUBLIC][google.cloud.talent.v4.CompleteQueryRequest.CompletionScope.PUBLIC].
+    /// The scope of the completion. The defaults is [CompletionScope.PUBLIC][google.cloud.talent.v4.CompleteQueryRequest.CompletionScope.PUBLIC].
     #[prost(enumeration = "complete_query_request::CompletionScope", tag = "6")]
     pub scope: i32,
-    /// The completion topic. The default is
-    /// [CompletionType.COMBINED][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMBINED].
+    /// The completion topic. The default is [CompletionType.COMBINED][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMBINED].
     #[prost(enumeration = "complete_query_request::CompletionType", tag = "7")]
     pub r#type: i32,
 }
@@ -1184,29 +1110,20 @@ pub mod complete_query_request {
         Unspecified = 0,
         /// Suggest job titles for jobs autocomplete.
         ///
-        /// For
-        /// [CompletionType.JOB_TITLE][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.JOB_TITLE]
-        /// type, only open jobs with the same
-        /// [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes]
-        /// are returned.
+        /// For [CompletionType.JOB_TITLE][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.JOB_TITLE] type, only open jobs with the same
+        /// [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes] are returned.
         JobTitle = 1,
         /// Suggest company names for jobs autocomplete.
         ///
-        /// For
-        /// [CompletionType.COMPANY_NAME][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMPANY_NAME]
-        /// type, only companies having open jobs with the same
-        /// [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes]
-        /// are returned.
+        /// For [CompletionType.COMPANY_NAME][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMPANY_NAME] type,
+        /// only companies having open jobs with the same [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes] are
+        /// returned.
         CompanyName = 2,
         /// Suggest both job titles and company names for jobs autocomplete.
         ///
-        /// For
-        /// [CompletionType.COMBINED][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMBINED]
-        /// type, only open jobs with the same
-        /// [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes]
-        /// or companies having open jobs with the same
-        /// [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes]
-        /// are returned.
+        /// For [CompletionType.COMBINED][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMBINED] type, only open jobs with the same
+        /// [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes] or companies having open jobs with the same
+        /// [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes] are returned.
         Combined = 3,
     }
 }
@@ -1340,17 +1257,14 @@ pub mod client_event {
 /// implements Cloud Talent Solution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobEvent {
-    /// Required. The type of the event (see
-    /// [JobEventType][google.cloud.talent.v4.JobEvent.JobEventType]).
+    /// Required. The type of the event (see [JobEventType][google.cloud.talent.v4.JobEvent.JobEventType]).
     #[prost(enumeration = "job_event::JobEventType", tag = "1")]
     pub r#type: i32,
-    /// Required. The [job name(s)][google.cloud.talent.v4.Job.name] associated
-    /// with this event. For example, if this is an
-    /// [impression][google.cloud.talent.v4.JobEvent.JobEventType.IMPRESSION]
-    /// event, this field contains the identifiers of all jobs shown to the job
-    /// seeker. If this was a
-    /// [view][google.cloud.talent.v4.JobEvent.JobEventType.VIEW] event, this field
-    /// contains the identifier of the viewed job.
+    /// Required. The [job name(s)][google.cloud.talent.v4.Job.name] associated with this event.
+    /// For example, if this is an [impression][google.cloud.talent.v4.JobEvent.JobEventType.IMPRESSION] event,
+    /// this field contains the identifiers of all jobs shown to the job seeker.
+    /// If this was a [view][google.cloud.talent.v4.JobEvent.JobEventType.VIEW] event, this field contains the
+    /// identifier of the viewed job.
     ///
     /// The format is
     /// "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}", for
@@ -1391,9 +1305,7 @@ pub mod job_event {
         /// submitted an application for a job with a single click without
         /// entering information. If a job seeker performs this action, send only
         /// this event to the service. Do not also send
-        /// [JobEventType.APPLICATION_START][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_START]
-        /// or
-        /// [JobEventType.APPLICATION_FINISH][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_FINISH]
+        /// [JobEventType.APPLICATION_START][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_START] or [JobEventType.APPLICATION_FINISH][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_FINISH]
         /// events.
         ApplicationQuickSubmission = 6,
         /// The job seeker or other entity interacting with the service
@@ -1410,11 +1322,8 @@ pub mod job_event {
         /// (without viewing the details of the job posting), and is redirected
         /// to a different website to complete the application. If a candidate
         /// performs this action, send only this event to the service. Do not also
-        /// send
-        /// [JobEventType.APPLICATION_START][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_START],
-        /// [JobEventType.APPLICATION_FINISH][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_FINISH]
-        /// or [JobEventType.VIEW][google.cloud.talent.v4.JobEvent.JobEventType.VIEW]
-        /// events.
+        /// send [JobEventType.APPLICATION_START][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_START],
+        /// [JobEventType.APPLICATION_FINISH][google.cloud.talent.v4.JobEvent.JobEventType.APPLICATION_FINISH] or [JobEventType.VIEW][google.cloud.talent.v4.JobEvent.JobEventType.VIEW] events.
         ApplicationRedirectFromSearch = 9,
         /// This event should be used when a company submits an application
         /// on behalf of a job seeker. This event is intended for use by staffing
@@ -1454,8 +1363,8 @@ pub struct CreateClientEventRequest {
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. Events issued when end user interacts with customer's application
-    /// that uses Cloud Talent Solution.
+    /// Required. Events issued when end user interacts with customer's application that
+    /// uses Cloud Talent Solution.
     #[prost(message, optional, tag = "2")]
     pub client_event: ::std::option::Option<ClientEvent>,
 }
@@ -1528,8 +1437,8 @@ pub struct JobQuery {
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "1")]
     pub query: std::string::String,
-    /// The language code of [query][google.cloud.talent.v4.JobQuery.query]. For
-    /// example, "en-US". This field helps to better interpret the query.
+    /// The language code of [query][google.cloud.talent.v4.JobQuery.query]. For example, "en-US". This field helps to
+    /// better interpret the query.
     ///
     /// If a value isn't specified, the query language code is automatically
     /// detected, which may not be accurate.
@@ -1555,16 +1464,15 @@ pub struct JobQuery {
     #[prost(string, repeated, tag = "2")]
     pub companies: ::std::vec::Vec<std::string::String>,
     /// The location filter specifies geo-regions containing the jobs to
-    /// search against. See [LocationFilter][google.cloud.talent.v4.LocationFilter]
-    /// for more information.
+    /// search against. See [LocationFilter][google.cloud.talent.v4.LocationFilter] for more information.
     ///
     /// If a location value isn't specified, jobs fitting the other search
     /// criteria are retrieved regardless of where they're located.
     ///
     /// If multiple values are specified, jobs are retrieved from any of the
     /// specified locations. If different values are specified for the
-    /// [LocationFilter.distance_in_miles][google.cloud.talent.v4.LocationFilter.distance_in_miles]
-    /// parameter, the maximum provided distance is used for all locations.
+    /// [LocationFilter.distance_in_miles][google.cloud.talent.v4.LocationFilter.distance_in_miles] parameter, the maximum provided
+    /// distance is used for all locations.
     ///
     /// At most 5 location filters are allowed.
     #[prost(message, repeated, tag = "3")]
@@ -1581,17 +1489,14 @@ pub struct JobQuery {
     /// Allows filtering jobs by commute time with different travel methods (for
     ///  example, driving or public transit).
     ///
-    /// Note: This only works when you specify a
-    /// [CommuteMethod][google.cloud.talent.v4.CommuteMethod]. In this case,
-    /// [location_filters][google.cloud.talent.v4.JobQuery.location_filters] is
-    /// ignored.
+    /// Note: This only works when you specify a [CommuteMethod][google.cloud.talent.v4.CommuteMethod]. In this case,
+    /// [location_filters][google.cloud.talent.v4.JobQuery.location_filters] is ignored.
     ///
     ///  Currently we don't support sorting by commute time.
     #[prost(message, optional, tag = "5")]
     pub commute_filter: ::std::option::Option<CommuteFilter>,
-    /// This filter specifies the exact company
-    /// [Company.display_name][google.cloud.talent.v4.Company.display_name] of the
-    /// jobs to search against.
+    /// This filter specifies the exact company [Company.display_name][google.cloud.talent.v4.Company.display_name]
+    /// of the jobs to search against.
     ///
     /// If a value isn't specified, jobs within the search results are
     /// associated with any company.
@@ -1603,15 +1508,14 @@ pub struct JobQuery {
     #[prost(string, repeated, tag = "6")]
     pub company_display_names: ::std::vec::Vec<std::string::String>,
     /// This search filter is applied only to
-    /// [Job.compensation_info][google.cloud.talent.v4.Job.compensation_info]. For
-    /// example, if the filter is specified as "Hourly job with per-hour
-    /// compensation > $15", only jobs meeting these criteria are searched. If a
-    /// filter isn't defined, all open jobs are searched.
+    /// [Job.compensation_info][google.cloud.talent.v4.Job.compensation_info]. For example, if the filter is specified
+    /// as "Hourly job with per-hour compensation > $15", only jobs meeting
+    /// these criteria are searched. If a filter isn't defined, all open jobs
+    /// are searched.
     #[prost(message, optional, tag = "7")]
     pub compensation_filter: ::std::option::Option<CompensationFilter>,
     /// This filter specifies a structured syntax to match against the
-    /// [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes]
-    /// marked as `filterable`.
+    /// [Job.custom_attributes][google.cloud.talent.v4.Job.custom_attributes] marked as `filterable`.
     ///
     /// The syntax for this expression is a subset of SQL syntax.
     ///
@@ -1642,8 +1546,7 @@ pub struct JobQuery {
     #[prost(bool, tag = "9")]
     pub disable_spell_check: bool,
     /// The employment type filter specifies the employment type of jobs to
-    /// search against, such as
-    /// [EmploymentType.FULL_TIME][google.cloud.talent.v4.EmploymentType.FULL_TIME].
+    /// search against, such as [EmploymentType.FULL_TIME][google.cloud.talent.v4.EmploymentType.FULL_TIME].
     ///
     /// If a value isn't specified, jobs in the search results includes any
     /// employment type.
@@ -1707,15 +1610,12 @@ pub struct LocationFilter {
     /// Allows the client to return jobs without a
     /// set location, specifically, telecommuting jobs (telecommuting is considered
     /// by the service as a special location.
-    /// [Job.posting_region][google.cloud.talent.v4.Job.posting_region] indicates
-    /// if a job permits telecommuting. If this field is set to
-    /// [TelecommutePreference.TELECOMMUTE_ALLOWED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_ALLOWED],
-    /// telecommuting jobs are searched, and
-    /// [address][google.cloud.talent.v4.LocationFilter.address] and
-    /// [lat_lng][google.cloud.talent.v4.LocationFilter.lat_lng] are ignored. If
-    /// not set or set to
-    /// [TelecommutePreference.TELECOMMUTE_EXCLUDED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_EXCLUDED],
-    /// telecommute job are not searched.
+    /// [Job.posting_region][google.cloud.talent.v4.Job.posting_region] indicates if a job permits telecommuting.
+    /// If this field is set to [TelecommutePreference.TELECOMMUTE_ALLOWED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_ALLOWED],
+    /// telecommuting jobs are searched, and [address][google.cloud.talent.v4.LocationFilter.address] and [lat_lng][google.cloud.talent.v4.LocationFilter.lat_lng] are
+    /// ignored. If not set or set to
+    /// [TelecommutePreference.TELECOMMUTE_EXCLUDED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_EXCLUDED], telecommute job are not
+    /// searched.
     ///
     /// This filter can be used by itself to search exclusively for telecommuting
     /// jobs, or it can be combined with another location
@@ -1773,37 +1673,29 @@ pub mod compensation_filter {
         Unspecified = 0,
         /// Filter by `base compensation entry's` unit. A job is a match if and
         /// only if the job contains a base CompensationEntry and the base
-        /// CompensationEntry's unit matches provided
-        /// [units][google.cloud.talent.v4.CompensationFilter.units]. Populate one or
-        /// more [units][google.cloud.talent.v4.CompensationFilter.units].
+        /// CompensationEntry's unit matches provided [units][google.cloud.talent.v4.CompensationFilter.units].
+        /// Populate one or more [units][google.cloud.talent.v4.CompensationFilter.units].
         ///
-        /// See
-        /// [CompensationInfo.CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry]
-        /// for definition of base compensation entry.
+        /// See [CompensationInfo.CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry] for definition of
+        /// base compensation entry.
         UnitOnly = 1,
         /// Filter by `base compensation entry's` unit and amount / range. A job
         /// is a match if and only if the job contains a base CompensationEntry, and
         /// the base entry's unit matches provided
-        /// [CompensationUnit][google.cloud.talent.v4.CompensationInfo.CompensationUnit]
-        /// and amount or range overlaps with provided
+        /// [CompensationUnit][google.cloud.talent.v4.CompensationInfo.CompensationUnit] and
+        /// amount or range overlaps with provided
         /// [CompensationRange][google.cloud.talent.v4.CompensationInfo.CompensationRange].
         ///
-        /// See
-        /// [CompensationInfo.CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry]
-        /// for definition of base compensation entry.
+        /// See [CompensationInfo.CompensationEntry][google.cloud.talent.v4.CompensationInfo.CompensationEntry] for definition of
+        /// base compensation entry.
         ///
-        /// Set exactly one [units][google.cloud.talent.v4.CompensationFilter.units]
-        /// and populate [range][google.cloud.talent.v4.CompensationFilter.range].
+        /// Set exactly one [units][google.cloud.talent.v4.CompensationFilter.units] and populate [range][google.cloud.talent.v4.CompensationFilter.range].
         UnitAndAmount = 2,
         /// Filter by annualized base compensation amount and `base compensation
-        /// entry's` unit. Populate
-        /// [range][google.cloud.talent.v4.CompensationFilter.range] and zero or more
-        /// [units][google.cloud.talent.v4.CompensationFilter.units].
+        /// entry's` unit. Populate [range][google.cloud.talent.v4.CompensationFilter.range] and zero or more [units][google.cloud.talent.v4.CompensationFilter.units].
         AnnualizedBaseAmount = 3,
         /// Filter by annualized total compensation amount and `base compensation
-        /// entry's` unit . Populate
-        /// [range][google.cloud.talent.v4.CompensationFilter.range] and zero or more
-        /// [units][google.cloud.talent.v4.CompensationFilter.units].
+        /// entry's` unit . Populate [range][google.cloud.talent.v4.CompensationFilter.range] and zero or more [units][google.cloud.talent.v4.CompensationFilter.units].
         AnnualizedTotalAmount = 4,
     }
 }
@@ -1817,8 +1709,8 @@ pub struct CommuteFilter {
     /// commute time from.
     #[prost(message, optional, tag = "2")]
     pub start_coordinates: ::std::option::Option<super::super::super::r#type::LatLng>,
-    /// Required. The maximum travel time in seconds. The maximum allowed value is
-    /// `3600s` (one hour). Format is `123s`.
+    /// Required. The maximum travel time in seconds. The maximum allowed value is `3600s`
+    /// (one hour). Format is `123s`.
     #[prost(message, optional, tag = "3")]
     pub travel_duration: ::std::option::Option<::prost_types::Duration>,
     /// If `true`, jobs without street level addresses may also be returned.
@@ -1864,15 +1756,11 @@ pub struct HistogramQuery {
     /// An expression specifies a histogram request against matching jobs for
     /// searches.
     ///
-    /// See
-    /// [SearchJobsRequest.histogram_queries][google.cloud.talent.v4.SearchJobsRequest.histogram_queries]
-    /// for details about syntax.
+    /// See [SearchJobsRequest.histogram_queries][google.cloud.talent.v4.SearchJobsRequest.histogram_queries] for details about syntax.
     #[prost(string, tag = "1")]
     pub histogram_query: std::string::String,
 }
-/// Histogram result that matches
-/// [HistogramQuery][google.cloud.talent.v4.HistogramQuery] specified in
-/// searches.
+/// Histogram result that matches [HistogramQuery][google.cloud.talent.v4.HistogramQuery] specified in searches.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistogramQueryResult {
     /// Requested histogram expression.
@@ -1892,9 +1780,8 @@ pub struct HistogramQueryResult {
     pub histogram: ::std::collections::HashMap<std::string::String, i64>,
 }
 /// A Job resource represents a job posting (also referred to as a "job listing"
-/// or "job requisition"). A job belongs to a
-/// [Company][google.cloud.talent.v4.Company], which is the hiring entity
-/// responsible for the job.
+/// or "job requisition"). A job belongs to a [Company][google.cloud.talent.v4.Company], which is the hiring
+/// entity responsible for the job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// Required during job update.
@@ -1907,8 +1794,7 @@ pub struct Job {
     /// example, "projects/foo/tenants/bar/jobs/baz".
     ///
     /// Use of this field in job queries and API calls is preferred over the use of
-    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id] since this
-    /// value is unique.
+    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id] since this value is unique.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// Required. The resource name of the company listing the job.
@@ -1918,13 +1804,11 @@ pub struct Job {
     /// example, "projects/foo/tenants/bar/companies/baz".
     #[prost(string, tag = "2")]
     pub company: std::string::String,
-    /// Required. The requisition ID, also referred to as the posting ID, is
-    /// assigned by the client to identify a job. This field is intended to be used
-    /// by clients for client identification and tracking of postings. A job isn't
-    /// allowed to be created if there is another job with the same
-    /// [company][google.cloud.talent.v4.Job.name],
-    /// [language_code][google.cloud.talent.v4.Job.language_code] and
-    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id].
+    /// Required. The requisition ID, also referred to as the posting ID, is assigned by the
+    /// client to identify a job. This field is intended to be used by clients
+    /// for client identification and tracking of postings. A job isn't allowed
+    /// to be created if there is another job with the same [company][google.cloud.talent.v4.Job.name],
+    /// [language_code][google.cloud.talent.v4.Job.language_code] and [requisition_id][google.cloud.talent.v4.Job.requisition_id].
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "3")]
@@ -1934,12 +1818,11 @@ pub struct Job {
     /// The maximum number of allowed characters is 500.
     #[prost(string, tag = "4")]
     pub title: std::string::String,
-    /// Required. The description of the job, which typically includes a
-    /// multi-paragraph description of the company and related information.
-    /// Separate fields are provided on the job object for
-    /// [responsibilities][google.cloud.talent.v4.Job.responsibilities],
-    /// [qualifications][google.cloud.talent.v4.Job.qualifications], and other job
-    /// characteristics. Use of these separate job fields is recommended.
+    /// Required. The description of the job, which typically includes a multi-paragraph
+    /// description of the company and related information. Separate fields are
+    /// provided on the job object for [responsibilities][google.cloud.talent.v4.Job.responsibilities],
+    /// [qualifications][google.cloud.talent.v4.Job.qualifications], and other job characteristics. Use of
+    /// these separate job fields is recommended.
     ///
     /// This field accepts and sanitizes HTML input, and also accepts
     /// bold, italic, ordered list, and unordered list markup tags.
@@ -1956,16 +1839,12 @@ pub struct Job {
     ///
     /// At most 50 locations are allowed for best search performance. If a job has
     /// more locations, it is suggested to split it into multiple jobs with unique
-    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id]s (e.g. 'ReqA'
-    /// becomes 'ReqA-1', 'ReqA-2', and so on.) as multiple jobs with the same
-    /// [company][google.cloud.talent.v4.Job.company],
-    /// [language_code][google.cloud.talent.v4.Job.language_code] and
-    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id] are not
-    /// allowed. If the original
-    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id] must be
-    /// preserved, a custom field should be used for storage. It is also suggested
-    /// to group the locations that close to each other in the same job for better
-    /// search experience.
+    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id]s (e.g. 'ReqA' becomes 'ReqA-1', 'ReqA-2', and so on.) as
+    /// multiple jobs with the same [company][google.cloud.talent.v4.Job.company], [language_code][google.cloud.talent.v4.Job.language_code] and
+    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id] are not allowed. If the original [requisition_id][google.cloud.talent.v4.Job.requisition_id] must
+    /// be preserved, a custom field should be used for storage. It is also
+    /// suggested to group the locations that close to each other in the same job
+    /// for better search experience.
     ///
     /// The maximum number of allowed characters is 500.
     #[prost(string, repeated, tag = "6")]
@@ -2022,11 +1901,9 @@ pub struct Job {
     /// [Tags for Identifying Languages](https://tools.ietf.org/html/bcp47){:
     /// class="external" target="_blank" }.
     ///
-    /// If this field is unspecified and
-    /// [Job.description][google.cloud.talent.v4.Job.description] is present,
-    /// detected language code based on
-    /// [Job.description][google.cloud.talent.v4.Job.description] is assigned,
-    /// otherwise defaults to 'en_US'.
+    /// If this field is unspecified and [Job.description][google.cloud.talent.v4.Job.description] is present, detected
+    /// language code based on [Job.description][google.cloud.talent.v4.Job.description] is assigned, otherwise
+    /// defaults to 'en_US'.
     #[prost(string, tag = "15")]
     pub language_code: std::string::String,
     /// The experience level associated with the job, such as "Entry Level".
@@ -2043,8 +1920,7 @@ pub struct Job {
     pub promotion_value: i32,
     /// A description of the qualifications required to perform the
     /// job. The use of this field is recommended
-    /// as an alternative to using the more general
-    /// [description][google.cloud.talent.v4.Job.description] field.
+    /// as an alternative to using the more general [description][google.cloud.talent.v4.Job.description] field.
     ///
     /// This field accepts and sanitizes HTML input, and also accepts
     /// bold, italic, ordered list, and unordered list markup tags.
@@ -2053,8 +1929,8 @@ pub struct Job {
     #[prost(string, tag = "18")]
     pub qualifications: std::string::String,
     /// A description of job responsibilities. The use of this field is
-    /// recommended as an alternative to using the more general
-    /// [description][google.cloud.talent.v4.Job.description] field.
+    /// recommended as an alternative to using the more general [description][google.cloud.talent.v4.Job.description]
+    /// field.
     ///
     /// This field accepts and sanitizes HTML input, and also accepts
     /// bold, italic, ordered list, and unordered list markup tags.
@@ -2062,24 +1938,20 @@ pub struct Job {
     /// The maximum number of allowed characters is 10,000.
     #[prost(string, tag = "19")]
     pub responsibilities: std::string::String,
-    /// The job [PostingRegion][google.cloud.talent.v4.PostingRegion] (for example,
-    /// state, country) throughout which the job is available. If this field is
-    /// set, a [LocationFilter][google.cloud.talent.v4.LocationFilter] in a search
-    /// query within the job region finds this job posting if an exact location
-    /// match isn't specified. If this field is set to
-    /// [PostingRegion.NATION][google.cloud.talent.v4.PostingRegion.NATION] or
-    /// [PostingRegion.ADMINISTRATIVE_AREA][google.cloud.talent.v4.PostingRegion.ADMINISTRATIVE_AREA],
-    /// setting job [Job.addresses][google.cloud.talent.v4.Job.addresses] to the
-    /// same location level as this field is strongly recommended.
+    /// The job [PostingRegion][google.cloud.talent.v4.PostingRegion] (for example, state, country) throughout
+    /// which the job is available. If this field is set, a [LocationFilter][google.cloud.talent.v4.LocationFilter]
+    /// in a search query within the job region finds this job posting if an
+    /// exact location match isn't specified. If this field is set to
+    /// [PostingRegion.NATION][google.cloud.talent.v4.PostingRegion.NATION] or [PostingRegion.ADMINISTRATIVE_AREA][google.cloud.talent.v4.PostingRegion.ADMINISTRATIVE_AREA],
+    /// setting job [Job.addresses][google.cloud.talent.v4.Job.addresses] to the same location level as this field
+    /// is strongly recommended.
     #[prost(enumeration = "PostingRegion", tag = "20")]
     pub posting_region: i32,
     /// Deprecated. The job is only visible to the owner.
     ///
     /// The visibility of the job.
     ///
-    /// Defaults to
-    /// [Visibility.ACCOUNT_ONLY][google.cloud.talent.v4.Visibility.ACCOUNT_ONLY]
-    /// if not specified.
+    /// Defaults to [Visibility.ACCOUNT_ONLY][google.cloud.talent.v4.Visibility.ACCOUNT_ONLY] if not specified.
     #[prost(enumeration = "Visibility", tag = "21")]
     pub visibility: i32,
     /// The start timestamp of the job in UTC time zone. Typically this field
@@ -2099,17 +1971,13 @@ pub struct Job {
     ///
     /// The expiration timestamp of the job. After this timestamp, the
     /// job is marked as expired, and it no longer appears in search results. The
-    /// expired job can't be listed by the
-    /// [ListJobs][google.cloud.talent.v4.JobService.ListJobs] API, but it can be
-    /// retrieved with the [GetJob][google.cloud.talent.v4.JobService.GetJob] API
-    /// or updated with the
-    /// [UpdateJob][google.cloud.talent.v4.JobService.UpdateJob] API or deleted
-    /// with the [DeleteJob][google.cloud.talent.v4.JobService.DeleteJob] API. An
-    /// expired job can be updated and opened again by using a future expiration
-    /// timestamp. Updating an expired job fails if there is another existing open
-    /// job with same [company][google.cloud.talent.v4.Job.company],
-    /// [language_code][google.cloud.talent.v4.Job.language_code] and
-    /// [requisition_id][google.cloud.talent.v4.Job.requisition_id].
+    /// expired job can't be listed by the [ListJobs][google.cloud.talent.v4.JobService.ListJobs] API,
+    /// but it can be retrieved with the [GetJob][google.cloud.talent.v4.JobService.GetJob] API or
+    /// updated with the [UpdateJob][google.cloud.talent.v4.JobService.UpdateJob] API or deleted with
+    /// the [DeleteJob][google.cloud.talent.v4.JobService.DeleteJob] API. An expired job can
+    /// be updated and opened again by using a future expiration timestamp.
+    /// Updating an expired job fails if there is another existing open job with
+    /// same [company][google.cloud.talent.v4.Job.company], [language_code][google.cloud.talent.v4.Job.language_code] and [requisition_id][google.cloud.talent.v4.Job.requisition_id].
     ///
     /// The expired jobs are retained in our system for 90 days. However, the
     /// overall expired job count cannot exceed 3 times the maximum number of
@@ -2123,13 +1991,12 @@ pub struct Job {
     /// If the timestamp is before the instant request is made, the job
     /// is treated as expired immediately on creation. This kind of job can
     /// not be updated. And when creating a job with past timestamp, the
-    /// [posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
-    /// must be set before
-    /// [posting_expire_time][google.cloud.talent.v4.Job.posting_expire_time]. The
-    /// purpose of this feature is to allow other objects, such as [Application][],
-    /// to refer a job that didn't exist in the system prior to becoming expired.
-    /// If you want to modify a job that was expired on creation, delete it and
-    /// create a new one.
+    /// [posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time] must be set before
+    /// [posting_expire_time][google.cloud.talent.v4.Job.posting_expire_time]. The purpose of this feature is
+    /// to allow other objects, such as [Application][], to refer a job
+    /// that didn't exist in the system prior to becoming expired. If you
+    /// want to modify a job that was expired on creation,
+    /// delete it and create a new one.
     ///
     /// If this value isn't provided at the time of job creation or is invalid,
     /// the job posting expires after 30 days from the job's creation time. For
@@ -2137,13 +2004,10 @@ pub struct Job {
     /// unspecified expiration date, the job expires after 2017/01/31 13:00AM UTC.
     ///
     /// If this value isn't provided on job update, it depends on the field masks
-    /// set by
-    /// [UpdateJobRequest.update_mask][google.cloud.talent.v4.UpdateJobRequest.update_mask].
-    /// If the field masks include
-    /// [job_end_time][google.cloud.talent.v4.Job.job_end_time], or the masks are
-    /// empty meaning that every field is updated, the job posting expires after 30
-    /// days from the job's last update time. Otherwise the expiration date isn't
-    /// updated.
+    /// set by [UpdateJobRequest.update_mask][google.cloud.talent.v4.UpdateJobRequest.update_mask]. If the field masks include
+    /// [job_end_time][google.cloud.talent.v4.Job.job_end_time], or the masks are empty meaning that every field is
+    /// updated, the job posting expires after 30 days from the job's last
+    /// update time. Otherwise the expiration date isn't updated.
     #[prost(message, optional, tag = "25")]
     pub posting_expire_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp when this job posting was created.
@@ -2191,16 +2055,13 @@ pub mod job {
     /// Derived details about the job posting.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DerivedInfo {
-        /// Structured locations of the job, resolved from
-        /// [Job.addresses][google.cloud.talent.v4.Job.addresses].
+        /// Structured locations of the job, resolved from [Job.addresses][google.cloud.talent.v4.Job.addresses].
         ///
-        /// [locations][google.cloud.talent.v4.Job.DerivedInfo.locations] are exactly
-        /// matched to [Job.addresses][google.cloud.talent.v4.Job.addresses] in the
-        /// same order.
+        /// [locations][google.cloud.talent.v4.Job.DerivedInfo.locations] are exactly matched to [Job.addresses][google.cloud.talent.v4.Job.addresses] in the same
+        /// order.
         #[prost(message, repeated, tag = "1")]
         pub locations: ::std::vec::Vec<super::Location>,
-        /// Job categories derived from [Job.title][google.cloud.talent.v4.Job.title]
-        /// and [Job.description][google.cloud.talent.v4.Job.description].
+        /// Job categories derived from [Job.title][google.cloud.talent.v4.Job.title] and [Job.description][google.cloud.talent.v4.Job.description].
         #[prost(enumeration = "super::JobCategory", repeated, tag = "3")]
         pub job_categories: ::std::vec::Vec<i32>,
     }
@@ -2222,8 +2083,7 @@ pub mod job {
         /// HTML tags in these fields may be stripped if sanitiazation isn't
         /// disabled.
         ///
-        /// Defaults to
-        /// [HtmlSanitization.SIMPLE_FORMATTING_ONLY][google.cloud.talent.v4.HtmlSanitization.SIMPLE_FORMATTING_ONLY].
+        /// Defaults to [HtmlSanitization.SIMPLE_FORMATTING_ONLY][google.cloud.talent.v4.HtmlSanitization.SIMPLE_FORMATTING_ONLY].
         #[prost(enumeration = "super::HtmlSanitization", tag = "2")]
         pub html_sanitization: i32,
     }
@@ -3151,8 +3011,7 @@ pub struct Tenant {
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Required. Client side tenant identifier, used to uniquely identify the
-    /// tenant.
+    /// Required. Client side tenant identifier, used to uniquely identify the tenant.
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "2")]
@@ -3184,16 +3043,13 @@ pub struct GetTenantRequest {
 /// Request for updating a specified tenant.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTenantRequest {
-    /// Required. The tenant resource to replace the current resource in the
-    /// system.
+    /// Required. The tenant resource to replace the current resource in the system.
     #[prost(message, optional, tag = "1")]
     pub tenant: ::std::option::Option<Tenant>,
     /// Strongly recommended for the best service experience.
     ///
-    /// If [update_mask][google.cloud.talent.v4.UpdateTenantRequest.update_mask] is
-    /// provided, only the specified fields in
-    /// [tenant][google.cloud.talent.v4.UpdateTenantRequest.tenant] are updated.
-    /// Otherwise all the fields are updated.
+    /// If [update_mask][google.cloud.talent.v4.UpdateTenantRequest.update_mask] is provided, only the specified fields in
+    /// [tenant][google.cloud.talent.v4.UpdateTenantRequest.tenant] are updated. Otherwise all the fields are updated.
     ///
     /// A field mask to specify the tenant fields to be updated. Only
     /// top level fields of [Tenant][google.cloud.talent.v4.Tenant] are supported.

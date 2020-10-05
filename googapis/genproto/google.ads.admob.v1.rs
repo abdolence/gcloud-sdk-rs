@@ -362,15 +362,11 @@ pub mod mediation_report_spec {
         /// (for example, "2018-12-21"). Requests can specify at most one time
         /// dimension.
         Week = 3,
-        /// The unique ID of the ad source (for example, "5450213213286189855" and
-        /// "AdMob Network" as label value).
+        /// The [unique ID of the ad source](/admob/api/v1/ad_sources) (for example,
+        /// "5450213213286189855" and "AdMob Network" as label value).
         AdSource = 4,
         /// The unique ID of the ad source instance (for example,
         /// "ca-app-pub-1234#5678" and "AdMob (default)" as label value).
-        ///
-        /// **Warning:** The dimension is incompatible with
-        /// [ESTIMATED_EARNINGS](#Metric.ENUM_VALUES.ESTIMATED_EARNINGS) and
-        /// [OBSERVED_ECPM](#Metric.ENUM_VALUES.OBSERVED_ECPM) metrics.
         AdSourceInstance = 5,
         /// The unique ID of the ad unit (for example, "ca-app-pub-1234/8790").
         /// If AD_UNIT dimension is specified, then APP is included automatically.
@@ -380,10 +376,6 @@ pub mod mediation_report_spec {
         App = 7,
         /// The unique ID of the mediation group (for example,
         /// "ca-app-pub-1234:mg:1234" and "AdMob (default)" as label value).
-        ///
-        /// **Warning:** The dimension is incompatible with
-        /// [ESTIMATED_EARNINGS](#Metric.ENUM_VALUES.ESTIMATED_EARNINGS) and
-        /// [OBSERVED_ECPM](#Metric.ENUM_VALUES.OBSERVED_ECPM) metrics.
         MediationGroup = 11,
         /// CLDR country code of the place where the ad views/clicks occur (for
         /// example, "US" or "FR"). This is a geography dimension.
@@ -412,9 +404,9 @@ pub mod mediation_report_spec {
         /// setting for currency. The amount is in micros. For example, $6.50 would
         /// be represented as 6500000.
         ///
-        /// **Warning:** The metric is incompatible with
-        /// [AD_SOURCE_INSTANCE](#Dimension.ENUM_VALUES.AD_SOURCE_INSTANCE) and
-        /// [MEDIATION_GROUP](#Dimension.ENUM_VALUES.MEDIATION_GROUP) dimensions.
+        /// Estimated earnings per mediation group and per ad source instance level
+        /// is supported dating back to October 20, 2019. Third-party estimated
+        /// earnings will show 0 for dates prior to October 20, 2019.
         EstimatedEarnings = 3,
         /// The total number of ads shown to users. The value is an integer.
         Impressions = 4,
@@ -432,9 +424,9 @@ pub mod mediation_report_spec {
         /// localization setting for currency. The amount is in micros. For example,
         /// $2.30 would be represented as 2300000.
         ///
-        /// **Warning:** The metric is incompatible with
-        /// [AD_SOURCE_INSTANCE](#Dimension.ENUM_VALUES.AD_SOURCE_INSTANCE) and
-        /// [MEDIATION_GROUP](#Dimension.ENUM_VALUES.MEDIATION_GROUP) dimensions.
+        /// The estimated average eCPM per mediation group and per ad source instance
+        /// level is supported dating back to October 20, 2019. Third-party estimated
+        /// average eCPM will show 0 for dates prior to October 20, 2019.
         ObservedEcpm = 8,
     }
 }
@@ -553,7 +545,10 @@ pub struct ReportFooter {
     /// Warnings associated with generation of the report.
     #[prost(message, repeated, tag = "1")]
     pub warnings: ::std::vec::Vec<ReportWarning>,
-    /// Total number of rows that did match the request.
+    /// Total number of rows that matched the request.
+    ///
+    /// Warning: This count does NOT always match the number of rows in the
+    /// response. Do not make that assumption when processing the response.
     #[prost(int64, tag = "2")]
     pub matching_row_count: i64,
 }
@@ -779,8 +774,8 @@ pub mod generate_network_report_response {
 pub mod ad_mob_api_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " The AdMob API allows AdMob publishers to access their account settings and"]
-    #[doc = " generate reports."]
+    #[doc = " The AdMob API allows AdMob publishers programmatically get information about"]
+    #[doc = " their AdMob account."]
     pub struct AdMobApiClient<T> {
         inner: tonic::client::Grpc<T>,
     }

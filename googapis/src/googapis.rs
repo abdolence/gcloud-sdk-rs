@@ -1926,7 +1926,10 @@ pub mod google {
 }
 pub mod grafeas {
     pub mod v1 {
-        #[cfg(any(feature = "grafeas-v1",))]
+        #[cfg(any(
+            feature = "google-devtools-containeranalysis-v1",
+            feature = "grafeas-v1",
+        ))]
         include_proto!("grafeas.v1");
     }
     pub mod v1beta1 {

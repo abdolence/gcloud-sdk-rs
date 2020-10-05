@@ -90,7 +90,7 @@ pub struct Connection {
     #[prost(bool, tag = "7")]
     pub has_credential: bool,
     /// Properties specific to the underlying data source.
-    #[prost(oneof = "connection::Properties", tags = "4")]
+    #[prost(oneof = "connection::Properties", tags = "4, 8")]
     pub properties: ::std::option::Option<connection::Properties>,
 }
 pub mod connection {
@@ -100,6 +100,9 @@ pub mod connection {
         /// Cloud SQL properties.
         #[prost(message, tag = "4")]
         CloudSql(super::CloudSqlProperties),
+        /// Amazon Web Services (AWS) properties.
+        #[prost(message, tag = "8")]
+        Aws(super::AwsProperties),
     }
 }
 /// Connection properties specific to the Cloud SQL.
@@ -140,6 +143,40 @@ pub struct CloudSqlCredential {
     /// The password for the credential.
     #[prost(string, tag = "2")]
     pub password: std::string::String,
+}
+/// Connection properties specific to Amazon Web Services (AWS).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsProperties {
+    /// Authentication method chosen at connection creation.
+    #[prost(oneof = "aws_properties::AuthenticationMethod", tags = "2")]
+    pub authentication_method: ::std::option::Option<aws_properties::AuthenticationMethod>,
+}
+pub mod aws_properties {
+    /// Authentication method chosen at connection creation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AuthenticationMethod {
+        /// Authentication using Google owned AWS IAM user's access key to assume
+        /// into customer's AWS IAM Role.
+        #[prost(message, tag = "2")]
+        CrossAccountRole(super::AwsCrossAccountRole),
+    }
+}
+/// Authentication method for Amazon Web Services (AWS) that uses Google owned
+/// AWS IAM user's access key to assume into customer's AWS IAM Role.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsCrossAccountRole {
+    /// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
+    /// Connection.
+    #[prost(string, tag = "1")]
+    pub iam_role_id: std::string::String,
+    /// Output only. Google-owned AWS IAM User for a Connection.
+    #[prost(string, tag = "2")]
+    pub iam_user_id: std::string::String,
+    /// Output only. A Google-generated id for representing Connection’s identity in AWS.
+    /// External Id is also used for preventing the Confused Deputy Problem. See
+    /// https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html
+    #[prost(string, tag = "3")]
+    pub external_id: std::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod connection_service_client {

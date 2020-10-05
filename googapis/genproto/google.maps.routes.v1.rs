@@ -545,24 +545,21 @@ pub struct NavigationInstruction {
     #[prost(string, tag = "2")]
     pub instructions: std::string::String,
 }
-/// Traffic density indicator on a contiguous segment of a polyline.
-/// Given a polyline with polyline points P_0, P_1, ... , P_N
-/// (the indexing is zero-based), the SpeedReadingInterval defines an
-/// interval (including the start, exclusing the end point) and describes the
-/// traffic density on the respective interval using the below style categories.
+/// Traffic density indicator on a contiguous segment of a polyline or path.
+/// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
+/// SpeedReadingInterval defines an interval and describes its traffic using the
+/// following categories.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
-    /// The index of the starting polyline point of the interval
-    /// in the ordered list of polyline points.
+    /// The starting index of this interval in the polyline.
     /// In JSON, when the index is 0, the field will appear to be unpopulated.
     #[prost(int32, tag = "1")]
     pub start_polyline_point_index: i32,
-    /// The index of the ending polyline point of the interval
-    /// (with off-by-one ending) in the ordered list of polyline points.
+    /// The ending index of this interval in the polyline.
     /// In JSON, when the index is 0, the field will appear to be unpopulated.
     #[prost(int32, tag = "2")]
     pub end_polyline_point_index: i32,
-    /// Traffic information speed at the interval.
+    /// Traffic speed in this interval.
     #[prost(enumeration = "speed_reading_interval::Speed", tag = "3")]
     pub speed: i32,
 }

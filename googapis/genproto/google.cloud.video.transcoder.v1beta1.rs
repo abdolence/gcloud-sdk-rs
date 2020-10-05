@@ -38,6 +38,15 @@ pub struct Job {
     /// information about the failure when `failure_reason` is present.
     #[prost(message, repeated, tag = "11")]
     pub failure_details: ::std::vec::Vec<FailureDetail>,
+    /// Output only. The time the job was created.
+    #[prost(message, optional, tag = "12")]
+    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the transcoding started.
+    #[prost(message, optional, tag = "13")]
+    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the transcoding finished.
+    #[prost(message, optional, tag = "14")]
+    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Specify the `job_config` for transcoding job. When you use a `template_id`
     /// to create a job, the `Job.config` is populated by the `JobTemplate.config`.
     #[prost(oneof = "job::JobConfig", tags = "4, 5")]
@@ -255,7 +264,7 @@ pub struct MuxStream {
 /// Manifest configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Manifest {
-    /// The name of the generated file. The default is `"master"` with the
+    /// The name of the generated file. The default is `"manifest"` with the
     /// extension suffix corresponding to the `Manifest.type`.
     #[prost(string, tag = "1")]
     pub file_name: std::string::String,
@@ -571,10 +580,14 @@ pub struct VideoStream {
     /// Enforce specified codec preset. The default is `"veryfast"`.
     #[prost(string, tag = "4")]
     pub preset: std::string::String,
-    /// Required. The height of video in pixels. Must be an even integer.
+    /// The height of the video in pixels. Must be an even integer.
+    /// When not specified, the height is adjusted to match the specified width and
+    /// input aspect ratio. If both are omitted, the input height is used.
     #[prost(int32, tag = "5")]
     pub height_pixels: i32,
-    /// Required. The width of video in pixels. Must be an even integer.
+    /// The width of the video in pixels. Must be an even integer.
+    /// When not specified, the width is adjusted to match the specified height and
+    /// input aspect ratio. If both are omitted, the input width is used.
     #[prost(int32, tag = "6")]
     pub width_pixels: i32,
     /// Pixel format to use. The default is `"yuv420p"`.
@@ -637,9 +650,30 @@ pub struct VideoStream {
     /// Must be less than `VideoStream.gop_frame_count` if set. The default is 0.
     #[prost(int32, tag = "19")]
     pub b_frame_count: i32,
-    /// Required. The video frame rate in frames per second. Must be less than or equal to
-    /// 120. Will default to the input frame rate if larger than the input frame
-    /// rate.
+    /// Required. The target video frame rate in frames per second (FPS). Must be less than
+    /// or equal to 120. Will default to the input frame rate if larger than the
+    /// input frame rate. The API will generate an output FPS that is divisible by
+    /// the input FPS, and smaller or equal to the target FPS.
+    ///
+    /// The following table shows the computed video FPS given the target FPS (in
+    /// parenthesis) and input FPS (in the first column):
+    ///
+    /// |        | (30)   | (60)   | (25) | (50) |
+    /// |--------|--------|--------|------|------|
+    /// | 240    | Fail   | Fail   | Fail | Fail |
+    /// | 120    | 30     | 60     | 20   | 30   |
+    /// | 100    | 25     | 50     | 20   | 30   |
+    /// | 50     | 25     | 50     | 20   | 30   |
+    /// | 60     | 30     | 60     | 20   | 30   |
+    /// | 59.94  | 29.97  | 59.94  | 20   | 30   |
+    /// | 48     | 24     | 48     | 20   | 30   |
+    /// | 30     | 30     | 30     | 20   | 30   |
+    /// | 25     | 25     | 25     | 20   | 30   |
+    /// | 24     | 24     | 24     | 20   | 30   |
+    /// | 23.976 | 23.976 | 23.976 | 20   | 30   |
+    /// | 15     | 15     | 15     | 20   | 30   |
+    /// | 12     | 12     | 12     | 20   | 30   |
+    /// | 10     | 10     | 10     | 20   | 30   |
     #[prost(double, tag = "20")]
     pub frame_rate: f64,
     /// Specify the intensity of the adaptive quantizer (AQ). Must be between 0 and
@@ -953,8 +987,8 @@ pub struct CreateJobTemplateRequest {
     /// Required. The ID to use for the job template, which will become the final component
     /// of the job template's resource name.
     ///
-    /// This value should be 4-63 characters, and valid characters
-    /// are `/[a-zA-Z0-9_-_]/`.
+    /// This value should be 4-63 characters, and valid characters must match the
+    /// regular expression `[a-zA-Z][a-zA-Z0-9_-]*`.
     #[prost(string, tag = "3")]
     pub job_template_id: std::string::String,
 }
