@@ -1,3 +1,279 @@
+// OS Config Inventory is a service for collecting and reporting operating
+// system and package information on VM instances.
+
+/// The inventory details of a VM.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Inventory {
+    /// Base level operating system information for the VM.
+    #[prost(message, optional, tag = "1")]
+    pub os_info: ::std::option::Option<inventory::OsInfo>,
+    /// Inventory items related to the VM keyed by an opaque unique identifier for
+    /// each inventory item.  The identifier is unique to each distinct and
+    /// addressable inventory item and will change, when there is a new package
+    /// version.
+    #[prost(map = "string, message", tag = "2")]
+    pub items: ::std::collections::HashMap<std::string::String, inventory::Item>,
+}
+pub mod inventory {
+    /// Operating system information for the VM.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OsInfo {
+        /// The VM hostname.
+        #[prost(string, tag = "9")]
+        pub hostname: std::string::String,
+        /// The operating system long name.
+        /// For example 'Debian GNU/Linux 9' or 'Microsoft Window Server 2019
+        /// Datacenter'.
+        #[prost(string, tag = "2")]
+        pub long_name: std::string::String,
+        /// The operating system short name.
+        /// For example, 'windows' or 'debian'.
+        #[prost(string, tag = "3")]
+        pub short_name: std::string::String,
+        /// The version of the operating system.
+        #[prost(string, tag = "4")]
+        pub version: std::string::String,
+        /// The system architecture of the operating system.
+        #[prost(string, tag = "5")]
+        pub architecture: std::string::String,
+        /// The kernel version of the operating system.
+        #[prost(string, tag = "6")]
+        pub kernel_version: std::string::String,
+        /// The kernel release of the operating system.
+        #[prost(string, tag = "7")]
+        pub kernel_release: std::string::String,
+        /// The current version of the OS Config agent running on the VM.
+        #[prost(string, tag = "8")]
+        pub osconfig_agent_version: std::string::String,
+    }
+    /// A single piece of inventory on a VM.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Item {
+        /// Identifier for this item, unique across items for this VM.
+        #[prost(string, tag = "1")]
+        pub id: std::string::String,
+        /// The origin of this inventory item.
+        #[prost(enumeration = "item::OriginType", tag = "2")]
+        pub origin_type: i32,
+        /// When this inventory item was first detected.
+        #[prost(message, optional, tag = "8")]
+        pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+        /// When this inventory item was last modified.
+        #[prost(message, optional, tag = "9")]
+        pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+        /// The specific type of inventory, correlating to its specific details.
+        #[prost(enumeration = "item::Type", tag = "5")]
+        pub r#type: i32,
+        /// Specific details of this inventory item based on its type.
+        #[prost(oneof = "item::Details", tags = "6, 7")]
+        pub details: ::std::option::Option<item::Details>,
+    }
+    pub mod item {
+        /// The origin of a specific inventory item.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum OriginType {
+            /// Invalid. An origin type must be specified.
+            Unspecified = 0,
+            /// This inventory item was discovered as the result of the agent
+            /// reporting inventory via the reporting API.
+            InventoryReport = 1,
+        }
+        /// The different types of inventory that are tracked on a VM.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum Type {
+            /// Invalid. An type must be specified.
+            Unspecified = 0,
+            /// This represents a package that is installed on the VM.
+            InstalledPackage = 1,
+            /// This represents an update that is available for a package.
+            AvailablePackage = 2,
+        }
+        /// Specific details of this inventory item based on its type.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Details {
+            /// Software package present on the VM instance.
+            #[prost(message, tag = "6")]
+            InstalledPackage(super::SoftwarePackage),
+            /// Software package available to be installed on the VM instance.
+            #[prost(message, tag = "7")]
+            AvailablePackage(super::SoftwarePackage),
+        }
+    }
+    /// Software package information of the operating system.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SoftwarePackage {
+        /// Information about the different types of software packages.
+        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8")]
+        pub details: ::std::option::Option<software_package::Details>,
+    }
+    pub mod software_package {
+        /// Information about the different types of software packages.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Details {
+            /// Yum package info.
+            /// For details about the yum package manager, see
+            /// https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
+            #[prost(message, tag = "1")]
+            YumPackage(super::VersionedPackage),
+            /// Details of an APT package.
+            /// For details about the apt package manager, see
+            /// https://wiki.debian.org/Apt.
+            #[prost(message, tag = "2")]
+            AptPackage(super::VersionedPackage),
+            /// Details of a Zypper package.
+            /// For details about the Zypper package manager, see
+            /// https://en.opensuse.org/SDB:Zypper_manual.
+            #[prost(message, tag = "3")]
+            ZypperPackage(super::VersionedPackage),
+            /// Details of a Googet package.
+            ///  For details about the googet package manager, see
+            ///  https://github.com/google/googet.
+            #[prost(message, tag = "4")]
+            GoogetPackage(super::VersionedPackage),
+            /// Details of a Zypper patch.
+            /// For details about the Zypper package manager, see
+            /// https://en.opensuse.org/SDB:Zypper_manual.
+            #[prost(message, tag = "5")]
+            ZypperPatch(super::ZypperPatch),
+            /// Details of a Windows Update package.
+            /// See https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
+            /// information about Windows Update.
+            #[prost(message, tag = "6")]
+            WuaPackage(super::WindowsUpdatePackage),
+            /// Details of a Windows Quick Fix engineering package.
+            /// See
+            /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+            /// for info in Windows Quick Fix Engineering.
+            #[prost(message, tag = "7")]
+            QfePackage(super::WindowsQuickFixEngineeringPackage),
+            /// Details of a COS package.
+            #[prost(message, tag = "8")]
+            CosPackage(super::VersionedPackage),
+        }
+    }
+    /// Information related to the a standard versioned package.  This includes
+    /// package info for APT, Yum, Zypper, and Googet package managers.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VersionedPackage {
+        /// The name of the package.
+        #[prost(string, tag = "4")]
+        pub package_name: std::string::String,
+        /// The system architecture this package is intended for.
+        #[prost(string, tag = "2")]
+        pub architecture: std::string::String,
+        /// The version of the package.
+        #[prost(string, tag = "3")]
+        pub version: std::string::String,
+    }
+    /// Details related to a Windows Update package.
+    /// Field data and names are taken from Windows Update API IUpdate Interface:
+    /// https://docs.microsoft.com/en-us/windows/win32/api/_wua/
+    /// Descriptive fields like title, and description are localized based on
+    /// the locale of the VM being updated.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsUpdatePackage {
+        /// The localized title of the update package.
+        #[prost(string, tag = "1")]
+        pub title: std::string::String,
+        /// The localized description of the update package.
+        #[prost(string, tag = "2")]
+        pub description: std::string::String,
+        /// The categories that are associated with this update package.
+        #[prost(message, repeated, tag = "3")]
+        pub categories: ::std::vec::Vec<windows_update_package::WindowsUpdateCategory>,
+        /// A collection of Microsoft Knowledge Base article IDs that are associated
+        /// with the update package.
+        #[prost(string, repeated, tag = "4")]
+        pub kb_article_ids: ::std::vec::Vec<std::string::String>,
+        /// A hyperlink to the language-specific support information for the update.
+        #[prost(string, tag = "11")]
+        pub support_url: std::string::String,
+        /// A collection of URLs that provide more information about the update
+        /// package.
+        #[prost(string, repeated, tag = "5")]
+        pub more_info_urls: ::std::vec::Vec<std::string::String>,
+        /// Gets the identifier of an update package.  Stays the same across
+        /// revisions.
+        #[prost(string, tag = "6")]
+        pub update_id: std::string::String,
+        /// The revision number of this update package.
+        #[prost(int32, tag = "7")]
+        pub revision_number: i32,
+        /// The last published date of the update, in (UTC) date and time.
+        #[prost(message, optional, tag = "10")]
+        pub last_deployment_change_time: ::std::option::Option<::prost_types::Timestamp>,
+    }
+    pub mod windows_update_package {
+        /// Categories specified by the Windows Update.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct WindowsUpdateCategory {
+            /// The identifier of the windows update category.
+            #[prost(string, tag = "1")]
+            pub id: std::string::String,
+            /// The name of the windows update category.
+            #[prost(string, tag = "2")]
+            pub name: std::string::String,
+        }
+    }
+    /// Details related to a Zypper Patch.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ZypperPatch {
+        /// The name of the patch.
+        #[prost(string, tag = "5")]
+        pub patch_name: std::string::String,
+        /// The category of the patch.
+        #[prost(string, tag = "2")]
+        pub category: std::string::String,
+        /// The severity specified for this patch
+        #[prost(string, tag = "3")]
+        pub severity: std::string::String,
+        /// Any summary information provided about this patch.
+        #[prost(string, tag = "4")]
+        pub summary: std::string::String,
+    }
+    /// Information related to a Quick Fix Engineering package.
+    /// Fields are taken from Windows QuickFixEngineering Interface and match
+    /// the source names:
+    /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsQuickFixEngineeringPackage {
+        /// A short textual description of the QFE update.
+        #[prost(string, tag = "1")]
+        pub caption: std::string::String,
+        /// A textual description of the QFE update.
+        #[prost(string, tag = "2")]
+        pub description: std::string::String,
+        /// Unique identifier associated with a particular QFE update.
+        #[prost(string, tag = "3")]
+        pub hot_fix_id: std::string::String,
+        /// Date that the QFE update was installed.  Mapped from installed_on field.
+        #[prost(message, optional, tag = "5")]
+        pub install_time: ::std::option::Option<::prost_types::Timestamp>,
+    }
+}
+/// Message encapsulating a value that can be either absolute ("fixed") or
+/// relative ("percent") to a value.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FixedOrPercent {
+    /// Type of the value.
+    #[prost(oneof = "fixed_or_percent::Mode", tags = "1, 2")]
+    pub mode: ::std::option::Option<fixed_or_percent::Mode>,
+}
+pub mod fixed_or_percent {
+    /// Type of the value.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Mode {
+        /// Specifies a fixed value.
+        #[prost(int32, tag = "1")]
+        Fixed(i32),
+        /// Specifies the relative value defined as a percentage, which will be
+        /// multiplied by a reference value.
+        #[prost(int32, tag = "2")]
+        Percent(i32),
+    }
+}
 /// A request message to initiate patching across Compute Engine
 /// instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9,8 +285,8 @@ pub struct ExecutePatchJobRequest {
     /// to 1024 characters.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
-    /// Required. Instances to patch, either explicitly or filtered by some criteria such
-    /// as zone or labels.
+    /// Required. Instances to patch, either explicitly or filtered by some
+    /// criteria such as zone or labels.
     #[prost(message, optional, tag = "7")]
     pub instance_filter: ::std::option::Option<PatchInstanceFilter>,
     /// Patch configuration being applied. If omitted, instances are
@@ -28,6 +304,9 @@ pub struct ExecutePatchJobRequest {
     /// Display name for this patch job. This does not have to be unique.
     #[prost(string, tag = "8")]
     pub display_name: std::string::String,
+    /// Rollout strategy of the patch job.
+    #[prost(message, optional, tag = "9")]
+    pub rollout: ::std::option::Option<PatchRollout>,
 }
 /// Request to get an active or completed patch job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -39,7 +318,8 @@ pub struct GetPatchJobRequest {
 /// Request to list details for all instances that are part of a patch job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPatchJobInstanceDetailsRequest {
-    /// Required. The parent for the instances are in the form of `projects/*/patchJobs/*`.
+    /// Required. The parent for the instances are in the form of
+    /// `projects/*/patchJobs/*`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The maximum number of instance details records to return.  Default is 100.
@@ -120,7 +400,7 @@ pub struct ListPatchJobsResponse {
 /// A high level representation of a patch job that is either in progress
 /// or has completed.
 ///
-/// Instances details are not included in the job. To paginate through instance
+/// Instance details are not included in the job. To paginate through instance
 /// details, use ListPatchJobInstanceDetails.
 ///
 /// For more information about patch jobs, see
@@ -145,7 +425,7 @@ pub struct PatchJob {
     /// Last time this patch job was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// The current state of the PatchJob .
+    /// The current state of the PatchJob.
     #[prost(enumeration = "patch_job::State", tag = "5")]
     pub state: i32,
     /// Instances to patch.
@@ -176,6 +456,9 @@ pub struct PatchJob {
     /// Output only. Name of the patch deployment that created this patch job.
     #[prost(string, tag = "15")]
     pub patch_deployment: std::string::String,
+    /// Rollout strategy being applied.
+    #[prost(message, optional, tag = "16")]
+    pub rollout: ::std::option::Option<PatchRollout>,
 }
 pub mod patch_job {
     /// A summary of the current patch state across all instances that this patch
@@ -623,6 +906,57 @@ pub mod patch_instance_filter {
         pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
     }
 }
+/// Patch rollout configuration specifications. Contains details on the
+/// concurrency control when applying patch(es) to all targeted VMs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PatchRollout {
+    /// Mode of the patch rollout.
+    #[prost(enumeration = "patch_rollout::Mode", tag = "1")]
+    pub mode: i32,
+    /// The maximum number (or percentage) of VMs per zone to disrupt at any given
+    /// moment. The number of VMs calculated from multiplying the percentage by the
+    /// total number of VMs in a zone is rounded up.
+    ///
+    /// During patching, a VM is considered disrupted from the time the agent is
+    /// notified to begin until patching has completed. This disruption time
+    /// includes the time to complete reboot and any post-patch steps.
+    ///
+    /// A VM contributes to the disruption budget if its patching operation fails
+    /// either when applying the patches, running pre or post patch steps, or if it
+    /// fails to respond with a success notification before timing out. VMs that
+    /// are not running or do not have an active agent do not count toward this
+    /// disruption budget.
+    ///
+    /// For zone-by-zone rollouts, if the disruption budget in a zone is exceeded,
+    /// the patch job stops, because continuing to the next zone requires
+    /// completion of the patch process in the previous zone.
+    ///
+    /// For example, if the disruption budget has a fixed value of `10`, and 8 VMs
+    /// fail to patch in the current zone, the patch job continues to patch 2 VMs
+    /// at a time until the zone is completed. When that zone is completed
+    /// successfully, patching begins with 10 VMs at a time in the next zone. If 10
+    /// VMs in the next zone fail to patch, the patch job stops.
+    #[prost(message, optional, tag = "2")]
+    pub disruption_budget: ::std::option::Option<FixedOrPercent>,
+}
+pub mod patch_rollout {
+    /// Type of the rollout.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Mode must be specified.
+        Unspecified = 0,
+        /// Patches are applied one zone at a time. The patch job begins in the
+        /// region with the lowest number of targeted VMs. Within the region,
+        /// patching begins in the zone with the lowest number of targeted VMs. If
+        /// multiple regions (or zones within a region) have the same number of
+        /// targeted VMs, a tie-breaker is achieved by sorting the regions or zones
+        /// in alphabetical order.
+        ZoneByZone = 1,
+        /// Patches are applied to VMs in all zones at the same time.
+        ConcurrentZones = 2,
+    }
+}
 /// Patch deployments are configurations that individual patch jobs use to
 /// complete a patch. These configurations include instance filter, package
 /// repository settings, and a schedule. For more information about creating and
@@ -636,8 +970,8 @@ pub struct PatchDeployment {
     /// This field is ignored when you create a new patch deployment.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Optional. Description of the patch deployment. Length of the description is limited
-    /// to 1024 characters.
+    /// Optional. Description of the patch deployment. Length of the description is
+    /// limited to 1024 characters.
     #[prost(string, tag = "2")]
     pub description: std::string::String,
     /// Required. VM instances to patch.
@@ -646,7 +980,8 @@ pub struct PatchDeployment {
     /// Optional. Patch configuration that is applied.
     #[prost(message, optional, tag = "4")]
     pub patch_config: ::std::option::Option<PatchConfig>,
-    /// Optional. Duration of the patch. After the duration ends, the patch times out.
+    /// Optional. Duration of the patch. After the duration ends, the patch times
+    /// out.
     #[prost(message, optional, tag = "5")]
     pub duration: ::std::option::Option<::prost_types::Duration>,
     /// Output only. Time the patch deployment was created. Timestamp is in
@@ -662,6 +997,9 @@ pub struct PatchDeployment {
     /// format.
     #[prost(message, optional, tag = "10")]
     pub last_execute_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Optional. Rollout strategy of the patch job.
+    #[prost(message, optional, tag = "11")]
+    pub rollout: ::std::option::Option<PatchRollout>,
     /// Schedule for the patch.
     #[prost(oneof = "patch_deployment::Schedule", tags = "6, 7")]
     pub schedule: ::std::option::Option<patch_deployment::Schedule>,
@@ -697,8 +1035,8 @@ pub struct RecurringSchedule {
     /// Defaults to `create_time` of the patch deployment.
     #[prost(message, optional, tag = "2")]
     pub start_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// Optional. The end time at which a recurring patch deployment schedule is no longer
-    /// active.
+    /// Optional. The end time at which a recurring patch deployment schedule is no
+    /// longer active.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Required. Time of the day to run a recurring deployment.
@@ -766,10 +1104,10 @@ pub mod monthly_schedule {
         /// Required. Week day in a month.
         #[prost(message, tag = "1")]
         WeekDayOfMonth(super::WeekDayOfMonth),
-        /// Required. One day of the month. 1-31 indicates the 1st to the 31st day. -1
-        /// indicates the last day of the month.
-        /// Months without the target day will be skipped. For example, a schedule to
-        /// run "every month on the 31st" will not run in February, April, June, etc.
+        /// Required. One day of the month. 1-31 indicates the 1st to the 31st day.
+        /// -1 indicates the last day of the month. Months without the target day
+        /// will be skipped. For example, a schedule to run "every month on the 31st"
+        /// will not run in February, April, June, etc.
         #[prost(int32, tag = "2")]
         MonthDay(i32),
     }
@@ -777,8 +1115,8 @@ pub mod monthly_schedule {
 /// Represents one week day in a month. An example is "the 4th Sunday".
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WeekDayOfMonth {
-    /// Required. Week number in a month. 1-4 indicates the 1st to 4th week of the month. -1
-    /// indicates the last week of the month.
+    /// Required. Week number in a month. 1-4 indicates the 1st to 4th week of the
+    /// month. -1 indicates the last week of the month.
     #[prost(int32, tag = "1")]
     pub week_ordinal: i32,
     /// Required. A day of the week.
@@ -788,11 +1126,12 @@ pub struct WeekDayOfMonth {
 /// A request message for creating a patch deployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePatchDeploymentRequest {
-    /// Required. The project to apply this patch deployment to in the form `projects/*`.
+    /// Required. The project to apply this patch deployment to in the form
+    /// `projects/*`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. A name for the patch deployment in the project. When creating a name
-    /// the following rules apply:
+    /// Required. A name for the patch deployment in the project. When creating a
+    /// name the following rules apply:
     /// * Must contain only lowercase letters, numbers, and hyphens.
     /// * Must start with a letter.
     /// * Must be between 1-63 characters.
@@ -818,11 +1157,13 @@ pub struct ListPatchDeploymentsRequest {
     /// Required. The resource name of the parent in the form `projects/*`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Optional. The maximum number of patch deployments to return. Default is 100.
+    /// Optional. The maximum number of patch deployments to return. Default is
+    /// 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A pagination token returned from a previous call to ListPatchDeployments
-    /// that indicates where this listing should continue from.
+    /// Optional. A pagination token returned from a previous call to
+    /// ListPatchDeployments that indicates where this listing should continue
+    /// from.
     #[prost(string, tag = "3")]
     pub page_token: std::string::String,
 }

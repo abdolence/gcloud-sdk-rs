@@ -16,7 +16,10 @@ pub struct Account {
     #[prost(string, tag = "4")]
     pub display_name: std::string::String,
     /// Country of business. Must be a non-deprecated code for a UN M.49 region.
-    /// https://unicode.org/cldr/charts/latest/supplemental/territory_containment_un_m_49.html
+    ///
+    /// https:
+    /// //unicode.org/cldr/charts/latest/supplem
+    /// // ental/territory_containment_un_m_49.html
     #[prost(string, tag = "5")]
     pub country_code: std::string::String,
     /// Output only. Indicates whether this Account is soft-deleted or not. Deleted
@@ -24,7 +27,7 @@ pub struct Account {
     #[prost(bool, tag = "6")]
     pub deleted: bool,
 }
-/// A resource message representing a Google Analytics App+Web property.
+/// A resource message representing a Google Analytics GA4 property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// Output only. Resource name of this property.
@@ -221,6 +224,7 @@ pub struct AuditUserLink {
 pub struct EnhancedMeasurementSettings {
     /// Output only. Resource name of this Data Stream.
     /// Format:
+    ///
     /// properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
     /// Example: "properties/1000/webDataStreams/2000/enhancedMeasurementSettings"
     #[prost(string, tag = "1")]
@@ -295,7 +299,7 @@ pub struct EnhancedMeasurementSettings {
     #[prost(string, tag = "18")]
     pub excluded_domains: std::string::String,
 }
-/// A link between an App+Web property and a Firebase project.
+/// A link between an GA4 property and a Firebase project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirebaseLink {
     /// Output only. Example format: properties/1234/firebaseLinks/5678
@@ -313,7 +317,7 @@ pub struct FirebaseLink {
     /// Output only. Time when this FirebaseLink was originally created.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// Maximum user access to the App + Web property allowed to admins of
+    /// Maximum user access to the GA4 property allowed to admins of
     /// the linked Firebase project.
     #[prost(enumeration = "MaximumUserAccess", tag = "4")]
     pub maximum_user_access: i32,
@@ -327,7 +331,7 @@ pub struct GlobalSiteTag {
     #[prost(string, tag = "1")]
     pub snippet: std::string::String,
 }
-/// A link between an App+Web property and a Google Ads account.
+/// A link between an GA4 property and a Google Ads account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsLink {
     /// Output only. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
@@ -390,6 +394,57 @@ pub struct DataSharingSettings {
     #[prost(bool, tag = "6")]
     pub sharing_with_others_enabled: bool,
 }
+/// A virtual resource representing an overview of an account and
+/// all its child GA4 properties.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccountSummary {
+    /// Resource name for this account summary.
+    /// Format: accountSummaries/{account_id}
+    /// Example: "accountSummaries/1000"
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// Resource name of account referred to by this account summary
+    /// Format: accounts/{account_id}
+    /// Example: "accounts/1000"
+    #[prost(string, tag = "2")]
+    pub account: std::string::String,
+    /// Display name for the account referred to in this account summary.
+    #[prost(string, tag = "3")]
+    pub display_name: std::string::String,
+    /// List of summaries for child accounts of this account.
+    #[prost(message, repeated, tag = "4")]
+    pub property_summaries: ::std::vec::Vec<PropertySummary>,
+}
+/// A virtual resource representing metadata for an GA4 property.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PropertySummary {
+    /// Resource name of property referred to by this property summary
+    /// Format: properties/{property_id}
+    /// Example: "properties/1000"
+    #[prost(string, tag = "1")]
+    pub property: std::string::String,
+    /// Display name for the property referred to in this account summary.
+    #[prost(string, tag = "2")]
+    pub display_name: std::string::String,
+}
+/// Maximum access settings that Firebase user receive on the linked Analytics
+/// property.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MaximumUserAccess {
+    /// Unspecified maximum user access.
+    Unspecified = 0,
+    /// Firebase users have no access to the Analytics property.
+    NoAccess = 1,
+    /// Firebase users have Read & Analyze access to the Analytics property.
+    ReadAndAnalyze = 2,
+    /// Firebase users have edit access to the Analytics property, but may not
+    /// manage the Firebase link.
+    EditorWithoutLinkManagement = 3,
+    /// Firebase users have edit access to the Analytics property and may manage
+    /// the Firebase link.
+    EditorIncludingLinkManagement = 4,
+}
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -448,24 +503,6 @@ pub enum IndustryCategory {
     JobsAndEducation = 25,
     /// Shopping
     Shopping = 26,
-}
-/// Maximum access settings that Firebase user receive on the linked Analytics
-/// property.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum MaximumUserAccess {
-    /// Unspecified maximum user access.
-    Unspecified = 0,
-    /// Firebase users have no access to the Analytics property.
-    NoAccess = 1,
-    /// Firebase users have Read & Analyze access to the Analytics property.
-    ReadAndAnalyze = 2,
-    /// Firebase users have edit access to the Analytics property, but may not
-    /// manage the Firebase link.
-    EditorWithoutLinkManagement = 3,
-    /// Firebase users have edit access to the Analytics property and may manage
-    /// the Firebase link.
-    EditorIncludingLinkManagement = 4,
 }
 /// Request message for GetAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -732,8 +769,8 @@ pub struct CreateUserLinkRequest {
     /// Required. Example format: accounts/1234
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Optional. If notify_new_user is set, then email new user that they've been given
-    /// permissions on the resource.
+    /// Optional. If set, then email the new user notifying them that they've been granted
+    /// permissions to the resource.
     #[prost(bool, tag = "2")]
     pub notify_new_user: bool,
     /// Required. The user link to create.
@@ -749,11 +786,12 @@ pub struct BatchCreateUserLinksRequest {
     /// Example format: accounts/1234
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Optional. If notify_new_users is set, then email new users that they've been given
-    /// permissions on the resource.
+    /// Optional. If set, then email the new users notifying them that they've been granted
+    /// permissions to the resource. Regardless of whether this is set or not,
+    /// notify_new_user field inside each individual request is ignored.
     #[prost(bool, tag = "2")]
     pub notify_new_users: bool,
-    /// The requests specifying the user links to create.
+    /// Required. The requests specifying the user links to create.
     /// A maximum of 1000 user links can be created in a batch.
     #[prost(message, repeated, tag = "3")]
     pub requests: ::std::vec::Vec<CreateUserLinkRequest>,
@@ -781,7 +819,7 @@ pub struct BatchUpdateUserLinksRequest {
     /// Example format: accounts/1234
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// The requests specifying the user links to update.
+    /// Required. The requests specifying the user links to update.
     /// A maximum of 1000 user links can be updated in a batch.
     #[prost(message, repeated, tag = "2")]
     pub requests: ::std::vec::Vec<UpdateUserLinkRequest>,
@@ -809,7 +847,7 @@ pub struct BatchDeleteUserLinksRequest {
     /// Example format: accounts/1234
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// The requests specifying the user links to update.
+    /// Required. The requests specifying the user links to update.
     /// A maximum of 1000 user links can be updated in a batch.
     #[prost(message, repeated, tag = "2")]
     pub requests: ::std::vec::Vec<DeleteUserLinkRequest>,
@@ -1034,6 +1072,7 @@ pub struct ListAndroidAppDataStreamsResponse {
 pub struct GetEnhancedMeasurementSettingsRequest {
     /// Required. The name of the settings to lookup.
     /// Format:
+    ///
     /// properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
     /// Example: "properties/1000/webDataStreams/2000/enhancedMeasurementSettings"
     #[prost(string, tag = "1")]
@@ -1170,11 +1209,38 @@ pub struct GetDataSharingSettingsRequest {
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
+/// Request message for ListAccountSummaries RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccountSummariesRequest {
+    /// The maximum number of AccountSummary resources to return. The service may
+    /// return fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListAccountSummaries` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListAccountSummaries`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "2")]
+    pub page_token: std::string::String,
+}
+/// Response message for ListAccountSummaries RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccountSummariesResponse {
+    /// Account summaries of all accounts the caller has access to.
+    #[prost(message, repeated, tag = "1")]
+    pub account_summaries: ::std::vec::Vec<AccountSummary>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+}
 #[doc = r" Generated client implementations."]
 pub mod analytics_admin_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Service Interface for the Analytics Admin API (App+Web)."]
+    #[doc = " Service Interface for the Analytics Admin API (GA4)."]
     pub struct AnalyticsAdminServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -1214,7 +1280,7 @@ pub mod analytics_admin_service_client {
         }
         #[doc = " Returns all accounts accessible by the caller."]
         #[doc = ""]
-        #[doc = " Note that these accounts might not currently have App+Web properties."]
+        #[doc = " Note that these accounts might not currently have GA4 properties."]
         #[doc = " Soft-deleted (ie: \"trashed\") accounts are excluded by default."]
         #[doc = " Returns an empty list if no relevant accounts are found."]
         pub async fn list_accounts(
@@ -1294,10 +1360,27 @@ pub mod analytics_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lookup for a single \"App+Web\" Property."]
+        #[doc = " Returns summaries of all accounts accessible by the caller."]
+        pub async fn list_account_summaries(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAccountSummariesRequest>,
+        ) -> Result<tonic::Response<super::ListAccountSummariesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListAccountSummaries",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lookup for a single \"GA4\" Property."]
         #[doc = ""]
         #[doc = " Throws \"Target not found\" if no such property found, if property is not"]
-        #[doc = " of the type \"App+Web\", or if caller does not have permissions to access it."]
+        #[doc = " of the type \"GA4\", or if caller does not have permissions to access it."]
         pub async fn get_property(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPropertyRequest>,
@@ -1316,7 +1399,7 @@ pub mod analytics_admin_service_client {
         }
         #[doc = " Returns child Properties under the specified parent Account."]
         #[doc = ""]
-        #[doc = " Only \"App+Web\" properties will be returned."]
+        #[doc = " Only \"GA4\" properties will be returned."]
         #[doc = " Properties will be excluded if the caller does not have access."]
         #[doc = " Soft-deleted (ie: \"trashed\") properties are excluded by default."]
         #[doc = " Returns an empty list if no relevant properties are found."]
@@ -1336,7 +1419,7 @@ pub mod analytics_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an \"App+Web\" property with the specified location and attributes."]
+        #[doc = " Creates an \"GA4\" property with the specified location and attributes."]
         pub async fn create_property(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePropertyRequest>,
@@ -1363,7 +1446,7 @@ pub mod analytics_admin_service_client {
         #[doc = " will be permanently purged."]
         #[doc = " https://support.google.com/analytics/answer/6154772"]
         #[doc = ""]
-        #[doc = " Returns an error if the target is not found, or is not an App+Web Property."]
+        #[doc = " Returns an error if the target is not found, or is not an GA4 Property."]
         pub async fn delete_property(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePropertyRequest>,

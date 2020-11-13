@@ -44,9 +44,6 @@ pub struct Structure {
     /// Structure traits.
     #[prost(message, optional, tag = "2")]
     pub traits: ::std::option::Option<::prost_types::Struct>,
-    /// Assignee details of the structure.
-    #[prost(message, repeated, tag = "3")]
-    pub parent_relations: ::std::vec::Vec<StructureParentRelation>,
 }
 /// Room resource represents an instance of sub-space within a structure such as
 /// rooms in a hotel suite or rental apartment.
@@ -59,19 +56,6 @@ pub struct Room {
     /// Room traits.
     #[prost(message, optional, tag = "2")]
     pub traits: ::std::option::Option<::prost_types::Struct>,
-}
-/// Represents structure assignee relationships, for instance, group to which the
-/// structure is assigned to.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StructureParentRelation {
-    /// Output only. The name of the relation -- e.g., group to which the structure
-    /// is assigned to. For example: "enterprises/XYZ/groups/ABC"
-    #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Output only. The custom name of the relation -- e.g., group, to which the
-    /// structure is assigned to.
-    #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
 }
 /// Request message for SmartDeviceManagementService.GetDevice
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -96,10 +80,8 @@ pub struct ListDevicesRequest {
     pub page_token: std::string::String,
     /// Optional filter to list devices.
     ///
-    /// Filters can match the exact assignee (could be a structure or a room).
-    /// E.g. 'assignee=enterprises/XYZ/structures/abc'
-    /// Also could filter by parent (group):
-    /// 'parent=enterprises/XYZ/groups/jkl'
+    /// Filters can match the exact parent (could be a structure or a room):
+    /// 'parent=enterprises/XYZ/structures/jkl'
     /// or filter by device custom name (substring match):
     /// 'customName=wing'
     #[prost(string, tag = "4")]
@@ -159,11 +141,6 @@ pub struct ListStructuresRequest {
     #[prost(string, tag = "3")]
     pub page_token: std::string::String,
     /// Optional filter to list structures.
-    ///
-    /// Filters can match the exact album assigned to the structure.
-    /// E.g. 'album=enterprises/XYZ/albums/abc'
-    /// It also support filtering by parent (only groups for now):
-    /// E.g. 'parent=enterprises/XYZ/groups/124'
     #[prost(string, tag = "4")]
     pub filter: std::string::String,
 }

@@ -5770,6 +5770,8 @@ pub mod positive_geo_target_type_enum {
         PresenceOrInterest = 5,
         /// Specifies that an ad is triggered if the user
         /// searches for advertiser's targeted locations.
+        /// This can only be used with Search and standard
+        /// Shopping campaigns.
         SearchInterest = 6,
         /// Specifies that an ad is triggered if the user is in
         /// or regularly in advertiser's targeted locations.

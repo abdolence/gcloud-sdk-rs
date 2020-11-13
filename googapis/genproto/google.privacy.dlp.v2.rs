@@ -471,27 +471,31 @@ pub mod storage_config {
     /// Currently only supported when inspecting Google Cloud Storage and BigQuery.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimespanConfig {
-        /// Exclude files or rows older than this value.
+        /// Exclude files, tables, or rows older than this value.
+        /// If not set, no lower time limit is applied.
         #[prost(message, optional, tag = "1")]
         pub start_time: ::std::option::Option<::prost_types::Timestamp>,
-        /// Exclude files or rows newer than this value.
-        /// If set to zero, no upper time limit is applied.
+        /// Exclude files, tables, or rows newer than this value.
+        /// If not set, no upper time limit is applied.
         #[prost(message, optional, tag = "2")]
         pub end_time: ::std::option::Option<::prost_types::Timestamp>,
         /// Specification of the field containing the timestamp of scanned items.
         /// Used for data sources like Datastore and BigQuery.
         ///
         /// For BigQuery:
-        /// Required to filter out rows based on the given start and
-        /// end times. If not specified and the table was modified between the given
-        /// start and end times, the entire table will be scanned.
-        /// The valid data types of the timestamp field are: `INTEGER`, `DATE`,
-        /// `TIMESTAMP`, or `DATETIME` BigQuery column.
+        /// If this value is not specified and the table was modified between the
+        /// given start and end times, the entire table will be scanned. If this
+        /// value is specified, then rows are filtered based on the given start and
+        /// end times. Rows with a `NULL` value in the provided BigQuery column are
+        /// skipped.
+        /// Valid data types of the provided BigQuery column are: `INTEGER`, `DATE`,
+        /// `TIMESTAMP`, and `DATETIME`.
         ///
-        /// For Datastore.
-        /// Valid data types of the timestamp field are: `TIMESTAMP`.
-        /// Datastore entity will be scanned if the timestamp property does not
-        /// exist or its value is empty or invalid.
+        /// For Datastore:
+        /// If this value is specified, then entities are filtered based on the given
+        /// start and end times. If an entity does not contain the provided timestamp
+        /// property or contains empty or invalid values, then it is included.
+        /// Valid data types of the provided timestamp property are: `TIMESTAMP`.
         #[prost(message, optional, tag = "3")]
         pub timestamp_field: ::std::option::Option<super::FieldId>,
         /// When the job is started by a JobTrigger we will automatically figure out
@@ -2035,6 +2039,10 @@ pub struct AnalyzeDataSourceRiskDetails {
     /// Input dataset to compute metrics over.
     #[prost(message, optional, tag = "2")]
     pub requested_source_table: ::std::option::Option<BigQueryTable>,
+    /// The configuration used for this job.
+    #[prost(message, optional, tag = "10")]
+    pub requested_options:
+        ::std::option::Option<analyze_data_source_risk_details::RequestedRiskAnalysisOptions>,
     /// Values associated with this metric.
     #[prost(
         oneof = "analyze_data_source_risk_details::Result",
@@ -2297,6 +2305,13 @@ pub mod analyze_data_source_risk_details {
             #[prost(int64, tag = "7")]
             pub bucket_value_count: i64,
         }
+    }
+    /// Risk analysis options.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RequestedRiskAnalysisOptions {
+        /// The job config for the risk job.
+        #[prost(message, optional, tag = "1")]
+        pub job_config: ::std::option::Option<super::RiskAnalysisJobConfig>,
     }
     /// Values associated with this metric.
     #[derive(Clone, PartialEq, ::prost::Oneof)]

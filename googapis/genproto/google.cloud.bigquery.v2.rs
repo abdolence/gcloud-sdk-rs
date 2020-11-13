@@ -69,6 +69,8 @@ pub mod standard_sql_data_type {
         Geography = 22,
         /// Encoded as a decimal string.
         Numeric = 23,
+        /// Encoded as a decimal string.
+        Bignumeric = 24,
         /// Encoded as a list with types matching Type.array_type.
         Array = 16,
         /// Encoded as a list with fields of type Type.struct_type[i]. List is used
@@ -101,6 +103,22 @@ pub struct StandardSqlField {
 pub struct StandardSqlStructType {
     #[prost(message, repeated, tag = "1")]
     pub fields: ::std::vec::Vec<StandardSqlField>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableReference {
+    /// Required. The ID of the project containing this table.
+    #[prost(string, tag = "1")]
+    pub project_id: std::string::String,
+    /// Required. The ID of the dataset containing this table.
+    #[prost(string, tag = "2")]
+    pub dataset_id: std::string::String,
+    /// Required. The ID of the table. The ID must contain only
+    /// letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum
+    /// length is 1,024 characters.  Certain operations allow
+    /// suffixing of the table ID with a partition decorator, such as
+    /// `sample_table$20190123`.
+    #[prost(string, tag = "3")]
+    pub table_id: std::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
@@ -143,7 +161,8 @@ pub struct Model {
     pub location: std::string::String,
     /// Custom encryption configuration (e.g., Cloud KMS keys). This shows the
     /// encryption configuration of the model data while stored in BigQuery
-    /// storage.
+    /// storage. This field can be used with PatchModel to update encryption key
+    /// for an already encrypted model.
     #[prost(message, optional, tag = "17")]
     pub encryption_configuration: ::std::option::Option<EncryptionConfiguration>,
     /// Output only. Type of the model resource.
@@ -162,6 +181,27 @@ pub struct Model {
 }
 pub mod model {
     #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SeasonalPeriod {}
+    pub mod seasonal_period {
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum SeasonalPeriodType {
+            Unspecified = 0,
+            /// No seasonality
+            NoSeasonality = 1,
+            /// Daily period, 24 hours.
+            Daily = 2,
+            /// Weekly period, 7 days.
+            Weekly = 3,
+            /// Monthly period, 30 days or irregular.
+            Monthly = 4,
+            /// Quarterly period, 90 days or irregular.
+            Quarterly = 5,
+            /// Yearly period, 365 days or irregular.
+            Yearly = 6,
+        }
+    }
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KmeansEnums {}
     pub mod kmeans_enums {
         /// Indicates the method used to initialize the centroids for KMeans
@@ -175,6 +215,8 @@ pub mod model {
             /// Initializes the centroids using data specified in
             /// kmeans_initialization_column.
             Custom = 2,
+            /// Initializes with kmeans++.
+            KmeansPlusPlus = 3,
         }
     }
     /// Evaluation metrics for regression and explicit feedback type matrix
@@ -410,12 +452,93 @@ pub mod model {
             }
         }
     }
+    /// Evaluation metrics used by weighted-ALS models specified by
+    /// feedback_type=implicit.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RankingMetrics {
+        /// Calculates a precision per user for all the items by ranking them and
+        /// then averages all the precisions across all the users.
+        #[prost(message, optional, tag = "1")]
+        pub mean_average_precision: ::std::option::Option<f64>,
+        /// Similar to the mean squared error computed in regression and explicit
+        /// recommendation models except instead of computing the rating directly,
+        /// the output from evaluate is computed against a preference which is 1 or 0
+        /// depending on if the rating exists or not.
+        #[prost(message, optional, tag = "2")]
+        pub mean_squared_error: ::std::option::Option<f64>,
+        /// A metric to determine the goodness of a ranking calculated from the
+        /// predicted confidence by comparing it to an ideal rank measured by the
+        /// original ratings.
+        #[prost(message, optional, tag = "3")]
+        pub normalized_discounted_cumulative_gain: ::std::option::Option<f64>,
+        /// Determines the goodness of a ranking by computing the percentile rank
+        /// from the predicted confidence and dividing it by the original rank.
+        #[prost(message, optional, tag = "4")]
+        pub average_rank: ::std::option::Option<f64>,
+    }
+    /// Model evaluation metrics for ARIMA forecasting models.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ArimaForecastingMetrics {
+        /// Non-seasonal order.
+        #[prost(message, repeated, tag = "1")]
+        pub non_seasonal_order: ::std::vec::Vec<ArimaOrder>,
+        /// Arima model fitting metrics.
+        #[prost(message, repeated, tag = "2")]
+        pub arima_fitting_metrics: ::std::vec::Vec<ArimaFittingMetrics>,
+        /// Seasonal periods. Repeated because multiple periods are supported for one
+        /// time series.
+        #[prost(
+            enumeration = "seasonal_period::SeasonalPeriodType",
+            repeated,
+            tag = "3"
+        )]
+        pub seasonal_periods: ::std::vec::Vec<i32>,
+        /// Whether Arima model fitted with drift or not. It is always false when d
+        /// is not 1.
+        #[prost(bool, repeated, tag = "4")]
+        pub has_drift: ::std::vec::Vec<bool>,
+        /// Id to differentiate different time series for the large-scale case.
+        #[prost(string, repeated, tag = "5")]
+        pub time_series_id: ::std::vec::Vec<std::string::String>,
+        /// Repeated as there can be many metric sets (one for each model) in
+        /// auto-arima and the large-scale case.
+        #[prost(message, repeated, tag = "6")]
+        pub arima_single_model_forecasting_metrics:
+            ::std::vec::Vec<arima_forecasting_metrics::ArimaSingleModelForecastingMetrics>,
+    }
+    pub mod arima_forecasting_metrics {
+        /// Model evaluation metrics for a single ARIMA forecasting model.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ArimaSingleModelForecastingMetrics {
+            /// Non-seasonal order.
+            #[prost(message, optional, tag = "1")]
+            pub non_seasonal_order: ::std::option::Option<super::ArimaOrder>,
+            /// Arima fitting metrics.
+            #[prost(message, optional, tag = "2")]
+            pub arima_fitting_metrics: ::std::option::Option<super::ArimaFittingMetrics>,
+            /// Is arima model fitted with drift or not. It is always false when d
+            /// is not 1.
+            #[prost(bool, tag = "3")]
+            pub has_drift: bool,
+            /// The id to indicate different time series.
+            #[prost(string, tag = "4")]
+            pub time_series_id: std::string::String,
+            /// Seasonal periods. Repeated because multiple periods are supported
+            /// for one time series.
+            #[prost(
+                enumeration = "super::seasonal_period::SeasonalPeriodType",
+                repeated,
+                tag = "5"
+            )]
+            pub seasonal_periods: ::std::vec::Vec<i32>,
+        }
+    }
     /// Evaluation metrics of a model. These are either computed on all training
     /// data or just the eval data based on whether eval data was used during
     /// training. These are not present for imported models.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EvaluationMetrics {
-        #[prost(oneof = "evaluation_metrics::Metrics", tags = "1, 2, 3, 4")]
+        #[prost(oneof = "evaluation_metrics::Metrics", tags = "1, 2, 3, 4, 5, 6")]
         pub metrics: ::std::option::Option<evaluation_metrics::Metrics>,
     }
     pub mod evaluation_metrics {
@@ -434,6 +557,77 @@ pub mod model {
             /// Populated for clustering models.
             #[prost(message, tag = "4")]
             ClusteringMetrics(super::ClusteringMetrics),
+            /// Populated for implicit feedback type matrix factorization models.
+            #[prost(message, tag = "5")]
+            RankingMetrics(super::RankingMetrics),
+            /// Populated for ARIMA models.
+            #[prost(message, tag = "6")]
+            ArimaForecastingMetrics(super::ArimaForecastingMetrics),
+        }
+    }
+    /// Data split result. This contains references to the training and evaluation
+    /// data tables that were used to train the model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataSplitResult {
+        /// Table reference of the training data after split.
+        #[prost(message, optional, tag = "1")]
+        pub training_table: ::std::option::Option<super::TableReference>,
+        /// Table reference of the evaluation data after split.
+        #[prost(message, optional, tag = "2")]
+        pub evaluation_table: ::std::option::Option<super::TableReference>,
+    }
+    /// Arima order, can be used for both non-seasonal and seasonal parts.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ArimaOrder {
+        /// Order of the autoregressive part.
+        #[prost(int64, tag = "1")]
+        pub p: i64,
+        /// Order of the differencing part.
+        #[prost(int64, tag = "2")]
+        pub d: i64,
+        /// Order of the moving-average part.
+        #[prost(int64, tag = "3")]
+        pub q: i64,
+    }
+    /// ARIMA model fitting metrics.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ArimaFittingMetrics {
+        /// Log-likelihood.
+        #[prost(double, tag = "1")]
+        pub log_likelihood: f64,
+        /// AIC.
+        #[prost(double, tag = "2")]
+        pub aic: f64,
+        /// Variance.
+        #[prost(double, tag = "3")]
+        pub variance: f64,
+    }
+    /// Global explanations containing the top most important features
+    /// after training.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GlobalExplanation {
+        /// A list of the top global explanations. Sorted by absolute value of
+        /// attribution in descending order.
+        #[prost(message, repeated, tag = "1")]
+        pub explanations: ::std::vec::Vec<global_explanation::Explanation>,
+        /// Class label for this set of global explanations. Will be empty/null for
+        /// binary logistic and linear regression models. Sorted alphabetically in
+        /// descending order.
+        #[prost(string, tag = "2")]
+        pub class_label: std::string::String,
+    }
+    pub mod global_explanation {
+        /// Explanation for a single feature.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Explanation {
+            /// Full name of the feature. For non-numerical features, will be
+            /// formatted like <column_name>.<encoded_feature_name>. Overall size of
+            /// feature name will always be truncated to first 120 characters.
+            #[prost(string, tag = "1")]
+            pub feature_name: std::string::String,
+            /// Attribution of feature.
+            #[prost(message, optional, tag = "2")]
+            pub attribution: ::std::option::Option<f64>,
         }
     }
     /// Information about a single training query run for the model.
@@ -453,6 +647,15 @@ pub mod model {
         /// end of training.
         #[prost(message, optional, tag = "7")]
         pub evaluation_metrics: ::std::option::Option<EvaluationMetrics>,
+        /// Data split result of the training run. Only set when the input data is
+        /// actually split.
+        #[prost(message, optional, tag = "9")]
+        pub data_split_result: ::std::option::Option<DataSplitResult>,
+        /// Global explanations for important features of the model. For multi-class
+        /// models, there is one entry for each label class. For other models, there
+        /// is only one entry in the list.
+        #[prost(message, repeated, tag = "10")]
+        pub global_explanations: ::std::vec::Vec<GlobalExplanation>,
     }
     pub mod training_run {
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -521,6 +724,12 @@ pub mod model {
             /// training data. Only applicable for classification models.
             #[prost(map = "string, double", tag = "17")]
             pub label_class_weights: ::std::collections::HashMap<std::string::String, f64>,
+            /// User column specified for matrix factorization models.
+            #[prost(string, tag = "18")]
+            pub user_column: std::string::String,
+            /// Item column specified for matrix factorization models.
+            #[prost(string, tag = "19")]
+            pub item_column: std::string::String,
             /// Distance type for clustering models.
             #[prost(enumeration = "super::DistanceType", tag = "20")]
             pub distance_type: i32,
@@ -534,6 +743,36 @@ pub mod model {
             /// Optimization strategy for training linear regression models.
             #[prost(enumeration = "super::OptimizationStrategy", tag = "23")]
             pub optimization_strategy: i32,
+            /// Hidden units for dnn models.
+            #[prost(int64, repeated, tag = "24")]
+            pub hidden_units: ::std::vec::Vec<i64>,
+            /// Batch size for dnn models.
+            #[prost(int64, tag = "25")]
+            pub batch_size: i64,
+            /// Dropout probability for dnn models.
+            #[prost(message, optional, tag = "26")]
+            pub dropout: ::std::option::Option<f64>,
+            /// Maximum depth of a tree for boosted tree models.
+            #[prost(int64, tag = "27")]
+            pub max_tree_depth: i64,
+            /// Subsample fraction of the training data to grow tree to prevent
+            /// overfitting for boosted tree models.
+            #[prost(double, tag = "28")]
+            pub subsample: f64,
+            /// Minimum split loss for boosted tree models.
+            #[prost(message, optional, tag = "29")]
+            pub min_split_loss: ::std::option::Option<f64>,
+            /// Num factors specified for matrix factorization models.
+            #[prost(int64, tag = "30")]
+            pub num_factors: i64,
+            /// Feedback type that specifies which algorithm to run for matrix
+            /// factorization.
+            #[prost(enumeration = "super::FeedbackType", tag = "31")]
+            pub feedback_type: i32,
+            /// Hyperparameter for matrix factoration when implicit feedback type is
+            /// specified.
+            #[prost(message, optional, tag = "32")]
+            pub wals_alpha: ::std::option::Option<f64>,
             /// The method used to initialize the centroids for kmeans algorithm.
             #[prost(
                 enumeration = "super::kmeans_enums::KmeansInitializationMethod",
@@ -544,6 +783,47 @@ pub mod model {
             /// when kmeans_initialization_method is CUSTOM.
             #[prost(string, tag = "34")]
             pub kmeans_initialization_column: std::string::String,
+            /// Column to be designated as time series timestamp for ARIMA model.
+            #[prost(string, tag = "35")]
+            pub time_series_timestamp_column: std::string::String,
+            /// Column to be designated as time series data for ARIMA model.
+            #[prost(string, tag = "36")]
+            pub time_series_data_column: std::string::String,
+            /// Whether to enable auto ARIMA or not.
+            #[prost(bool, tag = "37")]
+            pub auto_arima: bool,
+            /// A specification of the non-seasonal part of the ARIMA model: the three
+            /// components (p, d, q) are the AR order, the degree of differencing, and
+            /// the MA order.
+            #[prost(message, optional, tag = "38")]
+            pub non_seasonal_order: ::std::option::Option<super::ArimaOrder>,
+            /// The data frequency of a time series.
+            #[prost(enumeration = "super::DataFrequency", tag = "39")]
+            pub data_frequency: i32,
+            /// Include drift when fitting an ARIMA model.
+            #[prost(bool, tag = "41")]
+            pub include_drift: bool,
+            /// The geographical region based on which the holidays are considered in
+            /// time series modeling. If a valid value is specified, then holiday
+            /// effects modeling is enabled.
+            #[prost(enumeration = "super::HolidayRegion", tag = "42")]
+            pub holiday_region: i32,
+            /// The id column that will be used to indicate different time series to
+            /// forecast in parallel.
+            #[prost(string, tag = "43")]
+            pub time_series_id_column: std::string::String,
+            /// The number of periods ahead that need to be forecasted.
+            #[prost(int64, tag = "44")]
+            pub horizon: i64,
+            /// Whether to preserve the input structs in output feature names.
+            /// Suppose there is a struct A with field b.
+            /// When false (default), the output feature name is A_b.
+            /// When true, the output feature name is A.b.
+            #[prost(bool, tag = "45")]
+            pub preserve_input_structs: bool,
+            /// The max value of non-seasonal p and q.
+            #[prost(int64, tag = "46")]
+            pub auto_arima_max_order: i64,
         }
         /// Information about a single iteration of the training run.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -566,6 +846,8 @@ pub mod model {
             /// Information about top clusters for clustering models.
             #[prost(message, repeated, tag = "8")]
             pub cluster_infos: ::std::vec::Vec<iteration_result::ClusterInfo>,
+            #[prost(message, optional, tag = "9")]
+            pub arima_result: ::std::option::Option<iteration_result::ArimaResult>,
         }
         pub mod iteration_result {
             /// Information about a single cluster for clustering model.
@@ -582,6 +864,67 @@ pub mod model {
                 #[prost(message, optional, tag = "3")]
                 pub cluster_size: ::std::option::Option<i64>,
             }
+            /// (Auto-)arima fitting result. Wrap everything in ArimaResult for easier
+            /// refactoring if we want to use model-specific iteration results.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ArimaResult {
+                /// This message is repeated because there are multiple arima models
+                /// fitted in auto-arima. For non-auto-arima model, its size is one.
+                #[prost(message, repeated, tag = "1")]
+                pub arima_model_info: ::std::vec::Vec<arima_result::ArimaModelInfo>,
+                /// Seasonal periods. Repeated because multiple periods are supported for
+                /// one time series.
+                #[prost(
+                    enumeration = "super::super::seasonal_period::SeasonalPeriodType",
+                    repeated,
+                    tag = "2"
+                )]
+                pub seasonal_periods: ::std::vec::Vec<i32>,
+            }
+            pub mod arima_result {
+                /// Arima coefficients.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct ArimaCoefficients {
+                    /// Auto-regressive coefficients, an array of double.
+                    #[prost(double, repeated, tag = "1")]
+                    pub auto_regressive_coefficients: ::std::vec::Vec<f64>,
+                    /// Moving-average coefficients, an array of double.
+                    #[prost(double, repeated, tag = "2")]
+                    pub moving_average_coefficients: ::std::vec::Vec<f64>,
+                    /// Intercept coefficient, just a double not an array.
+                    #[prost(double, tag = "3")]
+                    pub intercept_coefficient: f64,
+                }
+                /// Arima model information.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct ArimaModelInfo {
+                    /// Non-seasonal order.
+                    #[prost(message, optional, tag = "1")]
+                    pub non_seasonal_order: ::std::option::Option<super::super::super::ArimaOrder>,
+                    /// Arima coefficients.
+                    #[prost(message, optional, tag = "2")]
+                    pub arima_coefficients: ::std::option::Option<ArimaCoefficients>,
+                    /// Arima fitting metrics.
+                    #[prost(message, optional, tag = "3")]
+                    pub arima_fitting_metrics:
+                        ::std::option::Option<super::super::super::ArimaFittingMetrics>,
+                    /// Whether Arima model fitted with drift or not. It is always false
+                    /// when d is not 1.
+                    #[prost(bool, tag = "4")]
+                    pub has_drift: bool,
+                    /// The id to indicate different time series.
+                    #[prost(string, tag = "5")]
+                    pub time_series_id: std::string::String,
+                    /// Seasonal periods. Repeated because multiple periods are supported
+                    /// for one time series.
+                    #[prost(
+                        enumeration = "super::super::super::seasonal_period::SeasonalPeriodType",
+                        repeated,
+                        tag = "6"
+                    )]
+                    pub seasonal_periods: ::std::vec::Vec<i32>,
+                }
+            }
         }
     }
     /// Indicates the type of the Model.
@@ -595,8 +938,24 @@ pub mod model {
         LogisticRegression = 2,
         /// K-means clustering model.
         Kmeans = 3,
+        /// Matrix factorization model.
+        MatrixFactorization = 4,
+        /// [Beta] DNN classifier model.
+        DnnClassifier = 5,
         /// [Beta] An imported TensorFlow model.
         Tensorflow = 6,
+        /// [Beta] DNN regressor model.
+        DnnRegressor = 7,
+        /// [Beta] Boosted tree regressor model.
+        BoostedTreeRegressor = 9,
+        /// [Beta] Boosted tree classifier model.
+        BoostedTreeClassifier = 10,
+        /// [Beta] ARIMA model.
+        Arima = 11,
+        /// [Beta] AutoML Tables regression model.
+        AutomlRegressor = 12,
+        /// [Beta] AutoML Tables classification model.
+        AutomlClassifier = 13,
     }
     /// Loss metric to evaluate model training performance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -635,6 +994,170 @@ pub mod model {
         /// Otherwise uses RANDOM.
         AutoSplit = 5,
     }
+    /// Type of supported data frequency for time series forecasting models.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DataFrequency {
+        Unspecified = 0,
+        /// Automatically inferred from timestamps.
+        AutoFrequency = 1,
+        /// Yearly data.
+        Yearly = 2,
+        /// Quarterly data.
+        Quarterly = 3,
+        /// Monthly data.
+        Monthly = 4,
+        /// Weekly data.
+        Weekly = 5,
+        /// Daily data.
+        Daily = 6,
+        /// Hourly data.
+        Hourly = 7,
+    }
+    /// Type of supported holiday regions for time series forecasting models.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum HolidayRegion {
+        /// Holiday region unspecified.
+        Unspecified = 0,
+        /// Global.
+        Global = 1,
+        /// North America.
+        Na = 2,
+        /// Japan and Asia Pacific: Korea, Greater China, India, Australia, and New
+        /// Zealand.
+        Japac = 3,
+        /// Europe, the Middle East and Africa.
+        Emea = 4,
+        /// Latin America and the Caribbean.
+        Lac = 5,
+        /// United Arab Emirates
+        Ae = 6,
+        /// Argentina
+        Ar = 7,
+        /// Austria
+        At = 8,
+        /// Australia
+        Au = 9,
+        /// Belgium
+        Be = 10,
+        /// Brazil
+        Br = 11,
+        /// Canada
+        Ca = 12,
+        /// Switzerland
+        Ch = 13,
+        /// Chile
+        Cl = 14,
+        /// China
+        Cn = 15,
+        /// Colombia
+        Co = 16,
+        /// Czechoslovakia
+        Cs = 17,
+        /// Czech Republic
+        Cz = 18,
+        /// Germany
+        De = 19,
+        /// Denmark
+        Dk = 20,
+        /// Algeria
+        Dz = 21,
+        /// Ecuador
+        Ec = 22,
+        /// Estonia
+        Ee = 23,
+        /// Egypt
+        Eg = 24,
+        /// Spain
+        Es = 25,
+        /// Finland
+        Fi = 26,
+        /// France
+        Fr = 27,
+        /// Great Britain (United Kingdom)
+        Gb = 28,
+        /// Greece
+        Gr = 29,
+        /// Hong Kong
+        Hk = 30,
+        /// Hungary
+        Hu = 31,
+        /// Indonesia
+        Id = 32,
+        /// Ireland
+        Ie = 33,
+        /// Israel
+        Il = 34,
+        /// India
+        In = 35,
+        /// Iran
+        Ir = 36,
+        /// Italy
+        It = 37,
+        /// Japan
+        Jp = 38,
+        /// Korea (South)
+        Kr = 39,
+        /// Latvia
+        Lv = 40,
+        /// Morocco
+        Ma = 41,
+        /// Mexico
+        Mx = 42,
+        /// Malaysia
+        My = 43,
+        /// Nigeria
+        Ng = 44,
+        /// Netherlands
+        Nl = 45,
+        /// Norway
+        No = 46,
+        /// New Zealand
+        Nz = 47,
+        /// Peru
+        Pe = 48,
+        /// Philippines
+        Ph = 49,
+        /// Pakistan
+        Pk = 50,
+        /// Poland
+        Pl = 51,
+        /// Portugal
+        Pt = 52,
+        /// Romania
+        Ro = 53,
+        /// Serbia
+        Rs = 54,
+        /// Russian Federation
+        Ru = 55,
+        /// Saudi Arabia
+        Sa = 56,
+        /// Sweden
+        Se = 57,
+        /// Singapore
+        Sg = 58,
+        /// Slovenia
+        Si = 59,
+        /// Slovakia
+        Sk = 60,
+        /// Thailand
+        Th = 61,
+        /// Turkey
+        Tr = 62,
+        /// Taiwan
+        Tw = 63,
+        /// Ukraine
+        Ua = 64,
+        /// United States
+        Us = 65,
+        /// Venezuela
+        Ve = 66,
+        /// Viet Nam
+        Vn = 67,
+        /// South Africa
+        Za = 68,
+    }
     /// Indicates the learning rate optimization strategy to use.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -654,6 +1177,16 @@ pub mod model {
         BatchGradientDescent = 1,
         /// Uses a normal equation to solve linear regression problem.
         NormalEquation = 2,
+    }
+    /// Indicates the training algorithm to use for matrix factorization models.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum FeedbackType {
+        Unspecified = 0,
+        /// Use weighted-als for implicit feedback problems.
+        Implicit = 1,
+        /// Use nonweighted-als for explicit feedback problems.
+        Explicit = 2,
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -1650,6 +1650,32 @@ pub struct ModelExportOutputConfig {
     /// *  For Image Classification mobile-core-ml-low-latency-1,
     ///        mobile-core-ml-versatile-1, mobile-core-ml-high-accuracy-1:
     ///      "core_ml" (default).
+    ///
+    /// *  For Image Object Detection mobile-low-latency-1, mobile-versatile-1,
+    ///        mobile-high-accuracy-1:
+    ///      "tflite", "tf_saved_model", "tf_js".
+    ///
+    /// *  For Video Classification cloud,
+    ///      "tf_saved_model".
+    ///
+    /// *  For Video Object Tracking cloud,
+    ///      "tf_saved_model".
+    ///
+    /// *  For Video Object Tracking mobile-versatile-1:
+    ///      "tflite", "edgetpu_tflite", "tf_saved_model", "docker".
+    ///
+    /// *  For Video Object Tracking mobile-coral-versatile-1:
+    ///      "tflite", "edgetpu_tflite", "docker".
+    ///
+    /// *  For Video Object Tracking mobile-coral-low-latency-1:
+    ///      "tflite", "edgetpu_tflite", "docker".
+    ///
+    /// *  For Video Object Tracking mobile-jetson-versatile-1:
+    ///      "tf_saved_model", "docker".
+    ///
+    /// *  For Tables:
+    ///      "docker".
+    ///
     /// Formats description:
     ///
     /// * tflite - Used for Android mobile devices.
@@ -2748,7 +2774,16 @@ pub struct TextClassificationModelMetadata {
 pub struct TextExtractionDatasetMetadata {}
 /// Model metadata that is specific to text extraction.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextExtractionModelMetadata {}
+pub struct TextExtractionModelMetadata {
+    /// Indicates the scope of model use case.
+    ///
+    /// * `default`: Use to train a general text extraction model. Default value.
+    ///
+    /// * `health_care`: Use to train a text extraction model that is tuned for
+    ///   healthcare applications.
+    #[prost(string, tag = "3")]
+    pub model_hint: std::string::String,
+}
 /// Dataset metadata for text sentiment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentDatasetMetadata {

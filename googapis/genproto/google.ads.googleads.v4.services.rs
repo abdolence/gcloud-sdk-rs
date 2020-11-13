@@ -13030,7 +13030,7 @@ pub struct ListPlannableProductsResponse {
 /// The metadata associated with an available plannable product.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductMetadata {
-    /// The code associated with the ad product. E.g. Trueview, Bumper
+    /// The code associated with the ad product. E.g. BUMPER, TRUEVIEW_IN_STREAM
     /// To list the available plannable product codes use ListPlannableProducts.
     #[prost(message, optional, tag = "1")]
     pub plannable_product_code: ::std::option::Option<::std::string::String>,
@@ -13247,7 +13247,8 @@ pub struct CampaignDuration {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlannedProduct {
     /// Required. Selected product for planning.
-    /// Plannable products codes can be obtained from ListPlannableProducts.
+    /// The code associated with the ad product. E.g. Trueview, Bumper
+    /// To list the available plannable product codes use ListPlannableProducts.
     #[prost(message, optional, tag = "1")]
     pub plannable_product_code: ::std::option::Option<::std::string::String>,
     /// Required. Maximum budget allocation in micros for the selected product.

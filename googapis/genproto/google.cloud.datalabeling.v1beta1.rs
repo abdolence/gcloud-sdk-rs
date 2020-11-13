@@ -2247,6 +2247,7 @@ pub struct ListEvaluationJobsResponse {
 pub mod data_labeling_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
+    #[doc = " Service for the AI Platform Data Labeling API."]
     pub struct DataLabelingServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }

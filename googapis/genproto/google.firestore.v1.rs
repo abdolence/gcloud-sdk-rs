@@ -1,81 +1,3 @@
-/// A set of field paths on a document.
-/// Used to restrict a get or update operation on a document to a subset of its
-/// fields.
-/// This is different from standard field masks, as this is always scoped to a
-/// [Document][google.firestore.v1.Document], and takes in account the dynamic nature of [Value][google.firestore.v1.Value].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DocumentMask {
-    /// The list of field paths in the mask. See [Document.fields][google.firestore.v1.Document.fields] for a field
-    /// path syntax reference.
-    #[prost(string, repeated, tag = "1")]
-    pub field_paths: ::std::vec::Vec<std::string::String>,
-}
-/// A precondition on a document, used for conditional operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Precondition {
-    /// The type of precondition.
-    #[prost(oneof = "precondition::ConditionType", tags = "1, 2")]
-    pub condition_type: ::std::option::Option<precondition::ConditionType>,
-}
-pub mod precondition {
-    /// The type of precondition.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum ConditionType {
-        /// When set to `true`, the target document must exist.
-        /// When set to `false`, the target document must not exist.
-        #[prost(bool, tag = "1")]
-        Exists(bool),
-        /// When set, the target document must exist and have been last updated at
-        /// that time.
-        #[prost(message, tag = "2")]
-        UpdateTime(::prost_types::Timestamp),
-    }
-}
-/// Options for creating a new transaction.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TransactionOptions {
-    /// The mode of the transaction.
-    #[prost(oneof = "transaction_options::Mode", tags = "2, 3")]
-    pub mode: ::std::option::Option<transaction_options::Mode>,
-}
-pub mod transaction_options {
-    /// Options for a transaction that can be used to read and write documents.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ReadWrite {
-        /// An optional transaction to retry.
-        #[prost(bytes, tag = "1")]
-        pub retry_transaction: std::vec::Vec<u8>,
-    }
-    /// Options for a transaction that can only be used to read documents.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ReadOnly {
-        /// The consistency mode for this transaction. If not set, defaults to strong
-        /// consistency.
-        #[prost(oneof = "read_only::ConsistencySelector", tags = "2")]
-        pub consistency_selector: ::std::option::Option<read_only::ConsistencySelector>,
-    }
-    pub mod read_only {
-        /// The consistency mode for this transaction. If not set, defaults to strong
-        /// consistency.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum ConsistencySelector {
-            /// Reads documents at the given time.
-            /// This may not be older than 60 seconds.
-            #[prost(message, tag = "2")]
-            ReadTime(::prost_types::Timestamp),
-        }
-    }
-    /// The mode of the transaction.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Mode {
-        /// The transaction can only be used for read operations.
-        #[prost(message, tag = "2")]
-        ReadOnly(ReadOnly),
-        /// The transaction can be used for both read and write operations.
-        #[prost(message, tag = "3")]
-        ReadWrite(ReadWrite),
-    }
-}
 /// A Firestore document.
 ///
 /// Must not exceed 1 MiB - 4 bytes.
@@ -493,6 +415,84 @@ pub struct Cursor {
     /// to the sort order defined by the query.
     #[prost(bool, tag = "2")]
     pub before: bool,
+}
+/// A set of field paths on a document.
+/// Used to restrict a get or update operation on a document to a subset of its
+/// fields.
+/// This is different from standard field masks, as this is always scoped to a
+/// [Document][google.firestore.v1.Document], and takes in account the dynamic nature of [Value][google.firestore.v1.Value].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DocumentMask {
+    /// The list of field paths in the mask. See [Document.fields][google.firestore.v1.Document.fields] for a field
+    /// path syntax reference.
+    #[prost(string, repeated, tag = "1")]
+    pub field_paths: ::std::vec::Vec<std::string::String>,
+}
+/// A precondition on a document, used for conditional operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Precondition {
+    /// The type of precondition.
+    #[prost(oneof = "precondition::ConditionType", tags = "1, 2")]
+    pub condition_type: ::std::option::Option<precondition::ConditionType>,
+}
+pub mod precondition {
+    /// The type of precondition.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ConditionType {
+        /// When set to `true`, the target document must exist.
+        /// When set to `false`, the target document must not exist.
+        #[prost(bool, tag = "1")]
+        Exists(bool),
+        /// When set, the target document must exist and have been last updated at
+        /// that time.
+        #[prost(message, tag = "2")]
+        UpdateTime(::prost_types::Timestamp),
+    }
+}
+/// Options for creating a new transaction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransactionOptions {
+    /// The mode of the transaction.
+    #[prost(oneof = "transaction_options::Mode", tags = "2, 3")]
+    pub mode: ::std::option::Option<transaction_options::Mode>,
+}
+pub mod transaction_options {
+    /// Options for a transaction that can be used to read and write documents.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReadWrite {
+        /// An optional transaction to retry.
+        #[prost(bytes, tag = "1")]
+        pub retry_transaction: std::vec::Vec<u8>,
+    }
+    /// Options for a transaction that can only be used to read documents.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReadOnly {
+        /// The consistency mode for this transaction. If not set, defaults to strong
+        /// consistency.
+        #[prost(oneof = "read_only::ConsistencySelector", tags = "2")]
+        pub consistency_selector: ::std::option::Option<read_only::ConsistencySelector>,
+    }
+    pub mod read_only {
+        /// The consistency mode for this transaction. If not set, defaults to strong
+        /// consistency.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum ConsistencySelector {
+            /// Reads documents at the given time.
+            /// This may not be older than 60 seconds.
+            #[prost(message, tag = "2")]
+            ReadTime(::prost_types::Timestamp),
+        }
+    }
+    /// The mode of the transaction.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Mode {
+        /// The transaction can only be used for read operations.
+        #[prost(message, tag = "2")]
+        ReadOnly(ReadOnly),
+        /// The transaction can be used for both read and write operations.
+        #[prost(message, tag = "3")]
+        ReadWrite(ReadWrite),
+    }
 }
 /// A write on a document.
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -482,8 +482,7 @@ pub struct LegacyResponsiveDisplayAdInfo {
 /// An app ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppAdInfo {
-    /// An optional text asset that, if specified, must always be displayed when
-    /// the ad is served.
+    /// Mandatory ad text.
     #[prost(message, optional, tag = "1")]
     pub mandatory_ad_text: ::std::option::Option<AdTextAsset>,
     /// List of text assets for headlines. When the ad serves the headlines will
@@ -740,12 +739,12 @@ pub struct ManualCpm {}
 /// View based bidding where user pays per video view.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpv {}
-/// An automated bidding strategy that sets bids to help get the most conversions
-/// for your campaign while spending your budget.
+/// An automated bidding strategy to help get the most conversions for your
+/// campaigns while spending your budget.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaximizeConversions {}
-/// An automated bidding strategy which tries to maximize conversion value
-/// given a daily budget.
+/// An automated bidding strategy to help get the most conversion value for your
+/// campaigns while spending your budget.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaximizeConversionValue {
     /// The target return on ad spend (ROAS) option. If set, the bid strategy will
@@ -824,6 +823,9 @@ pub struct TargetSpend {
     /// A TargetSpend bidder will attempt to spend the smaller of this value
     /// or the natural throttling spend amount.
     /// If not specified, the budget is used as the spend target.
+    /// This field is deprecated and should no longer be used. See
+    /// https://ads-developers.googleblog.com/2020/05/reminder-about-sunset-creation-of.html
+    /// for details.
     #[prost(message, optional, tag = "1")]
     pub target_spend_micros: ::std::option::Option<i64>,
     /// Maximum bid limit that can be set by the bid strategy.
@@ -1527,7 +1529,8 @@ pub struct LocationGroupInfo {
     /// This is required and must be set in CREATE operations.
     #[prost(message, optional, tag = "3")]
     pub radius: ::std::option::Option<i64>,
-    /// Unit of the radius, miles and meters supported currently.
+    /// Unit of the radius. Miles and meters are supported for geo target
+    /// constants. Milli miles and meters are supported for feed item sets.
     /// This is required and must be set in CREATE operations.
     #[prost(
         enumeration = "super::enums::location_group_radius_units_enum::LocationGroupRadiusUnits",

@@ -143,6 +143,732 @@ pub struct CompletionStats {
     #[prost(int64, tag = "3")]
     pub incomplete_count: i64,
 }
+/// Metadata describing the Model's input and output for explanation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplanationMetadata {
+    /// Required. Map from feature names to feature input metadata. Keys are the name of the
+    /// features. Values are the specification of the feature.
+    ///
+    /// An empty InputMetadata is valid. It describes a text feature which has the
+    /// name specified as the key in [ExplanationMetadata.inputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs]. The baseline
+    /// of the empty feature is chosen by AI Platform.
+    ///
+    /// For AI Platform provided Tensorflow images, the key can be any friendly
+    /// name of the feature . Once specified, [
+    /// featureAttributions][Attribution.feature_attributions] will be keyed by
+    /// this key (if not grouped with another feature).
+    ///
+    /// For custom images, the key must match with the key in
+    /// [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances].
+    #[prost(map = "string, message", tag = "1")]
+    pub inputs:
+        ::std::collections::HashMap<std::string::String, explanation_metadata::InputMetadata>,
+    /// Required. Map from output names to output metadata.
+    ///
+    /// For AI Platform provided Tensorflow images, keys can be any string user
+    /// defines.
+    ///
+    /// For custom images, keys are the name of the output field in the prediction
+    /// to be explained.
+    ///
+    /// Currently only one key is allowed.
+    #[prost(map = "string, message", tag = "2")]
+    pub outputs:
+        ::std::collections::HashMap<std::string::String, explanation_metadata::OutputMetadata>,
+    /// Points to a YAML file stored on Google Cloud Storage describing the format
+    /// of the [feature attributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions].
+    /// The schema is defined as an OpenAPI 3.0.2
+    /// [Schema Object](https://tinyurl.com/y538mdwt#schema-object).
+    /// AutoML tabular Models always have this field populated by AI Platform.
+    /// Note: The URI given on output may be different, including the URI scheme,
+    /// than the one given on input. The output URI will point to a location where
+    /// the user only has a read access.
+    #[prost(string, tag = "3")]
+    pub feature_attributions_schema_uri: std::string::String,
+}
+pub mod explanation_metadata {
+    /// Metadata of the input of a feature.
+    ///
+    /// Fields other than [InputMetadata.input_baselines][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.input_baselines] are applicable only
+    /// for Models that are using AI Platform-provided images for Tensorflow.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InputMetadata {
+        /// Baseline inputs for this feature.
+        ///
+        /// If no baseline is specified, AI Platform chooses the baseline for this
+        /// feature. If multiple baselines are specified, AI Platform returns the
+        /// average attributions across them in
+        /// [Attributions.baseline_attribution][].
+        ///
+        /// For AI Platform provided Tensorflow images (both 1.x and 2.x), the shape
+        /// of each baseline must match the shape of the input tensor. If a scalar is
+        /// provided, we broadcast to the same shape as the input tensor.
+        ///
+        /// For custom images, the element of the baselines must be in the same
+        /// format as the feature's input in the
+        /// [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances][]. The schema of any single instance
+        /// may be specified via Endpoint's DeployedModels'
+        /// [Model's][google.cloud.aiplatform.v1beta1.DeployedModel.model]
+        /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
+        /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
+        #[prost(message, repeated, tag = "1")]
+        pub input_baselines: ::std::vec::Vec<::prost_types::Value>,
+        /// Name of the input tensor for this feature. Required and is only
+        /// applicable to AI Platform provided images for Tensorflow.
+        #[prost(string, tag = "2")]
+        pub input_tensor_name: std::string::String,
+        /// Defines how the feature is encoded into the input tensor. Defaults to
+        /// IDENTITY.
+        #[prost(enumeration = "input_metadata::Encoding", tag = "3")]
+        pub encoding: i32,
+        /// Modality of the feature. Valid values are: numeric, image. Defaults to
+        /// numeric.
+        #[prost(string, tag = "4")]
+        pub modality: std::string::String,
+        /// The domain details of the input feature value. Like min/max, original
+        /// mean or standard deviation if normalized.
+        #[prost(message, optional, tag = "5")]
+        pub feature_value_domain: ::std::option::Option<input_metadata::FeatureValueDomain>,
+        /// Specifies the index of the values of the input tensor.
+        /// Required when the input tensor is a sparse representation. Refer to
+        /// Tensorflow documentation for more details:
+        /// https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor.
+        #[prost(string, tag = "6")]
+        pub indices_tensor_name: std::string::String,
+        /// Specifies the shape of the values of the input if the input is a sparse
+        /// representation. Refer to Tensorflow documentation for more details:
+        /// https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor.
+        #[prost(string, tag = "7")]
+        pub dense_shape_tensor_name: std::string::String,
+        /// A list of feature names for each index in the input tensor.
+        /// Required when the input [InputMetadata.encoding][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.encoding] is BAG_OF_FEATURES,
+        /// BAG_OF_FEATURES_SPARSE, INDICATOR.
+        #[prost(string, repeated, tag = "8")]
+        pub index_feature_mapping: ::std::vec::Vec<std::string::String>,
+        /// Encoded tensor is a transformation of the input tensor. Must be provided
+        /// if choosing [Integrated Gradients
+        /// attribution][ExplanationParameters.integrated_gradients_attribution] or
+        /// [XRAI attribution][google.cloud.aiplatform.v1beta1.ExplanationParameters.xrai_attribution]
+        /// and the input tensor is not differentiable.
+        ///
+        /// An encoded tensor is generated if the input tensor is encoded by a lookup
+        /// table.
+        #[prost(string, tag = "9")]
+        pub encoded_tensor_name: std::string::String,
+        /// A list of baselines for the encoded tensor.
+        ///
+        /// The shape of each baseline should match the shape of the encoded tensor.
+        /// If a scalar is provided, AI Platform broadcast to the same shape as the
+        /// encoded tensor.
+        #[prost(message, repeated, tag = "10")]
+        pub encoded_baselines: ::std::vec::Vec<::prost_types::Value>,
+        /// Visualization configurations for image explanation.
+        #[prost(message, optional, tag = "11")]
+        pub visualization: ::std::option::Option<input_metadata::Visualization>,
+        /// Name of the group that the input belongs to. Features with the same group
+        /// name will be treated as one feature when computing attributions. Features
+        /// grouped together can have different shapes in value. If provided, there
+        /// will be one single attribution generated in [
+        /// featureAttributions][Attribution.feature_attributions], keyed by the
+        /// group name.
+        #[prost(string, tag = "12")]
+        pub group_name: std::string::String,
+    }
+    pub mod input_metadata {
+        /// Domain details of the input feature value. Provides numeric information
+        /// about the feature, such as its range (min, max). If the feature has been
+        /// pre-processed, for example with z-scoring, then it provides information
+        /// about how to recover the original feature. For example, if the input
+        /// feature is an image and it has been pre-processed to obtain 0-mean and
+        /// stddev = 1 values, then original_mean, and original_stddev refer to the
+        /// mean and stddev of the original feature (e.g. image tensor) from which
+        /// input feature (with mean = 0 and stddev = 1) was obtained.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FeatureValueDomain {
+            /// The minimum permissible value for this feature.
+            #[prost(float, tag = "1")]
+            pub min_value: f32,
+            /// The maximum permissible value for this feature.
+            #[prost(float, tag = "2")]
+            pub max_value: f32,
+            /// If this input feature has been normalized to a mean value of 0,
+            /// the original_mean specifies the mean value of the domain prior to
+            /// normalization.
+            #[prost(float, tag = "3")]
+            pub original_mean: f32,
+            /// If this input feature has been normalized to a standard deviation of
+            /// 1.0, the original_stddev specifies the standard deviation of the domain
+            /// prior to normalization.
+            #[prost(float, tag = "4")]
+            pub original_stddev: f32,
+        }
+        /// Visualization configurations for image explanation.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Visualization {
+            /// Type of the image visualization. Only applicable to [Integrated
+            /// Gradients attribution]
+            /// [ExplanationParameters.integrated_gradients_attribution]. OUTLINES
+            /// shows regions of attribution, while PIXELS shows per-pixel attribution.
+            /// Defaults to OUTLINES.
+            #[prost(enumeration = "visualization::Type", tag = "1")]
+            pub r#type: i32,
+            /// Whether to only highlight pixels with positive contributions, negative
+            /// or both. Defaults to POSITIVE.
+            #[prost(enumeration = "visualization::Polarity", tag = "2")]
+            pub polarity: i32,
+            /// The color scheme used for the highlighted areas.
+            ///
+            /// Defaults to PINK_GREEN for [Integrated Gradients
+            /// attribution][ExplanationParameters.integrated_gradients_attribution],
+            /// which shows positive attributions in green and negative in pink.
+            ///
+            /// Defaults to VIRIDIS for
+            /// [XRAI attribution][google.cloud.aiplatform.v1beta1.ExplanationParameters.xrai_attribution], which
+            /// highlights the most influential regions in yellow and the least
+            /// influential in blue.
+            #[prost(enumeration = "visualization::ColorMap", tag = "3")]
+            pub color_map: i32,
+            /// Excludes attributions above the specified percentile from the
+            /// highlighted areas. Using the clip_percent_upperbound and
+            /// clip_percent_lowerbound together can be useful for filtering out noise
+            /// and making it easier to see areas of strong attribution. Defaults to
+            /// 99.9.
+            #[prost(float, tag = "4")]
+            pub clip_percent_upperbound: f32,
+            /// Excludes attributions below the specified percentile, from the
+            /// highlighted areas. Defaults to 35.
+            #[prost(float, tag = "5")]
+            pub clip_percent_lowerbound: f32,
+            /// How the original image is displayed in the visualization.
+            /// Adjusting the overlay can help increase visual clarity if the original
+            /// image makes it difficult to view the visualization. Defaults to NONE.
+            #[prost(enumeration = "visualization::OverlayType", tag = "6")]
+            pub overlay_type: i32,
+        }
+        pub mod visualization {
+            /// Type of the image visualization. Only applicable to [Integrated
+            /// Gradients attribution]
+            /// [ExplanationParameters.integrated_gradients_attribution].
+            #[derive(
+                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+            )]
+            #[repr(i32)]
+            pub enum Type {
+                /// Should not be used.
+                Unspecified = 0,
+                /// Shows which pixel contributed to the image prediction.
+                Pixels = 1,
+                /// Shows which region contributed to the image prediction by outlining
+                /// the region.
+                Outlines = 2,
+            }
+            /// Whether to only highlight pixels with positive contributions, negative
+            /// or both. Defaults to POSITIVE.
+            #[derive(
+                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+            )]
+            #[repr(i32)]
+            pub enum Polarity {
+                /// Default value. This is the same as POSITIVE.
+                Unspecified = 0,
+                /// Highlights the pixels/outlines that were most influential to the
+                /// model's prediction.
+                Positive = 1,
+                /// Setting polarity to negative highlights areas that does not lead to
+                /// the models's current prediction.
+                Negative = 2,
+                /// Shows both positive and negative attributions.
+                Both = 3,
+            }
+            /// The color scheme used for highlighting areas.
+            #[derive(
+                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+            )]
+            #[repr(i32)]
+            pub enum ColorMap {
+                /// Should not be used.
+                Unspecified = 0,
+                /// Positive: green. Negative: pink.
+                PinkGreen = 1,
+                /// Viridis color map: A perceptually uniform color mapping which is
+                /// easier to see by those with colorblindness and progresses from yellow
+                /// to green to blue. Positive: yellow. Negative: blue.
+                Viridis = 2,
+                /// Positive: red. Negative: red.
+                Red = 3,
+                /// Positive: green. Negative: green.
+                Green = 4,
+                /// Positive: green. Negative: red.
+                RedGreen = 6,
+                /// PiYG palette.
+                PinkWhiteGreen = 5,
+            }
+            /// How the original image is displayed in the visualization.
+            #[derive(
+                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+            )]
+            #[repr(i32)]
+            pub enum OverlayType {
+                /// Default value. This is the same as NONE.
+                Unspecified = 0,
+                /// No overlay.
+                None = 1,
+                /// The attributions are shown on top of the original image.
+                Original = 2,
+                /// The attributions are shown on top of grayscaled version of the
+                /// original image.
+                Grayscale = 3,
+                /// The attributions are used as a mask to reveal predictive parts of
+                /// the image and hide the un-predictive parts.
+                MaskBlack = 4,
+            }
+        }
+        /// Defines how the feature is encoded to [encoded_tensor][]. Defaults to
+        /// IDENTITY.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum Encoding {
+            /// Default value. This is the same as IDENTITY.
+            Unspecified = 0,
+            /// The tensor represents one feature.
+            Identity = 1,
+            /// The tensor represents a bag of features where each index maps to
+            /// a feature. [InputMetadata.index_feature_mapping][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.index_feature_mapping] must be provided for
+            /// this encoding. For example:
+            /// ```
+            /// input = [27, 6.0, 150]
+            /// index_feature_mapping = ["age", "height", "weight"]
+            /// ```
+            BagOfFeatures = 2,
+            /// The tensor represents a bag of features where each index maps to a
+            /// feature. Zero values in the tensor indicates feature being
+            /// non-existent. [InputMetadata.index_feature_mapping][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.index_feature_mapping] must be provided
+            /// for this encoding. For example:
+            /// ```
+            /// input = [2, 0, 5, 0, 1]
+            /// index_feature_mapping = ["a", "b", "c", "d", "e"]
+            /// ```
+            BagOfFeaturesSparse = 3,
+            /// The tensor is a list of binaries representing whether a feature exists
+            /// or not (1 indicates existence). [InputMetadata.index_feature_mapping][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.index_feature_mapping]
+            /// must be provided for this encoding. For example:
+            /// ```
+            /// input = [1, 0, 1, 0, 1]
+            /// index_feature_mapping = ["a", "b", "c", "d", "e"]
+            /// ```
+            Indicator = 4,
+            /// The tensor is encoded into a 1-dimensional array represented by an
+            /// encoded tensor. [InputMetadata.encoded_tensor_name][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.encoded_tensor_name] must be provided
+            /// for this encoding. For example:
+            /// ```
+            /// input = ["This", "is", "a", "test", "."]
+            /// encoded = [0.1, 0.2, 0.3, 0.4, 0.5]
+            /// ```
+            CombinedEmbedding = 5,
+            /// Select this encoding when the input tensor is encoded into a
+            /// 2-dimensional array represented by an encoded tensor.
+            /// [InputMetadata.encoded_tensor_name][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.encoded_tensor_name] must be provided for this
+            /// encoding. The first dimension of the encoded tensor's shape is the same
+            /// as the input tensor's shape. For example:
+            /// ```
+            /// input = ["This", "is", "a", "test", "."]
+            /// encoded = [[0.1, 0.2, 0.3, 0.4, 0.5],
+            ///            [0.2, 0.1, 0.4, 0.3, 0.5],
+            ///            [0.5, 0.1, 0.3, 0.5, 0.4],
+            ///            [0.5, 0.3, 0.1, 0.2, 0.4],
+            ///            [0.4, 0.3, 0.2, 0.5, 0.1]]
+            /// ```
+            ConcatEmbedding = 6,
+        }
+    }
+    /// Metadata of the prediction output to be explained.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OutputMetadata {
+        /// Name of the output tensor. Required and is only applicable to AI
+        /// Platform provided images for Tensorflow.
+        #[prost(string, tag = "3")]
+        pub output_tensor_name: std::string::String,
+        /// Defines how to map [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] to
+        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name].
+        ///
+        /// If neither of the fields are specified,
+        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name] will not be populated.
+        #[prost(oneof = "output_metadata::DisplayNameMapping", tags = "1, 2")]
+        pub display_name_mapping: ::std::option::Option<output_metadata::DisplayNameMapping>,
+    }
+    pub mod output_metadata {
+        /// Defines how to map [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] to
+        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name].
+        ///
+        /// If neither of the fields are specified,
+        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name] will not be populated.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum DisplayNameMapping {
+            /// Static mapping between the index and display name.
+            ///
+            /// Use this if the outputs are a deterministic n-dimensional array, e.g. a
+            /// list of scores of all the classes in a pre-defined order for a
+            /// multi-classification Model. It's not feasible if the outputs are
+            /// non-deterministic, e.g. the Model produces top-k classes or sort the
+            /// outputs by their values.
+            ///
+            /// The shape of the value must be an n-dimensional array of strings. The
+            /// number of dimentions must match that of the outputs to be explained.
+            /// The [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name] is populated by locating in the
+            /// mapping with [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index].
+            #[prost(message, tag = "1")]
+            IndexDisplayNameMapping(::prost_types::Value),
+            /// Specify a field name in the prediction to look for the display name.
+            ///
+            /// Use this if the prediction contains the display names for the outputs.
+            ///
+            /// The display names in the prediction must have the same shape of the
+            /// outputs, so that it can be located by [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] for
+            /// a specific output.
+            #[prost(string, tag = "2")]
+            DisplayNameMappingKey(std::string::String),
+        }
+    }
+}
+/// Explanation of a prediction (provided in [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions])
+/// produced by the Model on a given [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Explanation {
+    /// Output only. Feature attributions grouped by predicted outputs.
+    ///
+    /// For Models that predict only one output, such as regression Models that
+    /// predict only one score, there is only one attibution that explains the
+    /// predicted output. For Models that predict multiple outputs, such as
+    /// multiclass Models that predict multiple classes, each element explains one
+    /// specific item. [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] can be used to identify which
+    /// output this attribution is explaining.
+    ///
+    /// If users set [ExplanationParameters.top_k][google.cloud.aiplatform.v1beta1.ExplanationParameters.top_k], the attributions are sorted
+    /// by [instance_output_value][Attributions.instance_output_value] in
+    /// descending order. If [ExplanationParameters.output_indices][google.cloud.aiplatform.v1beta1.ExplanationParameters.output_indices] is specified,
+    /// the attributions are stored by [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] in the same
+    /// order as they appear in the output_indices.
+    #[prost(message, repeated, tag = "1")]
+    pub attributions: ::std::vec::Vec<Attribution>,
+}
+/// Aggregated explanation metrics for a Model over a set of instances.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelExplanation {
+    /// Output only. Aggregated attributions explaning the Model's prediction outputs over the
+    /// set of instances. The attributions are grouped by outputs.
+    ///
+    /// For Models that predict only one output, such as regression Models that
+    /// predict only one score, there is only one attibution that explains the
+    /// predicted output. For Models that predict multiple outputs, such as
+    /// multiclass Models that predict multiple classes, each element explains one
+    /// specific item. [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] can be used to identify which
+    /// output this attribution is explaining.
+    ///
+    /// The [baselineOutputValue][google.cloud.aiplatform.v1beta1.Attribution.baseline_output_value],
+    /// [instanceOutputValue][google.cloud.aiplatform.v1beta1.Attribution.instance_output_value] and
+    /// [featureAttributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions] fields are
+    /// averaged over the test data.
+    ///
+    /// NOTE: Currently AutoML tabular classification Models produce only one
+    /// attribution, which averages attributions over all the classes it predicts.
+    /// [Attribution.approximation_error][google.cloud.aiplatform.v1beta1.Attribution.approximation_error] is not populated.
+    #[prost(message, repeated, tag = "1")]
+    pub mean_attributions: ::std::vec::Vec<Attribution>,
+}
+/// Attribution that explains a particular prediction output.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Attribution {
+    /// Output only. Model predicted output if the input instance is constructed from the
+    /// baselines of all the features defined in [ExplanationMetadata.inputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs].
+    /// The field name of the output is determined by the key in
+    /// [ExplanationMetadata.outputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.outputs].
+    ///
+    /// If the Model's predicted output has multiple dimensions (rank > 1), this is
+    /// the value in the output located by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index].
+    ///
+    /// If there are multiple baselines, their output values are averaged.
+    #[prost(double, tag = "1")]
+    pub baseline_output_value: f64,
+    /// Output only. Model predicted output on the corresponding [explanation
+    /// instance][ExplainRequest.instances]. The field name of the output is
+    /// determined by the key in [ExplanationMetadata.outputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.outputs].
+    ///
+    /// If the Model predicted output has multiple dimensions, this is the value in
+    /// the output located by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index].
+    #[prost(double, tag = "2")]
+    pub instance_output_value: f64,
+    /// Output only. Attributions of each explained feature. Features are extracted from
+    /// the [prediction instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances] according to
+    /// [explanation metadata for inputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs].
+    ///
+    /// The value is a struct, whose keys are the name of the feature. The values
+    /// are how much the feature in the [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances]
+    /// contributed to the predicted result.
+    ///
+    /// The format of the value is determined by the feature's input format:
+    ///
+    ///   * If the feature is a scalar value, the attribution value is a
+    ///     [floating number][google.protobuf.Value.number_value].
+    ///
+    ///   * If the feature is an array of scalar values, the attribution value is
+    ///     an [array][google.protobuf.Value.list_value].
+    ///
+    ///   * If the feature is a struct, the attribution value is a
+    ///     [struct][google.protobuf.Value.struct_value]. The keys in the
+    ///     attribution value struct are the same as the keys in the feature
+    ///     struct. The formats of the values in the attribution struct are
+    ///     determined by the formats of the values in the feature struct.
+    ///
+    /// The [ExplanationMetadata.feature_attributions_schema_uri][google.cloud.aiplatform.v1beta1.ExplanationMetadata.feature_attributions_schema_uri] field,
+    /// pointed to by the [ExplanationSpec][google.cloud.aiplatform.v1beta1.ExplanationSpec] field of the
+    /// [Endpoint.deployed_models][google.cloud.aiplatform.v1beta1.Endpoint.deployed_models] object, points to the schema file that
+    /// describes the features and their attribution values (if it is populated).
+    #[prost(message, optional, tag = "3")]
+    pub feature_attributions: ::std::option::Option<::prost_types::Value>,
+    /// Output only. The index that locates the explained prediction output.
+    ///
+    /// If the prediction output is a scalar value, output_index is not populated.
+    /// If the prediction output has multiple dimensions, the length of the
+    /// output_index list is the same as the number of dimensions of the output.
+    /// The i-th element in output_index is the element index of the i-th dimension
+    /// of the output vector. Indices start from 0.
+    #[prost(int32, repeated, packed = "false", tag = "4")]
+    pub output_index: ::std::vec::Vec<i32>,
+    /// Output only. The display name of the output identified by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index], e.g. the
+    /// predicted class name by a multi-classification Model.
+    ///
+    /// This field is only populated iff the Model predicts display names as a
+    /// separate field along with the explained output. The predicted display name
+    /// must has the same shape of the explained output, and can be located using
+    /// output_index.
+    #[prost(string, tag = "5")]
+    pub output_display_name: std::string::String,
+    /// Output only. Error of [feature_attributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions] caused by approximation used in the
+    /// explanation method. Lower value means more precise attributions.
+    ///
+    /// * For [Sampled Shapley
+    /// attribution][ExplanationParameters.sampled_shapley_attribution], increasing
+    /// [path_count][google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count] may reduce the error.
+    /// * For [Integrated Gradients
+    /// attribution][ExplanationParameters.integrated_gradients_attribution],
+    /// increasing [step_count][google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.step_count] may
+    /// reduce the error.
+    /// * For [XRAI
+    /// attribution][ExplanationParameters.xrai_attribution], increasing
+    /// [step_count][google.cloud.aiplatform.v1beta1.XraiAttribution.step_count] may reduce the error.
+    ///
+    /// Refer to  AI Explanations Whitepaper for more details:
+    ///
+    /// https:
+    /// //storage.googleapis.com/cloud-ai-whitep
+    /// // apers/AI%20Explainability%20Whitepaper.pdf
+    #[prost(double, tag = "6")]
+    pub approximation_error: f64,
+    /// Output only. Name of the explain output. Specified as the key in
+    /// [ExplanationMetadata.outputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.outputs].
+    #[prost(string, tag = "7")]
+    pub output_name: std::string::String,
+}
+/// Specification of Model explanation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplanationSpec {
+    /// Required. Parameters that configure explaining of the Model's predictions.
+    #[prost(message, optional, tag = "1")]
+    pub parameters: ::std::option::Option<ExplanationParameters>,
+    /// Required. Metadata describing the Model's input and output for explanation.
+    #[prost(message, optional, tag = "2")]
+    pub metadata: ::std::option::Option<ExplanationMetadata>,
+}
+/// Parameters to configure explaining for Model's predictions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplanationParameters {
+    /// If populated, returns attributions for top K indices of outputs
+    /// (defaults to 1). Only applies to Models that predicts more than one outputs
+    /// (e,g, multi-class Models). When set to -1, returns explanations for all
+    /// outputs.
+    #[prost(int32, tag = "4")]
+    pub top_k: i32,
+    /// If populated, only returns attributions that have
+    /// [output_index][Attributions.output_index] contained in output_indices. It
+    /// must be an ndarray of integers, with the same shape of the output it's
+    /// explaining.
+    ///
+    /// If not populated, returns attributions for [top_k][google.cloud.aiplatform.v1beta1.ExplanationParameters.top_k] indices of outputs.
+    /// If neither top_k nor output_indeices is populated, returns the argmax
+    /// index of the outputs.
+    ///
+    /// Only applicable to Models that predict multiple outputs (e,g, multi-class
+    /// Models that predict multiple classes).
+    #[prost(message, optional, tag = "5")]
+    pub output_indices: ::std::option::Option<::prost_types::ListValue>,
+    #[prost(oneof = "explanation_parameters::Method", tags = "1, 2, 3")]
+    pub method: ::std::option::Option<explanation_parameters::Method>,
+}
+pub mod explanation_parameters {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Method {
+        /// An attribution method that approximates Shapley values for features that
+        /// contribute to the label being predicted. A sampling strategy is used to
+        /// approximate the value rather than considering all subsets of features.
+        /// Refer to this paper for model details: https://arxiv.org/abs/1306.4265.
+        #[prost(message, tag = "1")]
+        SampledShapleyAttribution(super::SampledShapleyAttribution),
+        /// An attribution method that computes Aumann-Shapley values taking
+        /// advantage of the model's fully differentiable structure. Refer to this
+        /// paper for more details: https://arxiv.org/abs/1703.01365
+        #[prost(message, tag = "2")]
+        IntegratedGradientsAttribution(super::IntegratedGradientsAttribution),
+        /// An attribution method that redistributes Integrated Gradients
+        /// attribution to segmented regions, taking advantage of the model's fully
+        /// differentiable structure. Refer to this paper for
+        /// more details: https://arxiv.org/abs/1906.02825
+        ///
+        /// XRAI currently performs better on natural images, like a picture of a
+        /// house or an animal. If the images are taken in artificial environments,
+        /// like a lab or manufacturing line, or from diagnostic equipment, like
+        /// x-rays or quality-control cameras, use Integrated Gradients instead.
+        #[prost(message, tag = "3")]
+        XraiAttribution(super::XraiAttribution),
+    }
+}
+/// An attribution method that approximates Shapley values for features that
+/// contribute to the label being predicted. A sampling strategy is used to
+/// approximate the value rather than considering all subsets of features.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SampledShapleyAttribution {
+    /// Required. The number of feature permutations to consider when approximating the
+    /// Shapley values.
+    ///
+    /// Valid range of its value is [1, 50], inclusively.
+    #[prost(int32, tag = "1")]
+    pub path_count: i32,
+}
+/// An attribution method that computes the Aumann-Shapley value taking advantage
+/// of the model's fully differentiable structure. Refer to this paper for
+/// more details: https://arxiv.org/abs/1703.01365
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntegratedGradientsAttribution {
+    /// Required. The number of steps for approximating the path integral.
+    /// A good value to start is 50 and gradually increase until the
+    /// sum to diff property is within the desired error range.
+    ///
+    /// Valid range of its value is [1, 100], inclusively.
+    #[prost(int32, tag = "1")]
+    pub step_count: i32,
+    /// Config for SmoothGrad approximation of gradients.
+    ///
+    /// When enabled, the gradients are approximated by averaging the gradients
+    /// from noisy samples in the vicinity of the inputs. Adding
+    /// noise can help improve the computed gradients. Refer to this paper for more
+    /// details: https://arxiv.org/pdf/1706.03825.pdf
+    #[prost(message, optional, tag = "2")]
+    pub smooth_grad_config: ::std::option::Option<SmoothGradConfig>,
+}
+/// An explanation method that redistributes Integrated Gradients
+/// attributions to segmented regions, taking advantage of the model's fully
+/// differentiable structure. Refer to this paper for more details:
+/// https://arxiv.org/abs/1906.02825
+///
+/// Only supports image Models ([modality][InputMetadata.modality] is IMAGE).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct XraiAttribution {
+    /// Required. The number of steps for approximating the path integral.
+    /// A good value to start is 50 and gradually increase until the
+    /// sum to diff property is met within the desired error range.
+    ///
+    /// Valid range of its value is [1, 100], inclusively.
+    #[prost(int32, tag = "1")]
+    pub step_count: i32,
+    /// Config for SmoothGrad approximation of gradients.
+    ///
+    /// When enabled, the gradients are approximated by averaging the gradients
+    /// from noisy samples in the vicinity of the inputs. Adding
+    /// noise can help improve the computed gradients. Refer to this paper for more
+    /// details: https://arxiv.org/pdf/1706.03825.pdf
+    #[prost(message, optional, tag = "2")]
+    pub smooth_grad_config: ::std::option::Option<SmoothGradConfig>,
+}
+/// Config for SmoothGrad approximation of gradients.
+///
+/// When enabled, the gradients are approximated by averaging the gradients from
+/// noisy samples in the vicinity of the inputs. Adding noise can help improve
+/// the computed gradients. Refer to this paper for more details:
+/// https://arxiv.org/pdf/1706.03825.pdf
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SmoothGradConfig {
+    /// The number of gradient samples to use for
+    /// approximation. The higher this number, the more accurate the gradient
+    /// is, but the runtime complexity increases by this factor as well.
+    /// Valid range of its value is [1, 50]. Defaults to 3.
+    #[prost(int32, tag = "3")]
+    pub noisy_sample_count: i32,
+    /// Represents the standard deviation of the gaussian kernel
+    /// that will be used to add noise to the interpolated inputs
+    /// prior to computing gradients.
+    #[prost(oneof = "smooth_grad_config::GradientNoiseSigma", tags = "1, 2")]
+    pub gradient_noise_sigma: ::std::option::Option<smooth_grad_config::GradientNoiseSigma>,
+}
+pub mod smooth_grad_config {
+    /// Represents the standard deviation of the gaussian kernel
+    /// that will be used to add noise to the interpolated inputs
+    /// prior to computing gradients.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum GradientNoiseSigma {
+        /// This is a single float value and will be used to add noise to all the
+        /// features. Use this field when all features are normalized to have the
+        /// same distribution: scale to range [0, 1], [-1, 1] or z-scoring, where
+        /// features are normalized to have 0-mean and 1-variance. Refer to
+        /// this doc for more details about normalization:
+        ///
+        /// https:
+        /// //developers.google.com/machine-learning
+        /// // /data-prep/transform/normalization.
+        ///
+        /// For best results the recommended value is about 10% - 20% of the standard
+        /// deviation of the input feature. Refer to section 3.2 of the SmoothGrad
+        /// paper: https://arxiv.org/pdf/1706.03825.pdf. Defaults to 0.1.
+        ///
+        /// If the distribution is different per feature, set
+        /// [feature_noise_sigma][google.cloud.aiplatform.v1beta1.SmoothGradConfig.feature_noise_sigma] instead
+        /// for each feature.
+        #[prost(float, tag = "1")]
+        NoiseSigma(f32),
+        /// This is similar to [noise_sigma][google.cloud.aiplatform.v1beta1.SmoothGradConfig.noise_sigma], but
+        /// provides additional flexibility. A separate noise sigma can be provided
+        /// for each feature, which is useful if their distributions are different.
+        /// No noise is added to features that are not set. If this field is unset,
+        /// [noise_sigma][google.cloud.aiplatform.v1beta1.SmoothGradConfig.noise_sigma] will be used for all
+        /// features.
+        #[prost(message, tag = "2")]
+        FeatureNoiseSigma(super::FeatureNoiseSigma),
+    }
+}
+/// Noise sigma by features. Noise sigma represents the standard deviation of the
+/// gaussian kernel that will be used to add noise to interpolated inputs prior
+/// to computing gradients.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureNoiseSigma {
+    /// Noise sigma per feature. No noise is added to features that are not set.
+    #[prost(message, repeated, tag = "1")]
+    pub noise_sigma: ::std::vec::Vec<feature_noise_sigma::NoiseSigmaForFeature>,
+}
+pub mod feature_noise_sigma {
+    /// Noise sigma for a single feature.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NoiseSigmaForFeature {
+        /// The name of the input feature for which noise sigma is provided. The
+        /// features are defined in
+        /// [explanation metadata inputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs].
+        #[prost(string, tag = "1")]
+        pub name: std::string::String,
+        /// This represents the standard deviation of the Gaussian kernel that will
+        /// be used to add noise to the feature prior to computing gradients. Similar
+        /// to [noise_sigma][google.cloud.aiplatform.v1beta1.SmoothGradConfig.noise_sigma] but represents the
+        /// noise added to the current feature. Defaults to 0.1.
+        #[prost(float, tag = "2")]
+        pub sigma: f32,
+    }
+}
 /// The Google Cloud Storage location for the input content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
@@ -348,6 +1074,18 @@ pub struct ResourcesConsumed {
     #[prost(double, tag = "1")]
     pub replica_hours: f64,
 }
+/// Represents the spec of disk options.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiskSpec {
+    /// Type of the boot disk (default is "pd-standard").
+    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
+    /// "pd-standard" (Persistent Disk Hard Disk Drive).
+    #[prost(string, tag = "1")]
+    pub boot_disk_type: std::string::String,
+    /// Size in GB of the boot disk (default is 100GB).
+    #[prost(int32, tag = "2")]
+    pub boot_disk_size_gb: i32,
+}
 /// Manual batch tuning parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualBatchTuningParameters {
@@ -416,28 +1154,29 @@ pub struct BatchPredictionJob {
     pub manual_batch_tuning_parameters: ::std::option::Option<ManualBatchTuningParameters>,
     /// Generate explanation along with the batch prediction results.
     ///
-    /// This can only be set to true for AutoML tabular Models, and only when the
-    /// output destination is BigQuery. When it's true, the batch prediction
-    /// output will include a column named `feature_attributions`.
+    /// When it's true, the batch prediction output will change based on the
+    /// [output format][BatchPredictionJob.output_config.predictions_format]:
     ///
-    /// For AutoML tabular Models, the value of the `feature_attributions` column
-    /// is a struct that maps from string to number. The keys in the map are the
-    /// names of the features. The values in the map are the how much the features
-    /// contribute to the predicted result. Features are defined as follows:
-    ///
-    /// * A scalar column defines a feature of the same name as the column.
-    ///
-    /// * A struct column defines multiple features, one feature per leaf field.
-    ///   The feature name is the fully qualified path for the leaf field,
-    ///   separated by ".". For example a column `key1` in the format of
-    ///   {"value1": {"prop1": number}, "value2": number} defines two features:
-    ///   `key1.value1.prop1` and `key1.value2`
-    ///
-    /// Attributions of each feature is represented as an extra column in the
-    /// batch prediction output BigQuery table.
-    ///
+    ///  * `bigquery`: output will include a column named `explanation`. The value
+    ///    is a struct that conforms to the [Explanation][google.cloud.aiplatform.v1beta1.Explanation] object.
+    ///  * `jsonl`: The JSON objects on each line will include an additional entry
+    ///    keyed `explanation`. The value of the entry is a JSON object that
+    ///    conforms to the [Explanation][google.cloud.aiplatform.v1beta1.Explanation] object.
+    ///  * `csv`: Generating explanations for CSV format is not supported.
     #[prost(bool, tag = "23")]
     pub generate_explanation: bool,
+    /// Explanation configuration for this BatchPredictionJob. Can only be
+    /// specified if [generate_explanation][google.cloud.aiplatform.v1beta1.BatchPredictionJob.generate_explanation] is set to `true`. It's invalid to
+    /// specified it with generate_explanation set to false or unset.
+    ///
+    /// This value overrides the value of [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec]. All fields of
+    /// [explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec] are optional in the request. If a field of
+    /// [explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec] is not populated, the value of the same field of
+    /// [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] is inherited. The corresponding
+    /// [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] must be populated, otherwise explanation for
+    /// this Model is not allowed.
+    #[prost(message, optional, tag = "25")]
+    pub explanation_spec: ::std::option::Option<ExplanationSpec>,
     /// Output only. Information further describing the output of this job.
     #[prost(message, optional, tag = "9")]
     pub output_info: ::std::option::Option<batch_prediction_job::OutputInfo>,
@@ -681,6 +1420,24 @@ pub struct CustomJobSpec {
     /// Scheduling options for a CustomJob.
     #[prost(message, optional, tag = "3")]
     pub scheduling: ::std::option::Option<Scheduling>,
+    /// Specifies the service account for workload run-as account.
+    /// Users submitting jobs must have act-as permission on this run-as account.
+    #[prost(string, tag = "4")]
+    pub service_account: std::string::String,
+    /// The full name of the Compute Engine
+    /// [network](/compute/docs/networks-and-firewalls#networks) to which the Job
+    /// should be peered. For example, projects/12345/global/networks/myVPC.
+    ///
+    /// [Format](https:
+    /// //cloud.google.com/compute/docs/reference/rest/v1/networks/insert)
+    /// is of the form projects/{project}/global/networks/{network}.
+    /// Where {project} is a project number, as in '12345', and {network} is
+    /// network name.
+    ///
+    /// Private services access must already be configured for the network. If left
+    /// unspecified, the job is not peered with any network.
+    #[prost(string, tag = "5")]
+    pub network: std::string::String,
     /// The Google Cloud Storage location to store the output of this CustomJob or
     /// HyperparameterTuningJob. For HyperparameterTuningJob,
     /// [base_output_directory][CustomJob.job_spec.base_output_directory] of
@@ -713,6 +1470,9 @@ pub struct WorkerPoolSpec {
     /// Required. The number of worker replicas to use for this worker pool.
     #[prost(int64, tag = "2")]
     pub replica_count: i64,
+    /// Disk spec.
+    #[prost(message, optional, tag = "5")]
+    pub disk_spec: ::std::option::Option<DiskSpec>,
     /// The custom task to be executed in this worker pool.
     #[prost(oneof = "worker_pool_spec::Task", tags = "6, 7")]
     pub task: ::std::option::Option<worker_pool_spec::Task>,
@@ -904,6 +1664,10 @@ pub struct DataLabelingJob {
     /// Output only. Timestamp when this DataLabelingJob was updated most recently.
     #[prost(message, optional, tag = "10")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Output only. DataLabelingJob errors. It is only populated when job's state is
+    /// `JOB_STATE_FAILED` or `JOB_STATE_CANCELLED`.
+    #[prost(message, optional, tag = "22")]
+    pub error: ::std::option::Option<super::super::super::rpc::Status>,
     /// The labels with user-defined metadata to organize your DataLabelingJobs.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -1119,7 +1883,7 @@ pub mod export_data_config {
         /// The Google Cloud Storage location where the output is to be written to.
         /// In the given directory a new directory will be created with name:
         /// `export-data-<dataset-display-name>-<timestamp-of-export-call>` where
-        /// timestamp is in YYYYMMDDHHMMSS format. All export
+        /// timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. All export
         /// output will be written into that directory. Inside that directory,
         /// annotations with the same schema will be grouped into sub directories
         /// which are named with the corresponding annotations' schema title. Inside
@@ -1142,6 +1906,8 @@ pub struct GenericOperationMetadata {
     #[prost(message, optional, tag = "2")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the operation was updated for the last time.
+    /// If the operation has finished (successfully or not), this is the finish
+    /// time.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
 }
@@ -1161,260 +1927,6 @@ pub struct DeployedModelRef {
     /// Immutable. An ID of a DeployedModel in the above Endpoint.
     #[prost(string, tag = "2")]
     pub deployed_model_id: std::string::String,
-}
-/// Metadata describing the Model's input and output for explanation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplanationMetadata {
-    /// Required. Map from feature names to feature input metadata. Keys are the name of the
-    /// features. Values are the specification of the feature.
-    ///
-    /// An empty InputMetadata is valid. It describes a text feature which has the
-    /// name specified as the key in [ExplanationMetadata.inputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs]. The baseline
-    /// of the empty feature is chosen by AI Platform.
-    ///
-    #[prost(map = "string, message", tag = "1")]
-    pub inputs:
-        ::std::collections::HashMap<std::string::String, explanation_metadata::InputMetadata>,
-    /// Required. Map from output names to output metadata.
-    ///
-    /// Keys are the name of the output field in the prediction to be explained.
-    /// Currently only one key is allowed.
-    ///
-    #[prost(map = "string, message", tag = "2")]
-    pub outputs:
-        ::std::collections::HashMap<std::string::String, explanation_metadata::OutputMetadata>,
-    /// Points to a YAML file stored on Google Cloud Storage describing the format
-    /// of the [feature attributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions].
-    /// The schema is defined as an OpenAPI 3.0.2
-    /// [Schema Object](https://tinyurl.com/y538mdwt#schema-object).
-    /// AutoML tabular Models always have this field populated by AI Platform.
-    /// Note: The URI given on output may be different, including the URI scheme,
-    /// than the one given on input. The output URI will point to a location where
-    /// the user only has a read access.
-    #[prost(string, tag = "3")]
-    pub feature_attributions_schema_uri: std::string::String,
-}
-pub mod explanation_metadata {
-    /// Metadata of the input of a feature.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct InputMetadata {
-        /// Baseline inputs for this feature.
-        ///
-        /// If no baseline is specified, AI Platform chooses the baseline for this
-        /// feature. If multiple baselines are specified, AI Platform returns the
-        /// average attributions across them in
-        /// [Attributions.baseline_attribution][].
-        ///
-        /// The element of the baselines must be in the same format as the feature's
-        /// input in the [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances][]. The schema of any
-        /// single instance may be specified via Endpoint's DeployedModels'
-        /// [Model's][google.cloud.aiplatform.v1beta1.DeployedModel.model]
-        /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
-        /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
-        #[prost(message, repeated, tag = "1")]
-        pub input_baselines: ::std::vec::Vec<::prost_types::Value>,
-    }
-    /// Metadata of the prediction output to be explained.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct OutputMetadata {
-        /// Defines how to map [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] to
-        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name].
-        ///
-        /// If neither of the fields are specified,
-        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name] will not be populated.
-        #[prost(oneof = "output_metadata::DisplayNameMapping", tags = "1, 2")]
-        pub display_name_mapping: ::std::option::Option<output_metadata::DisplayNameMapping>,
-    }
-    pub mod output_metadata {
-        /// Defines how to map [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] to
-        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name].
-        ///
-        /// If neither of the fields are specified,
-        /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name] will not be populated.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum DisplayNameMapping {
-            /// Static mapping between the index and display name.
-            ///
-            /// Use this if the outputs are a deterministic n-dimensional array, e.g. a
-            /// list of scores of all the classes in a pre-defined order for a
-            /// multi-classification Model. It's not feasible if the outputs are
-            /// non-deterministic, e.g. the Model produces top-k classes or sort the
-            /// outputs by their values.
-            ///
-            /// The shape of the value must be an n-dimensional array of strings. The
-            /// number of dimentions must match that of the outputs to be explained.
-            /// The [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name] is populated by locating in the
-            /// mapping with [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index].
-            ///
-            #[prost(message, tag = "1")]
-            IndexDisplayNameMapping(::prost_types::Value),
-            /// Specify a field name in the prediction to look for the display name.
-            ///
-            /// Use this if the prediction contains the display names for the outputs.
-            ///
-            /// The display names in the prediction must have the same shape of the
-            /// outputs, so that it can be located by [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] for
-            /// a specific output.
-            #[prost(string, tag = "2")]
-            DisplayNameMappingKey(std::string::String),
-        }
-    }
-}
-/// Explanation of a [prediction][ExplainResponse.predictions] produced by the
-/// Model on a given [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances].
-///
-/// Currently, only AutoML tabular Models support explanation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Explanation {
-    /// Output only. Feature attributions grouped by predicted outputs.
-    ///
-    /// For Models that predict only one output, such as regression Models that
-    /// predict only one score, there is only one attibution that explains the
-    /// predicted output. For Models that predict multiple outputs, such as
-    /// multiclass Models that predict multiple classes, each element explains one
-    /// specific item. [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] can be used to identify which
-    /// output this attribution is explaining.
-    ///
-    #[prost(message, repeated, tag = "1")]
-    pub attributions: ::std::vec::Vec<Attribution>,
-}
-/// Aggregated explanation metrics for a Model over a set of instances.
-///
-/// Currently, only AutoML tabular Models support aggregated explanation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ModelExplanation {
-    /// Output only. Aggregated attributions explaning the Model's prediction outputs over the
-    /// set of instances. The attributions are grouped by outputs.
-    ///
-    /// For Models that predict only one output, such as regression Models that
-    /// predict only one score, there is only one attibution that explains the
-    /// predicted output. For Models that predict multiple outputs, such as
-    /// multiclass Models that predict multiple classes, each element explains one
-    /// specific item. [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] can be used to identify which
-    /// output this attribution is explaining.
-    ///
-    /// The [baselineOutputValue][google.cloud.aiplatform.v1beta1.Attribution.baseline_output_value],
-    /// [instanceOutputValue][google.cloud.aiplatform.v1beta1.Attribution.instance_output_value] and
-    /// [featureAttributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions] fields are
-    /// averaged over the test data.
-    ///
-    /// NOTE: Currently AutoML tabular classification Models produce only one
-    /// attribution, which averages attributions over all the classes it predicts.
-    /// [Attribution.approximation_error][google.cloud.aiplatform.v1beta1.Attribution.approximation_error] is not populated.
-    #[prost(message, repeated, tag = "1")]
-    pub mean_attributions: ::std::vec::Vec<Attribution>,
-}
-/// Attribution that explains a particular prediction output.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Attribution {
-    /// Output only. Model predicted output if the input instance is constructed from the
-    /// baselines of all the features defined in [ExplanationMetadata.inputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs].
-    /// The field name of the output is determined by the key in
-    /// [ExplanationMetadata.outputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.outputs].
-    ///
-    /// If the Model predicted output is a tensor value (for example, an ndarray),
-    /// this is the value in the output located by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index].
-    ///
-    /// If there are multiple baselines, their output values are averaged.
-    #[prost(double, tag = "1")]
-    pub baseline_output_value: f64,
-    /// Output only. Model predicted output on the corresponding [explanation
-    /// instance][ExplainRequest.instances]. The field name of the output is
-    /// determined by the key in [ExplanationMetadata.outputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.outputs].
-    ///
-    /// If the Model predicted output is a tensor value (for example, an ndarray),
-    /// this is the value in the output located by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index].
-    #[prost(double, tag = "2")]
-    pub instance_output_value: f64,
-    /// Output only. Attributions of each explained feature. Features are extracted from
-    /// the [prediction instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances] according to
-    /// [explanation input metadata][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs].
-    ///
-    /// The value is a struct, whose keys are the name of the feature. The values
-    /// are how much the feature in the [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances]
-    /// contributed to the predicted result.
-    ///
-    /// The format of the value is determined by the feature's input format:
-    ///
-    ///   * If the feature is a scalar value, the attribution value is a
-    ///     [floating number][google.protobuf.Value.number_value].
-    ///
-    ///   * If the feature is an array of scalar values, the attribution value is
-    ///     an [array][google.protobuf.Value.list_value].
-    ///
-    ///   * If the feature is a struct, the attribution value is a
-    ///     [struct][google.protobuf.Value.struct_value]. The keys in the
-    ///     attribution value struct are the same as the keys in the feature
-    ///     struct. The formats of the values in the attribution struct are
-    ///     determined by the formats of the values in the feature struct.
-    ///
-    /// The [ExplanationMetadata.feature_attributions_schema_uri][google.cloud.aiplatform.v1beta1.ExplanationMetadata.feature_attributions_schema_uri] field,
-    /// pointed to by the [ExplanationSpec][google.cloud.aiplatform.v1beta1.ExplanationSpec] field of the
-    /// [Endpoint.deployed_models][google.cloud.aiplatform.v1beta1.Endpoint.deployed_models] object, points to the schema file that
-    /// describes the features and their attribution values (if it is populated).
-    #[prost(message, optional, tag = "3")]
-    pub feature_attributions: ::std::option::Option<::prost_types::Value>,
-    /// Output only. The index that locates the explained prediction output.
-    ///
-    /// If the prediction output is a scalar value, output_index is not populated.
-    /// If the prediction output is a tensor value (for example, an ndarray),
-    /// the length of output_index is the same as the number of dimensions of the
-    /// output. The i-th element in output_index is the element index of the i-th
-    /// dimension of the output vector. Indexes start from 0.
-    #[prost(int32, repeated, packed = "false", tag = "4")]
-    pub output_index: ::std::vec::Vec<i32>,
-    /// Output only. The display name of the output identified by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index], e.g. the
-    /// predicted class name by a multi-classification Model.
-    ///
-    /// This field is only populated iff the Model predicts display names as a
-    /// separate field along with the explained output. The predicted display name
-    /// must has the same shape of the explained output, and can be located using
-    /// output_index.
-    #[prost(string, tag = "5")]
-    pub output_display_name: std::string::String,
-    /// Output only. Error of [feature_attributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions] caused by approximation used in the
-    /// explanation method. Lower value means more precise attributions.
-    ///
-    /// For Sampled Shapley
-    /// [attribution][google.cloud.aiplatform.v1beta1.ExplanationParameters.sampled_shapley_attribution],
-    /// increasing [path_count][google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count] might reduce
-    /// the error.
-    ///
-    #[prost(double, tag = "6")]
-    pub approximation_error: f64,
-}
-/// Specification of Model explanation.
-///
-/// Currently, only AutoML tabular Models support explanation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplanationSpec {
-    /// Required. Parameters that configure explaining of the Model's predictions.
-    #[prost(message, optional, tag = "1")]
-    pub parameters: ::std::option::Option<ExplanationParameters>,
-    /// Required. Metadata describing the Model's input and output for explanation.
-    #[prost(message, optional, tag = "2")]
-    pub metadata: ::std::option::Option<ExplanationMetadata>,
-}
-/// Parameters to configure explaining for Model's predictions.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplanationParameters {
-    /// An attribution method that approximates Shapley values for features that
-    /// contribute to the label being predicted. A sampling strategy is used to
-    /// approximate the value rather than considering all subsets of features.
-    #[prost(message, optional, tag = "1")]
-    pub sampled_shapley_attribution: ::std::option::Option<SampledShapleyAttribution>,
-}
-/// An attribution method that approximates Shapley values for features that
-/// contribute to the label being predicted. A sampling strategy is used to
-/// approximate the value rather than considering all subsets of features.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SampledShapleyAttribution {
-    /// Required. The number of feature permutations to consider when approximating the
-    /// Shapley values.
-    ///
-    /// Valid range of its value is [1, 50], inclusively.
-    #[prost(int32, tag = "1")]
-    pub path_count: i32,
 }
 /// A trained machine learning Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1453,7 +1965,7 @@ pub struct Model {
     #[prost(message, optional, tag = "6")]
     pub metadata: ::std::option::Option<::prost_types::Value>,
     /// Output only. The formats in which this Model may be exported. If empty, this Model is
-    /// not avaiable for export.
+    /// not available for export.
     #[prost(message, repeated, tag = "20")]
     pub supported_export_formats: ::std::vec::Vec<model::ExportFormat>,
     /// Output only. The resource name of the TrainingPipeline that uploaded this Model, if any.
@@ -1641,11 +2153,12 @@ pub mod model {
             /// Should not be used.
             Unspecified = 0,
             /// Model artifact and any of its supported files. Will be exported to the
-            /// specified [ExportModelRequest.output_config.artifact_destination]
+            /// location specified by the `artifactDestination` field of the
+            /// [ExportModelRequest.output_config][google.cloud.aiplatform.v1beta1.ExportModelRequest.output_config] object.
             Artifact = 1,
             /// The container image that is to be used when deploying this Model. Will
-            /// be exported to the specified
-            /// [ExportModelRequest.output_config.image_destination]
+            /// be exported to the location specified by the `imageDestination` field
+            /// of the [ExportModelRequest.output_config][google.cloud.aiplatform.v1beta1.ExportModelRequest.output_config] object.
             Image = 2,
         }
     }
@@ -1706,55 +2219,207 @@ pub struct PredictSchemata {
     #[prost(string, tag = "3")]
     pub prediction_schema_uri: std::string::String,
 }
-/// Specification of the container to be deployed for this Model.
-/// The ModelContainerSpec is based on the Kubernetes Container
-/// [specification](https://tinyurl.com/k8s-io-api/v1.10/#container-v1-core).
+/// Specification of a container for serving predictions. This message is a
+/// subset of the Kubernetes Container v1 core
+/// [specification](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelContainerSpec {
-    /// Required. Immutable. The URI of the Model serving container file in the Container Registry. The
-    /// container image is ingested upon [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel], stored
+    /// Required. Immutable. URI of the Docker image to be used as the custom container for serving
+    /// predictions. This URI must identify an image in Artifact Registry or
+    /// Container Registry. Learn more about the container publishing
+    /// requirements, including permissions requirements for the AI Platform
+    /// Service Agent,
+    /// [here](https://tinyurl.com/cust-cont-reqs#publishing).
+    ///
+    /// The container image is ingested upon [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel], stored
     /// internally, and this original path is afterwards not used.
+    ///
+    /// To learn about the requirements for the Docker image itself, see
+    /// [Custom container requirements](https://tinyurl.com/cust-cont-reqs).
     #[prost(string, tag = "1")]
     pub image_uri: std::string::String,
-    /// Immutable. The command with which the container is run. Not executed within a shell.
-    /// The Docker image's ENTRYPOINT is used if this is not provided.
-    /// Variable references $(VAR_NAME) are expanded using the container's
-    /// environment. If a variable cannot be resolved, the reference in the input
-    /// string will be unchanged. The $(VAR_NAME) syntax can be escaped with a
-    /// double $$, ie: $$(VAR_NAME). Escaped references will never be expanded,
-    /// regardless of whether the variable exists or not.
-    /// More info: https://tinyurl.com/y42hmlxe
+    /// Immutable. Specifies the command that runs when the container starts. This overrides
+    /// the container's
+    /// [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint).
+    /// Specify this field as an array of executable and arguments, similar to a
+    /// Docker `ENTRYPOINT`'s "exec" form, not its "shell" form.
+    ///
+    /// If you do not specify this field, then the container's `ENTRYPOINT` runs,
+    /// in conjunction with the [args][google.cloud.aiplatform.v1beta1.ModelContainerSpec.args] field or the
+    /// container's [`CMD`](https://docs.docker.com/engine/reference/builder/#cmd),
+    /// if either exists. If this field is not specified and the container does not
+    /// have an `ENTRYPOINT`, then refer to the Docker documentation about how
+    /// `CMD` and `ENTRYPOINT`
+    /// [interact](https://tinyurl.com/h3kdcgs).
+    ///
+    /// If you specify this field, then you can also specify the `args` field to
+    /// provide additional arguments for this command. However, if you specify this
+    /// field, then the container's `CMD` is ignored. See the
+    /// [Kubernetes documentation](https://tinyurl.com/y8bvllf4) about how the
+    /// `command` and `args` fields interact with a container's `ENTRYPOINT` and
+    /// `CMD`.
+    ///
+    /// In this field, you can reference environment variables
+    /// [set by AI Platform](https://tinyurl.com/cust-cont-reqs#aip-variables)
+    /// and environment variables set in the [env][google.cloud.aiplatform.v1beta1.ModelContainerSpec.env] field.
+    /// You cannot reference environment variables set in the Docker image. In
+    /// order for environment variables to be expanded, reference them by using the
+    /// following syntax:
+    /// <code>$(<var>VARIABLE_NAME</var>)</code>
+    /// Note that this differs from Bash variable expansion, which does not use
+    /// parentheses. If a variable cannot be resolved, the reference in the input
+    /// string is used unchanged. To avoid variable expansion, you can escape this
+    /// syntax with `$$`; for example:
+    /// <code>$$(<var>VARIABLE_NAME</var>)</code>
+    /// This field corresponds to the `command` field of the Kubernetes Containers
+    /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(string, repeated, tag = "2")]
     pub command: ::std::vec::Vec<std::string::String>,
-    /// Immutable. The arguments to the command.
-    /// The Docker image's CMD is used if this is not provided.
-    /// Variable references $(VAR_NAME) are expanded using the container's
-    /// environment. If a variable cannot be resolved, the reference in the input
-    /// string will be unchanged. The $(VAR_NAME) syntax can be escaped with a
-    /// double $$, ie: $$(VAR_NAME). Escaped references will never be expanded,
-    /// regardless of whether the variable exists or not.
-    /// More info: https://tinyurl.com/y42hmlxe
+    /// Immutable. Specifies arguments for the command that runs when the container starts.
+    /// This overrides the container's
+    /// [`CMD`](https://docs.docker.com/engine/reference/builder/#cmd). Specify
+    /// this field as an array of executable and arguments, similar to a Docker
+    /// `CMD`'s "default parameters" form.
+    ///
+    /// If you don't specify this field but do specify the
+    /// [command][google.cloud.aiplatform.v1beta1.ModelContainerSpec.command] field, then the command from the
+    /// `command` field runs without any additional arguments. See the
+    /// [Kubernetes documentation](https://tinyurl.com/y8bvllf4) about how the
+    /// `command` and `args` fields interact with a container's `ENTRYPOINT` and
+    /// `CMD`.
+    ///
+    /// If you don't specify this field and don't specify the `command` field,
+    /// then the container's
+    /// [`ENTRYPOINT`](https://docs.docker.com/engine/reference/builder/#cmd) and
+    /// `CMD` determine what runs based on their default behavior. See the Docker
+    /// documentation about how `CMD` and `ENTRYPOINT`
+    /// [interact](https://tinyurl.com/h3kdcgs).
+    ///
+    /// In this field, you can reference environment variables
+    /// [set by AI Platform](https://tinyurl.com/cust-cont-reqs#aip-variables)
+    /// and environment variables set in the [env][google.cloud.aiplatform.v1beta1.ModelContainerSpec.env] field.
+    /// You cannot reference environment variables set in the Docker image. In
+    /// order for environment variables to be expanded, reference them by using the
+    /// following syntax:
+    /// <code>$(<var>VARIABLE_NAME</var>)</code>
+    /// Note that this differs from Bash variable expansion, which does not use
+    /// parentheses. If a variable cannot be resolved, the reference in the input
+    /// string is used unchanged. To avoid variable expansion, you can escape this
+    /// syntax with `$$`; for example:
+    /// <code>$$(<var>VARIABLE_NAME</var>)</code>
+    /// This field corresponds to the `args` field of the Kubernetes Containers
+    /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(string, repeated, tag = "3")]
     pub args: ::std::vec::Vec<std::string::String>,
-    /// Immutable. The environment variables that are to be present in the container.
+    /// Immutable. List of environment variables to set in the container. After the container
+    /// starts running, code running in the container can read these environment
+    /// variables.
+    ///
+    /// Additionally, the [command][google.cloud.aiplatform.v1beta1.ModelContainerSpec.command] and
+    /// [args][google.cloud.aiplatform.v1beta1.ModelContainerSpec.args] fields can reference these variables. Later
+    /// entries in this list can also reference earlier entries. For example, the
+    /// following example sets the variable `VAR_2` to have the value `foo bar`:
+    ///
+    /// ```json
+    /// [
+    ///   {
+    ///     "name": "VAR_1",
+    ///     "value": "foo"
+    ///   },
+    ///   {
+    ///     "name": "VAR_2",
+    ///     "value": "$(VAR_1) bar"
+    ///   }
+    /// ]
+    /// ```
+    ///
+    /// If you switch the order of the variables in the example, then the expansion
+    /// does not occur.
+    ///
+    /// This field corresponds to the `env` field of the Kubernetes Containers
+    /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(message, repeated, tag = "4")]
     pub env: ::std::vec::Vec<EnvVar>,
-    /// Immutable. Declaration of ports that are exposed by the container. This field is
-    /// primarily informational, it gives AI Platform information about the
-    /// network connections the container uses. Listing or not a port
-    /// here has no impact on whether the port is actually exposed, any port
-    /// listening on the default "0.0.0.0" address inside a container will be
-    /// accessible from the network.
+    /// Immutable. List of ports to expose from the container. AI Platform sends any
+    /// prediction requests that it receives to the first port on this list. AI
+    /// Platform also sends
+    /// [liveness and health checks](https://tinyurl.com/cust-cont-reqs#health)
+    /// to this port.
+    ///
+    /// If you do not specify this field, it defaults to following value:
+    ///
+    /// ```json
+    /// [
+    ///   {
+    ///     "containerPort": 8080
+    ///   }
+    /// ]
+    /// ```
+    ///
+    /// AI Platform does not use ports other than the first one listed. This field
+    /// corresponds to the `ports` field of the Kubernetes Containers
+    /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(message, repeated, tag = "5")]
     pub ports: ::std::vec::Vec<Port>,
-    /// Immutable. An HTTP path to send prediction requests to the container, and which
-    /// must be supported by it. If not specified a default HTTP path will be
-    /// used by AI Platform.
+    /// Immutable. HTTP path on the container to send prediction requests to. AI Platform
+    /// forwards requests sent using
+    /// [projects.locations.endpoints.predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict] to this
+    /// path on the container's IP address and port. AI Platform then returns the
+    /// container's response in the API response.
+    ///
+    /// For example, if you set this field to `/foo`, then when AI Platform
+    /// receives a prediction request, it forwards the request body in a POST
+    /// request to the following URL on the container:
+    /// <code>localhost:<var>PORT</var>/foo</code>
+    /// <var>PORT</var> refers to the first value of this `ModelContainerSpec`'s
+    /// [ports][google.cloud.aiplatform.v1beta1.ModelContainerSpec.ports] field.
+    ///
+    /// If you don't specify this field, it defaults to the following value when
+    /// you [deploy this Model to an Endpoint][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel]:
+    /// <code>/v1/endpoints/<var>ENDPOINT</var>/deployedModels/<var>DEPLOYED_MODEL</var>:predict</code>
+    /// The placeholders in this value are replaced as follows:
+    ///
+    /// * <var>ENDPOINT</var>: The last segment (following `endpoints/`)of the
+    ///   Endpoint.name][] field of the Endpoint where this Model has been
+    ///   deployed. (AI Platform makes this value available to your container code
+    ///   as the
+    ///  [`AIP_ENDPOINT_ID`](https://tinyurl.com/cust-cont-reqs#aip-variables)
+    ///  environment variable.)
+    ///
+    /// * <var>DEPLOYED_MODEL</var>: [DeployedModel.id][google.cloud.aiplatform.v1beta1.DeployedModel.id] of the `DeployedModel`.
+    ///   (AI Platform makes this value available to your container code
+    ///   as the [`AIP_DEPLOYED_MODEL_ID` environment
+    ///   variable](https://tinyurl.com/cust-cont-reqs#aip-variables).)
     #[prost(string, tag = "6")]
     pub predict_route: std::string::String,
-    /// Immutable. An HTTP path to send health check requests to the container, and which
-    /// must be supported by it. If not specified a standard HTTP path will be
-    /// used by AI Platform.
+    /// Immutable. HTTP path on the container to send health checkss to. AI Platform
+    /// intermittently sends GET requests to this path on the container's IP
+    /// address and port to check that the container is healthy. Read more about
+    /// [health
+    /// checks](https://tinyurl.com/cust-cont-reqs#checks).
+    ///
+    /// For example, if you set this field to `/bar`, then AI Platform
+    /// intermittently sends a GET request to the following URL on the container:
+    /// <code>localhost:<var>PORT</var>/bar</code>
+    /// <var>PORT</var> refers to the first value of this `ModelContainerSpec`'s
+    /// [ports][google.cloud.aiplatform.v1beta1.ModelContainerSpec.ports] field.
+    ///
+    /// If you don't specify this field, it defaults to the following value when
+    /// you [deploy this Model to an Endpoint][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel]:
+    /// <code>/v1/endpoints/<var>ENDPOINT</var>/deployedModels/<var>DEPLOYED_MODEL</var>:predict</code>
+    /// The placeholders in this value are replaced as follows:
+    ///
+    /// * <var>ENDPOINT</var>: The last segment (following `endpoints/`)of the
+    ///   Endpoint.name][] field of the Endpoint where this Model has been
+    ///   deployed. (AI Platform makes this value available to your container code
+    ///   as the
+    ///   [`AIP_ENDPOINT_ID`](https://tinyurl.com/cust-cont-reqs#aip-variables)
+    ///   environment variable.)
+    ///
+    /// * <var>DEPLOYED_MODEL</var>: [DeployedModel.id][google.cloud.aiplatform.v1beta1.DeployedModel.id] of the `DeployedModel`.
+    ///   (AI Platform makes this value available to your container code as the
+    /// [`AIP_DEPLOYED_MODEL_ID`](https://tinyurl.com/cust-cont-reqs#aip-variables)
+    ///   environment variable.)
     #[prost(string, tag = "7")]
     pub health_route: std::string::String,
 }
@@ -1937,16 +2602,20 @@ pub struct InputDataConfig {
     pub split: ::std::option::Option<input_data_config::Split>,
     /// Only applicable to Custom and Hyperparameter Tuning TrainingPipelines.
     ///
-    /// The destination of the input data to be written to.
+    /// The destination of the training data to be written to.
+    ///
+    /// Supported destination file formats:
+    ///   * For non-tabular data: "jsonl".
+    ///   * For tabular data: "csv" and "bigquery".
     ///
     /// Following AI Platform environment variables will be passed to containers
     /// or python modules of the training task when this field is set:
     ///
-    /// * AIP_DATA_FORMAT : Exported data format. Supported formats: "jsonl".
+    /// * AIP_DATA_FORMAT : Exported data format.
     /// * AIP_TRAINING_DATA_URI : Sharded exported training data uris.
     /// * AIP_VALIDATION_DATA_URI : Sharded exported validation data uris.
     /// * AIP_TEST_DATA_URI : Sharded exported test data uris.
-    #[prost(oneof = "input_data_config::Destination", tags = "8")]
+    #[prost(oneof = "input_data_config::Destination", tags = "8, 10")]
     pub destination: ::std::option::Option<input_data_config::Destination>,
 }
 pub mod input_data_config {
@@ -1974,29 +2643,62 @@ pub mod input_data_config {
     }
     /// Only applicable to Custom and Hyperparameter Tuning TrainingPipelines.
     ///
-    /// The destination of the input data to be written to.
+    /// The destination of the training data to be written to.
+    ///
+    /// Supported destination file formats:
+    ///   * For non-tabular data: "jsonl".
+    ///   * For tabular data: "csv" and "bigquery".
     ///
     /// Following AI Platform environment variables will be passed to containers
     /// or python modules of the training task when this field is set:
     ///
-    /// * AIP_DATA_FORMAT : Exported data format. Supported formats: "jsonl".
+    /// * AIP_DATA_FORMAT : Exported data format.
     /// * AIP_TRAINING_DATA_URI : Sharded exported training data uris.
     /// * AIP_VALIDATION_DATA_URI : Sharded exported validation data uris.
     /// * AIP_TEST_DATA_URI : Sharded exported test data uris.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// The Google Cloud Storage location.
+        /// The Google Cloud Storage location where the training data is to be
+        /// written to. In the given directory a new directory will be created with
+        /// name:
+        /// `dataset-<dataset-id>-<annotation-type>-<timestamp-of-training-call>`
+        /// where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
+        /// All training input data will be written into that directory.
         ///
         /// The AI Platform environment variables representing Google Cloud Storage
         /// data URIs will always be represented in the Google Cloud Storage wildcard
-        /// format to support sharded data. e.g.: "gs://.../training-*
+        /// format to support sharded data. e.g.: "gs://.../training-*.jsonl"
         ///
-        /// * AIP_DATA_FORMAT = "jsonl".
-        /// * AIP_TRAINING_DATA_URI  = "gcs_destination/training-*"
-        /// * AIP_VALIDATION_DATA_URI = "gcs_destination/validation-*"
-        /// * AIP_TEST_DATA_URI = "gcs_destination/test-*"
+        /// * AIP_DATA_FORMAT = "jsonl" for non-tabular data, "csv" for tabular data
+        /// * AIP_TRAINING_DATA_URI  =
+        ///
+        /// "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/training-*.${AIP_DATA_FORMAT}"
+        /// * AIP_VALIDATION_DATA_URI =
+        ///
+        /// "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/validation-*.${AIP_DATA_FORMAT}"
+        /// * AIP_TEST_DATA_URI =
+        ///
+        /// "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/test-*.${AIP_DATA_FORMAT}"
         #[prost(message, tag = "8")]
         GcsDestination(super::GcsDestination),
+        /// The BigQuery project location where the training data is to be written
+        /// to. In the given project a new dataset is created with name
+        /// `dataset_<dataset-id>_<annotation-type>_<timestamp-of-training-call>`
+        /// where timestamp is in YYYY_MM_DDThh_mm_ss_sssZ format. All training
+        /// input data will be written into that dataset. In the dataset three
+        /// tables will be created, `training`, `validation` and `test`.
+        ///
+        /// * AIP_DATA_FORMAT = "bigquery".
+        /// * AIP_TRAINING_DATA_URI  =
+        ///
+        /// "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.training"
+        /// * AIP_VALIDATION_DATA_URI =
+        ///
+        /// "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.validation"
+        /// * AIP_TEST_DATA_URI =
+        /// "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.test"
+        #[prost(message, tag = "10")]
+        BigqueryDestination(super::BigQueryDestination),
     }
 }
 /// Assigns the input data to training, validation, and test sets as per the
@@ -2613,10 +3315,17 @@ pub struct DeployedModel {
     /// [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] is inherited. The corresponding
     /// [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] must be populated, otherwise explanation for
     /// this Model is not allowed.
-    ///
-    /// Currently, only AutoML tabular Models support explanation_spec.
     #[prost(message, optional, tag = "9")]
     pub explanation_spec: ::std::option::Option<ExplanationSpec>,
+    /// The service account that the DeployedModel's container runs as. Specify the
+    /// email address of the service account. If this service account is not
+    /// specified, the container runs as a service account that doesn't have access
+    /// to the resource project.
+    ///
+    /// Users deploying the Model must have the `iam.serviceAccounts.actAs`
+    /// permission on this service account.
+    #[prost(string, tag = "11")]
+    pub service_account: std::string::String,
     /// If true, the container of the DeployedModel instances will send `stderr`
     /// and `stdout` streams to Stackdriver Logging.
     ///
@@ -3108,6 +3817,13 @@ pub mod study_spec {
         /// Leave unset for `CATEGORICAL` parameters.
         #[prost(enumeration = "parameter_spec::ScaleType", tag = "6")]
         pub scale_type: i32,
+        /// A conditional parameter node is active if the parameter's value matches
+        /// the conditional node's parent_value_condition.
+        ///
+        /// If two items in conditional_parameter_specs have the same name, they
+        /// must have disjoint parent_value_condition.
+        #[prost(message, repeated, tag = "10")]
+        pub conditional_parameter_specs: ::std::vec::Vec<parameter_spec::ConditionalParameterSpec>,
         #[prost(oneof = "parameter_spec::ParameterValueSpec", tags = "2, 3, 4, 5")]
         pub parameter_value_spec: ::std::option::Option<parameter_spec::ParameterValueSpec>,
     }
@@ -3148,6 +3864,67 @@ pub mod study_spec {
             /// and 4.0. This list should not contain more than 1,000 values.
             #[prost(double, repeated, packed = "false", tag = "1")]
             pub values: ::std::vec::Vec<f64>,
+        }
+        /// Represents a parameter spec with condition from its parent parameter.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ConditionalParameterSpec {
+            /// Required. The spec for a conditional parameter.
+            #[prost(message, optional, tag = "1")]
+            pub parameter_spec: ::std::option::Option<super::ParameterSpec>,
+            /// A set of parameter values from the parent ParameterSpec's feasible
+            /// space.
+            #[prost(
+                oneof = "conditional_parameter_spec::ParentValueCondition",
+                tags = "2, 3, 4"
+            )]
+            pub parent_value_condition:
+                ::std::option::Option<conditional_parameter_spec::ParentValueCondition>,
+        }
+        pub mod conditional_parameter_spec {
+            /// Represents the spec to match discrete values from parent parameter.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct DiscreteValueCondition {
+                /// Required. Matches values of the parent parameter of 'DISCRETE' type.
+                /// All values must exist in `discrete_value_spec` of parent parameter.
+                ///
+                /// The Epsilon of the value matching is 1e-10.
+                #[prost(double, repeated, packed = "false", tag = "1")]
+                pub values: ::std::vec::Vec<f64>,
+            }
+            /// Represents the spec to match integer values from parent parameter.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct IntValueCondition {
+                /// Required. Matches values of the parent parameter of 'INTEGER' type.
+                /// All values must lie in `integer_value_spec` of parent parameter.
+                #[prost(int64, repeated, packed = "false", tag = "1")]
+                pub values: ::std::vec::Vec<i64>,
+            }
+            /// Represents the spec to match categorical values from parent parameter.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct CategoricalValueCondition {
+                /// Required. Matches values of the parent parameter of 'CATEGORICAL' type.
+                /// All values must exist in `categorical_value_spec` of parent
+                /// parameter.
+                #[prost(string, repeated, tag = "1")]
+                pub values: ::std::vec::Vec<std::string::String>,
+            }
+            /// A set of parameter values from the parent ParameterSpec's feasible
+            /// space.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum ParentValueCondition {
+                /// The spec for matching values from a parent parameter of
+                /// `DISCRETE` type.
+                #[prost(message, tag = "2")]
+                ParentDiscreteValues(DiscreteValueCondition),
+                /// The spec for matching values from a parent parameter of `INTEGER`
+                /// type.
+                #[prost(message, tag = "3")]
+                ParentIntValues(IntValueCondition),
+                /// The spec for matching values from a parent parameter of
+                /// `CATEGORICAL` type.
+                #[prost(message, tag = "4")]
+                ParentCategoricalValues(CategoricalValueCondition),
+            }
         }
         /// The type of scaling that should be applied to this parameter.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4079,6 +4856,383 @@ pub mod job_service_client {
         }
     }
 }
+/// Represents one resource that exists in automl.googleapis.com,
+/// datalabeling.googleapis.com or ml.googleapis.com.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigratableResource {
+    /// Output only. Timestamp when last migrate attempt on this MigratableResource started.
+    /// Will not be set if there's no migrate attempt on this MigratableResource.
+    #[prost(message, optional, tag = "5")]
+    pub last_migrate_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this MigratableResource was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub last_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    #[prost(oneof = "migratable_resource::Resource", tags = "1, 2, 3, 4")]
+    pub resource: ::std::option::Option<migratable_resource::Resource>,
+}
+pub mod migratable_resource {
+    /// Represents one model Version in ml.googleapis.com.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MlEngineModelVersion {
+        /// The ml.googleapis.com endpoint that this model Version currently lives
+        /// in.
+        /// Example values:
+        /// * ml.googleapis.com
+        /// * us-centrall-ml.googleapis.com
+        /// * europe-west4-ml.googleapis.com
+        /// * asia-east1-ml.googleapis.com
+        #[prost(string, tag = "1")]
+        pub endpoint: std::string::String,
+        /// Full resource name of ml engine model Version.
+        /// Format: `projects/{project}/models/{model}/versions/{version}`.
+        #[prost(string, tag = "2")]
+        pub version: std::string::String,
+    }
+    /// Represents one Model in automl.googleapis.com.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutomlModel {
+        /// Full resource name of automl Model.
+        /// Format:
+        /// `projects/{project}/locations/{location}/models/{model}`.
+        #[prost(string, tag = "1")]
+        pub model: std::string::String,
+        /// The Model's display name in automl.googleapis.com.
+        #[prost(string, tag = "3")]
+        pub model_display_name: std::string::String,
+    }
+    /// Represents one Dataset in automl.googleapis.com.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutomlDataset {
+        /// Full resource name of automl Dataset.
+        /// Format:
+        /// `projects/{project}/locations/{location}/datasets/{dataset}`.
+        #[prost(string, tag = "1")]
+        pub dataset: std::string::String,
+        /// The Dataset's display name in automl.googleapis.com.
+        #[prost(string, tag = "4")]
+        pub dataset_display_name: std::string::String,
+    }
+    /// Represents one Dataset in datalabeling.googleapis.com.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataLabelingDataset {
+        /// Full resource name of data labeling Dataset.
+        /// Format:
+        /// `projects/{project}/datasets/{dataset}`.
+        #[prost(string, tag = "1")]
+        pub dataset: std::string::String,
+        /// The Dataset's display name in datalabeling.googleapis.com.
+        #[prost(string, tag = "4")]
+        pub dataset_display_name: std::string::String,
+        /// The migratable AnnotatedDataset in datalabeling.googleapis.com belongs to
+        /// the data labeling Dataset.
+        #[prost(message, repeated, tag = "3")]
+        pub data_labeling_annotated_datasets:
+            ::std::vec::Vec<data_labeling_dataset::DataLabelingAnnotatedDataset>,
+    }
+    pub mod data_labeling_dataset {
+        /// Represents one AnnotatedDataset in datalabeling.googleapis.com.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DataLabelingAnnotatedDataset {
+            /// Full resource name of data labeling AnnotatedDataset.
+            /// Format:
+            ///
+            /// `projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}`.
+            #[prost(string, tag = "1")]
+            pub annotated_dataset: std::string::String,
+            /// The AnnotatedDataset's display name in datalabeling.googleapis.com.
+            #[prost(string, tag = "3")]
+            pub annotated_dataset_display_name: std::string::String,
+        }
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Resource {
+        /// Output only. Represents one Version in ml.googleapis.com.
+        #[prost(message, tag = "1")]
+        MlEngineModelVersion(MlEngineModelVersion),
+        /// Output only. Represents one Model in automl.googleapis.com.
+        #[prost(message, tag = "2")]
+        AutomlModel(AutomlModel),
+        /// Output only. Represents one Dataset in automl.googleapis.com.
+        #[prost(message, tag = "3")]
+        AutomlDataset(AutomlDataset),
+        /// Output only. Represents one Dataset in datalabeling.googleapis.com.
+        #[prost(message, tag = "4")]
+        DataLabelingDataset(DataLabelingDataset),
+    }
+}
+/// Request message for [MigrationService.SearchMigratableResources][google.cloud.aiplatform.v1beta1.MigrationService.SearchMigratableResources].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchMigratableResourcesRequest {
+    /// Required. The location that the migratable resources should be searched from.
+    /// It's the AI Platform location that the resources can be migrated to, not
+    /// the resources' original location.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// The standard page size.
+    /// The default and maximum value is 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The standard page token.
+    #[prost(string, tag = "3")]
+    pub page_token: std::string::String,
+}
+/// Response message for [MigrationService.SearchMigratableResources][google.cloud.aiplatform.v1beta1.MigrationService.SearchMigratableResources].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchMigratableResourcesResponse {
+    /// All migratable resources that can be migrated to the
+    /// location specified in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub migratable_resources: ::std::vec::Vec<MigratableResource>,
+    /// The standard next-page token.
+    /// The migratable_resources may not fill page_size in
+    /// SearchMigratableResourcesRequest even when there are subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: std::string::String,
+}
+/// Request message for [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1beta1.MigrationService.BatchMigrateResources].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchMigrateResourcesRequest {
+    /// Required. The location of the migrated resource will live in.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Required. The request messages specifying the resources to migrate.
+    /// They must be in the same location as the destination.
+    /// Up to 50 resources can be migrated in one batch.
+    #[prost(message, repeated, tag = "2")]
+    pub migrate_resource_requests: ::std::vec::Vec<MigrateResourceRequest>,
+}
+/// Config of migrating one resource from automl.googleapis.com,
+/// datalabeling.googleapis.com and ml.googleapis.com to AI Platform.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrateResourceRequest {
+    #[prost(oneof = "migrate_resource_request::Request", tags = "1, 2, 3, 4")]
+    pub request: ::std::option::Option<migrate_resource_request::Request>,
+}
+pub mod migrate_resource_request {
+    /// Config for migrating version in ml.googleapis.com to AI Platform's Model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MigrateMlEngineModelVersionConfig {
+        /// Required. The ml.googleapis.com endpoint that this model version should be migrated
+        /// from.
+        /// Example values:
+        ///
+        /// * ml.googleapis.com
+        ///
+        /// * us-centrall-ml.googleapis.com
+        ///
+        /// * europe-west4-ml.googleapis.com
+        ///
+        /// * asia-east1-ml.googleapis.com
+        #[prost(string, tag = "1")]
+        pub endpoint: std::string::String,
+        /// Required. Full resource name of ml engine model version.
+        /// Format: `projects/{project}/models/{model}/versions/{version}`.
+        #[prost(string, tag = "2")]
+        pub model_version: std::string::String,
+        /// Required. Display name of the model in AI Platform.
+        /// System will pick a display name if unspecified.
+        #[prost(string, tag = "3")]
+        pub model_display_name: std::string::String,
+    }
+    /// Config for migrating Model in automl.googleapis.com to AI Platform's Model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MigrateAutomlModelConfig {
+        /// Required. Full resource name of automl Model.
+        /// Format:
+        /// `projects/{project}/locations/{location}/models/{model}`.
+        #[prost(string, tag = "1")]
+        pub model: std::string::String,
+        /// Optional. Display name of the model in AI Platform.
+        /// System will pick a display name if unspecified.
+        #[prost(string, tag = "2")]
+        pub model_display_name: std::string::String,
+    }
+    /// Config for migrating Dataset in automl.googleapis.com to AI Platform's
+    /// Dataset.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MigrateAutomlDatasetConfig {
+        /// Required. Full resource name of automl Dataset.
+        /// Format:
+        /// `projects/{project}/locations/{location}/datasets/{dataset}`.
+        #[prost(string, tag = "1")]
+        pub dataset: std::string::String,
+        /// Required. Display name of the Dataset in AI Platform.
+        /// System will pick a display name if unspecified.
+        #[prost(string, tag = "2")]
+        pub dataset_display_name: std::string::String,
+    }
+    /// Config for migrating Dataset in datalabeling.googleapis.com to AI
+    /// Platform's Dataset.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MigrateDataLabelingDatasetConfig {
+        /// Required. Full resource name of data labeling Dataset.
+        /// Format:
+        /// `projects/{project}/datasets/{dataset}`.
+        #[prost(string, tag = "1")]
+        pub dataset: std::string::String,
+        /// Optional. Display name of the Dataset in AI Platform.
+        /// System will pick a display name if unspecified.
+        #[prost(string, tag = "2")]
+        pub dataset_display_name: std::string::String,
+        /// Optional. Configs for migrating AnnotatedDataset in datalabeling.googleapis.com to
+        /// AI Platform's SavedQuery. The specified AnnotatedDatasets have to belong
+        /// to the datalabeling Dataset.
+        #[prost(message, repeated, tag = "3")]
+        pub migrate_data_labeling_annotated_dataset_configs: ::std::vec::Vec<
+            migrate_data_labeling_dataset_config::MigrateDataLabelingAnnotatedDatasetConfig,
+        >,
+    }
+    pub mod migrate_data_labeling_dataset_config {
+        /// Config for migrating AnnotatedDataset in datalabeling.googleapis.com to
+        /// AI Platform's SavedQuery.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MigrateDataLabelingAnnotatedDatasetConfig {
+            /// Required. Full resource name of data labeling AnnotatedDataset.
+            /// Format:
+            ///
+            /// `projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}`.
+            #[prost(string, tag = "1")]
+            pub annotated_dataset: std::string::String,
+        }
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Request {
+        /// Config for migrating Version in ml.googleapis.com to AI Platform's Model.
+        #[prost(message, tag = "1")]
+        MigrateMlEngineModelVersionConfig(MigrateMlEngineModelVersionConfig),
+        /// Config for migrating Model in automl.googleapis.com to AI Platform's
+        /// Model.
+        #[prost(message, tag = "2")]
+        MigrateAutomlModelConfig(MigrateAutomlModelConfig),
+        /// Config for migrating Dataset in automl.googleapis.com to AI Platform's
+        /// Dataset.
+        #[prost(message, tag = "3")]
+        MigrateAutomlDatasetConfig(MigrateAutomlDatasetConfig),
+        /// Config for migrating Dataset in datalabeling.googleapis.com to
+        /// AI Platform's Dataset.
+        #[prost(message, tag = "4")]
+        MigrateDataLabelingDatasetConfig(MigrateDataLabelingDatasetConfig),
+    }
+}
+/// Response message for [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1beta1.MigrationService.BatchMigrateResources].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchMigrateResourcesResponse {
+    /// Successfully migrated resources.
+    #[prost(message, repeated, tag = "1")]
+    pub migrate_resource_responses: ::std::vec::Vec<MigrateResourceResponse>,
+}
+/// Describes a successfully migrated resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrateResourceResponse {
+    /// Before migration, the identifier in ml.googleapis.com,
+    /// automl.googleapis.com or datalabeling.googleapis.com.
+    #[prost(message, optional, tag = "3")]
+    pub migratable_resource: ::std::option::Option<MigratableResource>,
+    /// After migration, the resource name in AI Platform.
+    #[prost(oneof = "migrate_resource_response::MigratedResource", tags = "1, 2")]
+    pub migrated_resource: ::std::option::Option<migrate_resource_response::MigratedResource>,
+}
+pub mod migrate_resource_response {
+    /// After migration, the resource name in AI Platform.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MigratedResource {
+        /// Migrated Dataset's resource name.
+        #[prost(string, tag = "1")]
+        Dataset(std::string::String),
+        /// Migrated Model's resource name.
+        #[prost(string, tag = "2")]
+        Model(std::string::String),
+    }
+}
+/// Runtime operation information for [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1beta1.MigrationService.BatchMigrateResources].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchMigrateResourcesOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+}
+#[doc = r" Generated client implementations."]
+pub mod migration_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " A service that migrates resources from automl.googleapis.com,"]
+    #[doc = " datalabeling.googleapis.com and ml.googleapis.com to AI Platform."]
+    pub struct MigrationServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> MigrationServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Searches all of the resources in automl.googleapis.com,"]
+        #[doc = " datalabeling.googleapis.com and ml.googleapis.com that can be migrated to"]
+        #[doc = " AI Platform's given location."]
+        pub async fn search_migratable_resources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchMigratableResourcesRequest>,
+        ) -> Result<tonic::Response<super::SearchMigratableResourcesResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.MigrationService/SearchMigratableResources",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Batch migrates resources from ml.googleapis.com, automl.googleapis.com,"]
+        #[doc = " and datalabeling.googleapis.com to AI Platform (Unified)."]
+        pub async fn batch_migrate_resources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchMigrateResourcesRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.MigrationService/BatchMigrateResources",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for MigrationServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for MigrationServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "MigrationServiceClient {{ ... }}")
+        }
+    }
+}
 /// A collection of metrics calculated by comparing Model's predictions on all of
 /// the test data against annotations from the test data.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4923,8 +6077,7 @@ pub struct ExplainRequest {
 /// Response message for [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplainResponse {
-    /// The explanations of the [Model's
-    /// predictions][PredictionResponse.predictions][].
+    /// The explanations of the Model's [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
     ///
     /// It has the same number of elements as [instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances]
     /// to be explained.
@@ -4933,6 +6086,10 @@ pub struct ExplainResponse {
     /// ID of the Endpoint's DeployedModel that served this explanation.
     #[prost(string, tag = "2")]
     pub deployed_model_id: std::string::String,
+    /// The predictions that are the output of the predictions call.
+    /// Same as [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
+    #[prost(message, repeated, tag = "3")]
+    pub predictions: ::std::vec::Vec<::prost_types::Value>,
 }
 #[doc = r" Generated client implementations."]
 pub mod prediction_service_client {
@@ -4976,10 +6133,12 @@ pub mod prediction_service_client {
         }
         #[doc = " Perform an online explanation."]
         #[doc = ""]
-        #[doc = " If [ExplainRequest.deployed_model_id] is specified, the corresponding"]
-        #[doc = " DeployModel must have [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]"]
-        #[doc = " populated. If [ExplainRequest.deployed_model_id] is not specified, all"]
-        #[doc = " DeployedModels must have [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]"]
+        #[doc = " If [deployed_model_id][google.cloud.aiplatform.v1beta1.ExplainRequest.deployed_model_id] is specified,"]
+        #[doc = " the corresponding DeployModel must have"]
+        #[doc = " [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]"]
+        #[doc = " populated. If [deployed_model_id][google.cloud.aiplatform.v1beta1.ExplainRequest.deployed_model_id]"]
+        #[doc = " is not specified, all DeployedModels must have"]
+        #[doc = " [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]"]
         #[doc = " populated. Only deployed AutoML tabular Models have"]
         #[doc = " explanation_spec."]
         pub async fn explain(

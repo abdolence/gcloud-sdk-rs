@@ -1,4 +1,3 @@
-/// ################################################################ #
 ///
 /// Represents the input to API methods.
 #[derive(Clone, PartialEq, ::prost::Message)]

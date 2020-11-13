@@ -10,8 +10,8 @@ pub struct Budget {
     /// `billingAccounts/{billingAccountId}/budgets/{budgetId}`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// User data for display name in UI.
-    /// Validation: <= 60 chars.
+    /// User data for display name in UI. The name must be less than or equal to 60
+    /// characters.
     #[prost(string, tag = "2")]
     pub display_name: std::string::String,
     /// Optional. Filters that define which resources are used to compute
@@ -28,7 +28,7 @@ pub struct Budget {
     /// Optional. Rules to apply to notifications sent based on budget spend and
     /// thresholds.
     #[prost(message, optional, tag = "6")]
-    pub all_updates_rule: ::std::option::Option<AllUpdatesRule>,
+    pub notifications_rule: ::std::option::Option<NotificationsRule>,
     /// Optional. Etag to validate that the object is unchanged for a
     /// read-modify-write operation.
     /// An empty etag will cause an update to overwrite other changes.
@@ -97,10 +97,10 @@ pub mod threshold_rule {
         ForecastedSpend = 2,
     }
 }
-/// AllUpdatesRule defines notifications that are sent based on budget spend
+/// NotificationsRule defines notifications that are sent based on budget spend
 /// and thresholds.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AllUpdatesRule {
+pub struct NotificationsRule {
     /// Optional. The name of the Pub/Sub topic where budget related messages will
     /// be published, in the form `projects/{project_id}/topics/{topic_id}`.
     /// Updates are sent at regular intervals to the topic. The topic needs to be
@@ -147,13 +147,13 @@ pub struct Filter {
     #[prost(string, repeated, tag = "1")]
     pub projects: ::std::vec::Vec<std::string::String>,
     /// Optional. If
-    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment]
     /// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
     /// subtracted from gross cost to determine the spend for threshold
     /// calculations.
     ///
     /// If
-    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment]
     /// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty. See [a list
     /// of acceptable credit type
     /// values](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
@@ -173,9 +173,9 @@ pub struct Filter {
     /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
     /// specifying that usage from only this set of subaccounts should be included
     /// in the budget. If a subaccount is set to the name of the parent account,
-    /// usage from the parent account will be included. If omitted, the
-    /// report will include usage from the parent account and all
-    /// subaccounts, if they exist.
+    /// usage from the parent account will be included. If the field is omitted,
+    /// the report will include usage from the parent account and all subaccounts,
+    /// if they exist.
     #[prost(string, repeated, tag = "5")]
     pub subaccounts: ::std::vec::Vec<std::string::String>,
     /// Optional. A single label and value pair specifying that usage from only
@@ -191,6 +191,7 @@ pub mod filter {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CreditTypesTreatment {
+        /// This is an invalid value.
         Unspecified = 0,
         /// All types of credit are subtracted from the gross cost to determine the
         /// spend for threshold calculations.
@@ -299,7 +300,7 @@ pub mod budget_service_client {
             Self { inner }
         }
         #[doc = " Creates a new budget. See"]
-        #[doc = " <a href=\"https://cloud.google.com/billing/quotas\">Quotas and limits</a>"]
+        #[doc = " [Quotas and limits](https://cloud.google.com/billing/quotas)"]
         #[doc = " for more information on the limits of the number of budgets you can create."]
         pub async fn create_budget(
             &mut self,
@@ -313,7 +314,7 @@ pub mod budget_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.billing.budgets.v1beta1.BudgetService/CreateBudget",
+                "/google.cloud.billing.budgets.v1.BudgetService/CreateBudget",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -334,7 +335,7 @@ pub mod budget_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.billing.budgets.v1beta1.BudgetService/UpdateBudget",
+                "/google.cloud.billing.budgets.v1.BudgetService/UpdateBudget",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -356,7 +357,7 @@ pub mod budget_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.billing.budgets.v1beta1.BudgetService/GetBudget",
+                "/google.cloud.billing.budgets.v1.BudgetService/GetBudget",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -378,7 +379,7 @@ pub mod budget_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.billing.budgets.v1beta1.BudgetService/ListBudgets",
+                "/google.cloud.billing.budgets.v1.BudgetService/ListBudgets",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -395,7 +396,7 @@ pub mod budget_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.billing.budgets.v1beta1.BudgetService/DeleteBudget",
+                "/google.cloud.billing.budgets.v1.BudgetService/DeleteBudget",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

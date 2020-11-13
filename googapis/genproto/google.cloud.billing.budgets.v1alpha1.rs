@@ -25,8 +25,8 @@ pub struct Budget {
     /// being crossed) when spend exceeds the specified percentages of the budget.
     #[prost(message, repeated, tag = "5")]
     pub threshold_rules: ::std::vec::Vec<ThresholdRule>,
-    /// Optional. Rules to apply to all updates to the actual spend, regardless
-    /// of the thresholds set in `threshold_rules`.
+    /// Optional. Rules to apply to notifications sent based on budget spend and
+    /// thresholds.
     #[prost(message, optional, tag = "6")]
     pub all_updates_rule: ::std::option::Option<AllUpdatesRule>,
     /// Optional. Etag to validate that the object is unchanged for a
@@ -97,29 +97,44 @@ pub mod threshold_rule {
         ForecastedSpend = 2,
     }
 }
-/// AllUpdatesRule defines notifications that are sent on every update to the
-/// billing account's spend, regardless of the thresholds defined using
-/// threshold rules.
+/// AllUpdatesRule defines notifications that are sent based on budget spend
+/// and thresholds.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllUpdatesRule {
-    /// Required. The name of the Cloud Pub/Sub topic where budget related messages will be
-    /// published, in the form `projects/{project_id}/topics/{topic_id}`. Updates
-    /// are sent at regular intervals to the topic.
-    /// The topic needs to be created before the budget is created; see
+    /// Optional. The name of the Pub/Sub topic where budget related messages will
+    /// be published, in the form `projects/{project_id}/topics/{topic_id}`.
+    /// Updates are sent at regular intervals to the topic. The topic needs to be
+    /// created before the budget is created; see
     /// https://cloud.google.com/billing/docs/how-to/budgets#manage-notifications
     /// for more details.
     /// Caller is expected to have
     /// `pubsub.topics.setIamPolicy` permission on the topic when it's set for a
     /// budget, otherwise, the API call will fail with PERMISSION_DENIED. See
-    /// https://cloud.google.com/pubsub/docs/access-control for more details on
-    /// Pub/Sub roles and permissions.
+    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
+    /// for more details on Pub/Sub roles and permissions.
     #[prost(string, tag = "1")]
     pub pubsub_topic: std::string::String,
-    /// Required. The schema version of the notification.
+    /// Optional. The schema version of the notification sent to `pubsub_topic`.
     /// Only "1.0" is accepted. It represents the JSON schema as defined in
-    /// https://cloud.google.com/billing/docs/how-to/budgets#notification_format
+    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format
     #[prost(string, tag = "2")]
     pub schema_version: std::string::String,
+    /// Optional. Targets to send notifications to when a threshold is exceeded.
+    /// This is in addition to default recipients who have billing account IAM
+    /// roles. The value is the full REST resource name of a monitoring
+    /// notification channel with the form
+    /// `projects/{project_id}/notificationChannels/{channel_id}`. A maximum of 5
+    /// channels are allowed. See
+    /// https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients
+    /// for more details.
+    #[prost(string, repeated, tag = "3")]
+    pub monitoring_notification_channels: ::std::vec::Vec<std::string::String>,
+    /// Optional. When set to true, disables default notifications sent when a
+    /// threshold is exceeded. Default notifications are sent to those with Billing
+    /// Account Administrator and Billing Account User IAM roles for the target
+    /// account.
+    #[prost(bool, tag = "4")]
+    pub disable_default_iam_recipients: bool,
 }
 /// A filter for a budget, limiting the scope of the cost to calculate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -131,6 +146,15 @@ pub struct Filter {
     /// Only zero or one project can be specified currently.
     #[prost(string, repeated, tag = "1")]
     pub projects: ::std::vec::Vec<std::string::String>,
+    /// Optional. A list of credit types to be subtracted from gross cost to
+    /// determine the spend for threshold calculations if and only if
+    /// credit_types_treatment is INCLUDE_SPECIFIED_CREDITS. If
+    /// credit_types_treatment is not INCLUDE_SPECIFIED_CREDITS, this field must be
+    /// empty. See credits.type at
+    /// https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#data-schema
+    /// for a list of acceptable credit type values in this field.
+    #[prost(string, repeated, tag = "7")]
+    pub credit_types: ::std::vec::Vec<std::string::String>,
     /// Optional. If not set, default behavior is `INCLUDE_ALL_CREDITS`.
     #[prost(enumeration = "filter::CreditTypesTreatment", tag = "4")]
     pub credit_types_treatment: i32,
@@ -142,17 +166,18 @@ pub struct Filter {
     /// https://cloud.google.com/billing/v1/how-tos/catalog-api.
     #[prost(string, repeated, tag = "3")]
     pub services: ::std::vec::Vec<std::string::String>,
-    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`, specifying
-    /// that usage from only this set of subaccounts should be included in the
-    /// budget. If a subaccount is set to the name of the master account, usage
-    /// from the master account will be included. If omitted, the report will
-    /// include usage from the master account and all subaccounts, if they exist.
+    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
+    /// specifying that usage from only this set of subaccounts should be included
+    /// in the budget. If a subaccount is set to the name of the parent account,
+    /// usage from the parent account will be included. If omitted, the
+    /// report will include usage from the parent account and all
+    /// subaccounts, if they exist.
     #[prost(string, repeated, tag = "5")]
     pub subaccounts: ::std::vec::Vec<std::string::String>,
-    /// Optional. A single label and value pair specifying that usage from only this set of
-    /// labeled resources should be included in the budget. Currently, multiple
-    /// entries or multiple values per entry are not allowed. If omitted, the
-    /// report will include all labeled and unlabeled usage.
+    /// Optional. A single label and value pair specifying that usage from only
+    /// this set of labeled resources should be included in the budget. Currently,
+    /// multiple entries or multiple values per entry are not allowed. If omitted,
+    /// the report will include all labeled and unlabeled usage.
     #[prost(map = "string, message", tag = "6")]
     pub labels: ::std::collections::HashMap<std::string::String, ::prost_types::ListValue>,
 }
@@ -169,6 +194,9 @@ pub mod filter {
         /// All types of credit are added to the net cost to determine the spend for
         /// threshold calculations.
         ExcludeAllCredits = 2,
+        /// Credit types specified in the credit_types field are subtracted from the
+        /// gross cost to determine the spend for threshold calculations.
+        IncludeSpecifiedCredits = 3,
     }
 }
 /// Request for CreateBudget

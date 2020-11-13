@@ -1,30 +1,48 @@
-/// Represents a whole or partial calendar date, e.g. a birthday. The time of day
-/// and time zone are either specified elsewhere or are not significant. The date
-/// is relative to the Proleptic Gregorian Calendar. This can represent:
+/// An object that represents a latitude/longitude pair. This is expressed as a
+/// pair of doubles to represent degrees latitude and degrees longitude. Unless
+/// specified otherwise, this must conform to the
+/// <a href="http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84
+/// standard</a>. Values must be within normalized ranges.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LatLng {
+    /// The latitude in degrees. It must be in the range [-90.0, +90.0].
+    #[prost(double, tag = "1")]
+    pub latitude: f64,
+    /// The longitude in degrees. It must be in the range [-180.0, +180.0].
+    #[prost(double, tag = "2")]
+    pub longitude: f64,
+}
+/// Represents a whole or partial calendar date, such as a birthday. The time of
+/// day and time zone are either specified elsewhere or are insignificant. The
+/// date is relative to the Gregorian Calendar. This can represent one of the
+/// following:
 ///
-/// * A full date, with non-zero year, month and day values
-/// * A month and day value, with a zero year, e.g. an anniversary
+/// * A full date, with non-zero year, month, and day values
+/// * A month and day value, with a zero year, such as an anniversary
 /// * A year on its own, with zero month and day values
-/// * A year and month value, with a zero day, e.g. a credit card expiration date
+/// * A year and month value, with a zero day, such as a credit card expiration
+/// date
 ///
 /// Related types are [google.type.TimeOfDay][google.type.TimeOfDay] and `google.protobuf.Timestamp`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Date {
-    /// Year of date. Must be from 1 to 9999, or 0 if specifying a date without
+    /// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
     /// a year.
     #[prost(int32, tag = "1")]
     pub year: i32,
-    /// Month of year. Must be from 1 to 12, or 0 if specifying a year without a
+    /// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
     /// month and day.
     #[prost(int32, tag = "2")]
     pub month: i32,
-    /// Day of month. Must be from 1 to 31 and valid for the year and month, or 0
-    /// if specifying a year by itself or a year and month where the day is not
+    /// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+    /// to specify a year by itself or a year and month where the day isn't
     /// significant.
     #[prost(int32, tag = "3")]
     pub day: i32,
 }
-/// Represents civil time in one of a few possible ways:
+/// Represents civil time (or occasionally physical time).
+///
+/// This type can represent a civil time in one of a few possible ways:
 ///
 ///  * When utc_offset is set and time_zone is unset: a civil time on a calendar
 ///    day with a particular offset from UTC.
@@ -37,6 +55,12 @@ pub struct Date {
 ///
 /// If year is 0, the DateTime is considered not to have a specific year. month
 /// and day must have valid, non-zero values.
+///
+/// This type may also be used to represent a physical time if all the date and
+/// time fields are set and either case of the `time_offset` oneof is set.
+/// Consider using `Timestamp` message for physical time instead. If your use
+/// case also would like to store the user's timezone, that can be done in
+/// another field.
 ///
 /// This type is more flexible than some applications may want. Make sure to
 /// document and validate your application's limitations.
@@ -106,44 +130,53 @@ pub struct TimeZone {
     #[prost(string, tag = "2")]
     pub version: std::string::String,
 }
-/// An object representing a latitude/longitude pair. This is expressed as a pair
-/// of doubles representing degrees latitude and degrees longitude. Unless
-/// specified otherwise, this must conform to the
-/// <a href="http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84
-/// standard</a>. Values must be within normalized ranges.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LatLng {
-    /// The latitude in degrees. It must be in the range [-90.0, +90.0].
-    #[prost(double, tag = "1")]
-    pub latitude: f64,
-    /// The longitude in degrees. It must be in the range [-180.0, +180.0].
-    #[prost(double, tag = "2")]
-    pub longitude: f64,
-}
-/// Represents an expression text. Example:
+/// Represents a textual expression in the Common Expression Language (CEL)
+/// syntax. CEL is a C-like expression language. The syntax and semantics of CEL
+/// are documented at https://github.com/google/cel-spec.
 ///
-///     title: "User account presence"
-///     description: "Determines whether the request has a user account"
-///     expression: "size(request.user) > 0"
+/// Example (Comparison):
+///
+///     title: "Summary size limit"
+///     description: "Determines if a summary is less than 100 chars"
+///     expression: "document.summary.size() < 100"
+///
+/// Example (Equality):
+///
+///     title: "Requestor is owner"
+///     description: "Determines if requestor is the document owner"
+///     expression: "document.owner == request.auth.claims.email"
+///
+/// Example (Logic):
+///
+///     title: "Public documents"
+///     description: "Determine whether the document should be publicly visible"
+///     expression: "document.type != 'private' && document.type != 'internal'"
+///
+/// Example (Data Manipulation):
+///
+///     title: "Notification string"
+///     description: "Create a notification string with a timestamp."
+///     expression: "'New message received at ' + string(document.create_time)"
+///
+/// The exact variables and functions that may be referenced within an expression
+/// are determined by the service that evaluates it. See the service
+/// documentation for additional information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
-    /// Textual representation of an expression in
-    /// Common Expression Language syntax.
-    ///
-    /// The application context of the containing message determines which
-    /// well-known feature set of CEL is supported.
+    /// Textual representation of an expression in Common Expression Language
+    /// syntax.
     #[prost(string, tag = "1")]
     pub expression: std::string::String,
-    /// An optional title for the expression, i.e. a short string describing
+    /// Optional. Title for the expression, i.e. a short string describing
     /// its purpose. This can be used e.g. in UIs which allow to enter the
     /// expression.
     #[prost(string, tag = "2")]
     pub title: std::string::String,
-    /// An optional description of the expression. This is a longer text which
+    /// Optional. Description of the expression. This is a longer text which
     /// describes the expression, e.g. when hovered over it in a UI.
     #[prost(string, tag = "3")]
     pub description: std::string::String,
-    /// An optional string indicating the location of the expression for error
+    /// Optional. String indicating the location of the expression for error
     /// reporting, e.g. a file name and a position in the file.
     #[prost(string, tag = "4")]
     pub location: std::string::String,
@@ -151,7 +184,7 @@ pub struct Expr {
 /// Represents an amount of money with its currency type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Money {
-    /// The 3-letter currency code defined in ISO 4217.
+    /// The three-letter currency code defined in ISO 4217.
     #[prost(string, tag = "1")]
     pub currency_code: std::string::String,
     /// The whole units of the amount.
@@ -179,6 +212,10 @@ pub struct Money {
 /// that should be used to interpret the RGB value (e.g. sRGB, Adobe RGB,
 /// DCI-P3, BT.2020, etc.). By default, applications SHOULD assume the sRGB color
 /// space.
+///
+/// Note: when color equality needs to be decided, implementations, unless
+/// documented otherwise, will treat two colors to be equal if all their red,
+/// green, blue and alpha values each differ by at most 1e-5.
 ///
 /// Example (Java):
 ///
@@ -422,25 +459,25 @@ pub struct PostalAddress {
     #[prost(string, tag = "11")]
     pub organization: std::string::String,
 }
-/// Represents a day of week.
+/// Represents a day of the week.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DayOfWeek {
-    /// The unspecified day-of-week.
+    /// The day of the week is unspecified.
     Unspecified = 0,
-    /// The day-of-week of Monday.
+    /// Monday
     Monday = 1,
-    /// The day-of-week of Tuesday.
+    /// Tuesday
     Tuesday = 2,
-    /// The day-of-week of Wednesday.
+    /// Wednesday
     Wednesday = 3,
-    /// The day-of-week of Thursday.
+    /// Thursday
     Thursday = 4,
-    /// The day-of-week of Friday.
+    /// Friday
     Friday = 5,
-    /// The day-of-week of Saturday.
+    /// Saturday
     Saturday = 6,
-    /// The day-of-week of Sunday.
+    /// Sunday
     Sunday = 7,
 }
 /// Represents a time of day. The date and time zone are either not significant
@@ -493,13 +530,47 @@ pub enum CalendarPeriod {
 /// Represents a fraction in terms of a numerator divided by a denominator.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fraction {
-    /// The portion of the denominator in the faction, e.g. 2 in 2/3.
+    /// The numerator in the fraction, e.g. 2 in 2/3.
     #[prost(int64, tag = "1")]
     pub numerator: i64,
     /// The value by which the numerator is divided, e.g. 3 in 2/3. Must be
     /// positive.
     #[prost(int64, tag = "2")]
     pub denominator: i64,
+}
+/// Represents a time interval, encoded as a Timestamp start (inclusive) and a
+/// Timestamp end (exclusive).
+///
+/// The start must be less than or equal to the end.
+/// When the start equals the end, the interval is empty (matches no time).
+/// When both start and end are unspecified, the interval matches any time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Interval {
+    /// Optional. Inclusive start of the interval.
+    ///
+    /// If specified, a Timestamp matching this interval will have to be the same
+    /// or after the start.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    /// Optional. Exclusive end of the interval.
+    ///
+    /// If specified, a Timestamp matching this interval will have to be before the
+    /// end.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+}
+/// Localized variant of a text in a particular language.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocalizedText {
+    /// Localized string in the language corresponding to `language_code' below.
+    #[prost(string, tag = "1")]
+    pub text: std::string::String,
+    /// The text's BCP-47 language code, such as "en-US" or "sr-Latn".
+    ///
+    /// For more information, see
+    /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+    #[prost(string, tag = "2")]
+    pub language_code: std::string::String,
 }
 /// Represents a month in the Gregorian calendar.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -531,6 +602,105 @@ pub enum Month {
     November = 11,
     /// The month of December.
     December = 12,
+}
+/// An object representing a phone number, suitable as an API wire format.
+///
+/// This representation:
+///
+///  - should not be used for locale-specific formatting of a phone number, such
+///    as "+1 (650) 253-0000 ext. 123"
+///
+///  - is not designed for efficient storage
+///  - may not be suitable for dialing - specialized libraries (see references)
+///    should be used to parse the number for that purpose
+///
+/// To do something meaningful with this number, such as format it for various
+/// use-cases, convert it to an `i18n.phonenumbers.PhoneNumber` object first.
+///
+/// For instance, in Java this would be:
+///
+///    com.google.type.PhoneNumber wireProto =
+///        com.google.type.PhoneNumber.newBuilder().build();
+///    com.google.i18n.phonenumbers.Phonenumber.PhoneNumber phoneNumber =
+///        PhoneNumberUtil.getInstance().parse(wireProto.getE164Number(), "ZZ");
+///    if (!wireProto.getExtension().isEmpty()) {
+///      phoneNumber.setExtension(wireProto.getExtension());
+///    }
+///
+///  Reference(s):
+///   - https://github.com/google/libphonenumber
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PhoneNumber {
+    /// The phone number's extension. The extension is not standardized in ITU
+    /// recommendations, except for being defined as a series of numbers with a
+    /// maximum length of 40 digits. Other than digits, some other dialing
+    /// characters such as ',' (indicating a wait) or '#' may be stored here.
+    ///
+    /// Note that no regions currently use extensions with short codes, so this
+    /// field is normally only set in conjunction with an E.164 number. It is held
+    /// separately from the E.164 number to allow for short code extensions in the
+    /// future.
+    #[prost(string, tag = "3")]
+    pub extension: std::string::String,
+    /// Required.  Either a regular number, or a short code.  New fields may be
+    /// added to the oneof below in the future, so clients should ignore phone
+    /// numbers for which none of the fields they coded against are set.
+    #[prost(oneof = "phone_number::Kind", tags = "1, 2")]
+    pub kind: ::std::option::Option<phone_number::Kind>,
+}
+pub mod phone_number {
+    /// An object representing a short code, which is a phone number that is
+    /// typically much shorter than regular phone numbers and can be used to
+    /// address messages in MMS and SMS systems, as well as for abbreviated dialing
+    /// (e.g. "Text 611 to see how many minutes you have remaining on your plan.").
+    ///
+    /// Short codes are restricted to a region and are not internationally
+    /// dialable, which means the same short code can exist in different regions,
+    /// with different usage and pricing, even if those regions share the same
+    /// country calling code (e.g. US and CA).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ShortCode {
+        /// Required. The BCP-47 region code of the location where calls to this
+        /// short code can be made, such as "US" and "BB".
+        ///
+        /// Reference(s):
+        ///  - http://www.unicode.org/reports/tr35/#unicode_region_subtag
+        #[prost(string, tag = "1")]
+        pub region_code: std::string::String,
+        /// Required. The short code digits, without a leading plus ('+') or country
+        /// calling code, e.g. "611".
+        #[prost(string, tag = "2")]
+        pub number: std::string::String,
+    }
+    /// Required.  Either a regular number, or a short code.  New fields may be
+    /// added to the oneof below in the future, so clients should ignore phone
+    /// numbers for which none of the fields they coded against are set.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Kind {
+        /// The phone number, represented as a leading plus sign ('+'), followed by a
+        /// phone number that uses a relaxed ITU E.164 format consisting of the
+        /// country calling code (1 to 3 digits) and the subscriber number, with no
+        /// additional spaces or formatting, e.g.:
+        ///  - correct: "+15552220123"
+        ///  - incorrect: "+1 (555) 222-01234 x123".
+        ///
+        /// The ITU E.164 format limits the latter to 12 digits, but in practice not
+        /// all countries respect that, so we relax that restriction here.
+        /// National-only numbers are not allowed.
+        ///
+        /// References:
+        ///  - https://www.itu.int/rec/T-REC-E.164-201011-I
+        ///  - https://en.wikipedia.org/wiki/E.164.
+        ///  - https://en.wikipedia.org/wiki/List_of_country_calling_codes
+        #[prost(string, tag = "1")]
+        E164Number(std::string::String),
+        /// A short code.
+        ///
+        /// Reference(s):
+        ///  - https://en.wikipedia.org/wiki/Short_code
+        #[prost(message, tag = "2")]
+        ShortCode(ShortCode),
+    }
 }
 /// A quaternion is defined as the quotient of two directed lines in a
 /// three-dimensional space or equivalently as the quotient of two Euclidean

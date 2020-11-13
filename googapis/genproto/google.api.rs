@@ -31,264 +31,6 @@ pub enum FieldBehavior {
     /// resource, but may not be changed thereafter.
     Immutable = 5,
 }
-/// A simple descriptor of a resource type.
-///
-/// ResourceDescriptor annotates a resource message (either by means of a
-/// protobuf annotation or use in the service config), and associates the
-/// resource's schema, the resource type, and the pattern of the resource name.
-///
-/// Example:
-///
-///     message Topic {
-///       // Indicates this message defines a resource schema.
-///       // Declares the resource type in the format of {service}/{kind}.
-///       // For Kubernetes resources, the format is {api group}/{kind}.
-///       option (google.api.resource) = {
-///         type: "pubsub.googleapis.com/Topic"
-///         name_descriptor: {
-///           pattern: "projects/{project}/topics/{topic}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Project"
-///           parent_name_extractor: "projects/{project}"
-///         }
-///       };
-///     }
-///
-/// The ResourceDescriptor Yaml config will look like:
-///
-///     resources:
-///     - type: "pubsub.googleapis.com/Topic"
-///       name_descriptor:
-///         - pattern: "projects/{project}/topics/{topic}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Project"
-///           parent_name_extractor: "projects/{project}"
-///
-/// Sometimes, resources have multiple patterns, typically because they can
-/// live under multiple parents.
-///
-/// Example:
-///
-///     message LogEntry {
-///       option (google.api.resource) = {
-///         type: "logging.googleapis.com/LogEntry"
-///         name_descriptor: {
-///           pattern: "projects/{project}/logs/{log}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Project"
-///           parent_name_extractor: "projects/{project}"
-///         }
-///         name_descriptor: {
-///           pattern: "folders/{folder}/logs/{log}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
-///           parent_name_extractor: "folders/{folder}"
-///         }
-///         name_descriptor: {
-///           pattern: "organizations/{organization}/logs/{log}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Organization"
-///           parent_name_extractor: "organizations/{organization}"
-///         }
-///         name_descriptor: {
-///           pattern: "billingAccounts/{billing_account}/logs/{log}"
-///           parent_type: "billing.googleapis.com/BillingAccount"
-///           parent_name_extractor: "billingAccounts/{billing_account}"
-///         }
-///       };
-///     }
-///
-/// The ResourceDescriptor Yaml config will look like:
-///
-///     resources:
-///     - type: 'logging.googleapis.com/LogEntry'
-///       name_descriptor:
-///         - pattern: "projects/{project}/logs/{log}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Project"
-///           parent_name_extractor: "projects/{project}"
-///         - pattern: "folders/{folder}/logs/{log}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
-///           parent_name_extractor: "folders/{folder}"
-///         - pattern: "organizations/{organization}/logs/{log}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Organization"
-///           parent_name_extractor: "organizations/{organization}"
-///         - pattern: "billingAccounts/{billing_account}/logs/{log}"
-///           parent_type: "billing.googleapis.com/BillingAccount"
-///           parent_name_extractor: "billingAccounts/{billing_account}"
-///
-/// For flexible resources, the resource name doesn't contain parent names, but
-/// the resource itself has parents for policy evaluation.
-///
-/// Example:
-///
-///     message Shelf {
-///       option (google.api.resource) = {
-///         type: "library.googleapis.com/Shelf"
-///         name_descriptor: {
-///           pattern: "shelves/{shelf}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Project"
-///         }
-///         name_descriptor: {
-///           pattern: "shelves/{shelf}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
-///         }
-///       };
-///     }
-///
-/// The ResourceDescriptor Yaml config will look like:
-///
-///     resources:
-///     - type: 'library.googleapis.com/Shelf'
-///       name_descriptor:
-///         - pattern: "shelves/{shelf}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Project"
-///         - pattern: "shelves/{shelf}"
-///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceDescriptor {
-    /// The resource type. It must be in the format of
-    /// {service_name}/{resource_type_kind}. The `resource_type_kind` must be
-    /// singular and must not include version numbers.
-    ///
-    /// Example: `storage.googleapis.com/Bucket`
-    ///
-    /// The value of the resource_type_kind must follow the regular expression
-    /// /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and
-    /// should use PascalCase (UpperCamelCase). The maximum number of
-    /// characters allowed for the `resource_type_kind` is 100.
-    #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
-    /// Optional. The relative resource name pattern associated with this resource
-    /// type. The DNS prefix of the full resource name shouldn't be specified here.
-    ///
-    /// The path pattern must follow the syntax, which aligns with HTTP binding
-    /// syntax:
-    ///
-    ///     Template = Segment { "/" Segment } ;
-    ///     Segment = LITERAL | Variable ;
-    ///     Variable = "{" LITERAL "}" ;
-    ///
-    /// Examples:
-    ///
-    ///     - "projects/{project}/topics/{topic}"
-    ///     - "projects/{project}/knowledgeBases/{knowledge_base}"
-    ///
-    /// The components in braces correspond to the IDs for each resource in the
-    /// hierarchy. It is expected that, if multiple patterns are provided,
-    /// the same component name (e.g. "project") refers to IDs of the same
-    /// type of resource.
-    #[prost(string, repeated, tag = "2")]
-    pub pattern: ::std::vec::Vec<std::string::String>,
-    /// Optional. The field on the resource that designates the resource name
-    /// field. If omitted, this is assumed to be "name".
-    #[prost(string, tag = "3")]
-    pub name_field: std::string::String,
-    /// Optional. The historical or future-looking state of the resource pattern.
-    ///
-    /// Example:
-    ///
-    ///     // The InspectTemplate message originally only supported resource
-    ///     // names with organization, and project was added later.
-    ///     message InspectTemplate {
-    ///       option (google.api.resource) = {
-    ///         type: "dlp.googleapis.com/InspectTemplate"
-    ///         pattern:
-    ///         "organizations/{organization}/inspectTemplates/{inspect_template}"
-    ///         pattern: "projects/{project}/inspectTemplates/{inspect_template}"
-    ///         history: ORIGINALLY_SINGLE_PATTERN
-    ///       };
-    ///     }
-    #[prost(enumeration = "resource_descriptor::History", tag = "4")]
-    pub history: i32,
-    /// The plural name used in the resource name and permission names, such as
-    /// 'projects' for the resource name of 'projects/{project}' and the permission
-    /// name of 'cloudresourcemanager.googleapis.com/projects.get'. It is the same
-    /// concept of the `plural` field in k8s CRD spec
-    /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
-    ///
-    /// Note: The plural form is required even for singleton resources. See
-    /// https://aip.dev/156
-    #[prost(string, tag = "5")]
-    pub plural: std::string::String,
-    /// The same concept of the `singular` field in k8s CRD spec
-    /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
-    /// Such as "project" for the `resourcemanager.googleapis.com/Project` type.
-    #[prost(string, tag = "6")]
-    pub singular: std::string::String,
-    /// Style flag(s) for this resource.
-    /// These indicate that a resource is expected to conform to a given
-    /// style. See the specific style flags for additional information.
-    #[prost(enumeration = "resource_descriptor::Style", repeated, tag = "10")]
-    pub style: ::std::vec::Vec<i32>,
-}
-pub mod resource_descriptor {
-    /// A description of the historical or future-looking state of the
-    /// resource pattern.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum History {
-        /// The "unset" value.
-        Unspecified = 0,
-        /// The resource originally had one pattern and launched as such, and
-        /// additional patterns were added later.
-        OriginallySinglePattern = 1,
-        /// The resource has one pattern, but the API owner expects to add more
-        /// later. (This is the inverse of ORIGINALLY_SINGLE_PATTERN, and prevents
-        /// that from being necessary once there are multiple patterns.)
-        FutureMultiPattern = 2,
-    }
-    /// A flag representing a specific style that a resource claims to conform to.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum Style {
-        /// The unspecified value. Do not use.
-        Unspecified = 0,
-        /// This resource is intended to be "declarative-friendly".
-        ///
-        /// Declarative-friendly resources must be more strictly consistent, and
-        /// setting this to true communicates to tools that this resource should
-        /// adhere to declarative-friendly expectations.
-        ///
-        /// Note: This is used by the API linter (linter.aip.dev) to enable
-        /// additional checks.
-        DeclarativeFriendly = 1,
-    }
-}
-/// Defines a proto annotation that describes a string field that refers to
-/// an API resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceReference {
-    /// The resource type that the annotated field references.
-    ///
-    /// Example:
-    ///
-    ///     message Subscription {
-    ///       string topic = 2 [(google.api.resource_reference) = {
-    ///         type: "pubsub.googleapis.com/Topic"
-    ///       }];
-    ///     }
-    ///
-    /// Occasionally, a field may reference an arbitrary resource. In this case,
-    /// APIs use the special value * in their resource reference.
-    ///
-    /// Example:
-    ///
-    ///     message GetIamPolicyRequest {
-    ///       string resource = 2 [(google.api.resource_reference) = {
-    ///         type: "*"
-    ///       }];
-    ///     }
-    #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
-    /// The resource type of a child collection that the annotated field
-    /// references. This is useful for annotating the `parent` field that
-    /// doesn't have a fixed resource type.
-    ///
-    /// Example:
-    ///
-    ///     message ListLogEntriesRequest {
-    ///       string parent = 1 [(google.api.resource_reference) = {
-    ///         child_type: "logging.googleapis.com/LogEntry"
-    ///       };
-    ///     }
-    #[prost(string, tag = "2")]
-    pub child_type: std::string::String,
-}
 /// Defines the HTTP configuration for an API service. It contains a list of
 /// [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
 /// to one or more HTTP REST API methods.
@@ -651,6 +393,264 @@ pub struct CustomHttpPattern {
     #[prost(string, tag = "2")]
     pub path: std::string::String,
 }
+/// A simple descriptor of a resource type.
+///
+/// ResourceDescriptor annotates a resource message (either by means of a
+/// protobuf annotation or use in the service config), and associates the
+/// resource's schema, the resource type, and the pattern of the resource name.
+///
+/// Example:
+///
+///     message Topic {
+///       // Indicates this message defines a resource schema.
+///       // Declares the resource type in the format of {service}/{kind}.
+///       // For Kubernetes resources, the format is {api group}/{kind}.
+///       option (google.api.resource) = {
+///         type: "pubsub.googleapis.com/Topic"
+///         name_descriptor: {
+///           pattern: "projects/{project}/topics/{topic}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Project"
+///           parent_name_extractor: "projects/{project}"
+///         }
+///       };
+///     }
+///
+/// The ResourceDescriptor Yaml config will look like:
+///
+///     resources:
+///     - type: "pubsub.googleapis.com/Topic"
+///       name_descriptor:
+///         - pattern: "projects/{project}/topics/{topic}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Project"
+///           parent_name_extractor: "projects/{project}"
+///
+/// Sometimes, resources have multiple patterns, typically because they can
+/// live under multiple parents.
+///
+/// Example:
+///
+///     message LogEntry {
+///       option (google.api.resource) = {
+///         type: "logging.googleapis.com/LogEntry"
+///         name_descriptor: {
+///           pattern: "projects/{project}/logs/{log}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Project"
+///           parent_name_extractor: "projects/{project}"
+///         }
+///         name_descriptor: {
+///           pattern: "folders/{folder}/logs/{log}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
+///           parent_name_extractor: "folders/{folder}"
+///         }
+///         name_descriptor: {
+///           pattern: "organizations/{organization}/logs/{log}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Organization"
+///           parent_name_extractor: "organizations/{organization}"
+///         }
+///         name_descriptor: {
+///           pattern: "billingAccounts/{billing_account}/logs/{log}"
+///           parent_type: "billing.googleapis.com/BillingAccount"
+///           parent_name_extractor: "billingAccounts/{billing_account}"
+///         }
+///       };
+///     }
+///
+/// The ResourceDescriptor Yaml config will look like:
+///
+///     resources:
+///     - type: 'logging.googleapis.com/LogEntry'
+///       name_descriptor:
+///         - pattern: "projects/{project}/logs/{log}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Project"
+///           parent_name_extractor: "projects/{project}"
+///         - pattern: "folders/{folder}/logs/{log}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
+///           parent_name_extractor: "folders/{folder}"
+///         - pattern: "organizations/{organization}/logs/{log}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Organization"
+///           parent_name_extractor: "organizations/{organization}"
+///         - pattern: "billingAccounts/{billing_account}/logs/{log}"
+///           parent_type: "billing.googleapis.com/BillingAccount"
+///           parent_name_extractor: "billingAccounts/{billing_account}"
+///
+/// For flexible resources, the resource name doesn't contain parent names, but
+/// the resource itself has parents for policy evaluation.
+///
+/// Example:
+///
+///     message Shelf {
+///       option (google.api.resource) = {
+///         type: "library.googleapis.com/Shelf"
+///         name_descriptor: {
+///           pattern: "shelves/{shelf}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Project"
+///         }
+///         name_descriptor: {
+///           pattern: "shelves/{shelf}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
+///         }
+///       };
+///     }
+///
+/// The ResourceDescriptor Yaml config will look like:
+///
+///     resources:
+///     - type: 'library.googleapis.com/Shelf'
+///       name_descriptor:
+///         - pattern: "shelves/{shelf}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Project"
+///         - pattern: "shelves/{shelf}"
+///           parent_type: "cloudresourcemanager.googleapis.com/Folder"
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceDescriptor {
+    /// The resource type. It must be in the format of
+    /// {service_name}/{resource_type_kind}. The `resource_type_kind` must be
+    /// singular and must not include version numbers.
+    ///
+    /// Example: `storage.googleapis.com/Bucket`
+    ///
+    /// The value of the resource_type_kind must follow the regular expression
+    /// /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and
+    /// should use PascalCase (UpperCamelCase). The maximum number of
+    /// characters allowed for the `resource_type_kind` is 100.
+    #[prost(string, tag = "1")]
+    pub r#type: std::string::String,
+    /// Optional. The relative resource name pattern associated with this resource
+    /// type. The DNS prefix of the full resource name shouldn't be specified here.
+    ///
+    /// The path pattern must follow the syntax, which aligns with HTTP binding
+    /// syntax:
+    ///
+    ///     Template = Segment { "/" Segment } ;
+    ///     Segment = LITERAL | Variable ;
+    ///     Variable = "{" LITERAL "}" ;
+    ///
+    /// Examples:
+    ///
+    ///     - "projects/{project}/topics/{topic}"
+    ///     - "projects/{project}/knowledgeBases/{knowledge_base}"
+    ///
+    /// The components in braces correspond to the IDs for each resource in the
+    /// hierarchy. It is expected that, if multiple patterns are provided,
+    /// the same component name (e.g. "project") refers to IDs of the same
+    /// type of resource.
+    #[prost(string, repeated, tag = "2")]
+    pub pattern: ::std::vec::Vec<std::string::String>,
+    /// Optional. The field on the resource that designates the resource name
+    /// field. If omitted, this is assumed to be "name".
+    #[prost(string, tag = "3")]
+    pub name_field: std::string::String,
+    /// Optional. The historical or future-looking state of the resource pattern.
+    ///
+    /// Example:
+    ///
+    ///     // The InspectTemplate message originally only supported resource
+    ///     // names with organization, and project was added later.
+    ///     message InspectTemplate {
+    ///       option (google.api.resource) = {
+    ///         type: "dlp.googleapis.com/InspectTemplate"
+    ///         pattern:
+    ///         "organizations/{organization}/inspectTemplates/{inspect_template}"
+    ///         pattern: "projects/{project}/inspectTemplates/{inspect_template}"
+    ///         history: ORIGINALLY_SINGLE_PATTERN
+    ///       };
+    ///     }
+    #[prost(enumeration = "resource_descriptor::History", tag = "4")]
+    pub history: i32,
+    /// The plural name used in the resource name and permission names, such as
+    /// 'projects' for the resource name of 'projects/{project}' and the permission
+    /// name of 'cloudresourcemanager.googleapis.com/projects.get'. It is the same
+    /// concept of the `plural` field in k8s CRD spec
+    /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
+    ///
+    /// Note: The plural form is required even for singleton resources. See
+    /// https://aip.dev/156
+    #[prost(string, tag = "5")]
+    pub plural: std::string::String,
+    /// The same concept of the `singular` field in k8s CRD spec
+    /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
+    /// Such as "project" for the `resourcemanager.googleapis.com/Project` type.
+    #[prost(string, tag = "6")]
+    pub singular: std::string::String,
+    /// Style flag(s) for this resource.
+    /// These indicate that a resource is expected to conform to a given
+    /// style. See the specific style flags for additional information.
+    #[prost(enumeration = "resource_descriptor::Style", repeated, tag = "10")]
+    pub style: ::std::vec::Vec<i32>,
+}
+pub mod resource_descriptor {
+    /// A description of the historical or future-looking state of the
+    /// resource pattern.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum History {
+        /// The "unset" value.
+        Unspecified = 0,
+        /// The resource originally had one pattern and launched as such, and
+        /// additional patterns were added later.
+        OriginallySinglePattern = 1,
+        /// The resource has one pattern, but the API owner expects to add more
+        /// later. (This is the inverse of ORIGINALLY_SINGLE_PATTERN, and prevents
+        /// that from being necessary once there are multiple patterns.)
+        FutureMultiPattern = 2,
+    }
+    /// A flag representing a specific style that a resource claims to conform to.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Style {
+        /// The unspecified value. Do not use.
+        Unspecified = 0,
+        /// This resource is intended to be "declarative-friendly".
+        ///
+        /// Declarative-friendly resources must be more strictly consistent, and
+        /// setting this to true communicates to tools that this resource should
+        /// adhere to declarative-friendly expectations.
+        ///
+        /// Note: This is used by the API linter (linter.aip.dev) to enable
+        /// additional checks.
+        DeclarativeFriendly = 1,
+    }
+}
+/// Defines a proto annotation that describes a string field that refers to
+/// an API resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceReference {
+    /// The resource type that the annotated field references.
+    ///
+    /// Example:
+    ///
+    ///     message Subscription {
+    ///       string topic = 2 [(google.api.resource_reference) = {
+    ///         type: "pubsub.googleapis.com/Topic"
+    ///       }];
+    ///     }
+    ///
+    /// Occasionally, a field may reference an arbitrary resource. In this case,
+    /// APIs use the special value * in their resource reference.
+    ///
+    /// Example:
+    ///
+    ///     message GetIamPolicyRequest {
+    ///       string resource = 2 [(google.api.resource_reference) = {
+    ///         type: "*"
+    ///       }];
+    ///     }
+    #[prost(string, tag = "1")]
+    pub r#type: std::string::String,
+    /// The resource type of a child collection that the annotated field
+    /// references. This is useful for annotating the `parent` field that
+    /// doesn't have a fixed resource type.
+    ///
+    /// Example:
+    ///
+    ///     message ListLogEntriesRequest {
+    ///       string parent = 1 [(google.api.resource_reference) = {
+    ///         child_type: "logging.googleapis.com/LogEntry"
+    ///       };
+    ///     }
+    #[prost(string, tag = "2")]
+    pub child_type: std::string::String,
+}
 /// `Authentication` defines the authentication configuration for an API.
 ///
 /// Example for an API targeted for external use:
@@ -696,6 +696,7 @@ pub struct AuthenticationRule {
     #[prost(message, optional, tag = "2")]
     pub oauth: ::std::option::Option<OAuthRequirements>,
     /// If true, the service accepts API keys without any other credential.
+    /// This flag only applies to HTTP and gRPC requests.
     #[prost(bool, tag = "5")]
     pub allow_without_credential: bool,
     /// Requirements for additional authentication providers.
@@ -1092,7 +1093,7 @@ pub enum LaunchStage {
     /// for widespread use. By Alpha, all significant design issues are resolved
     /// and we are in the process of verifying functionality. Alpha customers
     /// need to apply for access, agree to applicable terms, and have their
-    /// projects whitelisted. Alpha releases don’t have to be feature complete,
+    /// projects allowlisted. Alpha releases don’t have to be feature complete,
     /// no SLAs are provided, and there are no technical support obligations, but
     /// they will be far enough along that customers can actually use them in
     /// test environments or for limited-use tests -- just like they would in
@@ -1118,40 +1119,15 @@ pub enum LaunchStage {
 /// deleting or altering it stops data collection and makes the metric type's
 /// existing data unusable.
 ///
-/// The following are specific rules for service defined Monitoring metric
-/// descriptors:
-///
-/// * `type`, `metric_kind`, `value_type`, `description`, `display_name`,
-///   `launch_stage` fields are all required. The `unit` field must be specified
-///   if the `value_type` is any of DOUBLE, INT64, DISTRIBUTION.
-/// * Maximum of default 500 metric descriptors per service is allowed.
-/// * Maximum of default 10 labels per metric descriptor is allowed.
-///
-/// The default maximum limit can be overridden. Please follow
-/// https://cloud.google.com/monitoring/quotas
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricDescriptor {
     /// The resource name of the metric descriptor.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// The metric type, including its DNS name prefix. The type is not
-    /// URL-encoded.
-    ///
-    /// All service defined metrics must be prefixed with the service name, in the
-    /// format of `{service name}/{relative metric name}`, such as
-    /// `cloudsql.googleapis.com/database/cpu/utilization`. The relative metric
-    /// name must follow:
-    ///
-    /// * Only upper and lower-case letters, digits, '/' and underscores '_' are
-    ///   allowed.
-    /// * The maximum number of characters allowed for the relative_metric_name is
-    ///   100.
-    ///
-    /// All user-defined metric types have the DNS name
-    /// `custom.googleapis.com`, `external.googleapis.com`, or
-    /// `logging.googleapis.com/user/`.
-    ///
-    /// Metric types should use a natural hierarchical grouping. For example:
+    /// URL-encoded. All user-defined metric types have the DNS name
+    /// `custom.googleapis.com` or `external.googleapis.com`. Metric types should
+    /// use a natural hierarchical grouping. For example:
     ///
     ///     "custom.googleapis.com/invoice/paid/amount"
     ///     "external.googleapis.com/prometheus/up"
@@ -1159,16 +1135,7 @@ pub struct MetricDescriptor {
     #[prost(string, tag = "8")]
     pub r#type: std::string::String,
     /// The set of labels that can be used to describe a specific
-    /// instance of this metric type.
-    ///
-    /// The label key name must follow:
-    ///
-    /// * Only upper and lower-case letters, digits and underscores (_) are
-    ///   allowed.
-    /// * Label name must start with a letter or digit.
-    /// * The maximum length of a label name is 100 characters.
-    ///
-    /// For example, the
+    /// instance of this metric type. For example, the
     /// `appengine.googleapis.com/http/server/response_latencies` metric
     /// type has a label for the HTTP response code, `response_code`, so
     /// you can look at latencies for successful responses or just
@@ -1330,6 +1297,8 @@ pub mod metric_descriptor {
         pub ingest_delay: ::std::option::Option<::prost_types::Duration>,
     }
     /// The kind of measurement. It describes how the data is reported.
+    /// For information on setting the start time and end time based on
+    /// the MetricKind, see [TimeInterval][google.monitoring.v3.TimeInterval].
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MetricKind {
@@ -1577,7 +1546,7 @@ pub mod property {
 /// Available context types are defined in package
 /// `google.rpc.context`.
 ///
-/// This also provides mechanism to whitelist any protobuf message extension that
+/// This also provides mechanism to allowlist any protobuf message extension that
 /// can be sent in grpc metadata using “x-goog-ext-<extension_id>-bin” and
 /// “x-goog-ext-<extension_id>-jspb” format. For example, list any service
 /// specific protobuf types that can appear in grpc metadata as follows in your
@@ -1667,7 +1636,7 @@ pub struct Distribution {
     ///
     ///     Sum[i=1..n]((x_i - mean)^2)
     ///
-    /// Knuth, "The Art of Computer Programming", Vol. 2, page 323, 3rd edition
+    /// Knuth, "The Art of Computer Programming", Vol. 2, page 232, 3rd edition
     /// describes Welford's method for accumulating this sum in one pass.
     ///
     /// If `count` is zero then this field must be zero.
@@ -2172,23 +2141,9 @@ pub mod logging {
 /// `"gce_instance"` and specifies the use of the labels `"instance_id"` and
 /// `"zone"` to identify particular VM instances.
 ///
-/// Different services can support different monitored resource types.
-///
-/// The following are specific rules to service defined monitored resources for
-/// Monitoring and Logging:
-///
-/// * The `type`, `display_name`, `description`, `labels` and `launch_stage`
-///   fields are all required.
-/// * The first label of the monitored resource descriptor must be
-///   `resource_container`. There are legacy monitored resource descritptors
-///   start with `project_id`.
-/// * It must include a `location` label.
-/// * Maximum of default 5 service defined monitored resource descriptors
-///   is allowed per service.
-/// * Maximum of default 10 labels per monitored resource is allowed.
-///
-/// The default maximum limit can be overridden. Please follow
-/// https://cloud.google.com/monitoring/quotas
+/// Different APIs can support different monitored resource types. APIs generally
+/// provide a `list` method that returns the monitored resource descriptors used
+/// by the API.
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonitoredResourceDescriptor {
@@ -2201,19 +2156,7 @@ pub struct MonitoredResourceDescriptor {
     #[prost(string, tag = "5")]
     pub name: std::string::String,
     /// Required. The monitored resource type. For example, the type
-    /// `cloudsql_database` represents databases in Google Cloud SQL.
-    ///
-    /// All service defined monitored resource types must be prefixed with the
-    /// service name, in the format of `{service name}/{relative resource name}`.
-    /// The relative resource name must follow:
-    ///
-    /// * Only upper and lower-case letters and digits are allowed.
-    /// * It must start with upper case character and is recommended to use Upper
-    ///   Camel Case style.
-    /// * The maximum number of characters allowed for the relative_resource_name
-    ///   is 100.
-    ///
-    /// Note there are legacy service monitored resources not following this rule.
+    /// `"cloudsql_database"` represents databases in Google Cloud SQL.
     #[prost(string, tag = "1")]
     pub r#type: std::string::String,
     /// Optional. A concise name for the monitored resource type that might be
@@ -2227,16 +2170,8 @@ pub struct MonitoredResourceDescriptor {
     #[prost(string, tag = "3")]
     pub description: std::string::String,
     /// Required. A set of labels used to describe instances of this monitored
-    /// resource type.
-    /// The label key name must follow:
-    ///
-    /// * Only upper and lower-case letters, digits and underscores (_) are
-    ///   allowed.
-    /// * Label name must start with a letter or digit.
-    /// * The maximum length of a label name is 100 characters.
-    ///
-    /// For example, an individual Google Cloud SQL database is
-    /// identified by values for the labels `database_id` and `location`.
+    /// resource type. For example, an individual Google Cloud SQL database is
+    /// identified by values for the labels `"database_id"` and `"zone"`.
     #[prost(message, repeated, tag = "4")]
     pub labels: ::std::vec::Vec<LabelDescriptor>,
     /// Optional. The launch stage of the monitored resource definition.
@@ -2299,41 +2234,56 @@ pub struct MonitoredResourceMetadata {
 /// for monitoring. In the example, a monitored resource and two metrics are
 /// defined. The `library.googleapis.com/book/returned_count` metric is sent
 /// to both producer and consumer projects, whereas the
-/// `library.googleapis.com/book/overdue_count` metric is only sent to the
+/// `library.googleapis.com/book/num_overdue` metric is only sent to the
 /// consumer project.
 ///
 ///     monitored_resources:
-///     - type: library.googleapis.com/branch
+///     - type: library.googleapis.com/Branch
+///       display_name: "Library Branch"
+///       description: "A branch of a library."
+///       launch_stage: GA
 ///       labels:
-///       - key: /city
-///         description: The city where the library branch is located in.
-///       - key: /name
-///         description: The name of the branch.
+///       - key: resource_container
+///         description: "The Cloud container (ie. project id) for the Branch."
+///       - key: location
+///         description: "The location of the library branch."
+///       - key: branch_id
+///         description: "The id of the branch."
 ///     metrics:
 ///     - name: library.googleapis.com/book/returned_count
+///       display_name: "Books Returned"
+///       description: "The count of books that have been returned."
+///       launch_stage: GA
 ///       metric_kind: DELTA
 ///       value_type: INT64
+///       unit: "1"
 ///       labels:
-///       - key: /customer_id
-///     - name: library.googleapis.com/book/overdue_count
+///       - key: customer_id
+///         description: "The id of the customer."
+///     - name: library.googleapis.com/book/num_overdue
+///       display_name: "Books Overdue"
+///       description: "The current number of overdue books."
+///       launch_stage: GA
 ///       metric_kind: GAUGE
 ///       value_type: INT64
+///       unit: "1"
 ///       labels:
-///       - key: /customer_id
+///       - key: customer_id
+///         description: "The id of the customer."
 ///     monitoring:
 ///       producer_destinations:
-///       - monitored_resource: library.googleapis.com/branch
+///       - monitored_resource: library.googleapis.com/Branch
 ///         metrics:
 ///         - library.googleapis.com/book/returned_count
 ///       consumer_destinations:
-///       - monitored_resource: library.googleapis.com/branch
+///       - monitored_resource: library.googleapis.com/Branch
 ///         metrics:
 ///         - library.googleapis.com/book/returned_count
-///         - library.googleapis.com/book/overdue_count
+///         - library.googleapis.com/book/num_overdue
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Monitoring {
     /// Monitoring configurations for sending metrics to the producer project.
-    /// There can be multiple producer destinations. A monitored resouce type may
+    /// There can be multiple producer destinations. A monitored resource type may
     /// appear in multiple monitoring destinations if different aggregations are
     /// needed for different sets of metrics associated with that monitored
     /// resource type. A monitored resource and metric pair may only be used once
@@ -2341,7 +2291,7 @@ pub struct Monitoring {
     #[prost(message, repeated, tag = "1")]
     pub producer_destinations: ::std::vec::Vec<monitoring::MonitoringDestination>,
     /// Monitoring configurations for sending metrics to the consumer project.
-    /// There can be multiple consumer destinations. A monitored resouce type may
+    /// There can be multiple consumer destinations. A monitored resource type may
     /// appear in multiple monitoring destinations if different aggregations are
     /// needed for different sets of metrics associated with that monitored
     /// resource type. A monitored resource and metric pair may only be used once
@@ -2702,11 +2652,7 @@ pub struct UsageRule {
 ///           provider_id: google_calendar_auth
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
-    /// The semantic version of the service configuration. The config version
-    /// affects the interpretation of the service configuration. For example,
-    /// certain features are enabled by default for certain config versions.
-    ///
-    /// The latest config version is `3`.
+    /// This field is obsolete. Its value must be set to `3`.
     #[prost(message, optional, tag = "20")]
     pub config_version: ::std::option::Option<u32>,
     /// The service name, which is a DNS-like logical identifier for the

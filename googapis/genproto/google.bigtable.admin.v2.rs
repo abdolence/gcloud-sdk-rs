@@ -499,7 +499,7 @@ pub struct DeleteAppProfileRequest {
     /// `projects/{project}/instances/{instance}/appProfiles/{app_profile}`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// If true, ignore safety checks when deleting the app profile.
+    /// Required. If true, ignore safety checks when deleting the app profile.
     #[prost(bool, tag = "2")]
     pub ignore_warnings: bool,
 }
@@ -1203,6 +1203,87 @@ pub enum RestoreSourceType {
     /// A backup was used as the source of the restore.
     Backup = 1,
 }
+/// The request for
+/// [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreTableRequest {
+    /// Required. The name of the instance in which to create the restored
+    /// table. This instance must be the parent of the source backup. Values are
+    /// of the form `projects/<project>/instances/<instance>`.
+    #[prost(string, tag = "1")]
+    pub parent: std::string::String,
+    /// Required. The id of the table to create and restore to. This
+    /// table must not already exist. The `table_id` appended to
+    /// `parent` forms the full table name of the form
+    /// `projects/<project>/instances/<instance>/tables/<table_id>`.
+    #[prost(string, tag = "2")]
+    pub table_id: std::string::String,
+    /// Required. The source from which to restore.
+    #[prost(oneof = "restore_table_request::Source", tags = "3")]
+    pub source: ::std::option::Option<restore_table_request::Source>,
+}
+pub mod restore_table_request {
+    /// Required. The source from which to restore.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Name of the backup from which to restore.  Values are of the form
+        /// `projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>`.
+        #[prost(string, tag = "3")]
+        Backup(std::string::String),
+    }
+}
+/// Metadata type for the long-running operation returned by
+/// [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreTableMetadata {
+    /// Name of the table being created and restored to.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// The type of the restore source.
+    #[prost(enumeration = "RestoreSourceType", tag = "2")]
+    pub source_type: i32,
+    /// If exists, the name of the long-running operation that will be used to
+    /// track the post-restore optimization process to optimize the performance of
+    /// the restored table. The metadata type of the long-running operation is
+    /// [OptimizeRestoreTableMetadata][]. The response type is
+    /// [Empty][google.protobuf.Empty]. This long-running operation may be
+    /// automatically created by the system if applicable after the
+    /// RestoreTable long-running operation completes successfully. This operation
+    /// may not be created if the table is already optimized or the restore was
+    /// not successful.
+    #[prost(string, tag = "4")]
+    pub optimize_table_operation_name: std::string::String,
+    /// The progress of the [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable]
+    /// operation.
+    #[prost(message, optional, tag = "5")]
+    pub progress: ::std::option::Option<OperationProgress>,
+    /// Information about the source used to restore the table, as specified by
+    /// `source` in [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
+    #[prost(oneof = "restore_table_metadata::SourceInfo", tags = "3")]
+    pub source_info: ::std::option::Option<restore_table_metadata::SourceInfo>,
+}
+pub mod restore_table_metadata {
+    /// Information about the source used to restore the table, as specified by
+    /// `source` in [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SourceInfo {
+        #[prost(message, tag = "3")]
+        BackupInfo(super::BackupInfo),
+    }
+}
+/// Metadata type for the long-running operation used to track the progress
+/// of optimizations performed on a newly restored table. This long-running
+/// operation is automatically created by the system after the successful
+/// completion of a table restore, and cannot be cancelled.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OptimizeRestoredTableMetadata {
+    /// Name of the restored table being optimized.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+    /// The progress of the post-restore optimizations.
+    #[prost(message, optional, tag = "2")]
+    pub progress: ::std::option::Option<OperationProgress>,
+}
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.CreateTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1211,8 +1292,8 @@ pub struct CreateTableRequest {
     /// Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. The name by which the new table should be referred to within the
-    /// parent instance, e.g., `foobar` rather than `{parent}/tables/foobar`.
+    /// Required. The name by which the new table should be referred to within the parent
+    /// instance, e.g., `foobar` rather than `{parent}/tables/foobar`.
     /// Maximum 50 characters.
     #[prost(string, tag = "2")]
     pub table_id: std::string::String,
@@ -1260,13 +1341,13 @@ pub struct CreateTableFromSnapshotRequest {
     /// Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. The name by which the new table should be referred to within the
-    /// parent instance, e.g., `foobar` rather than `{parent}/tables/foobar`.
+    /// Required. The name by which the new table should be referred to within the parent
+    /// instance, e.g., `foobar` rather than `{parent}/tables/foobar`.
     #[prost(string, tag = "2")]
     pub table_id: std::string::String,
-    /// Required. The unique name of the snapshot from which to restore the table.
-    /// The snapshot and the table must be in the same instance. Values are of the
-    /// form
+    /// Required. The unique name of the snapshot from which to restore the table. The
+    /// snapshot and the table must be in the same instance.
+    /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}`.
     #[prost(string, tag = "3")]
     pub source_snapshot: std::string::String,
@@ -1301,8 +1382,8 @@ pub mod drop_row_range_request {
 /// [google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesRequest {
-    /// Required. The unique name of the instance for which tables should be
-    /// listed. Values are of the form `projects/{project}/instances/{instance}`.
+    /// Required. The unique name of the instance for which tables should be listed.
+    /// Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
     /// The view to be applied to the returned tables' fields.
@@ -1370,10 +1451,10 @@ pub struct ModifyColumnFamiliesRequest {
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
-    /// Required. Modifications to be atomically applied to the specified table's
-    /// families. Entries are applied in order, meaning that earlier modifications
-    /// can be masked by later ones (in the case of repeated updates to the same
-    /// family, for example).
+    /// Required. Modifications to be atomically applied to the specified table's families.
+    /// Entries are applied in order, meaning that earlier modifications can be
+    /// masked by later ones (in the case of repeated updates to the same family,
+    /// for example).
     #[prost(message, repeated, tag = "2")]
     pub modifications: ::std::vec::Vec<modify_column_families_request::Modification>,
 }
@@ -1411,8 +1492,8 @@ pub mod modify_column_families_request {
 /// [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConsistencyTokenRequest {
-    /// Required. The unique name of the Table for which to create a consistency
-    /// token. Values are of the form
+    /// Required. The unique name of the Table for which to create a consistency token.
+    /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -1429,8 +1510,8 @@ pub struct GenerateConsistencyTokenResponse {
 /// [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckConsistencyRequest {
-    /// Required. The unique name of the Table for which to check replication
-    /// consistency. Values are of the form
+    /// Required. The unique name of the Table for which to check replication consistency.
+    /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
@@ -1466,9 +1547,9 @@ pub struct SnapshotTableRequest {
     /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "2")]
     pub cluster: std::string::String,
-    /// Required. The ID by which the new snapshot should be referred to within the
-    /// parent cluster, e.g., `mysnapshot` of the form:
-    /// `[_a-zA-Z0-9][-_.a-zA-Z0-9]*` rather than
+    /// Required. The ID by which the new snapshot should be referred to within the parent
+    /// cluster, e.g., `mysnapshot` of the form: `[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
+    /// rather than
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/mysnapshot`.
     #[prost(string, tag = "3")]
     pub snapshot_id: std::string::String,
@@ -1506,8 +1587,8 @@ pub struct GetSnapshotRequest {
 /// for production use. It is not subject to any SLA or deprecation policy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSnapshotsRequest {
-    /// Required. The unique name of the cluster for which snapshots should be
-    /// listed. Values are of the form
+    /// Required. The unique name of the cluster for which snapshots should be listed.
+    /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
     /// Use `{cluster} = '-'` to list snapshots for all clusters in an instance,
     /// e.g., `projects/{project}/instances/{instance}/clusters/-`.
@@ -1591,8 +1672,7 @@ pub struct CreateTableFromSnapshotMetadata {
     #[prost(message, optional, tag = "3")]
     pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
 }
-/// The request for
-/// [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
+/// The request for [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. This must be one of the clusters in the instance in which this
@@ -1629,18 +1709,7 @@ pub struct CreateBackupMetadata {
     #[prost(message, optional, tag = "4")]
     pub end_time: ::std::option::Option<::prost_types::Timestamp>,
 }
-/// The request for
-/// [GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetBackupRequest {
-    /// Required. Name of the backup.
-    /// Values are of the form
-    /// `projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}`.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-}
-/// The request for
-/// [UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup].
+/// The request for [UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupRequest {
     /// Required. The backup to update. `backup.name`, and the fields to be updated
@@ -1657,8 +1726,16 @@ pub struct UpdateBackupRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
 }
-/// The request for
-/// [DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup].
+/// The request for [GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupRequest {
+    /// Required. Name of the backup.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}`.
+    #[prost(string, tag = "1")]
+    pub name: std::string::String,
+}
+/// The request for [DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Name of the backup to delete.
@@ -1667,11 +1744,10 @@ pub struct DeleteBackupRequest {
     #[prost(string, tag = "1")]
     pub name: std::string::String,
 }
-/// The request for
-/// [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
+/// The request for [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
-    /// Required. The cluster to list backups from. Values are of the
+    /// Required. The cluster to list backups from.  Values are of the
     /// form `projects/{project}/instances/{instance}/clusters/{cluster}`.
     /// Use `{cluster} = '-'` to list backups for all clusters in an instance,
     /// e.g., `projects/{project}/instances/{instance}/clusters/-`.
@@ -1681,7 +1757,7 @@ pub struct ListBackupsRequest {
     /// The expression must specify the field name, a comparison operator,
     /// and the value that you want to use for filtering. The value must be a
     /// string, a number, or a boolean. The comparison operator must be
-    /// <, >, <=, >=, !=, =, or :. Colon ‘:’ represents a HAS operator which is
+    /// <, >, <=, >=, !=, =, or :. Colon ':' represents a HAS operator which is
     /// roughly synonymous with equality. Filter rules are case insensitive.
     ///
     /// The fields eligible for filtering are:
@@ -1712,9 +1788,8 @@ pub struct ListBackupsRequest {
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
     /// An expression for specifying the sort order of the results of the request.
-    /// The string value should specify one or more fields in
-    /// [Backup][google.bigtable.admin.v2.Backup]. The full syntax is described at
-    /// https://aip.dev/132#ordering.
+    /// The string value should specify one or more fields in [Backup][google.bigtable.admin.v2.Backup]. The full
+    /// syntax is described at https://aip.dev/132#ordering.
     ///
     /// Fields supported are:
     ///    * name
@@ -1739,109 +1814,23 @@ pub struct ListBackupsRequest {
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// If non-empty, `page_token` should contain a
-    /// [next_page_token][google.bigtable.admin.v2.ListBackupsResponse.next_page_token]
-    /// from a previous
-    /// [ListBackupsResponse][google.bigtable.admin.v2.ListBackupsResponse] to the
-    /// same `parent` and with the same `filter`.
+    /// [next_page_token][google.bigtable.admin.v2.ListBackupsResponse.next_page_token] from a
+    /// previous [ListBackupsResponse][google.bigtable.admin.v2.ListBackupsResponse] to the same `parent` and with the same
+    /// `filter`.
     #[prost(string, tag = "5")]
     pub page_token: std::string::String,
 }
-/// The response for
-/// [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
+/// The response for [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The list of matching backups.
     #[prost(message, repeated, tag = "1")]
     pub backups: ::std::vec::Vec<Backup>,
     /// `next_page_token` can be sent in a subsequent
-    /// [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups] call
-    /// to fetch more of the matching backups.
+    /// [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups] call to fetch more
+    /// of the matching backups.
     #[prost(string, tag = "2")]
     pub next_page_token: std::string::String,
-}
-/// The request for
-/// [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RestoreTableRequest {
-    /// Required. The name of the instance in which to create the restored
-    /// table. This instance must be the parent of the source backup. Values are
-    /// of the form `projects/<project>/instances/<instance>`.
-    #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// Required. The id of the table to create and restore to. This
-    /// table must not already exist. The `table_id` appended to
-    /// `parent` forms the full table name of the form
-    /// `projects/<project>/instances/<instance>/tables/<table_id>`.
-    #[prost(string, tag = "2")]
-    pub table_id: std::string::String,
-    /// Required. The source from which to restore.
-    #[prost(oneof = "restore_table_request::Source", tags = "3")]
-    pub source: ::std::option::Option<restore_table_request::Source>,
-}
-pub mod restore_table_request {
-    /// Required. The source from which to restore.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Source {
-        /// Name of the backup from which to restore. Values are of the form
-        /// `projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>`.
-        #[prost(string, tag = "3")]
-        Backup(std::string::String),
-    }
-}
-/// Metadata type for the long-running operation returned by
-/// [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RestoreTableMetadata {
-    /// Name of the table being created and restored to.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// The type of the restore source.
-    #[prost(enumeration = "RestoreSourceType", tag = "2")]
-    pub source_type: i32,
-    /// If exists, the name of the long-running operation that will be used to
-    /// track the post-restore optimization process to optimize the performance of
-    /// the restored table. The metadata type of the long-running operation is
-    /// [OptimizeRestoreTableMetadata][]. The response type is
-    /// [Empty][google.protobuf.Empty]. This long-running operation may be
-    /// automatically created by the system if applicable after the
-    /// RestoreTable long-running operation completes successfully. This operation
-    /// may not be created if the table is already optimized or the restore was
-    /// not successful.
-    #[prost(string, tag = "4")]
-    pub optimize_table_operation_name: std::string::String,
-    /// The progress of the
-    /// [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable]
-    /// operation.
-    #[prost(message, optional, tag = "5")]
-    pub progress: ::std::option::Option<OperationProgress>,
-    /// Information about the source used to restore the table, as specified by
-    /// `source` in
-    /// [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
-    #[prost(oneof = "restore_table_metadata::SourceInfo", tags = "3")]
-    pub source_info: ::std::option::Option<restore_table_metadata::SourceInfo>,
-}
-pub mod restore_table_metadata {
-    /// Information about the source used to restore the table, as specified by
-    /// `source` in
-    /// [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum SourceInfo {
-        #[prost(message, tag = "3")]
-        BackupInfo(super::BackupInfo),
-    }
-}
-/// Metadata type for the long-running operation used to track the progress
-/// of optimizations performed on a newly restored table. This long-running
-/// operation is automatically created by the system after the successful
-/// completion of a table restore, and cannot be cancelled.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OptimizeRestoredTableMetadata {
-    /// Name of the restored table being optimized.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// The progress of the post-restore optimizations.
-    #[prost(message, optional, tag = "2")]
-    pub progress: ::std::option::Option<OperationProgress>,
 }
 #[doc = r" Generated client implementations."]
 pub mod bigtable_table_admin_client {
@@ -2142,14 +2131,14 @@ pub mod bigtable_table_admin_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Starts creating a new Cloud Bigtable Backup. The returned backup"]
+        #[doc = " Starts creating a new Cloud Bigtable Backup.  The returned backup"]
         #[doc = " [long-running operation][google.longrunning.Operation] can be used to"]
         #[doc = " track creation of the backup. The"]
         #[doc = " [metadata][google.longrunning.Operation.metadata] field type is"]
         #[doc = " [CreateBackupMetadata][google.bigtable.admin.v2.CreateBackupMetadata]. The"]
         #[doc = " [response][google.longrunning.Operation.response] field type is"]
-        #[doc = " [Backup][google.bigtable.admin.v2.Backup], if successful. Cancelling the"]
-        #[doc = " returned operation will stop the creation and delete the backup."]
+        #[doc = " [Backup][google.bigtable.admin.v2.Backup], if successful. Cancelling the returned operation will stop the"]
+        #[doc = " creation and delete the backup."]
         pub async fn create_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBackupRequest>,
@@ -2239,11 +2228,11 @@ pub mod bigtable_table_admin_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Create a new table by restoring from a completed backup. The new table"]
-        #[doc = " must be in the same instance as the instance containing the backup. The"]
+        #[doc = " must be in the same instance as the instance containing the backup.  The"]
         #[doc = " returned table [long-running operation][google.longrunning.Operation] can"]
-        #[doc = " be used to track the progress of the operation, and to cancel it. The"]
+        #[doc = " be used to track the progress of the operation, and to cancel it.  The"]
         #[doc = " [metadata][google.longrunning.Operation.metadata] field type is"]
-        #[doc = " [RestoreTableMetadata][google.bigtable.admin.RestoreTableMetadata]. The"]
+        #[doc = " [RestoreTableMetadata][google.bigtable.admin.RestoreTableMetadata].  The"]
         #[doc = " [response][google.longrunning.Operation.response] type is"]
         #[doc = " [Table][google.bigtable.admin.v2.Table], if successful."]
         pub async fn restore_table(
@@ -2265,7 +2254,7 @@ pub mod bigtable_table_admin_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets the access control policy for a resource."]
+        #[doc = " Gets the access control policy for a Table or Backup resource."]
         #[doc = " Returns an empty policy if the resource exists but does not have a policy"]
         #[doc = " set."]
         pub async fn get_iam_policy(
@@ -2304,7 +2293,7 @@ pub mod bigtable_table_admin_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns permissions that the caller has on the specified table resource."]
+        #[doc = " Returns permissions that the caller has on the specified Table or Backup resource."]
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<

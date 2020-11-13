@@ -1574,6 +1574,29 @@ pub struct ListDocumentsRequest {
     /// The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: std::string::String,
+    /// The filter expression used to filter documents returned by the list method.
+    /// The expression has the following syntax:
+    ///
+    ///   <field> <operator> <value> [AND <field> <operator> <value>] ...
+    ///
+    /// The following fields and operators are supported:
+    ///
+    /// * knowledge_types with has(:) operator
+    /// * display_name with has(:) operator
+    /// * state with equals(=) operator
+    ///
+    /// Examples:
+    ///
+    /// * "knowledge_types:FAQ" matches documents with FAQ knowledge type.
+    /// * "display_name:customer" matches documents whose display name contains
+    ///   "customer".
+    /// * "state=ACTIVE" matches documents with ACTIVE state.
+    /// * "knowledge_types:FAQ AND state=ACTIVE" matches all active FAQ documents.
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](https://aip.dev/160).
+    #[prost(string, tag = "4")]
+    pub filter: std::string::String,
 }
 /// Response message for [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1589,7 +1612,7 @@ pub struct ListDocumentsResponse {
 /// Request message for [Documents.CreateDocument][google.cloud.dialogflow.v2beta1.Documents.CreateDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
-    /// Required. The knoweldge base to create a document for.
+    /// Required. The knowledge base to create a document for.
     /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base ID>`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
@@ -1665,19 +1688,6 @@ pub mod reload_document_request {
         #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
     }
-}
-/// Response message for [Documents.AutoApproveSmartMessagingEntries].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AutoApproveSmartMessagingEntriesResponse {
-    /// Number of smart messaging entries enabled.
-    #[prost(int32, tag = "1")]
-    pub enabled_count: i32,
-    /// Number of smart messaging entries disabled.
-    #[prost(int32, tag = "2")]
-    pub disabled_count: i32,
-    /// Number of smart messaging entries unreviewed.
-    #[prost(int32, tag = "3")]
-    pub unreviewed_count: i32,
 }
 #[doc = r" Generated client implementations."]
 pub mod documents_client {
@@ -1815,6 +1825,9 @@ pub mod documents_client {
         #[doc = " content. The previously loaded content of the document will be deleted."]
         #[doc = " Note: Even when the content of the document has not changed, there still"]
         #[doc = " may be side effects because of internal implementation changes."]
+        #[doc = " Note: If the document source is Google Cloud Storage URI, its metadata will"]
+        #[doc = " be replaced with the custom metadata from Google Cloud Storage if the"]
+        #[doc = " `import_gcs_custom_metadata` field is set to true in the request."]
         #[doc = ""]
         #[doc = " Note: The `projects.agent.knowledgeBases.documents` resource is deprecated;"]
         #[doc = " only use `projects.knowledgeBases.documents`."]
@@ -3993,6 +4006,34 @@ pub struct ListKnowledgeBasesRequest {
     /// The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: std::string::String,
+    /// The filter expression used to filter knowledge bases returned by the list
+    /// method. The expression has the following syntax:
+    ///
+    ///   <field> <operator> <value> [AND <field> <operator> <value>] ...
+    ///
+    /// The following fields and operators are supported:
+    ///
+    /// * display_name with has(:) operator
+    /// * language_code with equals(=) operator
+    ///
+    /// Examples:
+    ///
+    /// * 'language_code=en-us' matches knowledge bases with en-us language code.
+    /// * 'display_name:articles' matches knowledge bases whose display name
+    ///   contains "articles".
+    /// * 'display_name:"Best Articles"' matches knowledge bases whose display
+    ///   name contains "Best Articles".
+    /// * 'language_code=en-gb AND display_name=articles' matches all knowledge
+    ///   bases whose display name contains "articles" and whose language code is
+    ///   "en-gb".
+    ///
+    /// Note: An empty filter string (i.e. "") is a no-op and will result in no
+    /// filtering.
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](https://aip.dev/160).
+    #[prost(string, tag = "4")]
+    pub filter: std::string::String,
 }
 /// Response message for [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5175,9 +5216,9 @@ pub struct SentimentAnalysisRequestConfig {
 /// The result of sentiment analysis. Sentiment analysis inspects user input
 /// and identifies the prevailing subjective opinion, especially to determine a
 /// user's attitude as positive, negative, or neutral.
-/// For [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent], it needs to be configured in
+/// For [Participants.DetectIntent][], it needs to be configured in
 /// [DetectIntentRequest.query_params][google.cloud.dialogflow.v2beta1.DetectIntentRequest.query_params]. For
-/// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent], it needs to be configured in
+/// [Participants.StreamingDetectIntent][], it needs to be configured in
 /// [StreamingDetectIntentRequest.query_params][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_params].
 /// And for [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent] and
 /// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent], it needs to be configured in

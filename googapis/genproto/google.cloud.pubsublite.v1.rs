@@ -172,11 +172,12 @@ pub struct CreateTopicRequest {
     /// Structured like `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. Configuration of the topic to create. Its `name` field is ignored.
+    /// Required. Configuration of the topic to create. Its `name` field is
+    /// ignored.
     #[prost(message, optional, tag = "2")]
     pub topic: ::std::option::Option<Topic>,
-    /// Required. The ID to use for the topic, which will become the final component of
-    /// the topic's name.
+    /// Required. The ID to use for the topic, which will become the final
+    /// component of the topic's name.
     ///
     /// This value is structured like: `my-topic-name`.
     #[prost(string, tag = "3")]
@@ -290,11 +291,12 @@ pub struct CreateSubscriptionRequest {
     /// Structured like `projects/{project_number}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. Configuration of the subscription to create. Its `name` field is ignored.
+    /// Required. Configuration of the subscription to create. Its `name` field is
+    /// ignored.
     #[prost(message, optional, tag = "2")]
     pub subscription: ::std::option::Option<Subscription>,
-    /// Required. The ID to use for the subscription, which will become the final component
-    /// of the subscription's name.
+    /// Required. The ID to use for the subscription, which will become the final
+    /// component of the subscription's name.
     ///
     /// This value is structured like: `my-sub-name`.
     #[prost(string, tag = "3")]

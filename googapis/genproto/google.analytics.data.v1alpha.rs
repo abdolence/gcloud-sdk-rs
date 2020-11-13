@@ -1,6 +1,5 @@
 /// A contiguous set of days: startDate, startDate + 1, ..., endDate. Requests
-/// are allowed up to 4 date ranges, and the union of the ranges can cover up to
-/// 1 year.
+/// are allowed up to 4 date ranges.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
     /// The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
@@ -25,16 +24,28 @@ pub struct DateRange {
 /// The unique identifier of the property whose events are tracked.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entity {
-    /// A Google Analytics App + Web property id.
+    /// A Google Analytics GA4 property id. To learn more, see [where to find your
+    /// Property
+    /// ID](https://developers.google.com/analytics/trusted-testing/analytics-data/property-id).
     #[prost(string, tag = "1")]
     pub property_id: std::string::String,
 }
-/// Dimensions are attributes of your data. For example, the dimension City
-/// indicates the city, for example, "Paris" or "New York", from which an event
-/// originates. Requests are allowed up to 8 dimensions.
+/// Dimensions are attributes of your data. For example, the dimension city
+/// indicates the city from which an event originates. Dimension values in report
+/// responses are strings; for example, city could be "Paris" or "New York".
+/// Requests are allowed up to 8 dimensions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dimension {
-    /// The name of the dimension.
+    /// The name of the dimension. See the [API
+    /// Dimensions](https://developers.google.com/analytics/trusted-testing/analytics-data/api-schema#dimensions)
+    /// for the list of dimension names.
+    ///
+    /// If `dimensionExpression` is specified, `name` can be any string that you
+    /// would like. For example if a `dimensionExpression` concatenates `country`
+    /// and `city`, you could call that dimension `countryAndCity`.
+    ///
+    /// Dimensions are referenced by `name` in `dimensionFilter`, `orderBys`,
+    /// `dimensionExpression`, and `pivots`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// One dimension can be the result of an expression of multiple dimensions.
@@ -93,20 +104,30 @@ pub mod dimension_expression {
         Concatenate(ConcatenateExpression),
     }
 }
-/// The quantitative measurements of a report. For example, the metric eventCount
-/// is the total number of events. Requests are allowed up to 10 metrics.
+/// The quantitative measurements of a report. For example, the metric
+/// `eventCount` is the total number of events. Requests are allowed up to 10
+/// metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metric {
-    /// The name of the metric.
+    /// The name of the metric. See the [API
+    /// Metrics](https://developers.google.com/analytics/trusted-testing/analytics-data/api-schema#metrics)
+    /// for the list of metric names.
+    ///
+    /// If `expression` is specified, `name` can be any string that you would like.
+    /// For example if `expression` is `screenPageViews/sessions`, you could call
+    /// that metric's name = `viewsPerSession`.
+    ///
+    /// Metrics are referenced by `name` in `metricFilter`, `orderBys`, and metric
+    /// `expression`.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
     /// A mathematical expression for derived metrics. For example, the metric
-    /// Event count per user is eventCount/totalUsers.
+    /// Event count per user is `eventCount/totalUsers`.
     #[prost(string, tag = "2")]
     pub expression: std::string::String,
-    /// Indicates if a metric is invisible.
-    /// If a metric is invisible, the metric is not in the response, but can be
-    /// used in filters, order_bys or being referred to in a metric expression.
+    /// Indicates if a metric is invisible in the report response. If a metric is
+    /// invisible, the metric will not produce a column in the response, but can be
+    /// used in `metricFilter`, `orderBys`, or a metric `expression`.
     #[prost(bool, tag = "3")]
     pub invisible: bool,
 }
@@ -245,7 +266,10 @@ pub mod filter {
     /// Specify one type of filter for `Filter`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
-        /// A filter for null values.
+        /// A filter for null values. If True, a null dimension value is matched by
+        /// this filter. Null filter is commonly used inside a NOT filter
+        /// expression. For example, a NOT expression of a null filter removes rows
+        /// when a dimension is null.
         #[prost(bool, tag = "2")]
         NullFilter(bool),
         /// Strings related filter.
@@ -512,7 +536,9 @@ pub struct PivotHeader {
     /// combinations.
     #[prost(message, repeated, tag = "1")]
     pub pivot_dimension_headers: ::std::vec::Vec<PivotDimensionHeader>,
-    /// The cardinality of the pivot as if offset = 0 and limit = -1.
+    /// The cardinality of the pivot as if offset = 0 and limit = -1. The total
+    /// number of rows for this pivot's fields regardless of how the parameters
+    /// offset and limit are specified in the request.
     #[prost(int32, tag = "2")]
     pub row_count: i32,
 }
@@ -527,28 +553,38 @@ pub struct PivotDimensionHeader {
 /// For example if RunReportRequest contains:
 ///
 /// ```none
-/// dimensions {
-///   name: "eventName"
-/// }
-/// dimensions {
-///   name: "countryId"
-/// }
-/// metrics {
-///   name: "eventCount"
-/// }
+/// "dimensions": [
+///   {
+///     "name": "eventName"
+///   },
+///   {
+///     "name": "countryId"
+///   }
+/// ],
+/// "metrics": [
+///   {
+///     "name": "eventCount"
+///   }
+/// ]
 /// ```
 ///
-/// One row with 'in_app_purchase' as the eventName, 'us' as the countryId, and
+/// One row with 'in_app_purchase' as the eventName, 'JP' as the countryId, and
 /// 15 as the eventCount, would be:
 ///
 /// ```none
-/// dimension_values {
-///   name: 'in_app_purchase'
-///   name: 'us'
-/// }
-/// metric_values {
-///   int64_value: 15
-/// }
+/// "dimensionValues": [
+///   {
+///     "value": "in_app_purchase"
+///   },
+///   {
+///     "value": "JP"
+///   }
+/// ],
+/// "metricValues": [
+///   {
+///     "value": "15"
+///   }
+/// ]
 /// ```
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Row {
@@ -616,20 +652,24 @@ pub mod numeric_value {
 /// Exhausted errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyQuota {
-    /// Analytics Properties can use up to 25,000 tokens per day. Most requests
+    /// Standard Analytics Properties can use up to 25,000 tokens per day;
+    /// Analytics 360 Properties can use 250,000 tokens per day. Most requests
     /// consume fewer than 10 tokens.
     #[prost(message, optional, tag = "1")]
     pub tokens_per_day: ::std::option::Option<QuotaStatus>,
-    /// Analytics Properties can use up to 5,000 tokens per day. An API request
-    /// consumes a single number of tokens, and that number is deducted from both
-    /// the hourly and daily quotas.
+    /// Standard Analytics Properties can use up to 5,000 tokens per day; Analytics
+    /// 360 Properties can use 50,000 tokens per day. An API request consumes a
+    /// single number of tokens, and that number is deducted from both the hourly
+    /// and daily quotas.
     #[prost(message, optional, tag = "2")]
     pub tokens_per_hour: ::std::option::Option<QuotaStatus>,
-    /// Analytics Properties can send up to 10 concurrent requests.
+    /// Standard Analytics Properties can send up to 10 concurrent requests;
+    /// Analytics 360 Properties can use up to 50 concurrent requests.
     #[prost(message, optional, tag = "3")]
     pub concurrent_requests: ::std::option::Option<QuotaStatus>,
-    /// Analytics Properties and cloud project pairs can have up to 10
-    /// server errors per hour.
+    /// Standard Analytics Properties and cloud project pairs can have up to 10
+    /// server errors per hour; Analytics 360 Properties and cloud project pairs
+    /// can have up to 50 server errors per hour.
     #[prost(message, optional, tag = "4")]
     pub server_errors_per_project_per_hour: ::std::option::Option<QuotaStatus>,
 }
@@ -720,8 +760,24 @@ pub enum MetricType {
     TypeFloat = 2,
     /// A duration of seconds; a special floating point type.
     TypeSeconds = 4,
+    /// A duration in milliseconds; a special floating point type.
+    TypeMilliseconds = 5,
+    /// A duration in minutes; a special floating point type.
+    TypeMinutes = 6,
+    /// A duration in hours; a special floating point type.
+    TypeHours = 7,
+    /// A custom metric of standard type; a special floating point type.
+    TypeStandard = 8,
     /// An amount of money; a special floating point type.
     TypeCurrency = 9,
+    /// A length in feet; a special floating point type.
+    TypeFeet = 10,
+    /// A length in miles; a special floating point type.
+    TypeMiles = 11,
+    /// A length in meters; a special floating point type.
+    TypeMeters = 12,
+    /// A length in kilometers; a special floating point type.
+    TypeKilometers = 13,
 }
 /// The dimensions and metrics currently accepted in reporting methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -729,7 +785,7 @@ pub struct Metadata {
     /// Resource name of this metadata.
     #[prost(string, tag = "3")]
     pub name: std::string::String,
-    /// The dimensions descriptions.
+    /// The dimension descriptions.
     #[prost(message, repeated, tag = "1")]
     pub dimensions: ::std::vec::Vec<DimensionMetadata>,
     /// The metric descriptions.
@@ -757,10 +813,16 @@ pub struct RunReportRequest {
     #[prost(message, repeated, tag = "4")]
     pub date_ranges: ::std::vec::Vec<DateRange>,
     /// The row count of the start row. The first row is counted as row 0.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](basics#pagination).
     #[prost(int64, tag = "5")]
     pub offset: i64,
     /// The number of rows to return. If unspecified, 10 rows are returned. If
     /// -1, all rows are returned.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](basics#pagination).
     #[prost(int64, tag = "6")]
     pub limit: i64,
     /// Aggregation of metrics. Aggregated metric values will be shown in rows
@@ -820,6 +882,15 @@ pub struct RunReportResponse {
     /// If requested, the minimum values of metrics.
     #[prost(message, repeated, tag = "10")]
     pub minimums: ::std::vec::Vec<Row>,
+    /// The total number of rows in the query result, regardless of the number of
+    /// rows returned in the response. For example if a query returns 175 rows and
+    /// includes limit = 50 in the API request, the response will contain row_count
+    /// = 175 but only 50 rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](basics#pagination).
+    #[prost(int32, tag = "12")]
+    pub row_count: i32,
     /// Metadata for the report.
     #[prost(message, optional, tag = "6")]
     pub metadata: ::std::option::Option<ResponseMetaData>,
@@ -988,15 +1059,97 @@ pub struct BatchRunPivotReportsResponse {
     #[prost(message, repeated, tag = "1")]
     pub pivot_reports: ::std::vec::Vec<RunPivotReportResponse>,
 }
-/// Request for dimension and metric metadata.
+/// Request for a property's dimension and metric metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetadataRequest {
-    /// Required. The name of the metadata to retrieve. Either has the form
-    /// 'metadata' or 'properties/{property}/metadata'. This name field is
+    /// Required. The resource name of the metadata to retrieve. This name field is
     /// specified in the URL path and not URL parameters. Property is a numeric
-    /// Google Analytics App + Web Property Id.
+    /// Google Analytics GA4 Property identifier. To learn more, see [where to find
+    /// your Property
+    /// ID](https://developers.google.com/analytics/trusted-testing/analytics-data/property-id).
+    ///
+    /// Example: properties/1234/metadata
+    ///
+    /// Set the Property ID to 0 for dimensions and metrics common to all
+    /// properties. In this special mode, this method will not return custom
+    /// dimensions and metrics.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
+}
+/// The request to generate a realtime report.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunRealtimeReportRequest {
+    /// A Google Analytics GA4 property identifier whose events are tracked.
+    /// Specified in the URL path and not the body. To learn more, see [where to
+    /// find your Property
+    /// ID](https://developers.google.com/analytics/trusted-testing/analytics-data/property-id).
+    ///
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub property: std::string::String,
+    /// The dimensions requested and displayed.
+    #[prost(message, repeated, tag = "2")]
+    pub dimensions: ::std::vec::Vec<Dimension>,
+    /// The metrics requested and displayed.
+    #[prost(message, repeated, tag = "3")]
+    pub metrics: ::std::vec::Vec<Metric>,
+    /// The number of rows to return. If unspecified, 10 rows are returned. If
+    /// -1, all rows are returned.
+    #[prost(int64, tag = "4")]
+    pub limit: i64,
+    /// The filter clause of dimensions. Dimensions must be requested to be used in
+    /// this filter. Metrics cannot be used in this filter.
+    #[prost(message, optional, tag = "5")]
+    pub dimension_filter: ::std::option::Option<FilterExpression>,
+    /// The filter clause of metrics. Applied at post aggregation phase, similar to
+    /// SQL having-clause. Metrics must be requested to be used in this filter.
+    /// Dimensions cannot be used in this filter.
+    #[prost(message, optional, tag = "6")]
+    pub metric_filter: ::std::option::Option<FilterExpression>,
+    /// Aggregation of metrics. Aggregated metric values will be shown in rows
+    /// where the dimension_values are set to "RESERVED_(MetricAggregation)".
+    #[prost(enumeration = "MetricAggregation", repeated, tag = "7")]
+    pub metric_aggregations: ::std::vec::Vec<i32>,
+    /// Specifies how rows are ordered in the response.
+    #[prost(message, repeated, tag = "8")]
+    pub order_bys: ::std::vec::Vec<OrderBy>,
+    /// Toggles whether to return the current state of this Analytics Property's
+    /// Realtime quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    #[prost(bool, tag = "9")]
+    pub return_property_quota: bool,
+}
+/// The response realtime report table corresponding to a request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunRealtimeReportResponse {
+    /// Describes dimension columns. The number of DimensionHeaders and ordering of
+    /// DimensionHeaders matches the dimensions present in rows.
+    #[prost(message, repeated, tag = "1")]
+    pub dimension_headers: ::std::vec::Vec<DimensionHeader>,
+    /// Describes metric columns. The number of MetricHeaders and ordering of
+    /// MetricHeaders matches the metrics present in rows.
+    #[prost(message, repeated, tag = "2")]
+    pub metric_headers: ::std::vec::Vec<MetricHeader>,
+    /// Rows of dimension value combinations and metric values in the report.
+    #[prost(message, repeated, tag = "3")]
+    pub rows: ::std::vec::Vec<Row>,
+    /// If requested, the totaled values of metrics.
+    #[prost(message, repeated, tag = "4")]
+    pub totals: ::std::vec::Vec<Row>,
+    /// If requested, the maximum values of metrics.
+    #[prost(message, repeated, tag = "5")]
+    pub maximums: ::std::vec::Vec<Row>,
+    /// If requested, the minimum values of metrics.
+    #[prost(message, repeated, tag = "6")]
+    pub minimums: ::std::vec::Vec<Row>,
+    /// The total number of rows in the query result, regardless of the number of
+    /// rows returned in the response. For example if a query returns 175 rows and
+    /// includes limit = 50 in the API request, the response will contain row_count
+    /// = 175 but only 50 rows.
+    #[prost(int32, tag = "7")]
+    pub row_count: i32,
+    /// This Analytics Property's Realtime quota state including this request.
+    #[prost(message, optional, tag = "8")]
+    pub property_quota: ::std::option::Option<PropertyQuota>,
 }
 #[doc = r" Generated client implementations."]
 pub mod alpha_analytics_data_client {
@@ -1102,8 +1255,15 @@ pub mod alpha_analytics_data_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns metadata for dimensions and metrics available in reporting methods."]
-        #[doc = " Used to explore the dimensions and metrics. Dimensions and metrics will be"]
-        #[doc = " mostly added over time, but renames and deletions may occur."]
+        #[doc = " Used to explore the dimensions and metrics. In this method, a Google"]
+        #[doc = " Analytics GA4 Property Identifier is specified in the request, and"]
+        #[doc = " the metadata response includes Custom dimensions and metrics as well as"]
+        #[doc = " Universal metadata."]
+        #[doc = ""]
+        #[doc = " For example if a custom metric with parameter name `levels_unlocked` is"]
+        #[doc = " registered to a property, the Metadata response will contain"]
+        #[doc = " `customEvent:levels_unlocked`. Universal metadata are dimensions and"]
+        #[doc = " metrics applicable to any property such as `country` and `totalUsers`."]
         pub async fn get_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMetadataRequest>,
@@ -1117,6 +1277,25 @@ pub mod alpha_analytics_data_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetMetadata",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " The Google Analytics Realtime API returns a customized report of realtime"]
+        #[doc = " event data for your property. These reports show events and usage from the"]
+        #[doc = " last 30 minutes."]
+        pub async fn run_realtime_report(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunRealtimeReportRequest>,
+        ) -> Result<tonic::Response<super::RunRealtimeReportResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunRealtimeReport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

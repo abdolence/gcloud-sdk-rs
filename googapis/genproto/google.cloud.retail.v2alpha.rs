@@ -2,42 +2,55 @@
 /// how users will be send events and how predictions will be made.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductLevelConfig {
-    /// The level of a [Catalog][google.cloud.retail.v2alpha.Catalog] at which the
-    /// [UserEvent][google.cloud.retail.v2alpha.UserEvent]s are uploaded.
-    /// Acceptable values are:
-    ///   * `primary`
-    ///   * `variant`
+    /// The type of [Product][google.cloud.retail.v2alpha.Product]s allowed to be
+    /// ingested into the catalog. Acceptable values are:
     ///
-    /// If this field is set to an invalid value other than these, an
-    /// INVALID_ARGUMENT error is returned.
-    ///
-    /// If this field is `primary` and
-    /// [predict_product_level][google.cloud.retail.v2alpha.ProductLevelConfig.predict_product_level]
-    /// is `variant`, an INVALID_ARGUMENT error is returned.
-    ///
-    /// See
-    /// https://cloud.google.com/recommendations-ai/docs/catalog#catalog-levels
-    /// for more details.
-    #[prost(string, tag = "1")]
-    pub event_product_level: std::string::String,
-    /// The level of a [Catalog][google.cloud.retail.v2alpha.Catalog] at which the
-    /// [PredictionService.Predict][google.cloud.retail.v2alpha.PredictionService.Predict]
-    /// is called. Acceptable values are:
-    ///   * `primary`
-    ///   * `variant`
+    /// * `primary` (default): You can only ingest PRIMARY
+    /// [Product][google.cloud.retail.v2alpha.Product]s. This means
+    ///   [Product.primary_product_id][google.cloud.retail.v2alpha.Product.primary_product_id]
+    ///   can only be empty or set to the same value as
+    ///   [Product.id][google.cloud.retail.v2alpha.Product.id].
+    /// * `variant`: You can only ingest VARIANT
+    /// [Product][google.cloud.retail.v2alpha.Product]s. This means
+    ///   [Product.primary_product_id][google.cloud.retail.v2alpha.Product.primary_product_id]
+    ///   cannot be empty.
     ///
     /// If this field is set to an invalid value other than these, an
     /// INVALID_ARGUMENT error is returned.
     ///
     /// If this field is `variant` and
-    /// [event_product_level][google.cloud.retail.v2alpha.ProductLevelConfig.event_product_level]
-    /// is `primary`, an INVALID_ARGUMENT error is returned.
+    /// [merchant_center_product_id_field][google.cloud.retail.v2alpha.ProductLevelConfig.merchant_center_product_id_field]
+    /// is `itemGroupId`, an INVALID_ARGUMENT error is returned.
+    ///
+    /// See
+    /// https://cloud.google.com/recommendations-ai/docs/catalog#catalog-levels
+    /// for more details.
+    #[prost(string, tag = "1")]
+    pub ingestion_product_type: std::string::String,
+    /// Which field of [Merchant Center
+    ///
+    /// Product](https:
+    /// //cloud.google.com/bigquery-transfer/docs/merchant-center-products-schema)
+    /// should be imported as [Product.id][google.cloud.retail.v2alpha.Product.id].
+    /// Acceptable values are:
+    ///
+    /// * `offerId` (default): Import `offerId` as the product ID.
+    /// * `itemGroupId`: Import `itemGroupId` as the product ID. Notice that Retail
+    ///   API will choose one item from the ones with the same `itemGroupId`, and
+    ///   use it to represent the item group.
+    ///
+    /// If this field is set to an invalid value other than these, an
+    /// INVALID_ARGUMENT error is returned.
+    ///
+    /// If this field is `itemGroupId` and
+    /// [ingestion_product_type][google.cloud.retail.v2alpha.ProductLevelConfig.ingestion_product_type]
+    /// is `variant`, an INVALID_ARGUMENT error is returned.
     ///
     /// See
     /// https://cloud.google.com/recommendations-ai/docs/catalog#catalog-levels
     /// for more details.
     #[prost(string, tag = "2")]
-    pub predict_product_level: std::string::String,
+    pub merchant_center_product_id_field: std::string::String,
 }
 /// The catalog configuration.
 /// Next ID: 5.
@@ -48,8 +61,8 @@ pub struct Catalog {
     pub name: std::string::String,
     /// Required. Immutable. The catalog display name.
     ///
-    /// This field must be a UTF-8 encoded string with a length limit of 128 bytes.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// This field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     #[prost(string, tag = "2")]
     pub display_name: std::string::String,
     /// Required. The product level configuration.
@@ -210,12 +223,12 @@ pub struct CustomAttribute {
     /// "green"]` when the key is "color".
     ///
     /// At most 400 values are allowed. Empty values are not allowed. Each value
-    /// must be a UTF-8 encoded string with a length limit of 256 bytes. Otherwise,
-    /// an INVALID_ARGUMENT error is returned.
+    /// must be a UTF-8 encoded string with a length limit of 256 characters.
+    /// Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Exactly one of [text][google.cloud.retail.v2alpha.CustomAttribute.text] or
     /// [numbers][google.cloud.retail.v2alpha.CustomAttribute.numbers] should be
-    /// set. Otherwise, a FAILED_PRECONDITION error is returned.
+    /// set. Otherwise, a INVALID_ARGUMENT error is returned.
     #[prost(string, repeated, tag = "1")]
     pub text: ::std::vec::Vec<std::string::String>,
     /// The numerical values of this custom attribute. For example, `[2.3, 15.4]`
@@ -226,7 +239,7 @@ pub struct CustomAttribute {
     ///
     /// Exactly one of [text][google.cloud.retail.v2alpha.CustomAttribute.text] or
     /// [numbers][google.cloud.retail.v2alpha.CustomAttribute.numbers] should be
-    /// set. Otherwise, a FAILED_PRECONDITION error is returned.
+    /// set. Otherwise, a INVALID_ARGUMENT error is returned.
     #[prost(double, repeated, tag = "2")]
     pub numbers: ::std::vec::Vec<f64>,
 }
@@ -235,8 +248,8 @@ pub struct CustomAttribute {
 pub struct Image {
     /// Required. URI of the image.
     ///
-    /// This field must be a valid UTF-8 encoded URI with a length limit of 5 KiB.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// This field must be a valid UTF-8 encoded URI with a length limit of 5,000
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Google Merchant Center property
     /// [image_link](https://support.google.com/merchants/answer/6324350).
@@ -295,8 +308,8 @@ pub struct UserInfo {
     /// Highly recommended for logged-in users. Unique identifier for logged-in
     /// user, such as a user name.
     ///
-    /// The field must be a UTF-8 encoded string with a length limit of 128 bytes.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// The field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     #[prost(string, tag = "1")]
     pub user_id: std::string::String,
     /// The end user's IP address. This field is used to extract location
@@ -315,8 +328,8 @@ pub struct UserInfo {
     pub ip_address: std::string::String,
     /// User agent as included in the HTTP header.
     ///
-    /// The field must be a UTF-8 encoded string with a length limit of 1 KiB.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// The field must be a UTF-8 encoded string with a length limit of 1,000
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// This should not be set when using the client side event reporting with
     /// GTM or JavaScript tag in
@@ -404,14 +417,8 @@ pub struct ExportProductsRequest {
     /// "projects/1234/locations/global/catalogs/default_catalog/branches/default_branch"
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Unique identifier provided by client, within the ancestor
-    /// dataset scope. Ensures idempotency for expensive long running operations.
-    /// Server-generated if unspecified. Up to 128 characters long. This is
-    /// returned as google.longrunning.Operation.name in the response.
-    #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
     /// Required. The desired output location of the data.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag = "2")]
     pub output_config: ::std::option::Option<OutputConfig>,
     /// Filtering expression to specify restrictions over
     /// returned products. This is a sequence of terms, where each term applies
@@ -445,7 +452,7 @@ pub struct ExportProductsRequest {
     ///      expression is enclosed in parentheses, and must be separated from the
     ///      tag values by a space. `-"tagA"` is also supported and is equivalent
     ///      to `NOT "tagA"`. Tag values must be double quoted UTF-8 encoded
-    ///      strings with a size limit of 1 KiB.
+    ///      strings with a size limit of 1,000 characters.
     ///
     ///   Some examples of valid filters expressions:
     ///
@@ -459,7 +466,7 @@ pub struct ExportProductsRequest {
     ///             "2018-04-23T18:30:43.511Z"
     ///   * Example 4: lastModifiedTime > "2012-04-23T18:25:43.511Z"
     ///   * Example 5: availability = (IN_STOCK OR BACKORDER)
-    #[prost(string, tag = "4")]
+    #[prost(string, tag = "3")]
     pub filter: std::string::String,
 }
 /// Request message for ExportUserEvents method.
@@ -468,14 +475,8 @@ pub struct ExportUserEventsRequest {
     /// Required. "projects/1234/locations/global/catalogs/default_catalog"
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Unique identifier provided by client, within the ancestor
-    /// dataset scope. Ensures idempotency for expensive long running operations.
-    /// Server-generated if unspecified. Up to 128 characters long. This is
-    /// returned as google.longrunning.Operation.name in the response.
-    #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
     /// Required. The desired output location of the data.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag = "2")]
     pub output_config: ::std::option::Option<OutputConfig>,
     /// Filtering expression to specify restrictions over
     /// returned events. This is a sequence of terms, where each term applies some
@@ -511,26 +512,19 @@ pub struct ExportUserEventsRequest {
     ///   * Example 4: eventTime > "2012-04-23T18:25:43.511Z"
     ///   * Example 5: eventType = (search OR impression)
     ///   * Example 6: eventsMissingCatalogItems
-    #[prost(string, tag = "4")]
+    #[prost(string, tag = "3")]
     pub filter: std::string::String,
 }
 /// Metadata related to the progress of the Export operation. This will be
 /// returned by the google.longrunning.Operation.metadata field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadata {
-    /// Name of the operation.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// Id of the request / operation. This is parroting back the requestId that
-    /// was passed in the request.
-    #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
     /// Operation create time.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Operation last update time. If the operation is done, this is also the
     /// finish time.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag = "2")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
 }
 /// Response of the ExportProductsRequest. If the long running
@@ -576,8 +570,8 @@ pub struct Product {
     ///
     /// "projects/*/locations/global/catalogs/default_catalog/branches/default_branch/products/id_1".
     ///
-    /// This field must be a UTF-8 encoded string with a length limit of 128 bytes.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// This field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Google Merchant Center property
     /// [id](https://support.google.com/merchants/answer/6324405).
@@ -588,14 +582,14 @@ pub struct Product {
     /// [id][google.cloud.retail.v2alpha.Product.id], with the same parent branch
     /// with this product. Otherwise, an error is thrown.
     ///
-    /// The primary product may be empty during the creation, but cannot be updated
-    /// from a non-empty string to an empty one. Otherwise an INVALID_ARGUMENT
-    /// error is returned.
+    /// For [Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+    /// [Product][google.cloud.retail.v2alpha.Product]s, this field can only be
+    /// empty or set to the same value as
+    /// [id][google.cloud.retail.v2alpha.Product.id].
     ///
-    /// Should only be set for
-    /// [Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
-    /// [Product][google.cloud.retail.v2alpha.Product]s. A maximum of 1000 products
-    /// are allowed to share the same
+    /// For [Type.VARIANT][google.cloud.retail.v2alpha.Product.Type.VARIANT]
+    /// [Product][google.cloud.retail.v2alpha.Product]s, this field cannot be
+    /// empty. A maximum of 2000 products are allowed to share the same
     /// [Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
     /// [Product][google.cloud.retail.v2alpha.Product]. Otherwise, an
     /// INVALID_ARGUMENT error is returned.
@@ -609,9 +603,9 @@ pub struct Product {
     /// more](/recommendations-ai/docs/catalog#item-group-id).
     #[prost(string, tag = "4")]
     pub primary_product_id: std::string::String,
-    /// Required. Product categories. This field is repeated for supporting one
-    /// product belonging to several parallel categories. Each value is either the
-    /// full path of the category, or the [category
+    /// Product categories. This field is repeated for supporting one product
+    /// belonging to several parallel categories. Each value is either the full
+    /// path of the category, or the [category
     ///
     /// ID](https:
     /// //www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt).
@@ -619,8 +613,8 @@ pub struct Product {
     /// quality.
     ///
     /// To represent full path of category, use '>' sign to separate different
-    /// hierarchies. If '>' is part of the category name, you should escape it with
-    /// '\x3E'.
+    /// hierarchies. If '>' is part of the category name, please replace it with
+    /// other character(s).
     ///
     /// For example, if a shoes product belongs to both
     /// ["Shoes & Accessories" -> "Shoes"] and
@@ -632,10 +626,15 @@ pub struct Product {
     ///        "Sports & Fitness > Athletic Clothing > Shoes"
     ///      ]
     ///
+    /// Must be set for
+    /// [Type.PRIMARY][google.cloud.retail.v2alpha.Product.Type.PRIMARY]
+    /// [Product][google.cloud.retail.v2alpha.Product] otherwise an
+    /// INVALID_ARGUMENT error is returned.
+    ///
     /// At most 250 values are allowed per
     /// [Product][google.cloud.retail.v2alpha.Product]. Empty values are not
-    /// allowed. Each value must be a UTF-8 encoded string with a length limit of 5
-    /// KiB. Otherwise, an INVALID_ARGUMENT error is returned.
+    /// allowed. Each value must be a UTF-8 encoded string with a length limit of
+    /// 5,000 characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Google Merchant Center property
     ///
@@ -646,8 +645,8 @@ pub struct Product {
     pub categories: ::std::vec::Vec<std::string::String>,
     /// Required. Product title.
     ///
-    /// This field must be a UTF-8 encoded string with a length limit of 128 bytes.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// This field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Google Merchant Center property
     /// [title](https://support.google.com/merchants/answer/6324415). Schema.org
@@ -656,27 +655,14 @@ pub struct Product {
     pub title: std::string::String,
     /// Product description.
     ///
-    /// This field must be a UTF-8 encoded string with a length limit of 5 KiB.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// This field must be a UTF-8 encoded string with a length limit of 5,000
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Google Merchant Center property
     /// [description](https://support.google.com/merchants/answer/6324468).
     /// schema.org property [Product.description](https://schema.org/description).
     #[prost(string, tag = "10")]
     pub description: std::string::String,
-    /// Language of the title/description and other string attributes. Use language
-    /// tags defined by [BCP 47][https://www.rfc-editor.org/rfc/bcp/bcp47.txt].
-    ///
-    /// The model automatically detects the text language. The
-    /// [Product][google.cloud.retail.v2alpha.Product] can include text in
-    /// different languages, but duplicating
-    /// [Product][google.cloud.retail.v2alpha.Product]s to provide text in multiple
-    /// languages can result in degraded model performance.
-    ///
-    /// Currently, recommendation supports all language codes, while the only
-    /// supported language code for search is "en-US".
-    #[prost(string, tag = "11")]
-    pub language_code: std::string::String,
     /// Highly encouraged. Extra product attributes to be included. For example,
     /// for products, this could include the store name, vendor, style, color, etc.
     /// These are very strong signals for recommendation model, thus we highly
@@ -701,8 +687,8 @@ pub struct Product {
     ///
     /// At most 250 values are allowed per
     /// [Product][google.cloud.retail.v2alpha.Product]. This value must be a UTF-8
-    /// encoded string with a length limit of 1 KiB. Otherwise, an INVALID_ARGUMENT
-    /// error is returned.
+    /// encoded string with a length limit of 1,000 characters. Otherwise, an
+    /// INVALID_ARGUMENT error is returned.
     ///
     /// This tag can be used for filtering recommendation results by passing the
     /// tag as part of the
@@ -739,8 +725,8 @@ pub struct Product {
     pub available_quantity: ::std::option::Option<i32>,
     /// Canonical URL directly linking to the product detail page.
     ///
-    /// This field must be a UTF-8 encoded string with a length limit of 5 KiB.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// This field must be a UTF-8 encoded string with a length limit of 5,000
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Google Merchant Center property
     /// [link](https://support.google.com/merchants/answer/6324416).
@@ -749,52 +735,13 @@ pub struct Product {
     pub uri: std::string::String,
     /// Product images for the product.
     ///
+    /// A maximum of 300 images are allowed.
+    ///
     /// Google Merchant Center property
     /// [image_link](https://support.google.com/merchants/answer/6324350).
     /// Schema.org property [Product.image](https://schema.org/image).
     #[prost(message, repeated, tag = "23")]
     pub images: ::std::vec::Vec<Image>,
-    /// The material of the product. For example, "leather", "wooden".
-    ///
-    /// A maximum of 5 values are allowed. Each value must be a UTF-8 encoded
-    /// string with a length limit of 128 bytes. Otherwise, an INVALID_ARGUMENT
-    /// error is returned.
-    ///
-    /// Google Merchant Center property
-    /// [material](https://support.google.com/merchants/answer/6324410). Schema.org
-    /// property [Product.material](https://schema.org/material).
-    #[prost(string, repeated, tag = "27")]
-    pub materials: ::std::vec::Vec<std::string::String>,
-    /// Indicates which fields in the
-    /// [variants][google.cloud.retail.v2alpha.Product.variants] are retrievable in
-    /// [Search][]. If not set or empty, the following fields are returned:
-    ///
-    /// * [name][google.cloud.retail.v2alpha.Product.name]
-    /// * [availability][google.cloud.retail.v2alpha.Product.availability]
-    /// * [color_info][google.cloud.retail.v2alpha.Product.color_info]
-    ///
-    /// Supported fields:
-    ///
-    /// * [name][google.cloud.retail.v2alpha.Product.name]
-    /// * [availability][google.cloud.retail.v2alpha.Product.availability]
-    /// * [color_info][google.cloud.retail.v2alpha.Product.color_info]
-    /// * [gtin][google.cloud.retail.v2alpha.Product.gtin]
-    /// * [price_info][google.cloud.retail.v2alpha.Product.price_info]
-    /// * [sizes][google.cloud.retail.v2alpha.Product.sizes]
-    /// * [materials][google.cloud.retail.v2alpha.Product.materials]
-    /// * [patterns][google.cloud.retail.v2alpha.Product.patterns]
-    /// * [conditions][google.cloud.retail.v2alpha.Product.conditions]
-    /// * [images][google.cloud.retail.v2alpha.Product.images]
-    /// * [attributes][google.cloud.retail.v2alpha.Product.attributes]
-    ///
-    /// To mark custom attributes as retrievable, include paths of the form
-    /// "attributes.key" where "key" is the key of a custom attribute, as
-    /// specified in [attributes][google.cloud.retail.v2alpha.Product.attributes].
-    ///
-    /// Maximum number of paths is 10. Otherwise, an INVALID_ARGUMENT error is
-    /// returned.
-    #[prost(message, optional, tag = "30")]
-    pub stocking_unit_retrievable_fields: ::std::option::Option<::prost_types::FieldMask>,
 }
 pub mod product {
     /// Product availability. If this field is unspecified, the product is
@@ -837,8 +784,8 @@ pub struct UserEvent {
     /// identify a visitor on a single device. This unique identifier should not
     /// change if the visitor log in/out of the website.
     ///
-    /// The field must be a UTF-8 encoded string with a length limit of 128 bytes.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// The field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     #[prost(string, tag = "2")]
     pub visitor_id: std::string::String,
     /// Only required for
@@ -910,8 +857,8 @@ pub struct UserEvent {
     pub purchase_transaction: ::std::option::Option<PurchaseTransaction>,
     /// The user's search query.
     ///
-    /// The value must be a UTF-8 encoded string with a length limit of 5 KiB.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// The value must be a UTF-8 encoded string with a length limit of 5,000
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
     /// Required for `search` events. Other event types should not set this field.
     /// Otherwise, an INVALID_ARGUMENT error is returned.
@@ -920,8 +867,8 @@ pub struct UserEvent {
     /// The categories associated with a category page.
     ///
     /// To represent full path of category, use '>' sign to separate different
-    /// hierarchies. If '>' is part of the category name, you should escape it with
-    /// '\x3E'.
+    /// hierarchies. If '>' is part of the category name, please replace it with
+    /// other character(s).
     ///
     /// Category pages include special pages such as sales or promotions. For
     /// instance, a special sale page may have the category hierarchy:
@@ -936,7 +883,8 @@ pub struct UserEvent {
     pub user_info: ::std::option::Option<UserInfo>,
     /// Complete url (window.location.href) of the user's current page.
     /// When using the client side event reporting with JavaScript pixel and Google
-    /// Tag Manager, this value is filled in automatically. Maximum length 5KB.
+    /// Tag Manager, this value is filled in automatically. Maximum length 5,000
+    /// characters.
     #[prost(string, tag = "13")]
     pub uri: std::string::String,
     /// The referrer url of the current page. When using
@@ -954,26 +902,13 @@ pub struct UserEvent {
     /// JavaScript pixel and Google Tag Manager.
     #[prost(string, tag = "15")]
     pub page_view_id: std::string::String,
-    /// User event source.
-    /// Acceptable values are:
-    ///
-    /// * `client_tag` if the event is ingested via a JavaScript tag or
-    ///   Recommendations AI Tag through automl datalayer or JS Macros.
-    /// * `client_tag_ecommerce` if the event is ingested via Recommendations AI
-    /// Tag through
-    ///   Enhanced Ecommerce datalayer.
-    /// * 'batch_upload' if the event is ingested via ImportUserEvents API.
-    ///
-    /// This field should *not* be set when using client side event reporting with
-    /// JavaScript pixel and Google Tag Manager or the Recommendations AI Tag.
-    #[prost(string, tag = "16")]
-    pub event_source: std::string::String,
 }
 /// Detailed product information associated with a user event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductDetail {
     /// Required. [Product][google.cloud.retail.v2alpha.Product] information.
-    /// Only [Product][id] field must to be set.
+    /// Only [Product][id] field is used when ingesting an event, all other product
+    /// fields are ignored as we will look them up from the catalog.
     #[prost(message, optional, tag = "1")]
     pub product: ::std::option::Option<Product>,
     /// Quantity of the product associated with the user event. For
@@ -986,7 +921,7 @@ pub struct ProductDetail {
 /// A transaction represents the entire purchase transaction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurchaseTransaction {
-    /// The transaction ID with a length limit of 128 bytes.
+    /// The transaction ID with a length limit of 128 characters.
     #[prost(string, tag = "1")]
     pub id: std::string::String,
     /// Required. Total revenue or grand total associated with the transaction.
@@ -1055,19 +990,22 @@ pub struct GcsSource {
 /// BigQuery source import data from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQuerySource {
-    /// The project id (can be project # or id) that the BigQuery source is in. If
-    /// not specified, inherits the project id from the parent request.
+    /// The project id (can be project # or id) that the BigQuery source is in with
+    /// a length limit of 128 characters. If not specified, inherits the project
+    /// id from the parent request.
     #[prost(string, tag = "5")]
     pub project_id: std::string::String,
-    /// Required. The BigQuery data set to copy the data from.
+    /// Required. The BigQuery data set to copy the data from with a length limit
+    /// of 1,024 characters.
     #[prost(string, tag = "1")]
     pub dataset_id: std::string::String,
-    /// Required. The BigQuery table to copy the data from.
+    /// Required. The BigQuery table to copy the data from with a length limit of
+    /// 1,024 characters.
     #[prost(string, tag = "2")]
     pub table_id: std::string::String,
-    /// Intermediate Cloud Storage directory used for the import. Can be specified
-    /// if one wants to have the BigQuery export to a specific Cloud Storage
-    /// directory.
+    /// Intermediate Cloud Storage directory used for the import with a length
+    /// limit of 2,000 characters. Can be specified if one wants to have the
+    /// BigQuery export to a specific Cloud Storage directory.
     #[prost(string, tag = "3")]
     pub gcs_staging_dir: std::string::String,
     /// The schema to use when parsing the data from the source.
@@ -1095,14 +1033,15 @@ pub struct BigQuerySource {
 /// The inline source for the input config for ImportProducts method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductInlineSource {
-    /// A list of products to update/create. Recommended max of 10k items.
+    /// Required. A list of products to update/create. Recommended max of 10k
+    /// items.
     #[prost(message, repeated, tag = "1")]
     pub products: ::std::vec::Vec<Product>,
 }
 /// The inline source for the input config for ImportUserEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserEventInlineSource {
-    /// A list of user events to import. Recommended max of 10k items.
+    /// Required. A list of user events to import. Recommended max of 10k items.
     #[prost(message, repeated, tag = "1")]
     pub user_events: ::std::vec::Vec<UserEvent>,
 }
@@ -1155,7 +1094,8 @@ pub struct ImportUserEventsRequest {
     /// Required. The desired input location of the data.
     #[prost(message, optional, tag = "2")]
     pub input_config: ::std::option::Option<UserEventInputConfig>,
-    /// The desired location of errors incurred during the Import.
+    /// The desired location of errors incurred during the Import. Cannot be set
+    /// for inline user event imports.
     #[prost(message, optional, tag = "3")]
     pub errors_config: ::std::option::Option<ImportErrorsConfig>,
 }
@@ -1207,21 +1147,18 @@ pub mod user_event_input_config {
 /// returned by the google.longrunning.Operation.metadata field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportMetadata {
-    /// Name of the operation.
-    #[prost(string, tag = "1")]
-    pub name: std::string::String,
     /// Operation create time.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Operation last update time. If the operation is done, this is also the
     /// finish time.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag = "2")]
     pub update_time: ::std::option::Option<::prost_types::Timestamp>,
     /// Count of entries that were processed successfully.
-    #[prost(int64, tag = "4")]
+    #[prost(int64, tag = "3")]
     pub success_count: i64,
     /// Count of entries that encountered errors while processing.
-    #[prost(int64, tag = "5")]
+    #[prost(int64, tag = "4")]
     pub failure_count: i64,
 }
 /// Response of the
@@ -1317,15 +1254,15 @@ pub struct PredictRequest {
     /// The previous PredictResponse.next_page_token.
     #[prost(string, tag = "4")]
     pub page_token: std::string::String,
-    /// Filter for restricting prediction results. Accepts values for
-    /// tags and the `filterOutOfStockItems` flag.
+    /// Filter for restricting prediction results with a length limit of 5,000
+    /// characters. Accepts values for tags and the `filterOutOfStockItems` flag.
     ///
     ///  * Tag expressions. Restricts predictions to products that match all of the
     ///    specified tags. Boolean operators `OR` and `NOT` are supported if the
     ///    expression is enclosed in parentheses, and must be separated from the
     ///    tag values by a space. `-"tagA"` is also supported and is equivalent to
     ///    `NOT "tagA"`. Tag values must be double quoted UTF-8 encoded strings
-    ///    with a size limit of 1 KiB.
+    ///    with a size limit of 1,000 characters.
     ///
     ///  * filterOutOfStockItems. Restricts predictions to products that do not
     ///  have a
@@ -1473,14 +1410,7 @@ pub mod prediction_service_client {
 /// Metadata related to the progress of the Purge operation.
 /// This will be returned by the google.longrunning.Operation.metadata field.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PurgeMetadata {
-    /// The ID of the request / operation.
-    #[prost(string, tag = "1")]
-    pub operation: std::string::String,
-    /// Operation create time.
-    #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
-}
+pub struct PurgeMetadata {}
 /// Request message for PurgeProducts method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeProductsRequest {
@@ -1493,9 +1423,9 @@ pub struct PurgeProductsRequest {
     /// at the moment is "*" (all items).
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
-    /// The default value is false. Override this flag to true to
-    /// actually perform the purge. If the field is not set to true, a sampling of
-    /// products to be deleted will be returned.
+    /// Actually perform the purge.
+    /// If `force` is set to false, the method will return the expected purge count
+    /// without deleting any products.
     #[prost(bool, tag = "3")]
     pub force: bool,
 }
@@ -1507,24 +1437,18 @@ pub struct PurgeProductsResponse {
     /// The total count of products purged as a result of the operation.
     #[prost(int64, tag = "1")]
     pub purged_count: i64,
-    /// A random sampling of products deleted (or will be deleted) depending
-    /// on the `force` property in the request. Max of 500 items will be returned.
-    /// Currently, this is only populated if force=false.
-    #[prost(message, repeated, tag = "2")]
-    pub products_sample: ::std::vec::Vec<Product>,
 }
 /// Request message for PurgeUserEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeUserEventsRequest {
-    /// Required. The resource name of the event_store under which the events are
+    /// Required. The resource name of the catalog under which the events are
     /// created. The format is
-    ///
-    /// "projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}"
+    /// "projects/${projectId}/locations/global/catalogs/${catalogId}"
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. The filter string to specify the events to be deleted. Empty
-    /// string filter is not allowed. The eligible fields
-    /// for filtering are:
+    /// Required. The filter string to specify the events to be deleted with a
+    /// length limit of 5,000 characters. Empty string filter is not allowed. The
+    /// eligible fields for filtering are:
     ///
     /// * `eventType`: UserEvent.eventType field of type string.
     /// * `eventTime`: in ISO 8601 "zulu" format.
@@ -1546,9 +1470,9 @@ pub struct PurgeUserEventsRequest {
     /// The filtering fields are assumed to have an implicit AND.
     #[prost(string, tag = "2")]
     pub filter: std::string::String,
-    /// The default value is false. Override this flag to true to
-    /// actually perform the purge. If the field is not set to true, a sampling of
-    /// events to be deleted will be returned.
+    /// Actually perform the purge.
+    /// If `force` is set to false, the method will return the expected purge count
+    /// without deleting any user events.
     #[prost(bool, tag = "3")]
     pub force: bool,
 }
@@ -1560,10 +1484,6 @@ pub struct PurgeUserEventsResponse {
     /// The total count of events purged as a result of the operation.
     #[prost(int64, tag = "1")]
     pub purged_events_count: i64,
-    /// A sampling of events deleted (or will be deleted) depending on the `force`
-    /// property in the request. Max of 500 items will be returned.
-    #[prost(message, repeated, tag = "2")]
-    pub user_events_sample: ::std::vec::Vec<UserEvent>,
 }
 /// Request message for [CreateProduct][] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1589,8 +1509,8 @@ pub struct CreateProductRequest {
     /// [parent][google.cloud.retail.v2alpha.CreateProductRequest.parent].
     /// Otherwise, an ALREADY_EXISTS error is returned.
     ///
-    /// This field must be a UTF-8 encoded string with a length limit of 128 bytes.
-    /// Otherwise, an INVALID_ARGUMENT error is returned.
+    /// This field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     #[prost(string, tag = "3")]
     pub product_id: std::string::String,
 }
@@ -1759,8 +1679,7 @@ pub mod product_service_client {
         #[doc = " Depending on the number of [Product][google.cloud.retail.v2alpha.Product]s,"]
         #[doc = " this operation could take hours to complete. To get a sample of"]
         #[doc = " [Product][google.cloud.retail.v2alpha.Product]s that would be deleted, set"]
-        #[doc = " [PurgeProductsRequest.force][google.cloud.retail.v2alpha.PurgeProductsRequest.force]"]
-        #[doc = " to false."]
+        #[doc = " [PurgeProductsRequest.force][] to false."]
         pub async fn purge_products(
             &mut self,
             request: impl tonic::IntoRequest<super::PurgeProductsRequest>,
@@ -1843,7 +1762,7 @@ pub mod product_service_client {
 /// Request message for WriteUserEvent method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteUserEventRequest {
-    /// Required. The parent eventStore resource name, such as
+    /// Required. The parent catalog resource name, such as
     /// "projects/1234/locations/global/catalogs/default_catalog".
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
@@ -1854,17 +1773,18 @@ pub struct WriteUserEventRequest {
 /// Request message for CollectUserEvent method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CollectUserEventRequest {
-    /// Required. The parent eventStore name, such as
+    /// Required. The parent catalog name, such as
     /// "projects/1234/locations/global/catalogs/default_catalog".
     #[prost(string, tag = "1")]
     pub parent: std::string::String,
-    /// Required. URL encoded UserEvent proto.
+    /// Required. URL encoded UserEvent proto with a length limit of 2,000,000
+    /// characters.
     #[prost(string, tag = "2")]
     pub user_event: std::string::String,
-    /// The url including cgi-parameters but excluding the hash fragment. The URL
-    /// must be truncated to 1.5K bytes to conservatively be under the 2K bytes.
-    /// This is often more useful than the referer url, because many browsers only
-    /// send the domain for 3rd party requests.
+    /// The url including cgi-parameters but excluding the hash fragment with a
+    /// length limit of 5,000 characters. This is often more useful than the
+    /// referer url, because many browsers only send the domain for 3rd party
+    /// requests.
     #[prost(string, tag = "3")]
     pub uri: std::string::String,
     /// The event timestamp in milliseconds. This prevents browser caching of

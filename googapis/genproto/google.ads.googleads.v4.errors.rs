@@ -932,10 +932,10 @@ pub mod bidding_error_enum {
         InvalidBid = 17,
         /// Bidding strategy is not available for the account type.
         BiddingStrategyNotAvailableForAccountType = 18,
-        /// Conversion tracking is not enabled in the campaign that has YouTube
-        /// Video Builder transitions.
+        /// Conversion tracking is not enabled in the campaign that has value-based
+        /// bidding transitions.
         ConversionTrackingNotEnabled = 19,
-        /// Not enough conversions tracked for YouTube Video Builder transitions.
+        /// Not enough conversions tracked for value-based bidding transitions.
         NotEnoughConversions = 20,
         /// Campaign can not be created with given bidding strategy. It can be
         /// transitioned to the strategy, once eligible.
@@ -3953,7 +3953,7 @@ pub mod offline_user_data_job_error_enum {
         JobAlreadyStarted = 22,
         /// Remove operation is not allowed for store sales direct updates.
         RemoveNotSupported = 23,
-        /// Remove-all is not supported for store sales direct updates.
+        /// Remove-all is not supported for certain offline user data job types.
         RemoveAllNotSupported = 24,
         /// The SHA256 encoded value is malformed.
         InvalidSha256Format = 25,
@@ -3964,7 +3964,7 @@ pub mod offline_user_data_job_error_enum {
         CustomKeyNotPredefined = 27,
         /// The custom key specified is not set in the upload.
         CustomKeyNotSet = 29,
-        /// The customer has not accpeted the customer data terms in the conversion
+        /// The customer has not accepted the customer data terms in the conversion
         /// settings page.
         CustomerNotAcceptedCustomerDataTerms = 30,
     }
