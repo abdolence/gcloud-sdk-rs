@@ -358,7 +358,12 @@ pub fn proto_path(protos: &[Proto]) -> Vec<PathBuf> {
     let mut ret = protos
         .iter()
         .map(|p| p.path.clone())
-        .filter(|p| !p.to_str().unwrap().contains("google/ads/googleads/v5"))
+        // TODO: There is a syntax error in google.ads.googleads.v5 and google.ads.googleads.v6.
+        // See https://github.com/googleapis/googleapis/pull/622 and https://github.com/mechiru/googapis/pull/9.
+        .filter(|p| {
+            let path = p.to_str().unwrap();
+            !(path.contains("google/ads/googleads/v5") || path.contains("google/ads/googleads/v6"))
+        })
         .collect::<Vec<_>>();
     ret.sort();
     ret
