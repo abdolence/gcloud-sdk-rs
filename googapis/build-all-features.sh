@@ -6,13 +6,13 @@ cd $current_dir
 
 features=(
   default
+  google-actions-sdk-v2
+  google-actions-sdk-v2-conversation
+  google-actions-sdk-v2-interactionmodel
+  google-actions-sdk-v2-interactionmodel-prompt
+  google-actions-sdk-v2-interactionmodel-type
   google-actions-type
   google-ads-admob-v1
-  google-ads-googleads-v2-common
-  google-ads-googleads-v2-enums
-  google-ads-googleads-v2-errors
-  google-ads-googleads-v2-resources
-  google-ads-googleads-v2-services
   google-ads-googleads-v3-common
   google-ads-googleads-v3-enums
   google-ads-googleads-v3-errors
@@ -28,9 +28,13 @@ features=(
   # google-ads-googleads-v5-errors
   # google-ads-googleads-v5-resources
   # google-ads-googleads-v5-services
+  # google-ads-googleads-v6-common
+  # google-ads-googleads-v6-enums
+  # google-ads-googleads-v6-errors
+  # google-ads-googleads-v6-resources
+  # google-ads-googleads-v6-services
   google-analytics-admin-v1alpha
   google-analytics-data-v1alpha
-  google-analytics-management-v1alpha
   google-api
   google-api-expr-v1alpha1
   google-api-expr-v1beta1
@@ -52,6 +56,7 @@ features=(
   google-chromeos-moblab-v1beta1
   google-cloud
   google-cloud-accessapproval-v1
+  google-cloud-aiplatform-logging
   google-cloud-aiplatform-v1beta1
   google-cloud-asset-v1
   google-cloud-asset-v1beta1
@@ -74,6 +79,7 @@ features=(
   google-cloud-bigquery-storage-v1beta1
   google-cloud-bigquery-storage-v1beta2
   google-cloud-bigquery-v2
+  google-cloud-billing-budgets-v1
   google-cloud-billing-budgets-v1alpha1
   google-cloud-billing-budgets-v1beta1
   google-cloud-billing-v1
@@ -81,8 +87,10 @@ features=(
   google-cloud-datacatalog-v1
   google-cloud-datacatalog-v1beta1
   google-cloud-datalabeling-v1beta1
+  google-cloud-dataproc-logging
   google-cloud-dataproc-v1
   google-cloud-dataproc-v1beta2
+  google-cloud-dialogflow-cx-v3
   google-cloud-dialogflow-cx-v3beta1
   google-cloud-dialogflow-v2
   google-cloud-dialogflow-v2beta1
@@ -144,6 +152,7 @@ features=(
   google-cloud-securitycenter-v1
   google-cloud-securitycenter-v1beta1
   google-cloud-securitycenter-v1p1beta1
+  google-cloud-servicedirectory-v1
   google-cloud-servicedirectory-v1beta1
   google-cloud-speech-v1
   google-cloud-speech-v1p1beta1
@@ -169,6 +178,7 @@ features=(
   google-cloud-vision-v1p2beta1
   google-cloud-vision-v1p3beta1
   google-cloud-vision-v1p4beta1
+  google-cloud-visualinspection-v1beta1
   google-cloud-webrisk-v1
   google-cloud-webrisk-v1beta1
   google-cloud-websecurityscanner-v1
@@ -183,6 +193,7 @@ features=(
   google-datastore-admin-v1beta1
   google-datastore-v1
   google-datastore-v1beta3
+  google-devtools-artifactregistry-v1beta2
   google-devtools-build-v1
   google-devtools-cloudbuild-v1
   google-devtools-clouddebugger-v2
@@ -190,7 +201,7 @@ features=(
   google-devtools-cloudprofiler-v2
   google-devtools-cloudtrace-v1
   google-devtools-cloudtrace-v2
-  google-devtools-containeranalysis-v1
+  # google-devtools-containeranalysis-v1
   google-devtools-containeranalysis-v1beta1
   google-devtools-remoteworkers-v1test2
   google-devtools-resultstore-v2
@@ -202,8 +213,10 @@ features=(
   google-firestore-admin-v1
   google-firestore-admin-v1beta1
   google-firestore-admin-v1beta2
+  # google-firestore-bundle
   google-firestore-v1
   google-firestore-v1beta1
+  google-gapic-metadata
   google-genomics-v1
   google-genomics-v1alpha2
   google-geo-type
@@ -253,6 +266,7 @@ features=(
   grafeas-v1beta1-provenance
   grafeas-v1beta1-source
   # grafeas-v1beta1-vulnerability
+  storage-clouddms-logging-v1
 )
 
 for f in "${features[@]}"; do
