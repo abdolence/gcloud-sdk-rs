@@ -283,6 +283,6 @@ grafeas-v1beta1-source = []
 storage-clouddms-logging-v1 = []
 
 [dependencies]
-tonic = { version = "0.3" }
-prost = { version = "0.6" }
-prost-types = { version = "0.6" }
+tonic = { version = "0.4" }
+prost = { version = "0.7" }
+prost-types = { version = "0.7" }
