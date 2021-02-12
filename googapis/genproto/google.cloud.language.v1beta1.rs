@@ -15,12 +15,13 @@ pub struct Document {
     /// specified by the caller or automatically detected) is not supported by the
     /// called API method, an `INVALID_ARGUMENT` error is returned.
     #[prost(string, tag = "4")]
-    pub language: std::string::String,
+    pub language: ::prost::alloc::string::String,
     /// The source of the document: a string containing the content or a
     /// Google Cloud Storage URI.
     #[prost(oneof = "document::Source", tags = "2, 3")]
-    pub source: ::std::option::Option<document::Source>,
+    pub source: ::core::option::Option<document::Source>,
 }
+/// Nested message and enum types in `Document`.
 pub mod document {
     /// The document types enum.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -39,13 +40,13 @@ pub mod document {
     pub enum Source {
         /// The content of the input in string format.
         #[prost(string, tag = "2")]
-        Content(std::string::String),
+        Content(::prost::alloc::string::String),
         /// The Google Cloud Storage URI where the file content is located.
         /// This URI must be of the form: gs://bucket_name/object_name. For more
         /// details, see https://cloud.google.com/storage/docs/reference-uris.
         /// NOTE: Cloud Storage object versioning is not supported.
         #[prost(string, tag = "3")]
-        GcsContentUri(std::string::String),
+        GcsContentUri(::prost::alloc::string::String),
     }
 }
 /// Represents a sentence in the input document.
@@ -53,12 +54,12 @@ pub mod document {
 pub struct Sentence {
     /// The sentence text.
     #[prost(message, optional, tag = "1")]
-    pub text: ::std::option::Option<TextSpan>,
+    pub text: ::core::option::Option<TextSpan>,
     /// For calls to [AnalyzeSentiment][] or if
     /// [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment]
     /// is set to true, this field will contain the sentiment for the sentence.
     #[prost(message, optional, tag = "2")]
-    pub sentiment: ::std::option::Option<Sentiment>,
+    pub sentiment: ::core::option::Option<Sentiment>,
 }
 /// Represents a phrase in the text that is a known entity, such as
 /// a person, an organization, or location. The API associates information, such
@@ -67,7 +68,7 @@ pub struct Sentence {
 pub struct Entity {
     /// The representative name for the entity.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The entity type.
     #[prost(enumeration = "entity::Type", tag = "2")]
     pub r#type: i32,
@@ -76,7 +77,8 @@ pub struct Entity {
     /// Currently, Wikipedia URLs and Knowledge Graph MIDs are provided, if
     /// available. The associated keys are "wikipedia_url" and "mid", respectively.
     #[prost(map = "string, string", tag = "3")]
-    pub metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The salience score associated with the entity in the [0, 1.0] range.
     ///
     /// The salience score for an entity provides information about the
@@ -88,8 +90,9 @@ pub struct Entity {
     /// The mentions of this entity in the input document. The API currently
     /// supports proper noun mentions.
     #[prost(message, repeated, tag = "5")]
-    pub mentions: ::std::vec::Vec<EntityMention>,
+    pub mentions: ::prost::alloc::vec::Vec<EntityMention>,
 }
+/// Nested message and enum types in `Entity`.
 pub mod entity {
     /// The type of the entity.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -118,16 +121,16 @@ pub mod entity {
 pub struct Token {
     /// The token text.
     #[prost(message, optional, tag = "1")]
-    pub text: ::std::option::Option<TextSpan>,
+    pub text: ::core::option::Option<TextSpan>,
     /// Parts of speech tag for this token.
     #[prost(message, optional, tag = "2")]
-    pub part_of_speech: ::std::option::Option<PartOfSpeech>,
+    pub part_of_speech: ::core::option::Option<PartOfSpeech>,
     /// Dependency tree parse for this token.
     #[prost(message, optional, tag = "3")]
-    pub dependency_edge: ::std::option::Option<DependencyEdge>,
+    pub dependency_edge: ::core::option::Option<DependencyEdge>,
     /// [Lemma](https://en.wikipedia.org/wiki/Lemma_%28morphology%29) of the token.
     #[prost(string, tag = "4")]
-    pub lemma: std::string::String,
+    pub lemma: ::prost::alloc::string::String,
 }
 /// Represents the feeling associated with the entire text or entities in
 /// the text.
@@ -188,6 +191,7 @@ pub struct PartOfSpeech {
     #[prost(enumeration = "part_of_speech::Voice", tag = "12")]
     pub voice: i32,
 }
+/// Nested message and enum types in `PartOfSpeech`.
 pub mod part_of_speech {
     /// The part of speech tags enum.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -435,6 +439,7 @@ pub struct DependencyEdge {
     #[prost(enumeration = "dependency_edge::Label", tag = "2")]
     pub label: i32,
 }
+/// Nested message and enum types in `DependencyEdge`.
 pub mod dependency_edge {
     /// The parse label enum for the token.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -602,11 +607,12 @@ pub mod dependency_edge {
 pub struct EntityMention {
     /// The mention text.
     #[prost(message, optional, tag = "1")]
-    pub text: ::std::option::Option<TextSpan>,
+    pub text: ::core::option::Option<TextSpan>,
     /// The type of the entity mention.
     #[prost(enumeration = "entity_mention::Type", tag = "2")]
     pub r#type: i32,
 }
+/// Nested message and enum types in `EntityMention`.
 pub mod entity_mention {
     /// The supported types of mentions.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -625,7 +631,7 @@ pub mod entity_mention {
 pub struct TextSpan {
     /// The content of the output text.
     #[prost(string, tag = "1")]
-    pub content: std::string::String,
+    pub content: ::prost::alloc::string::String,
     /// The API calculates the beginning offset of the content in the original
     /// document according to the
     /// [EncodingType][google.cloud.language.v1beta1.EncodingType] specified in the
@@ -638,7 +644,7 @@ pub struct TextSpan {
 pub struct AnalyzeSentimentRequest {
     /// Input document.
     #[prost(message, optional, tag = "1")]
-    pub document: ::std::option::Option<Document>,
+    pub document: ::core::option::Option<Document>,
     /// The encoding type used by the API to calculate sentence offsets for the
     /// sentence sentiment.
     #[prost(enumeration = "EncodingType", tag = "2")]
@@ -649,23 +655,23 @@ pub struct AnalyzeSentimentRequest {
 pub struct AnalyzeSentimentResponse {
     /// The overall sentiment of the input document.
     #[prost(message, optional, tag = "1")]
-    pub document_sentiment: ::std::option::Option<Sentiment>,
+    pub document_sentiment: ::core::option::Option<Sentiment>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
     /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "2")]
-    pub language: std::string::String,
+    pub language: ::prost::alloc::string::String,
     /// The sentiment for all the sentences in the document.
     #[prost(message, repeated, tag = "3")]
-    pub sentences: ::std::vec::Vec<Sentence>,
+    pub sentences: ::prost::alloc::vec::Vec<Sentence>,
 }
 /// The entity analysis request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeEntitiesRequest {
     /// Input document.
     #[prost(message, optional, tag = "1")]
-    pub document: ::std::option::Option<Document>,
+    pub document: ::core::option::Option<Document>,
     /// The encoding type used by the API to calculate offsets.
     #[prost(enumeration = "EncodingType", tag = "2")]
     pub encoding_type: i32,
@@ -675,20 +681,20 @@ pub struct AnalyzeEntitiesRequest {
 pub struct AnalyzeEntitiesResponse {
     /// The recognized entities in the input document.
     #[prost(message, repeated, tag = "1")]
-    pub entities: ::std::vec::Vec<Entity>,
+    pub entities: ::prost::alloc::vec::Vec<Entity>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
     /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "2")]
-    pub language: std::string::String,
+    pub language: ::prost::alloc::string::String,
 }
 /// The syntax analysis request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeSyntaxRequest {
     /// Input document.
     #[prost(message, optional, tag = "1")]
-    pub document: ::std::option::Option<Document>,
+    pub document: ::core::option::Option<Document>,
     /// The encoding type used by the API to calculate offsets.
     #[prost(enumeration = "EncodingType", tag = "2")]
     pub encoding_type: i32,
@@ -698,16 +704,16 @@ pub struct AnalyzeSyntaxRequest {
 pub struct AnalyzeSyntaxResponse {
     /// Sentences in the input document.
     #[prost(message, repeated, tag = "1")]
-    pub sentences: ::std::vec::Vec<Sentence>,
+    pub sentences: ::prost::alloc::vec::Vec<Sentence>,
     /// Tokens, along with their syntactic information, in the input document.
     #[prost(message, repeated, tag = "2")]
-    pub tokens: ::std::vec::Vec<Token>,
+    pub tokens: ::prost::alloc::vec::Vec<Token>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
     /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "3")]
-    pub language: std::string::String,
+    pub language: ::prost::alloc::string::String,
 }
 /// The request message for the text annotation API, which can perform multiple
 /// analysis types (sentiment, entities, and syntax) in one call.
@@ -715,14 +721,15 @@ pub struct AnalyzeSyntaxResponse {
 pub struct AnnotateTextRequest {
     /// Input document.
     #[prost(message, optional, tag = "1")]
-    pub document: ::std::option::Option<Document>,
+    pub document: ::core::option::Option<Document>,
     /// The enabled features.
     #[prost(message, optional, tag = "2")]
-    pub features: ::std::option::Option<annotate_text_request::Features>,
+    pub features: ::core::option::Option<annotate_text_request::Features>,
     /// The encoding type used by the API to calculate offsets.
     #[prost(enumeration = "EncodingType", tag = "3")]
     pub encoding_type: i32,
 }
+/// Nested message and enum types in `AnnotateTextRequest`.
 pub mod annotate_text_request {
     /// All available features for sentiment, syntax, and semantic analysis.
     /// Setting each one to true will enable that specific analysis for the input.
@@ -745,27 +752,27 @@ pub struct AnnotateTextResponse {
     /// Sentences in the input document. Populated if the user enables
     /// [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax].
     #[prost(message, repeated, tag = "1")]
-    pub sentences: ::std::vec::Vec<Sentence>,
+    pub sentences: ::prost::alloc::vec::Vec<Sentence>,
     /// Tokens, along with their syntactic information, in the input document.
     /// Populated if the user enables
     /// [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_syntax].
     #[prost(message, repeated, tag = "2")]
-    pub tokens: ::std::vec::Vec<Token>,
+    pub tokens: ::prost::alloc::vec::Vec<Token>,
     /// Entities, along with their semantic information, in the input document.
     /// Populated if the user enables
     /// [AnnotateTextRequest.Features.extract_entities][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_entities].
     #[prost(message, repeated, tag = "3")]
-    pub entities: ::std::vec::Vec<Entity>,
+    pub entities: ::prost::alloc::vec::Vec<Entity>,
     /// The overall sentiment for the document. Populated if the user enables
     /// [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta1.AnnotateTextRequest.Features.extract_document_sentiment].
     #[prost(message, optional, tag = "4")]
-    pub document_sentiment: ::std::option::Option<Sentiment>,
+    pub document_sentiment: ::core::option::Option<Sentiment>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
     /// See [Document.language][google.cloud.language.v1beta1.Document.language]
     /// field for more details.
     #[prost(string, tag = "5")]
-    pub language: std::string::String,
+    pub language: ::prost::alloc::string::String,
 }
 /// Represents the text encoding that the caller uses to process the output.
 /// Providing an `EncodingType` is recommended because the API provides the

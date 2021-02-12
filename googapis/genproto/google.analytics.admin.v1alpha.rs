@@ -5,23 +5,19 @@ pub struct Account {
     /// Format: accounts/{account}
     /// Example: "accounts/100"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Time when this account was originally created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when account payload fields were last updated.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Human-readable display name for this account.
     #[prost(string, tag = "4")]
-    pub display_name: std::string::String,
-    /// Country of business. Must be a non-deprecated code for a UN M.49 region.
-    ///
-    /// https:
-    /// //unicode.org/cldr/charts/latest/supplem
-    /// // ental/territory_containment_un_m_49.html
+    pub display_name: ::prost::alloc::string::String,
+    /// Country of business. Must be a Unicode CLDR region code.
     #[prost(string, tag = "5")]
-    pub country_code: std::string::String,
+    pub region_code: ::prost::alloc::string::String,
     /// Output only. Indicates whether this Account is soft-deleted or not. Deleted
     /// accounts are excluded from List results unless specifically requested.
     #[prost(bool, tag = "6")]
@@ -34,25 +30,25 @@ pub struct Property {
     /// Format: properties/{property_id}
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Time when the entity was originally created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when entity payload fields were last updated.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Immutable. Resource name of this property's logical parent.
     ///
     /// Note: The Property-Moving UI can be used to change the parent.
     /// Format: accounts/{account}
     /// Example: "accounts/100"
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Human-readable display name for this property.
     ///
     /// The max allowed display name length is 100 UTF-16 code units.
     #[prost(string, tag = "5")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Industry associated with this property
     /// Example: AUTOMOTIVE, FOOD_AND_DRINK
     #[prost(enumeration = "IndustryCategory", tag = "6")]
@@ -67,14 +63,14 @@ pub struct Property {
     /// Format: https://www.iana.org/time-zones
     /// Example: "America/Los_Angeles"
     #[prost(string, tag = "7")]
-    pub time_zone: std::string::String,
+    pub time_zone: ::prost::alloc::string::String,
     /// The currency type used in reports involving monetary values.
     ///
     ///
     /// Format: https://en.wikipedia.org/wiki/ISO_4217
     /// Examples: "USD", "EUR", "JPY"
     #[prost(string, tag = "8")]
-    pub currency_code: std::string::String,
+    pub currency_code: ::prost::alloc::string::String,
     /// Output only. Indicates whether this Property is soft-deleted or not. Deleted properties
     /// are excluded from List results unless specifically requested.
     #[prost(bool, tag = "9")]
@@ -87,26 +83,26 @@ pub struct AndroidAppDataStream {
     /// Format: properties/{property_id}/androidAppDataStreams/{stream_id}
     /// Example: "properties/1000/androidAppDataStreams/2000"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. ID of the corresponding Android app in Firebase, if any.
     /// This ID can change if the Android app is deleted and recreated.
     #[prost(string, tag = "2")]
-    pub firebase_app_id: std::string::String,
+    pub firebase_app_id: ::prost::alloc::string::String,
     /// Output only. Time when this stream was originally created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when stream payload fields were last updated.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Immutable. The package name for the app being measured.
     /// Example: "com.example.myandroidapp"
     #[prost(string, tag = "5")]
-    pub package_name: std::string::String,
+    pub package_name: ::prost::alloc::string::String,
     /// Human-readable display name for the Data Stream.
     ///
     /// The max allowed display name length is 255 UTF-16 code units.
     #[prost(string, tag = "6")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
 }
 /// A resource message representing a Google Analytics IOS app stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -115,26 +111,26 @@ pub struct IosAppDataStream {
     /// Format: properties/{property_id}/iosAppDataStreams/{stream_id}
     /// Example: "properties/1000/iosAppDataStreams/2000"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. ID of the corresponding iOS app in Firebase, if any.
     /// This ID can change if the iOS app is deleted and recreated.
     #[prost(string, tag = "2")]
-    pub firebase_app_id: std::string::String,
+    pub firebase_app_id: ::prost::alloc::string::String,
     /// Output only. Time when this stream was originally created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when stream payload fields were last updated.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Immutable. The Apple App Store Bundle ID for the app
     /// Example: "com.example.myiosapp"
     #[prost(string, tag = "5")]
-    pub bundle_id: std::string::String,
+    pub bundle_id: ::prost::alloc::string::String,
     /// Human-readable display name for the Data Stream.
     ///
     /// The max allowed display name length is 255 UTF-16 code units.
     #[prost(string, tag = "6")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
 }
 /// A resource message representing a Google Analytics web stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -143,30 +139,30 @@ pub struct WebDataStream {
     /// Format: properties/{property_id}/webDataStreams/{stream_id}
     /// Example: "properties/1000/webDataStreams/2000"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Analytics "Measurement ID", without the "G-" prefix.
     /// Example: "G-1A2BCD345E" would just be "1A2BCD345E"
     #[prost(string, tag = "2")]
-    pub measurement_id: std::string::String,
+    pub measurement_id: ::prost::alloc::string::String,
     /// Output only. ID of the corresponding web app in Firebase, if any.
     /// This ID can change if the web app is deleted and recreated.
     #[prost(string, tag = "3")]
-    pub firebase_app_id: std::string::String,
+    pub firebase_app_id: ::prost::alloc::string::String,
     /// Output only. Time when this stream was originally created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when stream payload fields were last updated.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Immutable. Domain name of the web app being measured, or empty.
     /// Example: "http://www.google.com", "https://www.google.com"
     #[prost(string, tag = "6")]
-    pub default_uri: std::string::String,
+    pub default_uri: ::prost::alloc::string::String,
     /// Required. Human-readable display name for the Data Stream.
     ///
     /// The max allowed display name length is 100 UTF-16 code units.
     #[prost(string, tag = "7")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
 }
 /// A resource message representing a user's permissions on an Account or
 /// Property resource.
@@ -174,10 +170,10 @@ pub struct WebDataStream {
 pub struct UserLink {
     /// Example format: properties/1234/userLinks/5678
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Email address of the user to link
     #[prost(string, tag = "2")]
-    pub email_address: std::string::String,
+    pub email_address: ::prost::alloc::string::String,
     /// Roles directly assigned to this user for this account or property.
     ///
     /// Valid values:
@@ -192,17 +188,17 @@ pub struct UserLink {
     /// A UserLink that is updated to have an empty list of direct_roles will be
     /// deleted.
     #[prost(string, repeated, tag = "3")]
-    pub direct_roles: ::std::vec::Vec<std::string::String>,
+    pub direct_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Read-only resource used to summarize a principal's effective roles.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditUserLink {
     /// Example format: properties/1234/userLinks/5678
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Email address of the linked user
     #[prost(string, tag = "2")]
-    pub email_address: std::string::String,
+    pub email_address: ::prost::alloc::string::String,
     /// Roles directly assigned to this user for this entity.
     ///
     /// Format: predefinedRoles/read
@@ -210,13 +206,13 @@ pub struct AuditUserLink {
     /// Excludes roles that are inherited from an account (if this is for a
     /// property), group, or organization admin role.
     #[prost(string, repeated, tag = "3")]
-    pub direct_roles: ::std::vec::Vec<std::string::String>,
+    pub direct_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Union of all permissions a user has at this account or property (includes
     /// direct permissions, group-inherited permissions, etc.).
     ///
     /// Format: predefinedRoles/read
     #[prost(string, repeated, tag = "4")]
-    pub effective_roles: ::std::vec::Vec<std::string::String>,
+    pub effective_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Singleton resource under a WebDataStream, configuring measurement of
 /// additional site interactions and content.
@@ -224,11 +220,10 @@ pub struct AuditUserLink {
 pub struct EnhancedMeasurementSettings {
     /// Output only. Resource name of this Data Stream.
     /// Format:
-    ///
     /// properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
     /// Example: "properties/1000/webDataStreams/2000/enhancedMeasurementSettings"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Indicates whether Enhanced Measurement Settings will be used to
     /// automatically measure interactions and content on this web stream.
     ///
@@ -248,18 +243,10 @@ pub struct EnhancedMeasurementSettings {
     /// link that leads them away from your domain.
     #[prost(bool, tag = "5")]
     pub outbound_clicks_enabled: bool,
-    /// Capture events when your visitors view content on your site that has
-    /// structured data (eg, articles, blog posts, product details screens, etc.).
-    #[prost(bool, tag = "6")]
-    pub content_views_enabled: bool,
     /// If enabled, capture a view search results event each time a visitor
     /// performs a search on your site (based on a query parameter).
     #[prost(bool, tag = "7")]
     pub site_search_enabled: bool,
-    /// If enabled, capture a view search results event each time a visitor
-    /// interacts with a form on your site.
-    #[prost(bool, tag = "8")]
-    pub form_interactions_enabled: bool,
     /// If enabled, capture video play, progress, and complete events as visitors
     /// view embedded videos on your site.
     #[prost(bool, tag = "9")]
@@ -268,43 +255,28 @@ pub struct EnhancedMeasurementSettings {
     /// a common document, compressed file, application, video, or audio extension.
     #[prost(bool, tag = "10")]
     pub file_downloads_enabled: bool,
-    /// If enabled, capture a click event each time a visitor clicks a link or
-    /// element that has data attributes beginning with "data-ga".
-    #[prost(bool, tag = "11")]
-    pub data_tagged_element_clicks_enabled: bool,
-    /// If enabled, capture a page view event each time a page loads.
+    /// Output only. If enabled, capture a page view event each time a page loads.
     #[prost(bool, tag = "12")]
     pub page_loads_enabled: bool,
     /// If enabled, capture a page view event each time the website changes the
     /// browser history state.
     #[prost(bool, tag = "13")]
     pub page_changes_enabled: bool,
-    /// Capture events when your visitors view content on your site that has
-    /// articles or blog posts.
-    #[prost(bool, tag = "14")]
-    pub articles_and_blogs_enabled: bool,
-    /// Capture events when your visitors view content on your site that has
-    /// product details screens, etc.
-    #[prost(bool, tag = "15")]
-    pub products_and_ecommerce_enabled: bool,
     /// Required. URL query parameters to interpret as site search parameters.
     /// Max length is 1024 characters. Must not be empty.
     #[prost(string, tag = "16")]
-    pub search_query_parameter: std::string::String,
+    pub search_query_parameter: ::prost::alloc::string::String,
     /// Additional URL query parameters.
     /// Max length is 1024 characters.
     #[prost(string, tag = "17")]
-    pub url_query_parameter: std::string::String,
-    /// Domains to exclude from measurement. Max length is 1024 characters.
-    #[prost(string, tag = "18")]
-    pub excluded_domains: std::string::String,
+    pub uri_query_parameter: ::prost::alloc::string::String,
 }
 /// A link between an GA4 property and a Firebase project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirebaseLink {
     /// Output only. Example format: properties/1234/firebaseLinks/5678
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Immutable. Firebase project resource name. When creating a FirebaseLink, you may
     /// provide this resource name using either a project number or project ID.
     /// Once this resource has been created, returned FirebaseLinks will always
@@ -313,10 +285,10 @@ pub struct FirebaseLink {
     /// Format: 'projects/{project number}'
     /// Example: 'projects/1234'
     #[prost(string, tag = "2")]
-    pub project: std::string::String,
+    pub project: ::prost::alloc::string::String,
     /// Output only. Time when this FirebaseLink was originally created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Maximum user access to the GA4 property allowed to admins of
     /// the linked Firebase project.
     #[prost(enumeration = "MaximumUserAccess", tag = "4")]
@@ -326,10 +298,14 @@ pub struct FirebaseLink {
 /// WebDataStream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalSiteTag {
+    /// Output only. Resource name for this GlobalSiteTag resource.
+    /// Format: properties/{propertyId}/globalSiteTag
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
     /// Immutable. JavaScript code snippet to be pasted as the first item into the head tag of
     /// every webpage to measure.
-    #[prost(string, tag = "1")]
-    pub snippet: std::string::String,
+    #[prost(string, tag = "2")]
+    pub snippet: ::prost::alloc::string::String,
 }
 /// A link between an GA4 property and a Google Ads account.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -338,13 +314,10 @@ pub struct GoogleAdsLink {
     ///
     /// Note: googleAdsLinkId is not the Google Ads customer ID.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// Immutable. Format: properties/{propertyId}
-    #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Immutable. Google Ads customer ID.
     #[prost(string, tag = "3")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Output only. If true, this link is for a Google Ads manager account.
     #[prost(bool, tag = "4")]
     pub can_manage_clients: bool,
@@ -353,17 +326,17 @@ pub struct GoogleAdsLink {
     /// Analytics remarketing events/parameters to the linked Google Ads account.
     /// If this field is not set on create/update it will be defaulted to true.
     #[prost(message, optional, tag = "5")]
-    pub ads_personalization_enabled: ::std::option::Option<bool>,
+    pub ads_personalization_enabled: ::core::option::Option<bool>,
     /// Output only. Email address of the user that created the link.
     /// An empty string will be returned if the email address can't be retrieved.
     #[prost(string, tag = "6")]
-    pub email_address: std::string::String,
+    pub email_address: ::prost::alloc::string::String,
     /// Output only. Time when this link was originally created.
     #[prost(message, optional, tag = "7")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when this link was last updated.
     #[prost(message, optional, tag = "8")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A resource message representing data sharing settings of a Google Analytics
 /// account.
@@ -373,7 +346,7 @@ pub struct DataSharingSettings {
     /// Format: accounts/{account}/dataSharingSettings
     /// Example: "accounts/1000/dataSharingSettings"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Allows Google support to access the data in order to help troubleshoot
     /// issues.
     #[prost(bool, tag = "2")]
@@ -402,18 +375,18 @@ pub struct AccountSummary {
     /// Format: accountSummaries/{account_id}
     /// Example: "accountSummaries/1000"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Resource name of account referred to by this account summary
     /// Format: accounts/{account_id}
     /// Example: "accounts/1000"
     #[prost(string, tag = "2")]
-    pub account: std::string::String,
+    pub account: ::prost::alloc::string::String,
     /// Display name for the account referred to in this account summary.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// List of summaries for child accounts of this account.
     #[prost(message, repeated, tag = "4")]
-    pub property_summaries: ::std::vec::Vec<PropertySummary>,
+    pub property_summaries: ::prost::alloc::vec::Vec<PropertySummary>,
 }
 /// A virtual resource representing metadata for an GA4 property.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -422,10 +395,10 @@ pub struct PropertySummary {
     /// Format: properties/{property_id}
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
-    pub property: std::string::String,
+    pub property: ::prost::alloc::string::String,
     /// Display name for the property referred to in this account summary.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
 }
 /// Maximum access settings that Firebase user receive on the linked Analytics
 /// property.
@@ -511,7 +484,7 @@ pub struct GetAccountRequest {
     /// Format: accounts/{account}
     /// Example: "accounts/100"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAccounts RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -527,7 +500,7 @@ pub struct ListAccountsRequest {
     /// When paginating, all other parameters provided to `ListAccounts` must
     /// match the call that provided the page token.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Whether to include soft-deleted (ie: "trashed") Accounts in the
     /// results. Accounts can be inspected to determine whether they are deleted or
     /// not.
@@ -539,11 +512,11 @@ pub struct ListAccountsRequest {
 pub struct ListAccountsResponse {
     /// Results that were accessible to the caller.
     #[prost(message, repeated, tag = "1")]
-    pub accounts: ::std::vec::Vec<Account>,
+    pub accounts: ::prost::alloc::vec::Vec<Account>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -552,7 +525,7 @@ pub struct DeleteAccountRequest {
     /// Format: accounts/{account}
     /// Example: "accounts/100"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -560,28 +533,30 @@ pub struct UpdateAccountRequest {
     /// Required. The account to update.
     /// The account's `name` field is used to identify the account.
     #[prost(message, optional, tag = "1")]
-    pub account: ::std::option::Option<Account>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub account: ::core::option::Option<Account>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ProvisionAccountTicket RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvisionAccountTicketRequest {
     /// The account to create.
     #[prost(message, optional, tag = "1")]
-    pub account: ::std::option::Option<Account>,
+    pub account: ::core::option::Option<Account>,
     /// Redirect URI where the user will be sent after accepting Terms of Service.
     /// Must be configured in Developers Console as a Redirect URI
     #[prost(string, tag = "2")]
-    pub redirect_uri: std::string::String,
+    pub redirect_uri: ::prost::alloc::string::String,
 }
 /// Response message for ProvisionAccountTicket RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvisionAccountTicketResponse {
     /// The param to be passed in the ToS link.
     #[prost(string, tag = "1")]
-    pub account_ticket_id: std::string::String,
+    pub account_ticket_id: ::prost::alloc::string::String,
 }
 /// Request message for GetProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -590,7 +565,7 @@ pub struct GetPropertyRequest {
     /// Format: properties/{property_id}
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListProperties RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -601,13 +576,15 @@ pub struct ListPropertiesRequest {
     /// `firebase_project:`(The id or number of the linked firebase project).
     /// Some examples of filters:
     ///
+    /// ```
     /// | Filter                      | Description                               |
     /// |-----------------------------|-------------------------------------------|
     /// | parent:accounts/123         | The account with account id: 123.         |
     /// | firebase_project:project-id | The firebase project with id: project-id. |
     /// | firebase_project:123        | The firebase project with number: 123.    |
+    /// ```
     #[prost(string, tag = "1")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The maximum number of resources to return. The service may return
     /// fewer than this value, even if there are additional pages.
     /// If unspecified, at most 50 resources will be returned.
@@ -619,7 +596,7 @@ pub struct ListPropertiesRequest {
     /// When paginating, all other parameters provided to `ListProperties` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Whether to include soft-deleted (ie: "trashed") Properties in the
     /// results. Properties can be inspected to determine whether they are deleted
     /// or not.
@@ -631,11 +608,11 @@ pub struct ListPropertiesRequest {
 pub struct ListPropertiesResponse {
     /// Results that matched the filter criteria and were accessible to the caller.
     #[prost(message, repeated, tag = "1")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -644,10 +621,12 @@ pub struct UpdatePropertyRequest {
     /// The property's `name` field is used to identify the property to be
     /// updated.
     #[prost(message, optional, tag = "1")]
-    pub property: ::std::option::Option<Property>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub property: ::core::option::Option<Property>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -655,7 +634,7 @@ pub struct CreatePropertyRequest {
     /// Required. The property to create.
     /// Note: the supplied property must specify its parent.
     #[prost(message, optional, tag = "1")]
-    pub property: ::std::option::Option<Property>,
+    pub property: ::core::option::Option<Property>,
 }
 /// Request message for DeleteProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -664,14 +643,14 @@ pub struct DeletePropertyRequest {
     /// Format: properties/{property_id}
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetUserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUserLinkRequest {
     /// Required. Example format: accounts/1234/userLinks/5678
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BatchGetUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -681,26 +660,26 @@ pub struct BatchGetUserLinksRequest {
     /// this field.
     /// Example format: accounts/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The names of the user links to retrieve.
     /// A maximum of 1000 user links can be retrieved in a batch.
     /// Format: accounts/{accountId}/userLinks/{userLinkId}
     #[prost(string, repeated, tag = "2")]
-    pub names: ::std::vec::Vec<std::string::String>,
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for BatchGetUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetUserLinksResponse {
     /// The requested user links.
     #[prost(message, repeated, tag = "1")]
-    pub user_links: ::std::vec::Vec<UserLink>,
+    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
 }
 /// Request message for ListUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUserLinksRequest {
     /// Required. Example format: accounts/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of user links to return.
     /// The service may return fewer than this value.
     /// If unspecified, at most 200 user links will be returned.
@@ -712,25 +691,25 @@ pub struct ListUserLinksRequest {
     /// When paginating, all other parameters provided to `ListUserLinks` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUserLinksResponse {
     /// List of UserLinks. These will be ordered stably, but in an arbitrary order.
     #[prost(message, repeated, tag = "1")]
-    pub user_links: ::std::vec::Vec<UserLink>,
+    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for AuditUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditUserLinksRequest {
     /// Required. Example format: accounts/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of user links to return.
     /// The service may return fewer than this value.
     /// If unspecified, at most 1000 user links will be returned.
@@ -742,7 +721,7 @@ pub struct AuditUserLinksRequest {
     /// When paginating, all other parameters provided to `AuditUserLinks` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for AuditUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -750,11 +729,11 @@ pub struct AuditUserLinksResponse {
     /// List of AuditUserLinks. These will be ordered stably, but in an arbitrary
     /// order.
     #[prost(message, repeated, tag = "1")]
-    pub user_links: ::std::vec::Vec<AuditUserLink>,
+    pub user_links: ::prost::alloc::vec::Vec<AuditUserLink>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateUserLink RPC.
 ///
@@ -768,14 +747,14 @@ pub struct AuditUserLinksResponse {
 pub struct CreateUserLinkRequest {
     /// Required. Example format: accounts/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. If set, then email the new user notifying them that they've been granted
     /// permissions to the resource.
     #[prost(bool, tag = "2")]
     pub notify_new_user: bool,
     /// Required. The user link to create.
     #[prost(message, optional, tag = "3")]
-    pub user_link: ::std::option::Option<UserLink>,
+    pub user_link: ::core::option::Option<UserLink>,
 }
 /// Request message for BatchCreateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -785,7 +764,7 @@ pub struct BatchCreateUserLinksRequest {
     /// messages must either be empty or match this field.
     /// Example format: accounts/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. If set, then email the new users notifying them that they've been granted
     /// permissions to the resource. Regardless of whether this is set or not,
     /// notify_new_user field inside each individual request is ignored.
@@ -794,21 +773,21 @@ pub struct BatchCreateUserLinksRequest {
     /// Required. The requests specifying the user links to create.
     /// A maximum of 1000 user links can be created in a batch.
     #[prost(message, repeated, tag = "3")]
-    pub requests: ::std::vec::Vec<CreateUserLinkRequest>,
+    pub requests: ::prost::alloc::vec::Vec<CreateUserLinkRequest>,
 }
 /// Response message for BatchCreateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateUserLinksResponse {
     /// The user links created.
     #[prost(message, repeated, tag = "1")]
-    pub user_links: ::std::vec::Vec<UserLink>,
+    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
 }
 /// Request message for UpdateUserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUserLinkRequest {
     /// Required. The user link to update.
     #[prost(message, optional, tag = "1")]
-    pub user_link: ::std::option::Option<UserLink>,
+    pub user_link: ::core::option::Option<UserLink>,
 }
 /// Request message for BatchUpdateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -818,25 +797,25 @@ pub struct BatchUpdateUserLinksRequest {
     /// empty or match this field.
     /// Example format: accounts/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The requests specifying the user links to update.
     /// A maximum of 1000 user links can be updated in a batch.
     #[prost(message, repeated, tag = "2")]
-    pub requests: ::std::vec::Vec<UpdateUserLinkRequest>,
+    pub requests: ::prost::alloc::vec::Vec<UpdateUserLinkRequest>,
 }
 /// Response message for BatchUpdateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateUserLinksResponse {
     /// The user links updated.
     #[prost(message, repeated, tag = "1")]
-    pub user_links: ::std::vec::Vec<UserLink>,
+    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
 }
 /// Request message for DeleteUserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteUserLinkRequest {
     /// Required. Example format: accounts/1234/userLinks/5678
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BatchDeleteUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -846,11 +825,11 @@ pub struct BatchDeleteUserLinksRequest {
     /// field.
     /// Example format: accounts/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The requests specifying the user links to update.
     /// A maximum of 1000 user links can be updated in a batch.
     #[prost(message, repeated, tag = "2")]
-    pub requests: ::std::vec::Vec<DeleteUserLinkRequest>,
+    pub requests: ::prost::alloc::vec::Vec<DeleteUserLinkRequest>,
 }
 /// Request message for GetWebDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -859,7 +838,7 @@ pub struct GetWebDataStreamRequest {
     /// Format: properties/{property_id}/webDataStreams/{stream_id}
     /// Example: "properties/123/webDataStreams/456"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteWebDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -868,7 +847,7 @@ pub struct DeleteWebDataStreamRequest {
     /// Format: properties/{property_id}/webDataStreams/{stream_id}
     /// Example: "properties/123/webDataStreams/456"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateWebDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -876,21 +855,23 @@ pub struct UpdateWebDataStreamRequest {
     /// Required. The web stream to update.
     /// The `name` field is used to identify the web stream to be updated.
     #[prost(message, optional, tag = "1")]
-    pub web_data_stream: ::std::option::Option<WebDataStream>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub web_data_stream: ::core::option::Option<WebDataStream>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateWebDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWebDataStreamRequest {
     /// Required. The web stream to create.
     #[prost(message, optional, tag = "1")]
-    pub web_data_stream: ::std::option::Option<WebDataStream>,
+    pub web_data_stream: ::core::option::Option<WebDataStream>,
     /// Required. The parent resource where this web data stream will be created.
     /// Format: properties/123
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// Request message for ListWebDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -899,7 +880,7 @@ pub struct ListWebDataStreamsRequest {
     /// For example, to list results of web streams under the property with Id
     /// 123: "properties/123"
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
@@ -910,18 +891,18 @@ pub struct ListWebDataStreamsRequest {
     /// When paginating, all other parameters provided to `ListWebDataStreams` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Request message for ListWebDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWebDataStreamsResponse {
     /// Results that matched the filter criteria and were accessible to the caller.
     #[prost(message, repeated, tag = "1")]
-    pub web_data_streams: ::std::vec::Vec<WebDataStream>,
+    pub web_data_streams: ::prost::alloc::vec::Vec<WebDataStream>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetIosAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -930,7 +911,7 @@ pub struct GetIosAppDataStreamRequest {
     /// Format: properties/{property_id}/iosAppDataStreams/{stream_id}
     /// Example: "properties/123/iosAppDataStreams/456"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteIosAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -939,7 +920,7 @@ pub struct DeleteIosAppDataStreamRequest {
     /// Format: properties/{property_id}/iosAppDataStreams/{stream_id}
     /// Example: "properties/123/iosAppDataStreams/456"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateIosAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -947,21 +928,23 @@ pub struct UpdateIosAppDataStreamRequest {
     /// Required. The iOS app stream to update.
     /// The `name` field is used to identify the iOS app stream to be updated.
     #[prost(message, optional, tag = "1")]
-    pub ios_app_data_stream: ::std::option::Option<IosAppDataStream>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub ios_app_data_stream: ::core::option::Option<IosAppDataStream>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateIosAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIosAppDataStreamRequest {
     /// Required. The iOS app data stream to create.
     #[prost(message, optional, tag = "1")]
-    pub ios_app_data_stream: ::std::option::Option<IosAppDataStream>,
+    pub ios_app_data_stream: ::core::option::Option<IosAppDataStream>,
     /// Required. The parent resource where this ios app data stream will be created.
     /// Format: properties/123
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// Request message for ListIosAppDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -970,7 +953,7 @@ pub struct ListIosAppDataStreamsRequest {
     /// For example, to list results of app streams under the property with Id
     /// 123: "properties/123"
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200; (higher values will be coerced to the maximum)
@@ -981,18 +964,18 @@ pub struct ListIosAppDataStreamsRequest {
     /// When paginating, all other parameters provided to `ListIosAppDataStreams`
     /// must match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Request message for ListIosAppDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIosAppDataStreamsResponse {
     /// Results that matched the filter criteria and were accessible to the caller.
     #[prost(message, repeated, tag = "1")]
-    pub ios_app_data_streams: ::std::vec::Vec<IosAppDataStream>,
+    pub ios_app_data_streams: ::prost::alloc::vec::Vec<IosAppDataStream>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetAndroidAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1001,7 +984,7 @@ pub struct GetAndroidAppDataStreamRequest {
     /// Format: properties/{property_id}/androidAppDataStreams/{stream_id}
     /// Example: "properties/123/androidAppDataStreams/456"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAndroidAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1010,7 +993,7 @@ pub struct DeleteAndroidAppDataStreamRequest {
     /// Format: properties/{property_id}/androidAppDataStreams/{stream_id}
     /// Example: "properties/123/androidAppDataStreams/456"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateAndroidAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1018,21 +1001,23 @@ pub struct UpdateAndroidAppDataStreamRequest {
     /// Required. The android app stream to update.
     /// The `name` field is used to identify the android app stream to be updated.
     #[prost(message, optional, tag = "1")]
-    pub android_app_data_stream: ::std::option::Option<AndroidAppDataStream>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub android_app_data_stream: ::core::option::Option<AndroidAppDataStream>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateAndroidAppDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAndroidAppDataStreamRequest {
     /// Required. The android app stream to create.
     #[prost(message, optional, tag = "1")]
-    pub android_app_data_stream: ::std::option::Option<AndroidAppDataStream>,
+    pub android_app_data_stream: ::core::option::Option<AndroidAppDataStream>,
     /// Required. The parent resource where this android app data stream will be created.
     /// Format: properties/123
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// Request message for ListAndroidAppDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1041,7 +1026,7 @@ pub struct ListAndroidAppDataStreamsRequest {
     /// For example, to limit results to app streams under the property with Id
     /// 123: "properties/123"
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return.
     ///
     /// If unspecified, at most 50 resources will be returned.
@@ -1054,29 +1039,28 @@ pub struct ListAndroidAppDataStreamsRequest {
     /// `ListAndroidAppDataStreams` must match the call that provided the page
     /// token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Request message for ListAndroidDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAndroidAppDataStreamsResponse {
     /// Results that matched the filter criteria and were accessible to the caller.
     #[prost(message, repeated, tag = "1")]
-    pub android_app_data_streams: ::std::vec::Vec<AndroidAppDataStream>,
+    pub android_app_data_streams: ::prost::alloc::vec::Vec<AndroidAppDataStream>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetEnhancedMeasurementSettings RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnhancedMeasurementSettingsRequest {
     /// Required. The name of the settings to lookup.
     /// Format:
-    ///
     /// properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
     /// Example: "properties/1000/webDataStreams/2000/enhancedMeasurementSettings"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateEnhancedMeasurementSettings RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1084,10 +1068,12 @@ pub struct UpdateEnhancedMeasurementSettingsRequest {
     /// Required. The settings to update.
     /// The `name` field is used to identify the settings to be updated.
     #[prost(message, optional, tag = "1")]
-    pub enhanced_measurement_settings: ::std::option::Option<EnhancedMeasurementSettings>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub enhanced_measurement_settings: ::core::option::Option<EnhancedMeasurementSettings>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateFirebaseLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1095,20 +1081,22 @@ pub struct CreateFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}
     /// Example: properties/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Firebase link to create.
     #[prost(message, optional, tag = "2")]
-    pub firebase_link: ::std::option::Option<FirebaseLink>,
+    pub firebase_link: ::core::option::Option<FirebaseLink>,
 }
 /// Request message for UpdateFirebaseLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFirebaseLinkRequest {
     /// Required. The Firebase link to update.
     #[prost(message, optional, tag = "1")]
-    pub firebase_link: ::std::option::Option<FirebaseLink>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub firebase_link: ::core::option::Option<FirebaseLink>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteFirebaseLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1116,7 +1104,7 @@ pub struct DeleteFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id}
     /// Example: properties/1234/firebaseLinks/5678
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListFirebaseLinks RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1124,14 +1112,32 @@ pub struct ListFirebaseLinksRequest {
     /// Required. Format: properties/{property_id}
     /// Example: properties/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListFirebaseLinks` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListProperties` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListFirebaseLinks RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirebaseLinksResponse {
     /// List of FirebaseLinks. This will have at most one value.
     #[prost(message, repeated, tag = "1")]
-    pub firebase_links: ::std::vec::Vec<FirebaseLink>,
+    pub firebase_links: ::prost::alloc::vec::Vec<FirebaseLink>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    /// Currently, Google Analytics supports only one FirebaseLink per property,
+    /// so this will never be populated.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetGlobalSiteTag RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1141,41 +1147,43 @@ pub struct GetGlobalSiteTagRequest {
     /// Format: properties/{property_id}/webDataStreams/{stream_id}/globalSiteTag
     /// Example: "properties/123/webDataStreams/456/globalSiteTag"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateGoogleAdsLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGoogleAdsLinkRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The GoogleAdsLink to create.
     #[prost(message, optional, tag = "2")]
-    pub google_ads_link: ::std::option::Option<GoogleAdsLink>,
+    pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
 }
 /// Request message for UpdateGoogleAdsLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGoogleAdsLinkRequest {
     /// The GoogleAdsLink to update
     #[prost(message, optional, tag = "1")]
-    pub google_ads_link: ::std::option::Option<GoogleAdsLink>,
-    /// The list of fields to be updated. Omitted fields will not be updated.
+    pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteGoogleAdsLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGoogleAdsLinkRequest {
     /// Required. Example format: properties/1234/googleAdsLinks/5678
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListGoogleAdsLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGoogleAdsLinksRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return.
     /// If unspecified, at most 50 resources will be returned.
     /// The maximum value is 200 (higher values will be coerced to the maximum).
@@ -1187,18 +1195,18 @@ pub struct ListGoogleAdsLinksRequest {
     /// When paginating, all other parameters provided to `ListGoogleAdsLinks` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListGoogleAdsLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGoogleAdsLinksResponse {
     /// List of GoogleAdsLinks.
     #[prost(message, repeated, tag = "1")]
-    pub google_ads_links: ::std::vec::Vec<GoogleAdsLink>,
+    pub google_ads_links: ::prost::alloc::vec::Vec<GoogleAdsLink>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetDataSharingSettings RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1207,7 +1215,7 @@ pub struct GetDataSharingSettingsRequest {
     /// Format: accounts/{account}/dataSharingSettings
     /// Example: "accounts/1000/dataSharingSettings"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAccountSummaries RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1223,18 +1231,18 @@ pub struct ListAccountSummariesRequest {
     /// When paginating, all other parameters provided to `ListAccountSummaries`
     /// must match the call that provided the page token.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAccountSummaries RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountSummariesResponse {
     /// Account summaries of all accounts the caller has access to.
     #[prost(message, repeated, tag = "1")]
-    pub account_summaries: ::std::vec::Vec<AccountSummary>,
+    pub account_summaries: ::prost::alloc::vec::Vec<AccountSummary>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod analytics_admin_service_client {
@@ -1260,8 +1268,6 @@ pub mod analytics_admin_service_client {
             Self { inner }
         }
         #[doc = " Lookup for a single Account."]
-        #[doc = " Throws \"Target not found\" if no such account found, or if caller does not"]
-        #[doc = " have permissions to access it."]
         pub async fn get_account(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAccountRequest>,
@@ -1378,9 +1384,6 @@ pub mod analytics_admin_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lookup for a single \"GA4\" Property."]
-        #[doc = ""]
-        #[doc = " Throws \"Target not found\" if no such property found, if property is not"]
-        #[doc = " of the type \"GA4\", or if caller does not have permissions to access it."]
         pub async fn get_property(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPropertyRequest>,
@@ -1666,9 +1669,6 @@ pub mod analytics_admin_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lookup for a single WebDataStream"]
-        #[doc = ""]
-        #[doc = " Throws \"Target not found\" if no such web data stream found, or if the"]
-        #[doc = " caller does not have permissions to access it."]
         pub async fn get_web_data_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWebDataStreamRequest>,
@@ -1757,9 +1757,6 @@ pub mod analytics_admin_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lookup for a single IosAppDataStream"]
-        #[doc = ""]
-        #[doc = " Throws \"Target not found\" if no such iOS app data stream found, or if the"]
-        #[doc = " caller does not have permissions to access it."]
         pub async fn get_ios_app_data_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIosAppDataStreamRequest>,
@@ -1848,9 +1845,6 @@ pub mod analytics_admin_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lookup for a single AndroidAppDataStream"]
-        #[doc = ""]
-        #[doc = " Throws \"Target not found\" if no such android app data stream found, or if"]
-        #[doc = " the caller does not have permissions to access it."]
         pub async fn get_android_app_data_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAndroidAppDataStreamRequest>,
@@ -1953,7 +1947,7 @@ pub mod analytics_admin_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEnhancedMeasurementSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEnhancedMeasurementSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the singleton enhanced measurement settings for this web stream."]
@@ -1970,7 +1964,7 @@ pub mod analytics_admin_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEnhancedMeasurementSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEnhancedMeasurementSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a FirebaseLink."]

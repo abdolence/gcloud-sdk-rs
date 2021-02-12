@@ -4,11 +4,12 @@
 pub struct EventHandler {
     /// Name of the webhook handler to call.
     #[prost(string, tag = "1")]
-    pub webhook_handler: std::string::String,
+    pub webhook_handler: ::prost::alloc::string::String,
     /// Prompts can either be inlined or referenced by name.
     #[prost(oneof = "event_handler::Prompt", tags = "2, 3")]
-    pub prompt: ::std::option::Option<event_handler::Prompt>,
+    pub prompt: ::core::option::Option<event_handler::Prompt>,
 }
+/// Nested message and enum types in `EventHandler`.
 pub mod event_handler {
     /// Prompts can either be inlined or referenced by name.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -19,7 +20,7 @@ pub mod event_handler {
         StaticPrompt(super::prompt::StaticPrompt),
         /// Name of the static prompt to invoke.
         #[prost(string, tag = "3")]
-        StaticPromptName(std::string::String),
+        StaticPromptName(::prost::alloc::string::String),
     }
 }
 /// Defines a global intent handler. Global intent events are scoped to the
@@ -36,12 +37,12 @@ pub struct GlobalIntentEvent {
     /// Optional. Destination scene which the conversation should jump to. The state of the
     /// current scene is destroyed on the transition.
     #[prost(string, tag = "1")]
-    pub transition_to_scene: std::string::String,
+    pub transition_to_scene: ::prost::alloc::string::String,
     /// Optional. Event handler which is triggered when the intent is matched. Should execute
     /// before transitioning to the destination scene. Useful to generate Prompts
     /// in response to events.
     #[prost(message, optional, tag = "2")]
-    pub handler: ::std::option::Option<EventHandler>,
+    pub handler: ::core::option::Option<EventHandler>,
 }
 /// Intents map open-ended user input to structured objects. Spoken
 /// phrases are matched to intents with Google's Natural Language Understanding
@@ -53,7 +54,7 @@ pub struct Intent {
     /// The list of parameters within the training phrases. All parameters must be
     /// defined here to be used in the training phrase.
     #[prost(message, repeated, tag = "1")]
-    pub parameters: ::std::vec::Vec<intent::IntentParameter>,
+    pub parameters: ::prost::alloc::vec::Vec<intent::IntentParameter>,
     /// Training phrases allow Google’s NLU to automatically match intents with
     /// user input. The more unique phrases that are provided, the better chance
     /// this intent will be matched.
@@ -68,8 +69,9 @@ pub struct Intent {
     /// "Book a flight from ($source 'San Francisco' auto=false) to ($dest
     /// 'Vancouver')"
     #[prost(string, repeated, tag = "2")]
-    pub training_phrases: ::std::vec::Vec<std::string::String>,
+    pub training_phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Intent`.
 pub mod intent {
     /// Definition of a parameter which can be used inside training phrases.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -78,11 +80,12 @@ pub mod intent {
         /// responses to reference intent parameters extracted by NLU with
         /// $intent.params.[name].resolved
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// The type of the intent parameter.
         #[prost(oneof = "intent_parameter::ParameterType", tags = "2")]
-        pub parameter_type: ::std::option::Option<intent_parameter::ParameterType>,
+        pub parameter_type: ::core::option::Option<intent_parameter::ParameterType>,
     }
+    /// Nested message and enum types in `IntentParameter`.
     pub mod intent_parameter {
         /// The type of the intent parameter.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -113,33 +116,33 @@ pub struct ConditionalEvent {
     ///   `size`      - `size(session.params.fruitList) > 2`
     ///   `substring` - `session.params.fullName.contains("John")`
     #[prost(string, tag = "1")]
-    pub condition: std::string::String,
+    pub condition: ::prost::alloc::string::String,
     /// Optional. Destination scene which the conversation should jump to when the associated
     /// condition is evaluated to true. The state of the current scene is destroyed
     /// on the transition.
     #[prost(string, tag = "2")]
-    pub transition_to_scene: std::string::String,
+    pub transition_to_scene: ::prost::alloc::string::String,
     /// Optional. Event handler which is triggered when the associated condition is evaluated
     /// to `true`. Should execute before transitioning to the destination scene.
     /// Useful to generate Prompts in response to events.
     #[prost(message, optional, tag = "3")]
-    pub handler: ::std::option::Option<EventHandler>,
+    pub handler: ::core::option::Option<EventHandler>,
 }
 /// Registers Events which trigger as the result of an intent match.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentEvent {
     /// Required. Intent triggering the event.
     #[prost(string, tag = "1")]
-    pub intent: std::string::String,
+    pub intent: ::prost::alloc::string::String,
     /// Optional. Destination scene which the conversation should jump to. The state of the
     /// current scene is destroyed on the transition.
     #[prost(string, tag = "2")]
-    pub transition_to_scene: std::string::String,
+    pub transition_to_scene: ::prost::alloc::string::String,
     /// Optional. Event handler which is triggered when the intent is matched. Should execute
     /// before transitioning to the destination scene. Useful to generate prompts
     /// in response to events.
     #[prost(message, optional, tag = "3")]
-    pub handler: ::std::option::Option<EventHandler>,
+    pub handler: ::core::option::Option<EventHandler>,
 }
 /// Configuration for a slot. Slots are single units of data that can be filled
 /// through natural language (ie. intent parameters), session parameters, and
@@ -148,10 +151,10 @@ pub struct IntentEvent {
 pub struct Slot {
     /// Required. Name of the slot.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Declares the data type of this slot.
     #[prost(message, optional, tag = "2")]
-    pub r#type: ::std::option::Option<r#type::ClassReference>,
+    pub r#type: ::core::option::Option<r#type::ClassReference>,
     /// Optional. Indicates whether the slot is required to be filled before
     /// advancing. Required slots that are not filled will trigger a customizable
     /// prompt to the user.
@@ -159,10 +162,10 @@ pub struct Slot {
     pub required: bool,
     /// Optional. Registers Prompts for different stages of slot filling.
     #[prost(message, optional, tag = "4")]
-    pub prompt_settings: ::std::option::Option<slot::PromptSettings>,
+    pub prompt_settings: ::core::option::Option<slot::PromptSettings>,
     /// Optional. Commit behavior associated with the slot.
     #[prost(message, optional, tag = "5")]
-    pub commit_behavior: ::std::option::Option<slot::CommitBehavior>,
+    pub commit_behavior: ::core::option::Option<slot::CommitBehavior>,
     /// Optional. Additional configuration associated with the slot which is
     /// used for filling the slot. The format of the config is specific to the
     /// type of the slot. Resource references to user or session parameter can be
@@ -184,45 +187,46 @@ pub struct Slot {
     ///      }
     ///    }
     #[prost(message, optional, tag = "6")]
-    pub config: ::std::option::Option<::prost_types::Value>,
+    pub config: ::core::option::Option<::prost_types::Value>,
     /// Optional. Configuration to populate a default value for this slot.
     #[prost(message, optional, tag = "7")]
-    pub default_value: ::std::option::Option<slot::DefaultValue>,
+    pub default_value: ::core::option::Option<slot::DefaultValue>,
 }
+/// Nested message and enum types in `Slot`.
 pub mod slot {
     /// A single place where slot prompts are defined.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PromptSettings {
         /// Prompt for the slot value itself. Example: "What size did you want?"
         #[prost(message, optional, tag = "1")]
-        pub initial_prompt: ::std::option::Option<super::EventHandler>,
+        pub initial_prompt: ::core::option::Option<super::EventHandler>,
         /// Prompt to give when the user's input does not match the expected
         /// value type for the slot for the first time. Example: "Sorry, I
         /// didn't get that."
         #[prost(message, optional, tag = "2")]
-        pub no_match_prompt1: ::std::option::Option<super::EventHandler>,
+        pub no_match_prompt1: ::core::option::Option<super::EventHandler>,
         /// Prompt to give when the user's input does not match the expected
         /// value type for the slot for the second time. Example: "Sorry, I
         /// didn't get that."
         #[prost(message, optional, tag = "3")]
-        pub no_match_prompt2: ::std::option::Option<super::EventHandler>,
+        pub no_match_prompt2: ::core::option::Option<super::EventHandler>,
         /// Prompt to give when the user's input does not match the expected
         /// value type for the slot for the last time. Example: "Sorry, I
         /// didn't get that."
         #[prost(message, optional, tag = "4")]
-        pub no_match_final_prompt: ::std::option::Option<super::EventHandler>,
+        pub no_match_final_prompt: ::core::option::Option<super::EventHandler>,
         /// Prompt to give when the user does not provide an input for the first
         /// time. Example: "Sorry, I didn't get that."
         #[prost(message, optional, tag = "5")]
-        pub no_input_prompt1: ::std::option::Option<super::EventHandler>,
+        pub no_input_prompt1: ::core::option::Option<super::EventHandler>,
         /// Prompt to give when the user does not provide an input for the second
         /// time. Example: "Sorry, I didn't get that."
         #[prost(message, optional, tag = "6")]
-        pub no_input_prompt2: ::std::option::Option<super::EventHandler>,
+        pub no_input_prompt2: ::core::option::Option<super::EventHandler>,
         /// Prompt to give when the user does not provide an input for the last
         /// time. Example: "Sorry, I didn't get that."
         #[prost(message, optional, tag = "7")]
-        pub no_input_final_prompt: ::std::option::Option<super::EventHandler>,
+        pub no_input_final_prompt: ::core::option::Option<super::EventHandler>,
     }
     /// Message describing the commit behavior associated with the slot after it
     /// has been successfully filled.
@@ -234,7 +238,7 @@ pub mod slot {
         /// Eg: write_session_param = "fruit" corresponds to "$session.params.fruit".
         /// write_session_param = "ticket" corresponds to "$session.params.ticket".
         #[prost(string, tag = "1")]
-        pub write_session_param: std::string::String,
+        pub write_session_param: ::prost::alloc::string::String,
     }
     /// Configuration to populate a default value for this slot.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -245,12 +249,12 @@ pub mod slot {
         /// Eg: `session_param = "fruit"` corresponds to `$session.params.fruit`.
         /// `session_param = "ticket"` corresponds to `$session.params.ticket`.
         #[prost(string, tag = "1")]
-        pub session_param: std::string::String,
+        pub session_param: ::prost::alloc::string::String,
         /// Optional. Constant default value for the slot. This will only be used if a value
         /// for this slot was not populated through the `session_param`. The
         /// type for this value must match the type of the slot.
         #[prost(message, optional, tag = "2")]
-        pub constant: ::std::option::Option<::prost_types::Value>,
+        pub constant: ::core::option::Option<::prost_types::Value>,
     }
 }
 /// Scene is the basic unit of control flow when designing a conversation. They
@@ -261,7 +265,7 @@ pub mod slot {
 pub struct Scene {
     /// Handler to invoke when transitioning into this scene.
     #[prost(message, optional, tag = "1")]
-    pub on_enter: ::std::option::Option<EventHandler>,
+    pub on_enter: ::core::option::Option<EventHandler>,
     /// The list of events that trigger based on intents. These events can
     /// be triggered at any time after the on_load Handler has been called.
     /// Important - these events define the set of intents which are scoped to
@@ -269,21 +273,21 @@ pub struct Scene {
     /// have the same intents or their triggering phrases. Intent names must be
     /// unique within a scene.
     #[prost(message, repeated, tag = "2")]
-    pub intent_events: ::std::vec::Vec<IntentEvent>,
+    pub intent_events: ::prost::alloc::vec::Vec<IntentEvent>,
     /// The list of events to trigger based on conditional statements. These are
     /// evaluated after the form has been filled or immediately after on_load if
     /// this scene does not have a form (evaluation is only done once). Only the
     /// first matching event will be triggered.
     #[prost(message, repeated, tag = "3")]
-    pub conditional_events: ::std::vec::Vec<ConditionalEvent>,
+    pub conditional_events: ::prost::alloc::vec::Vec<ConditionalEvent>,
     /// Ordered list of slots. Each slot defines the type of data
     /// that it will resolve and configuration to customize the experience of this
     /// resolution (e.g. prompts).
     #[prost(message, repeated, tag = "4")]
-    pub slots: ::std::vec::Vec<Slot>,
+    pub slots: ::prost::alloc::vec::Vec<Slot>,
     /// Handler called when there is a change in state of a slot not
     /// caused by updates within another Handler. This allows slots to be
     /// invalidated, the scene invalidated or other changes to scene state.
     #[prost(message, optional, tag = "5")]
-    pub on_slot_updated: ::std::option::Option<EventHandler>,
+    pub on_slot_updated: ::core::option::Option<EventHandler>,
 }

@@ -6,8 +6,9 @@ pub struct Layer {
     pub directive: i32,
     /// The recovered arguments to the Dockerfile directive.
     #[prost(string, tag = "2")]
-    pub arguments: std::string::String,
+    pub arguments: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Layer`.
 pub mod layer {
     /// Instructions from Dockerfile.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -57,16 +58,16 @@ pub struct Fingerprint {
     /// Required. The layer ID of the final layer in the Docker image's v1
     /// representation.
     #[prost(string, tag = "1")]
-    pub v1_name: std::string::String,
+    pub v1_name: ::prost::alloc::string::String,
     /// Required. The ordered list of v2 blobs that represent a given image.
     #[prost(string, repeated, tag = "2")]
-    pub v2_blob: ::std::vec::Vec<std::string::String>,
+    pub v2_blob: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The name of the image's v2 blobs computed via:
     ///   [bottom] := v2_blob[bottom]
     ///   [N] := sha256(v2_blob[N] + " " + v2_name[N+1])
     /// Only the name of the final blob is kept.
     #[prost(string, tag = "3")]
-    pub v2_name: std::string::String,
+    pub v2_name: ::prost::alloc::string::String,
 }
 /// Basis describes the base image portion (Note) of the DockerImage
 /// relationship. Linked occurrences are derived from this or an
@@ -78,17 +79,17 @@ pub struct Basis {
     /// Required. Immutable. The resource_url for the resource representing the
     /// basis of associated occurrence images.
     #[prost(string, tag = "1")]
-    pub resource_url: std::string::String,
+    pub resource_url: ::prost::alloc::string::String,
     /// Required. Immutable. The fingerprint of the base image.
     #[prost(message, optional, tag = "2")]
-    pub fingerprint: ::std::option::Option<Fingerprint>,
+    pub fingerprint: ::core::option::Option<Fingerprint>,
 }
 /// Details of an image occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
     /// Required. Immutable. The child image derived from the base image.
     #[prost(message, optional, tag = "1")]
-    pub derived_image: ::std::option::Option<Derived>,
+    pub derived_image: ::core::option::Option<Derived>,
 }
 /// Derived describes the derived image portion (Occurrence) of the DockerImage
 /// relationship. This image would be produced from a Dockerfile with FROM
@@ -97,7 +98,7 @@ pub struct Details {
 pub struct Derived {
     /// Required. The fingerprint of the derived image.
     #[prost(message, optional, tag = "1")]
-    pub fingerprint: ::std::option::Option<Fingerprint>,
+    pub fingerprint: ::core::option::Option<Fingerprint>,
     /// Output only. The number of layers by which this image differs from the
     /// associated image basis.
     #[prost(int32, tag = "2")]
@@ -106,9 +107,9 @@ pub struct Derived {
     /// "distance" and is ordered with [distance] being the layer immediately
     /// following the base image and [1] being the final layer.
     #[prost(message, repeated, tag = "3")]
-    pub layer_info: ::std::vec::Vec<Layer>,
+    pub layer_info: ::prost::alloc::vec::Vec<Layer>,
     /// Output only. This contains the base image URL for the derived image
     /// occurrence.
     #[prost(string, tag = "4")]
-    pub base_resource_url: std::string::String,
+    pub base_resource_url: ::prost::alloc::string::String,
 }

@@ -6,7 +6,7 @@ pub struct PosixAccount {
     pub primary: bool,
     /// The username of the POSIX account.
     #[prost(string, tag = "2")]
-    pub username: std::string::String,
+    pub username: ::prost::alloc::string::String,
     /// The user ID.
     #[prost(int64, tag = "3")]
     pub uid: i64,
@@ -15,26 +15,26 @@ pub struct PosixAccount {
     pub gid: i64,
     /// The path to the home directory for this account.
     #[prost(string, tag = "5")]
-    pub home_directory: std::string::String,
+    pub home_directory: ::prost::alloc::string::String,
     /// The path to the logic shell for this account.
     #[prost(string, tag = "6")]
-    pub shell: std::string::String,
+    pub shell: ::prost::alloc::string::String,
     /// The GECOS (user information) entry for this account.
     #[prost(string, tag = "7")]
-    pub gecos: std::string::String,
+    pub gecos: ::prost::alloc::string::String,
     /// System identifier for which account the username or uid applies to.
     /// By default, the empty value is used.
     #[prost(string, tag = "8")]
-    pub system_id: std::string::String,
+    pub system_id: ::prost::alloc::string::String,
     /// Output only. A POSIX account identifier.
     #[prost(string, tag = "9")]
-    pub account_id: std::string::String,
+    pub account_id: ::prost::alloc::string::String,
     /// The operating system type where this account applies.
     #[prost(enumeration = "OperatingSystemType", tag = "10")]
     pub operating_system_type: i32,
     /// Output only. The canonical resource name.
     #[prost(string, tag = "11")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The SSH public key information associated with a Google account.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -43,16 +43,16 @@ pub struct SshPublicKey {
     /// <a href="https://www.ietf.org/rfc/rfc4253.txt" target="_blank">RFC4253</a>
     /// section 6.6.
     #[prost(string, tag = "1")]
-    pub key: std::string::String,
+    pub key: ::prost::alloc::string::String,
     /// An expiration time in microseconds since epoch.
     #[prost(int64, tag = "2")]
     pub expiration_time_usec: i64,
     /// Output only. The SHA-256 fingerprint of the SSH public key.
     #[prost(string, tag = "3")]
-    pub fingerprint: std::string::String,
+    pub fingerprint: ::prost::alloc::string::String,
     /// Output only. The canonical resource name.
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The operating system options for account entries.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

@@ -26,10 +26,11 @@ pub struct UserActionReference {
     /// The method name of the API call. For example,
     /// "/google.cloud.aiplatform.v1alpha1.DatasetService.CreateDataset"
     #[prost(string, tag = "3")]
-    pub method: std::string::String,
+    pub method: ::prost::alloc::string::String,
     #[prost(oneof = "user_action_reference::Reference", tags = "1, 2")]
-    pub reference: ::std::option::Option<user_action_reference::Reference>,
+    pub reference: ::core::option::Option<user_action_reference::Reference>,
 }
+/// Nested message and enum types in `UserActionReference`.
 pub mod user_action_reference {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Reference {
@@ -38,14 +39,14 @@ pub mod user_action_reference {
         /// Format:
         /// 'projects/{project}/locations/{location}/operations/{operation}'
         #[prost(string, tag = "1")]
-        Operation(std::string::String),
+        Operation(::prost::alloc::string::String),
         /// For API calls that start a LabelingJob.
         /// Resource name of the LabelingJob.
         /// Format:
         ///
         /// 'projects/{project}/locations/{location}/dataLabelingJobs/{data_labeling_job}'
         #[prost(string, tag = "2")]
-        DataLabelingJob(std::string::String),
+        DataLabelingJob(::prost::alloc::string::String),
     }
 }
 /// Used to assign specific AnnotationSpec to a particular area of a DataItem or
@@ -54,7 +55,7 @@ pub mod user_action_reference {
 pub struct Annotation {
     /// Output only. Resource name of the Annotation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Google Cloud Storage URI points to a YAML file describing [payload][google.cloud.aiplatform.v1beta1.Annotation.payload]. The
     /// schema is defined as an
     /// [OpenAPI 3.0.2 Schema Object](https://tinyurl.com/y538mdwt).
@@ -63,24 +64,24 @@ pub struct Annotation {
     /// chosen schema must be consistent with the parent Dataset's
     /// [metadata][google.cloud.aiplatform.v1beta1.Dataset.metadata_schema_uri].
     #[prost(string, tag = "2")]
-    pub payload_schema_uri: std::string::String,
+    pub payload_schema_uri: ::prost::alloc::string::String,
     /// Required. The schema of the payload can be found in
     /// [payload_schema][google.cloud.aiplatform.v1beta1.Annotation.payload_schema_uri].
     #[prost(message, optional, tag = "3")]
-    pub payload: ::std::option::Option<::prost_types::Value>,
+    pub payload: ::core::option::Option<::prost_types::Value>,
     /// Output only. Timestamp when this Annotation was created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when this Annotation was last updated.
     #[prost(message, optional, tag = "7")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Used to perform a consistent read-modify-write updates. If not set, a blind
     /// "overwrite" update happens.
     #[prost(string, tag = "8")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Output only. The source of the Annotation.
     #[prost(message, optional, tag = "5")]
-    pub annotation_source: ::std::option::Option<UserActionReference>,
+    pub annotation_source: ::core::option::Option<UserActionReference>,
     /// Optional. The labels with user-defined metadata to organize your Annotations.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -101,29 +102,30 @@ pub struct Annotation {
     ///   output only, its value is the [payload_schema's][google.cloud.aiplatform.v1beta1.Annotation.payload_schema_uri]
     ///   title.
     #[prost(map = "string, string", tag = "6")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Identifies a concept with which DataItems may be annotated with.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationSpec {
     /// Output only. Resource name of the AnnotationSpec.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of the AnnotationSpec.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Output only. Timestamp when this AnnotationSpec was created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when AnnotationSpec was last updated.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Used to perform a consistent read-modify-write updates. If not set, a blind
     /// "overwrite" update happens.
     #[prost(string, tag = "5")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Success and error statistics of processing multiple entities
 /// (for example, DataItems or structured data rows) in batch.
@@ -143,6 +145,18 @@ pub struct CompletionStats {
     #[prost(int64, tag = "3")]
     pub incomplete_count: i64,
 }
+/// Represents a customer-managed encryption key spec that can be applied to
+/// a top-level resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionSpec {
+    /// Required. The Cloud KMS resource identifier of the customer managed encryption key
+    /// used to protect a resource. Has the form:
+    /// `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+    /// The key needs to be in the same region as where the compute resource is
+    /// created.
+    #[prost(string, tag = "1")]
+    pub kms_key_name: ::prost::alloc::string::String,
+}
 /// Metadata describing the Model's input and output for explanation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplanationMetadata {
@@ -154,15 +168,17 @@ pub struct ExplanationMetadata {
     /// of the empty feature is chosen by AI Platform.
     ///
     /// For AI Platform provided Tensorflow images, the key can be any friendly
-    /// name of the feature . Once specified, [
-    /// featureAttributions][Attribution.feature_attributions] will be keyed by
+    /// name of the feature. Once specified,
+    /// [featureAttributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions] are keyed by
     /// this key (if not grouped with another feature).
     ///
     /// For custom images, the key must match with the key in
     /// [instance][google.cloud.aiplatform.v1beta1.ExplainRequest.instances].
     #[prost(map = "string, message", tag = "1")]
-    pub inputs:
-        ::std::collections::HashMap<std::string::String, explanation_metadata::InputMetadata>,
+    pub inputs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        explanation_metadata::InputMetadata,
+    >,
     /// Required. Map from output names to output metadata.
     ///
     /// For AI Platform provided Tensorflow images, keys can be any string user
@@ -173,8 +189,10 @@ pub struct ExplanationMetadata {
     ///
     /// Currently only one key is allowed.
     #[prost(map = "string, message", tag = "2")]
-    pub outputs:
-        ::std::collections::HashMap<std::string::String, explanation_metadata::OutputMetadata>,
+    pub outputs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        explanation_metadata::OutputMetadata,
+    >,
     /// Points to a YAML file stored on Google Cloud Storage describing the format
     /// of the [feature attributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions].
     /// The schema is defined as an OpenAPI 3.0.2
@@ -184,8 +202,9 @@ pub struct ExplanationMetadata {
     /// than the one given on input. The output URI will point to a location where
     /// the user only has a read access.
     #[prost(string, tag = "3")]
-    pub feature_attributions_schema_uri: std::string::String,
+    pub feature_attributions_schema_uri: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ExplanationMetadata`.
 pub mod explanation_metadata {
     /// Metadata of the input of a feature.
     ///
@@ -212,11 +231,11 @@ pub mod explanation_metadata {
         /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
         /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
         #[prost(message, repeated, tag = "1")]
-        pub input_baselines: ::std::vec::Vec<::prost_types::Value>,
+        pub input_baselines: ::prost::alloc::vec::Vec<::prost_types::Value>,
         /// Name of the input tensor for this feature. Required and is only
         /// applicable to AI Platform provided images for Tensorflow.
         #[prost(string, tag = "2")]
-        pub input_tensor_name: std::string::String,
+        pub input_tensor_name: ::prost::alloc::string::String,
         /// Defines how the feature is encoded into the input tensor. Defaults to
         /// IDENTITY.
         #[prost(enumeration = "input_metadata::Encoding", tag = "3")]
@@ -224,27 +243,27 @@ pub mod explanation_metadata {
         /// Modality of the feature. Valid values are: numeric, image. Defaults to
         /// numeric.
         #[prost(string, tag = "4")]
-        pub modality: std::string::String,
+        pub modality: ::prost::alloc::string::String,
         /// The domain details of the input feature value. Like min/max, original
         /// mean or standard deviation if normalized.
         #[prost(message, optional, tag = "5")]
-        pub feature_value_domain: ::std::option::Option<input_metadata::FeatureValueDomain>,
+        pub feature_value_domain: ::core::option::Option<input_metadata::FeatureValueDomain>,
         /// Specifies the index of the values of the input tensor.
         /// Required when the input tensor is a sparse representation. Refer to
         /// Tensorflow documentation for more details:
         /// https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor.
         #[prost(string, tag = "6")]
-        pub indices_tensor_name: std::string::String,
+        pub indices_tensor_name: ::prost::alloc::string::String,
         /// Specifies the shape of the values of the input if the input is a sparse
         /// representation. Refer to Tensorflow documentation for more details:
         /// https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor.
         #[prost(string, tag = "7")]
-        pub dense_shape_tensor_name: std::string::String,
+        pub dense_shape_tensor_name: ::prost::alloc::string::String,
         /// A list of feature names for each index in the input tensor.
         /// Required when the input [InputMetadata.encoding][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata.encoding] is BAG_OF_FEATURES,
         /// BAG_OF_FEATURES_SPARSE, INDICATOR.
         #[prost(string, repeated, tag = "8")]
-        pub index_feature_mapping: ::std::vec::Vec<std::string::String>,
+        pub index_feature_mapping: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Encoded tensor is a transformation of the input tensor. Must be provided
         /// if choosing [Integrated Gradients
         /// attribution][ExplanationParameters.integrated_gradients_attribution] or
@@ -254,17 +273,17 @@ pub mod explanation_metadata {
         /// An encoded tensor is generated if the input tensor is encoded by a lookup
         /// table.
         #[prost(string, tag = "9")]
-        pub encoded_tensor_name: std::string::String,
+        pub encoded_tensor_name: ::prost::alloc::string::String,
         /// A list of baselines for the encoded tensor.
         ///
         /// The shape of each baseline should match the shape of the encoded tensor.
         /// If a scalar is provided, AI Platform broadcast to the same shape as the
         /// encoded tensor.
         #[prost(message, repeated, tag = "10")]
-        pub encoded_baselines: ::std::vec::Vec<::prost_types::Value>,
+        pub encoded_baselines: ::prost::alloc::vec::Vec<::prost_types::Value>,
         /// Visualization configurations for image explanation.
         #[prost(message, optional, tag = "11")]
-        pub visualization: ::std::option::Option<input_metadata::Visualization>,
+        pub visualization: ::core::option::Option<input_metadata::Visualization>,
         /// Name of the group that the input belongs to. Features with the same group
         /// name will be treated as one feature when computing attributions. Features
         /// grouped together can have different shapes in value. If provided, there
@@ -272,8 +291,9 @@ pub mod explanation_metadata {
         /// featureAttributions][Attribution.feature_attributions], keyed by the
         /// group name.
         #[prost(string, tag = "12")]
-        pub group_name: std::string::String,
+        pub group_name: ::prost::alloc::string::String,
     }
+    /// Nested message and enum types in `InputMetadata`.
     pub mod input_metadata {
         /// Domain details of the input feature value. Provides numeric information
         /// about the feature, such as its range (min, max). If the feature has been
@@ -345,6 +365,7 @@ pub mod explanation_metadata {
             #[prost(enumeration = "visualization::OverlayType", tag = "6")]
             pub overlay_type: i32,
         }
+        /// Nested message and enum types in `Visualization`.
         pub mod visualization {
             /// Type of the image visualization. Only applicable to [Integrated
             /// Gradients attribution]
@@ -425,7 +446,9 @@ pub mod explanation_metadata {
         }
         /// Defines how the feature is encoded to [encoded_tensor][]. Defaults to
         /// IDENTITY.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum Encoding {
             /// Default value. This is the same as IDENTITY.
@@ -487,15 +510,16 @@ pub mod explanation_metadata {
         /// Name of the output tensor. Required and is only applicable to AI
         /// Platform provided images for Tensorflow.
         #[prost(string, tag = "3")]
-        pub output_tensor_name: std::string::String,
+        pub output_tensor_name: ::prost::alloc::string::String,
         /// Defines how to map [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] to
         /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name].
         ///
         /// If neither of the fields are specified,
         /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name] will not be populated.
         #[prost(oneof = "output_metadata::DisplayNameMapping", tags = "1, 2")]
-        pub display_name_mapping: ::std::option::Option<output_metadata::DisplayNameMapping>,
+        pub display_name_mapping: ::core::option::Option<output_metadata::DisplayNameMapping>,
     }
+    /// Nested message and enum types in `OutputMetadata`.
     pub mod output_metadata {
         /// Defines how to map [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] to
         /// [Attribution.output_display_name][google.cloud.aiplatform.v1beta1.Attribution.output_display_name].
@@ -526,7 +550,7 @@ pub mod explanation_metadata {
             /// outputs, so that it can be located by [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] for
             /// a specific output.
             #[prost(string, tag = "2")]
-            DisplayNameMappingKey(std::string::String),
+            DisplayNameMappingKey(::prost::alloc::string::String),
         }
     }
 }
@@ -549,12 +573,12 @@ pub struct Explanation {
     /// the attributions are stored by [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] in the same
     /// order as they appear in the output_indices.
     #[prost(message, repeated, tag = "1")]
-    pub attributions: ::std::vec::Vec<Attribution>,
+    pub attributions: ::prost::alloc::vec::Vec<Attribution>,
 }
 /// Aggregated explanation metrics for a Model over a set of instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelExplanation {
-    /// Output only. Aggregated attributions explaning the Model's prediction outputs over the
+    /// Output only. Aggregated attributions explaining the Model's prediction outputs over the
     /// set of instances. The attributions are grouped by outputs.
     ///
     /// For Models that predict only one output, such as regression Models that
@@ -573,7 +597,7 @@ pub struct ModelExplanation {
     /// attribution, which averages attributions over all the classes it predicts.
     /// [Attribution.approximation_error][google.cloud.aiplatform.v1beta1.Attribution.approximation_error] is not populated.
     #[prost(message, repeated, tag = "1")]
-    pub mean_attributions: ::std::vec::Vec<Attribution>,
+    pub mean_attributions: ::prost::alloc::vec::Vec<Attribution>,
 }
 /// Attribution that explains a particular prediction output.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -624,7 +648,7 @@ pub struct Attribution {
     /// [Endpoint.deployed_models][google.cloud.aiplatform.v1beta1.Endpoint.deployed_models] object, points to the schema file that
     /// describes the features and their attribution values (if it is populated).
     #[prost(message, optional, tag = "3")]
-    pub feature_attributions: ::std::option::Option<::prost_types::Value>,
+    pub feature_attributions: ::core::option::Option<::prost_types::Value>,
     /// Output only. The index that locates the explained prediction output.
     ///
     /// If the prediction output is a scalar value, output_index is not populated.
@@ -633,51 +657,49 @@ pub struct Attribution {
     /// The i-th element in output_index is the element index of the i-th dimension
     /// of the output vector. Indices start from 0.
     #[prost(int32, repeated, packed = "false", tag = "4")]
-    pub output_index: ::std::vec::Vec<i32>,
-    /// Output only. The display name of the output identified by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index], e.g. the
-    /// predicted class name by a multi-classification Model.
+    pub output_index: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. The display name of the output identified by [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index]. For example,
+    /// the predicted class name by a multi-classification Model.
     ///
     /// This field is only populated iff the Model predicts display names as a
     /// separate field along with the explained output. The predicted display name
     /// must has the same shape of the explained output, and can be located using
     /// output_index.
     #[prost(string, tag = "5")]
-    pub output_display_name: std::string::String,
+    pub output_display_name: ::prost::alloc::string::String,
     /// Output only. Error of [feature_attributions][google.cloud.aiplatform.v1beta1.Attribution.feature_attributions] caused by approximation used in the
     /// explanation method. Lower value means more precise attributions.
     ///
-    /// * For [Sampled Shapley
-    /// attribution][ExplanationParameters.sampled_shapley_attribution], increasing
-    /// [path_count][google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count] may reduce the error.
-    /// * For [Integrated Gradients
-    /// attribution][ExplanationParameters.integrated_gradients_attribution],
-    /// increasing [step_count][google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.step_count] may
+    /// * For Sampled Shapley
+    /// [attribution][google.cloud.aiplatform.v1beta1.ExplanationParameters.sampled_shapley_attribution],
+    /// increasing [path_count][google.cloud.aiplatform.v1beta1.SampledShapleyAttribution.path_count] might reduce
+    /// the error.
+    /// * For Integrated Gradients
+    /// [attribution][google.cloud.aiplatform.v1beta1.ExplanationParameters.integrated_gradients_attribution],
+    /// increasing [step_count][google.cloud.aiplatform.v1beta1.IntegratedGradientsAttribution.step_count] might
     /// reduce the error.
-    /// * For [XRAI
-    /// attribution][ExplanationParameters.xrai_attribution], increasing
-    /// [step_count][google.cloud.aiplatform.v1beta1.XraiAttribution.step_count] may reduce the error.
+    /// * For [XRAI attribution][google.cloud.aiplatform.v1beta1.ExplanationParameters.xrai_attribution],
+    /// increasing
+    /// [step_count][google.cloud.aiplatform.v1beta1.XraiAttribution.step_count] might reduce the error.
     ///
-    /// Refer to  AI Explanations Whitepaper for more details:
-    ///
-    /// https:
-    /// //storage.googleapis.com/cloud-ai-whitep
-    /// // apers/AI%20Explainability%20Whitepaper.pdf
+    /// See [this introduction](/ai-platform-unified/docs/explainable-ai/overview)
+    /// for more information.
     #[prost(double, tag = "6")]
     pub approximation_error: f64,
     /// Output only. Name of the explain output. Specified as the key in
     /// [ExplanationMetadata.outputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.outputs].
     #[prost(string, tag = "7")]
-    pub output_name: std::string::String,
+    pub output_name: ::prost::alloc::string::String,
 }
 /// Specification of Model explanation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplanationSpec {
     /// Required. Parameters that configure explaining of the Model's predictions.
     #[prost(message, optional, tag = "1")]
-    pub parameters: ::std::option::Option<ExplanationParameters>,
+    pub parameters: ::core::option::Option<ExplanationParameters>,
     /// Required. Metadata describing the Model's input and output for explanation.
     #[prost(message, optional, tag = "2")]
-    pub metadata: ::std::option::Option<ExplanationMetadata>,
+    pub metadata: ::core::option::Option<ExplanationMetadata>,
 }
 /// Parameters to configure explaining for Model's predictions.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -689,7 +711,7 @@ pub struct ExplanationParameters {
     #[prost(int32, tag = "4")]
     pub top_k: i32,
     /// If populated, only returns attributions that have
-    /// [output_index][Attributions.output_index] contained in output_indices. It
+    /// [output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index] contained in output_indices. It
     /// must be an ndarray of integers, with the same shape of the output it's
     /// explaining.
     ///
@@ -700,10 +722,11 @@ pub struct ExplanationParameters {
     /// Only applicable to Models that predict multiple outputs (e,g, multi-class
     /// Models that predict multiple classes).
     #[prost(message, optional, tag = "5")]
-    pub output_indices: ::std::option::Option<::prost_types::ListValue>,
+    pub output_indices: ::core::option::Option<::prost_types::ListValue>,
     #[prost(oneof = "explanation_parameters::Method", tags = "1, 2, 3")]
-    pub method: ::std::option::Option<explanation_parameters::Method>,
+    pub method: ::core::option::Option<explanation_parameters::Method>,
 }
+/// Nested message and enum types in `ExplanationParameters`.
 pub mod explanation_parameters {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Method {
@@ -762,14 +785,14 @@ pub struct IntegratedGradientsAttribution {
     /// noise can help improve the computed gradients. Refer to this paper for more
     /// details: https://arxiv.org/pdf/1706.03825.pdf
     #[prost(message, optional, tag = "2")]
-    pub smooth_grad_config: ::std::option::Option<SmoothGradConfig>,
+    pub smooth_grad_config: ::core::option::Option<SmoothGradConfig>,
 }
 /// An explanation method that redistributes Integrated Gradients
 /// attributions to segmented regions, taking advantage of the model's fully
 /// differentiable structure. Refer to this paper for more details:
 /// https://arxiv.org/abs/1906.02825
 ///
-/// Only supports image Models ([modality][InputMetadata.modality] is IMAGE).
+/// Supported only by image Models.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct XraiAttribution {
     /// Required. The number of steps for approximating the path integral.
@@ -786,7 +809,7 @@ pub struct XraiAttribution {
     /// noise can help improve the computed gradients. Refer to this paper for more
     /// details: https://arxiv.org/pdf/1706.03825.pdf
     #[prost(message, optional, tag = "2")]
-    pub smooth_grad_config: ::std::option::Option<SmoothGradConfig>,
+    pub smooth_grad_config: ::core::option::Option<SmoothGradConfig>,
 }
 /// Config for SmoothGrad approximation of gradients.
 ///
@@ -806,8 +829,9 @@ pub struct SmoothGradConfig {
     /// that will be used to add noise to the interpolated inputs
     /// prior to computing gradients.
     #[prost(oneof = "smooth_grad_config::GradientNoiseSigma", tags = "1, 2")]
-    pub gradient_noise_sigma: ::std::option::Option<smooth_grad_config::GradientNoiseSigma>,
+    pub gradient_noise_sigma: ::core::option::Option<smooth_grad_config::GradientNoiseSigma>,
 }
+/// Nested message and enum types in `SmoothGradConfig`.
 pub mod smooth_grad_config {
     /// Represents the standard deviation of the gaussian kernel
     /// that will be used to add noise to the interpolated inputs
@@ -817,12 +841,9 @@ pub mod smooth_grad_config {
         /// This is a single float value and will be used to add noise to all the
         /// features. Use this field when all features are normalized to have the
         /// same distribution: scale to range [0, 1], [-1, 1] or z-scoring, where
-        /// features are normalized to have 0-mean and 1-variance. Refer to
-        /// this doc for more details about normalization:
-        ///
-        /// https:
-        /// //developers.google.com/machine-learning
-        /// // /data-prep/transform/normalization.
+        /// features are normalized to have 0-mean and 1-variance. For more details
+        /// about normalization:
+        /// https://tinyurl.com/dgc-normalization.
         ///
         /// For best results the recommended value is about 10% - 20% of the standard
         /// deviation of the input feature. Refer to section 3.2 of the SmoothGrad
@@ -850,8 +871,9 @@ pub mod smooth_grad_config {
 pub struct FeatureNoiseSigma {
     /// Noise sigma per feature. No noise is added to features that are not set.
     #[prost(message, repeated, tag = "1")]
-    pub noise_sigma: ::std::vec::Vec<feature_noise_sigma::NoiseSigmaForFeature>,
+    pub noise_sigma: ::prost::alloc::vec::Vec<feature_noise_sigma::NoiseSigmaForFeature>,
 }
+/// Nested message and enum types in `FeatureNoiseSigma`.
 pub mod feature_noise_sigma {
     /// Noise sigma for a single feature.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -860,13 +882,57 @@ pub mod feature_noise_sigma {
         /// features are defined in
         /// [explanation metadata inputs][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs].
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// This represents the standard deviation of the Gaussian kernel that will
         /// be used to add noise to the feature prior to computing gradients. Similar
         /// to [noise_sigma][google.cloud.aiplatform.v1beta1.SmoothGradConfig.noise_sigma] but represents the
         /// noise added to the current feature. Defaults to 0.1.
         #[prost(float, tag = "2")]
         pub sigma: f32,
+    }
+}
+/// The [ExplanationSpec][google.cloud.aiplatform.v1beta1.ExplanationSpec] entries that can be overridden at [online
+/// explanation][PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain] time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplanationSpecOverride {
+    /// The parameters to be overridden. Note that the
+    /// [method][google.cloud.aiplatform.v1beta1.ExplanationParameters.method] cannot be changed. If not specified,
+    /// no parameter is overridden.
+    #[prost(message, optional, tag = "1")]
+    pub parameters: ::core::option::Option<ExplanationParameters>,
+    /// The metadata to be overridden. If not specified, no metadata is overridden.
+    #[prost(message, optional, tag = "2")]
+    pub metadata: ::core::option::Option<ExplanationMetadataOverride>,
+}
+/// The [ExplanationMetadata][google.cloud.aiplatform.v1beta1.ExplanationMetadata] entries that can be overridden at
+/// [online explanation][google.cloud.aiplatform.v1beta1.PredictionService.Explain] time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplanationMetadataOverride {
+    /// Required. Overrides the [input metadata][google.cloud.aiplatform.v1beta1.ExplanationMetadata.inputs] of the features.
+    /// The key is the name of the feature to be overridden. The keys specified
+    /// here must exist in the input metadata to be overridden. If a feature is
+    /// not specified here, the corresponding feature's input metadata is not
+    /// overridden.
+    #[prost(map = "string, message", tag = "1")]
+    pub inputs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        explanation_metadata_override::InputMetadataOverride,
+    >,
+}
+/// Nested message and enum types in `ExplanationMetadataOverride`.
+pub mod explanation_metadata_override {
+    /// The [input metadata][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata] entries to be
+    /// overridden.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InputMetadataOverride {
+        /// Baseline inputs for this feature.
+        ///
+        /// This overrides the `input_baseline` field of the
+        /// [ExplanationMetadata.InputMetadata][google.cloud.aiplatform.v1beta1.ExplanationMetadata.InputMetadata]
+        /// object of the corresponding feature's input metadata. If it's not
+        /// specified, the original baselines are not overridden.
+        #[prost(message, repeated, tag = "1")]
+        pub input_baselines: ::prost::alloc::vec::Vec<::prost_types::Value>,
     }
 }
 /// The Google Cloud Storage location for the input content.
@@ -876,7 +942,7 @@ pub struct GcsSource {
     /// wildcards. For more information on wildcards, see
     /// https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames.
     #[prost(string, repeated, tag = "1")]
-    pub uris: ::std::vec::Vec<std::string::String>,
+    pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The Google Cloud Storage location where the output is to be written to.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -885,7 +951,7 @@ pub struct GcsDestination {
     /// '/', a '/' will be automatically appended. The directory is created if it
     /// doesn't exist.
     #[prost(string, tag = "1")]
-    pub output_uri_prefix: std::string::String,
+    pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// The BigQuery location for the input content.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -895,17 +961,23 @@ pub struct BigQuerySource {
     ///
     /// *  BigQuery path. For example: `bq://projectId.bqDatasetId.bqTableId`.
     #[prost(string, tag = "1")]
-    pub input_uri: std::string::String,
+    pub input_uri: ::prost::alloc::string::String,
 }
 /// The BigQuery location for the output content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDestination {
-    /// Required. BigQuery URI to a project, up to 2000 characters long.
+    /// Required. BigQuery URI to a project or table, up to 2000 characters long.
+    ///
+    /// When only project is specified, Dataset and Table is created.
+    /// When full table reference is specified, Dataset must exist and table must
+    /// not exist.
+    ///
     /// Accepted forms:
     ///
-    /// *  BigQuery path. For example: `bq://projectId`.
+    /// *  BigQuery path. For example:
+    /// `bq://projectId` or `bq://projectId.bqDatasetId.bqTableId`.
     #[prost(string, tag = "1")]
-    pub output_uri: std::string::String,
+    pub output_uri: ::prost::alloc::string::String,
 }
 /// The Container Regsitry location for the container image.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -922,7 +994,7 @@ pub struct ContainerRegistryDestination {
     ///
     /// If a tag is not specified, "latest" will be used as the default tag.
     #[prost(string, tag = "1")]
-    pub output_uri: std::string::String,
+    pub output_uri: ::prost::alloc::string::String,
 }
 /// Describes the state of a job.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -951,44 +1023,16 @@ pub enum JobState {
 /// Specification of a single machine.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineSpec {
-    /// Immutable. The type of the machine.
-    /// Following machine types are supported:
+    /// Immutable. The type of the machine. For the machine types supported for prediction,
+    /// see https://tinyurl.com/aip-docs/predictions/machine-types.
+    /// For machine types supported for creating a custom training job, see
+    /// https://tinyurl.com/aip-docs/training/configure-compute.
     ///
-    /// * `n1-standard-2`
-    ///
-    /// * `n1-standard-4`
-    ///
-    /// * `n1-standard-8`
-    ///
-    /// * `n1-standard-16`
-    ///
-    /// * `n1-standard-32`
-    ///
-    /// * `n1-highmem-2`
-    ///
-    /// * `n1-highmem-4`
-    ///
-    /// * `n1-highmem-8`
-    ///
-    /// * `n1-highmem-16`
-    ///
-    /// * `n1-highmem-32`
-    ///
-    /// * `n1-highcpu-2`
-    ///
-    /// * `n1-highcpu-4`
-    ///
-    /// * `n1-highcpu-8`
-    ///
-    /// * `n1-highcpu-16`
-    ///
-    /// * `n1-highcpu-32`
-    ///
-    /// When used for [DeployedMode][] this field is optional and the default value
-    /// is `n1-standard-2`. If used for [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or as part of
+    /// For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this field is optional, and the default
+    /// value is `n1-standard-2`. For [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or as part of
     /// [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec] this field is required.
     #[prost(string, tag = "1")]
-    pub machine_type: std::string::String,
+    pub machine_type: ::prost::alloc::string::String,
     /// Immutable. The type of accelerator(s) that may be attached to the machine as per
     /// [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
     #[prost(enumeration = "AcceleratorType", tag = "2")]
@@ -1003,7 +1047,7 @@ pub struct MachineSpec {
 pub struct DedicatedResources {
     /// Required. Immutable. The specification of a single machine used by the prediction.
     #[prost(message, optional, tag = "1")]
-    pub machine_spec: ::std::option::Option<MachineSpec>,
+    pub machine_spec: ::core::option::Option<MachineSpec>,
     /// Required. Immutable. The minimum number of machine replicas this DeployedModel will be always
     /// deployed on. If traffic against it increases, it may dynamically be
     /// deployed onto more replicas, and as traffic decreases, some of these extra
@@ -1054,7 +1098,7 @@ pub struct AutomaticResources {
 pub struct BatchDedicatedResources {
     /// Required. Immutable. The specification of a single machine.
     #[prost(message, optional, tag = "1")]
-    pub machine_spec: ::std::option::Option<MachineSpec>,
+    pub machine_spec: ::core::option::Option<MachineSpec>,
     /// Immutable. The number of machine replicas used at the start of the batch operation.
     /// If not set, AI Platform decides starting number, not greater than
     /// [max_replica_count][google.cloud.aiplatform.v1beta1.BatchDedicatedResources.max_replica_count]
@@ -1077,11 +1121,11 @@ pub struct ResourcesConsumed {
 /// Represents the spec of disk options.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskSpec {
-    /// Type of the boot disk (default is "pd-standard").
+    /// Type of the boot disk (default is "pd-ssd").
     /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
     /// "pd-standard" (Persistent Disk Hard Disk Drive).
     #[prost(string, tag = "1")]
-    pub boot_disk_type: std::string::String,
+    pub boot_disk_type: ::prost::alloc::string::String,
     /// Size in GB of the boot disk (default is 100GB).
     #[prost(int32, tag = "2")]
     pub boot_disk_size_gb: i32,
@@ -1107,29 +1151,29 @@ pub struct ManualBatchTuningParameters {
 pub struct BatchPredictionJob {
     /// Output only. Resource name of the BatchPredictionJob.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of this BatchPredictionJob.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. The name of the Model that produces the predictions via this job,
     /// must share the same ancestor Location.
     /// Starting this job has no impact on any existing deployments of the Model
     /// and their resources.
     #[prost(string, tag = "3")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// Required. Input configuration of the instances on which predictions are performed.
     /// The schema of any single instance may be specified via
     /// the [Model's][google.cloud.aiplatform.v1beta1.BatchPredictionJob.model]
     /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
     /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
     #[prost(message, optional, tag = "4")]
-    pub input_config: ::std::option::Option<batch_prediction_job::InputConfig>,
+    pub input_config: ::core::option::Option<batch_prediction_job::InputConfig>,
     /// The parameters that govern the predictions. The schema of the parameters
     /// may be specified via the [Model's][google.cloud.aiplatform.v1beta1.BatchPredictionJob.model]
     /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
     /// [parameters_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.parameters_schema_uri].
     #[prost(message, optional, tag = "5")]
-    pub model_parameters: ::std::option::Option<::prost_types::Value>,
+    pub model_parameters: ::core::option::Option<::prost_types::Value>,
     /// Required. The Configuration specifying where output predictions should
     /// be written.
     /// The schema of any single prediction may be specified as a concatenation
@@ -1139,60 +1183,61 @@ pub struct BatchPredictionJob {
     /// and
     /// [prediction_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.prediction_schema_uri].
     #[prost(message, optional, tag = "6")]
-    pub output_config: ::std::option::Option<batch_prediction_job::OutputConfig>,
+    pub output_config: ::core::option::Option<batch_prediction_job::OutputConfig>,
     /// The config of resources used by the Model during the batch prediction. If
     /// the Model [supports][google.cloud.aiplatform.v1beta1.Model.supported_deployment_resources_types]
     /// DEDICATED_RESOURCES this config may be provided (and the job will use these
     /// resources), if the Model doesn't support AUTOMATIC_RESOURCES, this config
     /// must be provided.
     #[prost(message, optional, tag = "7")]
-    pub dedicated_resources: ::std::option::Option<BatchDedicatedResources>,
+    pub dedicated_resources: ::core::option::Option<BatchDedicatedResources>,
     /// Immutable. Parameters configuring the batch behavior. Currently only applicable when
     /// [dedicated_resources][google.cloud.aiplatform.v1beta1.BatchPredictionJob.dedicated_resources] are used (in other cases AI Platform does
     /// the tuning itself).
     #[prost(message, optional, tag = "8")]
-    pub manual_batch_tuning_parameters: ::std::option::Option<ManualBatchTuningParameters>,
-    /// Generate explanation along with the batch prediction results.
+    pub manual_batch_tuning_parameters: ::core::option::Option<ManualBatchTuningParameters>,
+    /// Generate explanation with the batch prediction results.
     ///
-    /// When it's true, the batch prediction output will change based on the
-    /// [output format][BatchPredictionJob.output_config.predictions_format]:
+    /// When set to `true`, the batch prediction output changes based on the
+    /// `predictions_format` field of the
+    /// [BatchPredictionJob.output_config][google.cloud.aiplatform.v1beta1.BatchPredictionJob.output_config] object:
     ///
-    ///  * `bigquery`: output will include a column named `explanation`. The value
+    ///  * `bigquery`: output includes a column named `explanation`. The value
     ///    is a struct that conforms to the [Explanation][google.cloud.aiplatform.v1beta1.Explanation] object.
-    ///  * `jsonl`: The JSON objects on each line will include an additional entry
+    ///  * `jsonl`: The JSON objects on each line include an additional entry
     ///    keyed `explanation`. The value of the entry is a JSON object that
     ///    conforms to the [Explanation][google.cloud.aiplatform.v1beta1.Explanation] object.
     ///  * `csv`: Generating explanations for CSV format is not supported.
+    ///
+    /// If this field is set to true, the [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] must be
+    /// populated.
     #[prost(bool, tag = "23")]
     pub generate_explanation: bool,
-    /// Explanation configuration for this BatchPredictionJob. Can only be
-    /// specified if [generate_explanation][google.cloud.aiplatform.v1beta1.BatchPredictionJob.generate_explanation] is set to `true`. It's invalid to
-    /// specified it with generate_explanation set to false or unset.
+    /// Explanation configuration for this BatchPredictionJob. Can be
+    /// specified only if [generate_explanation][google.cloud.aiplatform.v1beta1.BatchPredictionJob.generate_explanation] is set to `true`.
     ///
     /// This value overrides the value of [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec]. All fields of
-    /// [explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec] are optional in the request. If a field of
-    /// [explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec] is not populated, the value of the same field of
-    /// [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] is inherited. The corresponding
-    /// [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] must be populated, otherwise explanation for
-    /// this Model is not allowed.
+    /// [explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec] are optional in the request. If a field of the
+    /// [explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec] object is not populated, the corresponding field of
+    /// the [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] object is inherited.
     #[prost(message, optional, tag = "25")]
-    pub explanation_spec: ::std::option::Option<ExplanationSpec>,
+    pub explanation_spec: ::core::option::Option<ExplanationSpec>,
     /// Output only. Information further describing the output of this job.
     #[prost(message, optional, tag = "9")]
-    pub output_info: ::std::option::Option<batch_prediction_job::OutputInfo>,
+    pub output_info: ::core::option::Option<batch_prediction_job::OutputInfo>,
     /// Output only. The detailed state of the job.
     #[prost(enumeration = "JobState", tag = "10")]
     pub state: i32,
     /// Output only. Only populated when the job's state is JOB_STATE_FAILED or
     /// JOB_STATE_CANCELLED.
     #[prost(message, optional, tag = "11")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Output only. Partial failures encountered.
     /// For example, single files that can't be read.
     /// This field never exceeds 20 entries.
     /// Status details fields contain standard GCP error details.
     #[prost(message, repeated, tag = "12")]
-    pub partial_failures: ::std::vec::Vec<super::super::super::rpc::Status>,
+    pub partial_failures: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     /// Output only. Information about resources that had been consumed by this job.
     /// Provided in real time at best effort basis, as well as a final value
     /// once the job completes.
@@ -1200,24 +1245,24 @@ pub struct BatchPredictionJob {
     /// Note: This field currently may be not populated for batch predictions that
     /// use AutoML Models.
     #[prost(message, optional, tag = "13")]
-    pub resources_consumed: ::std::option::Option<ResourcesConsumed>,
+    pub resources_consumed: ::core::option::Option<ResourcesConsumed>,
     /// Output only. Statistics on completed and failed prediction instances.
     #[prost(message, optional, tag = "14")]
-    pub completion_stats: ::std::option::Option<CompletionStats>,
+    pub completion_stats: ::core::option::Option<CompletionStats>,
     /// Output only. Time when the BatchPredictionJob was created.
     #[prost(message, optional, tag = "15")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the BatchPredictionJob for the first time entered the
     /// `JOB_STATE_RUNNING` state.
     #[prost(message, optional, tag = "16")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the BatchPredictionJob entered any of the following states:
     /// `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`.
     #[prost(message, optional, tag = "17")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the BatchPredictionJob was most recently updated.
     #[prost(message, optional, tag = "18")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels with user-defined metadata to organize BatchPredictionJobs.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -1226,8 +1271,15 @@ pub struct BatchPredictionJob {
     ///
     /// See https://goo.gl/xmQnxf for more information and examples of labels.
     #[prost(map = "string, string", tag = "19")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Customer-managed encryption key options for a BatchPredictionJob. If this
+    /// is set, then all resources created by the BatchPredictionJob will be
+    /// encrypted with the provided encryption key.
+    #[prost(message, optional, tag = "24")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
+/// Nested message and enum types in `BatchPredictionJob`.
 pub mod batch_prediction_job {
     /// Configures the input to [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob].
     /// See [Model.supported_input_storage_formats][google.cloud.aiplatform.v1beta1.Model.supported_input_storage_formats] for Model's supported input
@@ -1238,16 +1290,17 @@ pub mod batch_prediction_job {
         /// [Model's][google.cloud.aiplatform.v1beta1.BatchPredictionJob.model]
         /// [supported_input_storage_formats][google.cloud.aiplatform.v1beta1.Model.supported_input_storage_formats].
         #[prost(string, tag = "1")]
-        pub instances_format: std::string::String,
+        pub instances_format: ::prost::alloc::string::String,
         /// Required. The source of the input.
         #[prost(oneof = "input_config::Source", tags = "2, 3")]
-        pub source: ::std::option::Option<input_config::Source>,
+        pub source: ::core::option::Option<input_config::Source>,
     }
+    /// Nested message and enum types in `InputConfig`.
     pub mod input_config {
         /// Required. The source of the input.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
-            /// The Google Cloud Storage location for the input instances.
+            /// The Cloud Storage location for the input instances.
             #[prost(message, tag = "2")]
             GcsSource(super::super::GcsSource),
             /// The BigQuery location of the input table.
@@ -1269,16 +1322,17 @@ pub mod batch_prediction_job {
         ///
         /// [supported_output_storage_formats][google.cloud.aiplatform.v1beta1.Model.supported_output_storage_formats].
         #[prost(string, tag = "1")]
-        pub predictions_format: std::string::String,
+        pub predictions_format: ::prost::alloc::string::String,
         /// Required. The destination of the output.
         #[prost(oneof = "output_config::Destination", tags = "2, 3")]
-        pub destination: ::std::option::Option<output_config::Destination>,
+        pub destination: ::core::option::Option<output_config::Destination>,
     }
+    /// Nested message and enum types in `OutputConfig`.
     pub mod output_config {
         /// Required. The destination of the output.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Destination {
-            /// The Google Cloud Storage location of the directory where the output is
+            /// The Cloud Storage location of the directory where the output is
             /// to be written to. In the given directory a new directory is created.
             /// Its name is `prediction-<model-display-name>-<job-create-time>`,
             /// where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
@@ -1329,21 +1383,22 @@ pub mod batch_prediction_job {
     pub struct OutputInfo {
         /// The output location into which prediction output is written.
         #[prost(oneof = "output_info::OutputLocation", tags = "1, 2")]
-        pub output_location: ::std::option::Option<output_info::OutputLocation>,
+        pub output_location: ::core::option::Option<output_info::OutputLocation>,
     }
+    /// Nested message and enum types in `OutputInfo`.
     pub mod output_info {
         /// The output location into which prediction output is written.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OutputLocation {
-            /// Output only. The full path of the Google Cloud Storage directory created, into which
+            /// Output only. The full path of the Cloud Storage directory created, into which
             /// the prediction output is written.
             #[prost(string, tag = "1")]
-            GcsOutputDirectory(std::string::String),
+            GcsOutputDirectory(::prost::alloc::string::String),
             /// Output only. The path of the BigQuery dataset created, in
             /// `bq://projectId.bqDatasetId`
             /// format, into which the prediction output is written.
             #[prost(string, tag = "2")]
-            BigqueryOutputDataset(std::string::String),
+            BigqueryOutputDataset(::prost::alloc::string::String),
         }
     }
 }
@@ -1352,8 +1407,8 @@ pub mod batch_prediction_job {
 pub struct EnvVar {
     /// Required. Name of the environment variable. Must be a valid C identifier.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// Variables that reference a $(VAR_NAME) are expanded
+    pub name: ::prost::alloc::string::String,
+    /// Required. Variables that reference a $(VAR_NAME) are expanded
     /// using the previous defined environment variables in the container and
     /// any service environment variables. If a variable cannot be resolved,
     /// the reference in the input string will be unchanged. The $(VAR_NAME)
@@ -1361,7 +1416,7 @@ pub struct EnvVar {
     /// references will never be expanded, regardless of whether the variable
     /// exists or not.
     #[prost(string, tag = "2")]
-    pub value: std::string::String,
+    pub value: ::prost::alloc::string::String,
 }
 /// Represents a job that runs custom workloads such as a Docker container or a
 /// Python package. A CustomJob can have multiple worker pools and each worker
@@ -1371,36 +1426,36 @@ pub struct EnvVar {
 pub struct CustomJob {
     /// Output only. Resource name of a CustomJob.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The display name of the CustomJob.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. Job spec.
     #[prost(message, optional, tag = "4")]
-    pub job_spec: ::std::option::Option<CustomJobSpec>,
+    pub job_spec: ::core::option::Option<CustomJobSpec>,
     /// Output only. The detailed state of the job.
     #[prost(enumeration = "JobState", tag = "5")]
     pub state: i32,
     /// Output only. Time when the CustomJob was created.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the CustomJob for the first time entered the
     /// `JOB_STATE_RUNNING` state.
     #[prost(message, optional, tag = "7")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the CustomJob entered any of the following states:
     /// `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`.
     #[prost(message, optional, tag = "8")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the CustomJob was most recently updated.
     #[prost(message, optional, tag = "9")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Only populated when job's state is `JOB_STATE_FAILED` or
     /// `JOB_STATE_CANCELLED`.
     #[prost(message, optional, tag = "10")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// The labels with user-defined metadata to organize CustomJobs.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -1409,74 +1464,82 @@ pub struct CustomJob {
     ///
     /// See https://goo.gl/xmQnxf for more information and examples of labels.
     #[prost(map = "string, string", tag = "11")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Customer-managed encryption key options for a CustomJob. If this is set,
+    /// then all resources created by the CustomJob will be encrypted with the
+    /// provided encryption key.
+    #[prost(message, optional, tag = "12")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Represents the spec of a CustomJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomJobSpec {
     /// Required. The spec of the worker pools including machine type and Docker image.
     #[prost(message, repeated, tag = "1")]
-    pub worker_pool_specs: ::std::vec::Vec<WorkerPoolSpec>,
+    pub worker_pool_specs: ::prost::alloc::vec::Vec<WorkerPoolSpec>,
     /// Scheduling options for a CustomJob.
     #[prost(message, optional, tag = "3")]
-    pub scheduling: ::std::option::Option<Scheduling>,
+    pub scheduling: ::core::option::Option<Scheduling>,
     /// Specifies the service account for workload run-as account.
     /// Users submitting jobs must have act-as permission on this run-as account.
+    /// If unspecified, the AI Platform Custom Code Service Agent for the
+    /// CustomJob's project is used.
     #[prost(string, tag = "4")]
-    pub service_account: std::string::String,
+    pub service_account: ::prost::alloc::string::String,
     /// The full name of the Compute Engine
     /// [network](/compute/docs/networks-and-firewalls#networks) to which the Job
-    /// should be peered. For example, projects/12345/global/networks/myVPC.
-    ///
-    /// [Format](https:
-    /// //cloud.google.com/compute/docs/reference/rest/v1/networks/insert)
-    /// is of the form projects/{project}/global/networks/{network}.
-    /// Where {project} is a project number, as in '12345', and {network} is
+    /// should be peered. For example, `projects/12345/global/networks/myVPC`.
+    /// [Format](/compute/docs/reference/rest/v1/networks/insert)
+    /// is of the form `projects/{project}/global/networks/{network}`.
+    /// Where {project} is a project number, as in `12345`, and {network} is a
     /// network name.
     ///
     /// Private services access must already be configured for the network. If left
     /// unspecified, the job is not peered with any network.
     #[prost(string, tag = "5")]
-    pub network: std::string::String,
-    /// The Google Cloud Storage location to store the output of this CustomJob or
+    pub network: ::prost::alloc::string::String,
+    /// The Cloud Storage location to store the output of this CustomJob or
     /// HyperparameterTuningJob. For HyperparameterTuningJob,
-    /// [base_output_directory][CustomJob.job_spec.base_output_directory] of
+    /// the baseOutputDirectory of
     /// each child CustomJob backing a Trial is set to a subdirectory of name
-    /// [id][google.cloud.aiplatform.v1beta1.Trial.id] under parent HyperparameterTuningJob's
+    /// [id][google.cloud.aiplatform.v1beta1.Trial.id] under its parent HyperparameterTuningJob's
+    /// baseOutputDirectory.
     ///
-    /// [base_output_directory][HyperparameterTuningJob.trial_job_spec.base_output_directory].
-    ///
-    /// Following AI Platform environment variables will be passed to containers or
-    /// python modules when this field is set:
+    /// The following AI Platform environment variables will be passed to
+    /// containers or python modules when this field is set:
     ///
     ///   For CustomJob:
+    ///
     ///   * AIP_MODEL_DIR = `<base_output_directory>/model/`
     ///   * AIP_CHECKPOINT_DIR = `<base_output_directory>/checkpoints/`
     ///   * AIP_TENSORBOARD_LOG_DIR = `<base_output_directory>/logs/`
     ///
     ///   For CustomJob backing a Trial of HyperparameterTuningJob:
+    ///
     ///   * AIP_MODEL_DIR = `<base_output_directory>/<trial_id>/model/`
     ///   * AIP_CHECKPOINT_DIR = `<base_output_directory>/<trial_id>/checkpoints/`
     ///   * AIP_TENSORBOARD_LOG_DIR = `<base_output_directory>/<trial_id>/logs/`
     #[prost(message, optional, tag = "6")]
-    pub base_output_directory: ::std::option::Option<GcsDestination>,
+    pub base_output_directory: ::core::option::Option<GcsDestination>,
 }
 /// Represents the spec of a worker pool in a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerPoolSpec {
-    /// Required. Immutable. The specification of a single machine.
+    /// Optional. Immutable. The specification of a single machine.
     #[prost(message, optional, tag = "1")]
-    pub machine_spec: ::std::option::Option<MachineSpec>,
-    /// Required. The number of worker replicas to use for this worker pool.
+    pub machine_spec: ::core::option::Option<MachineSpec>,
+    /// Optional. The number of worker replicas to use for this worker pool.
     #[prost(int64, tag = "2")]
     pub replica_count: i64,
     /// Disk spec.
     #[prost(message, optional, tag = "5")]
-    pub disk_spec: ::std::option::Option<DiskSpec>,
+    pub disk_spec: ::core::option::Option<DiskSpec>,
     /// The custom task to be executed in this worker pool.
     #[prost(oneof = "worker_pool_spec::Task", tags = "6, 7")]
-    pub task: ::std::option::Option<worker_pool_spec::Task>,
+    pub task: ::core::option::Option<worker_pool_spec::Task>,
 }
+/// Nested message and enum types in `WorkerPoolSpec`.
 pub mod worker_pool_spec {
     /// The custom task to be executed in this worker pool.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1495,14 +1558,14 @@ pub struct ContainerSpec {
     /// Required. The URI of a container image in the Container Registry that is to be run on
     /// each worker replica.
     #[prost(string, tag = "1")]
-    pub image_uri: std::string::String,
+    pub image_uri: ::prost::alloc::string::String,
     /// The command to be invoked when the container is started.
     /// It overrides the entrypoint instruction in Dockerfile when provided.
     #[prost(string, repeated, tag = "2")]
-    pub command: ::std::vec::Vec<std::string::String>,
+    pub command: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The arguments to be passed when starting the container.
     #[prost(string, repeated, tag = "3")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The spec of a Python packaged code.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1512,25 +1575,25 @@ pub struct PythonPackageSpec {
     /// with pre-installed packages to meet users' various use cases. Only one of
     /// the provided images can be set here.
     #[prost(string, tag = "1")]
-    pub executor_image_uri: std::string::String,
+    pub executor_image_uri: ::prost::alloc::string::String,
     /// Required. The Google Cloud Storage location of the Python package files which are
     /// the training program and its dependent packages.
     /// The maximum number of package URIs is 100.
     #[prost(string, repeated, tag = "2")]
-    pub package_uris: ::std::vec::Vec<std::string::String>,
+    pub package_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The Python module name to run after installing the packages.
     #[prost(string, tag = "3")]
-    pub python_module: std::string::String,
+    pub python_module: ::prost::alloc::string::String,
     /// Command line arguments to be passed to the Python task.
     #[prost(string, repeated, tag = "4")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// All parameters related to queuing and scheduling of custom jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Scheduling {
     /// The maximum job running time. The default is 7 days.
     #[prost(message, optional, tag = "1")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Restarts the entire CustomJob if a worker gets restarted.
     /// This feature can be used by distributed training jobs that are not
     /// resilient to workers leaving and joining a job.
@@ -1543,13 +1606,13 @@ pub struct Scheduling {
 pub struct DataItem {
     /// Output only. The resource name of the DataItem.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Timestamp when this DataItem was created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when this DataItem was last updated.
     #[prost(message, optional, tag = "6")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The labels with user-defined metadata to organize your DataItems.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -1562,16 +1625,17 @@ pub struct DataItem {
     /// System reserved label keys are prefixed with "aiplatform.googleapis.com/"
     /// and are immutable.
     #[prost(map = "string, string", tag = "3")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. The data that the DataItem represents (for example, an image or a text
     /// snippet). The schema of the payload is stored in the parent Dataset's
     /// [metadata schema's][google.cloud.aiplatform.v1beta1.Dataset.metadata_schema_uri] dataItemSchemaUri field.
     #[prost(message, optional, tag = "4")]
-    pub payload: ::std::option::Option<::prost_types::Value>,
+    pub payload: ::core::option::Option<::prost_types::Value>,
     /// Optional. Used to perform a consistent read-modify-write updates. If not set, a blind
     /// "overwrite" update happens.
     #[prost(string, tag = "7")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// SpecialistPool represents customers' own workforce to work on their data
 /// labeling jobs. It includes a group of specialist managers who are responsible
@@ -1583,22 +1647,22 @@ pub struct DataItem {
 pub struct SpecialistPool {
     /// Required. The resource name of the SpecialistPool.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of the SpecialistPool.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     /// This field should be unique on project-level.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Output only. The number of Specialists in this SpecialistPool.
     #[prost(int32, tag = "3")]
     pub specialist_managers_count: i32,
     /// The email addresses of the specialists in the SpecialistPool.
     #[prost(string, repeated, tag = "4")]
-    pub specialist_manager_emails: ::std::vec::Vec<std::string::String>,
+    pub specialist_manager_emails: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The resource name of the pending data labeling jobs.
     #[prost(string, repeated, tag = "5")]
-    pub pending_data_labeling_jobs: ::std::vec::Vec<std::string::String>,
+    pub pending_data_labeling_jobs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// DataLabelingJob is used to trigger a human labeling job on unlabeled data
 /// from the following Dataset:
@@ -1606,19 +1670,19 @@ pub struct SpecialistPool {
 pub struct DataLabelingJob {
     /// Output only. Resource name of the DataLabelingJob.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of the DataLabelingJob.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     /// Display name of a DataLabelingJob.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. Dataset resource names. Right now we only support labeling from a single
     /// Dataset.
     /// Format:
     /// `projects/{project}/locations/{location}/datasets/{dataset}`
     #[prost(string, repeated, tag = "3")]
-    pub datasets: ::std::vec::Vec<std::string::String>,
+    pub datasets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Labels to assign to annotations generated by this DataLabelingJob.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -1628,7 +1692,8 @@ pub struct DataLabelingJob {
     /// System reserved label keys are prefixed with "aiplatform.googleapis.com/"
     /// and are immutable.
     #[prost(map = "string, string", tag = "12")]
-    pub annotation_labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub annotation_labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Number of labelers to work on each DataItem.
     #[prost(int32, tag = "4")]
     pub labeler_count: i32,
@@ -1636,17 +1701,17 @@ pub struct DataLabelingJob {
     /// shared with labelers, and provides detailed description on how to label
     /// DataItems in Datasets.
     #[prost(string, tag = "5")]
-    pub instruction_uri: std::string::String,
+    pub instruction_uri: ::prost::alloc::string::String,
     /// Required. Points to a YAML file stored on Google Cloud Storage describing the
     /// config for a specific type of DataLabelingJob.
     /// The schema files that can be used here are found in the
     /// https://storage.googleapis.com/google-cloud-aiplatform bucket in the
     /// /schema/datalabelingjob/inputs/ folder.
     #[prost(string, tag = "6")]
-    pub inputs_schema_uri: std::string::String,
+    pub inputs_schema_uri: ::prost::alloc::string::String,
     /// Required. Input config parameters for the DataLabelingJob.
     #[prost(message, optional, tag = "7")]
-    pub inputs: ::std::option::Option<::prost_types::Value>,
+    pub inputs: ::core::option::Option<::prost_types::Value>,
     /// Output only. The detailed state of the job.
     #[prost(enumeration = "JobState", tag = "8")]
     pub state: i32,
@@ -1657,17 +1722,17 @@ pub struct DataLabelingJob {
     /// Output only. Estimated cost(in US dollars) that the DataLabelingJob has incurred to
     /// date.
     #[prost(message, optional, tag = "14")]
-    pub current_spend: ::std::option::Option<super::super::super::r#type::Money>,
+    pub current_spend: ::core::option::Option<super::super::super::r#type::Money>,
     /// Output only. Timestamp when this DataLabelingJob was created.
     #[prost(message, optional, tag = "9")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when this DataLabelingJob was updated most recently.
     #[prost(message, optional, tag = "10")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. DataLabelingJob errors. It is only populated when job's state is
     /// `JOB_STATE_FAILED` or `JOB_STATE_CANCELLED`.
     #[prost(message, optional, tag = "22")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// The labels with user-defined metadata to organize your DataLabelingJobs.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -1681,17 +1746,25 @@ pub struct DataLabelingJob {
     /// * "aiplatform.googleapis.com/schema": output only, its value is the
     ///   [inputs_schema][google.cloud.aiplatform.v1beta1.DataLabelingJob.inputs_schema_uri]'s title.
     #[prost(map = "string, string", tag = "11")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The SpecialistPools' resource names associated with this job.
     #[prost(string, repeated, tag = "16")]
-    pub specialist_pools: ::std::vec::Vec<std::string::String>,
-    /// Paramaters that configure active learning pipeline. Active learning will
+    pub specialist_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Customer-managed encryption key spec for a DataLabelingJob. If set, this
+    /// DataLabelingJob will be secured by this key.
+    ///
+    /// Note: Annotations created in the DataLabelingJob are associated with
+    /// the EncryptionSpec of the Dataset they are exported to.
+    #[prost(message, optional, tag = "20")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Parameters that configure active learning pipeline. Active learning will
     /// label the data incrementally via several iterations. For every iteration,
     /// it will select a batch of data based on the sampling strategy.
     #[prost(message, optional, tag = "21")]
-    pub active_learning_config: ::std::option::Option<ActiveLearningConfig>,
+    pub active_learning_config: ::core::option::Option<ActiveLearningConfig>,
 }
-/// Paramaters that configure active learning pipeline. Active learning will
+/// Parameters that configure active learning pipeline. Active learning will
 ///  label the data incrementally by several iterations. For every iteration, it
 ///  will select a batch of data based on the sampling strategy.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1699,17 +1772,18 @@ pub struct ActiveLearningConfig {
     /// Active learning data sampling config. For every active learning labeling
     /// iteration, it will select a batch of data based on the sampling strategy.
     #[prost(message, optional, tag = "3")]
-    pub sample_config: ::std::option::Option<SampleConfig>,
+    pub sample_config: ::core::option::Option<SampleConfig>,
     /// CMLE training config. For every active learning labeling iteration, system
     /// will train a machine learning model on CMLE. The trained model will be used
     /// by data sampling algorithm to select DataItems.
     #[prost(message, optional, tag = "4")]
-    pub training_config: ::std::option::Option<TrainingConfig>,
+    pub training_config: ::core::option::Option<TrainingConfig>,
     /// Required. Max human labeling DataItems. The rest part will be labeled by
     /// machine.
     #[prost(oneof = "active_learning_config::HumanLabelingBudget", tags = "1, 2")]
-    pub human_labeling_budget: ::std::option::Option<active_learning_config::HumanLabelingBudget>,
+    pub human_labeling_budget: ::core::option::Option<active_learning_config::HumanLabelingBudget>,
 }
+/// Nested message and enum types in `ActiveLearningConfig`.
 pub mod active_learning_config {
     /// Required. Max human labeling DataItems. The rest part will be labeled by
     /// machine.
@@ -1734,12 +1808,14 @@ pub struct SampleConfig {
     /// Decides sample size for the initial batch. initial_batch_sample_percentage
     /// is used by default.
     #[prost(oneof = "sample_config::InitialBatchSampleSize", tags = "1")]
-    pub initial_batch_sample_size: ::std::option::Option<sample_config::InitialBatchSampleSize>,
+    pub initial_batch_sample_size: ::core::option::Option<sample_config::InitialBatchSampleSize>,
     /// Decides sample size for the following batches.
     /// following_batch_sample_percentage is used by default.
     #[prost(oneof = "sample_config::FollowingBatchSampleSize", tags = "3")]
-    pub following_batch_sample_size: ::std::option::Option<sample_config::FollowingBatchSampleSize>,
+    pub following_batch_sample_size:
+        ::core::option::Option<sample_config::FollowingBatchSampleSize>,
 }
+/// Nested message and enum types in `SampleConfig`.
 pub mod sample_config {
     /// Sample strategy decides which subset of DataItems should be selected for
     /// human labeling in every batch.
@@ -1784,32 +1860,32 @@ pub struct TrainingConfig {
 pub struct Dataset {
     /// Output only. The resource name of the Dataset.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of the Dataset.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. Points to a YAML file stored on Google Cloud Storage describing additional
     /// information about the Dataset.
     /// The schema is defined as an OpenAPI 3.0.2 Schema Object.
     /// The schema files that can be used here are found in
     /// gs://google-cloud-aiplatform/schema/dataset/metadata/.
     #[prost(string, tag = "3")]
-    pub metadata_schema_uri: std::string::String,
+    pub metadata_schema_uri: ::prost::alloc::string::String,
     /// Required. Additional information about the Dataset.
     #[prost(message, optional, tag = "8")]
-    pub metadata: ::std::option::Option<::prost_types::Value>,
+    pub metadata: ::core::option::Option<::prost_types::Value>,
     /// Output only. Timestamp when this Dataset was created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when this Dataset was last updated.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Used to perform consistent read-modify-write updates. If not set, a blind
     /// "overwrite" update happens.
     #[prost(string, tag = "6")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The labels with user-defined metadata to organize your Datasets.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -1825,7 +1901,12 @@ pub struct Dataset {
     /// * "aiplatform.googleapis.com/dataset_metadata_schema": output only, its
     ///   value is the [metadata_schema's][google.cloud.aiplatform.v1beta1.Dataset.metadata_schema_uri] title.
     #[prost(map = "string, string", tag = "7")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Customer-managed encryption key spec for a Dataset. If set, this Dataset
+    /// and all sub-resources of this Dataset will be secured by this key.
+    #[prost(message, optional, tag = "11")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Describes the location from where we import data into a Dataset, together
 /// with the labels that will be applied to the DataItems and the Annotations.
@@ -1843,16 +1924,18 @@ pub struct ImportDataConfig {
     /// These labels will be overridden by Annotation labels specified inside index
     /// file refenced by [import_schema_uri][google.cloud.aiplatform.v1beta1.ImportDataConfig.import_schema_uri], e.g. jsonl file.
     #[prost(map = "string, string", tag = "2")]
-    pub data_item_labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub data_item_labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Points to a YAML file stored on Google Cloud Storage describing the import
     /// format. Validation will be done against the schema. The schema is defined
     /// as an [OpenAPI 3.0.2 Schema Object](https://tinyurl.com/y538mdwt).
     #[prost(string, tag = "4")]
-    pub import_schema_uri: std::string::String,
+    pub import_schema_uri: ::prost::alloc::string::String,
     /// The source of the input.
     #[prost(oneof = "import_data_config::Source", tags = "1")]
-    pub source: ::std::option::Option<import_data_config::Source>,
+    pub source: ::core::option::Option<import_data_config::Source>,
 }
+/// Nested message and enum types in `ImportDataConfig`.
 pub mod import_data_config {
     /// The source of the input.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1871,11 +1954,12 @@ pub struct ExportDataConfig {
     /// be exported. The filter syntax is the same as in
     /// [ListAnnotations][google.cloud.aiplatform.v1beta1.DatasetService.ListAnnotations].
     #[prost(string, tag = "2")]
-    pub annotations_filter: std::string::String,
+    pub annotations_filter: ::prost::alloc::string::String,
     /// The destination of the output.
     #[prost(oneof = "export_data_config::Destination", tags = "1")]
-    pub destination: ::std::option::Option<export_data_config::Destination>,
+    pub destination: ::core::option::Option<export_data_config::Destination>,
 }
+/// Nested message and enum types in `ExportDataConfig`.
 pub mod export_data_config {
     /// The destination of the output.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1901,52 +1985,52 @@ pub struct GenericOperationMetadata {
     /// This field should never exceed 20 entries.
     /// Status details field will contain standard GCP error details.
     #[prost(message, repeated, tag = "1")]
-    pub partial_failures: ::std::vec::Vec<super::super::super::rpc::Status>,
+    pub partial_failures: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     /// Output only. Time when the operation was created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the operation was updated for the last time.
     /// If the operation has finished (successfully or not), this is the finish
     /// time.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Details of operations that perform deletes of any entities.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Points to a DeployedModel.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedModelRef {
     /// Immutable. A resource name of an Endpoint.
     #[prost(string, tag = "1")]
-    pub endpoint: std::string::String,
+    pub endpoint: ::prost::alloc::string::String,
     /// Immutable. An ID of a DeployedModel in the above Endpoint.
     #[prost(string, tag = "2")]
-    pub deployed_model_id: std::string::String,
+    pub deployed_model_id: ::prost::alloc::string::String,
 }
 /// A trained machine learning Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
     /// The resource name of the Model.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The display name of the Model.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The description of the Model.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// The schemata that describe formats of the Model's predictions and
     /// explanations as given and returned via
     /// [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict] and [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
     #[prost(message, optional, tag = "4")]
-    pub predict_schemata: ::std::option::Option<PredictSchemata>,
+    pub predict_schemata: ::core::option::Option<PredictSchemata>,
     /// Immutable. Points to a YAML file stored on Google Cloud Storage describing additional
     /// information about the Model, that is specific to it. Unset if the Model
     /// does not have any additional information.
@@ -1958,31 +2042,31 @@ pub struct Model {
     /// including the URI scheme, than the one given on input. The output URI will
     /// point to a location where the user only has a read access.
     #[prost(string, tag = "5")]
-    pub metadata_schema_uri: std::string::String,
+    pub metadata_schema_uri: ::prost::alloc::string::String,
     /// Immutable. An additional information about the Model; the schema of the metadata can
     /// be found in [metadata_schema][google.cloud.aiplatform.v1beta1.Model.metadata_schema_uri].
     /// Unset if the Model does not have any additional information.
     #[prost(message, optional, tag = "6")]
-    pub metadata: ::std::option::Option<::prost_types::Value>,
+    pub metadata: ::core::option::Option<::prost_types::Value>,
     /// Output only. The formats in which this Model may be exported. If empty, this Model is
     /// not available for export.
     #[prost(message, repeated, tag = "20")]
-    pub supported_export_formats: ::std::vec::Vec<model::ExportFormat>,
+    pub supported_export_formats: ::prost::alloc::vec::Vec<model::ExportFormat>,
     /// Output only. The resource name of the TrainingPipeline that uploaded this Model, if any.
     #[prost(string, tag = "7")]
-    pub training_pipeline: std::string::String,
+    pub training_pipeline: ::prost::alloc::string::String,
     /// Input only. The specification of the container that is to be used when deploying
     /// this Model. The specification is ingested upon
     /// [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel], and all binaries it contains are copied
     /// and stored internally by AI Platform.
     /// Not present for AutoML Models.
     #[prost(message, optional, tag = "9")]
-    pub container_spec: ::std::option::Option<ModelContainerSpec>,
+    pub container_spec: ::core::option::Option<ModelContainerSpec>,
     /// Immutable. The path to the directory containing the Model artifact and any of its
     /// supporting files.
     /// Not present for AutoML Models.
     #[prost(string, tag = "26")]
-    pub artifact_uri: std::string::String,
+    pub artifact_uri: ::prost::alloc::string::String,
     /// Output only. When this Model is deployed, its prediction resources are described by the
     /// `prediction_resources` field of the [Endpoint.deployed_models][google.cloud.aiplatform.v1beta1.Endpoint.deployed_models] object.
     /// Because not all Models support all resource configuration types, the
@@ -2000,7 +2084,7 @@ pub struct Model {
         packed = "false",
         tag = "10"
     )]
-    pub supported_deployment_resources_types: ::std::vec::Vec<i32>,
+    pub supported_deployment_resources_types: ::prost::alloc::vec::Vec<i32>,
     /// Output only. The formats this Model supports in
     /// [BatchPredictionJob.input_config][google.cloud.aiplatform.v1beta1.BatchPredictionJob.input_config]. If
     /// [PredictSchemata.instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri] exists, the instances
@@ -2029,6 +2113,10 @@ pub struct Model {
     /// Each instance is a single row in BigQuery. Uses
     /// [BigQuerySource][google.cloud.aiplatform.v1beta1.BatchPredictionJob.InputConfig.bigquery_source].
     ///
+    /// * `file-list`
+    /// Each line of the file is the location of an instance to process, uses
+    /// `gcs_source` field of the
+    /// [InputConfig][google.cloud.aiplatform.v1beta1.BatchPredictionJob.InputConfig] object.
     ///
     ///
     /// If this Model doesn't support any of these formats it means it cannot be
@@ -2037,7 +2125,7 @@ pub struct Model {
     /// predictions by using [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict] or
     /// [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
     #[prost(string, repeated, tag = "11")]
-    pub supported_input_storage_formats: ::std::vec::Vec<std::string::String>,
+    pub supported_input_storage_formats: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The formats this Model supports in
     /// [BatchPredictionJob.output_config][google.cloud.aiplatform.v1beta1.BatchPredictionJob.output_config]. If both
     /// [PredictSchemata.instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri] and
@@ -2070,34 +2158,36 @@ pub struct Model {
     /// predictions by using [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict] or
     /// [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
     #[prost(string, repeated, tag = "12")]
-    pub supported_output_storage_formats: ::std::vec::Vec<std::string::String>,
+    pub supported_output_storage_formats: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Timestamp when this Model was uploaded into AI Platform.
     #[prost(message, optional, tag = "13")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when this Model was most recently updated.
     #[prost(message, optional, tag = "14")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The pointers to DeployedModels created from this Model. Note that
     /// Model could have been deployed to Endpoints in different Locations.
     #[prost(message, repeated, tag = "15")]
-    pub deployed_models: ::std::vec::Vec<DeployedModelRef>,
-    /// Output only. The default explanation specification for this Model.
+    pub deployed_models: ::prost::alloc::vec::Vec<DeployedModelRef>,
+    /// The default explanation specification for this Model.
     ///
-    /// Model can be used for [requesting explanation][google.cloud.aiplatform.v1beta1.PredictionService.Explain]
-    /// after being [deployed][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel] iff it is populated.
+    /// The Model can be used for [requesting
+    /// explanation][PredictionService.Explain] after being
+    /// [deployed][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel] iff it is populated.
+    /// The Model can be used for [batch
+    /// explanation][BatchPredictionJob.generate_explanation] iff it is populated.
     ///
     /// All fields of the explanation_spec can be overridden by
     /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec] of
-    /// [DeployModelRequest.deployed_model][google.cloud.aiplatform.v1beta1.DeployModelRequest.deployed_model].
-    ///
-    /// This field is populated only for tabular AutoML Models.
-    /// Specifying it with [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel] is not supported.
+    /// [DeployModelRequest.deployed_model][google.cloud.aiplatform.v1beta1.DeployModelRequest.deployed_model], or
+    /// [explanation_spec][google.cloud.aiplatform.v1beta1.BatchPredictionJob.explanation_spec] of
+    /// [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob].
     #[prost(message, optional, tag = "23")]
-    pub explanation_spec: ::std::option::Option<ExplanationSpec>,
+    pub explanation_spec: ::core::option::Option<ExplanationSpec>,
     /// Used to perform consistent read-modify-write updates. If not set, a blind
     /// "overwrite" update happens.
     #[prost(string, tag = "16")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The labels with user-defined metadata to organize your Models.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -2106,8 +2196,14 @@ pub struct Model {
     ///
     /// See https://goo.gl/xmQnxf for more information and examples of labels.
     #[prost(map = "string, string", tag = "17")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Customer-managed encryption key spec for a Model. If set, this
+    /// Model and all sub-resources of this Model will be secured by this key.
+    #[prost(message, optional, tag = "24")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
+/// Nested message and enum types in `Model`.
 pub mod model {
     /// Represents a supported by the Model export format.
     /// All formats export to Google Cloud Storage.
@@ -2135,7 +2231,7 @@ pub mod model {
         /// * `custom-trained`
         /// A Model that was uploaded or trained by custom code.
         #[prost(string, tag = "1")]
-        pub id: std::string::String,
+        pub id: ::prost::alloc::string::String,
         /// Output only. The content of this Model that may be exported.
         #[prost(
             enumeration = "export_format::ExportableContent",
@@ -2143,11 +2239,14 @@ pub mod model {
             packed = "false",
             tag = "2"
         )]
-        pub exportable_contents: ::std::vec::Vec<i32>,
+        pub exportable_contents: ::prost::alloc::vec::Vec<i32>,
     }
+    /// Nested message and enum types in `ExportFormat`.
     pub mod export_format {
         /// The Model content that can be exported.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ExportableContent {
             /// Should not be used.
@@ -2192,7 +2291,7 @@ pub struct PredictSchemata {
     /// including the URI scheme, than the one given on input. The output URI will
     /// point to a location where the user only has a read access.
     #[prost(string, tag = "1")]
-    pub instance_schema_uri: std::string::String,
+    pub instance_schema_uri: ::prost::alloc::string::String,
     /// Immutable. Points to a YAML file stored on Google Cloud Storage describing the
     /// parameters of prediction and explanation via
     /// [PredictRequest.parameters][google.cloud.aiplatform.v1beta1.PredictRequest.parameters], [ExplainRequest.parameters][google.cloud.aiplatform.v1beta1.ExplainRequest.parameters] and
@@ -2205,7 +2304,7 @@ pub struct PredictSchemata {
     /// including the URI scheme, than the one given on input. The output URI will
     /// point to a location where the user only has a read access.
     #[prost(string, tag = "2")]
-    pub parameters_schema_uri: std::string::String,
+    pub parameters_schema_uri: ::prost::alloc::string::String,
     /// Immutable. Points to a YAML file stored on Google Cloud Storage describing the format
     /// of a single prediction produced by this Model, which are returned via
     /// [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions], [ExplainResponse.explanations][google.cloud.aiplatform.v1beta1.ExplainResponse.explanations], and
@@ -2217,7 +2316,7 @@ pub struct PredictSchemata {
     /// including the URI scheme, than the one given on input. The output URI will
     /// point to a location where the user only has a read access.
     #[prost(string, tag = "3")]
-    pub prediction_schema_uri: std::string::String,
+    pub prediction_schema_uri: ::prost::alloc::string::String,
 }
 /// Specification of a container for serving predictions. This message is a
 /// subset of the Kubernetes Container v1 core
@@ -2237,7 +2336,7 @@ pub struct ModelContainerSpec {
     /// To learn about the requirements for the Docker image itself, see
     /// [Custom container requirements](https://tinyurl.com/cust-cont-reqs).
     #[prost(string, tag = "1")]
-    pub image_uri: std::string::String,
+    pub image_uri: ::prost::alloc::string::String,
     /// Immutable. Specifies the command that runs when the container starts. This overrides
     /// the container's
     /// [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint).
@@ -2274,7 +2373,7 @@ pub struct ModelContainerSpec {
     /// This field corresponds to the `command` field of the Kubernetes Containers
     /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(string, repeated, tag = "2")]
-    pub command: ::std::vec::Vec<std::string::String>,
+    pub command: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Immutable. Specifies arguments for the command that runs when the container starts.
     /// This overrides the container's
     /// [`CMD`](https://docs.docker.com/engine/reference/builder/#cmd). Specify
@@ -2310,7 +2409,7 @@ pub struct ModelContainerSpec {
     /// This field corresponds to the `args` field of the Kubernetes Containers
     /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(string, repeated, tag = "3")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Immutable. List of environment variables to set in the container. After the container
     /// starts running, code running in the container can read these environment
     /// variables.
@@ -2339,7 +2438,7 @@ pub struct ModelContainerSpec {
     /// This field corresponds to the `env` field of the Kubernetes Containers
     /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(message, repeated, tag = "4")]
-    pub env: ::std::vec::Vec<EnvVar>,
+    pub env: ::prost::alloc::vec::Vec<EnvVar>,
     /// Immutable. List of ports to expose from the container. AI Platform sends any
     /// prediction requests that it receives to the first port on this list. AI
     /// Platform also sends
@@ -2360,7 +2459,7 @@ pub struct ModelContainerSpec {
     /// corresponds to the `ports` field of the Kubernetes Containers
     /// [v1 core API](https://tinyurl.com/k8s-io-api/v1.18/#container-v1-core).
     #[prost(message, repeated, tag = "5")]
-    pub ports: ::std::vec::Vec<Port>,
+    pub ports: ::prost::alloc::vec::Vec<Port>,
     /// Immutable. HTTP path on the container to send prediction requests to. AI Platform
     /// forwards requests sent using
     /// [projects.locations.endpoints.predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict] to this
@@ -2369,9 +2468,8 @@ pub struct ModelContainerSpec {
     ///
     /// For example, if you set this field to `/foo`, then when AI Platform
     /// receives a prediction request, it forwards the request body in a POST
-    /// request to the following URL on the container:
-    /// <code>localhost:<var>PORT</var>/foo</code>
-    /// <var>PORT</var> refers to the first value of this `ModelContainerSpec`'s
+    /// request to the `/foo` path on the port of your container specified by the
+    /// first value of this `ModelContainerSpec`'s
     /// [ports][google.cloud.aiplatform.v1beta1.ModelContainerSpec.ports] field.
     ///
     /// If you don't specify this field, it defaults to the following value when
@@ -2391,7 +2489,7 @@ pub struct ModelContainerSpec {
     ///   as the [`AIP_DEPLOYED_MODEL_ID` environment
     ///   variable](https://tinyurl.com/cust-cont-reqs#aip-variables).)
     #[prost(string, tag = "6")]
-    pub predict_route: std::string::String,
+    pub predict_route: ::prost::alloc::string::String,
     /// Immutable. HTTP path on the container to send health checkss to. AI Platform
     /// intermittently sends GET requests to this path on the container's IP
     /// address and port to check that the container is healthy. Read more about
@@ -2399,9 +2497,8 @@ pub struct ModelContainerSpec {
     /// checks](https://tinyurl.com/cust-cont-reqs#checks).
     ///
     /// For example, if you set this field to `/bar`, then AI Platform
-    /// intermittently sends a GET request to the following URL on the container:
-    /// <code>localhost:<var>PORT</var>/bar</code>
-    /// <var>PORT</var> refers to the first value of this `ModelContainerSpec`'s
+    /// intermittently sends a GET request to the `/bar` path on the port of your
+    /// container specified by the first value of this `ModelContainerSpec`'s
     /// [ports][google.cloud.aiplatform.v1beta1.ModelContainerSpec.ports] field.
     ///
     /// If you don't specify this field, it defaults to the following value when
@@ -2421,7 +2518,7 @@ pub struct ModelContainerSpec {
     /// [`AIP_DEPLOYED_MODEL_ID`](https://tinyurl.com/cust-cont-reqs#aip-variables)
     ///   environment variable.)
     #[prost(string, tag = "7")]
-    pub health_route: std::string::String,
+    pub health_route: ::prost::alloc::string::String,
 }
 /// Represents a network port in a container.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2466,10 +2563,10 @@ pub enum PipelineState {
 pub struct TrainingPipeline {
     /// Output only. Resource name of the TrainingPipeline.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of this TrainingPipeline.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Specifies AI Platform owned input data that may be used for training the
     /// Model. The TrainingPipeline's [training_task_definition][google.cloud.aiplatform.v1beta1.TrainingPipeline.training_task_definition] should make
     /// clear whether this config is used and if there are any special requirements
@@ -2477,7 +2574,7 @@ pub struct TrainingPipeline {
     /// the [training_task_definition][google.cloud.aiplatform.v1beta1.TrainingPipeline.training_task_definition], then it should be assumed that the
     /// TrainingPipeline does not depend on this configuration.
     #[prost(message, optional, tag = "3")]
-    pub input_data_config: ::std::option::Option<InputDataConfig>,
+    pub input_data_config: ::core::option::Option<InputDataConfig>,
     /// Required. A Google Cloud Storage path to the YAML file that defines the training task
     /// which is responsible for producing the model artifact, and may also include
     /// additional auxiliary work.
@@ -2487,19 +2584,19 @@ pub struct TrainingPipeline {
     /// including the URI scheme, than the one given on input. The output URI will
     /// point to a location where the user only has a read access.
     #[prost(string, tag = "4")]
-    pub training_task_definition: std::string::String,
+    pub training_task_definition: ::prost::alloc::string::String,
     /// Required. The training task's parameter(s), as specified in the
     /// [training_task_definition][google.cloud.aiplatform.v1beta1.TrainingPipeline.training_task_definition]'s `inputs`.
     #[prost(message, optional, tag = "5")]
-    pub training_task_inputs: ::std::option::Option<::prost_types::Value>,
+    pub training_task_inputs: ::core::option::Option<::prost_types::Value>,
     /// Output only. The metadata information as specified in the [training_task_definition][google.cloud.aiplatform.v1beta1.TrainingPipeline.training_task_definition]'s
     /// `metadata`. This metadata is an auxiliary runtime and final information
     /// about the training task. While the pipeline is running this information is
     /// populated only at a best effort basis. Only present if the
     /// pipeline's [training_task_definition][google.cloud.aiplatform.v1beta1.TrainingPipeline.training_task_definition] contains `metadata` object.
     #[prost(message, optional, tag = "6")]
-    pub training_task_metadata: ::std::option::Option<::prost_types::Value>,
-    /// Describes the Model that may be uploaded (via [ModelService.UploadMode][])
+    pub training_task_metadata: ::core::option::Option<::prost_types::Value>,
+    /// Describes the Model that may be uploaded (via [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel])
     /// by this TrainingPipeline. The TrainingPipeline's
     /// [training_task_definition][google.cloud.aiplatform.v1beta1.TrainingPipeline.training_task_definition] should make clear whether this Model
     /// description should be populated, and if there are any special requirements
@@ -2514,29 +2611,29 @@ pub struct TrainingPipeline {
     /// is always uploaded into the Project and Location in which this pipeline
     /// is.
     #[prost(message, optional, tag = "7")]
-    pub model_to_upload: ::std::option::Option<Model>,
+    pub model_to_upload: ::core::option::Option<Model>,
     /// Output only. The detailed state of the pipeline.
     #[prost(enumeration = "PipelineState", tag = "9")]
     pub state: i32,
     /// Output only. Only populated when the pipeline's state is `PIPELINE_STATE_FAILED` or
     /// `PIPELINE_STATE_CANCELLED`.
     #[prost(message, optional, tag = "10")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Output only. Time when the TrainingPipeline was created.
     #[prost(message, optional, tag = "11")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the TrainingPipeline for the first time entered the
     /// `PIPELINE_STATE_RUNNING` state.
     #[prost(message, optional, tag = "12")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the TrainingPipeline entered any of the following states:
     /// `PIPELINE_STATE_SUCCEEDED`, `PIPELINE_STATE_FAILED`,
     /// `PIPELINE_STATE_CANCELLED`.
     #[prost(message, optional, tag = "13")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the TrainingPipeline was most recently updated.
     #[prost(message, optional, tag = "14")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels with user-defined metadata to organize TrainingPipelines.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -2545,7 +2642,15 @@ pub struct TrainingPipeline {
     ///
     /// See https://goo.gl/xmQnxf for more information and examples of labels.
     #[prost(map = "string, string", tag = "15")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Customer-managed encryption key spec for a TrainingPipeline. If set, this
+    /// TrainingPipeline will be secured by this key.
+    ///
+    /// Note: Model trained by this TrainingPipeline is also secured by this key if
+    /// [model_to_upload][google.cloud.aiplatform.v1beta1.TrainingPipeline.encryption_spec] is not set separately.
+    #[prost(message, optional, tag = "18")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Specifies AI Platform owned input data to be used for training, and
 /// possibly evaluating, the Model.
@@ -2559,8 +2664,8 @@ pub struct InputDataConfig {
     /// For tabular Datasets, all their data is exported to training, to pick
     /// and choose from.
     #[prost(string, tag = "1")]
-    pub dataset_id: std::string::String,
-    /// Only applicable to Datasets that have DataItems and Annotations.
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Applicable only to Datasets that have DataItems and Annotations.
     ///
     /// A filter on Annotations of the Dataset. Only Annotations that both
     /// match this filter and belong to DataItems not ignored by the split method
@@ -2571,17 +2676,15 @@ pub struct InputDataConfig {
     /// here it filters across all Annotations of the Dataset, and not just within
     /// a single DataItem.
     #[prost(string, tag = "6")]
-    pub annotations_filter: std::string::String,
-    /// Only applicable to custom training.
+    pub annotations_filter: ::prost::alloc::string::String,
+    /// Applicable only to custom training with Datasets that have DataItems and
+    /// Annotations.
     ///
-    /// Google Cloud Storage URI points to a YAML file describing annotation
-    /// schema. The schema is defined as an OpenAPI 3.0.2 [Schema Object](
-    ///
-    /// https:
-    /// //github.com/OAI/OpenAPI-Specification/b
-    /// // lob/master/versions/3.0.2.md#schema-object)
+    /// Cloud Storage URI that points to a YAML file describing the annotation
+    /// schema. The schema is defined as an OpenAPI 3.0.2
+    /// [Schema Object](https://tinyurl.com/y538mdwt#schema-object).
     /// The schema files that can be used here are found in
-    /// gs://google-cloud-aiplatform/schema/dataset/annotation/, note that the
+    /// gs://google-cloud-aiplatform/schema/dataset/annotation/ , note that the
     /// chosen schema must be consistent with
     /// [metadata][google.cloud.aiplatform.v1beta1.Dataset.metadata_schema_uri] of the Dataset specified by
     /// [dataset_id][google.cloud.aiplatform.v1beta1.InputDataConfig.dataset_id].
@@ -2594,12 +2697,12 @@ pub struct InputDataConfig {
     /// for training are filtered by both [annotations_filter][google.cloud.aiplatform.v1beta1.InputDataConfig.annotations_filter] and
     /// [annotation_schema_uri][google.cloud.aiplatform.v1beta1.InputDataConfig.annotation_schema_uri].
     #[prost(string, tag = "9")]
-    pub annotation_schema_uri: std::string::String,
+    pub annotation_schema_uri: ::prost::alloc::string::String,
     /// The instructions how the input data should be split between the
     /// training, validation and test sets.
     /// If no split type is provided, the [fraction_split][google.cloud.aiplatform.v1beta1.InputDataConfig.fraction_split] is used by default.
     #[prost(oneof = "input_data_config::Split", tags = "2, 3, 4, 5")]
-    pub split: ::std::option::Option<input_data_config::Split>,
+    pub split: ::core::option::Option<input_data_config::Split>,
     /// Only applicable to Custom and Hyperparameter Tuning TrainingPipelines.
     ///
     /// The destination of the training data to be written to.
@@ -2608,7 +2711,7 @@ pub struct InputDataConfig {
     ///   * For non-tabular data: "jsonl".
     ///   * For tabular data: "csv" and "bigquery".
     ///
-    /// Following AI Platform environment variables will be passed to containers
+    /// The following AI Platform environment variables are passed to containers
     /// or python modules of the training task when this field is set:
     ///
     /// * AIP_DATA_FORMAT : Exported data format.
@@ -2616,8 +2719,9 @@ pub struct InputDataConfig {
     /// * AIP_VALIDATION_DATA_URI : Sharded exported validation data uris.
     /// * AIP_TEST_DATA_URI : Sharded exported test data uris.
     #[prost(oneof = "input_data_config::Destination", tags = "8, 10")]
-    pub destination: ::std::option::Option<input_data_config::Destination>,
+    pub destination: ::core::option::Option<input_data_config::Destination>,
 }
+/// Nested message and enum types in `InputDataConfig`.
 pub mod input_data_config {
     /// The instructions how the input data should be split between the
     /// training, validation and test sets.
@@ -2649,7 +2753,7 @@ pub mod input_data_config {
     ///   * For non-tabular data: "jsonl".
     ///   * For tabular data: "csv" and "bigquery".
     ///
-    /// Following AI Platform environment variables will be passed to containers
+    /// The following AI Platform environment variables are passed to containers
     /// or python modules of the training task when this field is set:
     ///
     /// * AIP_DATA_FORMAT : Exported data format.
@@ -2658,43 +2762,50 @@ pub mod input_data_config {
     /// * AIP_TEST_DATA_URI : Sharded exported test data uris.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// The Google Cloud Storage location where the training data is to be
-        /// written to. In the given directory a new directory will be created with
+        /// The Cloud Storage location where the training data is to be
+        /// written to. In the given directory a new directory is created with
         /// name:
         /// `dataset-<dataset-id>-<annotation-type>-<timestamp-of-training-call>`
         /// where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
-        /// All training input data will be written into that directory.
+        /// All training input data is written into that directory.
         ///
-        /// The AI Platform environment variables representing Google Cloud Storage
-        /// data URIs will always be represented in the Google Cloud Storage wildcard
+        /// The AI Platform environment variables representing Cloud Storage
+        /// data URIs are represented in the Cloud Storage wildcard
         /// format to support sharded data. e.g.: "gs://.../training-*.jsonl"
         ///
         /// * AIP_DATA_FORMAT = "jsonl" for non-tabular data, "csv" for tabular data
-        /// * AIP_TRAINING_DATA_URI  =
+        /// * AIP_TRAINING_DATA_URI =
         ///
         /// "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/training-*.${AIP_DATA_FORMAT}"
+        ///
         /// * AIP_VALIDATION_DATA_URI =
         ///
         /// "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/validation-*.${AIP_DATA_FORMAT}"
+        ///
         /// * AIP_TEST_DATA_URI =
         ///
         /// "gcs_destination/dataset-<dataset-id>-<annotation-type>-<time>/test-*.${AIP_DATA_FORMAT}"
         #[prost(message, tag = "8")]
         GcsDestination(super::GcsDestination),
+        /// Only applicable to custom training with tabular Dataset with BigQuery
+        /// source.
+        ///
         /// The BigQuery project location where the training data is to be written
         /// to. In the given project a new dataset is created with name
         /// `dataset_<dataset-id>_<annotation-type>_<timestamp-of-training-call>`
         /// where timestamp is in YYYY_MM_DDThh_mm_ss_sssZ format. All training
-        /// input data will be written into that dataset. In the dataset three
-        /// tables will be created, `training`, `validation` and `test`.
+        /// input data is written into that dataset. In the dataset three
+        /// tables are created, `training`, `validation` and `test`.
         ///
         /// * AIP_DATA_FORMAT = "bigquery".
         /// * AIP_TRAINING_DATA_URI  =
         ///
         /// "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.training"
+        ///
         /// * AIP_VALIDATION_DATA_URI =
         ///
         /// "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.validation"
+        ///
         /// * AIP_TEST_DATA_URI =
         /// "bigquery_destination.dataset_<dataset-id>_<annotation-type>_<time>.test"
         #[prost(message, tag = "10")]
@@ -2706,7 +2817,7 @@ pub mod input_data_config {
 /// `test_fraction` may optionally be provided, they must sum to up to 1. If the
 /// provided ones sum to less than 1, the remainder is assigned to sets as
 /// decided by AI Platform. If none of the fractions are set, by default roughly
-/// 80% of data will be used for training, 10% for validation, and 10% for test.
+/// 80% of data is used for training, 10% for validation, and 10% for test.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FractionSplit {
     /// The fraction of the input data that is to be used to train the Model.
@@ -2724,32 +2835,35 @@ pub struct FractionSplit {
 /// supported for Datasets containing DataItems.
 /// If any of the filters in this message are to match nothing, then they can be
 /// set as '-' (the minus sign).
+///
+/// Supported only for unstructured Datasets.
+///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterSplit {
     /// Required. A filter on DataItems of the Dataset. DataItems that match
     /// this filter are used to train the Model. A filter with same syntax
     /// as the one used in [DatasetService.ListDataItems][google.cloud.aiplatform.v1beta1.DatasetService.ListDataItems] may be used. If a
     /// single DataItem is matched by more than one of the FilterSplit filters,
-    /// then it will be assigned to the first set that applies to it in the
+    /// then it is assigned to the first set that applies to it in the
     /// training, validation, test order.
     #[prost(string, tag = "1")]
-    pub training_filter: std::string::String,
+    pub training_filter: ::prost::alloc::string::String,
     /// Required. A filter on DataItems of the Dataset. DataItems that match
     /// this filter are used to validate the Model. A filter with same syntax
     /// as the one used in [DatasetService.ListDataItems][google.cloud.aiplatform.v1beta1.DatasetService.ListDataItems] may be used. If a
     /// single DataItem is matched by more than one of the FilterSplit filters,
-    /// then it will be assigned to the first set that applies to it in the
+    /// then it is assigned to the first set that applies to it in the
     /// training, validation, test order.
     #[prost(string, tag = "2")]
-    pub validation_filter: std::string::String,
+    pub validation_filter: ::prost::alloc::string::String,
     /// Required. A filter on DataItems of the Dataset. DataItems that match
     /// this filter are used to test the Model. A filter with same syntax
     /// as the one used in [DatasetService.ListDataItems][google.cloud.aiplatform.v1beta1.DatasetService.ListDataItems] may be used. If a
     /// single DataItem is matched by more than one of the FilterSplit filters,
-    /// then it will be assigned to the first set that applies to it in the
+    /// then it is assigned to the first set that applies to it in the
     /// training, validation, test order.
     #[prost(string, tag = "3")]
-    pub test_filter: std::string::String,
+    pub test_filter: ::prost::alloc::string::String,
 }
 /// Assigns input data to training, validation, and test sets based on the
 /// value of a provided key.
@@ -2764,7 +2878,7 @@ pub struct PredefinedSplit {
     /// is not present or has an invalid value, that piece is ignored by the
     /// pipeline.
     #[prost(string, tag = "1")]
-    pub key: std::string::String,
+    pub key: ::prost::alloc::string::String,
 }
 /// Assigns input data to training, validation, and test sets based on a
 /// provided timestamps. The youngest data pieces are assigned to training set,
@@ -2788,7 +2902,7 @@ pub struct TimestampSplit {
     /// (e.g. 1985-04-12T23:20:50.52Z). If for a piece of data the key is not
     /// present or has an invalid value, that piece is ignored by the pipeline.
     #[prost(string, tag = "4")]
-    pub key: std::string::String,
+    pub key: ::prost::alloc::string::String,
 }
 /// Request message for [DatasetService.CreateDataset][google.cloud.aiplatform.v1beta1.DatasetService.CreateDataset].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2796,46 +2910,44 @@ pub struct CreateDatasetRequest {
     /// Required. The resource name of the Location to create the Dataset in.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Dataset to create.
     #[prost(message, optional, tag = "2")]
-    pub dataset: ::std::option::Option<Dataset>,
+    pub dataset: ::core::option::Option<Dataset>,
 }
 /// Runtime operation information for [DatasetService.CreateDataset][google.cloud.aiplatform.v1beta1.DatasetService.CreateDataset].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetOperationMetadata {
     /// The operation generic information.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for [DatasetService.GetDataset][google.cloud.aiplatform.v1beta1.DatasetService.GetDataset].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. The name of the Dataset resource.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "2")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [DatasetService.UpdateDataset][google.cloud.aiplatform.v1beta1.DatasetService.UpdateDataset].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetRequest {
     /// Required. The Dataset which replaces the resource on the server.
     #[prost(message, optional, tag = "1")]
-    pub dataset: ::std::option::Option<Dataset>,
+    pub dataset: ::core::option::Option<Dataset>,
     /// Required. The update mask applies to the resource.
     /// For the `FieldMask` definition, see
-    ///
-    /// [FieldMask](https:
-    /// //tinyurl.com/dev-google-protobuf#google.protobuf.FieldMask).
+    /// [FieldMask](https://tinyurl.com/protobufs/google.protobuf#fieldmask).
     /// Updatable fields:
     ///
     ///   * `display_name`
     ///   * `description`
     ///   * `labels`
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [DatasetService.ListDatasets][google.cloud.aiplatform.v1beta1.DatasetService.ListDatasets].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2843,37 +2955,49 @@ pub struct ListDatasetsRequest {
     /// Required. The name of the Dataset's parent resource.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// The standard list filter.
+    pub parent: ::prost::alloc::string::String,
+    /// An expression for filtering the results of the request. For field names
+    /// both snake_case and camelCase are supported.
+    ///
+    ///   * `display_name`: supports = and !=
+    ///   * `metadata_schema_uri`: supports = and !=
+    ///   * `labels` supports general map functions that is:
+    ///     * `labels.key=value` - key:value equality
+    ///     * `labels.key:* or labels:key - key existence
+    ///     * A key including a space must be quoted. `labels."a key"`.
+    ///
+    /// Some examples:
+    ///   * `displayName="myDisplayName"`
+    ///   * `labels.myKey="myValue"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// The standard list page token.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// A comma-separated list of fields to order by, sorted in ascending order.
     /// Use "desc" after a field name for descending.
     /// Supported fields:
     ///   * `display_name`
-    ///   * `data_item_count`   * `create_time`
+    ///   * `create_time`
     ///   * `update_time`
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [DatasetService.ListDatasets][google.cloud.aiplatform.v1beta1.DatasetService.ListDatasets].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
     /// A list of Datasets that matches the specified filter in the request.
     #[prost(message, repeated, tag = "1")]
-    pub datasets: ::std::vec::Vec<Dataset>,
+    pub datasets: ::prost::alloc::vec::Vec<Dataset>,
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [DatasetService.DeleteDataset][google.cloud.aiplatform.v1beta1.DatasetService.DeleteDataset].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2882,7 +3006,7 @@ pub struct DeleteDatasetRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/datasets/{dataset}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [DatasetService.ImportData][google.cloud.aiplatform.v1beta1.DatasetService.ImportData].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2891,11 +3015,11 @@ pub struct ImportDataRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/datasets/{dataset}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The desired input locations. The contents of all input locations will be
     /// imported in one batch.
     #[prost(message, repeated, tag = "2")]
-    pub import_configs: ::std::vec::Vec<ImportDataConfig>,
+    pub import_configs: ::prost::alloc::vec::Vec<ImportDataConfig>,
 }
 /// Response message for [DatasetService.ImportData][google.cloud.aiplatform.v1beta1.DatasetService.ImportData].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2905,7 +3029,7 @@ pub struct ImportDataResponse {}
 pub struct ImportDataOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for [DatasetService.ExportData][google.cloud.aiplatform.v1beta1.DatasetService.ExportData].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2914,28 +3038,28 @@ pub struct ExportDataRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/datasets/{dataset}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The desired output location.
     #[prost(message, optional, tag = "2")]
-    pub export_config: ::std::option::Option<ExportDataConfig>,
+    pub export_config: ::core::option::Option<ExportDataConfig>,
 }
 /// Response message for [DatasetService.ExportData][google.cloud.aiplatform.v1beta1.DatasetService.ExportData].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataResponse {
     /// All of the files that are exported in this export operation.
     #[prost(string, repeated, tag = "1")]
-    pub exported_files: ::std::vec::Vec<std::string::String>,
+    pub exported_files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Runtime operation information for [DatasetService.ExportData][google.cloud.aiplatform.v1beta1.DatasetService.ExportData].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
     /// A Google Cloud Storage directory which path ends with '/'. The exported
     /// data is stored in the directory.
     #[prost(string, tag = "2")]
-    pub gcs_output_directory: std::string::String,
+    pub gcs_output_directory: ::prost::alloc::string::String,
 }
 /// Request message for [DatasetService.ListDataItems][google.cloud.aiplatform.v1beta1.DatasetService.ListDataItems].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2944,33 +3068,33 @@ pub struct ListDataItemsRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/datasets/{dataset}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// The standard list page token.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// A comma-separated list of fields to order by, sorted in ascending order.
     /// Use "desc" after a field name for descending.
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [DatasetService.ListDataItems][google.cloud.aiplatform.v1beta1.DatasetService.ListDataItems].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataItemsResponse {
     /// A list of DataItems that matches the specified filter in the request.
     #[prost(message, repeated, tag = "1")]
-    pub data_items: ::std::vec::Vec<DataItem>,
+    pub data_items: ::prost::alloc::vec::Vec<DataItem>,
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [DatasetService.GetAnnotationSpec][google.cloud.aiplatform.v1beta1.DatasetService.GetAnnotationSpec].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2980,10 +3104,10 @@ pub struct GetAnnotationSpecRequest {
     ///
     /// `projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "2")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [DatasetService.ListAnnotations][google.cloud.aiplatform.v1beta1.DatasetService.ListAnnotations].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2993,33 +3117,33 @@ pub struct ListAnnotationsRequest {
     ///
     /// `projects/{project}/locations/{location}/datasets/{dataset}/dataItems/{data_item}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// The standard list page token.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// A comma-separated list of fields to order by, sorted in ascending order.
     /// Use "desc" after a field name for descending.
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [DatasetService.ListAnnotations][google.cloud.aiplatform.v1beta1.DatasetService.ListAnnotations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotationsResponse {
     /// A list of Annotations that matches the specified filter in the request.
     #[prost(message, repeated, tag = "1")]
-    pub annotations: ::std::vec::Vec<Annotation>,
+    pub annotations: ::prost::alloc::vec::Vec<Annotation>,
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod dataset_service_client {
@@ -3245,20 +3369,20 @@ pub mod dataset_service_client {
 pub struct Endpoint {
     /// Output only. The resource name of the Endpoint.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The display name of the Endpoint.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The description of the Endpoint.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The models deployed in this Endpoint.
     /// To add or remove DeployedModels use [EndpointService.DeployModel][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel] and
     /// [EndpointService.UndeployModel][google.cloud.aiplatform.v1beta1.EndpointService.UndeployModel] respectively.
     #[prost(message, repeated, tag = "4")]
-    pub deployed_models: ::std::vec::Vec<DeployedModel>,
+    pub deployed_models: ::prost::alloc::vec::Vec<DeployedModel>,
     /// A map from a DeployedModel's ID to the percentage of this Endpoint's
     /// traffic that should be forwarded to that DeployedModel.
     ///
@@ -3268,11 +3392,11 @@ pub struct Endpoint {
     /// The traffic percentage values must add up to 100, or map must be empty if
     /// the Endpoint is to not accept any traffic at a moment.
     #[prost(map = "string, int32", tag = "5")]
-    pub traffic_split: ::std::collections::HashMap<std::string::String, i32>,
+    pub traffic_split: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
     /// Used to perform consistent read-modify-write updates. If not set, a blind
     /// "overwrite" update happens.
     #[prost(string, tag = "6")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The labels with user-defined metadata to organize your Endpoints.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -3281,31 +3405,37 @@ pub struct Endpoint {
     ///
     /// See https://goo.gl/xmQnxf for more information and examples of labels.
     #[prost(map = "string, string", tag = "7")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Timestamp when this Endpoint was created.
     #[prost(message, optional, tag = "8")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when this Endpoint was last updated.
     #[prost(message, optional, tag = "9")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Customer-managed encryption key spec for an Endpoint. If set, this
+    /// Endpoint and all sub-resources of this Endpoint will be secured by
+    /// this key.
+    #[prost(message, optional, tag = "10")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// A deployment of a Model. Endpoints contain one or more DeployedModels.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedModel {
     /// Output only. The ID of the DeployedModel.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Required. The name of the Model this is the deployment of. Note that the Model
     /// may be in a different location than the DeployedModel's Endpoint.
     #[prost(string, tag = "2")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// The display name of the DeployedModel. If not provided upon creation,
     /// the Model's display_name is used.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Output only. Timestamp when the DeployedModel was created.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Explanation configuration for this DeployedModel.
     ///
     /// When deploying a Model using [EndpointService.DeployModel][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel], this value
@@ -3316,7 +3446,7 @@ pub struct DeployedModel {
     /// [Model.explanation_spec][google.cloud.aiplatform.v1beta1.Model.explanation_spec] must be populated, otherwise explanation for
     /// this Model is not allowed.
     #[prost(message, optional, tag = "9")]
-    pub explanation_spec: ::std::option::Option<ExplanationSpec>,
+    pub explanation_spec: ::core::option::Option<ExplanationSpec>,
     /// The service account that the DeployedModel's container runs as. Specify the
     /// email address of the service account. If this service account is not
     /// specified, the container runs as a service account that doesn't have access
@@ -3325,11 +3455,11 @@ pub struct DeployedModel {
     /// Users deploying the Model must have the `iam.serviceAccounts.actAs`
     /// permission on this service account.
     #[prost(string, tag = "11")]
-    pub service_account: std::string::String,
+    pub service_account: ::prost::alloc::string::String,
     /// If true, the container of the DeployedModel instances will send `stderr`
     /// and `stdout` streams to Stackdriver Logging.
     ///
-    /// Only supported for custom-trained Models and AutoML Tables Models.
+    /// Only supported for custom-trained Models and AutoML Tabular Models.
     #[prost(bool, tag = "12")]
     pub enable_container_logging: bool,
     /// These logs are like standard server access logs, containing
@@ -3346,8 +3476,9 @@ pub struct DeployedModel {
     /// Not all Models support all resources types. See
     /// [Model.supported_deployment_resources_types][google.cloud.aiplatform.v1beta1.Model.supported_deployment_resources_types].
     #[prost(oneof = "deployed_model::PredictionResources", tags = "7, 8")]
-    pub prediction_resources: ::std::option::Option<deployed_model::PredictionResources>,
+    pub prediction_resources: ::core::option::Option<deployed_model::PredictionResources>,
 }
+/// Nested message and enum types in `DeployedModel`.
 pub mod deployed_model {
     /// The prediction (for example, the machine) resources that the DeployedModel
     /// uses. The user is billed for the resources (at least their minimal amount)
@@ -3372,17 +3503,17 @@ pub struct CreateEndpointRequest {
     /// Required. The resource name of the Location to create the Endpoint in.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Endpoint to create.
     #[prost(message, optional, tag = "2")]
-    pub endpoint: ::std::option::Option<Endpoint>,
+    pub endpoint: ::core::option::Option<Endpoint>,
 }
 /// Runtime operation information for [EndpointService.CreateEndpoint][google.cloud.aiplatform.v1beta1.EndpointService.CreateEndpoint].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointOperationMetadata {
     /// The operation generic information.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for [EndpointService.GetEndpoint][google.cloud.aiplatform.v1beta1.EndpointService.GetEndpoint]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3391,7 +3522,7 @@ pub struct GetEndpointRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [EndpointService.ListEndpoints][google.cloud.aiplatform.v1beta1.EndpointService.ListEndpoints].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3399,26 +3530,24 @@ pub struct ListEndpointsRequest {
     /// Required. The resource name of the Location from which to list the Endpoints.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. An expression for filtering the results of the request. For field names
     /// both snake_case and camelCase are supported.
     ///
     ///   * `endpoint` supports = and !=. `endpoint` represents the Endpoint ID,
-    ///     ie. the last segment of the Endpoint's [resource name][google.cloud.aiplatform.v1beta1.Endpoint.name].
-    ///   * `display_name` supports =, != and regex()
-    ///             (uses [re2](https://github.com/google/re2/wiki/Syntax) syntax)
+    ///     i.e. the last segment of the Endpoint's [resource name][google.cloud.aiplatform.v1beta1.Endpoint.name].
+    ///   * `display_name` supports = and, !=
     ///   * `labels` supports general map functions that is:
-    ///             `labels.key=value` - key:value equality
-    ///             `labels.key:* or labels:key - key existence
-    ///              A key including a space must be quoted. `labels."a key"`.
+    ///     * `labels.key=value` - key:value equality
+    ///     * `labels.key:* or labels:key - key existence
+    ///     * A key including a space must be quoted. `labels."a key"`.
     ///
     /// Some examples:
     ///   * `endpoint=1`
     ///   * `displayName="myDisplayName"`
-    ///   * `regex(display_name, "^A") -> The display name starts with an A.
     ///   * `labels.myKey="myValue"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -3427,31 +3556,33 @@ pub struct ListEndpointsRequest {
     /// [ListEndpointsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListEndpointsResponse.next_page_token] of the previous
     /// [EndpointService.ListEndpoints][google.cloud.aiplatform.v1beta1.EndpointService.ListEndpoints] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [EndpointService.ListEndpoints][google.cloud.aiplatform.v1beta1.EndpointService.ListEndpoints].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsResponse {
     /// List of Endpoints in the requested page.
     #[prost(message, repeated, tag = "1")]
-    pub endpoints: ::std::vec::Vec<Endpoint>,
+    pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
     /// A token to retrieve next page of results.
     /// Pass to [ListEndpointsRequest.page_token][google.cloud.aiplatform.v1beta1.ListEndpointsRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [EndpointService.UpdateEndpoint][google.cloud.aiplatform.v1beta1.EndpointService.UpdateEndpoint].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointRequest {
     /// Required. The Endpoint which replaces the resource on the server.
     #[prost(message, optional, tag = "1")]
-    pub endpoint: ::std::option::Option<Endpoint>,
+    pub endpoint: ::core::option::Option<Endpoint>,
     /// Required. The update mask applies to the resource.
+    /// See
+    /// [FieldMask](https://tinyurl.com/protobufs/google.protobuf#fieldmask).
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [EndpointService.DeleteEndpoint][google.cloud.aiplatform.v1beta1.EndpointService.DeleteEndpoint].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3460,7 +3591,7 @@ pub struct DeleteEndpointRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [EndpointService.DeployModel][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3469,13 +3600,13 @@ pub struct DeployModelRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
-    pub endpoint: std::string::String,
+    pub endpoint: ::prost::alloc::string::String,
     /// Required. The DeployedModel to be created within the Endpoint. Note that
     /// [Endpoint.traffic_split][google.cloud.aiplatform.v1beta1.Endpoint.traffic_split] must be updated for the DeployedModel to start
     /// receiving traffic, either as part of this call, or via
     /// [EndpointService.UpdateEndpoint][google.cloud.aiplatform.v1beta1.EndpointService.UpdateEndpoint].
     #[prost(message, optional, tag = "2")]
-    pub deployed_model: ::std::option::Option<DeployedModel>,
+    pub deployed_model: ::core::option::Option<DeployedModel>,
     /// A map from a DeployedModel's ID to the percentage of this Endpoint's
     /// traffic that should be forwarded to that DeployedModel.
     ///
@@ -3488,21 +3619,21 @@ pub struct DeployModelRequest {
     /// If this field is empty, then the Endpoint's
     /// [traffic_split][google.cloud.aiplatform.v1beta1.Endpoint.traffic_split] is not updated.
     #[prost(map = "string, int32", tag = "3")]
-    pub traffic_split: ::std::collections::HashMap<std::string::String, i32>,
+    pub traffic_split: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
 }
 /// Response message for [EndpointService.DeployModel][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelResponse {
     /// The DeployedModel that had been deployed in the Endpoint.
     #[prost(message, optional, tag = "1")]
-    pub deployed_model: ::std::option::Option<DeployedModel>,
+    pub deployed_model: ::core::option::Option<DeployedModel>,
 }
 /// Runtime operation information for [EndpointService.DeployModel][google.cloud.aiplatform.v1beta1.EndpointService.DeployModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelOperationMetadata {
     /// The operation generic information.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for [EndpointService.UndeployModel][google.cloud.aiplatform.v1beta1.EndpointService.UndeployModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3511,10 +3642,10 @@ pub struct UndeployModelRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
-    pub endpoint: std::string::String,
+    pub endpoint: ::prost::alloc::string::String,
     /// Required. The ID of the DeployedModel to be undeployed from the Endpoint.
     #[prost(string, tag = "2")]
-    pub deployed_model_id: std::string::String,
+    pub deployed_model_id: ::prost::alloc::string::String,
     /// If this field is provided, then the Endpoint's
     /// [traffic_split][google.cloud.aiplatform.v1beta1.Endpoint.traffic_split] will be overwritten with it. If
     /// last DeployedModel is being undeployed from the Endpoint, the
@@ -3523,7 +3654,7 @@ pub struct UndeployModelRequest {
     /// any traffic assigned to it when this method executes, or if this field
     /// unassigns any traffic to it.
     #[prost(map = "string, int32", tag = "3")]
-    pub traffic_split: ::std::collections::HashMap<std::string::String, i32>,
+    pub traffic_split: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
 }
 /// Response message for [EndpointService.UndeployModel][google.cloud.aiplatform.v1beta1.EndpointService.UndeployModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3533,7 +3664,7 @@ pub struct UndeployModelResponse {}
 pub struct UndeployModelOperationMetadata {
     /// The operation generic information.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 #[doc = r" Generated client implementations."]
 pub mod endpoint_service_client {
@@ -3710,27 +3841,28 @@ pub mod endpoint_service_client {
 pub struct Trial {
     /// Output only. The identifier of the Trial assigned by the service.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Output only. The detailed state of the Trial.
     #[prost(enumeration = "trial::State", tag = "3")]
     pub state: i32,
     /// Output only. The parameters of the Trial.
     #[prost(message, repeated, tag = "4")]
-    pub parameters: ::std::vec::Vec<trial::Parameter>,
+    pub parameters: ::prost::alloc::vec::Vec<trial::Parameter>,
     /// Output only. The final measurement containing the objective value.
     #[prost(message, optional, tag = "5")]
-    pub final_measurement: ::std::option::Option<Measurement>,
+    pub final_measurement: ::core::option::Option<Measurement>,
     /// Output only. Time when the Trial was started.
     #[prost(message, optional, tag = "7")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the Trial's status changed to `SUCCEEDED` or `INFEASIBLE`.
     #[prost(message, optional, tag = "8")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The CustomJob name linked to the Trial.
     /// It's set for a HyperparameterTuningJob's Trial.
     #[prost(string, tag = "11")]
-    pub custom_job: std::string::String,
+    pub custom_job: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Trial`.
 pub mod trial {
     /// A message representing a parameter to be tuned.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3738,14 +3870,14 @@ pub mod trial {
         /// Output only. The ID of the parameter. The parameter should be defined in
         /// [StudySpec's Parameters][google.cloud.aiplatform.v1beta1.StudySpec.parameters].
         #[prost(string, tag = "1")]
-        pub parameter_id: std::string::String,
+        pub parameter_id: ::prost::alloc::string::String,
         /// Output only. The value of the parameter.
         /// `number_value` will be set if a parameter defined in StudySpec is
         /// in type 'INTEGER', 'DOUBLE' or 'DISCRETE'.
         /// `string_value` will be set if a parameter defined in StudySpec is
         /// in type 'CATEGORICAL'.
         #[prost(message, optional, tag = "2")]
-        pub value: ::std::option::Option<::prost_types::Value>,
+        pub value: ::core::option::Option<::prost_types::Value>,
     }
     /// Describes a Trial state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3773,14 +3905,23 @@ pub mod trial {
 pub struct StudySpec {
     /// Required. Metric specs for the Study.
     #[prost(message, repeated, tag = "1")]
-    pub metrics: ::std::vec::Vec<study_spec::MetricSpec>,
+    pub metrics: ::prost::alloc::vec::Vec<study_spec::MetricSpec>,
     /// Required. The set of parameters to tune.
     #[prost(message, repeated, tag = "2")]
-    pub parameters: ::std::vec::Vec<study_spec::ParameterSpec>,
+    pub parameters: ::prost::alloc::vec::Vec<study_spec::ParameterSpec>,
     /// The search algorithm specified for the Study.
     #[prost(enumeration = "study_spec::Algorithm", tag = "3")]
     pub algorithm: i32,
+    /// The observation noise level of the study.
+    /// Currently only supported by the Vizier service. Not supported by
+    /// HyperparamterTuningJob or TrainingPipeline.
+    #[prost(enumeration = "study_spec::ObservationNoise", tag = "6")]
+    pub observation_noise: i32,
+    /// Describe which measurement selection type will be used
+    #[prost(enumeration = "study_spec::MeasurementSelectionType", tag = "7")]
+    pub measurement_selection_type: i32,
 }
+/// Nested message and enum types in `StudySpec`.
 pub mod study_spec {
     /// Represents a metric to optimize.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3788,14 +3929,17 @@ pub mod study_spec {
         /// Required. The ID of the metric. Must not contain whitespaces and must be unique
         /// amongst all MetricSpecs.
         #[prost(string, tag = "1")]
-        pub metric_id: std::string::String,
+        pub metric_id: ::prost::alloc::string::String,
         /// Required. The optimization goal of the metric.
         #[prost(enumeration = "metric_spec::GoalType", tag = "2")]
         pub goal: i32,
     }
+    /// Nested message and enum types in `MetricSpec`.
     pub mod metric_spec {
         /// The available types of optimization goals.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum GoalType {
             /// Goal Type will default to maximize.
@@ -3812,7 +3956,7 @@ pub mod study_spec {
         /// Required. The ID of the parameter. Must not contain whitespaces and must be unique
         /// amongst all ParameterSpecs.
         #[prost(string, tag = "1")]
-        pub parameter_id: std::string::String,
+        pub parameter_id: ::prost::alloc::string::String,
         /// How the parameter should be scaled.
         /// Leave unset for `CATEGORICAL` parameters.
         #[prost(enumeration = "parameter_spec::ScaleType", tag = "6")]
@@ -3823,10 +3967,12 @@ pub mod study_spec {
         /// If two items in conditional_parameter_specs have the same name, they
         /// must have disjoint parent_value_condition.
         #[prost(message, repeated, tag = "10")]
-        pub conditional_parameter_specs: ::std::vec::Vec<parameter_spec::ConditionalParameterSpec>,
+        pub conditional_parameter_specs:
+            ::prost::alloc::vec::Vec<parameter_spec::ConditionalParameterSpec>,
         #[prost(oneof = "parameter_spec::ParameterValueSpec", tags = "2, 3, 4, 5")]
-        pub parameter_value_spec: ::std::option::Option<parameter_spec::ParameterValueSpec>,
+        pub parameter_value_spec: ::core::option::Option<parameter_spec::ParameterValueSpec>,
     }
+    /// Nested message and enum types in `ParameterSpec`.
     pub mod parameter_spec {
         /// Value specification for a parameter in `DOUBLE` type.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3853,7 +3999,7 @@ pub mod study_spec {
         pub struct CategoricalValueSpec {
             /// Required. The list of possible categories.
             #[prost(string, repeated, tag = "1")]
-            pub values: ::std::vec::Vec<std::string::String>,
+            pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// Value specification for a parameter in `DISCRETE` type.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3863,14 +4009,14 @@ pub mod study_spec {
             /// For instance, this parameter might have possible settings of 1.5, 2.5,
             /// and 4.0. This list should not contain more than 1,000 values.
             #[prost(double, repeated, packed = "false", tag = "1")]
-            pub values: ::std::vec::Vec<f64>,
+            pub values: ::prost::alloc::vec::Vec<f64>,
         }
         /// Represents a parameter spec with condition from its parent parameter.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ConditionalParameterSpec {
             /// Required. The spec for a conditional parameter.
             #[prost(message, optional, tag = "1")]
-            pub parameter_spec: ::std::option::Option<super::ParameterSpec>,
+            pub parameter_spec: ::core::option::Option<super::ParameterSpec>,
             /// A set of parameter values from the parent ParameterSpec's feasible
             /// space.
             #[prost(
@@ -3878,8 +4024,9 @@ pub mod study_spec {
                 tags = "2, 3, 4"
             )]
             pub parent_value_condition:
-                ::std::option::Option<conditional_parameter_spec::ParentValueCondition>,
+                ::core::option::Option<conditional_parameter_spec::ParentValueCondition>,
         }
+        /// Nested message and enum types in `ConditionalParameterSpec`.
         pub mod conditional_parameter_spec {
             /// Represents the spec to match discrete values from parent parameter.
             #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3889,7 +4036,7 @@ pub mod study_spec {
                 ///
                 /// The Epsilon of the value matching is 1e-10.
                 #[prost(double, repeated, packed = "false", tag = "1")]
-                pub values: ::std::vec::Vec<f64>,
+                pub values: ::prost::alloc::vec::Vec<f64>,
             }
             /// Represents the spec to match integer values from parent parameter.
             #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3897,7 +4044,7 @@ pub mod study_spec {
                 /// Required. Matches values of the parent parameter of 'INTEGER' type.
                 /// All values must lie in `integer_value_spec` of parent parameter.
                 #[prost(int64, repeated, packed = "false", tag = "1")]
-                pub values: ::std::vec::Vec<i64>,
+                pub values: ::prost::alloc::vec::Vec<i64>,
             }
             /// Represents the spec to match categorical values from parent parameter.
             #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3906,7 +4053,7 @@ pub mod study_spec {
                 /// All values must exist in `categorical_value_spec` of parent
                 /// parameter.
                 #[prost(string, repeated, tag = "1")]
-                pub values: ::std::vec::Vec<std::string::String>,
+                pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             }
             /// A set of parameter values from the parent ParameterSpec's feasible
             /// space.
@@ -3927,7 +4074,9 @@ pub mod study_spec {
             }
         }
         /// The type of scaling that should be applied to this parameter.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ScaleType {
             /// By default, no scaling is applied.
@@ -3971,6 +4120,46 @@ pub mod study_spec {
         /// Simple random search within the feasible space.
         RandomSearch = 3,
     }
+    /// Describes the noise level of the repeated observations.
+    ///
+    /// "Noisy" means that the repeated observations with the same Trial parameters
+    /// may lead to different metric evaluations.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ObservationNoise {
+        /// The default noise level chosen by the AI Platform service.
+        Unspecified = 0,
+        /// AI Platform Vizier assumes that the objective function is (nearly)
+        /// perfectly reproducible, and will never repeat the same Trial
+        /// parameters.
+        Low = 1,
+        /// AI Platform Vizier will estimate the amount of noise in metric
+        /// evaluations, it may repeat the same Trial parameters more than once.
+        High = 2,
+    }
+    /// This indicates which measurement to use if/when the service automatically
+    /// selects the final measurement from previously reported intermediate
+    /// measurements. Choose this based on two considerations:
+    ///  A) Do you expect your measurements to monotonically improve?
+    ///     If so, choose LAST_MEASUREMENT. On the other hand, if you're in a
+    ///     situation where your system can "over-train" and you expect the
+    ///     performance to get better for a while but then start declining,
+    ///     choose BEST_MEASUREMENT.
+    ///  B) Are your measurements significantly noisy and/or irreproducible?
+    ///     If so, BEST_MEASUREMENT will tend to be over-optimistic, and it
+    ///     may be better to choose LAST_MEASUREMENT.
+    ///  If both or neither of (A) and (B) apply, it doesn't matter which
+    ///  selection type is chosen.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum MeasurementSelectionType {
+        /// Will be treated as LAST_MEASUREMENT.
+        Unspecified = 0,
+        /// Use the last measurement reported.
+        LastMeasurement = 1,
+        /// Use the best measurement reported.
+        BestMeasurement = 2,
+    }
 }
 /// A message representing a Measurement of a Trial. A Measurement contains
 /// the Metrics got by executing a Trial using suggested hyperparameter
@@ -3984,8 +4173,9 @@ pub struct Measurement {
     /// Output only. A list of metrics got by evaluating the objective functions using suggested
     /// Parameter values.
     #[prost(message, repeated, tag = "3")]
-    pub metrics: ::std::vec::Vec<measurement::Metric>,
+    pub metrics: ::prost::alloc::vec::Vec<measurement::Metric>,
 }
+/// Nested message and enum types in `Measurement`.
 pub mod measurement {
     /// A message representing a metric in the measurement.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3993,7 +4183,7 @@ pub mod measurement {
         /// Output only. The ID of the Metric. The Metric should be defined in
         /// [StudySpec's Metrics][google.cloud.aiplatform.v1beta1.StudySpec.metrics].
         #[prost(string, tag = "1")]
-        pub metric_id: std::string::String,
+        pub metric_id: ::prost::alloc::string::String,
         /// Output only. The value for this metric.
         #[prost(double, tag = "2")]
         pub value: f64,
@@ -4006,15 +4196,15 @@ pub mod measurement {
 pub struct HyperparameterTuningJob {
     /// Output only. Resource name of the HyperparameterTuningJob.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The display name of the HyperparameterTuningJob.
     /// The name can be up to 128 characters long and can be consist of any UTF-8
     /// characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. Study configuration of the HyperparameterTuningJob.
     #[prost(message, optional, tag = "4")]
-    pub study_spec: ::std::option::Option<StudySpec>,
+    pub study_spec: ::core::option::Option<StudySpec>,
     /// Required. The desired total number of Trials.
     #[prost(int32, tag = "5")]
     pub max_trial_count: i32,
@@ -4031,31 +4221,31 @@ pub struct HyperparameterTuningJob {
     /// Required. The spec of a trial job. The same spec applies to the CustomJobs created
     /// in all the trials.
     #[prost(message, optional, tag = "8")]
-    pub trial_job_spec: ::std::option::Option<CustomJobSpec>,
+    pub trial_job_spec: ::core::option::Option<CustomJobSpec>,
     /// Output only. Trials of the HyperparameterTuningJob.
     #[prost(message, repeated, tag = "9")]
-    pub trials: ::std::vec::Vec<Trial>,
+    pub trials: ::prost::alloc::vec::Vec<Trial>,
     /// Output only. The detailed state of the job.
     #[prost(enumeration = "JobState", tag = "10")]
     pub state: i32,
     /// Output only. Time when the HyperparameterTuningJob was created.
     #[prost(message, optional, tag = "11")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the HyperparameterTuningJob for the first time entered the
     /// `JOB_STATE_RUNNING` state.
     #[prost(message, optional, tag = "12")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the HyperparameterTuningJob entered any of the following states:
     /// `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`.
     #[prost(message, optional, tag = "13")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the HyperparameterTuningJob was most recently updated.
     #[prost(message, optional, tag = "14")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Only populated when job's state is JOB_STATE_FAILED or
     /// JOB_STATE_CANCELLED.
     #[prost(message, optional, tag = "15")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// The labels with user-defined metadata to organize HyperparameterTuningJobs.
     ///
     /// Label keys and values can be no longer than 64 characters
@@ -4064,7 +4254,13 @@ pub struct HyperparameterTuningJob {
     ///
     /// See https://goo.gl/xmQnxf for more information and examples of labels.
     #[prost(map = "string, string", tag = "16")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Customer-managed encryption key options for a HyperparameterTuningJob.
+    /// If this is set, then all resources created by the HyperparameterTuningJob
+    /// will be encrypted with the provided encryption key.
+    #[prost(message, optional, tag = "17")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Request message for [JobService.CreateCustomJob][google.cloud.aiplatform.v1beta1.JobService.CreateCustomJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4072,10 +4268,10 @@ pub struct CreateCustomJobRequest {
     /// Required. The resource name of the Location to create the CustomJob in.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The CustomJob to create.
     #[prost(message, optional, tag = "2")]
-    pub custom_job: ::std::option::Option<CustomJob>,
+    pub custom_job: ::core::option::Option<CustomJob>,
 }
 /// Request message for [JobService.GetCustomJob][google.cloud.aiplatform.v1beta1.JobService.GetCustomJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4084,7 +4280,7 @@ pub struct GetCustomJobRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/customJobs/{custom_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.ListCustomJobs][google.cloud.aiplatform.v1beta1.JobService.ListCustomJobs].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4092,7 +4288,7 @@ pub struct ListCustomJobsRequest {
     /// Required. The resource name of the Location to list the CustomJobs from.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     ///
     /// Supported fields:
@@ -4111,7 +4307,7 @@ pub struct ListCustomJobsRequest {
     ///
     ///  * `state="JOB_STATE_FAILED"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -4120,21 +4316,21 @@ pub struct ListCustomJobsRequest {
     /// [ListCustomJobsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListCustomJobsResponse.next_page_token] of the previous
     /// [JobService.ListCustomJobs][google.cloud.aiplatform.v1beta1.JobService.ListCustomJobs] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [JobService.ListCustomJobs][google.cloud.aiplatform.v1beta1.JobService.ListCustomJobs]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomJobsResponse {
     /// List of CustomJobs in the requested page.
     #[prost(message, repeated, tag = "1")]
-    pub custom_jobs: ::std::vec::Vec<CustomJob>,
+    pub custom_jobs: ::prost::alloc::vec::Vec<CustomJob>,
     /// A token to retrieve next page of results.
     /// Pass to [ListCustomJobsRequest.page_token][google.cloud.aiplatform.v1beta1.ListCustomJobsRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.DeleteCustomJob][google.cloud.aiplatform.v1beta1.JobService.DeleteCustomJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4143,7 +4339,7 @@ pub struct DeleteCustomJobRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/customJobs/{custom_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.CancelCustomJob][google.cloud.aiplatform.v1beta1.JobService.CancelCustomJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4152,7 +4348,7 @@ pub struct CancelCustomJobRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/customJobs/{custom_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [DataLabelingJobService.CreateDataLabelingJob][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4160,10 +4356,10 @@ pub struct CreateDataLabelingJobRequest {
     /// Required. The parent of the DataLabelingJob.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The DataLabelingJob to create.
     #[prost(message, optional, tag = "2")]
-    pub data_labeling_job: ::std::option::Option<DataLabelingJob>,
+    pub data_labeling_job: ::core::option::Option<DataLabelingJob>,
 }
 /// Request message for [DataLabelingJobService.GetDataLabelingJob][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4173,7 +4369,7 @@ pub struct GetDataLabelingJobRequest {
     ///
     /// `projects/{project}/locations/{location}/dataLabelingJobs/{data_labeling_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [DataLabelingJobService.ListDataLabelingJobs][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4181,7 +4377,7 @@ pub struct ListDataLabelingJobsRequest {
     /// Required. The parent of the DataLabelingJob.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     ///
     /// Supported fields:
@@ -4200,24 +4396,24 @@ pub struct ListDataLabelingJobsRequest {
     ///
     ///  * `state="JOB_STATE_FAILED"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// The standard list page token.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read. FieldMask represents a set of
     /// symbolic field paths. For example, the mask can be `paths: "name"`. The
     /// "name" here is a field in DataLabelingJob.
     /// If this field is not set, all fields of the DataLabelingJob are returned.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// A comma-separated list of fields to order by, sorted in ascending order by
     /// default.
     /// Use `desc` after a field name for descending.
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [JobService.ListDataLabelingJobs][google.cloud.aiplatform.v1beta1.JobService.ListDataLabelingJobs].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4225,10 +4421,10 @@ pub struct ListDataLabelingJobsResponse {
     /// A list of DataLabelingJobs that matches the specified filter in the
     /// request.
     #[prost(message, repeated, tag = "1")]
-    pub data_labeling_jobs: ::std::vec::Vec<DataLabelingJob>,
+    pub data_labeling_jobs: ::prost::alloc::vec::Vec<DataLabelingJob>,
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.DeleteDataLabelingJob][google.cloud.aiplatform.v1beta1.JobService.DeleteDataLabelingJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4238,7 +4434,7 @@ pub struct DeleteDataLabelingJobRequest {
     ///
     /// `projects/{project}/locations/{location}/dataLabelingJobs/{data_labeling_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [DataLabelingJobService.CancelDataLabelingJob][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4248,7 +4444,7 @@ pub struct CancelDataLabelingJobRequest {
     ///
     /// `projects/{project}/locations/{location}/dataLabelingJobs/{data_labeling_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.CreateHyperparameterTuningJob][google.cloud.aiplatform.v1beta1.JobService.CreateHyperparameterTuningJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4256,10 +4452,10 @@ pub struct CreateHyperparameterTuningJobRequest {
     /// Required. The resource name of the Location to create the HyperparameterTuningJob in.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The HyperparameterTuningJob to create.
     #[prost(message, optional, tag = "2")]
-    pub hyperparameter_tuning_job: ::std::option::Option<HyperparameterTuningJob>,
+    pub hyperparameter_tuning_job: ::core::option::Option<HyperparameterTuningJob>,
 }
 /// Request message for [JobService.GetHyperparameterTuningJob][google.cloud.aiplatform.v1beta1.JobService.GetHyperparameterTuningJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4269,7 +4465,7 @@ pub struct GetHyperparameterTuningJobRequest {
     ///
     /// `projects/{project}/locations/{location}/hyperparameterTuningJobs/{hyperparameter_tuning_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.ListHyperparameterTuningJobs][google.cloud.aiplatform.v1beta1.JobService.ListHyperparameterTuningJobs].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4277,7 +4473,7 @@ pub struct ListHyperparameterTuningJobsRequest {
     /// Required. The resource name of the Location to list the HyperparameterTuningJobs
     /// from. Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     ///
     /// Supported fields:
@@ -4296,7 +4492,7 @@ pub struct ListHyperparameterTuningJobsRequest {
     ///
     ///  * `state="JOB_STATE_FAILED"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -4305,10 +4501,10 @@ pub struct ListHyperparameterTuningJobsRequest {
     /// [ListHyperparameterTuningJobsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListHyperparameterTuningJobsResponse.next_page_token] of the previous
     /// [JobService.ListHyperparameterTuningJobs][google.cloud.aiplatform.v1beta1.JobService.ListHyperparameterTuningJobs] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [JobService.ListHyperparameterTuningJobs][google.cloud.aiplatform.v1beta1.JobService.ListHyperparameterTuningJobs]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4316,12 +4512,12 @@ pub struct ListHyperparameterTuningJobsResponse {
     /// List of HyperparameterTuningJobs in the requested page.
     /// [HyperparameterTuningJob.trials][google.cloud.aiplatform.v1beta1.HyperparameterTuningJob.trials] of the jobs will be not be returned.
     #[prost(message, repeated, tag = "1")]
-    pub hyperparameter_tuning_jobs: ::std::vec::Vec<HyperparameterTuningJob>,
+    pub hyperparameter_tuning_jobs: ::prost::alloc::vec::Vec<HyperparameterTuningJob>,
     /// A token to retrieve next page of results.
     /// Pass to [ListHyperparameterTuningJobsRequest.page_token][google.cloud.aiplatform.v1beta1.ListHyperparameterTuningJobsRequest.page_token] to obtain that
     /// page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.DeleteHyperparameterTuningJob][google.cloud.aiplatform.v1beta1.JobService.DeleteHyperparameterTuningJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4331,7 +4527,7 @@ pub struct DeleteHyperparameterTuningJobRequest {
     ///
     /// `projects/{project}/locations/{location}/hyperparameterTuningJobs/{hyperparameter_tuning_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.CancelHyperparameterTuningJob][google.cloud.aiplatform.v1beta1.JobService.CancelHyperparameterTuningJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4341,7 +4537,7 @@ pub struct CancelHyperparameterTuningJobRequest {
     ///
     /// `projects/{project}/locations/{location}/hyperparameterTuningJobs/{hyperparameter_tuning_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.CreateBatchPredictionJob][google.cloud.aiplatform.v1beta1.JobService.CreateBatchPredictionJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4349,10 +4545,10 @@ pub struct CreateBatchPredictionJobRequest {
     /// Required. The resource name of the Location to create the BatchPredictionJob in.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The BatchPredictionJob to create.
     #[prost(message, optional, tag = "2")]
-    pub batch_prediction_job: ::std::option::Option<BatchPredictionJob>,
+    pub batch_prediction_job: ::core::option::Option<BatchPredictionJob>,
 }
 /// Request message for [JobService.GetBatchPredictionJob][google.cloud.aiplatform.v1beta1.JobService.GetBatchPredictionJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4362,7 +4558,7 @@ pub struct GetBatchPredictionJobRequest {
     ///
     /// `projects/{project}/locations/{location}/batchPredictionJobs/{batch_prediction_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.ListBatchPredictionJobs][google.cloud.aiplatform.v1beta1.JobService.ListBatchPredictionJobs].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4370,7 +4566,7 @@ pub struct ListBatchPredictionJobsRequest {
     /// Required. The resource name of the Location to list the BatchPredictionJobs
     /// from. Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     ///
     /// Supported fields:
@@ -4389,7 +4585,7 @@ pub struct ListBatchPredictionJobsRequest {
     ///
     ///  * `state="JOB_STATE_FAILED"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -4398,22 +4594,22 @@ pub struct ListBatchPredictionJobsRequest {
     /// [ListBatchPredictionJobsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListBatchPredictionJobsResponse.next_page_token] of the previous
     /// [JobService.ListBatchPredictionJobs][google.cloud.aiplatform.v1beta1.JobService.ListBatchPredictionJobs] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [JobService.ListBatchPredictionJobs][google.cloud.aiplatform.v1beta1.JobService.ListBatchPredictionJobs]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchPredictionJobsResponse {
     /// List of BatchPredictionJobs in the requested page.
     #[prost(message, repeated, tag = "1")]
-    pub batch_prediction_jobs: ::std::vec::Vec<BatchPredictionJob>,
+    pub batch_prediction_jobs: ::prost::alloc::vec::Vec<BatchPredictionJob>,
     /// A token to retrieve next page of results.
     /// Pass to [ListBatchPredictionJobsRequest.page_token][google.cloud.aiplatform.v1beta1.ListBatchPredictionJobsRequest.page_token] to obtain that
     /// page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.DeleteBatchPredictionJob][google.cloud.aiplatform.v1beta1.JobService.DeleteBatchPredictionJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4423,7 +4619,7 @@ pub struct DeleteBatchPredictionJobRequest {
     ///
     /// `projects/{project}/locations/{location}/batchPredictionJobs/{batch_prediction_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [JobService.CancelBatchPredictionJob][google.cloud.aiplatform.v1beta1.JobService.CancelBatchPredictionJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4433,7 +4629,7 @@ pub struct CancelBatchPredictionJobRequest {
     ///
     /// `projects/{project}/locations/{location}/batchPredictionJobs/{batch_prediction_job}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod job_service_client {
@@ -4863,13 +5059,14 @@ pub struct MigratableResource {
     /// Output only. Timestamp when last migrate attempt on this MigratableResource started.
     /// Will not be set if there's no migrate attempt on this MigratableResource.
     #[prost(message, optional, tag = "5")]
-    pub last_migrate_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_migrate_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when this MigratableResource was last updated.
     #[prost(message, optional, tag = "6")]
-    pub last_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(oneof = "migratable_resource::Resource", tags = "1, 2, 3, 4")]
-    pub resource: ::std::option::Option<migratable_resource::Resource>,
+    pub resource: ::core::option::Option<migratable_resource::Resource>,
 }
+/// Nested message and enum types in `MigratableResource`.
 pub mod migratable_resource {
     /// Represents one model Version in ml.googleapis.com.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4877,16 +5074,17 @@ pub mod migratable_resource {
         /// The ml.googleapis.com endpoint that this model Version currently lives
         /// in.
         /// Example values:
+        ///
         /// * ml.googleapis.com
         /// * us-centrall-ml.googleapis.com
         /// * europe-west4-ml.googleapis.com
         /// * asia-east1-ml.googleapis.com
         #[prost(string, tag = "1")]
-        pub endpoint: std::string::String,
+        pub endpoint: ::prost::alloc::string::String,
         /// Full resource name of ml engine model Version.
         /// Format: `projects/{project}/models/{model}/versions/{version}`.
         #[prost(string, tag = "2")]
-        pub version: std::string::String,
+        pub version: ::prost::alloc::string::String,
     }
     /// Represents one Model in automl.googleapis.com.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4895,10 +5093,10 @@ pub mod migratable_resource {
         /// Format:
         /// `projects/{project}/locations/{location}/models/{model}`.
         #[prost(string, tag = "1")]
-        pub model: std::string::String,
+        pub model: ::prost::alloc::string::String,
         /// The Model's display name in automl.googleapis.com.
         #[prost(string, tag = "3")]
-        pub model_display_name: std::string::String,
+        pub model_display_name: ::prost::alloc::string::String,
     }
     /// Represents one Dataset in automl.googleapis.com.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4907,10 +5105,10 @@ pub mod migratable_resource {
         /// Format:
         /// `projects/{project}/locations/{location}/datasets/{dataset}`.
         #[prost(string, tag = "1")]
-        pub dataset: std::string::String,
+        pub dataset: ::prost::alloc::string::String,
         /// The Dataset's display name in automl.googleapis.com.
         #[prost(string, tag = "4")]
-        pub dataset_display_name: std::string::String,
+        pub dataset_display_name: ::prost::alloc::string::String,
     }
     /// Represents one Dataset in datalabeling.googleapis.com.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4919,16 +5117,17 @@ pub mod migratable_resource {
         /// Format:
         /// `projects/{project}/datasets/{dataset}`.
         #[prost(string, tag = "1")]
-        pub dataset: std::string::String,
+        pub dataset: ::prost::alloc::string::String,
         /// The Dataset's display name in datalabeling.googleapis.com.
         #[prost(string, tag = "4")]
-        pub dataset_display_name: std::string::String,
+        pub dataset_display_name: ::prost::alloc::string::String,
         /// The migratable AnnotatedDataset in datalabeling.googleapis.com belongs to
         /// the data labeling Dataset.
         #[prost(message, repeated, tag = "3")]
         pub data_labeling_annotated_datasets:
-            ::std::vec::Vec<data_labeling_dataset::DataLabelingAnnotatedDataset>,
+            ::prost::alloc::vec::Vec<data_labeling_dataset::DataLabelingAnnotatedDataset>,
     }
+    /// Nested message and enum types in `DataLabelingDataset`.
     pub mod data_labeling_dataset {
         /// Represents one AnnotatedDataset in datalabeling.googleapis.com.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4938,10 +5137,10 @@ pub mod migratable_resource {
             ///
             /// `projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}`.
             #[prost(string, tag = "1")]
-            pub annotated_dataset: std::string::String,
+            pub annotated_dataset: ::prost::alloc::string::String,
             /// The AnnotatedDataset's display name in datalabeling.googleapis.com.
             #[prost(string, tag = "3")]
-            pub annotated_dataset_display_name: std::string::String,
+            pub annotated_dataset_display_name: ::prost::alloc::string::String,
         }
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4969,14 +5168,25 @@ pub struct SearchMigratableResourcesRequest {
     /// Format:
     /// `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard page size.
     /// The default and maximum value is 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The standard page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
+    /// Supported filters are:
+    /// * Resource type: For a specific type of MigratableResource.
+    ///   * `ml_engine_model_version:*`
+    ///   * `automl_model:*`,
+    ///   * `automl_dataset:*`
+    ///   * `data_labeling_dataset:*`.
+    /// * Migrated or not: Filter migrated resource or not by last_migrate_time.
+    ///   * `last_migrate_time:*` will filter migrated resources.
+    ///   * `NOT last_migrate_time:*` will filter not yet migrated resource.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for [MigrationService.SearchMigratableResources][google.cloud.aiplatform.v1beta1.MigrationService.SearchMigratableResources].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4984,12 +5194,12 @@ pub struct SearchMigratableResourcesResponse {
     /// All migratable resources that can be migrated to the
     /// location specified in the request.
     #[prost(message, repeated, tag = "1")]
-    pub migratable_resources: ::std::vec::Vec<MigratableResource>,
+    pub migratable_resources: ::prost::alloc::vec::Vec<MigratableResource>,
     /// The standard next-page token.
     /// The migratable_resources may not fill page_size in
     /// SearchMigratableResourcesRequest even when there are subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1beta1.MigrationService.BatchMigrateResources].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4997,20 +5207,21 @@ pub struct BatchMigrateResourcesRequest {
     /// Required. The location of the migrated resource will live in.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The request messages specifying the resources to migrate.
     /// They must be in the same location as the destination.
     /// Up to 50 resources can be migrated in one batch.
     #[prost(message, repeated, tag = "2")]
-    pub migrate_resource_requests: ::std::vec::Vec<MigrateResourceRequest>,
+    pub migrate_resource_requests: ::prost::alloc::vec::Vec<MigrateResourceRequest>,
 }
 /// Config of migrating one resource from automl.googleapis.com,
 /// datalabeling.googleapis.com and ml.googleapis.com to AI Platform.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrateResourceRequest {
     #[prost(oneof = "migrate_resource_request::Request", tags = "1, 2, 3, 4")]
-    pub request: ::std::option::Option<migrate_resource_request::Request>,
+    pub request: ::core::option::Option<migrate_resource_request::Request>,
 }
+/// Nested message and enum types in `MigrateResourceRequest`.
 pub mod migrate_resource_request {
     /// Config for migrating version in ml.googleapis.com to AI Platform's Model.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5027,15 +5238,15 @@ pub mod migrate_resource_request {
         ///
         /// * asia-east1-ml.googleapis.com
         #[prost(string, tag = "1")]
-        pub endpoint: std::string::String,
+        pub endpoint: ::prost::alloc::string::String,
         /// Required. Full resource name of ml engine model version.
         /// Format: `projects/{project}/models/{model}/versions/{version}`.
         #[prost(string, tag = "2")]
-        pub model_version: std::string::String,
+        pub model_version: ::prost::alloc::string::String,
         /// Required. Display name of the model in AI Platform.
         /// System will pick a display name if unspecified.
         #[prost(string, tag = "3")]
-        pub model_display_name: std::string::String,
+        pub model_display_name: ::prost::alloc::string::String,
     }
     /// Config for migrating Model in automl.googleapis.com to AI Platform's Model.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5044,11 +5255,11 @@ pub mod migrate_resource_request {
         /// Format:
         /// `projects/{project}/locations/{location}/models/{model}`.
         #[prost(string, tag = "1")]
-        pub model: std::string::String,
+        pub model: ::prost::alloc::string::String,
         /// Optional. Display name of the model in AI Platform.
         /// System will pick a display name if unspecified.
         #[prost(string, tag = "2")]
-        pub model_display_name: std::string::String,
+        pub model_display_name: ::prost::alloc::string::String,
     }
     /// Config for migrating Dataset in automl.googleapis.com to AI Platform's
     /// Dataset.
@@ -5058,11 +5269,11 @@ pub mod migrate_resource_request {
         /// Format:
         /// `projects/{project}/locations/{location}/datasets/{dataset}`.
         #[prost(string, tag = "1")]
-        pub dataset: std::string::String,
+        pub dataset: ::prost::alloc::string::String,
         /// Required. Display name of the Dataset in AI Platform.
         /// System will pick a display name if unspecified.
         #[prost(string, tag = "2")]
-        pub dataset_display_name: std::string::String,
+        pub dataset_display_name: ::prost::alloc::string::String,
     }
     /// Config for migrating Dataset in datalabeling.googleapis.com to AI
     /// Platform's Dataset.
@@ -5072,19 +5283,20 @@ pub mod migrate_resource_request {
         /// Format:
         /// `projects/{project}/datasets/{dataset}`.
         #[prost(string, tag = "1")]
-        pub dataset: std::string::String,
+        pub dataset: ::prost::alloc::string::String,
         /// Optional. Display name of the Dataset in AI Platform.
         /// System will pick a display name if unspecified.
         #[prost(string, tag = "2")]
-        pub dataset_display_name: std::string::String,
+        pub dataset_display_name: ::prost::alloc::string::String,
         /// Optional. Configs for migrating AnnotatedDataset in datalabeling.googleapis.com to
         /// AI Platform's SavedQuery. The specified AnnotatedDatasets have to belong
         /// to the datalabeling Dataset.
         #[prost(message, repeated, tag = "3")]
-        pub migrate_data_labeling_annotated_dataset_configs: ::std::vec::Vec<
+        pub migrate_data_labeling_annotated_dataset_configs: ::prost::alloc::vec::Vec<
             migrate_data_labeling_dataset_config::MigrateDataLabelingAnnotatedDatasetConfig,
         >,
     }
+    /// Nested message and enum types in `MigrateDataLabelingDatasetConfig`.
     pub mod migrate_data_labeling_dataset_config {
         /// Config for migrating AnnotatedDataset in datalabeling.googleapis.com to
         /// AI Platform's SavedQuery.
@@ -5095,7 +5307,7 @@ pub mod migrate_resource_request {
             ///
             /// `projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}`.
             #[prost(string, tag = "1")]
-            pub annotated_dataset: std::string::String,
+            pub annotated_dataset: ::prost::alloc::string::String,
         }
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5122,7 +5334,7 @@ pub mod migrate_resource_request {
 pub struct BatchMigrateResourcesResponse {
     /// Successfully migrated resources.
     #[prost(message, repeated, tag = "1")]
-    pub migrate_resource_responses: ::std::vec::Vec<MigrateResourceResponse>,
+    pub migrate_resource_responses: ::prost::alloc::vec::Vec<MigrateResourceResponse>,
 }
 /// Describes a successfully migrated resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5130,21 +5342,22 @@ pub struct MigrateResourceResponse {
     /// Before migration, the identifier in ml.googleapis.com,
     /// automl.googleapis.com or datalabeling.googleapis.com.
     #[prost(message, optional, tag = "3")]
-    pub migratable_resource: ::std::option::Option<MigratableResource>,
+    pub migratable_resource: ::core::option::Option<MigratableResource>,
     /// After migration, the resource name in AI Platform.
     #[prost(oneof = "migrate_resource_response::MigratedResource", tags = "1, 2")]
-    pub migrated_resource: ::std::option::Option<migrate_resource_response::MigratedResource>,
+    pub migrated_resource: ::core::option::Option<migrate_resource_response::MigratedResource>,
 }
+/// Nested message and enum types in `MigrateResourceResponse`.
 pub mod migrate_resource_response {
     /// After migration, the resource name in AI Platform.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MigratedResource {
         /// Migrated Dataset's resource name.
         #[prost(string, tag = "1")]
-        Dataset(std::string::String),
+        Dataset(::prost::alloc::string::String),
         /// Migrated Model's resource name.
         #[prost(string, tag = "2")]
-        Model(std::string::String),
+        Model(::prost::alloc::string::String),
     }
 }
 /// Runtime operation information for [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1beta1.MigrationService.BatchMigrateResources].
@@ -5152,7 +5365,46 @@ pub mod migrate_resource_response {
 pub struct BatchMigrateResourcesOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// Partial results that reflects the latest migration operation progress.
+    #[prost(message, repeated, tag = "2")]
+    pub partial_results:
+        ::prost::alloc::vec::Vec<batch_migrate_resources_operation_metadata::PartialResult>,
+}
+/// Nested message and enum types in `BatchMigrateResourcesOperationMetadata`.
+pub mod batch_migrate_resources_operation_metadata {
+    /// Represents a partial result in batch migration opreation for one
+    /// [MigrateResourceRequest][google.cloud.aiplatform.v1beta1.MigrateResourceRequest].
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PartialResult {
+        /// It's the same as the value in
+        /// [MigrateResourceRequest.migrate_resource_requests][].
+        #[prost(message, optional, tag = "1")]
+        pub request: ::core::option::Option<super::MigrateResourceRequest>,
+        /// If the resource's migration is ongoing, none of the result will be set.
+        /// If the resource's migration is finished, either error or one of the
+        /// migrated resource name will be filled.
+        #[prost(oneof = "partial_result::Result", tags = "2, 3, 4")]
+        pub result: ::core::option::Option<partial_result::Result>,
+    }
+    /// Nested message and enum types in `PartialResult`.
+    pub mod partial_result {
+        /// If the resource's migration is ongoing, none of the result will be set.
+        /// If the resource's migration is finished, either error or one of the
+        /// migrated resource name will be filled.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Result {
+            /// The error result of the migration request in case of failure.
+            #[prost(message, tag = "2")]
+            Error(super::super::super::super::super::rpc::Status),
+            /// Migrated model resource name.
+            #[prost(string, tag = "3")]
+            Model(::prost::alloc::string::String),
+            /// Migrated dataset resource name.
+            #[prost(string, tag = "4")]
+            Dataset(::prost::alloc::string::String),
+        }
+    }
 }
 #[doc = r" Generated client implementations."]
 pub mod migration_service_client {
@@ -5239,32 +5491,54 @@ pub mod migration_service_client {
 pub struct ModelEvaluation {
     /// Output only. The resource name of the ModelEvaluation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Points to a YAML file stored on Google Cloud Storage describing the
     /// [metrics][google.cloud.aiplatform.v1beta1.ModelEvaluation.metrics] of this ModelEvaluation. The schema is
     /// defined as an OpenAPI 3.0.2
     /// [Schema Object](https://tinyurl.com/y538mdwt#schema-object).
     #[prost(string, tag = "2")]
-    pub metrics_schema_uri: std::string::String,
+    pub metrics_schema_uri: ::prost::alloc::string::String,
     /// Output only. Evaluation metrics of the Model. The schema of the metrics is stored in
     /// [metrics_schema_uri][google.cloud.aiplatform.v1beta1.ModelEvaluation.metrics_schema_uri]
     #[prost(message, optional, tag = "3")]
-    pub metrics: ::std::option::Option<::prost_types::Value>,
+    pub metrics: ::core::option::Option<::prost_types::Value>,
     /// Output only. Timestamp when this ModelEvaluation was created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. All possible [dimensions][ModelEvaluationSlice.slice.dimension] of
     /// ModelEvaluationSlices. The dimensions can be used as the filter of the
     /// [ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluationSlices] request, in the form of
     /// `slice.dimension = <dimension>`.
     #[prost(string, repeated, tag = "5")]
-    pub slice_dimensions: ::std::vec::Vec<std::string::String>,
+    pub slice_dimensions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Aggregated explanation metrics for the Model's prediction output over the
     /// data this ModelEvaluation uses. This field is populated only if the Model
     /// is evaluated with explanations, and only for AutoML tabular Models.
     ///
     #[prost(message, optional, tag = "8")]
-    pub model_explanation: ::std::option::Option<ModelExplanation>,
+    pub model_explanation: ::core::option::Option<ModelExplanation>,
+    /// Output only. Describes the values of [ExplanationSpec][google.cloud.aiplatform.v1beta1.ExplanationSpec] that are used for explaining
+    /// the predicted values on the evaluated data.
+    #[prost(message, repeated, tag = "9")]
+    pub explanation_specs:
+        ::prost::alloc::vec::Vec<model_evaluation::ModelEvaluationExplanationSpec>,
+}
+/// Nested message and enum types in `ModelEvaluation`.
+pub mod model_evaluation {
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ModelEvaluationExplanationSpec {
+        /// Explanation type.
+        ///
+        /// For AutoML Image Classification models, possible values are:
+        ///
+        ///   * `image-integrated-gradients`
+        ///   * `image-xrai`
+        #[prost(string, tag = "1")]
+        pub explanation_type: ::prost::alloc::string::String,
+        /// Explanation spec details.
+        #[prost(message, optional, tag = "2")]
+        pub explanation_spec: ::core::option::Option<super::ExplanationSpec>,
+    }
 }
 /// A collection of metrics calculated by comparing Model's predictions on a
 /// slice of the test data against ground truth annotations.
@@ -5272,24 +5546,25 @@ pub struct ModelEvaluation {
 pub struct ModelEvaluationSlice {
     /// Output only. The resource name of the ModelEvaluationSlice.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The slice of the test data that is used to evaluate the Model.
     #[prost(message, optional, tag = "2")]
-    pub slice: ::std::option::Option<model_evaluation_slice::Slice>,
+    pub slice: ::core::option::Option<model_evaluation_slice::Slice>,
     /// Output only. Points to a YAML file stored on Google Cloud Storage describing the
     /// [metrics][google.cloud.aiplatform.v1beta1.ModelEvaluationSlice.metrics] of this ModelEvaluationSlice. The
     /// schema is defined as an OpenAPI 3.0.2
     /// [Schema Object](https://tinyurl.com/y538mdwt#schema-object).
     #[prost(string, tag = "3")]
-    pub metrics_schema_uri: std::string::String,
+    pub metrics_schema_uri: ::prost::alloc::string::String,
     /// Output only. Sliced evaluation metrics of the Model. The schema of the metrics is stored
     /// in [metrics_schema_uri][google.cloud.aiplatform.v1beta1.ModelEvaluationSlice.metrics_schema_uri]
     #[prost(message, optional, tag = "4")]
-    pub metrics: ::std::option::Option<::prost_types::Value>,
+    pub metrics: ::core::option::Option<::prost_types::Value>,
     /// Output only. Timestamp when this ModelEvaluationSlice was created.
     #[prost(message, optional, tag = "5")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `ModelEvaluationSlice`.
 pub mod model_evaluation_slice {
     /// Definition of a slice.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5300,10 +5575,10 @@ pub mod model_evaluation_slice {
         ///     ground truth or prediction with [AnnotationSpec.display_name][google.cloud.aiplatform.v1beta1.AnnotationSpec.display_name]
         ///     equals to [value][google.cloud.aiplatform.v1beta1.ModelEvaluationSlice.Slice.value].
         #[prost(string, tag = "1")]
-        pub dimension: std::string::String,
+        pub dimension: ::prost::alloc::string::String,
         /// Output only. The value of the dimension in this slice.
         #[prost(string, tag = "2")]
-        pub value: std::string::String,
+        pub value: ::prost::alloc::string::String,
     }
 }
 /// Request message for [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel].
@@ -5312,17 +5587,17 @@ pub struct UploadModelRequest {
     /// Required. The resource name of the Location into which to upload the Model.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Model to create.
     #[prost(message, optional, tag = "2")]
-    pub model: ::std::option::Option<Model>,
+    pub model: ::core::option::Option<Model>,
 }
 /// Details of [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel] operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadModelOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Response message of [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel] operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5330,7 +5605,7 @@ pub struct UploadModelResponse {
     /// The name of the uploaded Model resource.
     /// Format: `projects/{project}/locations/{location}/models/{model}`
     #[prost(string, tag = "1")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
 }
 /// Request message for [ModelService.GetModel][google.cloud.aiplatform.v1beta1.ModelService.GetModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5338,7 +5613,7 @@ pub struct GetModelRequest {
     /// Required. The name of the Model resource.
     /// Format: `projects/{project}/locations/{location}/models/{model}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [ModelService.ListModels][google.cloud.aiplatform.v1beta1.ModelService.ListModels].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5346,10 +5621,24 @@ pub struct ListModelsRequest {
     /// Required. The resource name of the Location to list the Models from.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
-    /// The standard list filter.
+    pub parent: ::prost::alloc::string::String,
+    /// An expression for filtering the results of the request. For field names
+    /// both snake_case and camelCase are supported.
+    ///
+    ///   * `model` supports = and !=. `model` represents the Model ID,
+    ///     i.e. the last segment of the Model's [resource name][google.cloud.aiplatform.v1beta1.Model.name].
+    ///   * `display_name` supports = and !=
+    ///   * `labels` supports general map functions that is:
+    ///     * `labels.key=value` - key:value equality
+    ///     * `labels.key:* or labels:key - key existence
+    ///     * A key including a space must be quoted. `labels."a key"`.
+    ///
+    /// Some examples:
+    ///   * `model=1234`
+    ///   * `displayName="myDisplayName"`
+    ///   * `labels.myKey="myValue"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -5358,36 +5647,33 @@ pub struct ListModelsRequest {
     /// [ListModelsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListModelsResponse.next_page_token] of the previous
     /// [ModelService.ListModels][google.cloud.aiplatform.v1beta1.ModelService.ListModels] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [ModelService.ListModels][google.cloud.aiplatform.v1beta1.ModelService.ListModels]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
     /// List of Models in the requested page.
     #[prost(message, repeated, tag = "1")]
-    pub models: ::std::vec::Vec<Model>,
+    pub models: ::prost::alloc::vec::Vec<Model>,
     /// A token to retrieve next page of results.
     /// Pass to [ListModelsRequest.page_token][google.cloud.aiplatform.v1beta1.ListModelsRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [ModelService.UpdateModel][google.cloud.aiplatform.v1beta1.ModelService.UpdateModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateModelRequest {
     /// Required. The Model which replaces the resource on the server.
     #[prost(message, optional, tag = "1")]
-    pub model: ::std::option::Option<Model>,
+    pub model: ::core::option::Option<Model>,
     /// Required. The update mask applies to the resource.
     /// For the `FieldMask` definition, see
-    ///
-    /// [FieldMask](https:
-    /// //developers.google.com/protocol-buffers
-    /// // /docs/reference/google.protobuf#fieldmask).
+    /// [FieldMask](https://tinyurl.com/protobufs/google.protobuf#fieldmask).
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [ModelService.DeleteModel][google.cloud.aiplatform.v1beta1.ModelService.DeleteModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5395,7 +5681,7 @@ pub struct DeleteModelRequest {
     /// Required. The name of the Model resource to be deleted.
     /// Format: `projects/{project}/locations/{location}/models/{model}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [ModelService.ExportModel][google.cloud.aiplatform.v1beta1.ModelService.ExportModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5403,11 +5689,12 @@ pub struct ExportModelRequest {
     /// Required. The resource name of the Model to export.
     /// Format: `projects/{project}/locations/{location}/models/{model}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The desired output location and configuration.
     #[prost(message, optional, tag = "2")]
-    pub output_config: ::std::option::Option<export_model_request::OutputConfig>,
+    pub output_config: ::core::option::Option<export_model_request::OutputConfig>,
 }
+/// Nested message and enum types in `ExportModelRequest`.
 pub mod export_model_request {
     /// Output configuration for the Model export.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5417,23 +5704,23 @@ pub mod export_model_request {
         /// If no value is provided here, then the first from the list of the Model's
         /// supported formats is used by default.
         #[prost(string, tag = "1")]
-        pub export_format_id: std::string::String,
-        /// The Google Cloud Storage location where the Model artifact is to be
+        pub export_format_id: ::prost::alloc::string::String,
+        /// The Cloud Storage location where the Model artifact is to be
         /// written to. Under the directory given as the destination a new one with
         /// name "`model-export-<model-display-name>-<timestamp-of-export-call>`",
         /// where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format,
         /// will be created. Inside, the Model and any of its supporting files
         /// will be written.
-        /// This field should only be set when
-        /// [Models.supported_export_formats.exportable_contents] contains ARTIFACT.
+        /// This field should only be set when the `exportableContent` field of the
+        /// [Model.supported_export_formats] object contains `ARTIFACT`.
         #[prost(message, optional, tag = "3")]
-        pub artifact_destination: ::std::option::Option<super::GcsDestination>,
+        pub artifact_destination: ::core::option::Option<super::GcsDestination>,
         /// The Google Container Registry or Artifact Registry uri where the
         /// Model container image will be copied to.
-        /// This field should only be set when
-        /// [Models.supported_export_formats.exportable_contents] contains IMAGE.
+        /// This field should only be set when the `exportableContent` field of the
+        /// [Model.supported_export_formats] object contains `IMAGE`.
         #[prost(message, optional, tag = "4")]
-        pub image_destination: ::std::option::Option<super::ContainerRegistryDestination>,
+        pub image_destination: ::core::option::Option<super::ContainerRegistryDestination>,
     }
 }
 /// Details of [ModelService.ExportModel][google.cloud.aiplatform.v1beta1.ModelService.ExportModel] operation.
@@ -5441,11 +5728,12 @@ pub mod export_model_request {
 pub struct ExportModelOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
     /// Output only. Information further describing the output of this Model export.
     #[prost(message, optional, tag = "2")]
-    pub output_info: ::std::option::Option<export_model_operation_metadata::OutputInfo>,
+    pub output_info: ::core::option::Option<export_model_operation_metadata::OutputInfo>,
 }
+/// Nested message and enum types in `ExportModelOperationMetadata`.
 pub mod export_model_operation_metadata {
     /// Further describes the output of the ExportModel. Supplements
     /// [ExportModelRequest.OutputConfig][google.cloud.aiplatform.v1beta1.ExportModelRequest.OutputConfig].
@@ -5455,11 +5743,11 @@ pub mod export_model_operation_metadata {
         /// the full path of the directory created, into which the Model files are
         /// being written to.
         #[prost(string, tag = "2")]
-        pub artifact_output_uri: std::string::String,
+        pub artifact_output_uri: ::prost::alloc::string::String,
         /// Output only. If the Model image is being exported to Google Container Registry or
         /// Artifact Registry this is the full path of the image created.
         #[prost(string, tag = "3")]
-        pub image_output_uri: std::string::String,
+        pub image_output_uri: ::prost::alloc::string::String,
     }
 }
 /// Response message of [ModelService.ExportModel][google.cloud.aiplatform.v1beta1.ModelService.ExportModel] operation.
@@ -5473,7 +5761,7 @@ pub struct GetModelEvaluationRequest {
     ///
     /// `projects/{project}/locations/{location}/models/{model}/evaluations/{evaluation}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [ModelService.ListModelEvaluations][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluations].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5481,10 +5769,10 @@ pub struct ListModelEvaluationsRequest {
     /// Required. The resource name of the Model to list the ModelEvaluations from.
     /// Format: `projects/{project}/locations/{location}/models/{model}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -5493,21 +5781,21 @@ pub struct ListModelEvaluationsRequest {
     /// [ListModelEvaluationsResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListModelEvaluationsResponse.next_page_token] of the previous
     /// [ModelService.ListModelEvaluations][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluations] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [ModelService.ListModelEvaluations][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsResponse {
     /// List of ModelEvaluations in the requested page.
     #[prost(message, repeated, tag = "1")]
-    pub model_evaluations: ::std::vec::Vec<ModelEvaluation>,
+    pub model_evaluations: ::prost::alloc::vec::Vec<ModelEvaluation>,
     /// A token to retrieve next page of results.
     /// Pass to [ListModelEvaluationsRequest.page_token][google.cloud.aiplatform.v1beta1.ListModelEvaluationsRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [ModelService.GetModelEvaluationSlice][google.cloud.aiplatform.v1beta1.ModelService.GetModelEvaluationSlice].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5517,7 +5805,7 @@ pub struct GetModelEvaluationSliceRequest {
     ///
     /// `projects/{project}/locations/{location}/models/{model}/evaluations/{evaluation}/slices/{slice}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluationSlices].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5527,12 +5815,12 @@ pub struct ListModelEvaluationSlicesRequest {
     ///
     /// `projects/{project}/locations/{location}/models/{model}/evaluations/{evaluation}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     ///
     ///   * `slice.dimension` - for =.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -5541,22 +5829,22 @@ pub struct ListModelEvaluationSlicesRequest {
     /// [ListModelEvaluationSlicesResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListModelEvaluationSlicesResponse.next_page_token] of the previous
     /// [ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluationSlices] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1beta1.ModelService.ListModelEvaluationSlices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationSlicesResponse {
     /// List of ModelEvaluations in the requested page.
     #[prost(message, repeated, tag = "1")]
-    pub model_evaluation_slices: ::std::vec::Vec<ModelEvaluationSlice>,
+    pub model_evaluation_slices: ::prost::alloc::vec::Vec<ModelEvaluationSlice>,
     /// A token to retrieve next page of results.
     /// Pass to [ListModelEvaluationSlicesRequest.page_token][google.cloud.aiplatform.v1beta1.ListModelEvaluationSlicesRequest.page_token] to obtain that
     /// page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod model_service_client {
@@ -5785,10 +6073,10 @@ pub struct CreateTrainingPipelineRequest {
     /// Required. The resource name of the Location to create the TrainingPipeline in.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The TrainingPipeline to create.
     #[prost(message, optional, tag = "2")]
-    pub training_pipeline: ::std::option::Option<TrainingPipeline>,
+    pub training_pipeline: ::core::option::Option<TrainingPipeline>,
 }
 /// Request message for [PipelineService.GetTrainingPipeline][google.cloud.aiplatform.v1beta1.PipelineService.GetTrainingPipeline].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5798,7 +6086,7 @@ pub struct GetTrainingPipelineRequest {
     ///
     /// `projects/{project}/locations/{location}/trainingPipelines/{training_pipeline}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [PipelineService.ListTrainingPipelines][google.cloud.aiplatform.v1beta1.PipelineService.ListTrainingPipelines].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5806,7 +6094,7 @@ pub struct ListTrainingPipelinesRequest {
     /// Required. The resource name of the Location to list the TrainingPipelines from.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list filter.
     /// Supported fields:
     ///
@@ -5824,7 +6112,7 @@ pub struct ListTrainingPipelinesRequest {
     ///
     ///  * `state="PIPELINE_STATE_FAILED"`
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -5833,21 +6121,21 @@ pub struct ListTrainingPipelinesRequest {
     /// [ListTrainingPipelinesResponse.next_page_token][google.cloud.aiplatform.v1beta1.ListTrainingPipelinesResponse.next_page_token] of the previous
     /// [PipelineService.ListTrainingPipelines][google.cloud.aiplatform.v1beta1.PipelineService.ListTrainingPipelines] call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [PipelineService.ListTrainingPipelines][google.cloud.aiplatform.v1beta1.PipelineService.ListTrainingPipelines]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTrainingPipelinesResponse {
     /// List of TrainingPipelines in the requested page.
     #[prost(message, repeated, tag = "1")]
-    pub training_pipelines: ::std::vec::Vec<TrainingPipeline>,
+    pub training_pipelines: ::prost::alloc::vec::Vec<TrainingPipeline>,
     /// A token to retrieve next page of results.
     /// Pass to [ListTrainingPipelinesRequest.page_token][google.cloud.aiplatform.v1beta1.ListTrainingPipelinesRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [PipelineService.DeleteTrainingPipeline][google.cloud.aiplatform.v1beta1.PipelineService.DeleteTrainingPipeline].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5857,7 +6145,7 @@ pub struct DeleteTrainingPipelineRequest {
     ///
     /// `projects/{project}/locations/{location}/trainingPipelines/{training_pipeline}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [PipelineService.CancelTrainingPipeline][google.cloud.aiplatform.v1beta1.PipelineService.CancelTrainingPipeline].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5867,7 +6155,7 @@ pub struct CancelTrainingPipelineRequest {
     ///
     /// `projects/{project}/locations/{location}/trainingPipelines/{training_pipeline}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod pipeline_service_client {
@@ -6011,7 +6299,7 @@ pub struct PredictRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
-    pub endpoint: std::string::String,
+    pub endpoint: ::prost::alloc::string::String,
     /// Required. The instances that are the input to the prediction call.
     /// A DeployedModel may have an upper limit on the number of instances it
     /// supports per request, and when it is exceeded the prediction call errors
@@ -6022,13 +6310,13 @@ pub struct PredictRequest {
     /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
     /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
     #[prost(message, repeated, tag = "2")]
-    pub instances: ::std::vec::Vec<::prost_types::Value>,
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
     /// The parameters that govern the prediction. The schema of the parameters may
     /// be specified via Endpoint's DeployedModels' [Model's ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
     /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
     /// [parameters_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.parameters_schema_uri].
     #[prost(message, optional, tag = "3")]
-    pub parameters: ::std::option::Option<::prost_types::Value>,
+    pub parameters: ::core::option::Option<::prost_types::Value>,
 }
 /// Response message for [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6039,10 +6327,10 @@ pub struct PredictResponse {
     /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
     /// [prediction_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.prediction_schema_uri].
     #[prost(message, repeated, tag = "1")]
-    pub predictions: ::std::vec::Vec<::prost_types::Value>,
+    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
     /// ID of the Endpoint's DeployedModel that served this prediction.
     #[prost(string, tag = "2")]
-    pub deployed_model_id: std::string::String,
+    pub deployed_model_id: ::prost::alloc::string::String,
 }
 /// Request message for [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6051,7 +6339,7 @@ pub struct ExplainRequest {
     /// Format:
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
-    pub endpoint: std::string::String,
+    pub endpoint: ::prost::alloc::string::String,
     /// Required. The instances that are the input to the explanation call.
     /// A DeployedModel may have an upper limit on the number of instances it
     /// supports per request, and when it is exceeded the explanation call errors
@@ -6062,17 +6350,27 @@ pub struct ExplainRequest {
     /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
     /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
     #[prost(message, repeated, tag = "2")]
-    pub instances: ::std::vec::Vec<::prost_types::Value>,
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
     /// The parameters that govern the prediction. The schema of the parameters may
     /// be specified via Endpoint's DeployedModels' [Model's ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
     /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
     /// [parameters_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.parameters_schema_uri].
     #[prost(message, optional, tag = "4")]
-    pub parameters: ::std::option::Option<::prost_types::Value>,
+    pub parameters: ::core::option::Option<::prost_types::Value>,
+    /// If specified, overrides the
+    /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec] of the DeployedModel.
+    /// Can be used for explaining prediction results with different
+    /// configurations, such as:
+    ///  - Explaining top-5 predictions results as opposed to top-1;
+    ///  - Increasing path count or step count of the attribution methods to reduce
+    ///    approximate errors;
+    ///  - Using different baselines for explaining the prediction results.
+    #[prost(message, optional, tag = "5")]
+    pub explanation_spec_override: ::core::option::Option<ExplanationSpecOverride>,
     /// If specified, this ExplainRequest will be served by the chosen
     /// DeployedModel, overriding [Endpoint.traffic_split][google.cloud.aiplatform.v1beta1.Endpoint.traffic_split].
     #[prost(string, tag = "3")]
-    pub deployed_model_id: std::string::String,
+    pub deployed_model_id: ::prost::alloc::string::String,
 }
 /// Response message for [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6082,14 +6380,14 @@ pub struct ExplainResponse {
     /// It has the same number of elements as [instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances]
     /// to be explained.
     #[prost(message, repeated, tag = "1")]
-    pub explanations: ::std::vec::Vec<Explanation>,
+    pub explanations: ::prost::alloc::vec::Vec<Explanation>,
     /// ID of the Endpoint's DeployedModel that served this explanation.
     #[prost(string, tag = "2")]
-    pub deployed_model_id: std::string::String,
+    pub deployed_model_id: ::prost::alloc::string::String,
     /// The predictions that are the output of the predictions call.
     /// Same as [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
     #[prost(message, repeated, tag = "3")]
-    pub predictions: ::std::vec::Vec<::prost_types::Value>,
+    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
 }
 #[doc = r" Generated client implementations."]
 pub mod prediction_service_client {
@@ -6177,10 +6475,10 @@ pub struct CreateSpecialistPoolRequest {
     /// Required. The parent Project name for the new SpecialistPool.
     /// The form is `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The SpecialistPool to create.
     #[prost(message, optional, tag = "2")]
-    pub specialist_pool: ::std::option::Option<SpecialistPool>,
+    pub specialist_pool: ::core::option::Option<SpecialistPool>,
 }
 /// Runtime operation information for
 /// [SpecialistPoolService.CreateSpecialistPool][google.cloud.aiplatform.v1beta1.SpecialistPoolService.CreateSpecialistPool].
@@ -6188,7 +6486,7 @@ pub struct CreateSpecialistPoolRequest {
 pub struct CreateSpecialistPoolOperationMetadata {
     /// The operation generic information.
     #[prost(message, optional, tag = "1")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for [SpecialistPoolService.GetSpecialistPool][google.cloud.aiplatform.v1beta1.SpecialistPoolService.GetSpecialistPool].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6198,7 +6496,7 @@ pub struct GetSpecialistPoolRequest {
     ///
     /// `projects/{project}/locations/{location}/specialistPools/{specialist_pool}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [SpecialistPoolService.ListSpecialistPools][google.cloud.aiplatform.v1beta1.SpecialistPoolService.ListSpecialistPools].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6206,7 +6504,7 @@ pub struct ListSpecialistPoolsRequest {
     /// Required. The name of the SpecialistPool's parent resource.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -6215,20 +6513,20 @@ pub struct ListSpecialistPoolsRequest {
     /// the previous [SpecialistPoolService.ListSpecialistPools][google.cloud.aiplatform.v1beta1.SpecialistPoolService.ListSpecialistPools] call. Return
     /// first page if empty.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Mask specifying which fields to read. FieldMask represents a set of
     #[prost(message, optional, tag = "4")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [SpecialistPoolService.ListSpecialistPools][google.cloud.aiplatform.v1beta1.SpecialistPoolService.ListSpecialistPools].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpecialistPoolsResponse {
     /// A list of SpecialistPools that matches the specified filter in the request.
     #[prost(message, repeated, tag = "1")]
-    pub specialist_pools: ::std::vec::Vec<SpecialistPool>,
+    pub specialist_pools: ::prost::alloc::vec::Vec<SpecialistPool>,
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [SpecialistPoolService.DeleteSpecialistPool][google.cloud.aiplatform.v1beta1.SpecialistPoolService.DeleteSpecialistPool].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6236,7 +6534,7 @@ pub struct DeleteSpecialistPoolRequest {
     /// Required. The resource name of the SpecialistPool to delete. Format:
     /// `projects/{project}/locations/{location}/specialistPools/{specialist_pool}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If set to true, any specialist managers in this SpecialistPool will also be
     /// deleted. (Otherwise, the request will only work if the SpecialistPool has
     /// no specialist managers.)
@@ -6248,10 +6546,10 @@ pub struct DeleteSpecialistPoolRequest {
 pub struct UpdateSpecialistPoolRequest {
     /// Required. The SpecialistPool which replaces the resource on the server.
     #[prost(message, optional, tag = "1")]
-    pub specialist_pool: ::std::option::Option<SpecialistPool>,
+    pub specialist_pool: ::core::option::Option<SpecialistPool>,
     /// Required. The update mask applies to the resource.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Runtime operation metadata for
 /// [SpecialistPoolService.UpdateSpecialistPool][google.cloud.aiplatform.v1beta1.SpecialistPoolService.UpdateSpecialistPool].
@@ -6262,10 +6560,10 @@ pub struct UpdateSpecialistPoolOperationMetadata {
     ///
     /// `projects/{project_id}/locations/{location_id}/specialistPools/{specialist_pool}`
     #[prost(string, tag = "1")]
-    pub specialist_pool: std::string::String,
+    pub specialist_pool: ::prost::alloc::string::String,
     /// The operation generic information.
     #[prost(message, optional, tag = "2")]
-    pub generic_metadata: ::std::option::Option<GenericOperationMetadata>,
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 #[doc = r" Generated client implementations."]
 pub mod specialist_pool_service_client {

@@ -4,7 +4,7 @@ pub struct BuildTarget {
     /// The resource name of the build target.
     /// Format: buildTargets/{build_target}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Resource that represents a model. Each model belongs to a build target. For
 /// non-unified build, the model name is the same as its build target name.
@@ -13,7 +13,7 @@ pub struct Model {
     /// The resource name of the model.
     /// Format: buildTargets/{build_target}/models/{model}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Resource that represents a chrome OS milestone.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -21,7 +21,7 @@ pub struct Milestone {
     /// The resource name of the milestone.
     /// Format: milestones/{milestone}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Resource that represents a build for the given build target, model, milestone
 /// and build version.
@@ -32,14 +32,14 @@ pub struct Build {
     /// Format: buildTargets/{build_target}/models/{model}/builds/{build}
     /// Example: buildTargets/octopus/models/bobba/builds/1234.0.0
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The milestone that owns the build.
     /// Format: milestones/{milestone}
     #[prost(string, tag = "2")]
-    pub milestone: std::string::String,
+    pub milestone: ::prost::alloc::string::String,
     /// The build version of the build, e.g. 1234.0.0.
     #[prost(string, tag = "3")]
-    pub build_version: std::string::String,
+    pub build_version: ::prost::alloc::string::String,
 }
 /// Resource that represents a build artifact stored in Google Cloud Storage for
 /// the given build target, model, build version and bucket. NEXT_TAG: 6
@@ -51,16 +51,16 @@ pub struct BuildArtifact {
     /// Example:
     /// buildTargets/octopus/models/bobba/builds/1234.0.0/artifacts/chromeos-moblab-peng-staging
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The build metadata of the build artifact.
     #[prost(string, tag = "2")]
-    pub build: std::string::String,
+    pub build: ::prost::alloc::string::String,
     /// The bucket that stores the build artifact.
     #[prost(string, tag = "3")]
-    pub bucket: std::string::String,
+    pub bucket: ::prost::alloc::string::String,
     /// The path of the build artifact in the bucket.
     #[prost(string, tag = "4")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// The number of objects in the build artifact folder. The object number can
     /// be used to calculated the stage progress by comparing the source build
     /// artifact with the destination build artifact.
@@ -76,19 +76,19 @@ pub struct ListBuildsRequest {
     /// For example,
     /// 'buildTargets/octopus/models/bobba'.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The number of builds to return in a page.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. A page token, received from a previous `ListBuilds` call. Provide this to
     /// retrieve the subsequent page.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Filter that specifies value constraints of fields. For example, the
     /// filter can be set as "filter='milestone=milestones/80'" to only select
     /// builds in milestone 80.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Read mask that specifies which Build fields to return. If empty, all Build
     /// fields will be returned.
     /// Valid fields: name, milestone, build_version.
@@ -96,12 +96,12 @@ pub struct ListBuildsRequest {
     /// ListBuilds will return a list of Builds object with only the milestone
     /// field.
     #[prost(message, optional, tag = "5")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. The operation that groups by all the Build fields specified in the read
     /// mask. The group_by field should be the same as the read_mask field in
     /// convention of SQL.
     #[prost(message, optional, tag = "6")]
-    pub group_by: ::std::option::Option<::prost_types::FieldMask>,
+    pub group_by: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for listing builds.
 /// NEXT_TAG: 4
@@ -109,11 +109,11 @@ pub struct ListBuildsRequest {
 pub struct ListBuildsResponse {
     /// The list of builds.
     #[prost(message, repeated, tag = "1")]
-    pub builds: ::std::vec::Vec<Build>,
+    pub builds: ::prost::alloc::vec::Vec<Build>,
     /// Token to retrieve the next page of builds. If this field is omitted, there
     /// are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Total number of builds.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
@@ -125,7 +125,7 @@ pub struct CheckBuildStageStatusRequest {
     /// For example,
     /// 'buildTargets/octopus/models/bobba/builds/12607.6.0/artifacts/chromeos-moblab-peng-staging'.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for checking the stage status of a build artifact.
 /// NEXT_TAG: 4
@@ -136,10 +136,10 @@ pub struct CheckBuildStageStatusResponse {
     pub is_build_staged: bool,
     /// The staged build artifact in the destination bucket.
     #[prost(message, optional, tag = "2")]
-    pub staged_build_artifact: ::std::option::Option<BuildArtifact>,
+    pub staged_build_artifact: ::core::option::Option<BuildArtifact>,
     /// The source build artifact in the source bucket.
     #[prost(message, optional, tag = "3")]
-    pub source_build_artifact: ::std::option::Option<BuildArtifact>,
+    pub source_build_artifact: ::core::option::Option<BuildArtifact>,
 }
 /// Request message for staging a build artifact.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -148,14 +148,14 @@ pub struct StageBuildRequest {
     /// For example,
     /// 'buildTargets/octopus/models/bobba/builds/12607.6.0/artifacts/chromeos-moblab-peng-staging'.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for staging a build artifact.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageBuildResponse {
     /// The staged build in the destination bucket.
     #[prost(message, optional, tag = "1")]
-    pub staged_build_artifact: ::std::option::Option<BuildArtifact>,
+    pub staged_build_artifact: ::core::option::Option<BuildArtifact>,
 }
 /// Metadata message for staging a build artifact.
 /// NEXT_TAG: 4
@@ -166,10 +166,10 @@ pub struct StageBuildMetadata {
     pub progress_percent: f32,
     /// Build stage start time.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Build stage end time.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[doc = r" Generated client implementations."]
 pub mod build_service_client {

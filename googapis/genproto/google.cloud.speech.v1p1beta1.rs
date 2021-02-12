@@ -5,22 +5,23 @@
 pub struct CustomClass {
     /// The resource name of the custom class.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If this custom class is a resource, the custom_class_id is the resource id
     /// of the CustomClass.
     #[prost(string, tag = "2")]
-    pub custom_class_id: std::string::String,
+    pub custom_class_id: ::prost::alloc::string::String,
     /// A collection of class items.
     #[prost(message, repeated, tag = "3")]
-    pub items: ::std::vec::Vec<custom_class::ClassItem>,
+    pub items: ::prost::alloc::vec::Vec<custom_class::ClassItem>,
 }
+/// Nested message and enum types in `CustomClass`.
 pub mod custom_class {
     /// An item of the class.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClassItem {
         /// The class item's value.
         #[prost(string, tag = "1")]
-        pub value: std::string::String,
+        pub value: ::prost::alloc::string::String,
     }
 }
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
@@ -29,10 +30,10 @@ pub mod custom_class {
 pub struct PhraseSet {
     /// The resource name of the phrase set.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A list of word and phrases.
     #[prost(message, repeated, tag = "2")]
-    pub phrases: ::std::vec::Vec<phrase_set::Phrase>,
+    pub phrases: ::prost::alloc::vec::Vec<phrase_set::Phrase>,
     /// Hint Boost. Positive value will increase the probability that a specific
     /// phrase will be recognized over other similar sounding phrases. The higher
     /// the boost, the higher the chance of false positive recognition as well.
@@ -45,6 +46,7 @@ pub struct PhraseSet {
     #[prost(float, tag = "4")]
     pub boost: f32,
 }
+/// Nested message and enum types in `PhraseSet`.
 pub mod phrase_set {
     /// A phrases containing words and phrase "hints" so that
     /// the speech recognition is more likely to recognize them. This can be used
@@ -69,7 +71,7 @@ pub mod phrase_set {
     pub struct Phrase {
         /// The phrase itself.
         #[prost(string, tag = "1")]
-        pub value: std::string::String,
+        pub value: ::prost::alloc::string::String,
         /// Hint Boost. Overrides the boost set at the phrase set level.
         /// Positive value will increase the probability that a specific phrase will
         /// be recognized over other similar sounding phrases. The higher the boost,
@@ -91,13 +93,13 @@ pub struct SpeechAdaptation {
     /// phrase set's `name` blank and fill in the rest of its fields. Any
     /// phrase set can use any custom class.
     #[prost(message, repeated, tag = "1")]
-    pub phrase_sets: ::std::vec::Vec<PhraseSet>,
+    pub phrase_sets: ::prost::alloc::vec::Vec<PhraseSet>,
     /// A collection of custom classes. To specify the classes inline, leave the
     /// class' `name` blank and fill in the rest of its fields, giving it a unique
     /// `custom_class_id`. Refer to the inline defined class in phrase hints by its
     /// `custom_class_id`.
     #[prost(message, repeated, tag = "2")]
-    pub custom_classes: ::std::vec::Vec<CustomClass>,
+    pub custom_classes: ::prost::alloc::vec::Vec<CustomClass>,
 }
 /// The top-level message sent by the client for the `Recognize` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -105,10 +107,10 @@ pub struct RecognizeRequest {
     /// Required. Provides information to the recognizer that specifies how to
     /// process the request.
     #[prost(message, optional, tag = "1")]
-    pub config: ::std::option::Option<RecognitionConfig>,
+    pub config: ::core::option::Option<RecognitionConfig>,
     /// Required. The audio data to be recognized.
     #[prost(message, optional, tag = "2")]
-    pub audio: ::std::option::Option<RecognitionAudio>,
+    pub audio: ::core::option::Option<RecognitionAudio>,
 }
 /// The top-level message sent by the client for the `LongRunningRecognize`
 /// method.
@@ -117,10 +119,10 @@ pub struct LongRunningRecognizeRequest {
     /// Required. Provides information to the recognizer that specifies how to
     /// process the request.
     #[prost(message, optional, tag = "1")]
-    pub config: ::std::option::Option<RecognitionConfig>,
+    pub config: ::core::option::Option<RecognitionConfig>,
     /// Required. The audio data to be recognized.
     #[prost(message, optional, tag = "2")]
-    pub audio: ::std::option::Option<RecognitionAudio>,
+    pub audio: ::core::option::Option<RecognitionAudio>,
 }
 /// The top-level message sent by the client for the `StreamingRecognize` method.
 /// Multiple `StreamingRecognizeRequest` messages are sent. The first message
@@ -131,8 +133,9 @@ pub struct LongRunningRecognizeRequest {
 pub struct StreamingRecognizeRequest {
     /// The streaming request, which is either a streaming config or audio content.
     #[prost(oneof = "streaming_recognize_request::StreamingRequest", tags = "1, 2")]
-    pub streaming_request: ::std::option::Option<streaming_recognize_request::StreamingRequest>,
+    pub streaming_request: ::core::option::Option<streaming_recognize_request::StreamingRequest>,
 }
+/// Nested message and enum types in `StreamingRecognizeRequest`.
 pub mod streaming_recognize_request {
     /// The streaming request, which is either a streaming config or audio content.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -151,7 +154,7 @@ pub mod streaming_recognize_request {
         /// pure binary representation (not base64). See
         /// [content limits](https://cloud.google.com/speech-to-text/quotas#content).
         #[prost(bytes, tag = "2")]
-        AudioContent(std::vec::Vec<u8>),
+        AudioContent(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Provides information to the recognizer that specifies how to process the
@@ -161,7 +164,7 @@ pub struct StreamingRecognitionConfig {
     /// Required. Provides information to the recognizer that specifies how to
     /// process the request.
     #[prost(message, optional, tag = "1")]
-    pub config: ::std::option::Option<RecognitionConfig>,
+    pub config: ::core::option::Option<RecognitionConfig>,
     /// If `false` or omitted, the recognizer will perform continuous
     /// recognition (continuing to wait for and process audio even if the user
     /// pauses speaking) until the client closes the input stream (gRPC API) or
@@ -228,7 +231,7 @@ pub struct RecognitionConfig {
     /// Support](https://cloud.google.com/speech-to-text/docs/languages) for a list
     /// of the currently supported language codes.
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// A list of up to 3 additional
     /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tags,
     /// listing possible alternative languages of the supplied audio.
@@ -242,7 +245,7 @@ pub struct RecognitionConfig {
     /// and performance may vary for other use cases (e.g., phone call
     /// transcription).
     #[prost(string, repeated, tag = "18")]
-    pub alternative_language_codes: ::std::vec::Vec<std::string::String>,
+    pub alternative_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Maximum number of recognition hypotheses to be returned.
     /// Specifically, the maximum number of `SpeechRecognitionAlternative` messages
     /// within each `SpeechRecognitionResult`.
@@ -263,14 +266,14 @@ pub struct RecognitionConfig {
     /// adaptation](https://cloud.google.com/speech-to-text/docs/context-strength)
     /// documentation.
     #[prost(message, optional, tag = "20")]
-    pub adaptation: ::std::option::Option<SpeechAdaptation>,
+    pub adaptation: ::core::option::Option<SpeechAdaptation>,
     /// Array of [SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext].
     /// A means to provide context to assist the speech recognition. For more
     /// information, see
     /// [speech
     /// adaptation](https://cloud.google.com/speech-to-text/docs/context-strength).
     #[prost(message, repeated, tag = "6")]
-    pub speech_contexts: ::std::vec::Vec<SpeechContext>,
+    pub speech_contexts: ::prost::alloc::vec::Vec<SpeechContext>,
     /// If `true`, the top result includes a list of words and
     /// the start and end time offsets (timestamps) for those words. If
     /// `false`, no word-level time offset information is returned. The default is
@@ -292,11 +295,13 @@ pub struct RecognitionConfig {
     /// the top alternative of the recognition result using a speaker_tag provided
     /// in the WordInfo.
     /// Note: Use diarization_config instead.
+    #[deprecated]
     #[prost(bool, tag = "16")]
     pub enable_speaker_diarization: bool,
     /// If set, specifies the estimated number of speakers in the conversation.
     /// Defaults to '2'. Ignored unless enable_speaker_diarization is set to true.
     /// Note: Use diarization_config instead.
+    #[deprecated]
     #[prost(int32, tag = "17")]
     pub diarization_speaker_count: i32,
     /// Config to enable speaker diarization and set additional
@@ -308,10 +313,10 @@ pub struct RecognitionConfig {
     /// For non-streaming requests, the diarization results will be provided only
     /// in the top alternative of the FINAL SpeechRecognitionResult.
     #[prost(message, optional, tag = "19")]
-    pub diarization_config: ::std::option::Option<SpeakerDiarizationConfig>,
+    pub diarization_config: ::core::option::Option<SpeakerDiarizationConfig>,
     /// Metadata regarding this request.
     #[prost(message, optional, tag = "9")]
-    pub metadata: ::std::option::Option<RecognitionMetadata>,
+    pub metadata: ::core::option::Option<RecognitionMetadata>,
     /// Which model to select for the given request. Select the model
     /// best suited to your domain to get best results. If a model is not
     /// explicitly specified, then we auto-select a model based on the parameters
@@ -345,7 +350,7 @@ pub struct RecognitionConfig {
     ///   </tr>
     /// </table>
     #[prost(string, tag = "13")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// Set to true to use an enhanced model for speech recognition.
     /// If `use_enhanced` is set to true and the `model` field is not set, then
     /// an appropriate enhanced model is chosen if an enhanced model exists for
@@ -357,6 +362,7 @@ pub struct RecognitionConfig {
     #[prost(bool, tag = "14")]
     pub use_enhanced: bool,
 }
+/// Nested message and enum types in `RecognitionConfig`.
 pub mod recognition_config {
     /// The encoding of the audio data sent in the request.
     ///
@@ -444,6 +450,7 @@ pub struct SpeakerDiarizationConfig {
     #[prost(int32, tag = "3")]
     pub max_speaker_count: i32,
     /// Output only. Unused.
+    #[deprecated]
     #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
 }
@@ -472,22 +479,24 @@ pub struct RecognitionMetadata {
     /// 'Polycom SoundStation IP 6000' or 'POTS' or 'VoIP' or
     /// 'Cardioid Microphone'.
     #[prost(string, tag = "7")]
-    pub recording_device_name: std::string::String,
+    pub recording_device_name: ::prost::alloc::string::String,
     /// Mime type of the original audio file.  For example `audio/m4a`,
     /// `audio/x-alaw-basic`, `audio/mp3`, `audio/3gpp`.
     /// A list of possible audio mime types is maintained at
     /// http://www.iana.org/assignments/media-types/media-types.xhtml#audio
     #[prost(string, tag = "8")]
-    pub original_mime_type: std::string::String,
+    pub original_mime_type: ::prost::alloc::string::String,
     /// Obfuscated (privacy-protected) ID of the user, to identify number of
     /// unique users using the service.
+    #[deprecated]
     #[prost(int64, tag = "9")]
     pub obfuscated_id: i64,
     /// Description of the content. Eg. "Recordings of federal supreme court
     /// hearings from 2012".
     #[prost(string, tag = "10")]
-    pub audio_topic: std::string::String,
+    pub audio_topic: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `RecognitionMetadata`.
 pub mod recognition_metadata {
     /// Use case categories that the audio recognition request can be described
     /// by.
@@ -583,7 +592,7 @@ pub struct SpeechContext {
     /// improves the likelihood of correctly transcribing audio that includes
     /// months.
     #[prost(string, repeated, tag = "1")]
-    pub phrases: ::std::vec::Vec<std::string::String>,
+    pub phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Hint Boost. Positive value will increase the probability that a specific
     /// phrase will be recognized over other similar sounding phrases. The higher
     /// the boost, the higher the chance of false positive recognition as well.
@@ -604,8 +613,9 @@ pub struct RecognitionAudio {
     /// The audio source, which is either inline content or a Google Cloud
     /// Storage uri.
     #[prost(oneof = "recognition_audio::AudioSource", tags = "1, 2")]
-    pub audio_source: ::std::option::Option<recognition_audio::AudioSource>,
+    pub audio_source: ::core::option::Option<recognition_audio::AudioSource>,
 }
+/// Nested message and enum types in `RecognitionAudio`.
 pub mod recognition_audio {
     /// The audio source, which is either inline content or a Google Cloud
     /// Storage uri.
@@ -615,7 +625,7 @@ pub mod recognition_audio {
         /// `RecognitionConfig`. Note: as with all bytes fields, proto buffers use a
         /// pure binary representation, whereas JSON representations use base64.
         #[prost(bytes, tag = "1")]
-        Content(std::vec::Vec<u8>),
+        Content(::prost::alloc::vec::Vec<u8>),
         /// URI that points to a file that contains audio data bytes as specified in
         /// `RecognitionConfig`. The file must not be compressed (for example, gzip).
         /// Currently, only Google Cloud Storage URIs are
@@ -625,7 +635,7 @@ pub mod recognition_audio {
         /// For more information, see [Request
         /// URIs](https://cloud.google.com/storage/docs/reference-uris).
         #[prost(string, tag = "2")]
-        Uri(std::string::String),
+        Uri(::prost::alloc::string::String),
     }
 }
 /// The only message returned to the client by the `Recognize` method. It
@@ -636,7 +646,7 @@ pub struct RecognizeResponse {
     /// Sequential list of transcription results corresponding to
     /// sequential portions of audio.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<SpeechRecognitionResult>,
+    pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
 }
 /// The only message returned to the client by the `LongRunningRecognize` method.
 /// It contains the result as zero or more sequential `SpeechRecognitionResult`
@@ -648,7 +658,7 @@ pub struct LongRunningRecognizeResponse {
     /// Sequential list of transcription results corresponding to
     /// sequential portions of audio.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<SpeechRecognitionResult>,
+    pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
 }
 /// Describes the progress of a long-running `LongRunningRecognize` call. It is
 /// included in the `metadata` field of the `Operation` returned by the
@@ -661,14 +671,14 @@ pub struct LongRunningRecognizeMetadata {
     pub progress_percent: i32,
     /// Time when the request was received.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time of the most recent processing update.
     #[prost(message, optional, tag = "3")]
-    pub last_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The URI of the audio file being transcribed. Empty if the audio was sent
     /// as byte content.
     #[prost(string, tag = "4")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
 }
 /// `StreamingRecognizeResponse` is the only message returned to the client by
 /// `StreamingRecognize`. A series of zero or more `StreamingRecognizeResponse`
@@ -724,13 +734,13 @@ pub struct StreamingRecognizeResponse {
     /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// This repeated list contains zero or more results that
     /// correspond to consecutive portions of the audio currently being processed.
     /// It contains zero or one `is_final=true` result (the newly settled portion),
     /// followed by zero or more `is_final=false` results (the interim results).
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<StreamingRecognitionResult>,
+    pub results: ::prost::alloc::vec::Vec<StreamingRecognitionResult>,
     /// Indicates the type of speech event.
     #[prost(
         enumeration = "streaming_recognize_response::SpeechEventType",
@@ -738,6 +748,7 @@ pub struct StreamingRecognizeResponse {
     )]
     pub speech_event_type: i32,
 }
+/// Nested message and enum types in `StreamingRecognizeResponse`.
 pub mod streaming_recognize_response {
     /// Indicates the type of speech event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -764,7 +775,7 @@ pub struct StreamingRecognitionResult {
     /// These alternatives are ordered in terms of accuracy, with the top (first)
     /// alternative being the most probable, as ranked by the recognizer.
     #[prost(message, repeated, tag = "1")]
-    pub alternatives: ::std::vec::Vec<SpeechRecognitionAlternative>,
+    pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
     /// If `false`, this `StreamingRecognitionResult` represents an
     /// interim result that may change. If `true`, this is the final time the
     /// speech service will return this particular `StreamingRecognitionResult`,
@@ -782,7 +793,7 @@ pub struct StreamingRecognitionResult {
     /// Time offset of the end of this result relative to the
     /// beginning of the audio.
     #[prost(message, optional, tag = "4")]
-    pub result_end_time: ::std::option::Option<::prost_types::Duration>,
+    pub result_end_time: ::core::option::Option<::prost_types::Duration>,
     /// For multi-channel audio, this is the channel number corresponding to the
     /// recognized result for the audio from that channel.
     /// For audio_channel_count = N, its output values can range from '1' to 'N'.
@@ -792,7 +803,7 @@ pub struct StreamingRecognitionResult {
     /// language tag of the language in this result. This language code was
     /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "6")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// A speech recognition result corresponding to a portion of the audio.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -802,7 +813,7 @@ pub struct SpeechRecognitionResult {
     /// These alternatives are ordered in terms of accuracy, with the top (first)
     /// alternative being the most probable, as ranked by the recognizer.
     #[prost(message, repeated, tag = "1")]
-    pub alternatives: ::std::vec::Vec<SpeechRecognitionAlternative>,
+    pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
     /// For multi-channel audio, this is the channel number corresponding to the
     /// recognized result for the audio from that channel.
     /// For audio_channel_count = N, its output values can range from '1' to 'N'.
@@ -812,14 +823,14 @@ pub struct SpeechRecognitionResult {
     /// language tag of the language in this result. This language code was
     /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "5")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Alternative hypotheses (a.k.a. n-best list).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionAlternative {
     /// Transcript text representing the words that the user spoke.
     #[prost(string, tag = "1")]
-    pub transcript: std::string::String,
+    pub transcript: ::prost::alloc::string::String,
     /// The confidence estimate between 0.0 and 1.0. A higher number
     /// indicates an estimated greater likelihood that the recognized words are
     /// correct. This field is set only for the top alternative of a non-streaming
@@ -833,7 +844,7 @@ pub struct SpeechRecognitionAlternative {
     /// Note: When `enable_speaker_diarization` is true, you will see all the words
     /// from the beginning of the audio.
     #[prost(message, repeated, tag = "3")]
-    pub words: ::std::vec::Vec<WordInfo>,
+    pub words: ::prost::alloc::vec::Vec<WordInfo>,
 }
 /// Word-specific information for recognized words.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -845,7 +856,7 @@ pub struct WordInfo {
     /// This is an experimental feature and the accuracy of the time offset can
     /// vary.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Duration>,
+    pub start_time: ::core::option::Option<::prost_types::Duration>,
     /// Time offset relative to the beginning of the audio,
     /// and corresponding to the end of the spoken word.
     /// This field is only set if `enable_word_time_offsets=true` and only
@@ -853,10 +864,10 @@ pub struct WordInfo {
     /// This is an experimental feature and the accuracy of the time offset can
     /// vary.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Duration>,
+    pub end_time: ::core::option::Option<::prost_types::Duration>,
     /// The word corresponding to this set of information.
     #[prost(string, tag = "3")]
-    pub word: std::string::String,
+    pub word: ::prost::alloc::string::String,
     /// The confidence estimate between 0.0 and 1.0. A higher number
     /// indicates an estimated greater likelihood that the recognized words are
     /// correct. This field is set only for the top alternative of a non-streaming

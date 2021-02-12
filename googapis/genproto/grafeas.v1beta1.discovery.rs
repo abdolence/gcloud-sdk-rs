@@ -13,7 +13,7 @@ pub struct Discovery {
 pub struct Details {
     /// Required. Analysis status for the discovered resource.
     #[prost(message, optional, tag = "1")]
-    pub discovered: ::std::option::Option<Discovered>,
+    pub discovered: ::core::option::Option<Discovered>,
 }
 /// Provides information about the analysis status of a discovered resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -23,7 +23,7 @@ pub struct Discovered {
     pub continuous_analysis: i32,
     /// The last time continuous analysis was done for this resource.
     #[prost(message, optional, tag = "2")]
-    pub last_analysis_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_analysis_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The status of discovery for the resource.
     #[prost(enumeration = "discovered::AnalysisStatus", tag = "3")]
     pub analysis_status: i32,
@@ -31,8 +31,9 @@ pub struct Discovered {
     /// details to show to the user. The LocalizedMessage is output only and
     /// populated by the API.
     #[prost(message, optional, tag = "4")]
-    pub analysis_status_error: ::std::option::Option<super::super::super::google::rpc::Status>,
+    pub analysis_status_error: ::core::option::Option<super::super::super::google::rpc::Status>,
 }
+/// Nested message and enum types in `Discovered`.
 pub mod discovered {
     /// Whether the resource is continuously analyzed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

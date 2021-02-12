@@ -4,23 +4,25 @@
 pub struct IamPolicyAnalysisResult {
     /// The full name of the resource to which the [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] policy attaches.
     #[prost(string, tag = "1")]
-    pub attached_resource_full_name: std::string::String,
+    pub attached_resource_full_name: ::prost::alloc::string::String,
     /// The Cloud IAM policy binding under analysis.
     #[prost(message, optional, tag = "2")]
-    pub iam_binding: ::std::option::Option<super::super::super::iam::v1::Binding>,
+    pub iam_binding: ::core::option::Option<super::super::super::iam::v1::Binding>,
     /// The access control lists derived from the [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] that match or
     /// potentially match resource and access selectors specified in the request.
     #[prost(message, repeated, tag = "3")]
-    pub access_control_lists: ::std::vec::Vec<iam_policy_analysis_result::AccessControlList>,
+    pub access_control_lists:
+        ::prost::alloc::vec::Vec<iam_policy_analysis_result::AccessControlList>,
     /// The identity list derived from members of the [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] that match or
     /// potentially match identity selector specified in the request.
     #[prost(message, optional, tag = "4")]
-    pub identity_list: ::std::option::Option<iam_policy_analysis_result::IdentityList>,
+    pub identity_list: ::core::option::Option<iam_policy_analysis_result::IdentityList>,
     /// Represents whether all nodes in the transitive closure of the
     /// [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] node have been explored.
     #[prost(bool, tag = "5")]
     pub fully_explored: bool,
 }
+/// Nested message and enum types in `IamPolicyAnalysisResult`.
 pub mod iam_policy_analysis_result {
     /// Represents analysis state of each node in the result graph or non-critical
     /// errors in the response.
@@ -35,36 +37,37 @@ pub mod iam_policy_analysis_result {
         pub code: i32,
         /// The human-readable description of the cause of failure.
         #[prost(string, tag = "2")]
-        pub cause: std::string::String,
+        pub cause: ::prost::alloc::string::String,
     }
     /// A GCP resource that appears in an access control list.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Resource {
         /// The [full resource name](https://aip.dev/122#full-resource-names).
         #[prost(string, tag = "1")]
-        pub full_resource_name: std::string::String,
+        pub full_resource_name: ::prost::alloc::string::String,
         /// The analysis state of this resource node.
         #[prost(message, optional, tag = "2")]
-        pub analysis_state: ::std::option::Option<AnalysisState>,
+        pub analysis_state: ::core::option::Option<AnalysisState>,
     }
     /// A role or permission that appears in an access control list.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Access {
         /// The analysis state of this access node.
         #[prost(message, optional, tag = "3")]
-        pub analysis_state: ::std::option::Option<AnalysisState>,
+        pub analysis_state: ::core::option::Option<AnalysisState>,
         #[prost(oneof = "access::OneofAccess", tags = "1, 2")]
-        pub oneof_access: ::std::option::Option<access::OneofAccess>,
+        pub oneof_access: ::core::option::Option<access::OneofAccess>,
     }
+    /// Nested message and enum types in `Access`.
     pub mod access {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OneofAccess {
             /// The role.
             #[prost(string, tag = "1")]
-            Role(std::string::String),
+            Role(::prost::alloc::string::String),
             /// The permission.
             #[prost(string, tag = "2")]
-            Permission(std::string::String),
+            Permission(::prost::alloc::string::String),
         }
     }
     /// A directional edge.
@@ -72,10 +75,10 @@ pub mod iam_policy_analysis_result {
     pub struct Edge {
         /// The source node of the edge.
         #[prost(string, tag = "1")]
-        pub source_node: std::string::String,
+        pub source_node: ::prost::alloc::string::String,
         /// The target node of the edge.
         #[prost(string, tag = "2")]
-        pub target_node: std::string::String,
+        pub target_node: ::prost::alloc::string::String,
     }
     /// An identity that appears in an access control list.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -92,10 +95,10 @@ pub mod iam_policy_analysis_result {
         /// - allUsers
         /// - etc.
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// The analysis state of this identity node.
         #[prost(message, optional, tag = "2")]
-        pub analysis_state: ::std::option::Option<AnalysisState>,
+        pub analysis_state: ::core::option::Option<AnalysisState>,
     }
     /// An access control list, derived from the above IAM policy binding, which
     /// contains a set of resources and accesses. May include one
@@ -118,19 +121,19 @@ pub mod iam_policy_analysis_result {
         /// - The resource_selector, if it is specified in request;
         /// - Otherwise, resources reachable from the policy attached resource.
         #[prost(message, repeated, tag = "1")]
-        pub resources: ::std::vec::Vec<Resource>,
+        pub resources: ::prost::alloc::vec::Vec<Resource>,
         /// The accesses that match one of the following conditions:
         /// - The access_selector, if it is specified in request;
         /// - Otherwise, access specifiers reachable from the policy binding's role.
         #[prost(message, repeated, tag = "2")]
-        pub accesses: ::std::vec::Vec<Access>,
+        pub accesses: ::prost::alloc::vec::Vec<Access>,
         /// Resource edges of the graph starting from the policy attached
         /// resource to any descendant resources. The [Edge.source_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.source_node] contains
         /// the full resource name of a parent resource and [Edge.target_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.target_node]
         /// contains the full resource name of a child resource. This field is
         /// present only if the output_resource_edges option is enabled in request.
         #[prost(message, repeated, tag = "3")]
-        pub resource_edges: ::std::vec::Vec<Edge>,
+        pub resource_edges: ::prost::alloc::vec::Vec<Edge>,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentityList {
@@ -139,7 +142,7 @@ pub mod iam_policy_analysis_result {
         /// - The identity_selector, if it is specified in request;
         /// - Otherwise, identities reachable from the policy binding's members.
         #[prost(message, repeated, tag = "1")]
-        pub identities: ::std::vec::Vec<Identity>,
+        pub identities: ::prost::alloc::vec::Vec<Identity>,
         /// Group identity edges of the graph starting from the binding's
         /// group members to any node of the [identities][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.IdentityList.identities]. The [Edge.source_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.source_node]
         /// contains a group, such as "group:parent@google.com". The
@@ -148,7 +151,7 @@ pub mod iam_policy_analysis_result {
         /// This field is present only if the output_group_edges option is enabled in
         /// request.
         #[prost(message, repeated, tag = "2")]
-        pub group_edges: ::std::vec::Vec<Edge>,
+        pub group_edges: ::prost::alloc::vec::Vec<Edge>,
     }
 }
 /// IAM policy analysis query message.
@@ -158,18 +161,19 @@ pub struct IamPolicyAnalysisQuery {
     /// the parent will be analyzed. This can only be an organization number (such
     /// as "organizations/123") or a folder number (such as "folders/123").
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Specifies a resource for analysis. Leaving it empty means ANY.
     #[prost(message, optional, tag = "2")]
-    pub resource_selector: ::std::option::Option<iam_policy_analysis_query::ResourceSelector>,
+    pub resource_selector: ::core::option::Option<iam_policy_analysis_query::ResourceSelector>,
     /// Optional. Specifies an identity for analysis. Leaving it empty means ANY.
     #[prost(message, optional, tag = "3")]
-    pub identity_selector: ::std::option::Option<iam_policy_analysis_query::IdentitySelector>,
+    pub identity_selector: ::core::option::Option<iam_policy_analysis_query::IdentitySelector>,
     /// Optional. Specifies roles or permissions for analysis. Leaving it empty
     /// means ANY.
     #[prost(message, optional, tag = "4")]
-    pub access_selector: ::std::option::Option<iam_policy_analysis_query::AccessSelector>,
+    pub access_selector: ::core::option::Option<iam_policy_analysis_query::AccessSelector>,
 }
+/// Nested message and enum types in `IamPolicyAnalysisQuery`.
 pub mod iam_policy_analysis_query {
     /// Specifies the resource to analyze for access policies, which may be set
     /// directly on the resource, or on ancestors such as organizations, folders or
@@ -181,7 +185,7 @@ pub mod iam_policy_analysis_query {
         /// name](https://cloud.google.com/apis/design/resource_names#full_resource_name)
         /// .
         #[prost(string, tag = "1")]
-        pub full_resource_name: std::string::String,
+        pub full_resource_name: ::prost::alloc::string::String,
     }
     /// Specifies an identity for which to determine resource access, based on
     /// roles assigned either directly to them or to the groups they belong to,
@@ -192,7 +196,7 @@ pub mod iam_policy_analysis_query {
         /// [IAM policy
         /// binding](https://cloud.google.com/iam/reference/rest/v1/Binding).
         #[prost(string, tag = "1")]
-        pub identity: std::string::String,
+        pub identity: ::prost::alloc::string::String,
     }
     /// Specifies roles and/or permissions to analyze, to determine both the
     /// identities possessing them and the resources they control. If multiple
@@ -202,10 +206,10 @@ pub mod iam_policy_analysis_query {
     pub struct AccessSelector {
         /// Optional. The roles to appear in result.
         #[prost(string, repeated, tag = "1")]
-        pub roles: ::std::vec::Vec<std::string::String>,
+        pub roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Optional. The permissions to appear in result.
         #[prost(string, repeated, tag = "2")]
-        pub permissions: ::std::vec::Vec<std::string::String>,
+        pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// A request message for [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
@@ -213,11 +217,12 @@ pub mod iam_policy_analysis_query {
 pub struct AnalyzeIamPolicyRequest {
     /// Required. The request query.
     #[prost(message, optional, tag = "1")]
-    pub analysis_query: ::std::option::Option<IamPolicyAnalysisQuery>,
+    pub analysis_query: ::core::option::Option<IamPolicyAnalysisQuery>,
     /// Optional. The request options.
     #[prost(message, optional, tag = "2")]
-    pub options: ::std::option::Option<analyze_iam_policy_request::Options>,
+    pub options: ::core::option::Option<analyze_iam_policy_request::Options>,
 }
+/// Nested message and enum types in `AnalyzeIamPolicyRequest`.
 pub mod analyze_iam_policy_request {
     /// Contains request options.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -299,7 +304,7 @@ pub mod analyze_iam_policy_request {
         ///
         /// Default is empty.
         #[prost(message, optional, tag = "7")]
-        pub execution_timeout: ::std::option::Option<::prost_types::Duration>,
+        pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
     }
 }
 /// A response message for [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
@@ -307,13 +312,13 @@ pub mod analyze_iam_policy_request {
 pub struct AnalyzeIamPolicyResponse {
     /// The main analysis that matches the original request.
     #[prost(message, optional, tag = "1")]
-    pub main_analysis: ::std::option::Option<analyze_iam_policy_response::IamPolicyAnalysis>,
+    pub main_analysis: ::core::option::Option<analyze_iam_policy_response::IamPolicyAnalysis>,
     /// The service account impersonation analysis if
     /// [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][] is
     /// enabled.
     #[prost(message, repeated, tag = "2")]
     pub service_account_impersonation_analysis:
-        ::std::vec::Vec<analyze_iam_policy_response::IamPolicyAnalysis>,
+        ::prost::alloc::vec::Vec<analyze_iam_policy_response::IamPolicyAnalysis>,
     /// Represents whether all entries in the [main_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.main_analysis] and
     /// [service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis] have been fully explored to
     /// answer the query in the request.
@@ -322,19 +327,20 @@ pub struct AnalyzeIamPolicyResponse {
     /// A list of non-critical errors happened during the request handling to
     /// explain why `fully_explored` is false, or empty if no error happened.
     #[prost(message, repeated, tag = "4")]
-    pub non_critical_errors: ::std::vec::Vec<iam_policy_analysis_result::AnalysisState>,
+    pub non_critical_errors: ::prost::alloc::vec::Vec<iam_policy_analysis_result::AnalysisState>,
 }
+/// Nested message and enum types in `AnalyzeIamPolicyResponse`.
 pub mod analyze_iam_policy_response {
     /// An analysis message to group the query and results.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamPolicyAnalysis {
         /// The analysis query.
         #[prost(message, optional, tag = "1")]
-        pub analysis_query: ::std::option::Option<super::IamPolicyAnalysisQuery>,
+        pub analysis_query: ::core::option::Option<super::IamPolicyAnalysisQuery>,
         /// A list of [IamPolicyAnalysisResult][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult] that matches the analysis query, or
         /// empty if no result is found.
         #[prost(message, repeated, tag = "2")]
-        pub analysis_results: ::std::vec::Vec<super::IamPolicyAnalysisResult>,
+        pub analysis_results: ::prost::alloc::vec::Vec<super::IamPolicyAnalysisResult>,
         /// Represents whether all entries in the [analysis_results][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.IamPolicyAnalysis.analysis_results] have been
         /// fully explored to answer the query.
         #[prost(bool, tag = "3")]
@@ -346,8 +352,9 @@ pub mod analyze_iam_policy_response {
 pub struct IamPolicyAnalysisOutputConfig {
     /// IAM policy analysis export destination.
     #[prost(oneof = "iam_policy_analysis_output_config::Destination", tags = "1")]
-    pub destination: ::std::option::Option<iam_policy_analysis_output_config::Destination>,
+    pub destination: ::core::option::Option<iam_policy_analysis_output_config::Destination>,
 }
+/// Nested message and enum types in `IamPolicyAnalysisOutputConfig`.
 pub mod iam_policy_analysis_output_config {
     /// A Cloud Storage location.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -358,7 +365,7 @@ pub mod iam_policy_analysis_output_config {
         /// Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)
         /// for more information.
         #[prost(string, tag = "1")]
-        pub uri: std::string::String,
+        pub uri: ::prost::alloc::string::String,
     }
     /// IAM policy analysis export destination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -373,14 +380,15 @@ pub mod iam_policy_analysis_output_config {
 pub struct ExportIamPolicyAnalysisRequest {
     /// Required. The request query.
     #[prost(message, optional, tag = "1")]
-    pub analysis_query: ::std::option::Option<IamPolicyAnalysisQuery>,
+    pub analysis_query: ::core::option::Option<IamPolicyAnalysisQuery>,
     /// Optional. The request options.
     #[prost(message, optional, tag = "2")]
-    pub options: ::std::option::Option<export_iam_policy_analysis_request::Options>,
+    pub options: ::core::option::Option<export_iam_policy_analysis_request::Options>,
     /// Required. Output configuration indicating where the results will be output to.
     #[prost(message, optional, tag = "3")]
-    pub output_config: ::std::option::Option<IamPolicyAnalysisOutputConfig>,
+    pub output_config: ::core::option::Option<IamPolicyAnalysisOutputConfig>,
 }
+/// Nested message and enum types in `ExportIamPolicyAnalysisRequest`.
 pub mod export_iam_policy_analysis_request {
     /// Contains request options.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -459,7 +467,7 @@ pub mod export_iam_policy_analysis_request {
 pub struct ExportIamPolicyAnalysisResponse {
     /// Output configuration indicating where the results were output to.
     #[prost(message, optional, tag = "1")]
-    pub output_config: ::std::option::Option<IamPolicyAnalysisOutputConfig>,
+    pub output_config: ::core::option::Option<IamPolicyAnalysisOutputConfig>,
 }
 #[doc = r" Generated client implementations."]
 pub mod asset_service_client {

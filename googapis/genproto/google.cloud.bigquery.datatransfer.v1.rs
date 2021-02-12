@@ -21,13 +21,13 @@ pub struct ScheduleOptions {
     /// moment. The time when a data transfer can be trigerred manually is not
     /// limited by this option.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Defines time to stop scheduling transfer runs. A transfer run cannot be
     /// scheduled at or after the end time. The end time can be changed at any
     /// moment. The time when a data transfer can be trigerred manually is not
     /// limited by this option.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents a data transfer configuration. A transfer configuration
 /// contains all metadata needed to perform a data transfer. For example,
@@ -45,16 +45,16 @@ pub struct TransferConfig {
     /// is not provided, usually a uuid, even though it is not guaranteed or
     /// required, will be generated for config_id.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// User specified display name for the data transfer.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Data source id. Cannot be changed once data transfer is created.
     #[prost(string, tag = "5")]
-    pub data_source_id: std::string::String,
+    pub data_source_id: ::prost::alloc::string::String,
     /// Data transfer specific parameters.
     #[prost(message, optional, tag = "9")]
-    pub params: ::std::option::Option<::prost_types::Struct>,
+    pub params: ::core::option::Option<::prost_types::Struct>,
     /// Data transfer schedule.
     /// If the data source does not support a custom schedule, this should be
     /// empty. If it is empty, the default value for the data source will be
@@ -68,10 +68,10 @@ pub struct TransferConfig {
     /// https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
     /// NOTE: the granularity should be at least 8 hours, or less frequent.
     #[prost(string, tag = "7")]
-    pub schedule: std::string::String,
+    pub schedule: ::prost::alloc::string::String,
     /// Options customizing the data transfer schedule.
     #[prost(message, optional, tag = "24")]
-    pub schedule_options: ::std::option::Option<ScheduleOptions>,
+    pub schedule_options: ::core::option::Option<ScheduleOptions>,
     /// The number of days to look back to automatically refresh the data.
     /// For example, if `data_refresh_window_days = 10`, then every day
     /// BigQuery reingests data for [today-10, today-1], rather than ingesting data
@@ -86,10 +86,10 @@ pub struct TransferConfig {
     pub disabled: bool,
     /// Output only. Data transfer modification time. Ignored by server on input.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Next time when data transfer will run.
     #[prost(message, optional, tag = "8")]
-    pub next_run_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub next_run_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. State of the most recently updated transfer run.
     #[prost(enumeration = "TransferState", tag = "10")]
     pub state: i32,
@@ -98,26 +98,27 @@ pub struct TransferConfig {
     pub user_id: i64,
     /// Output only. Region in which BigQuery dataset is located.
     #[prost(string, tag = "14")]
-    pub dataset_region: std::string::String,
+    pub dataset_region: ::prost::alloc::string::String,
     /// Pub/Sub topic where notifications will be sent after transfer runs
     /// associated with this transfer config finish.
     #[prost(string, tag = "15")]
-    pub notification_pubsub_topic: std::string::String,
+    pub notification_pubsub_topic: ::prost::alloc::string::String,
     /// Email notifications will be sent according to these preferences
     /// to the email address of the user who owns this transfer config.
     #[prost(message, optional, tag = "18")]
-    pub email_preferences: ::std::option::Option<EmailPreferences>,
+    pub email_preferences: ::core::option::Option<EmailPreferences>,
     /// The desination of the transfer config.
     #[prost(oneof = "transfer_config::Destination", tags = "2")]
-    pub destination: ::std::option::Option<transfer_config::Destination>,
+    pub destination: ::core::option::Option<transfer_config::Destination>,
 }
+/// Nested message and enum types in `TransferConfig`.
 pub mod transfer_config {
     /// The desination of the transfer config.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The BigQuery target dataset id.
         #[prost(string, tag = "2")]
-        DestinationDatasetId(std::string::String),
+        DestinationDatasetId(::prost::alloc::string::String),
     }
 }
 /// Represents a data transfer run.
@@ -128,34 +129,34 @@ pub struct TransferRun {
     /// `projects/{project_id}/locations/{location}/transferConfigs/{config_id}/runs/{run_id}`.
     /// The name is ignored when creating a transfer run.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Minimum time after which a transfer run can be started.
     #[prost(message, optional, tag = "3")]
-    pub schedule_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// For batch transfer runs, specifies the date and time of the data should be
     /// ingested.
     #[prost(message, optional, tag = "10")]
-    pub run_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub run_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Status of the transfer run.
     #[prost(message, optional, tag = "21")]
-    pub error_status: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub error_status: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Output only. Time when transfer run was started.
     /// Parameter ignored by server for input requests.
     #[prost(message, optional, tag = "4")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when transfer run ended.
     /// Parameter ignored by server for input requests.
     #[prost(message, optional, tag = "5")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Last time the data transfer run state was updated.
     #[prost(message, optional, tag = "6")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Data transfer specific parameters.
     #[prost(message, optional, tag = "9")]
-    pub params: ::std::option::Option<::prost_types::Struct>,
+    pub params: ::core::option::Option<::prost_types::Struct>,
     /// Output only. Data source id.
     #[prost(string, tag = "7")]
-    pub data_source_id: std::string::String,
+    pub data_source_id: ::prost::alloc::string::String,
     /// Data transfer run state. Ignored for input requests.
     #[prost(enumeration = "TransferState", tag = "8")]
     pub state: i32,
@@ -168,27 +169,28 @@ pub struct TransferRun {
     /// NOTE: the system might choose to delay the schedule depending on the
     /// current load, so `schedule_time` doesn't always match this.
     #[prost(string, tag = "12")]
-    pub schedule: std::string::String,
+    pub schedule: ::prost::alloc::string::String,
     /// Output only. Pub/Sub topic where a notification will be sent after this
     /// transfer run finishes
     #[prost(string, tag = "23")]
-    pub notification_pubsub_topic: std::string::String,
+    pub notification_pubsub_topic: ::prost::alloc::string::String,
     /// Output only. Email notifications will be sent according to these
     /// preferences to the email address of the user who owns the transfer config
     /// this run was derived from.
     #[prost(message, optional, tag = "25")]
-    pub email_preferences: ::std::option::Option<EmailPreferences>,
+    pub email_preferences: ::core::option::Option<EmailPreferences>,
     /// Data transfer destination.
     #[prost(oneof = "transfer_run::Destination", tags = "2")]
-    pub destination: ::std::option::Option<transfer_run::Destination>,
+    pub destination: ::core::option::Option<transfer_run::Destination>,
 }
+/// Nested message and enum types in `TransferRun`.
 pub mod transfer_run {
     /// Data transfer destination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Output only. The BigQuery target dataset id.
         #[prost(string, tag = "2")]
-        DestinationDatasetId(std::string::String),
+        DestinationDatasetId(::prost::alloc::string::String),
     }
 }
 /// Represents a user facing message for a particular data transfer run.
@@ -196,14 +198,15 @@ pub mod transfer_run {
 pub struct TransferMessage {
     /// Time when message was logged.
     #[prost(message, optional, tag = "1")]
-    pub message_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub message_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Message severity.
     #[prost(enumeration = "transfer_message::MessageSeverity", tag = "2")]
     pub severity: i32,
     /// Message text.
     #[prost(string, tag = "3")]
-    pub message_text: std::string::String,
+    pub message_text: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `TransferMessage`.
 pub mod transfer_message {
     /// Represents data transfer user facing message severity.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -259,13 +262,13 @@ pub enum TransferState {
 pub struct DataSourceParameter {
     /// Parameter identifier.
     #[prost(string, tag = "1")]
-    pub param_id: std::string::String,
+    pub param_id: ::prost::alloc::string::String,
     /// Parameter display name in the user interface.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Parameter description.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Parameter type.
     #[prost(enumeration = "data_source_parameter::Type", tag = "4")]
     pub r#type: i32,
@@ -277,26 +280,26 @@ pub struct DataSourceParameter {
     pub repeated: bool,
     /// Regular expression which can be used for parameter validation.
     #[prost(string, tag = "7")]
-    pub validation_regex: std::string::String,
+    pub validation_regex: ::prost::alloc::string::String,
     /// All possible values for the parameter.
     #[prost(string, repeated, tag = "8")]
-    pub allowed_values: ::std::vec::Vec<std::string::String>,
+    pub allowed_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// For integer and double values specifies minimum allowed value.
     #[prost(message, optional, tag = "9")]
-    pub min_value: ::std::option::Option<f64>,
+    pub min_value: ::core::option::Option<f64>,
     /// For integer and double values specifies maxminum allowed value.
     #[prost(message, optional, tag = "10")]
-    pub max_value: ::std::option::Option<f64>,
+    pub max_value: ::core::option::Option<f64>,
     /// Deprecated. This field has no effect.
     #[prost(message, repeated, tag = "11")]
-    pub fields: ::std::vec::Vec<DataSourceParameter>,
+    pub fields: ::prost::alloc::vec::Vec<DataSourceParameter>,
     /// Description of the requirements for this field, in case the user input does
     /// not fulfill the regex pattern or min/max values.
     #[prost(string, tag = "12")]
-    pub validation_description: std::string::String,
+    pub validation_description: ::prost::alloc::string::String,
     /// URL to a help document to further explain the naming requirements.
     #[prost(string, tag = "13")]
-    pub validation_help_url: std::string::String,
+    pub validation_help_url: ::prost::alloc::string::String,
     /// Cannot be changed after initial creation.
     #[prost(bool, tag = "14")]
     pub immutable: bool,
@@ -308,6 +311,7 @@ pub struct DataSourceParameter {
     #[prost(bool, tag = "20")]
     pub deprecated: bool,
 }
+/// Nested message and enum types in `DataSourceParameter`.
 pub mod data_source_parameter {
     /// Parameter type.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -336,28 +340,30 @@ pub mod data_source_parameter {
 pub struct DataSource {
     /// Output only. Data source resource name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Data source id.
     #[prost(string, tag = "2")]
-    pub data_source_id: std::string::String,
+    pub data_source_id: ::prost::alloc::string::String,
     /// User friendly data source name.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// User friendly data source description string.
     #[prost(string, tag = "4")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Data source client id which should be used to receive refresh token.
     #[prost(string, tag = "5")]
-    pub client_id: std::string::String,
+    pub client_id: ::prost::alloc::string::String,
     /// Api auth scopes for which refresh token needs to be obtained. These are
     /// scopes needed by a data source to prepare data and ingest them into
     /// BigQuery, e.g., https://www.googleapis.com/auth/bigquery
     #[prost(string, repeated, tag = "6")]
-    pub scopes: ::std::vec::Vec<std::string::String>,
+    pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Deprecated. This field has no effect.
+    #[deprecated]
     #[prost(enumeration = "TransferType", tag = "7")]
     pub transfer_type: i32,
     /// Deprecated. This field has no effect.
+    #[deprecated]
     #[prost(bool, tag = "8")]
     pub supports_multiple_transfers: bool,
     /// The number of seconds to wait for an update from the data source
@@ -370,7 +376,7 @@ pub struct DataSource {
     /// `every wed,fri of jan,jun 13:15`, and
     /// `first sunday of quarter 00:00`.
     #[prost(string, tag = "10")]
-    pub default_schedule: std::string::String,
+    pub default_schedule: ::prost::alloc::string::String,
     /// Specifies whether the data source supports a user defined schedule, or
     /// operates on the default schedule.
     /// When set to `true`, user can override default schedule.
@@ -378,10 +384,10 @@ pub struct DataSource {
     pub supports_custom_schedule: bool,
     /// Data source parameters.
     #[prost(message, repeated, tag = "12")]
-    pub parameters: ::std::vec::Vec<DataSourceParameter>,
+    pub parameters: ::prost::alloc::vec::Vec<DataSourceParameter>,
     /// Url for the help document for this data source.
     #[prost(string, tag = "13")]
-    pub help_url: std::string::String,
+    pub help_url: ::prost::alloc::string::String,
     /// Indicates the type of authorization.
     #[prost(enumeration = "data_source::AuthorizationType", tag = "14")]
     pub authorization_type: i32,
@@ -401,8 +407,9 @@ pub struct DataSource {
     pub manual_runs_disabled: bool,
     /// The minimum interval for scheduler to schedule runs.
     #[prost(message, optional, tag = "18")]
-    pub minimum_schedule_interval: ::std::option::Option<::prost_types::Duration>,
+    pub minimum_schedule_interval: ::core::option::Option<::prost_types::Duration>,
 }
+/// Nested message and enum types in `DataSource`.
 pub mod data_source {
     /// The type of authorization needed for this data source.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -444,7 +451,7 @@ pub struct GetDataSourceRequest {
     /// `projects/{project_id}/dataSources/{data_source_id}` or
     /// `projects/{project_id}/locations/{location_id}/dataSources/{data_source_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to list supported data sources and their data transfer settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -453,14 +460,14 @@ pub struct ListDataSourcesRequest {
     /// Must be in the form: `projects/{project_id}` or
     /// `projects/{project_id}/locations/{location_id}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Pagination token, which can be used to request a specific page
     /// of `ListDataSourcesRequest` list results. For multiple-page
     /// results, `ListDataSourcesResponse` outputs
     /// a `next_page` token, which can be used as the
     /// `page_token` value to request the next page of list results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Page size. The default page size is the maximum value of 1000 results.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
@@ -470,13 +477,13 @@ pub struct ListDataSourcesRequest {
 pub struct ListDataSourcesResponse {
     /// List of supported data sources and their transfer settings.
     #[prost(message, repeated, tag = "1")]
-    pub data_sources: ::std::vec::Vec<DataSource>,
+    pub data_sources: ::prost::alloc::vec::Vec<DataSource>,
     /// Output only. The next-pagination token. For multiple-page list results,
     /// this token can be used as the
     /// `ListDataSourcesRequest.page_token`
     /// to request the next page of list results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to create a data transfer configuration. If new credentials are
 /// needed for this transfer configuration, an authorization code must be
@@ -491,10 +498,10 @@ pub struct CreateTransferConfigRequest {
     /// projects/{project_id}. If specified location and location of the
     /// destination bigquery dataset do not match - the request will fail.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Data transfer configuration to create.
     #[prost(message, optional, tag = "2")]
-    pub transfer_config: ::std::option::Option<TransferConfig>,
+    pub transfer_config: ::core::option::Option<TransferConfig>,
     /// Optional OAuth2 authorization code to use with this transfer configuration.
     /// This is required if new credentials are needed, as indicated by
     /// `CheckValidCreds`.
@@ -512,7 +519,7 @@ pub struct CreateTransferConfigRequest {
     ///   returned in the title bar of the browser, with the page text prompting
     ///   the user to copy the code and paste it in the application.
     #[prost(string, tag = "3")]
-    pub authorization_code: std::string::String,
+    pub authorization_code: ::prost::alloc::string::String,
     /// Optional version info. If users want to find a very recent access token,
     /// that is, immediately after approving access, users have to set the
     /// version_info claim in the token request. To obtain the version_info, users
@@ -520,13 +527,13 @@ pub struct CreateTransferConfigRequest {
     /// version_info back in the authorization response which be be put in a JWT
     /// claim in the token request.
     #[prost(string, tag = "5")]
-    pub version_info: std::string::String,
+    pub version_info: ::prost::alloc::string::String,
     /// Optional service account name. If this field is set, transfer config will
     /// be created with this service account credentials. It requires that
     /// requesting user calling this API has permissions to act as this service
     /// account.
     #[prost(string, tag = "6")]
-    pub service_account_name: std::string::String,
+    pub service_account_name: ::prost::alloc::string::String,
 }
 /// A request to update a transfer configuration. To update the user id of the
 /// transfer configuration, an authorization code needs to be provided.
@@ -534,7 +541,7 @@ pub struct CreateTransferConfigRequest {
 pub struct UpdateTransferConfigRequest {
     /// Required. Data transfer configuration to create.
     #[prost(message, optional, tag = "1")]
-    pub transfer_config: ::std::option::Option<TransferConfig>,
+    pub transfer_config: ::core::option::Option<TransferConfig>,
     /// Optional OAuth2 authorization code to use with this transfer configuration.
     /// If it is provided, the transfer configuration will be associated with the
     /// authorizing user.
@@ -552,10 +559,10 @@ pub struct UpdateTransferConfigRequest {
     ///   returned in the title bar of the browser, with the page text prompting
     ///   the user to copy the code and paste it in the application.
     #[prost(string, tag = "3")]
-    pub authorization_code: std::string::String,
+    pub authorization_code: ::prost::alloc::string::String,
     /// Required. Required list of fields to be updated in this request.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional version info. If users want to find a very recent access token,
     /// that is, immediately after approving access, users have to set the
     /// version_info claim in the token request. To obtain the version_info, users
@@ -563,14 +570,14 @@ pub struct UpdateTransferConfigRequest {
     /// version_info back in the authorization response which be be put in a JWT
     /// claim in the token request.
     #[prost(string, tag = "5")]
-    pub version_info: std::string::String,
+    pub version_info: ::prost::alloc::string::String,
     /// Optional service account name. If this field is set and
     /// "service_account_name" is set in update_mask, transfer config will be
     /// updated to use this service account credentials. It requires that
     /// requesting user calling this API has permissions to act as this service
     /// account.
     #[prost(string, tag = "6")]
-    pub service_account_name: std::string::String,
+    pub service_account_name: ::prost::alloc::string::String,
 }
 /// A request to get data transfer information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -579,7 +586,7 @@ pub struct GetTransferConfigRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A request to delete data transfer information. All associated transfer runs
 /// and log messages will be deleted as well.
@@ -589,7 +596,7 @@ pub struct DeleteTransferConfigRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A request to get data transfer run information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -598,7 +605,7 @@ pub struct GetTransferRunRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A request to delete data transfer run information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -607,7 +614,7 @@ pub struct DeleteTransferRunRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A request to list data transfers configured for a BigQuery project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -616,17 +623,17 @@ pub struct ListTransferConfigsRequest {
     /// should be returned: `projects/{project_id}` or
     /// `projects/{project_id}/locations/{location_id}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// When specified, only configurations of requested data sources are returned.
     #[prost(string, repeated, tag = "2")]
-    pub data_source_ids: ::std::vec::Vec<std::string::String>,
+    pub data_source_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Pagination token, which can be used to request a specific page
     /// of `ListTransfersRequest` list results. For multiple-page
     /// results, `ListTransfersResponse` outputs
     /// a `next_page` token, which can be used as the
     /// `page_token` value to request the next page of list results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Page size. The default page size is the maximum value of 1000 results.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
@@ -636,13 +643,13 @@ pub struct ListTransferConfigsRequest {
 pub struct ListTransferConfigsResponse {
     /// Output only. The stored pipeline transfer configurations.
     #[prost(message, repeated, tag = "1")]
-    pub transfer_configs: ::std::vec::Vec<TransferConfig>,
+    pub transfer_configs: ::prost::alloc::vec::Vec<TransferConfig>,
     /// Output only. The next-pagination token. For multiple-page list results,
     /// this token can be used as the
     /// `ListTransferConfigsRequest.page_token`
     /// to request the next page of list results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to list data transfer runs. UI can use this method to show/filter
 /// specific data transfer runs. The data source can use this method to request
@@ -654,17 +661,17 @@ pub struct ListTransferRunsRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// When specified, only transfer runs with requested states are returned.
     #[prost(enumeration = "TransferState", repeated, tag = "2")]
-    pub states: ::std::vec::Vec<i32>,
+    pub states: ::prost::alloc::vec::Vec<i32>,
     /// Pagination token, which can be used to request a specific page
     /// of `ListTransferRunsRequest` list results. For multiple-page
     /// results, `ListTransferRunsResponse` outputs
     /// a `next_page` token, which can be used as the
     /// `page_token` value to request the next page of list results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Page size. The default page size is the maximum value of 1000 results.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
@@ -672,6 +679,7 @@ pub struct ListTransferRunsRequest {
     #[prost(enumeration = "list_transfer_runs_request::RunAttempt", tag = "5")]
     pub run_attempt: i32,
 }
+/// Nested message and enum types in `ListTransferRunsRequest`.
 pub mod list_transfer_runs_request {
     /// Represents which runs should be pulled.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -688,13 +696,13 @@ pub mod list_transfer_runs_request {
 pub struct ListTransferRunsResponse {
     /// Output only. The stored pipeline transfer runs.
     #[prost(message, repeated, tag = "1")]
-    pub transfer_runs: ::std::vec::Vec<TransferRun>,
+    pub transfer_runs: ::prost::alloc::vec::Vec<TransferRun>,
     /// Output only. The next-pagination token. For multiple-page list results,
     /// this token can be used as the
     /// `ListTransferRunsRequest.page_token`
     /// to request the next page of list results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to get user facing log messages associated with data transfer run.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -703,34 +711,34 @@ pub struct ListTransferLogsRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Pagination token, which can be used to request a specific page
     /// of `ListTransferLogsRequest` list results. For multiple-page
     /// results, `ListTransferLogsResponse` outputs
     /// a `next_page` token, which can be used as the
     /// `page_token` value to request the next page of list results.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Page size. The default page size is the maximum value of 1000 results.
     #[prost(int32, tag = "5")]
     pub page_size: i32,
     /// Message types to return. If not populated - INFO, WARNING and ERROR
     /// messages are returned.
     #[prost(enumeration = "transfer_message::MessageSeverity", repeated, tag = "6")]
-    pub message_types: ::std::vec::Vec<i32>,
+    pub message_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// The returned list transfer run messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferLogsResponse {
     /// Output only. The stored pipeline transfer messages.
     #[prost(message, repeated, tag = "1")]
-    pub transfer_messages: ::std::vec::Vec<TransferMessage>,
+    pub transfer_messages: ::prost::alloc::vec::Vec<TransferMessage>,
     /// Output only. The next-pagination token. For multiple-page list results,
     /// this token can be used as the
     /// `GetTransferRunLogRequest.page_token`
     /// to request the next page of list results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to determine whether the user has valid credentials. This method
 /// is used to limit the number of OAuth popups in the user interface. The
@@ -744,7 +752,7 @@ pub struct CheckValidCredsRequest {
     /// `projects/{project_id}/dataSources/{data_source_id}` or
     /// `projects/{project_id}/locations/{location_id}/dataSources/{data_source_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A response indicating whether the credentials exist and are valid.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -760,22 +768,22 @@ pub struct ScheduleTransferRunsRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Start time of the range of transfer runs. For example,
     /// `"2017-05-25T00:00:00+00:00"`.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. End time of the range of transfer runs. For example,
     /// `"2017-05-30T00:00:00+00:00"`.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A response to schedule transfer runs for a time range.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScheduleTransferRunsResponse {
     /// The transfer runs that were scheduled.
     #[prost(message, repeated, tag = "1")]
-    pub runs: ::std::vec::Vec<TransferRun>,
+    pub runs: ::prost::alloc::vec::Vec<TransferRun>,
 }
 /// A request to start manual transfer runs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -784,12 +792,13 @@ pub struct StartManualTransferRunsRequest {
     /// `projects/{project_id}/transferConfigs/{config_id}` or
     /// `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The requested time specification - this can be a time range or a specific
     /// run_time.
     #[prost(oneof = "start_manual_transfer_runs_request::Time", tags = "3, 4")]
-    pub time: ::std::option::Option<start_manual_transfer_runs_request::Time>,
+    pub time: ::core::option::Option<start_manual_transfer_runs_request::Time>,
 }
+/// Nested message and enum types in `StartManualTransferRunsRequest`.
 pub mod start_manual_transfer_runs_request {
     /// A specification for a time range, this will request transfer runs with
     /// run_time between start_time (inclusive) and end_time (exclusive).
@@ -800,13 +809,13 @@ pub mod start_manual_transfer_runs_request {
         /// the end_time. Creates transfer runs where run_time is in the range betwen
         /// start_time (inclusive) and end_time (exlusive).
         #[prost(message, optional, tag = "1")]
-        pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// End time of the range of transfer runs. For example,
         /// `"2017-05-30T00:00:00+00:00"`. The end_time must not be in the future.
         /// Creates transfer runs where run_time is in the range betwen start_time
         /// (inclusive) and end_time (exlusive).
         #[prost(message, optional, tag = "2")]
-        pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The requested time specification - this can be a time range or a specific
     /// run_time.
@@ -826,7 +835,7 @@ pub mod start_manual_transfer_runs_request {
 pub struct StartManualTransferRunsResponse {
     /// The transfer runs that were created.
     #[prost(message, repeated, tag = "1")]
-    pub runs: ::std::vec::Vec<TransferRun>,
+    pub runs: ::prost::alloc::vec::Vec<TransferRun>,
 }
 #[doc = r" Generated client implementations."]
 pub mod data_transfer_service_client {
@@ -1014,7 +1023,7 @@ pub mod data_transfer_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns information about the particular transfer run."]

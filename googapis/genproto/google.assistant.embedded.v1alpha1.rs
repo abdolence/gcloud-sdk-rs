@@ -3,13 +3,13 @@
 pub struct ConverseConfig {
     /// *Required* Specifies how to process the subsequent incoming audio.
     #[prost(message, optional, tag = "1")]
-    pub audio_in_config: ::std::option::Option<AudioInConfig>,
+    pub audio_in_config: ::core::option::Option<AudioInConfig>,
     /// *Required* Specifies how to format the audio that will be returned.
     #[prost(message, optional, tag = "2")]
-    pub audio_out_config: ::std::option::Option<AudioOutConfig>,
+    pub audio_out_config: ::core::option::Option<AudioOutConfig>,
     /// *Required* Represents the current dialog state.
     #[prost(message, optional, tag = "3")]
-    pub converse_state: ::std::option::Option<ConverseState>,
+    pub converse_state: ::core::option::Option<ConverseState>,
 }
 /// Specifies how to process the `audio_in` data that will be provided in
 /// subsequent requests. For recommended settings, see the Google Assistant SDK
@@ -28,6 +28,7 @@ pub struct AudioInConfig {
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
 }
+/// Nested message and enum types in `AudioInConfig`.
 pub mod audio_in_config {
     /// Audio encoding of the data sent in the audio message.
     /// Audio must be one-channel (mono). The only language supported is "en-US".
@@ -66,6 +67,7 @@ pub struct AudioOutConfig {
     #[prost(int32, tag = "3")]
     pub volume_percentage: i32,
 }
+/// Nested message and enum types in `AudioOutConfig`.
 pub mod audio_out_config {
     /// Audio encoding of the data returned in the audio message. All encodings are
     /// raw audio bytes with no header, except as indicated below.
@@ -93,8 +95,8 @@ pub struct ConverseState {
     /// `ConverseResponse`. If there was a prior `ConverseResponse`, do not omit
     /// this field; doing so will end that conversation (and this new request will
     /// start a new conversation).
-    #[prost(bytes, tag = "1")]
-    pub conversation_state: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub conversation_state: ::prost::alloc::vec::Vec<u8>,
 }
 /// The audio containing the assistant's response to the query. Sequential chunks
 /// of audio data are received in sequential `ConverseResponse` messages.
@@ -103,26 +105,26 @@ pub struct AudioOut {
     /// *Output-only* The audio data containing the assistant's response to the
     /// query. Sequential chunks of audio data are received in sequential
     /// `ConverseResponse` messages.
-    #[prost(bytes, tag = "1")]
-    pub audio_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub audio_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The semantic result for the user's spoken query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseResult {
     /// *Output-only* The recognized transcript of what the user said.
     #[prost(string, tag = "1")]
-    pub spoken_request_text: std::string::String,
+    pub spoken_request_text: ::prost::alloc::string::String,
     /// *Output-only* The text of the assistant's spoken response. This is only
     /// returned for an IFTTT action.
     #[prost(string, tag = "2")]
-    pub spoken_response_text: std::string::String,
+    pub spoken_response_text: ::prost::alloc::string::String,
     /// *Output-only* State information for subsequent `ConverseRequest`. This
     /// value should be saved in the client and returned in the
     /// `conversation_state` with the next `ConverseRequest`. (The client does not
     /// need to interpret or otherwise use this value.) There is no need to save
     /// this information across device restarts.
-    #[prost(bytes, tag = "3")]
-    pub conversation_state: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub conversation_state: ::prost::alloc::vec::Vec<u8>,
     /// *Output-only* Specifies the mode of the microphone after this `Converse`
     /// RPC is processed.
     #[prost(enumeration = "converse_result::MicrophoneMode", tag = "4")]
@@ -139,6 +141,7 @@ pub struct ConverseResult {
     #[prost(int32, tag = "5")]
     pub volume_percentage: i32,
 }
+/// Nested message and enum types in `ConverseResult`.
 pub mod converse_result {
     /// Possible states of the microphone after a `Converse` RPC completes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -164,8 +167,9 @@ pub mod converse_result {
 pub struct ConverseRequest {
     /// Exactly one of these fields must be specified in each `ConverseRequest`.
     #[prost(oneof = "converse_request::ConverseRequest", tags = "1, 2")]
-    pub converse_request: ::std::option::Option<converse_request::ConverseRequest>,
+    pub converse_request: ::core::option::Option<converse_request::ConverseRequest>,
 }
+/// Nested message and enum types in `ConverseRequest`.
 pub mod converse_request {
     /// Exactly one of these fields must be specified in each `ConverseRequest`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -184,7 +188,7 @@ pub mod converse_request {
         /// An error will be returned if audio is sent significantly faster or
         /// slower.
         #[prost(bytes, tag = "2")]
-        AudioIn(std::vec::Vec<u8>),
+        AudioIn(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// The top-level message received by the client. A series of one or more
@@ -193,8 +197,9 @@ pub mod converse_request {
 pub struct ConverseResponse {
     /// Exactly one of these fields will be populated in each `ConverseResponse`.
     #[prost(oneof = "converse_response::ConverseResponse", tags = "1, 2, 3, 5")]
-    pub converse_response: ::std::option::Option<converse_response::ConverseResponse>,
+    pub converse_response: ::core::option::Option<converse_response::ConverseResponse>,
 }
+/// Nested message and enum types in `ConverseResponse`.
 pub mod converse_response {
     /// Indicates the type of event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

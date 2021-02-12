@@ -3,10 +3,10 @@
 pub struct TimestampRange {
     /// Begin of the period (inclusive).
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End of the period (exclusive).
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A resource that represents a location with full geographic information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -22,10 +22,10 @@ pub struct Location {
     /// a postal service can deliver items to a premises, P.O. Box, or other
     /// delivery location.
     #[prost(message, optional, tag = "2")]
-    pub postal_address: ::std::option::Option<super::super::super::r#type::PostalAddress>,
+    pub postal_address: ::core::option::Option<super::super::super::r#type::PostalAddress>,
     /// An object representing a latitude/longitude pair.
     #[prost(message, optional, tag = "3")]
-    pub lat_lng: ::std::option::Option<super::super::super::r#type::LatLng>,
+    pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// Radius in miles of the job location. This value is derived from the
     /// location bounding box in which a circle with the specified radius
     /// centered from [google.type.LatLng][google.type.LatLng] covers the area associated with the
@@ -35,6 +35,7 @@ pub struct Location {
     #[prost(double, tag = "4")]
     pub radius_miles: f64,
 }
+/// Nested message and enum types in `Location`.
 pub mod location {
     /// An enum which represents the type of a location.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -89,7 +90,7 @@ pub struct RequestMetadata {
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "1")]
-    pub domain: std::string::String,
+    pub domain: ::prost::alloc::string::String,
     /// Required if [allow_missing_ids][google.cloud.talent.v4beta1.RequestMetadata.allow_missing_ids] is unset or `false`.
     ///
     /// A unique session identification string. A session is defined as the
@@ -103,7 +104,7 @@ pub struct RequestMetadata {
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "2")]
-    pub session_id: std::string::String,
+    pub session_id: ::prost::alloc::string::String,
     /// Required if [allow_missing_ids][google.cloud.talent.v4beta1.RequestMetadata.allow_missing_ids] is unset or `false`.
     ///
     /// A unique user identification string, as determined by the client.
@@ -117,7 +118,7 @@ pub struct RequestMetadata {
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "3")]
-    pub user_id: std::string::String,
+    pub user_id: ::prost::alloc::string::String,
     /// Only set when any of [domain][google.cloud.talent.v4beta1.RequestMetadata.domain], [session_id][google.cloud.talent.v4beta1.RequestMetadata.session_id] and [user_id][google.cloud.talent.v4beta1.RequestMetadata.user_id] isn't
     /// available for some reason. It is highly recommended not to set this field
     /// and provide accurate [domain][google.cloud.talent.v4beta1.RequestMetadata.domain], [session_id][google.cloud.talent.v4beta1.RequestMetadata.session_id] and [user_id][google.cloud.talent.v4beta1.RequestMetadata.user_id] for the
@@ -127,7 +128,7 @@ pub struct RequestMetadata {
     /// The type of device used by the job seeker at the time of the call to the
     /// service.
     #[prost(message, optional, tag = "5")]
-    pub device_info: ::std::option::Option<DeviceInfo>,
+    pub device_info: ::core::option::Option<DeviceInfo>,
 }
 /// Additional information returned to client, such as debugging information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -135,7 +136,7 @@ pub struct ResponseMetadata {
     /// A unique id associated with this call.
     /// This id is logged for tracking purposes.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Device information collected from the job seeker, candidate, or
 /// other entity conducting the job search. Providing this information improves
@@ -148,8 +149,9 @@ pub struct DeviceInfo {
     /// A device-specific ID. The ID must be a unique identifier that
     /// distinguishes the device from other devices.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `DeviceInfo`.
 pub mod device_info {
     /// An enumeration describing an API access portal and exposure mechanism.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -188,7 +190,7 @@ pub struct CustomAttribute {
     ///
     /// Empty string isn't allowed.
     #[prost(string, repeated, tag = "1")]
-    pub string_values: ::std::vec::Vec<std::string::String>,
+    pub string_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Exactly one of [string_values][google.cloud.talent.v4beta1.CustomAttribute.string_values] or [long_values][google.cloud.talent.v4beta1.CustomAttribute.long_values] must be specified.
     ///
     /// This field is used to perform number range search.
@@ -196,7 +198,7 @@ pub struct CustomAttribute {
     ///
     /// Currently at most 1 [long_values][google.cloud.talent.v4beta1.CustomAttribute.long_values] is supported.
     #[prost(int64, repeated, tag = "2")]
-    pub long_values: ::std::vec::Vec<i64>,
+    pub long_values: ::prost::alloc::vec::Vec<i64>,
     /// If the `filterable` flag is true, custom field values are searchable.
     /// If false, values are not searchable.
     ///
@@ -212,7 +214,7 @@ pub struct SpellingCorrection {
     pub corrected: bool,
     /// Correction output consisting of the corrected keyword string.
     #[prost(string, tag = "2")]
-    pub corrected_text: std::string::String,
+    pub corrected_text: ::prost::alloc::string::String,
     /// Corrected output with html tags to highlight the corrected words.
     /// Corrected words are called out with the "<b><i>...</i></b>" html tags.
     ///
@@ -221,7 +223,7 @@ pub struct SpellingCorrection {
     /// correction is enabled, this value is
     /// "software <b><i>engineer</i></b>".
     #[prost(string, tag = "3")]
-    pub corrected_html: std::string::String,
+    pub corrected_html: ::prost::alloc::string::String,
 }
 /// Job compensation details.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -232,7 +234,7 @@ pub struct CompensationInfo {
     /// [CompensationInfo.CompensationType.BASE][google.cloud.talent.v4beta1.CompensationInfo.CompensationType.BASE], which is
     /// referred as **base compensation entry** for the job.
     #[prost(message, repeated, tag = "1")]
-    pub entries: ::std::vec::Vec<compensation_info::CompensationEntry>,
+    pub entries: ::prost::alloc::vec::Vec<compensation_info::CompensationEntry>,
     /// Output only. Annualized base compensation range. Computed as base compensation entry's
     /// [CompensationEntry.amount][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.amount] times
     /// [CompensationEntry.expected_units_per_year][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.expected_units_per_year].
@@ -240,7 +242,7 @@ pub struct CompensationInfo {
     /// See [CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry] for explanation on compensation annualization.
     #[prost(message, optional, tag = "2")]
     pub annualized_base_compensation_range:
-        ::std::option::Option<compensation_info::CompensationRange>,
+        ::core::option::Option<compensation_info::CompensationRange>,
     /// Output only. Annualized total compensation range. Computed as all compensation entries'
     /// [CompensationEntry.amount][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.amount] times
     /// [CompensationEntry.expected_units_per_year][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.expected_units_per_year].
@@ -248,8 +250,9 @@ pub struct CompensationInfo {
     /// See [CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry] for explanation on compensation annualization.
     #[prost(message, optional, tag = "3")]
     pub annualized_total_compensation_range:
-        ::std::option::Option<compensation_info::CompensationRange>,
+        ::core::option::Option<compensation_info::CompensationRange>,
 }
+/// Nested message and enum types in `CompensationInfo`.
 pub mod compensation_info {
     /// A compensation entry that represents one component of compensation, such
     /// as base pay, bonus, or other compensation type.
@@ -275,7 +278,7 @@ pub mod compensation_info {
         /// indicate equity terms or provide additional context to an estimated
         /// bonus.
         #[prost(string, tag = "5")]
-        pub description: std::string::String,
+        pub description: ::prost::alloc::string::String,
         /// Expected number of units paid each year. If not specified, when
         /// [Job.employment_types][google.cloud.talent.v4beta1.Job.employment_types] is FULLTIME, a default value is inferred
         /// based on [unit][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.unit]. Default values:
@@ -285,11 +288,12 @@ pub mod compensation_info {
         /// - MONTHLY: 12
         /// - ANNUAL: 1
         #[prost(message, optional, tag = "6")]
-        pub expected_units_per_year: ::std::option::Option<f64>,
+        pub expected_units_per_year: ::core::option::Option<f64>,
         /// Compensation amount. It could be a fixed amount or a floating range.
         #[prost(oneof = "compensation_entry::CompensationAmount", tags = "3, 4")]
-        pub compensation_amount: ::std::option::Option<compensation_entry::CompensationAmount>,
+        pub compensation_amount: ::core::option::Option<compensation_entry::CompensationAmount>,
     }
+    /// Nested message and enum types in `CompensationEntry`.
     pub mod compensation_entry {
         /// Compensation amount. It could be a fixed amount or a floating range.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -310,12 +314,12 @@ pub mod compensation_info {
         /// match the [currency code][google.type.Money.currency_code] of
         /// min_compensation.
         #[prost(message, optional, tag = "2")]
-        pub max_compensation: ::std::option::Option<super::super::super::super::r#type::Money>,
+        pub max_compensation: ::core::option::Option<super::super::super::super::r#type::Money>,
         /// The minimum amount of compensation. If left empty, the value is set
         /// to zero and the currency code is set to match the
         /// [currency code][google.type.Money.currency_code] of max_compensation.
         #[prost(message, optional, tag = "1")]
-        pub min_compensation: ::std::option::Option<super::super::super::super::r#type::Money>,
+        pub min_compensation: ::core::option::Option<super::super::super::super::r#type::Money>,
     }
     /// The type of compensation.
     ///
@@ -387,23 +391,23 @@ pub struct Certification {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Acquisition date or effective date of license or certification.
     #[prost(message, optional, tag = "2")]
-    pub acquire_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub acquire_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// Expiration date of license of certification.
     #[prost(message, optional, tag = "3")]
-    pub expire_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub expire_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// Authority of license, such as government.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "4")]
-    pub authority: std::string::String,
+    pub authority: ::prost::alloc::string::String,
     /// Description of license or certification.
     ///
     /// Number of characters allowed is 100,000.
     #[prost(string, tag = "5")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 /// Resource that represents a skill of a candidate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -414,10 +418,10 @@ pub struct Skill {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The last time this skill was used.
     #[prost(message, optional, tag = "2")]
-    pub last_used_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub last_used_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// Skill proficiency level which indicates how proficient the candidate is at
     /// this skill.
     #[prost(enumeration = "SkillProficiencyLevel", tag = "3")]
@@ -426,19 +430,19 @@ pub struct Skill {
     ///
     /// Number of characters allowed is 100,000.
     #[prost(string, tag = "4")]
-    pub context: std::string::String,
+    pub context: ::prost::alloc::string::String,
     /// Output only. Skill name snippet shows how the [display_name][google.cloud.talent.v4beta1.Skill.display_name] is related to a search
     /// query. It's empty if the [display_name][google.cloud.talent.v4beta1.Skill.display_name] isn't related to the search
     /// query.
     #[prost(string, tag = "5")]
-    pub skill_name_snippet: std::string::String,
+    pub skill_name_snippet: ::prost::alloc::string::String,
 }
 /// Details of an interview.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Interview {
     /// The rating on this interview.
     #[prost(message, optional, tag = "6")]
-    pub rating: ::std::option::Option<Rating>,
+    pub rating: ::core::option::Option<Rating>,
     /// Required. The overall decision resulting from this interview (positive, negative,
     /// nuetral).
     #[prost(enumeration = "Outcome", tag = "7")]
@@ -470,7 +474,7 @@ pub struct BatchOperationMetadata {
     pub state: i32,
     /// More detailed information about operation state.
     #[prost(string, tag = "2")]
-    pub state_description: std::string::String,
+    pub state_description: ::prost::alloc::string::String,
     /// Count of successful item(s) inside an operation.
     #[prost(int32, tag = "3")]
     pub success_count: i32,
@@ -482,17 +486,18 @@ pub struct BatchOperationMetadata {
     pub total_count: i32,
     /// The time when the batch operation is created.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the batch operation status is updated. The metadata and the
     /// [update_time][google.cloud.talent.v4beta1.BatchOperationMetadata.update_time] is refreshed every minute otherwise cached data is
     /// returned.
     #[prost(message, optional, tag = "7")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the batch operation is finished and
     /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is set to `true`.
     #[prost(message, optional, tag = "8")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `BatchOperationMetadata`.
 pub mod batch_operation_metadata {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -960,37 +965,37 @@ pub struct Application {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}".
     /// For example, "projects/foo/tenants/bar/profiles/baz/applications/qux".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Client side application identifier, used to uniquely identify the
     /// application.
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "31")]
-    pub external_id: std::string::String,
+    pub external_id: ::prost::alloc::string::String,
     /// Output only. Resource name of the candidate of this application.
     ///
     /// The format is
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}".
     /// For example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, tag = "2")]
-    pub profile: std::string::String,
+    pub profile: ::prost::alloc::string::String,
     /// Required. Resource name of the job which the candidate applied for.
     ///
     /// The format is
     /// "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example,
     /// "projects/foo/tenants/bar/jobs/baz".
     #[prost(string, tag = "4")]
-    pub job: std::string::String,
+    pub job: ::prost::alloc::string::String,
     /// Resource name of the company which the candidate applied for.
     ///
     /// The format is
     /// "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}".
     /// For example, "projects/foo/tenants/bar/companies/baz".
     #[prost(string, tag = "5")]
-    pub company: std::string::String,
+    pub company: ::prost::alloc::string::String,
     /// The application date.
     #[prost(message, optional, tag = "7")]
-    pub application_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub application_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// Required. What is the most recent stage of the application (that is, new,
     /// screen, send cv, hired, finished work)?  This field is intentionally not
     /// comprehensive of every possible status, but instead, represents statuses
@@ -1004,22 +1009,22 @@ pub struct Application {
     /// application (includes details such as user conducting the interview,
     /// timestamp, feedback, and so on).
     #[prost(message, repeated, tag = "16")]
-    pub interviews: ::std::vec::Vec<Interview>,
+    pub interviews: ::prost::alloc::vec::Vec<Interview>,
     /// If the candidate is referred by a employee.
     #[prost(message, optional, tag = "18")]
-    pub referral: ::std::option::Option<bool>,
+    pub referral: ::core::option::Option<bool>,
     /// Required. Reflects the time that the application was created.
     #[prost(message, optional, tag = "19")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The last update timestamp.
     #[prost(message, optional, tag = "20")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Free text reason behind the recruitement outcome (for example, reason for
     /// withdraw / reject, reason for an unsuccessful finish, and so on).
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "21")]
-    pub outcome_notes: std::string::String,
+    pub outcome_notes: ::prost::alloc::string::String,
     /// Outcome positiveness shows how positive the outcome is.
     #[prost(enumeration = "Outcome", tag = "22")]
     pub outcome: i32,
@@ -1027,13 +1032,14 @@ pub struct Application {
     /// application related filters. This value is only applicable in profile
     /// search response.
     #[prost(message, optional, tag = "28")]
-    pub is_match: ::std::option::Option<bool>,
+    pub is_match: ::core::option::Option<bool>,
     /// Output only. Job title snippet shows how the job title is related to a
     /// search query. It's empty if the job title isn't related to the search
     /// query.
     #[prost(string, tag = "29")]
-    pub job_title_snippet: std::string::String,
+    pub job_title_snippet: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Application`.
 pub mod application {
     /// Enum that represents the application status.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1091,10 +1097,10 @@ pub struct CreateApplicationRequest {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}".
     /// For example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The application to be created.
     #[prost(message, optional, tag = "2")]
-    pub application: ::std::option::Option<Application>,
+    pub application: ::core::option::Option<Application>,
 }
 /// Request for getting a application by name.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1105,14 +1111,14 @@ pub struct GetApplicationRequest {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}".
     /// For example, "projects/foo/tenants/bar/profiles/baz/applications/qux".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for updating a specified application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApplicationRequest {
     /// Required. The application resource to replace the current resource in the system.
     #[prost(message, optional, tag = "1")]
-    pub application: ::std::option::Option<Application>,
+    pub application: ::core::option::Option<Application>,
     /// Strongly recommended for the best service experience.
     ///
     /// If [update_mask][google.cloud.talent.v4beta1.UpdateApplicationRequest.update_mask] is provided, only the specified fields in
@@ -1121,7 +1127,7 @@ pub struct UpdateApplicationRequest {
     /// A field mask to specify the application fields to be updated. Only
     /// top level fields of [Application][google.cloud.talent.v4beta1.Application] are supported.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete a application.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1132,7 +1138,7 @@ pub struct DeleteApplicationRequest {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}/applications/{application_id}".
     /// For example, "projects/foo/tenants/bar/profiles/baz/applications/qux".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// List applications for which the client has ACL visibility.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1143,10 +1149,10 @@ pub struct ListApplicationsRequest {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}", for
     /// example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The starting indicator from which to return results.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of applications to be returned, at most 100.
     /// Default is 100 if a non-positive number is provided.
     #[prost(int32, tag = "3")]
@@ -1157,14 +1163,14 @@ pub struct ListApplicationsRequest {
 pub struct ListApplicationsResponse {
     /// Applications for the current client.
     #[prost(message, repeated, tag = "1")]
-    pub applications: ::std::vec::Vec<Application>,
+    pub applications: ::prost::alloc::vec::Vec<Application>,
     /// A token to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Additional information for the API invocation, such as the request
     /// tracking id.
     #[prost(message, optional, tag = "3")]
-    pub metadata: ::std::option::Option<ResponseMetadata>,
+    pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 #[doc = r" Generated client implementations."]
 pub mod application_service_client {
@@ -1306,16 +1312,16 @@ pub struct Company {
     /// If tenant id is unspecified, the default tenant is used. For
     /// example, "projects/foo/companies/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The display name of the company, for example, "Google LLC".
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. Client side company identifier, used to uniquely identify the
     /// company.
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "3")]
-    pub external_id: std::string::String,
+    pub external_id: ::prost::alloc::string::String,
     /// The employer's company size.
     #[prost(enumeration = "CompanySize", tag = "4")]
     pub size: i32,
@@ -1324,7 +1330,7 @@ pub struct Company {
     /// to geolocate the provided address, and populates a more specific
     /// location wherever possible in [DerivedInfo.headquarters_location][google.cloud.talent.v4beta1.Company.DerivedInfo.headquarters_location].
     #[prost(string, tag = "5")]
-    pub headquarters_address: std::string::String,
+    pub headquarters_address: ::prost::alloc::string::String,
     /// Set to true if it is the hiring agency that post jobs for other
     /// employers.
     ///
@@ -1337,20 +1343,20 @@ pub struct Company {
     ///
     /// The maximum number of allowed characters is 500.
     #[prost(string, tag = "7")]
-    pub eeo_text: std::string::String,
+    pub eeo_text: ::prost::alloc::string::String,
     /// The URI representing the company's primary web site or home page,
     /// for example, "https://www.google.com".
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "8")]
-    pub website_uri: std::string::String,
+    pub website_uri: ::prost::alloc::string::String,
     /// The URI to employer's career site or careers page on the employer's web
     /// site, for example, "https://careers.google.com".
     #[prost(string, tag = "9")]
-    pub career_site_uri: std::string::String,
+    pub career_site_uri: ::prost::alloc::string::String,
     /// A URI that hosts the employer's company logo.
     #[prost(string, tag = "10")]
-    pub image_uri: std::string::String,
+    pub image_uri: ::prost::alloc::string::String,
     /// A list of keys of filterable [Job.custom_attributes][google.cloud.talent.v4beta1.Job.custom_attributes], whose
     /// corresponding `string_values` are used in keyword searches. Jobs with
     /// `string_values` under these specified field keys are returned if any
@@ -1358,16 +1364,18 @@ pub struct Company {
     /// parenthesis, brackets and special symbols are not searchable as-is,
     /// and those keyword queries must be surrounded by quotes.
     #[prost(string, repeated, tag = "11")]
-    pub keyword_searchable_job_custom_attributes: ::std::vec::Vec<std::string::String>,
+    pub keyword_searchable_job_custom_attributes:
+        ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Derived details about the company.
     #[prost(message, optional, tag = "12")]
-    pub derived_info: ::std::option::Option<company::DerivedInfo>,
+    pub derived_info: ::core::option::Option<company::DerivedInfo>,
     /// Output only. Indicates whether a company is flagged to be suspended from
     /// public availability by the service when job content appears suspicious,
     /// abusive, or spammy.
     #[prost(bool, tag = "13")]
     pub suspended: bool,
 }
+/// Nested message and enum types in `Company`.
 pub mod company {
     /// Derived details about the company.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1375,7 +1383,7 @@ pub mod company {
         /// A structured headquarters location of the company, resolved from
         /// [Company.headquarters_address][google.cloud.talent.v4beta1.Company.headquarters_address] if provided.
         #[prost(message, optional, tag = "1")]
-        pub headquarters_location: ::std::option::Option<super::Location>,
+        pub headquarters_location: ::core::option::Option<super::Location>,
     }
 }
 /// The Request of the CreateCompany method.
@@ -1387,10 +1395,10 @@ pub struct CreateCompanyRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
     /// is created, for example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The company to be created.
     #[prost(message, optional, tag = "2")]
-    pub company: ::std::option::Option<Company>,
+    pub company: ::core::option::Option<Company>,
 }
 /// Request for getting a company by name.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1404,14 +1412,14 @@ pub struct GetCompanyRequest {
     /// If tenant id is unspecified, the default tenant is used, for
     /// example, "projects/api-test-project/companies/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for updating a specified company.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCompanyRequest {
     /// Required. The company resource to replace the current resource in the system.
     #[prost(message, optional, tag = "1")]
-    pub company: ::std::option::Option<Company>,
+    pub company: ::core::option::Option<Company>,
     /// Strongly recommended for the best service experience.
     ///
     /// If [update_mask][google.cloud.talent.v4beta1.UpdateCompanyRequest.update_mask] is provided, only the specified fields in
@@ -1420,7 +1428,7 @@ pub struct UpdateCompanyRequest {
     /// A field mask to specify the company fields to be updated. Only
     /// top level fields of [Company][google.cloud.talent.v4beta1.Company] are supported.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete a company.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1434,7 +1442,7 @@ pub struct DeleteCompanyRequest {
     /// If tenant id is unspecified, the default tenant is used, for
     /// example, "projects/foo/companies/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// List companies for which the client has ACL visibility.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1447,10 +1455,10 @@ pub struct ListCompaniesRequest {
     /// If tenant id is unspecified, the default tenant will be used, for
     /// example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The starting indicator from which to return results.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of companies to be returned, at most 100.
     /// Default is 100 if a non-positive number is provided.
     #[prost(int32, tag = "3")]
@@ -1469,14 +1477,14 @@ pub struct ListCompaniesRequest {
 pub struct ListCompaniesResponse {
     /// Companies for the current client.
     #[prost(message, repeated, tag = "1")]
-    pub companies: ::std::vec::Vec<Company>,
+    pub companies: ::prost::alloc::vec::Vec<Company>,
     /// A token to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Additional information for the API invocation, such as the request
     /// tracking id.
     #[prost(message, optional, tag = "3")]
-    pub metadata: ::std::option::Option<ResponseMetadata>,
+    pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 #[doc = r" Generated client implementations."]
 pub mod company_service_client {
@@ -1612,12 +1620,12 @@ pub struct CompleteQueryRequest {
     /// If tenant id is unspecified, the default tenant is used, for
     /// example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The query used to generate suggestions.
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "2")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// The list of languages of the query. This is
     /// the BCP-47 language code, such as "en-US" or "sr-Latn".
     /// For more information, see
@@ -1625,7 +1633,7 @@ pub struct CompleteQueryRequest {
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, repeated, tag = "3")]
-    pub language_codes: ::std::vec::Vec<std::string::String>,
+    pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Completion result count.
     ///
     /// The maximum allowed page size is 10.
@@ -1640,7 +1648,7 @@ pub struct CompleteQueryRequest {
     /// If tenant id is unspecified, the default tenant is used, for
     /// example, "projects/foo".
     #[prost(string, tag = "5")]
-    pub company: std::string::String,
+    pub company: ::prost::alloc::string::String,
     /// The scope of the completion. The defaults is [CompletionScope.PUBLIC][google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope.PUBLIC].
     #[prost(enumeration = "complete_query_request::CompletionScope", tag = "6")]
     pub scope: i32,
@@ -1648,6 +1656,7 @@ pub struct CompleteQueryRequest {
     #[prost(enumeration = "complete_query_request::CompletionType", tag = "7")]
     pub r#type: i32,
 }
+/// Nested message and enum types in `CompleteQueryRequest`.
 pub mod complete_query_request {
     /// Enum to specify the scope of completion.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1691,19 +1700,20 @@ pub mod complete_query_request {
 pub struct CompleteQueryResponse {
     /// Results of the matching job/company candidates.
     #[prost(message, repeated, tag = "1")]
-    pub completion_results: ::std::vec::Vec<complete_query_response::CompletionResult>,
+    pub completion_results: ::prost::alloc::vec::Vec<complete_query_response::CompletionResult>,
     /// Additional information for the API invocation, such as the request
     /// tracking id.
     #[prost(message, optional, tag = "2")]
-    pub metadata: ::std::option::Option<ResponseMetadata>,
+    pub metadata: ::core::option::Option<ResponseMetadata>,
 }
+/// Nested message and enum types in `CompleteQueryResponse`.
 pub mod complete_query_response {
     /// Resource that represents completion results.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompletionResult {
         /// The suggestion for the query.
         #[prost(string, tag = "1")]
-        pub suggestion: std::string::String,
+        pub suggestion: ::prost::alloc::string::String,
         /// The completion topic.
         #[prost(
             enumeration = "super::complete_query_request::CompletionType",
@@ -1713,7 +1723,7 @@ pub mod complete_query_response {
         /// The URI of the company image for
         /// [COMPANY_NAME][google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionType.COMPANY_NAME].
         #[prost(string, tag = "3")]
-        pub image_uri: std::string::String,
+        pub image_uri: ::prost::alloc::string::String,
     }
 }
 #[doc = r" Generated client implementations."]
@@ -1783,23 +1793,24 @@ pub struct ClientEvent {
     /// A unique ID generated in the API responses. It can be found in
     /// [ResponseMetadata.request_id][google.cloud.talent.v4beta1.ResponseMetadata.request_id].
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Required. A unique identifier, generated by the client application.
     #[prost(string, tag = "2")]
-    pub event_id: std::string::String,
+    pub event_id: ::prost::alloc::string::String,
     /// Required. The timestamp of the event.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Notes about the event provided by recruiters or other users, for example,
     /// feedback on why a profile was bookmarked.
     #[prost(string, tag = "9")]
-    pub event_notes: std::string::String,
+    pub event_notes: ::prost::alloc::string::String,
     /// Required.
     ///
     /// The detail information of a specific event type.
     #[prost(oneof = "client_event::Event", tags = "5, 6")]
-    pub event: ::std::option::Option<client_event::Event>,
+    pub event: ::core::option::Option<client_event::Event>,
 }
+/// Nested message and enum types in `ClientEvent`.
 pub mod client_event {
     /// Required.
     ///
@@ -1833,15 +1844,16 @@ pub struct JobEvent {
     /// "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}", for
     /// example, "projects/foo/tenants/bar/jobs/baz".
     #[prost(string, repeated, tag = "2")]
-    pub jobs: ::std::vec::Vec<std::string::String>,
+    pub jobs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The [profile name][google.cloud.talent.v4beta1.Profile.name] associated with this client event.
     ///
     /// The format is
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}",
     /// for example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, tag = "3")]
-    pub profile: std::string::String,
+    pub profile: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `JobEvent`.
 pub mod job_event {
     /// An enumeration of an event attributed to the behavior of the end user,
     /// such as a job seeker.
@@ -1937,7 +1949,7 @@ pub struct ProfileEvent {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}",
     /// for example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, repeated, tag = "2")]
-    pub profiles: ::std::vec::Vec<std::string::String>,
+    pub profiles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The [job name(s)][google.cloud.talent.v4beta1.Job.name] associated with this client event. Leave it
     /// empty if the event isn't associated with a job.
     ///
@@ -1945,8 +1957,9 @@ pub struct ProfileEvent {
     /// "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}", for
     /// example, "projects/foo/tenants/bar/jobs/baz".
     #[prost(string, repeated, tag = "6")]
-    pub jobs: ::std::vec::Vec<std::string::String>,
+    pub jobs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `ProfileEvent`.
 pub mod profile_event {
     /// The enum represents types of client events for a candidate profile.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1986,11 +1999,11 @@ pub struct CreateClientEventRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
     /// is created, for example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Events issued when end user interacts with customer's application that
     /// uses Cloud Talent Solution.
     #[prost(message, optional, tag = "2")]
-    pub client_event: ::std::option::Option<ClientEvent>,
+    pub client_event: ::core::option::Option<ClientEvent>,
 }
 #[doc = r" Generated client implementations."]
 pub mod event_service_client {
@@ -2060,7 +2073,7 @@ pub struct JobQuery {
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "1")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// The language code of [query][google.cloud.talent.v4beta1.JobQuery.query]. For example, "en-US". This field helps to
     /// better interpret the query.
     ///
@@ -2071,7 +2084,7 @@ pub struct JobQuery {
     /// For more information, see
     /// [Tags for Identifying Languages](https://tools.ietf.org/html/bcp47).
     #[prost(string, tag = "14")]
-    pub query_language_code: std::string::String,
+    pub query_language_code: ::prost::alloc::string::String,
     /// This filter specifies the company entities to search against.
     ///
     /// If a value isn't specified, jobs are searched for against all
@@ -2089,7 +2102,7 @@ pub struct JobQuery {
     ///
     /// At most 20 company filters are allowed.
     #[prost(string, repeated, tag = "2")]
-    pub companies: ::std::vec::Vec<std::string::String>,
+    pub companies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The location filter specifies geo-regions containing the jobs to
     /// search against. See [LocationFilter][google.cloud.talent.v4beta1.LocationFilter] for more information.
     ///
@@ -2103,7 +2116,7 @@ pub struct JobQuery {
     ///
     /// At most 5 location filters are allowed.
     #[prost(message, repeated, tag = "3")]
-    pub location_filters: ::std::vec::Vec<LocationFilter>,
+    pub location_filters: ::prost::alloc::vec::Vec<LocationFilter>,
     /// The category filter specifies the categories of jobs to search against.
     /// See [JobCategory][google.cloud.talent.v4beta1.JobCategory] for more information.
     ///
@@ -2112,7 +2125,7 @@ pub struct JobQuery {
     /// If multiple values are specified, jobs from any of the specified
     /// categories are searched against.
     #[prost(enumeration = "JobCategory", repeated, tag = "4")]
-    pub job_categories: ::std::vec::Vec<i32>,
+    pub job_categories: ::prost::alloc::vec::Vec<i32>,
     /// Allows filtering jobs by commute time with different travel methods (for
     ///  example, driving or public transit).
     ///
@@ -2121,7 +2134,7 @@ pub struct JobQuery {
     ///
     ///  Currently we don't support sorting by commute time.
     #[prost(message, optional, tag = "5")]
-    pub commute_filter: ::std::option::Option<CommuteFilter>,
+    pub commute_filter: ::core::option::Option<CommuteFilter>,
     /// This filter specifies the exact company [Company.display_name][google.cloud.talent.v4beta1.Company.display_name]
     /// of the jobs to search against.
     ///
@@ -2133,14 +2146,14 @@ pub struct JobQuery {
     ///
     /// At most 20 company display name filters are allowed.
     #[prost(string, repeated, tag = "6")]
-    pub company_display_names: ::std::vec::Vec<std::string::String>,
+    pub company_display_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// This search filter is applied only to
     /// [Job.compensation_info][google.cloud.talent.v4beta1.Job.compensation_info]. For example, if the filter is specified
     /// as "Hourly job with per-hour compensation > $15", only jobs meeting
     /// these criteria are searched. If a filter isn't defined, all open jobs
     /// are searched.
     #[prost(message, optional, tag = "7")]
-    pub compensation_filter: ::std::option::Option<CompensationFilter>,
+    pub compensation_filter: ::core::option::Option<CompensationFilter>,
     /// This filter specifies a structured syntax to match against the
     /// [Job.custom_attributes][google.cloud.talent.v4beta1.Job.custom_attributes] marked as `filterable`.
     ///
@@ -2164,7 +2177,7 @@ pub struct JobQuery {
     /// `(LOWER(driving_license)="class \"a\"" OR EMPTY(driving_license)) AND
     /// driving_years > 10`
     #[prost(string, tag = "8")]
-    pub custom_attribute_filter: std::string::String,
+    pub custom_attribute_filter: ::prost::alloc::string::String,
     /// This flag controls the spell-check feature. If false, the
     /// service attempts to correct a misspelled query,
     /// for example, "enginee" is corrected to "engineer".
@@ -2181,7 +2194,7 @@ pub struct JobQuery {
     /// If multiple values are specified, jobs in the search results include
     /// any of the specified employment types.
     #[prost(enumeration = "EmploymentType", repeated, tag = "10")]
-    pub employment_types: ::std::vec::Vec<i32>,
+    pub employment_types: ::prost::alloc::vec::Vec<i32>,
     /// This filter specifies the locale of jobs to search against,
     /// for example, "en-US".
     ///
@@ -2195,16 +2208,16 @@ pub struct JobQuery {
     ///
     /// At most 10 language code filters are allowed.
     #[prost(string, repeated, tag = "11")]
-    pub language_codes: ::std::vec::Vec<std::string::String>,
+    pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Jobs published within a range specified by this filter are searched
     /// against.
     #[prost(message, optional, tag = "12")]
-    pub publish_time_range: ::std::option::Option<TimestampRange>,
+    pub publish_time_range: ::core::option::Option<TimestampRange>,
     /// This filter specifies a list of job names to be excluded during search.
     ///
     /// At most 400 excluded job names are allowed.
     #[prost(string, repeated, tag = "13")]
-    pub excluded_jobs: ::std::vec::Vec<std::string::String>,
+    pub excluded_jobs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Filters to apply when performing the search query.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2213,7 +2226,7 @@ pub struct ProfileQuery {
     ///
     /// For example, "software engineer in Palo Alto".
     #[prost(string, tag = "1")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// The location filter specifies geo-regions containing the profiles to
     /// search against.
     ///
@@ -2284,7 +2297,7 @@ pub struct ProfileQuery {
     ///
     /// If [LocationFilter.distance_in_miles][google.cloud.talent.v4beta1.LocationFilter.distance_in_miles] is negative, an error is thrown.
     #[prost(message, repeated, tag = "2")]
-    pub location_filters: ::std::vec::Vec<LocationFilter>,
+    pub location_filters: ::prost::alloc::vec::Vec<LocationFilter>,
     /// Job title filter specifies job titles of profiles to match on.
     ///
     /// If a job title isn't specified, profiles with any titles are retrieved.
@@ -2297,7 +2310,7 @@ pub struct ProfileQuery {
     ///
     /// For example, search for profiles with a job title "Product Manager".
     #[prost(message, repeated, tag = "3")]
-    pub job_title_filters: ::std::vec::Vec<JobTitleFilter>,
+    pub job_title_filters: ::prost::alloc::vec::Vec<JobTitleFilter>,
     /// Employer filter specifies employers of profiles to match on.
     ///
     /// If an employer filter isn't specified, profiles with any employers are
@@ -2312,7 +2325,7 @@ pub struct ProfileQuery {
     /// For example, search for profiles that have working experience at "Google
     /// LLC".
     #[prost(message, repeated, tag = "4")]
-    pub employer_filters: ::std::vec::Vec<EmployerFilter>,
+    pub employer_filters: ::prost::alloc::vec::Vec<EmployerFilter>,
     /// Education filter specifies education of profiles to match on.
     ///
     /// If an education filter isn't specified, profiles with any education are
@@ -2326,7 +2339,7 @@ pub struct ProfileQuery {
     ///
     /// For example, search for profiles with a master degree.
     #[prost(message, repeated, tag = "5")]
-    pub education_filters: ::std::vec::Vec<EducationFilter>,
+    pub education_filters: ::prost::alloc::vec::Vec<EducationFilter>,
     /// Skill filter specifies skill of profiles to match on.
     ///
     /// If a skill filter isn't specified, profiles with any skills are retrieved.
@@ -2340,7 +2353,7 @@ pub struct ProfileQuery {
     /// For example, search for profiles that have "Java" and "Python" in skill
     /// list.
     #[prost(message, repeated, tag = "6")]
-    pub skill_filters: ::std::vec::Vec<SkillFilter>,
+    pub skill_filters: ::prost::alloc::vec::Vec<SkillFilter>,
     /// Work experience filter specifies the total working experience of profiles
     /// to match on.
     ///
@@ -2352,26 +2365,26 @@ pub struct ProfileQuery {
     ///
     /// For example, search for profiles with 10 years of work experience.
     #[prost(message, repeated, tag = "7")]
-    pub work_experience_filter: ::std::vec::Vec<WorkExperienceFilter>,
+    pub work_experience_filter: ::prost::alloc::vec::Vec<WorkExperienceFilter>,
     /// Time filter specifies the create/update timestamp of the profiles to match
     /// on.
     ///
     /// For example, search for profiles created since "2018-1-1".
     #[prost(message, repeated, tag = "8")]
-    pub time_filters: ::std::vec::Vec<TimeFilter>,
+    pub time_filters: ::prost::alloc::vec::Vec<TimeFilter>,
     /// The hirable filter specifies the profile's hirable status to match on.
     #[prost(message, optional, tag = "9")]
-    pub hirable_filter: ::std::option::Option<bool>,
+    pub hirable_filter: ::core::option::Option<bool>,
     /// The application date filters specify application date ranges to match on.
     #[prost(message, repeated, tag = "10")]
-    pub application_date_filters: ::std::vec::Vec<ApplicationDateFilter>,
+    pub application_date_filters: ::prost::alloc::vec::Vec<ApplicationDateFilter>,
     /// The application outcome notes filters specify the notes for the outcome of
     /// the job application.
     #[prost(message, repeated, tag = "11")]
-    pub application_outcome_notes_filters: ::std::vec::Vec<ApplicationOutcomeNotesFilter>,
+    pub application_outcome_notes_filters: ::prost::alloc::vec::Vec<ApplicationOutcomeNotesFilter>,
     /// The application job filters specify the job applied for in the application.
     #[prost(message, repeated, tag = "13")]
-    pub application_job_filters: ::std::vec::Vec<ApplicationJobFilter>,
+    pub application_job_filters: ::prost::alloc::vec::Vec<ApplicationJobFilter>,
     /// This filter specifies a structured syntax to match against the
     /// [Profile.custom_attributes][google.cloud.talent.v4beta1.Profile.custom_attributes] that are marked as `filterable`.
     ///
@@ -2397,7 +2410,7 @@ pub struct ProfileQuery {
     /// Sample Query:
     /// (key1 = "TEST" OR LOWER(key1)="test" OR NOT EMPTY(key1))
     #[prost(string, tag = "15")]
-    pub custom_attribute_filter: std::string::String,
+    pub custom_attribute_filter: ::prost::alloc::string::String,
     /// Deprecated. Use availability_filters instead.
     ///
     /// The candidate availability filter which filters based on availability
@@ -2416,8 +2429,9 @@ pub struct ProfileQuery {
     /// based on an aggregated set of signals.  Specifically, the intent is NOT to
     /// indicate the candidate's potential qualification / interest / close ability
     /// for a specific job.
+    #[deprecated]
     #[prost(message, optional, tag = "16")]
-    pub candidate_availability_filter: ::std::option::Option<CandidateAvailabilityFilter>,
+    pub candidate_availability_filter: ::core::option::Option<CandidateAvailabilityFilter>,
     /// The availability filter which filters based on
     /// [Profile.availability_signals][google.cloud.talent.v4beta1.Profile.availability_signals].
     ///
@@ -2432,7 +2446,7 @@ pub struct ProfileQuery {
     /// [AvailabilityFilter][google.cloud.talent.v4beta1.AvailabilityFilter] for a [signal_type][google.cloud.talent.v4beta1.AvailabilityFilter.signal_type],
     /// an error is thrown.
     #[prost(message, repeated, tag = "18")]
-    pub availability_filters: ::std::vec::Vec<AvailabilityFilter>,
+    pub availability_filters: ::prost::alloc::vec::Vec<AvailabilityFilter>,
     /// Person name filter specifies person name of profiles to match on.
     ///
     /// If multiple person name filters are specified, profiles that match any
@@ -2440,14 +2454,14 @@ pub struct ProfileQuery {
     ///
     /// For example, search for profiles of candidates with name "John Smith".
     #[prost(message, repeated, tag = "17")]
-    pub person_name_filters: ::std::vec::Vec<PersonNameFilter>,
+    pub person_name_filters: ::prost::alloc::vec::Vec<PersonNameFilter>,
 }
 /// Geographic region of the search.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationFilter {
     /// The address name, such as "Mountain View" or "Bay Area".
     #[prost(string, tag = "1")]
-    pub address: std::string::String,
+    pub address: ::prost::alloc::string::String,
     /// CLDR region code of the country/region of the address. This is used
     /// to address ambiguity of the user-input location, for example, "Liverpool"
     /// against "Liverpool, NY, US" or "Liverpool, UK".
@@ -2461,11 +2475,11 @@ pub struct LocationFilter {
     /// for details. Example: "CH" for Switzerland.
     /// Note that this filter is not applicable for Profile Search related queries.
     #[prost(string, tag = "2")]
-    pub region_code: std::string::String,
+    pub region_code: ::prost::alloc::string::String,
     /// The latitude and longitude of the geographic center to search from. This
     /// field is ignored if `address` is provided.
     #[prost(message, optional, tag = "3")]
-    pub lat_lng: ::std::option::Option<super::super::super::r#type::LatLng>,
+    pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// The distance_in_miles is applied when the location being searched for is
     /// identified as a city or smaller. This field is ignored if the location
     /// being searched for is a state or larger.
@@ -2498,6 +2512,7 @@ pub struct LocationFilter {
     #[prost(bool, tag = "6")]
     pub negated: bool,
 }
+/// Nested message and enum types in `LocationFilter`.
 pub mod location_filter {
     /// Specify whether to include telecommute jobs.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2525,15 +2540,16 @@ pub struct CompensationFilter {
         packed = "false",
         tag = "2"
     )]
-    pub units: ::std::vec::Vec<i32>,
+    pub units: ::prost::alloc::vec::Vec<i32>,
     /// Compensation range.
     #[prost(message, optional, tag = "3")]
-    pub range: ::std::option::Option<compensation_info::CompensationRange>,
+    pub range: ::core::option::Option<compensation_info::CompensationRange>,
     /// If set to true, jobs with unspecified compensation range fields are
     /// included.
     #[prost(bool, tag = "4")]
     pub include_jobs_with_unspecified_compensation_range: bool,
 }
+/// Nested message and enum types in `CompensationFilter`.
 pub mod compensation_filter {
     /// Specify the type of filtering.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2578,11 +2594,11 @@ pub struct CommuteFilter {
     /// Required. The latitude and longitude of the location to calculate the
     /// commute time from.
     #[prost(message, optional, tag = "2")]
-    pub start_coordinates: ::std::option::Option<super::super::super::r#type::LatLng>,
+    pub start_coordinates: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// Required. The maximum travel time in seconds. The maximum allowed value is `3600s`
     /// (one hour). Format is `123s`.
     #[prost(message, optional, tag = "3")]
-    pub travel_duration: ::std::option::Option<::prost_types::Duration>,
+    pub travel_duration: ::core::option::Option<::prost_types::Duration>,
     /// If `true`, jobs without street level addresses may also be returned.
     /// For city level addresses, the city center is used. For state and coarser
     /// level addresses, text matching is used.
@@ -2592,8 +2608,9 @@ pub struct CommuteFilter {
     pub allow_imprecise_addresses: bool,
     /// Traffic factor to take into account while searching by commute.
     #[prost(oneof = "commute_filter::TrafficOption", tags = "5, 6")]
-    pub traffic_option: ::std::option::Option<commute_filter::TrafficOption>,
+    pub traffic_option: ::core::option::Option<commute_filter::TrafficOption>,
 }
+/// Nested message and enum types in `CommuteFilter`.
 pub mod commute_filter {
     /// The traffic density to use when calculating commute time.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2625,7 +2642,7 @@ pub mod commute_filter {
 pub struct JobTitleFilter {
     /// Required. The job title. For example, "Software engineer", or "Product manager".
     #[prost(string, tag = "1")]
-    pub job_title: std::string::String,
+    pub job_title: ::prost::alloc::string::String,
     /// Whether to apply negation to the filter so profiles matching the filter
     /// are excluded.
     #[prost(bool, tag = "2")]
@@ -2636,7 +2653,7 @@ pub struct JobTitleFilter {
 pub struct SkillFilter {
     /// Required. The skill name. For example, "java", "j2ee", and so on.
     #[prost(string, tag = "1")]
-    pub skill: std::string::String,
+    pub skill: ::prost::alloc::string::String,
     /// Whether to apply negation to the filter so profiles matching the filter
     /// are excluded.
     #[prost(bool, tag = "2")]
@@ -2647,7 +2664,7 @@ pub struct SkillFilter {
 pub struct EmployerFilter {
     /// Required. The name of the employer, for example "Google", "Alphabet".
     #[prost(string, tag = "1")]
-    pub employer: std::string::String,
+    pub employer: ::prost::alloc::string::String,
     /// Define set of [EmploymentRecord][google.cloud.talent.v4beta1.EmploymentRecord]s to search against.
     ///
     /// Defaults to [EmployerFilterMode.ALL_EMPLOYMENT_RECORDS][google.cloud.talent.v4beta1.EmployerFilter.EmployerFilterMode.ALL_EMPLOYMENT_RECORDS].
@@ -2658,6 +2675,7 @@ pub struct EmployerFilter {
     #[prost(bool, tag = "3")]
     pub negated: bool,
 }
+/// Nested message and enum types in `EmployerFilter`.
 pub mod employer_filter {
     /// Enum indicating which set of [Profile.employment_records][google.cloud.talent.v4beta1.Profile.employment_records] to search
     /// against.
@@ -2680,12 +2698,12 @@ pub mod employer_filter {
 pub struct EducationFilter {
     /// The school name. For example "MIT", "University of California, Berkeley".
     #[prost(string, tag = "1")]
-    pub school: std::string::String,
+    pub school: ::prost::alloc::string::String,
     /// The field of study. This is to search against value provided in
     /// [Degree.fields_of_study][google.cloud.talent.v4beta1.Degree.fields_of_study].
     /// For example "Computer Science", "Mathematics".
     #[prost(string, tag = "2")]
-    pub field_of_study: std::string::String,
+    pub field_of_study: ::prost::alloc::string::String,
     /// Education degree in ISCED code. Each value in degree covers a specific
     /// level of education, without any expansion to upper nor lower levels of
     /// education degree.
@@ -2704,10 +2722,10 @@ pub struct EducationFilter {
 pub struct WorkExperienceFilter {
     /// The minimum duration of the work experience (inclusive).
     #[prost(message, optional, tag = "1")]
-    pub min_experience: ::std::option::Option<::prost_types::Duration>,
+    pub min_experience: ::core::option::Option<::prost_types::Duration>,
     /// The maximum duration of the work experience (exclusive).
     #[prost(message, optional, tag = "2")]
-    pub max_experience: ::std::option::Option<::prost_types::Duration>,
+    pub max_experience: ::core::option::Option<::prost_types::Duration>,
 }
 /// Application Date Range Filter.
 ///
@@ -2719,11 +2737,11 @@ pub struct ApplicationDateFilter {
     /// Start date. If it's missing, The API matches profiles with application date
     /// not after the end date.
     #[prost(message, optional, tag = "1")]
-    pub start_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub start_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// End date. If it's missing, The API matches profiles with application date
     /// not before the start date.
     #[prost(message, optional, tag = "2")]
-    pub end_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub end_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// Outcome Notes Filter.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2731,7 +2749,7 @@ pub struct ApplicationOutcomeNotesFilter {
     /// Required. User entered or selected outcome reason. The API does an exact match on the
     /// [Application.outcome_notes][google.cloud.talent.v4beta1.Application.outcome_notes] in profiles.
     #[prost(string, tag = "1")]
-    pub outcome_notes: std::string::String,
+    pub outcome_notes: ::prost::alloc::string::String,
     /// If true, The API excludes all candidates with any
     /// [Application.outcome_notes][google.cloud.talent.v4beta1.Application.outcome_notes] matching the outcome reason specified in
     /// the filter.
@@ -2744,11 +2762,11 @@ pub struct ApplicationJobFilter {
     /// The job requisition id in the application. The API does an exact match on
     /// the [Job.requisition_id][google.cloud.talent.v4beta1.Job.requisition_id] of [Application.job][google.cloud.talent.v4beta1.Application.job] in profiles.
     #[prost(string, tag = "2")]
-    pub job_requisition_id: std::string::String,
+    pub job_requisition_id: ::prost::alloc::string::String,
     /// The job title in the application. The API does an exact match on the
     /// [Job.title][google.cloud.talent.v4beta1.Job.title] of [Application.job][google.cloud.talent.v4beta1.Application.job] in profiles.
     #[prost(string, tag = "3")]
-    pub job_title: std::string::String,
+    pub job_title: ::prost::alloc::string::String,
     /// If true, the API excludes all profiles with any [Application.job][google.cloud.talent.v4beta1.Application.job]
     /// matching the filters.
     #[prost(bool, tag = "4")]
@@ -2761,18 +2779,19 @@ pub struct TimeFilter {
     /// missing, The API matches profiles with create / update timestamp before the
     /// end timestamp.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End timestamp, matching profiles with the end time. If this field
     /// missing, The API matches profiles with create / update timestamp after the
     /// start timestamp.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Specifies which time field to filter profiles.
     ///
     /// Defaults to [TimeField.CREATE_TIME][google.cloud.talent.v4beta1.TimeFilter.TimeField.CREATE_TIME].
     #[prost(enumeration = "time_filter::TimeField", tag = "3")]
     pub time_field: i32,
 }
+/// Nested message and enum types in `TimeFilter`.
 pub mod time_filter {
     /// Time fields can be used in TimeFilter.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2804,7 +2823,7 @@ pub struct AvailabilityFilter {
     pub signal_type: i32,
     /// Required. Range of times to filter candidate signals by.
     #[prost(message, optional, tag = "2")]
-    pub range: ::std::option::Option<TimestampRange>,
+    pub range: ::core::option::Option<TimestampRange>,
     /// If multiple [AvailabilityFilter][google.cloud.talent.v4beta1.AvailabilityFilter] are provided, the default
     /// behavior is to OR all filters, but if this field is set to true, this
     /// particular [AvailabilityFilter][google.cloud.talent.v4beta1.AvailabilityFilter] will be AND'ed against other
@@ -2822,7 +2841,7 @@ pub struct PersonNameFilter {
     /// [PersonName.structured_name.family_name][], and
     /// [PersonName.formatted_name][google.cloud.talent.v4beta1.PersonName.formatted_name].
     #[prost(string, tag = "1")]
-    pub person_name: std::string::String,
+    pub person_name: ::prost::alloc::string::String,
 }
 /// The histogram request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2833,14 +2852,14 @@ pub struct HistogramQuery {
     /// See [SearchJobsRequest.histogram_queries][google.cloud.talent.v4beta1.SearchJobsRequest.histogram_queries] and
     /// [SearchProfilesRequest.histogram_queries][google.cloud.talent.v4beta1.SearchProfilesRequest.histogram_queries] for details about syntax.
     #[prost(string, tag = "1")]
-    pub histogram_query: std::string::String,
+    pub histogram_query: ::prost::alloc::string::String,
 }
 /// Histogram result that matches [HistogramQuery][google.cloud.talent.v4beta1.HistogramQuery] specified in searches.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistogramQueryResult {
     /// Requested histogram expression.
     #[prost(string, tag = "1")]
-    pub histogram_query: std::string::String,
+    pub histogram_query: ::prost::alloc::string::String,
     /// A map from the values of the facet associated with distinct values to the
     /// number of matching entries with corresponding value.
     ///
@@ -2852,7 +2871,7 @@ pub struct HistogramQueryResult {
     /// * (for anonymous numeric bucket) range formatted as `<low>-<high>`, for
     ///   example, `0-1000`, `MIN-0`, and `0-MAX`.
     #[prost(map = "string, int64", tag = "2")]
-    pub histogram: ::std::collections::HashMap<std::string::String, i64>,
+    pub histogram: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
 }
 /// A Job resource represents a job posting (also referred to as a "job listing"
 /// or "job requisition"). A job belongs to a [Company][google.cloud.talent.v4beta1.Company], which is the hiring
@@ -2874,7 +2893,7 @@ pub struct Job {
     /// Use of this field in job queries and API calls is preferred over the use of
     /// [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id] since this value is unique.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The resource name of the company listing the job.
     ///
     /// The format is
@@ -2884,7 +2903,7 @@ pub struct Job {
     /// If tenant id is unspecified, the default tenant is used. For
     /// example, "projects/foo/companies/bar".
     #[prost(string, tag = "2")]
-    pub company: std::string::String,
+    pub company: ::prost::alloc::string::String,
     /// Required. The requisition ID, also referred to as the posting ID, is assigned by the
     /// client to identify a job. This field is intended to be used by clients
     /// for client identification and tracking of postings. A job isn't allowed
@@ -2893,12 +2912,12 @@ pub struct Job {
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "3")]
-    pub requisition_id: std::string::String,
+    pub requisition_id: ::prost::alloc::string::String,
     /// Required. The title of the job, such as "Software Engineer"
     ///
     /// The maximum number of allowed characters is 500.
     #[prost(string, tag = "4")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Required. The description of the job, which typically includes a multi-paragraph
     /// description of the company and related information. Separate fields are
     /// provided on the job object for [responsibilities][google.cloud.talent.v4beta1.Job.responsibilities],
@@ -2910,7 +2929,7 @@ pub struct Job {
     ///
     /// The maximum number of allowed characters is 100,000.
     #[prost(string, tag = "5")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Strongly recommended for the best service experience.
     ///
     /// Location(s) where the employer is looking to hire for this job posting.
@@ -2929,17 +2948,17 @@ pub struct Job {
     ///
     /// The maximum number of allowed characters is 500.
     #[prost(string, repeated, tag = "6")]
-    pub addresses: ::std::vec::Vec<std::string::String>,
+    pub addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Job application information.
     #[prost(message, optional, tag = "7")]
-    pub application_info: ::std::option::Option<job::ApplicationInfo>,
+    pub application_info: ::core::option::Option<job::ApplicationInfo>,
     /// The benefits included with the job.
     #[prost(enumeration = "JobBenefit", repeated, tag = "8")]
-    pub job_benefits: ::std::vec::Vec<i32>,
+    pub job_benefits: ::prost::alloc::vec::Vec<i32>,
     /// Job compensation information (a.k.a. "pay rate") i.e., the compensation
     /// that will paid to the employee.
     #[prost(message, optional, tag = "9")]
-    pub compensation_info: ::std::option::Option<CompensationInfo>,
+    pub compensation_info: ::core::option::Option<CompensationInfo>,
     /// A map of fields to hold both filterable and non-filterable custom job
     /// attributes that are not covered by the provided structured fields.
     ///
@@ -2953,27 +2972,28 @@ pub struct Job {
     /// `string_values`, the maximum total size of `string_values` across all keys
     /// is 50KB.
     #[prost(map = "string, message", tag = "10")]
-    pub custom_attributes: ::std::collections::HashMap<std::string::String, CustomAttribute>,
+    pub custom_attributes:
+        ::std::collections::HashMap<::prost::alloc::string::String, CustomAttribute>,
     /// The desired education degrees for the job, such as Bachelors, Masters.
     #[prost(enumeration = "DegreeType", repeated, tag = "11")]
-    pub degree_types: ::std::vec::Vec<i32>,
+    pub degree_types: ::prost::alloc::vec::Vec<i32>,
     /// The department or functional area within the company with the open
     /// position.
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "12")]
-    pub department: std::string::String,
+    pub department: ::prost::alloc::string::String,
     /// The employment type(s) of a job, for example,
     /// [full time][google.cloud.talent.v4beta1.EmploymentType.FULL_TIME] or
     /// [part time][google.cloud.talent.v4beta1.EmploymentType.PART_TIME].
     #[prost(enumeration = "EmploymentType", repeated, tag = "13")]
-    pub employment_types: ::std::vec::Vec<i32>,
+    pub employment_types: ::prost::alloc::vec::Vec<i32>,
     /// A description of bonus, commission, and other compensation
     /// incentives associated with the job not including salary or pay.
     ///
     /// The maximum number of allowed characters is 10,000.
     #[prost(string, tag = "14")]
-    pub incentives: std::string::String,
+    pub incentives: ::prost::alloc::string::String,
     /// The language of the posting. This field is distinct from
     /// any requirements for fluency that are associated with the job.
     ///
@@ -2986,7 +3006,7 @@ pub struct Job {
     /// language code based on [Job.description][google.cloud.talent.v4beta1.Job.description] is assigned, otherwise
     /// defaults to 'en_US'.
     #[prost(string, tag = "15")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// The experience level associated with the job, such as "Entry Level".
     #[prost(enumeration = "JobLevel", tag = "16")]
     pub job_level: i32,
@@ -3008,7 +3028,7 @@ pub struct Job {
     ///
     /// The maximum number of allowed characters is 10,000.
     #[prost(string, tag = "18")]
-    pub qualifications: std::string::String,
+    pub qualifications: ::prost::alloc::string::String,
     /// A description of job responsibilities. The use of this field is
     /// recommended as an alternative to using the more general [description][google.cloud.talent.v4beta1.Job.description]
     /// field.
@@ -3018,7 +3038,7 @@ pub struct Job {
     ///
     /// The maximum number of allowed characters is 10,000.
     #[prost(string, tag = "19")]
-    pub responsibilities: std::string::String,
+    pub responsibilities: ::prost::alloc::string::String,
     /// The job [PostingRegion][google.cloud.talent.v4beta1.PostingRegion] (for example, state, country) throughout
     /// which the job is available. If this field is set, a [LocationFilter][google.cloud.talent.v4beta1.LocationFilter]
     /// in a search query within the job region finds this job posting if an
@@ -3033,21 +3053,22 @@ pub struct Job {
     /// The visibility of the job.
     ///
     /// Defaults to [Visibility.ACCOUNT_ONLY][google.cloud.talent.v4beta1.Visibility.ACCOUNT_ONLY] if not specified.
+    #[deprecated]
     #[prost(enumeration = "Visibility", tag = "21")]
     pub visibility: i32,
     /// The start timestamp of the job in UTC time zone. Typically this field
     /// is used for contracting engagements. Invalid timestamps are ignored.
     #[prost(message, optional, tag = "22")]
-    pub job_start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub job_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end timestamp of the job. Typically this field is used for contracting
     /// engagements. Invalid timestamps are ignored.
     #[prost(message, optional, tag = "23")]
-    pub job_end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub job_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The timestamp this job posting was most recently published. The default
     /// value is the time the request arrives at the server. Invalid timestamps are
     /// ignored.
     #[prost(message, optional, tag = "24")]
-    pub posting_publish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub posting_publish_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Strongly recommended for the best service experience.
     ///
     /// The expiration timestamp of the job. After this timestamp, the
@@ -3090,23 +3111,24 @@ pub struct Job {
     /// updated, the job posting expires after 30 days from the job's last
     /// update time. Otherwise the expiration date isn't updated.
     #[prost(message, optional, tag = "25")]
-    pub posting_expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub posting_expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp when this job posting was created.
     #[prost(message, optional, tag = "26")]
-    pub posting_create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub posting_create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp when this job posting was last updated.
     #[prost(message, optional, tag = "27")]
-    pub posting_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub posting_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Display name of the company listing the job.
     #[prost(string, tag = "28")]
-    pub company_display_name: std::string::String,
+    pub company_display_name: ::prost::alloc::string::String,
     /// Output only. Derived details about the job posting.
     #[prost(message, optional, tag = "29")]
-    pub derived_info: ::std::option::Option<job::DerivedInfo>,
+    pub derived_info: ::core::option::Option<job::DerivedInfo>,
     /// Options for job processing.
     #[prost(message, optional, tag = "30")]
-    pub processing_options: ::std::option::Option<job::ProcessingOptions>,
+    pub processing_options: ::core::option::Option<job::ProcessingOptions>,
 }
+/// Nested message and enum types in `Job`.
 pub mod job {
     /// Application related details of a job posting.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3116,7 +3138,7 @@ pub mod job {
         ///
         /// The maximum number of allowed characters for each entry is 255.
         #[prost(string, repeated, tag = "1")]
-        pub emails: ::std::vec::Vec<std::string::String>,
+        pub emails: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Use this field to provide instructions, such as "Mail your application
         /// to ...", that a candidate can follow to apply for the job.
         ///
@@ -3125,13 +3147,13 @@ pub mod job {
         ///
         /// The maximum number of allowed characters is 3,000.
         #[prost(string, tag = "2")]
-        pub instruction: std::string::String,
+        pub instruction: ::prost::alloc::string::String,
         /// Use this URI field to direct an applicant to a website, for example to
         /// link to an online application form.
         ///
         /// The maximum number of allowed characters for each entry is 2,000.
         #[prost(string, repeated, tag = "3")]
-        pub uris: ::std::vec::Vec<std::string::String>,
+        pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Derived details about the job posting.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3141,10 +3163,10 @@ pub mod job {
         /// [locations][google.cloud.talent.v4beta1.Job.DerivedInfo.locations] are exactly matched to [Job.addresses][google.cloud.talent.v4beta1.Job.addresses] in the same
         /// order.
         #[prost(message, repeated, tag = "1")]
-        pub locations: ::std::vec::Vec<super::Location>,
+        pub locations: ::prost::alloc::vec::Vec<super::Location>,
         /// Job categories derived from [Job.title][google.cloud.talent.v4beta1.Job.title] and [Job.description][google.cloud.talent.v4beta1.Job.description].
         #[prost(enumeration = "super::JobCategory", repeated, tag = "3")]
-        pub job_categories: ::std::vec::Vec<i32>,
+        pub job_categories: ::prost::alloc::vec::Vec<i32>,
     }
     /// Options for job processing.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3178,10 +3200,10 @@ pub struct CreateJobRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified a default tenant
     /// is created. For example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Job to be created.
     #[prost(message, optional, tag = "2")]
-    pub job: ::std::option::Option<Job>,
+    pub job: ::core::option::Option<Job>,
 }
 /// Get job request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3195,14 +3217,14 @@ pub struct GetJobRequest {
     /// If tenant id is unspecified, the default tenant is used. For
     /// example, "projects/foo/jobs/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Update job request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobRequest {
     /// Required. The Job to be updated.
     #[prost(message, optional, tag = "1")]
-    pub job: ::std::option::Option<Job>,
+    pub job: ::core::option::Option<Job>,
     /// Strongly recommended for the best service experience.
     ///
     /// If [update_mask][google.cloud.talent.v4beta1.UpdateJobRequest.update_mask] is provided, only the specified fields in
@@ -3211,7 +3233,7 @@ pub struct UpdateJobRequest {
     /// A field mask to restrict the fields that are updated. Only
     /// top level fields of [Job][google.cloud.talent.v4beta1.Job] are supported.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Delete job request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3225,7 +3247,7 @@ pub struct DeleteJobRequest {
     /// If tenant id is unspecified, the default tenant is used. For
     /// example, "projects/foo/jobs/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Batch delete jobs request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3236,7 +3258,7 @@ pub struct BatchDeleteJobsRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
     /// is created. For example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The filter string specifies the jobs to be deleted.
     ///
     /// Supported operator: =, AND
@@ -3249,7 +3271,7 @@ pub struct BatchDeleteJobsRequest {
     /// Sample Query: companyName = "projects/foo/companies/bar" AND
     /// requisitionId = "req-1"
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// List jobs request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3260,7 +3282,7 @@ pub struct ListJobsRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
     /// is created. For example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The filter string specifies the jobs to be enumerated.
     ///
     /// Supported operator: =, AND
@@ -3280,10 +3302,10 @@ pub struct ListJobsRequest {
     /// * companyName = "projects/foo/tenants/bar/companies/baz" AND
     /// status = "EXPIRED"
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The starting point of a query result.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of jobs to be returned per page of results.
     ///
     /// If [job_view][google.cloud.talent.v4beta1.ListJobsRequest.job_view] is set to [JobView.JOB_VIEW_ID_ONLY][google.cloud.talent.v4beta1.JobView.JOB_VIEW_ID_ONLY], the maximum allowed
@@ -3306,14 +3328,14 @@ pub struct ListJobsResponse {
     /// The maximum number of items returned is based on the limit field
     /// provided in the request.
     #[prost(message, repeated, tag = "1")]
-    pub jobs: ::std::vec::Vec<Job>,
+    pub jobs: ::prost::alloc::vec::Vec<Job>,
     /// A token to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Additional information for the API invocation, such as the request
     /// tracking id.
     #[prost(message, optional, tag = "3")]
-    pub metadata: ::std::option::Option<ResponseMetadata>,
+    pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 /// The Request body of the `SearchJobs` call.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3324,7 +3346,7 @@ pub struct SearchJobsRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
     /// is created. For example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Mode of a search.
     ///
     /// Defaults to [SearchMode.JOB_SEARCH][google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode.JOB_SEARCH].
@@ -3334,10 +3356,10 @@ pub struct SearchJobsRequest {
     /// search quality of the service. The identifiers (such as `user_id`) are
     /// provided by users, and must be unique and consistent.
     #[prost(message, optional, tag = "3")]
-    pub request_metadata: ::std::option::Option<RequestMetadata>,
+    pub request_metadata: ::core::option::Option<RequestMetadata>,
     /// Query used to search against jobs, such as keyword, location filters, etc.
     #[prost(message, optional, tag = "4")]
-    pub job_query: ::std::option::Option<JobQuery>,
+    pub job_query: ::core::option::Option<JobQuery>,
     /// Controls whether to broaden the search when it produces sparse results.
     /// Broadened queries append results to the end of the matching results
     /// list.
@@ -3448,7 +3470,7 @@ pub struct SearchJobsRequest {
     /// * `count(numeric_custom_attribute["some-numeric-custom-attribute"],
     ///   [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])`
     #[prost(message, repeated, tag = "7")]
-    pub histogram_queries: ::std::vec::Vec<HistogramQuery>,
+    pub histogram_queries: ::prost::alloc::vec::Vec<HistogramQuery>,
     /// The desired job attributes returned for jobs in the search response.
     /// Defaults to [JobView.JOB_VIEW_SMALL][google.cloud.talent.v4beta1.JobView.JOB_VIEW_SMALL] if no value is specified.
     #[prost(enumeration = "JobView", tag = "8")]
@@ -3474,7 +3496,7 @@ pub struct SearchJobsRequest {
     /// search results. See [SearchJobsResponse.next_page_token][google.cloud.talent.v4beta1.SearchJobsResponse.next_page_token] for
     /// an explanation of how to obtain the next set of query results.
     #[prost(string, tag = "11")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The criteria determining how search results are sorted. Default is
     /// `"relevance desc"`.
     ///
@@ -3526,7 +3548,7 @@ pub struct SearchJobsRequest {
     ///   still applied unless explicitly disabled in
     ///   [diversification_level][google.cloud.talent.v4beta1.SearchJobsRequest.diversification_level].
     #[prost(string, tag = "12")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Controls whether highly similar jobs are returned next to each other in
     /// the search results. Jobs are identified as highly similar based on
     /// their titles, job categories, and locations. Highly similar results are
@@ -3541,7 +3563,7 @@ pub struct SearchJobsRequest {
     /// Controls over how job documents get ranked on top of existing relevance
     /// score (determined by API algorithm).
     #[prost(message, optional, tag = "14")]
-    pub custom_ranking_info: ::std::option::Option<search_jobs_request::CustomRankingInfo>,
+    pub custom_ranking_info: ::core::option::Option<search_jobs_request::CustomRankingInfo>,
     /// Controls whether to disable exact keyword match on [Job.title][google.cloud.talent.v4beta1.Job.title],
     /// [Job.description][google.cloud.talent.v4beta1.Job.description], [Job.company_display_name][google.cloud.talent.v4beta1.Job.company_display_name], [Job.addresses][google.cloud.talent.v4beta1.Job.addresses],
     /// [Job.qualifications][google.cloud.talent.v4beta1.Job.qualifications]. When disable keyword match is turned off, a
@@ -3564,6 +3586,7 @@ pub struct SearchJobsRequest {
     #[prost(bool, tag = "16")]
     pub disable_keyword_match: bool,
 }
+/// Nested message and enum types in `SearchJobsRequest`.
 pub mod search_jobs_request {
     /// Custom ranking information for [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3597,11 +3620,14 @@ pub mod search_jobs_request {
         /// Sample ranking expression
         /// (year + 25) * 0.25 - (freshness / 0.5)
         #[prost(string, tag = "2")]
-        pub ranking_expression: std::string::String,
+        pub ranking_expression: ::prost::alloc::string::String,
     }
+    /// Nested message and enum types in `CustomRankingInfo`.
     pub mod custom_ranking_info {
         /// The importance level for [CustomRankingInfo.ranking_expression][google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ranking_expression].
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ImportanceLevel {
             /// Default value if the importance level isn't specified.
@@ -3679,20 +3705,20 @@ pub mod search_jobs_request {
 pub struct SearchJobsResponse {
     /// The Job entities that match the specified [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
     #[prost(message, repeated, tag = "1")]
-    pub matching_jobs: ::std::vec::Vec<search_jobs_response::MatchingJob>,
+    pub matching_jobs: ::prost::alloc::vec::Vec<search_jobs_response::MatchingJob>,
     /// The histogram results that match with specified
     /// [SearchJobsRequest.histogram_queries][google.cloud.talent.v4beta1.SearchJobsRequest.histogram_queries].
     #[prost(message, repeated, tag = "2")]
-    pub histogram_query_results: ::std::vec::Vec<HistogramQueryResult>,
+    pub histogram_query_results: ::prost::alloc::vec::Vec<HistogramQueryResult>,
     /// The token that specifies the starting position of the next page of results.
     /// This field is empty if there are no more results.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The location filters that the service applied to the specified query. If
     /// any filters are lat-lng based, the [Location.location_type][google.cloud.talent.v4beta1.Location.location_type] is
     /// [Location.LocationType.LOCATION_TYPE_UNSPECIFIED][google.cloud.talent.v4beta1.Location.LocationType.LOCATION_TYPE_UNSPECIFIED].
     #[prost(message, repeated, tag = "4")]
-    pub location_filters: ::std::vec::Vec<Location>,
+    pub location_filters: ::prost::alloc::vec::Vec<Location>,
     /// An estimation of the number of jobs that match the specified query.
     ///
     /// This number isn't guaranteed to be accurate. For accurate results,
@@ -3707,7 +3733,7 @@ pub struct SearchJobsResponse {
     /// Additional information for the API invocation, such as the request
     /// tracking id.
     #[prost(message, optional, tag = "7")]
-    pub metadata: ::std::option::Option<ResponseMetadata>,
+    pub metadata: ::core::option::Option<ResponseMetadata>,
     /// If query broadening is enabled, we may append additional results from the
     /// broadened query. This number indicates how many of the jobs returned in the
     /// jobs field are from the broadened query. These results are always at the
@@ -3719,47 +3745,48 @@ pub struct SearchJobsResponse {
     pub broadened_query_jobs_count: i32,
     /// The spell checking result, and correction.
     #[prost(message, optional, tag = "9")]
-    pub spell_correction: ::std::option::Option<SpellingCorrection>,
+    pub spell_correction: ::core::option::Option<SpellingCorrection>,
 }
+/// Nested message and enum types in `SearchJobsResponse`.
 pub mod search_jobs_response {
     /// Job entry with metadata inside [SearchJobsResponse][google.cloud.talent.v4beta1.SearchJobsResponse].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MatchingJob {
         /// Job resource that matches the specified [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
         #[prost(message, optional, tag = "1")]
-        pub job: ::std::option::Option<super::Job>,
+        pub job: ::core::option::Option<super::Job>,
         /// A summary of the job with core information that's displayed on the search
         /// results listing page.
         #[prost(string, tag = "2")]
-        pub job_summary: std::string::String,
+        pub job_summary: ::prost::alloc::string::String,
         /// Contains snippets of text from the [Job.title][google.cloud.talent.v4beta1.Job.title] field most
         /// closely matching a search query's keywords, if available. The matching
         /// query keywords are enclosed in HTML bold tags.
         #[prost(string, tag = "3")]
-        pub job_title_snippet: std::string::String,
+        pub job_title_snippet: ::prost::alloc::string::String,
         /// Contains snippets of text from the [Job.description][google.cloud.talent.v4beta1.Job.description] and similar
         /// fields that most closely match a search query's keywords, if available.
         /// All HTML tags in the original fields are stripped when returned in this
         /// field, and matching query keywords are enclosed in HTML bold tags.
         #[prost(string, tag = "4")]
-        pub search_text_snippet: std::string::String,
+        pub search_text_snippet: ::prost::alloc::string::String,
         /// Commute information which is generated based on specified
         ///  [CommuteFilter][google.cloud.talent.v4beta1.CommuteFilter].
         #[prost(message, optional, tag = "5")]
-        pub commute_info: ::std::option::Option<CommuteInfo>,
+        pub commute_info: ::core::option::Option<CommuteInfo>,
     }
     /// Commute details related to this job.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CommuteInfo {
         /// Location used as the destination in the commute calculation.
         #[prost(message, optional, tag = "1")]
-        pub job_location: ::std::option::Option<super::Location>,
+        pub job_location: ::core::option::Option<super::Location>,
         /// The number of seconds required to travel to the job location from the
         /// query location. A duration of 0 seconds indicates that the job isn't
         /// reachable within the requested duration, but was returned as part of an
         /// expanded query.
         #[prost(message, optional, tag = "2")]
-        pub travel_duration: ::std::option::Option<::prost_types::Duration>,
+        pub travel_duration: ::core::option::Option<::prost_types::Duration>,
     }
 }
 /// Request to create a batch of jobs.
@@ -3771,10 +3798,10 @@ pub struct BatchCreateJobsRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
     /// is created. For example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The jobs to be created.
     #[prost(message, repeated, tag = "2")]
-    pub jobs: ::std::vec::Vec<Job>,
+    pub jobs: ::prost::alloc::vec::Vec<Job>,
 }
 /// Request to update a batch of jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3785,10 +3812,10 @@ pub struct BatchUpdateJobsRequest {
     /// "projects/foo/tenant/bar". If tenant id is unspecified, a default tenant
     /// is created. For example, "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The jobs to be updated.
     #[prost(message, repeated, tag = "2")]
-    pub jobs: ::std::vec::Vec<Job>,
+    pub jobs: ::prost::alloc::vec::Vec<Job>,
     /// Strongly recommended for the best service experience. Be aware that it will
     /// also increase latency when checking the status of a batch operation.
     ///
@@ -3804,7 +3831,7 @@ pub struct BatchUpdateJobsRequest {
     /// Otherwise,  [Job][google.cloud.talent.v4beta1.Job] will include all fields, which can yield a very
     /// large response.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The result of [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs] or
 /// [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs] APIs. It's used to
@@ -3814,8 +3841,9 @@ pub struct JobOperationResult {
     /// List of job mutation results from a batch mutate operation. It can change
     /// until operation status is FINISHED, FAILED or CANCELLED.
     #[prost(message, repeated, tag = "1")]
-    pub job_results: ::std::vec::Vec<job_operation_result::JobResult>,
+    pub job_results: ::prost::alloc::vec::Vec<job_operation_result::JobResult>,
 }
+/// Nested message and enum types in `JobOperationResult`.
 pub mod job_operation_result {
     /// Mutation result of a job.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3825,11 +3853,11 @@ pub mod job_operation_result {
         /// and [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id], use getJob method to retrieve
         /// detailed information of the created/updated job.
         #[prost(message, optional, tag = "1")]
-        pub job: ::std::option::Option<super::Job>,
+        pub job: ::core::option::Option<super::Job>,
         /// The status of the job processed. This field is populated if the
         /// processing of the [job][google.cloud.talent.v4beta1.JobOperationResult.JobResult.job] fails.
         #[prost(message, optional, tag = "2")]
-        pub status: ::std::option::Option<super::super::super::super::rpc::Status>,
+        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
 }
 /// An enum that specifies the job attributes that are returned in the
@@ -4104,14 +4132,14 @@ pub struct Profile {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}",
     /// for example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Profile's id in client system, if available. This value is unique for each
     /// profile inside a tenant. An error is thrown if another profile with the
     /// same external_id is created.
     ///
     /// The maximum number of bytes allowed is 100.
     #[prost(string, tag = "2")]
-    pub external_id: std::string::String,
+    pub external_id: ::prost::alloc::string::String,
     /// The source description indicating where the profile is acquired.
     ///
     /// For example, if a candidate profile is acquired from a resume, the user can
@@ -4119,12 +4147,12 @@ pub struct Profile {
     ///
     /// The maximum number of bytes allowed is 100.
     #[prost(string, tag = "3")]
-    pub source: std::string::String,
+    pub source: ::prost::alloc::string::String,
     /// The URI set by clients that links to this profile's client-side copy.
     ///
     /// The maximum number of bytes allowed is 4000.
     #[prost(string, tag = "4")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
     /// The cluster id of the profile to associate with other profile(s) for the
     /// same candidate.
     ///
@@ -4138,16 +4166,16 @@ pub struct Profile {
     /// [group_id][google.cloud.talent.v4beta1.Profile.group_id], and assign it when the second profile is created,
     /// indicating these two profiles are referring to the same candidate.
     #[prost(string, tag = "5")]
-    pub group_id: std::string::String,
+    pub group_id: ::prost::alloc::string::String,
     /// Indicates the hirable status of the candidate.
     #[prost(message, optional, tag = "6")]
-    pub is_hirable: ::std::option::Option<bool>,
+    pub is_hirable: ::core::option::Option<bool>,
     /// The timestamp when the profile was first created at this source.
     #[prost(message, optional, tag = "7")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The timestamp when the profile was last updated at this source.
     #[prost(message, optional, tag = "8")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The timestamp when the profile was last updated as a result of a direct or
     /// indirect action by a candidate.
     ///
@@ -4167,7 +4195,7 @@ pub struct Profile {
     /// Note: [candidate_update_time][google.cloud.talent.v4beta1.Profile.candidate_update_time] must be greater than or equal to
     /// [resume_update_time][google.cloud.talent.v4beta1.Profile.resume_update_time] or an error is thrown.
     #[prost(message, optional, tag = "67")]
-    pub candidate_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub candidate_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The timestamp when the candidate's resume was added or updated on the
     /// candidate's profile. Whether that resume was directly uploaded by a
     /// candidate, pulled from a 3rd party job board feed, added by a recruiter,
@@ -4176,15 +4204,15 @@ pub struct Profile {
     /// If this field is updated, it's expected that [resume][google.cloud.talent.v4beta1.Profile.resume] is provided in
     /// the create or update calls.
     #[prost(message, optional, tag = "68")]
-    pub resume_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub resume_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The resume representing this profile.
     #[prost(message, optional, tag = "53")]
-    pub resume: ::std::option::Option<Resume>,
+    pub resume: ::core::option::Option<Resume>,
     /// The names of the candidate this profile references.
     ///
     /// Currently only one person name is supported.
     #[prost(message, repeated, tag = "11")]
-    pub person_names: ::std::vec::Vec<PersonName>,
+    pub person_names: ::prost::alloc::vec::Vec<PersonName>,
     /// The candidate's postal addresses. It's highly recommended to
     /// input this information as accurately as possible to help improve search
     /// quality. Here are some recommendations:
@@ -4208,20 +4236,20 @@ pub struct Profile {
     /// 4. [Address.usage][google.cloud.talent.v4beta1.Address.usage] is CONTACT_INFO_USAGE_UNSPECIFIED and
     /// [Address.current][google.cloud.talent.v4beta1.Address.current] is false or not set.
     #[prost(message, repeated, tag = "12")]
-    pub addresses: ::std::vec::Vec<Address>,
+    pub addresses: ::prost::alloc::vec::Vec<Address>,
     /// The candidate's email addresses.
     #[prost(message, repeated, tag = "13")]
-    pub email_addresses: ::std::vec::Vec<Email>,
+    pub email_addresses: ::prost::alloc::vec::Vec<Email>,
     /// The candidate's phone number(s).
     #[prost(message, repeated, tag = "14")]
-    pub phone_numbers: ::std::vec::Vec<Phone>,
+    pub phone_numbers: ::prost::alloc::vec::Vec<Phone>,
     /// The candidate's personal URIs.
     #[prost(message, repeated, tag = "15")]
-    pub personal_uris: ::std::vec::Vec<PersonalUri>,
+    pub personal_uris: ::prost::alloc::vec::Vec<PersonalUri>,
     /// Available contact information besides [addresses][google.cloud.talent.v4beta1.Profile.addresses], [email_addresses][google.cloud.talent.v4beta1.Profile.email_addresses],
     /// [phone_numbers][google.cloud.talent.v4beta1.Profile.phone_numbers] and [personal_uris][google.cloud.talent.v4beta1.Profile.personal_uris]. For example, Hang-out, Skype.
     #[prost(message, repeated, tag = "16")]
-    pub additional_contact_info: ::std::vec::Vec<AdditionalContactInfo>,
+    pub additional_contact_info: ::prost::alloc::vec::Vec<AdditionalContactInfo>,
     /// The employment history records of the candidate. It's highly recommended
     /// to input this information as accurately as possible to help improve search
     /// quality. Here are some recommendations:
@@ -4236,7 +4264,7 @@ pub struct Profile {
     ///
     /// The limitation for max number of employment records is 100.
     #[prost(message, repeated, tag = "17")]
-    pub employment_records: ::std::vec::Vec<EmploymentRecord>,
+    pub employment_records: ::prost::alloc::vec::Vec<EmploymentRecord>,
     /// The education history record of the candidate. It's highly recommended to
     /// input this information as accurately as possible to help improve search
     /// quality. Here are some recommendations:
@@ -4250,37 +4278,37 @@ pub struct Profile {
     ///
     /// The limitation for max number of education records is 100.
     #[prost(message, repeated, tag = "18")]
-    pub education_records: ::std::vec::Vec<EducationRecord>,
+    pub education_records: ::prost::alloc::vec::Vec<EducationRecord>,
     /// The skill set of the candidate. It's highly recommended to provide as
     /// much information as possible to help improve the search quality.
     ///
     /// The limitation for max number of skills is 500.
     #[prost(message, repeated, tag = "19")]
-    pub skills: ::std::vec::Vec<Skill>,
+    pub skills: ::prost::alloc::vec::Vec<Skill>,
     /// The individual or collaborative activities which the candidate has
     /// participated in, for example, open-source projects, class assignments that
     /// aren't listed in [employment_records][google.cloud.talent.v4beta1.Profile.employment_records].
     ///
     /// The limitation for max number of activities is 50.
     #[prost(message, repeated, tag = "20")]
-    pub activities: ::std::vec::Vec<Activity>,
+    pub activities: ::prost::alloc::vec::Vec<Activity>,
     /// The publications published by the candidate.
     ///
     /// The limitation for max number of publications is 50.
     #[prost(message, repeated, tag = "21")]
-    pub publications: ::std::vec::Vec<Publication>,
+    pub publications: ::prost::alloc::vec::Vec<Publication>,
     /// The patents acquired by the candidate.
     #[prost(message, repeated, tag = "22")]
-    pub patents: ::std::vec::Vec<Patent>,
+    pub patents: ::prost::alloc::vec::Vec<Patent>,
     /// The certifications acquired by the candidate.
     #[prost(message, repeated, tag = "23")]
-    pub certifications: ::std::vec::Vec<Certification>,
+    pub certifications: ::prost::alloc::vec::Vec<Certification>,
     /// Output only. The resource names of the candidate's applications.
     #[prost(string, repeated, tag = "47")]
-    pub applications: ::std::vec::Vec<std::string::String>,
+    pub applications: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The resource names of the candidate's assignments.
     #[prost(string, repeated, tag = "48")]
-    pub assignments: ::std::vec::Vec<std::string::String>,
+    pub assignments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A map of fields to hold both filterable and non-filterable custom profile
     /// attributes that aren't covered by the provided structured fields. See
     /// [CustomAttribute][google.cloud.talent.v4beta1.CustomAttribute] for more details.
@@ -4300,7 +4328,8 @@ pub struct Profile {
     /// 64B. An error is thrown for any request exceeding the limit.
     /// The maximum total byte size is 10KB.
     #[prost(map = "string, message", tag = "26")]
-    pub custom_attributes: ::std::collections::HashMap<std::string::String, CustomAttribute>,
+    pub custom_attributes:
+        ::std::collections::HashMap<::prost::alloc::string::String, CustomAttribute>,
     /// Output only. Indicates if a summarized profile was created as part of the
     /// profile creation API call. This flag does not indicate whether a profile is
     /// searchable or not.
@@ -4309,16 +4338,16 @@ pub struct Profile {
     /// Output only. Keyword snippet shows how the search result is related to a
     /// search query.  This is only returned in [SearchProfilesResponse][google.cloud.talent.v4beta1.SearchProfilesResponse].
     #[prost(string, tag = "28")]
-    pub keyword_snippet: std::string::String,
+    pub keyword_snippet: ::prost::alloc::string::String,
     /// Output only. Candidate's availability signals.
     #[prost(message, repeated, tag = "70")]
-    pub availability_signals: ::std::vec::Vec<AvailabilitySignal>,
+    pub availability_signals: ::prost::alloc::vec::Vec<AvailabilitySignal>,
     /// Output only. Derived locations of the profile, resolved from [Profile.addresses][google.cloud.talent.v4beta1.Profile.addresses].
     ///
     /// [derived_addresses][google.cloud.talent.v4beta1.Profile.derived_addresses] are exactly matched to [Profile.addresses][google.cloud.talent.v4beta1.Profile.addresses] in the
     /// same order.
     #[prost(message, repeated, tag = "64")]
-    pub derived_addresses: ::std::vec::Vec<Location>,
+    pub derived_addresses: ::prost::alloc::vec::Vec<Location>,
 }
 /// Candidate availability signal.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4328,7 +4357,7 @@ pub struct AvailabilitySignal {
     pub r#type: i32,
     /// Timestamp of when the given availability activity last happened.
     #[prost(message, optional, tag = "2")]
-    pub last_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Indicates if the [last_update_time][google.cloud.talent.v4beta1.AvailabilitySignal.last_update_time] is within
     /// [AvailabilityFilter.range][google.cloud.talent.v4beta1.AvailabilityFilter.range].
     ///
@@ -4336,7 +4365,7 @@ pub struct AvailabilitySignal {
     /// in [ProfileQuery.availability_filters][google.cloud.talent.v4beta1.ProfileQuery.availability_filters] where
     /// [signal_type][google.cloud.talent.v4beta1.AvailabilityFilter.signal_type] matches [type][google.cloud.talent.v4beta1.AvailabilitySignal.type].
     #[prost(message, optional, tag = "3")]
-    pub filter_satisfied: ::std::option::Option<bool>,
+    pub filter_satisfied: ::core::option::Option<bool>,
 }
 /// Resource that represents a resume.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4352,11 +4381,12 @@ pub struct Resume {
     /// data from resumes is an Alpha feature and as such is not covered by any
     /// SLA.
     #[prost(string, tag = "1")]
-    pub structured_resume: std::string::String,
+    pub structured_resume: ::prost::alloc::string::String,
     /// The format of [structured_resume][google.cloud.talent.v4beta1.Resume.structured_resume].
     #[prost(enumeration = "resume::ResumeType", tag = "2")]
     pub resume_type: i32,
 }
+/// Nested message and enum types in `Resume`.
 pub mod resume {
     /// The format of a structured resume.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4380,13 +4410,14 @@ pub struct PersonName {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "3")]
-    pub preferred_name: std::string::String,
+    pub preferred_name: ::prost::alloc::string::String,
     /// The name of a person. It can be one of
     /// [formatted_name][google.cloud.talent.v4beta1.PersonName.formatted_name] or
     /// [structured_name][google.cloud.talent.v4beta1.PersonName.structured_name].
     #[prost(oneof = "person_name::PersonName", tags = "1, 2")]
-    pub person_name: ::std::option::Option<person_name::PersonName>,
+    pub person_name: ::core::option::Option<person_name::PersonName>,
 }
+/// Nested message and enum types in `PersonName`.
 pub mod person_name {
     /// Resource that represents a person's structured name.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4397,36 +4428,36 @@ pub mod person_name {
         ///
         /// Number of characters allowed is 100.
         #[prost(string, tag = "1")]
-        pub given_name: std::string::String,
+        pub given_name: ::prost::alloc::string::String,
         /// Preferred given/first name or nickname.
         ///
         /// Number of characters allowed is 100.
         #[prost(string, tag = "6")]
-        pub preferred_name: std::string::String,
+        pub preferred_name: ::prost::alloc::string::String,
         /// Middle initial.
         ///
         /// It's derived from [formatted_name][google.cloud.talent.v4beta1.PersonName.formatted_name] if not provided.
         ///
         /// Number of characters allowed is 20.
         #[prost(string, tag = "2")]
-        pub middle_initial: std::string::String,
+        pub middle_initial: ::prost::alloc::string::String,
         /// Family/last name.
         ///
         /// It's derived from [formatted_name][google.cloud.talent.v4beta1.PersonName.formatted_name] if not provided.
         ///
         /// Number of characters allowed is 100.
         #[prost(string, tag = "3")]
-        pub family_name: std::string::String,
+        pub family_name: ::prost::alloc::string::String,
         /// Suffixes.
         ///
         /// Number of characters allowed is 20.
         #[prost(string, repeated, tag = "4")]
-        pub suffixes: ::std::vec::Vec<std::string::String>,
+        pub suffixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Prefixes.
         ///
         /// Number of characters allowed is 20.
         #[prost(string, repeated, tag = "5")]
-        pub prefixes: ::std::vec::Vec<std::string::String>,
+        pub prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// The name of a person. It can be one of
     /// [formatted_name][google.cloud.talent.v4beta1.PersonName.formatted_name] or
@@ -4437,7 +4468,7 @@ pub mod person_name {
         ///
         /// Number of characters allowed is 100.
         #[prost(string, tag = "1")]
-        FormattedName(std::string::String),
+        FormattedName(::prost::alloc::string::String),
         /// A person's name in a structured way (last name, first name, suffix, and
         /// so on.)
         #[prost(message, tag = "2")]
@@ -4452,13 +4483,14 @@ pub struct Address {
     pub usage: i32,
     /// Indicates if it's the person's current address.
     #[prost(message, optional, tag = "4")]
-    pub current: ::std::option::Option<bool>,
+    pub current: ::core::option::Option<bool>,
     /// The address of a person. It can be one of
     /// [unstructured_address][google.cloud.talent.v4beta1.Address.unstructured_address] or
     /// [structured_address][google.cloud.talent.v4beta1.Address.structured_address].
     #[prost(oneof = "address::Address", tags = "2, 3")]
-    pub address: ::std::option::Option<address::Address>,
+    pub address: ::core::option::Option<address::Address>,
 }
+/// Nested message and enum types in `Address`.
 pub mod address {
     /// The address of a person. It can be one of
     /// [unstructured_address][google.cloud.talent.v4beta1.Address.unstructured_address] or
@@ -4472,7 +4504,7 @@ pub mod address {
         ///
         /// Number of characters allowed is 100.
         #[prost(string, tag = "2")]
-        UnstructuredAddress(std::string::String),
+        UnstructuredAddress(::prost::alloc::string::String),
         /// Structured address that contains street address, city, state, country,
         /// and so on.
         #[prost(message, tag = "3")]
@@ -4489,7 +4521,7 @@ pub struct Email {
     ///
     /// Number of characters allowed is 4,000.
     #[prost(string, tag = "2")]
-    pub email_address: std::string::String,
+    pub email_address: ::prost::alloc::string::String,
 }
 /// Resource that represents a person's telephone number.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4509,13 +4541,14 @@ pub struct Phone {
     ///
     /// Number of characters allowed is 20.
     #[prost(string, tag = "3")]
-    pub number: std::string::String,
+    pub number: ::prost::alloc::string::String,
     /// When this number is available. Any descriptive string is expected.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "4")]
-    pub when_available: std::string::String,
+    pub when_available: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Phone`.
 pub mod phone {
     /// Enum that represents the type of the telephone.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4556,7 +4589,7 @@ pub struct PersonalUri {
     ///
     /// Number of characters allowed is 4,000.
     #[prost(string, tag = "1")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
 }
 /// Resource that represents contact information other than phone, email,
 /// URI and addresses.
@@ -4571,122 +4604,123 @@ pub struct AdditionalContactInfo {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The contact id.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "3")]
-    pub contact_id: std::string::String,
+    pub contact_id: ::prost::alloc::string::String,
 }
 /// Resource that represents an employment record of a candidate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EmploymentRecord {
     /// Start date of the employment.
     #[prost(message, optional, tag = "1")]
-    pub start_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub start_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// End date of the employment.
     #[prost(message, optional, tag = "2")]
-    pub end_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub end_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The name of the employer company/organization.
     ///
     /// For example, "Google", "Alphabet", and so on.
     ///
     /// Number of characters allowed is 250.
     #[prost(string, tag = "3")]
-    pub employer_name: std::string::String,
+    pub employer_name: ::prost::alloc::string::String,
     /// The division name of the employment.
     ///
     /// For example, division, department, client, and so on.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "4")]
-    pub division_name: std::string::String,
+    pub division_name: ::prost::alloc::string::String,
     /// The physical address of the employer.
     #[prost(message, optional, tag = "5")]
-    pub address: ::std::option::Option<Address>,
+    pub address: ::core::option::Option<Address>,
     /// The job title of the employment.
     ///
     /// For example, "Software Engineer", "Data Scientist", and so on.
     ///
     /// Number of characters allowed is 250.
     #[prost(string, tag = "6")]
-    pub job_title: std::string::String,
+    pub job_title: ::prost::alloc::string::String,
     /// The description of job content.
     ///
     /// Number of characters allowed is 100,000.
     #[prost(string, tag = "7")]
-    pub job_description: std::string::String,
+    pub job_description: ::prost::alloc::string::String,
     /// If the jobs is a supervisor position.
     #[prost(message, optional, tag = "8")]
-    pub is_supervisor: ::std::option::Option<bool>,
+    pub is_supervisor: ::core::option::Option<bool>,
     /// If this employment is self-employed.
     #[prost(message, optional, tag = "9")]
-    pub is_self_employed: ::std::option::Option<bool>,
+    pub is_self_employed: ::core::option::Option<bool>,
     /// If this employment is current.
     #[prost(message, optional, tag = "10")]
-    pub is_current: ::std::option::Option<bool>,
+    pub is_current: ::core::option::Option<bool>,
     /// Output only. The job title snippet shows how the [job_title][google.cloud.talent.v4beta1.EmploymentRecord.job_title] is related
     /// to a search query. It's empty if the [job_title][google.cloud.talent.v4beta1.EmploymentRecord.job_title] isn't related to the
     /// search query.
     #[prost(string, tag = "11")]
-    pub job_title_snippet: std::string::String,
+    pub job_title_snippet: ::prost::alloc::string::String,
     /// Output only. The job description snippet shows how the [job_description][google.cloud.talent.v4beta1.EmploymentRecord.job_description]
     /// is related to a search query. It's empty if the [job_description][google.cloud.talent.v4beta1.EmploymentRecord.job_description] isn't
     /// related to the search query.
     #[prost(string, tag = "12")]
-    pub job_description_snippet: std::string::String,
+    pub job_description_snippet: ::prost::alloc::string::String,
     /// Output only. The employer name snippet shows how the [employer_name][google.cloud.talent.v4beta1.EmploymentRecord.employer_name] is
     /// related to a search query. It's empty if the [employer_name][google.cloud.talent.v4beta1.EmploymentRecord.employer_name] isn't
     /// related to the search query.
     #[prost(string, tag = "13")]
-    pub employer_name_snippet: std::string::String,
+    pub employer_name_snippet: ::prost::alloc::string::String,
 }
 /// Resource that represents an education record of a candidate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EducationRecord {
     /// The start date of the education.
     #[prost(message, optional, tag = "1")]
-    pub start_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub start_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The end date of the education.
     #[prost(message, optional, tag = "2")]
-    pub end_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub end_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The expected graduation date if currently pursuing a degree.
     #[prost(message, optional, tag = "3")]
-    pub expected_graduation_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub expected_graduation_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The name of the school or institution.
     ///
     /// For example, "Stanford University", "UC Berkeley", and so on.
     ///
     /// Number of characters allowed is 250.
     #[prost(string, tag = "4")]
-    pub school_name: std::string::String,
+    pub school_name: ::prost::alloc::string::String,
     /// The physical address of the education institution.
     #[prost(message, optional, tag = "5")]
-    pub address: ::std::option::Option<Address>,
+    pub address: ::core::option::Option<Address>,
     /// The description of the education.
     ///
     /// Number of characters allowed is 100,000.
     #[prost(string, tag = "8")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// If this education is current.
     #[prost(message, optional, tag = "9")]
-    pub is_current: ::std::option::Option<bool>,
+    pub is_current: ::core::option::Option<bool>,
     /// Output only. The school name snippet shows how the [school_name][google.cloud.talent.v4beta1.EducationRecord.school_name] is related to a
     /// search query in search result. It's empty if the [school_name][google.cloud.talent.v4beta1.EducationRecord.school_name] isn't
     /// related to the search query.
     #[prost(string, tag = "10")]
-    pub school_name_snippet: std::string::String,
+    pub school_name_snippet: ::prost::alloc::string::String,
     /// Output only. The job description snippet shows how the [Degree][google.cloud.talent.v4beta1.Degree] is related to a search
     /// query in search result. It's empty if the [Degree][google.cloud.talent.v4beta1.Degree] isn't related to the
     /// search query.
     #[prost(string, tag = "11")]
-    pub degree_snippet: std::string::String,
+    pub degree_snippet: ::prost::alloc::string::String,
     /// The degree information. It can be one of
     /// [degree_description][google.cloud.talent.v4beta1.EducationRecord.degree_description] or
     /// [structured_degree][google.cloud.talent.v4beta1.EducationRecord.structured_degree].
     #[prost(oneof = "education_record::Degree", tags = "6, 7")]
-    pub degree: ::std::option::Option<education_record::Degree>,
+    pub degree: ::core::option::Option<education_record::Degree>,
 }
+/// Nested message and enum types in `EducationRecord`.
 pub mod education_record {
     /// The degree information. It can be one of
     /// [degree_description][google.cloud.talent.v4beta1.EducationRecord.degree_description] or
@@ -4699,7 +4733,7 @@ pub mod education_record {
         ///
         /// Number of characters allowed is 100.
         #[prost(string, tag = "6")]
-        DegreeDescription(std::string::String),
+        DegreeDescription(::prost::alloc::string::String),
         /// The structured notation of the degree.
         #[prost(message, tag = "7")]
         StructuredDegree(super::Degree),
@@ -4717,14 +4751,14 @@ pub struct Degree {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "2")]
-    pub degree_name: std::string::String,
+    pub degree_name: ::prost::alloc::string::String,
     /// Fields of study for the degree.
     ///
     /// For example, "Computer science", "engineering".
     ///
     /// Number of characters allowed is 100.
     #[prost(string, repeated, tag = "3")]
-    pub fields_of_study: ::std::vec::Vec<std::string::String>,
+    pub fields_of_study: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Resource that represents an individual or collaborative activity participated
 /// in by a candidate, for example, an open-source project, a class assignment,
@@ -4735,50 +4769,50 @@ pub struct Activity {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Activity description.
     ///
     /// Number of characters allowed is 100,000.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Activity URI.
     ///
     /// Number of characters allowed is 4,000.
     #[prost(string, tag = "3")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
     /// The first creation date of the activity.
     #[prost(message, optional, tag = "4")]
-    pub create_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub create_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The last update date of the activity.
     #[prost(message, optional, tag = "5")]
-    pub update_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub update_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// A list of team members involved in this activity.
     ///
     /// Number of characters allowed is 100.
     ///
     /// The limitation for max number of team members is 50.
     #[prost(string, repeated, tag = "6")]
-    pub team_members: ::std::vec::Vec<std::string::String>,
+    pub team_members: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of skills used in this activity.
     ///
     /// The limitation for max number of skills used is 50.
     #[prost(message, repeated, tag = "7")]
-    pub skills_used: ::std::vec::Vec<Skill>,
+    pub skills_used: ::prost::alloc::vec::Vec<Skill>,
     /// Output only. Activity name snippet shows how the [display_name][google.cloud.talent.v4beta1.Activity.display_name] is related to a search
     /// query. It's empty if the [display_name][google.cloud.talent.v4beta1.Activity.display_name] isn't related to the search
     /// query.
     #[prost(string, tag = "8")]
-    pub activity_name_snippet: std::string::String,
+    pub activity_name_snippet: ::prost::alloc::string::String,
     /// Output only. Activity description snippet shows how the
     /// [description][google.cloud.talent.v4beta1.Activity.description] is related to a search query. It's empty if the
     /// [description][google.cloud.talent.v4beta1.Activity.description] isn't related to the search query.
     #[prost(string, tag = "9")]
-    pub activity_description_snippet: std::string::String,
+    pub activity_description_snippet: ::prost::alloc::string::String,
     /// Output only. Skill used snippet shows how the corresponding
     /// [skills_used][google.cloud.talent.v4beta1.Activity.skills_used] are related to a search query. It's empty if the
     /// corresponding [skills_used][google.cloud.talent.v4beta1.Activity.skills_used] are not related to the search query.
     #[prost(string, repeated, tag = "10")]
-    pub skills_used_snippet: ::std::vec::Vec<std::string::String>,
+    pub skills_used_snippet: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Resource that represents a publication resource of a candidate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4787,45 +4821,45 @@ pub struct Publication {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, repeated, tag = "1")]
-    pub authors: ::std::vec::Vec<std::string::String>,
+    pub authors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The title of the publication.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "2")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// The description of the publication.
     ///
     /// Number of characters allowed is 100,000.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// The journal name of the publication.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "4")]
-    pub journal: std::string::String,
+    pub journal: ::prost::alloc::string::String,
     /// Volume number.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "5")]
-    pub volume: std::string::String,
+    pub volume: ::prost::alloc::string::String,
     /// The publisher of the journal.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "6")]
-    pub publisher: std::string::String,
+    pub publisher: ::prost::alloc::string::String,
     /// The publication date.
     #[prost(message, optional, tag = "7")]
-    pub publication_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub publication_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The publication type.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "8")]
-    pub publication_type: std::string::String,
+    pub publication_type: ::prost::alloc::string::String,
     /// ISBN number.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "9")]
-    pub isbn: std::string::String,
+    pub isbn: ::prost::alloc::string::String,
 }
 /// Resource that represents the patent acquired by a candidate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4834,41 +4868,41 @@ pub struct Patent {
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// A list of inventors' names.
     ///
     /// Number of characters allowed for each is 100.
     #[prost(string, repeated, tag = "2")]
-    pub inventors: ::std::vec::Vec<std::string::String>,
+    pub inventors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The status of the patent.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "3")]
-    pub patent_status: std::string::String,
+    pub patent_status: ::prost::alloc::string::String,
     /// The date the last time the status of the patent was checked.
     #[prost(message, optional, tag = "4")]
-    pub patent_status_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub patent_status_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The date that the patent was filed.
     #[prost(message, optional, tag = "5")]
-    pub patent_filing_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub patent_filing_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// The name of the patent office.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "6")]
-    pub patent_office: std::string::String,
+    pub patent_office: ::prost::alloc::string::String,
     /// The number of the patent.
     ///
     /// Number of characters allowed is 100.
     #[prost(string, tag = "7")]
-    pub patent_number: std::string::String,
+    pub patent_number: ::prost::alloc::string::String,
     /// The description of the patent.
     ///
     /// Number of characters allowed is 100,000.
     #[prost(string, tag = "8")]
-    pub patent_description: std::string::String,
+    pub patent_description: ::prost::alloc::string::String,
     /// The skills used in this patent.
     #[prost(message, repeated, tag = "9")]
-    pub skills_used: ::std::vec::Vec<Skill>,
+    pub skills_used: ::prost::alloc::vec::Vec<Skill>,
 }
 /// List profiles request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4878,7 +4912,7 @@ pub struct ListProfilesRequest {
     /// The format is "projects/{project_id}/tenants/{tenant_id}". For example,
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The filter string specifies the profiles to be enumerated.
     ///
     /// Supported operator: =, AND
@@ -4897,13 +4931,13 @@ pub struct ListProfilesRequest {
     /// * externalId = "externalId-1"
     /// * groupId = "groupId-1"
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The token that specifies the current offset (that is, starting result).
     ///
     /// Please set the value to [ListProfilesResponse.next_page_token][google.cloud.talent.v4beta1.ListProfilesResponse.next_page_token] to
     /// continue the list.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of profiles to be returned, at most 100.
     ///
     /// Default is 100 unless a positive number smaller than 100 is specified.
@@ -4916,18 +4950,18 @@ pub struct ListProfilesRequest {
     ///
     /// * name
     #[prost(message, optional, tag = "4")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The List profiles response object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProfilesResponse {
     /// Profiles for the specific tenant.
     #[prost(message, repeated, tag = "1")]
-    pub profiles: ::std::vec::Vec<Profile>,
+    pub profiles: ::prost::alloc::vec::Vec<Profile>,
     /// A token to retrieve the next page of results. This is empty if there are no
     /// more results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Create profile request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4937,10 +4971,10 @@ pub struct CreateProfileRequest {
     /// The format is "projects/{project_id}/tenants/{tenant_id}". For example,
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The profile to be created.
     #[prost(message, optional, tag = "2")]
-    pub profile: ::std::option::Option<Profile>,
+    pub profile: ::core::option::Option<Profile>,
 }
 /// Get profile request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4951,19 +4985,19 @@ pub struct GetProfileRequest {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
     /// example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Update profile request
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProfileRequest {
     /// Required. Profile to be updated.
     #[prost(message, optional, tag = "1")]
-    pub profile: ::std::option::Option<Profile>,
+    pub profile: ::core::option::Option<Profile>,
     /// A field mask to specify the profile fields to update.
     ///
     /// A full update is performed if it is unset.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Delete profile request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4974,7 +5008,7 @@ pub struct DeleteProfileRequest {
     /// "projects/{project_id}/tenants/{tenant_id}/profiles/{profile_id}". For
     /// example, "projects/foo/tenants/bar/profiles/baz".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request body of the `SearchProfiles` call.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4984,15 +5018,15 @@ pub struct SearchProfilesRequest {
     /// The format is "projects/{project_id}/tenants/{tenant_id}". For example,
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The meta information collected about the profile search user. This is used
     /// to improve the search quality of the service. These values are provided by
     /// users, and must be precise and consistent.
     #[prost(message, optional, tag = "2")]
-    pub request_metadata: ::std::option::Option<RequestMetadata>,
+    pub request_metadata: ::core::option::Option<RequestMetadata>,
     /// Search query to execute. See [ProfileQuery][google.cloud.talent.v4beta1.ProfileQuery] for more details.
     #[prost(message, optional, tag = "3")]
-    pub profile_query: ::std::option::Option<ProfileQuery>,
+    pub profile_query: ::core::option::Option<ProfileQuery>,
     /// A limit on the number of profiles returned in the search results.
     /// A value above the default value 10 can increase search response time.
     ///
@@ -5007,7 +5041,7 @@ pub struct SearchProfilesRequest {
     /// pageToken instead of offset increases the performance of the API,
     /// especially compared to larger offset values.
     #[prost(string, tag = "5")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// An integer that specifies the current offset (that is, starting result) in
     /// search results. This field is only considered if [page_token][google.cloud.talent.v4beta1.SearchProfilesRequest.page_token] is unset.
     ///
@@ -5044,7 +5078,7 @@ pub struct SearchProfilesRequest {
     /// * "last_name desc": Sort by [PersonName.PersonStructuredName.family_name][google.cloud.talent.v4beta1.PersonName.PersonStructuredName.family_name]
     ///   in ascending order.
     #[prost(string, tag = "8")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// When sort by field is based on alphabetical order, sort values case
     /// sensitively (based on ASCII) when the value is set to true. Default value
     /// is case in-sensitive sort (false).
@@ -5125,7 +5159,7 @@ pub struct SearchProfilesRequest {
     /// * count(numeric_custom_attribute["favorite_number"],
     /// [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative")])
     #[prost(message, repeated, tag = "10")]
-    pub histogram_queries: ::std::vec::Vec<HistogramQuery>,
+    pub histogram_queries: ::prost::alloc::vec::Vec<HistogramQuery>,
     /// An id that uniquely identifies the result set of a
     /// [SearchProfiles][google.cloud.talent.v4beta1.ProfileService.SearchProfiles] call. The id should be
     /// retrieved from the
@@ -5147,7 +5181,7 @@ pub struct SearchProfilesRequest {
     /// field, then use the resulting [result_set_id][google.cloud.talent.v4beta1.SearchProfilesRequest.result_set_id] in
     /// [SearchProfilesResponse][google.cloud.talent.v4beta1.SearchProfilesResponse] to page through the results.
     #[prost(string, tag = "12")]
-    pub result_set_id: std::string::String,
+    pub result_set_id: ::prost::alloc::string::String,
     /// This flag is used to indicate whether the service will attempt to
     /// understand synonyms and terms related to the search query or treat the
     /// query "as is" when it generates a set of results. By default this flag is
@@ -5174,34 +5208,34 @@ pub struct SearchProfilesResponse {
     pub estimated_total_size: i64,
     /// The spell checking result, and correction.
     #[prost(message, optional, tag = "2")]
-    pub spell_correction: ::std::option::Option<SpellingCorrection>,
+    pub spell_correction: ::core::option::Option<SpellingCorrection>,
     /// Additional information for the API invocation, such as the request
     /// tracking id.
     #[prost(message, optional, tag = "3")]
-    pub metadata: ::std::option::Option<ResponseMetadata>,
+    pub metadata: ::core::option::Option<ResponseMetadata>,
     /// A token to retrieve the next page of results. This is empty if there are no
     /// more results.
     #[prost(string, tag = "4")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The histogram results that match with specified
     /// [SearchProfilesRequest.histogram_queries][google.cloud.talent.v4beta1.SearchProfilesRequest.histogram_queries].
     #[prost(message, repeated, tag = "5")]
-    pub histogram_query_results: ::std::vec::Vec<HistogramQueryResult>,
+    pub histogram_query_results: ::prost::alloc::vec::Vec<HistogramQueryResult>,
     /// The profile entities that match the specified [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest].
     #[prost(message, repeated, tag = "6")]
-    pub summarized_profiles: ::std::vec::Vec<SummarizedProfile>,
+    pub summarized_profiles: ::prost::alloc::vec::Vec<SummarizedProfile>,
     /// An id that uniquely identifies the result set of a
     /// [SearchProfiles][google.cloud.talent.v4beta1.ProfileService.SearchProfiles] call for consistent
     /// results.
     #[prost(string, tag = "7")]
-    pub result_set_id: std::string::String,
+    pub result_set_id: ::prost::alloc::string::String,
 }
 /// Profile entry with metadata inside [SearchProfilesResponse][google.cloud.talent.v4beta1.SearchProfilesResponse].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizedProfile {
     /// A list of profiles that are linked by [Profile.group_id][google.cloud.talent.v4beta1.Profile.group_id].
     #[prost(message, repeated, tag = "1")]
-    pub profiles: ::std::vec::Vec<Profile>,
+    pub profiles: ::prost::alloc::vec::Vec<Profile>,
     /// A profile summary shows the profile summary and how the profile matches the
     /// search query.
     ///
@@ -5216,7 +5250,7 @@ pub struct SummarizedProfile {
     /// example, the school name in summary is set to "University of California at
     /// Berkeley" and the field of study is set to "Computer Science".
     #[prost(message, optional, tag = "2")]
-    pub summary: ::std::option::Option<Profile>,
+    pub summary: ::core::option::Option<Profile>,
 }
 #[doc = r" Generated client implementations."]
 pub mod profile_service_client {
@@ -5379,12 +5413,12 @@ pub struct Tenant {
     /// The format is "projects/{project_id}/tenants/{tenant_id}", for example,
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Client side tenant identifier, used to uniquely identify the tenant.
     ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "2")]
-    pub external_id: std::string::String,
+    pub external_id: ::prost::alloc::string::String,
     /// Indicates whether data owned by this tenant may be used to provide product
     /// improvements across other tenants.
     ///
@@ -5398,8 +5432,10 @@ pub struct Tenant {
     /// parenthesis, brackets and special symbols are not searchable as-is,
     /// and must be surrounded by quotes.
     #[prost(string, repeated, tag = "4")]
-    pub keyword_searchable_profile_custom_attributes: ::std::vec::Vec<std::string::String>,
+    pub keyword_searchable_profile_custom_attributes:
+        ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Tenant`.
 pub mod tenant {
     /// Enum that represents how user data owned by the tenant is used.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -5423,10 +5459,10 @@ pub struct CreateTenantRequest {
     /// The format is "projects/{project_id}", for example,
     /// "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The tenant to be created.
     #[prost(message, optional, tag = "2")]
-    pub tenant: ::std::option::Option<Tenant>,
+    pub tenant: ::core::option::Option<Tenant>,
 }
 /// Request for getting a tenant by name.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5436,14 +5472,14 @@ pub struct GetTenantRequest {
     /// The format is "projects/{project_id}/tenants/{tenant_id}", for example,
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for updating a specified tenant.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTenantRequest {
     /// Required. The tenant resource to replace the current resource in the system.
     #[prost(message, optional, tag = "1")]
-    pub tenant: ::std::option::Option<Tenant>,
+    pub tenant: ::core::option::Option<Tenant>,
     /// Strongly recommended for the best service experience.
     ///
     /// If [update_mask][google.cloud.talent.v4beta1.UpdateTenantRequest.update_mask] is provided, only the specified fields in
@@ -5452,7 +5488,7 @@ pub struct UpdateTenantRequest {
     /// A field mask to specify the tenant fields to be updated. Only
     /// top level fields of [Tenant][google.cloud.talent.v4beta1.Tenant] are supported.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete a tenant.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5462,7 +5498,7 @@ pub struct DeleteTenantRequest {
     /// The format is "projects/{project_id}/tenants/{tenant_id}", for example,
     /// "projects/foo/tenants/bar".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// List tenants for which the client has ACL visibility.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5472,10 +5508,10 @@ pub struct ListTenantsRequest {
     /// The format is "projects/{project_id}", for example,
     /// "projects/foo".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The starting indicator from which to return results.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of tenants to be returned, at most 100.
     /// Default is 100 if a non-positive number is provided.
     #[prost(int32, tag = "3")]
@@ -5486,14 +5522,14 @@ pub struct ListTenantsRequest {
 pub struct ListTenantsResponse {
     /// Tenants for the current client.
     #[prost(message, repeated, tag = "1")]
-    pub tenants: ::std::vec::Vec<Tenant>,
+    pub tenants: ::prost::alloc::vec::Vec<Tenant>,
     /// A token to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Additional information for the API invocation, such as the request
     /// tracking id.
     #[prost(message, optional, tag = "3")]
-    pub metadata: ::std::option::Option<ResponseMetadata>,
+    pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 #[doc = r" Generated client implementations."]
 pub mod tenant_service_client {

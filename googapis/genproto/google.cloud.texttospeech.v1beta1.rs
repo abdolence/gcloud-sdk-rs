@@ -10,14 +10,14 @@ pub struct ListVoicesRequest {
     /// will also get supported "cmn-\*" voices; specifying "zh-hk" will also get
     /// supported "yue-\*" voices.
     #[prost(string, tag = "1")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// The message returned to the client by the `ListVoices` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVoicesResponse {
     /// The list of voices.
     #[prost(message, repeated, tag = "1")]
-    pub voices: ::std::vec::Vec<Voice>,
+    pub voices: ::prost::alloc::vec::Vec<Voice>,
 }
 /// Description of a voice supported by the TTS service.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26,10 +26,10 @@ pub struct Voice {
     /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tags (e.g.
     /// "en-US", "es-419", "cmn-tw").
     #[prost(string, repeated, tag = "1")]
-    pub language_codes: ::std::vec::Vec<std::string::String>,
+    pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The name of this voice.  Each distinct voice has a unique name.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The gender of this voice.
     #[prost(enumeration = "SsmlVoiceGender", tag = "3")]
     pub ssml_gender: i32,
@@ -42,21 +42,22 @@ pub struct Voice {
 pub struct SynthesizeSpeechRequest {
     /// Required. The Synthesizer requires either plain text or SSML as input.
     #[prost(message, optional, tag = "1")]
-    pub input: ::std::option::Option<SynthesisInput>,
+    pub input: ::core::option::Option<SynthesisInput>,
     /// Required. The desired voice of the synthesized audio.
     #[prost(message, optional, tag = "2")]
-    pub voice: ::std::option::Option<VoiceSelectionParams>,
+    pub voice: ::core::option::Option<VoiceSelectionParams>,
     /// Required. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "3")]
-    pub audio_config: ::std::option::Option<AudioConfig>,
+    pub audio_config: ::core::option::Option<AudioConfig>,
     /// Whether and what timepoints should be returned in the response.
     #[prost(
         enumeration = "synthesize_speech_request::TimepointType",
         repeated,
         tag = "4"
     )]
-    pub enable_time_pointing: ::std::vec::Vec<i32>,
+    pub enable_time_pointing: ::prost::alloc::vec::Vec<i32>,
 }
+/// Nested message and enum types in `SynthesizeSpeechRequest`.
 pub mod synthesize_speech_request {
     /// The type of timepoint information that is returned in the response.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -76,21 +77,22 @@ pub mod synthesize_speech_request {
 pub struct SynthesisInput {
     /// The input source, which is either plain text or SSML.
     #[prost(oneof = "synthesis_input::InputSource", tags = "1, 2")]
-    pub input_source: ::std::option::Option<synthesis_input::InputSource>,
+    pub input_source: ::core::option::Option<synthesis_input::InputSource>,
 }
+/// Nested message and enum types in `SynthesisInput`.
 pub mod synthesis_input {
     /// The input source, which is either plain text or SSML.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum InputSource {
         /// The raw text to be synthesized.
         #[prost(string, tag = "1")]
-        Text(std::string::String),
+        Text(::prost::alloc::string::String),
         /// The SSML document to be synthesized. The SSML document must be valid
         /// and well-formed. Otherwise the RPC will fail and return
         /// [google.rpc.Code.INVALID_ARGUMENT][]. For more information, see
         /// [SSML](https://cloud.google.com/text-to-speech/docs/ssml).
         #[prost(string, tag = "2")]
-        Ssml(std::string::String),
+        Ssml(::prost::alloc::string::String),
     }
 }
 /// Description of which voice to use for a synthesis request.
@@ -108,11 +110,11 @@ pub struct VoiceSelectionParams {
     /// available), or even a different language, e.g. using "nb" (Norwegian
     /// Bokmal) instead of "no" (Norwegian)".
     #[prost(string, tag = "1")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// The name of the voice. If not set, the service will choose a
     /// voice based on the other parameters such as language_code and gender.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The preferred gender of the voice. If not set, the service will
     /// choose a voice based on the other parameters such as language_code and
     /// name. Note that this is only a preference, not requirement; if a
@@ -164,7 +166,7 @@ pub struct AudioConfig {
     /// profiles](https://cloud.google.com/text-to-speech/docs/audio-profiles) for
     /// current supported profile ids.
     #[prost(string, repeated, tag = "6")]
-    pub effects_profile_id: ::std::vec::Vec<std::string::String>,
+    pub effects_profile_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The message returned to the client by the `SynthesizeSpeech` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -174,15 +176,15 @@ pub struct SynthesizeSpeechResponse {
     /// For LINEAR16 audio, we include the WAV header. Note: as
     /// with all bytes fields, protobuffers use a pure binary representation,
     /// whereas JSON representations use base64.
-    #[prost(bytes, tag = "1")]
-    pub audio_content: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub audio_content: ::prost::alloc::vec::Vec<u8>,
     /// A link between a position in the original request input and a corresponding
     /// time in the output audio. It's only supported via `<mark>` of SSML input.
     #[prost(message, repeated, tag = "2")]
-    pub timepoints: ::std::vec::Vec<Timepoint>,
+    pub timepoints: ::prost::alloc::vec::Vec<Timepoint>,
     /// The audio metadata of `audio_content`.
     #[prost(message, optional, tag = "4")]
-    pub audio_config: ::std::option::Option<AudioConfig>,
+    pub audio_config: ::core::option::Option<AudioConfig>,
 }
 /// This contains a mapping between a certain point in the input text and a
 /// corresponding time in the output audio.
@@ -190,7 +192,7 @@ pub struct SynthesizeSpeechResponse {
 pub struct Timepoint {
     /// Timepoint name as received from the client within `<mark>` tag.
     #[prost(string, tag = "4")]
-    pub mark_name: std::string::String,
+    pub mark_name: ::prost::alloc::string::String,
     /// Time offset in seconds from the start of the synthesized audio.
     #[prost(double, tag = "3")]
     pub time_seconds: f64,

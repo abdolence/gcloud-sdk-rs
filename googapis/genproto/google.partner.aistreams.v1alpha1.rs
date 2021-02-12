@@ -4,30 +4,31 @@ pub struct Cluster {
     /// The name of the cluster. The format of cluster is:
     /// projects/<projectid>/locations/<locationid>/clusters/<clusterid>.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The time at which this cluster was created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this cluster was updated.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels with user-defined metadata.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. The certificate for creating the secure connection between the client and
     /// the AI Streams data plane.
     #[prost(string, tag = "5")]
-    pub certificate: std::string::String,
+    pub certificate: ::prost::alloc::string::String,
     /// Output only. The endpoint of the data plane cluster.
     #[prost(string, tag = "6")]
-    pub service_endpoint: std::string::String,
+    pub service_endpoint: ::prost::alloc::string::String,
 }
 /// Request message for 'ListClusters'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The parent that owns the collection of Clusters.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum number of Clusters to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -36,47 +37,47 @@ pub struct ListClustersRequest {
     /// provided to `ListClusters` must match the call that provided the page
     /// token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Filter request.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Order by fields for the result.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message from 'ListClusters'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// List of clusters.
     #[prost(message, repeated, tag = "1")]
-    pub clusters: ::std::vec::Vec<Cluster>,
+    pub clusters: ::prost::alloc::vec::Vec<Cluster>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetCluster'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The name of the Cluster resource to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateCluster'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. The parent that owns the collection of Clusters.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The cluster identifier.
     #[prost(string, tag = "2")]
-    pub cluster_id: std::string::String,
+    pub cluster_id: ::prost::alloc::string::String,
     /// Required. The cluster resource to create.
     #[prost(message, optional, tag = "3")]
-    pub cluster: ::std::option::Option<Cluster>,
+    pub cluster: ::core::option::Option<Cluster>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -91,7 +92,7 @@ pub struct CreateClusterRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'UpdateCluster'.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -102,10 +103,10 @@ pub struct UpdateClusterRequest {
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag = "1")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The Cluster resource to update.
     #[prost(message, optional, tag = "2")]
-    pub cluster: ::std::option::Option<Cluster>,
+    pub cluster: ::core::option::Option<Cluster>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -120,14 +121,14 @@ pub struct UpdateClusterRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteCluster'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The name of cluster to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -142,7 +143,7 @@ pub struct DeleteClusterRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Stream resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -150,23 +151,24 @@ pub struct Stream {
     /// The name of the stream. The format for the full name is:
     /// projects/<projectid>/location/<locationid>/clusters/<clusterid>/streams/<streamid>.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The time at which this Stream was created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this Stream was updated.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels of the stream.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Request message for 'ListStreams'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. The parent that owns the collection of the Streams.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum number of Streams to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -175,47 +177,47 @@ pub struct ListStreamsRequest {
     /// provided to `ListClusters` must match the call that provided the page
     /// token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Filter request.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Order by fields for the result.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message from 'ListStreams'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsResponse {
     /// List of the streams.
     #[prost(message, repeated, tag = "1")]
-    pub streams: ::std::vec::Vec<Stream>,
+    pub streams: ::prost::alloc::vec::Vec<Stream>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetStream'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. The name of the stream.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateStream'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStreamRequest {
     /// Required. The parent that owns the collection of streams.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The stream identifier.
     #[prost(string, tag = "2")]
-    pub stream_id: std::string::String,
+    pub stream_id: ::prost::alloc::string::String,
     /// Required. The stream to create.
     #[prost(message, optional, tag = "3")]
-    pub stream: ::std::option::Option<Stream>,
+    pub stream: ::core::option::Option<Stream>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -230,7 +232,7 @@ pub struct CreateStreamRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'UpdateStream'.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -241,10 +243,10 @@ pub struct UpdateStreamRequest {
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag = "1")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The stream resource to update.
     #[prost(message, optional, tag = "2")]
-    pub stream: ::std::option::Option<Stream>,
+    pub stream: ::core::option::Option<Stream>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -259,14 +261,14 @@ pub struct UpdateStreamRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteStream'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. The name of the stream.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -281,26 +283,26 @@ pub struct DeleteStreamRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag = "3")]
-    pub target: std::string::String,
+    pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag = "4")]
-    pub verb: std::string::String,
+    pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag = "5")]
-    pub status_message: std::string::String,
+    pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
@@ -309,7 +311,7 @@ pub struct OperationMetadata {
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
-    pub api_version: std::string::String,
+    pub api_version: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ai_streams_client {

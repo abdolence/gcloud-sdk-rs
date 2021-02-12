@@ -11,25 +11,26 @@ pub struct Instance {
     /// should be provisioned in. Refer to [location_id][google.cloud.redis.v1.Instance.location_id] and
     /// [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id] fields for more details.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// An arbitrary and optional user-provided name for the instance.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Resource labels to represent user provided metadata
     #[prost(map = "string, string", tag = "3")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. The zone where the instance will be provisioned. If not provided,
     /// the service will choose a zone for the instance. For STANDARD_HA tier,
     /// instances will be created across two zones for protection against zonal
     /// failures. If [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id] is also provided, it must be
     /// different from [location_id][google.cloud.redis.v1.Instance.location_id].
     #[prost(string, tag = "4")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
     /// Optional. Only applicable to STANDARD_HA tier which protects the instance
     /// against zonal failures by provisioning it across two zones. If provided, it
     /// must be a different zone from the one provided in [location_id][google.cloud.redis.v1.Instance.location_id].
     #[prost(string, tag = "5")]
-    pub alternative_location_id: std::string::String,
+    pub alternative_location_id: ::prost::alloc::string::String,
     /// Optional. The version of Redis software.
     /// If not provided, latest supported version will be used. Currently, the
     /// supported values are:
@@ -38,17 +39,17 @@ pub struct Instance {
     ///  *   `REDIS_4_0` for Redis 4.0 compatibility (default)
     ///  *   `REDIS_5_0` for Redis 5.0 compatibility
     #[prost(string, tag = "7")]
-    pub redis_version: std::string::String,
+    pub redis_version: ::prost::alloc::string::String,
     /// Optional. The CIDR range of internal addresses that are reserved for this
     /// instance. If not provided, the service will choose an unused /29 block,
     /// for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be unique
     /// and non-overlapping with existing subnets in an authorized network.
     #[prost(string, tag = "9")]
-    pub reserved_ip_range: std::string::String,
+    pub reserved_ip_range: ::prost::alloc::string::String,
     /// Output only. Hostname or IP address of the exposed Redis endpoint used by
     /// clients to connect to the service.
     #[prost(string, tag = "10")]
-    pub host: std::string::String,
+    pub host: ::prost::alloc::string::String,
     /// Output only. The port number of the exposed Redis endpoint.
     #[prost(int32, tag = "11")]
     pub port: i32,
@@ -58,17 +59,17 @@ pub struct Instance {
     /// this can be either [location_id][google.cloud.redis.v1.Instance.location_id] or [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id] and can
     /// change after a failover event.
     #[prost(string, tag = "12")]
-    pub current_location_id: std::string::String,
+    pub current_location_id: ::prost::alloc::string::String,
     /// Output only. The time the instance was created.
     #[prost(message, optional, tag = "13")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of this instance.
     #[prost(enumeration = "instance::State", tag = "14")]
     pub state: i32,
     /// Output only. Additional information about the current status of this
     /// instance, if available.
     #[prost(string, tag = "15")]
-    pub status_message: std::string::String,
+    pub status_message: ::prost::alloc::string::String,
     /// Optional. Redis configuration parameters, according to
     /// http://redis.io/topics/config. Currently, the only supported parameters
     /// are:
@@ -90,7 +91,8 @@ pub struct Instance {
     ///  *   stream-node-max-bytes
     ///  *   stream-node-max-entries
     #[prost(map = "string, string", tag = "16")]
-    pub redis_configs: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub redis_configs:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. The service tier of the instance.
     #[prost(enumeration = "instance::Tier", tag = "17")]
     pub tier: i32,
@@ -102,19 +104,20 @@ pub struct Instance {
     /// instance is connected. If left unspecified, the `default` network
     /// will be used.
     #[prost(string, tag = "20")]
-    pub authorized_network: std::string::String,
+    pub authorized_network: ::prost::alloc::string::String,
     /// Output only. Cloud IAM identity used by import / export operations to
     /// transfer data to/from Cloud Storage. Format is
     /// "serviceAccount:<service_account_email>". The value may change over time
     /// for a given instance so should be checked before each import/export
     /// operation.
     #[prost(string, tag = "21")]
-    pub persistence_iam_identity: std::string::String,
+    pub persistence_iam_identity: ::prost::alloc::string::String,
     /// Optional. The network connect mode of the Redis instance.
     /// If not provided, the connect mode defaults to DIRECT_PEERING.
     #[prost(enumeration = "instance::ConnectMode", tag = "22")]
     pub connect_mode: i32,
 }
+/// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Represents the different states of a Redis instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -173,7 +176,7 @@ pub struct ListInstancesRequest {
     ///     `projects/{project_id}/locations/{location_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     ///
     /// If not specified, a default value of 1000 will be used by the service.
@@ -186,7 +189,7 @@ pub struct ListInstancesRequest {
     /// The `next_page_token` value returned from a previous
     /// [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances] request, if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -202,14 +205,14 @@ pub struct ListInstancesResponse {
     /// the `status` field set to ERROR and `status_message` field set to "location
     /// not available for ListInstances".
     #[prost(message, repeated, tag = "1")]
-    pub instances: ::std::vec::Vec<Instance>,
+    pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -218,7 +221,7 @@ pub struct GetInstanceRequest {
     ///     `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -227,7 +230,7 @@ pub struct CreateInstanceRequest {
     ///     `projects/{project_id}/locations/{location_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The logical name of the Redis instance in the customer project
     /// with the following restrictions:
     ///
@@ -237,10 +240,10 @@ pub struct CreateInstanceRequest {
     /// * Must end with a number or a letter.
     /// * Must be unique within the customer project / location
     #[prost(string, tag = "2")]
-    pub instance_id: std::string::String,
+    pub instance_id: ::prost::alloc::string::String,
     /// Required. A Redis [Instance] resource
     #[prost(message, optional, tag = "3")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
 }
 /// Request for [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -254,11 +257,11 @@ pub struct UpdateInstanceRequest {
     ///  *   `memorySizeGb`
     ///  *   `redisConfig`
     #[prost(message, optional, tag = "1")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. Update description.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "2")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
 }
 /// Request for [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -267,10 +270,10 @@ pub struct UpgradeInstanceRequest {
     ///     `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Specifies the target version of Redis software to upgrade to.
     #[prost(string, tag = "2")]
-    pub redis_version: std::string::String,
+    pub redis_version: ::prost::alloc::string::String,
 }
 /// Request for [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -279,22 +282,23 @@ pub struct DeleteInstanceRequest {
     ///     `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The Cloud Storage location for the input content
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. Source data URI. (e.g. 'gs://my_bucket/my_object').
     #[prost(string, tag = "1")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
 }
 /// The input content
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Required. Specify source location of input data
     #[prost(oneof = "input_config::Source", tags = "1")]
-    pub source: ::std::option::Option<input_config::Source>,
+    pub source: ::core::option::Option<input_config::Source>,
 }
+/// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// Required. Specify source location of input data
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -311,10 +315,10 @@ pub struct ImportInstanceRequest {
     ///     `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Specify data to be imported.
     #[prost(message, optional, tag = "3")]
-    pub input_config: ::std::option::Option<InputConfig>,
+    pub input_config: ::core::option::Option<InputConfig>,
 }
 /// The Cloud Storage location for the output content
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -322,15 +326,16 @@ pub struct GcsDestination {
     /// Required. Data destination URI (e.g.
     /// 'gs://my_bucket/my_object'). Existing files will be overwritten.
     #[prost(string, tag = "1")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
 }
 /// The output content
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Required. Specify destination location of output data
     #[prost(oneof = "output_config::Destination", tags = "1")]
-    pub destination: ::std::option::Option<output_config::Destination>,
+    pub destination: ::core::option::Option<output_config::Destination>,
 }
+/// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Required. Specify destination location of output data
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -347,10 +352,10 @@ pub struct ExportInstanceRequest {
     ///     `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Specify data to be exported.
     #[prost(message, optional, tag = "3")]
-    pub output_config: ::std::option::Option<OutputConfig>,
+    pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Request for [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -359,7 +364,7 @@ pub struct FailoverInstanceRequest {
     ///     `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. Available data protection modes that the user can choose. If it's
     /// unspecified, data protection mode will be LIMITED_DATA_LOSS by default.
     #[prost(
@@ -368,6 +373,7 @@ pub struct FailoverInstanceRequest {
     )]
     pub data_protection_mode: i32,
 }
+/// Nested message and enum types in `FailoverInstanceRequest`.
 pub mod failover_instance_request {
     /// Specifies different modes of operation in relation to the data retention.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -390,25 +396,25 @@ pub mod failover_instance_request {
 pub struct OperationMetadata {
     /// Creation timestamp.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End timestamp.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Operation target.
     #[prost(string, tag = "3")]
-    pub target: std::string::String,
+    pub target: ::prost::alloc::string::String,
     /// Operation verb.
     #[prost(string, tag = "4")]
-    pub verb: std::string::String,
+    pub verb: ::prost::alloc::string::String,
     /// Operation status details.
     #[prost(string, tag = "5")]
-    pub status_detail: std::string::String,
+    pub status_detail: ::prost::alloc::string::String,
     /// Specifies if cancellation was requested for the operation.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
     /// API version.
     #[prost(string, tag = "7")]
-    pub api_version: std::string::String,
+    pub api_version: ::prost::alloc::string::String,
 }
 /// This location metadata represents additional configuration options for a
 /// given location where a Redis instance may be created. All fields are output
@@ -421,7 +427,7 @@ pub struct LocationMetadata {
     /// specified in `location_id` or `alternative_location_id` fields when
     /// creating a Redis instance.
     #[prost(map = "string, message", tag = "1")]
-    pub available_zones: ::std::collections::HashMap<std::string::String, ZoneMetadata>,
+    pub available_zones: ::std::collections::HashMap<::prost::alloc::string::String, ZoneMetadata>,
 }
 /// Defines specific information for a particular zone. Currently empty and
 /// reserved for future use only.

@@ -16,7 +16,7 @@ pub struct SpeechContext {
     /// documentation](https://cloud.google.com/speech-to-text/quotas) for usage
     /// limits.
     #[prost(string, repeated, tag = "1")]
-    pub phrases: ::std::vec::Vec<std::string::String>,
+    pub phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Boost for this context compared to other contexts:
     ///
     /// * If the boost is positive, Dialogflow will increase the probability that
@@ -34,17 +34,17 @@ pub struct SpeechContext {
 pub struct SpeechWordInfo {
     /// The word this info is for.
     #[prost(string, tag = "3")]
-    pub word: std::string::String,
+    pub word: ::prost::alloc::string::String,
     /// Time offset relative to the beginning of the audio that corresponds to the
     /// start of the spoken word. This is an experimental feature and the accuracy
     /// of the time offset can vary.
     #[prost(message, optional, tag = "1")]
-    pub start_offset: ::std::option::Option<::prost_types::Duration>,
+    pub start_offset: ::core::option::Option<::prost_types::Duration>,
     /// Time offset relative to the beginning of the audio that corresponds to the
     /// end of the spoken word. This is an experimental feature and the accuracy of
     /// the time offset can vary.
     #[prost(message, optional, tag = "2")]
-    pub end_offset: ::std::option::Option<::prost_types::Duration>,
+    pub end_offset: ::core::option::Option<::prost_types::Duration>,
     /// The Speech confidence between 0.0 and 1.0 for this word. A higher number
     /// indicates an estimated greater likelihood that the recognized word is
     /// correct. The default of 0.0 is a sentinel value indicating that confidence
@@ -74,7 +74,7 @@ pub struct InputAudioConfig {
     /// for a list of the currently supported language codes. Note that queries in
     /// the same session do not necessarily need to specify the same language.
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// If `true`, Dialogflow returns [SpeechWordInfo][google.cloud.dialogflow.v2beta1.SpeechWordInfo] in
     /// [StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult] with information about the recognized speech
     /// words, e.g. start and end time offsets. If false or unspecified, Speech
@@ -91,15 +91,16 @@ pub struct InputAudioConfig {
     /// This field is deprecated. Please use [speech_contexts]() instead. If you
     /// specify both [phrase_hints]() and [speech_contexts](), Dialogflow will
     /// treat the [phrase_hints]() as a single additional [SpeechContext]().
+    #[deprecated]
     #[prost(string, repeated, tag = "4")]
-    pub phrase_hints: ::std::vec::Vec<std::string::String>,
+    pub phrase_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Context information to assist speech recognition.
     ///
     /// See [the Cloud Speech
     /// documentation](https://cloud.google.com/speech-to-text/docs/basics#phrase-hints)
     /// for more details.
     #[prost(message, repeated, tag = "11")]
-    pub speech_contexts: ::std::vec::Vec<SpeechContext>,
+    pub speech_contexts: ::prost::alloc::vec::Vec<SpeechContext>,
     /// Which Speech model to select for the given request. Select the
     /// model best suited to your domain to get best results. If a model is not
     /// explicitly specified, then we auto-select a model based on the parameters
@@ -112,7 +113,7 @@ pub struct InputAudioConfig {
     /// documentation](https://cloud.google.com/speech-to-text/docs/basics#select-model)
     /// for more details.
     #[prost(string, tag = "7")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// Which variant of the [Speech model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model] to use.
     #[prost(enumeration = "SpeechModelVariant", tag = "10")]
     pub model_variant: i32,
@@ -135,8 +136,11 @@ pub struct VoiceSelectionParams {
     /// Optional. The name of the voice. If not set, the service will choose a
     /// voice based on the other parameters such as language_code and
     /// [ssml_gender][google.cloud.dialogflow.v2beta1.VoiceSelectionParams.ssml_gender].
+    ///
+    /// For the list of available voices, please refer to [Supported voices and
+    /// languages](https://cloud.google.com/text-to-speech/docs/voices).
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The preferred gender of the voice. If not set, the service will
     /// choose a voice based on the other parameters such as language_code and
     /// [name][google.cloud.dialogflow.v2beta1.VoiceSelectionParams.name]. Note that this is only a preference, not requirement. If a
@@ -173,10 +177,10 @@ pub struct SynthesizeSpeechConfig {
     /// applied on (post synthesized) text to speech. Effects are applied on top of
     /// each other in the order they are given.
     #[prost(string, repeated, tag = "5")]
-    pub effects_profile_id: ::std::vec::Vec<std::string::String>,
+    pub effects_profile_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The desired voice of the synthesized audio.
     #[prost(message, optional, tag = "4")]
-    pub voice: ::std::option::Option<VoiceSelectionParams>,
+    pub voice: ::core::option::Option<VoiceSelectionParams>,
 }
 /// Instructs the speech synthesizer how to generate the output audio content.
 /// If this audio config is supplied in a request, it overrides all existing
@@ -195,14 +199,14 @@ pub struct OutputAudioConfig {
     pub sample_rate_hertz: i32,
     /// Configuration of how speech should be synthesized.
     #[prost(message, optional, tag = "3")]
-    pub synthesize_speech_config: ::std::option::Option<SynthesizeSpeechConfig>,
+    pub synthesize_speech_config: ::core::option::Option<SynthesizeSpeechConfig>,
 }
 /// A wrapper of repeated TelephonyDtmf digits.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TelephonyDtmfEvents {
     /// A sequence of TelephonyDtmf digits.
     #[prost(enumeration = "TelephonyDtmf", repeated, tag = "1")]
-    pub dtmf_events: ::std::vec::Vec<i32>,
+    pub dtmf_events: ::prost::alloc::vec::Vec<i32>,
 }
 /// Audio encoding of the audio content sent in the conversational query request.
 /// Refer to the
@@ -386,18 +390,18 @@ pub struct Environment {
     /// - `projects/<Project Number / ID>/locations/<Location
     ///   ID>/agent/environments/<Environment ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The developer-provided description for this environment.
     /// The maximum length is 500 characters. If exceeded, the request is rejected.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Optional. The agent version loaded into this environment.
     /// Supported formats:
     /// - `projects/<Project ID>/agent/versions/<Version ID>`
     /// - `projects/<Project ID>/locations/<Location ID>/agent/versions/<Version
     ///   ID>`
     #[prost(string, tag = "3")]
-    pub agent_version: std::string::String,
+    pub agent_version: ::prost::alloc::string::String,
     /// Output only. The state of this environment. This field is read-only, i.e., it cannot be
     /// set by create and update methods.
     #[prost(enumeration = "environment::State", tag = "4")]
@@ -405,8 +409,9 @@ pub struct Environment {
     /// Output only. The last update time of this environment. This field is read-only, i.e., it
     /// cannot be set by create and update methods.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `Environment`.
 pub mod environment {
     /// Represents an environment state. When an environment is pointed to a new
     /// agent version, the environment is temporarily set to the `LOADING` state.
@@ -434,14 +439,14 @@ pub struct ListEnvironmentsRequest {
     /// - `projects/<Project Number / ID>/agent`
     /// - `projects/<Project Number / ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By default 100 and
     /// at most 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for [Environments.ListEnvironments][google.cloud.dialogflow.v2beta1.Environments.ListEnvironments].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -449,11 +454,11 @@ pub struct ListEnvironmentsResponse {
     /// The list of agent environments. There will be a maximum number of items
     /// returned based on the page_size field in the request.
     #[prost(message, repeated, tag = "1")]
-    pub environments: ::std::vec::Vec<Environment>,
+    pub environments: ::prost::alloc::vec::Vec<Environment>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod environments_client {
@@ -530,11 +535,12 @@ pub struct ValidationError {
     /// - "projects/<Project ID>/agent/entities/<Entity ID>", if the error is
     /// associated with certain entities.
     #[prost(string, repeated, tag = "3")]
-    pub entries: ::std::vec::Vec<std::string::String>,
+    pub entries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The detailed error messsage.
     #[prost(string, tag = "4")]
-    pub error_message: std::string::String,
+    pub error_message: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ValidationError`.
 pub mod validation_error {
     /// Represents a level of severity.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -542,7 +548,7 @@ pub mod validation_error {
     pub enum Severity {
         /// Not specified. This value should never be used.
         Unspecified = 0,
-        /// The agent doesn't follow Dialogflow best practicies.
+        /// The agent doesn't follow Dialogflow best practices.
         Info = 1,
         /// The agent may not behave as expected.
         Warning = 2,
@@ -557,7 +563,7 @@ pub mod validation_error {
 pub struct ValidationResult {
     /// Contains all validation errors.
     #[prost(message, repeated, tag = "1")]
-    pub validation_errors: ::std::vec::Vec<ValidationError>,
+    pub validation_errors: ::prost::alloc::vec::Vec<ValidationError>,
 }
 /// A Dialogflow agent is a virtual agent that handles conversations with your
 /// end-users. It is a natural language understanding module that understands the
@@ -574,41 +580,42 @@ pub struct Agent {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The name of this agent.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. The default language of the agent as a language tag. See
     /// [Language
     /// Support](https://cloud.google.com/dialogflow/docs/reference/language)
     /// for a list of the currently supported language codes. This field cannot be
     /// set by the `Update` method.
     #[prost(string, tag = "3")]
-    pub default_language_code: std::string::String,
+    pub default_language_code: ::prost::alloc::string::String,
     /// Optional. The list of all languages supported by this agent (except for the
     /// `default_language_code`).
     #[prost(string, repeated, tag = "4")]
-    pub supported_language_codes: ::std::vec::Vec<std::string::String>,
+    pub supported_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The time zone of this agent from the
     /// [time zone database](https://www.iana.org/time-zones), e.g.,
     /// America/New_York, Europe/Paris.
     #[prost(string, tag = "5")]
-    pub time_zone: std::string::String,
+    pub time_zone: ::prost::alloc::string::String,
     /// Optional. The description of this agent.
     /// The maximum length is 500 characters. If exceeded, the request is rejected.
     #[prost(string, tag = "6")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Optional. The URI of the agent's avatar.
     /// Avatars are used throughout the Dialogflow console and in the self-hosted
     /// [Web
     /// Demo](https://cloud.google.com/dialogflow/docs/integrations/web-demo)
     /// integration.
     #[prost(string, tag = "7")]
-    pub avatar_uri: std::string::String,
+    pub avatar_uri: ::prost::alloc::string::String,
     /// Optional. Determines whether this agent should log conversation queries.
     #[prost(bool, tag = "8")]
     pub enable_logging: bool,
     /// Optional. Determines how intents are detected from user queries.
+    #[deprecated]
     #[prost(enumeration = "agent::MatchMode", tag = "9")]
     pub match_mode: i32,
     /// Optional. To filter out false positive results and still get variety in
@@ -630,6 +637,7 @@ pub struct Agent {
     #[prost(enumeration = "agent::Tier", tag = "15")]
     pub tier: i32,
 }
+/// Nested message and enum types in `Agent`.
 pub mod agent {
     /// Match mode determines how intents are detected from user queries.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -678,17 +686,17 @@ pub struct GetAgentRequest {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// The request message for [Agents.SetAgent][google.cloud.dialogflow.v2beta1.Agents.SetAgent].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAgentRequest {
     /// Required. The agent to update.
     #[prost(message, optional, tag = "1")]
-    pub agent: ::std::option::Option<Agent>,
+    pub agent: ::core::option::Option<Agent>,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [Agents.DeleteAgent][google.cloud.dialogflow.v2beta1.Agents.DeleteAgent].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -697,7 +705,7 @@ pub struct DeleteAgentRequest {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// Contains basic configuration for a sub-agent.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -706,12 +714,12 @@ pub struct SubAgent {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub project: std::string::String,
+    pub project: ::prost::alloc::string::String,
     /// Optional. The unique identifier (`environment name` in dialogflow console)
     /// of this sub-agent environment. Assumes draft environment if `environment`
     /// is not set.
     #[prost(string, tag = "2")]
-    pub environment: std::string::String,
+    pub environment: ::prost::alloc::string::String,
 }
 /// The request message for [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -720,14 +728,14 @@ pub struct SearchAgentsRequest {
     /// Format: `projects/<Project ID or '-'>` or
     ///         `projects/<Project ID or '-'>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By
     /// default 100 and at most 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -735,11 +743,11 @@ pub struct SearchAgentsResponse {
     /// The list of agents. There will be a maximum number of items returned based
     /// on the page_size field in the request.
     #[prost(message, repeated, tag = "1")]
-    pub agents: ::std::vec::Vec<Agent>,
+    pub agents: ::prost::alloc::vec::Vec<Agent>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [Agents.TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -748,7 +756,7 @@ pub struct TrainAgentRequest {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// The request message for [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -757,22 +765,23 @@ pub struct ExportAgentRequest {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The
     /// [Google Cloud Storage](https://cloud.google.com/storage/docs/)
     /// URI to export the agent to.
     /// The format of this URI must be `gs://<bucket-name>/<object-name>`.
     /// If left unspecified, the serialized agent is returned inline.
     #[prost(string, tag = "2")]
-    pub agent_uri: std::string::String,
+    pub agent_uri: ::prost::alloc::string::String,
 }
 /// The response message for [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAgentResponse {
     /// The exported agent.
     #[prost(oneof = "export_agent_response::Agent", tags = "1, 2")]
-    pub agent: ::std::option::Option<export_agent_response::Agent>,
+    pub agent: ::core::option::Option<export_agent_response::Agent>,
 }
+/// Nested message and enum types in `ExportAgentResponse`.
 pub mod export_agent_response {
     /// The exported agent.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -780,10 +789,10 @@ pub mod export_agent_response {
         /// The URI to a file containing the exported agent. This field is populated
         /// only if `agent_uri` is specified in `ExportAgentRequest`.
         #[prost(string, tag = "1")]
-        AgentUri(std::string::String),
+        AgentUri(::prost::alloc::string::String),
         /// Zip compressed raw byte content for agent.
         #[prost(bytes, tag = "2")]
-        AgentContent(std::vec::Vec<u8>),
+        AgentContent(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// The request message for [Agents.ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent].
@@ -793,11 +802,12 @@ pub struct ImportAgentRequest {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The agent to import.
     #[prost(oneof = "import_agent_request::Agent", tags = "2, 3")]
-    pub agent: ::std::option::Option<import_agent_request::Agent>,
+    pub agent: ::core::option::Option<import_agent_request::Agent>,
 }
+/// Nested message and enum types in `ImportAgentRequest`.
 pub mod import_agent_request {
     /// Required. The agent to import.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -805,10 +815,10 @@ pub mod import_agent_request {
         /// The URI to a Google Cloud Storage file containing the agent to import.
         /// Note: The URI must start with "gs://".
         #[prost(string, tag = "2")]
-        AgentUri(std::string::String),
+        AgentUri(::prost::alloc::string::String),
         /// Zip compressed raw byte content for agent.
         #[prost(bytes, tag = "3")]
-        AgentContent(std::vec::Vec<u8>),
+        AgentContent(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// The request message for [Agents.RestoreAgent][google.cloud.dialogflow.v2beta1.Agents.RestoreAgent].
@@ -818,11 +828,12 @@ pub struct RestoreAgentRequest {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The agent to restore.
     #[prost(oneof = "restore_agent_request::Agent", tags = "2, 3")]
-    pub agent: ::std::option::Option<restore_agent_request::Agent>,
+    pub agent: ::core::option::Option<restore_agent_request::Agent>,
 }
+/// Nested message and enum types in `RestoreAgentRequest`.
 pub mod restore_agent_request {
     /// Required. The agent to restore.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -830,10 +841,10 @@ pub mod restore_agent_request {
         /// The URI to a Google Cloud Storage file containing the agent to restore.
         /// Note: The URI must start with "gs://".
         #[prost(string, tag = "2")]
-        AgentUri(std::string::String),
+        AgentUri(::prost::alloc::string::String),
         /// Zip compressed raw byte content for agent.
         #[prost(bytes, tag = "3")]
-        AgentContent(std::vec::Vec<u8>),
+        AgentContent(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// The request message for [Agents.GetValidationResult][google.cloud.dialogflow.v2beta1.Agents.GetValidationResult].
@@ -843,14 +854,14 @@ pub struct GetValidationResultRequest {
     /// Format: `projects/<Project ID>` or
     ///         `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The language for which you want a validation result. If not
     /// specified, the agent's default language is used. [Many
     /// languages](https://cloud.google.com/dialogflow/docs/reference/language)
     /// are supported. Note: languages must be enabled in the agent before they can
     /// be used.
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod agents_client {
@@ -1132,7 +1143,7 @@ pub struct Context {
     /// * `*_id_dialog_context`
     /// * `*_dialog_params_size`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The number of conversational query requests after which the
     /// context expires. The default is `0`. If set to `0`, the context expires
     /// immediately. Contexts expire automatically after 20 minutes if there
@@ -1149,13 +1160,14 @@ pub struct Context {
     /// -   MapKey value: parameter name
     /// -   MapValue type:
     ///     -   If parameter's entity type is a composite entity: map
-    ///     -   Else: string or number, depending on parameter value type
+    ///     -   Else: depending on parameter value type, could be one of string,
+    ///         number, boolean, null, list or map
     /// -   MapValue value:
     ///     -   If parameter's entity type is a composite entity:
     ///         map from composite entity property names to property values
     ///     -   Else: parameter value
     #[prost(message, optional, tag = "3")]
-    pub parameters: ::std::option::Option<::prost_types::Struct>,
+    pub parameters: ::core::option::Option<::prost_types::Struct>,
 }
 /// The request message for [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1174,14 +1186,14 @@ pub struct ListContextsRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By
     /// default 100 and at most 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for [Contexts.ListContexts][google.cloud.dialogflow.v2beta1.Contexts.ListContexts].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1189,11 +1201,11 @@ pub struct ListContextsResponse {
     /// The list of contexts. There will be a maximum number of items
     /// returned based on the page_size field in the request.
     #[prost(message, repeated, tag = "1")]
-    pub contexts: ::std::vec::Vec<Context>,
+    pub contexts: ::prost::alloc::vec::Vec<Context>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [Contexts.GetContext][google.cloud.dialogflow.v2beta1.Contexts.GetContext].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1213,7 +1225,7 @@ pub struct GetContextRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [Contexts.CreateContext][google.cloud.dialogflow.v2beta1.Contexts.CreateContext].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1232,20 +1244,20 @@ pub struct CreateContextRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The context to create.
     #[prost(message, optional, tag = "2")]
-    pub context: ::std::option::Option<Context>,
+    pub context: ::core::option::Option<Context>,
 }
 /// The request message for [Contexts.UpdateContext][google.cloud.dialogflow.v2beta1.Contexts.UpdateContext].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateContextRequest {
     /// Required. The context to update.
     #[prost(message, optional, tag = "1")]
-    pub context: ::std::option::Option<Context>,
+    pub context: ::core::option::Option<Context>,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [Contexts.DeleteContext][google.cloud.dialogflow.v2beta1.Contexts.DeleteContext].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1265,7 +1277,7 @@ pub struct DeleteContextRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2beta1.Contexts.DeleteAllContexts].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1284,7 +1296,7 @@ pub struct DeleteAllContextsRequest {
     /// `Environment ID` is not specified we assume default 'draft' environment. If
     /// `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod contexts_client {
@@ -1435,7 +1447,7 @@ pub struct GcsSource {
     ///   gs://bucket/object-prefix-or-name
     /// Whether a prefix or name is used depends on the use case.
     #[prost(string, tag = "1")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
 }
 /// A knowledge document to be used by a [KnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBase].
 ///
@@ -1448,17 +1460,17 @@ pub struct GcsSource {
 pub struct Document {
     /// Optional. The document resource name.
     /// The name must be empty when creating a document.
-    /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base
-    /// ID>/documents/<Document ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The display name of the document. The name must be 1024 bytes or
     /// less; otherwise, the creation request fails.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. The MIME type of this document.
     #[prost(string, tag = "3")]
-    pub mime_type: std::string::String,
+    pub mime_type: ::prost::alloc::string::String,
     /// Required. The knowledge type of document content.
     #[prost(
         enumeration = "document::KnowledgeType",
@@ -1466,7 +1478,7 @@ pub struct Document {
         packed = "false",
         tag = "4"
     )]
-    pub knowledge_types: ::std::vec::Vec<i32>,
+    pub knowledge_types: ::prost::alloc::vec::Vec<i32>,
     /// Optional. If true, we try to automatically reload the document every day
     /// (at a time picked by the system). If false or unspecified, we don't try
     /// to automatically reload the document.
@@ -1489,11 +1501,12 @@ pub struct Document {
     /// This reload may have been triggered automatically or manually
     /// and may not have succeeded.
     #[prost(message, optional, tag = "12")]
-    pub latest_reload_status: ::std::option::Option<document::ReloadStatus>,
+    pub latest_reload_status: ::core::option::Option<document::ReloadStatus>,
     /// The source of this document.
     #[prost(oneof = "document::Source", tags = "5, 6, 9")]
-    pub source: ::std::option::Option<document::Source>,
+    pub source: ::core::option::Option<document::Source>,
 }
+/// Nested message and enum types in `Document`.
 pub mod document {
     /// The status of a reload attempt.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1502,10 +1515,10 @@ pub mod document {
         /// This reload may have been triggered automatically or manually and may
         /// not have succeeded.
         #[prost(message, optional, tag = "1")]
-        pub time: ::std::option::Option<::prost_types::Timestamp>,
+        pub time: ::core::option::Option<::prost_types::Timestamp>,
         /// Output only. The status of a reload attempt or the initial load.
         #[prost(message, optional, tag = "2")]
-        pub status: ::std::option::Option<super::super::super::super::rpc::Status>,
+        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
     /// The knowledge type of document content.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1538,42 +1551,43 @@ pub mod document {
         /// Google Cloud Storage (i.e. the URL in your browser) are not supported.
         /// Instead use the `gs://` format URI described above.
         #[prost(string, tag = "5")]
-        ContentUri(std::string::String),
+        ContentUri(::prost::alloc::string::String),
         /// The raw content of the document. This field is only permitted for
         /// EXTRACTIVE_QA and FAQ knowledge types.
         /// Note: This field is in the process of being deprecated, please use
         /// raw_content instead.
         #[prost(string, tag = "6")]
-        Content(std::string::String),
+        Content(::prost::alloc::string::String),
         /// The raw content of the document. This field is only permitted for
         /// EXTRACTIVE_QA and FAQ knowledge types.
         #[prost(bytes, tag = "9")]
-        RawContent(std::vec::Vec<u8>),
+        RawContent(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Request message for [Documents.GetDocument][google.cloud.dialogflow.v2beta1.Documents.GetDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDocumentRequest {
     /// Required. The name of the document to retrieve.
-    /// Format `projects/<Project ID>/knowledgeBases/<Knowledge Base
-    /// ID>/documents/<Document ID>`.
+    /// Format `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsRequest {
     /// Required. The knowledge base to list all documents for.
-    /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By
     /// default 10 and at most 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The filter expression used to filter documents returned by the list method.
     /// The expression has the following syntax:
     ///
@@ -1596,50 +1610,55 @@ pub struct ListDocumentsRequest {
     /// For more information about filtering, see
     /// [API Filtering](https://aip.dev/160).
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsResponse {
     /// The list of documents.
     #[prost(message, repeated, tag = "1")]
-    pub documents: ::std::vec::Vec<Document>,
+    pub documents: ::prost::alloc::vec::Vec<Document>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [Documents.CreateDocument][google.cloud.dialogflow.v2beta1.Documents.CreateDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
     /// Required. The knowledge base to create a document for.
-    /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The document to create.
     #[prost(message, optional, tag = "2")]
-    pub document: ::std::option::Option<Document>,
+    pub document: ::core::option::Option<Document>,
+    /// Whether to import custom metadata from Google Cloud Storage.
+    /// Only valid when the document source is Google Cloud Storage URI.
+    #[prost(bool, tag = "3")]
+    pub import_gcs_custom_metadata: bool,
 }
 /// Request message for [Documents.DeleteDocument][google.cloud.dialogflow.v2beta1.Documents.DeleteDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDocumentRequest {
     /// Required. The name of the document to delete.
-    /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base
-    /// ID>/documents/<Document ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [Documents.UpdateDocument][google.cloud.dialogflow.v2beta1.Documents.UpdateDocument].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDocumentRequest {
     /// Required. The document to update.
     #[prost(message, optional, tag = "1")]
-    pub document: ::std::option::Option<Document>,
+    pub document: ::core::option::Option<Document>,
     /// Optional. Not specified means `update all`.
     /// Currently, only `display_name` can be updated, an InvalidArgument will be
     /// returned for attempting to update other fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Metadata in google::longrunning::Operation for Knowledge operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1648,6 +1667,7 @@ pub struct KnowledgeOperationMetadata {
     #[prost(enumeration = "knowledge_operation_metadata::State", tag = "1")]
     pub state: i32,
 }
+/// Nested message and enum types in `KnowledgeOperationMetadata`.
 pub mod knowledge_operation_metadata {
     /// States of the operation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1667,16 +1687,21 @@ pub mod knowledge_operation_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReloadDocumentRequest {
     /// Required. The name of the document to reload.
-    /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base
-    /// ID>/documents/<Document ID>`
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
+    /// Whether to import custom metadata from Google Cloud Storage.
+    /// Only valid when the document source is Google Cloud Storage URI.
+    #[prost(bool, tag = "4")]
+    pub import_gcs_custom_metadata: bool,
     /// The source for document reloading.
     /// Optional. If provided, the service will load the contents from the source
     /// and update document in the knowledge base.
     #[prost(oneof = "reload_document_request::Source", tags = "3")]
-    pub source: ::std::option::Option<reload_document_request::Source>,
+    pub source: ::core::option::Option<reload_document_request::Source>,
 }
+/// Nested message and enum types in `ReloadDocumentRequest`.
 pub mod reload_document_request {
     /// The source for document reloading.
     /// Optional. If provided, the service will load the contents from the source
@@ -1886,10 +1911,10 @@ pub struct EntityType {
     /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
     ///   Type ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The name of the entity type.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. Indicates the kind of entity type.
     #[prost(enumeration = "entity_type::Kind", tag = "3")]
     pub kind: i32,
@@ -1899,11 +1924,12 @@ pub struct EntityType {
     pub auto_expansion_mode: i32,
     /// Optional. The collection of entity entries associated with the entity type.
     #[prost(message, repeated, tag = "6")]
-    pub entities: ::std::vec::Vec<entity_type::Entity>,
+    pub entities: ::prost::alloc::vec::Vec<entity_type::Entity>,
     /// Optional. Enables fuzzy entity extraction during classification.
     #[prost(bool, tag = "7")]
     pub enable_fuzzy_extraction: bool,
 }
+/// Nested message and enum types in `EntityType`.
 pub mod entity_type {
     /// An **entity entry** for an associated entity type.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1921,7 +1947,7 @@ pub mod entity_type {
         /// *   A string that can contain references to other entity types (with or
         ///     without aliases).
         #[prost(string, tag = "1")]
-        pub value: std::string::String,
+        pub value: ::prost::alloc::string::String,
         /// Required. A collection of value synonyms. For example, if the entity type
         /// is *vegetable*, and `value` is *scallions*, a synonym could be *green
         /// onions*.
@@ -1930,7 +1956,7 @@ pub mod entity_type {
         ///
         /// *   This collection must contain exactly one synonym equal to `value`.
         #[prost(string, repeated, tag = "2")]
-        pub synonyms: ::std::vec::Vec<std::string::String>,
+        pub synonyms: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Represents kinds of entities.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1970,21 +1996,21 @@ pub struct ListEntityTypesRequest {
     /// - `projects/<Project ID>/agent`
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By
     /// default 100 and at most 1000.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.ListEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1992,11 +2018,11 @@ pub struct ListEntityTypesResponse {
     /// The list of agent entity types. There will be a maximum number of items
     /// returned based on the page_size field in the request.
     #[prost(message, repeated, tag = "1")]
-    pub entity_types: ::std::vec::Vec<EntityType>,
+    pub entity_types: ::prost::alloc::vec::Vec<EntityType>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [EntityTypes.GetEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.GetEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2007,14 +2033,14 @@ pub struct GetEntityTypeRequest {
     /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
     ///   Type ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// The request message for [EntityTypes.CreateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.CreateEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2024,34 +2050,34 @@ pub struct CreateEntityTypeRequest {
     /// - `projects/<Project ID>/agent`
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The entity type to create.
     #[prost(message, optional, tag = "2")]
-    pub entity_type: ::std::option::Option<EntityType>,
+    pub entity_type: ::core::option::Option<EntityType>,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// The request message for [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.UpdateEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntityTypeRequest {
     /// Required. The entity type to update.
     #[prost(message, optional, tag = "1")]
-    pub entity_type: ::std::option::Option<EntityType>,
+    pub entity_type: ::core::option::Option<EntityType>,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [EntityTypes.DeleteEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.DeleteEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2062,7 +2088,7 @@ pub struct DeleteEntityTypeRequest {
     /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
     ///   Type ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2072,17 +2098,17 @@ pub struct BatchUpdateEntityTypesRequest {
     /// - `projects/<Project ID>/agent`
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "4")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "5")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The source of the entity type batch.
     ///
     /// For each entity type in the batch:
@@ -2094,8 +2120,9 @@ pub struct BatchUpdateEntityTypesRequest {
         tags = "2, 3"
     )]
     pub entity_type_batch:
-        ::std::option::Option<batch_update_entity_types_request::EntityTypeBatch>,
+        ::core::option::Option<batch_update_entity_types_request::EntityTypeBatch>,
 }
+/// Nested message and enum types in `BatchUpdateEntityTypesRequest`.
 pub mod batch_update_entity_types_request {
     /// The source of the entity type batch.
     ///
@@ -2110,7 +2137,7 @@ pub mod batch_update_entity_types_request {
         /// EntityBatch type) or a JSON object. Note: The URI must start with
         /// "gs://".
         #[prost(string, tag = "2")]
-        EntityTypeBatchUri(std::string::String),
+        EntityTypeBatchUri(::prost::alloc::string::String),
         /// The collection of entity types to update or create.
         #[prost(message, tag = "3")]
         EntityTypeBatchInline(super::EntityTypeBatch),
@@ -2121,7 +2148,7 @@ pub mod batch_update_entity_types_request {
 pub struct BatchUpdateEntityTypesResponse {
     /// The collection of updated or created entity types.
     #[prost(message, repeated, tag = "1")]
-    pub entity_types: ::std::vec::Vec<EntityType>,
+    pub entity_types: ::prost::alloc::vec::Vec<EntityType>,
 }
 /// The request message for [EntityTypes.BatchDeleteEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2131,11 +2158,11 @@ pub struct BatchDeleteEntityTypesRequest {
     /// - `projects/<Project ID>/agent`,
     /// - `projects/<Project ID>/locations/<Location ID>/agent`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The names entity types to delete. All names must point to the
     /// same agent as `parent`.
     #[prost(string, repeated, tag = "2")]
-    pub entity_type_names: ::std::vec::Vec<std::string::String>,
+    pub entity_type_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2146,17 +2173,17 @@ pub struct BatchCreateEntitiesRequest {
     /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
     ///   Type ID>`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The entities to create.
     #[prost(message, repeated, tag = "2")]
-    pub entities: ::std::vec::Vec<entity_type::Entity>,
+    pub entities: ::prost::alloc::vec::Vec<entity_type::Entity>,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// The request message for [EntityTypes.BatchUpdateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntities].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2167,20 +2194,20 @@ pub struct BatchUpdateEntitiesRequest {
     /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
     ///   Type ID>`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The entities to update or create.
     #[prost(message, repeated, tag = "2")]
-    pub entities: ::std::vec::Vec<entity_type::Entity>,
+    pub entities: ::prost::alloc::vec::Vec<entity_type::Entity>,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [EntityTypes.BatchDeleteEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntities].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2191,26 +2218,26 @@ pub struct BatchDeleteEntitiesRequest {
     /// - `projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity
     ///   Type ID>`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The reference `values` of the entities to delete. Note that
     /// these are not fully-qualified names, i.e. they don't start with
     /// `projects/<Project ID>`.
     #[prost(string, repeated, tag = "2")]
-    pub entity_values: ::std::vec::Vec<std::string::String>,
+    pub entity_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// This message is a wrapper around a collection of entity types.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityTypeBatch {
     /// A collection of entity types.
     #[prost(message, repeated, tag = "1")]
-    pub entity_types: ::std::vec::Vec<EntityType>,
+    pub entity_types: ::prost::alloc::vec::Vec<EntityType>,
 }
 #[doc = r" Generated client implementations."]
 pub mod entity_types_client {
@@ -2463,10 +2490,10 @@ pub struct Intent {
     /// - `projects/<Project ID>/agent/intents/<Intent ID>`
     /// - `projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The name of this intent.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. Indicates whether webhooks are enabled for the intent.
     #[prost(enumeration = "intent::WebhookState", tag = "6")]
     pub webhook_state: i32,
@@ -2495,6 +2522,7 @@ pub struct Intent {
     ///   ml_enabled = false / ml_disabled = true.
     /// - After April 15th, 2018 the default is:
     ///   ml_enabled = true / ml_disabled = false.
+    #[deprecated]
     #[prost(bool, tag = "5")]
     pub ml_enabled: bool,
     /// Optional. Indicates whether Machine Learning is disabled for the intent.
@@ -2516,39 +2544,39 @@ pub struct Intent {
     /// - `projects/<Project ID>/locations/<Location
     ///   ID>/agent/sessions/-/contexts/<Context ID>`
     #[prost(string, repeated, tag = "7")]
-    pub input_context_names: ::std::vec::Vec<std::string::String>,
+    pub input_context_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The collection of event names that trigger the intent.
     /// If the collection of input contexts is not empty, all of the contexts must
     /// be present in the active user session for an event to trigger this intent.
     /// Event names are limited to 150 characters.
     #[prost(string, repeated, tag = "8")]
-    pub events: ::std::vec::Vec<std::string::String>,
+    pub events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The collection of examples that the agent is
     /// trained on.
     #[prost(message, repeated, tag = "9")]
-    pub training_phrases: ::std::vec::Vec<intent::TrainingPhrase>,
+    pub training_phrases: ::prost::alloc::vec::Vec<intent::TrainingPhrase>,
     /// Optional. The name of the action associated with the intent.
     /// Note: The action name must not contain whitespaces.
     #[prost(string, tag = "10")]
-    pub action: std::string::String,
+    pub action: ::prost::alloc::string::String,
     /// Optional. The collection of contexts that are activated when the intent
     /// is matched. Context messages in this collection should not set the
     /// parameters field. Setting the `lifespan_count` to 0 will reset the context
     /// when the intent is matched.
     /// Format: `projects/<Project ID>/agent/sessions/-/contexts/<Context ID>`.
     #[prost(message, repeated, tag = "11")]
-    pub output_contexts: ::std::vec::Vec<Context>,
+    pub output_contexts: ::prost::alloc::vec::Vec<Context>,
     /// Optional. Indicates whether to delete all contexts in the current
     /// session when this intent is matched.
     #[prost(bool, tag = "12")]
     pub reset_contexts: bool,
     /// Optional. The collection of parameters associated with the intent.
     #[prost(message, repeated, tag = "13")]
-    pub parameters: ::std::vec::Vec<intent::Parameter>,
+    pub parameters: ::prost::alloc::vec::Vec<intent::Parameter>,
     /// Optional. The collection of rich messages corresponding to the
     /// `Response` field in the Dialogflow console.
     #[prost(message, repeated, tag = "14")]
-    pub messages: ::std::vec::Vec<intent::Message>,
+    pub messages: ::prost::alloc::vec::Vec<intent::Message>,
     /// Optional. The list of platforms for which the first responses will be
     /// copied from the messages in PLATFORM_UNSPECIFIED (i.e. default platform).
     #[prost(
@@ -2557,14 +2585,14 @@ pub struct Intent {
         packed = "false",
         tag = "15"
     )]
-    pub default_response_platforms: ::std::vec::Vec<i32>,
+    pub default_response_platforms: ::prost::alloc::vec::Vec<i32>,
     /// Output only. The unique identifier of the root intent in the chain of
     /// followup intents. It identifies the correct followup intents chain for
     /// this intent.
     ///
     /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
     #[prost(string, tag = "16")]
-    pub root_followup_intent_name: std::string::String,
+    pub root_followup_intent_name: ::prost::alloc::string::String,
     /// Optional. The unique identifier of the parent intent in the
     /// chain of followup intents. You can set this field when creating an intent,
     /// for example with [CreateIntent][google.cloud.dialogflow.v2beta1.Intents.CreateIntent] or
@@ -2574,19 +2602,20 @@ pub struct Intent {
     /// It identifies the parent followup intent.
     /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
     #[prost(string, tag = "17")]
-    pub parent_followup_intent_name: std::string::String,
+    pub parent_followup_intent_name: ::prost::alloc::string::String,
     /// Output only. Information about all followup intents that have this intent as
     /// a direct or indirect parent. We populate this field only in the output.
     #[prost(message, repeated, tag = "18")]
-    pub followup_intent_info: ::std::vec::Vec<intent::FollowupIntentInfo>,
+    pub followup_intent_info: ::prost::alloc::vec::Vec<intent::FollowupIntentInfo>,
 }
+/// Nested message and enum types in `Intent`.
 pub mod intent {
     /// Represents an example that the agent is trained on.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrainingPhrase {
         /// Output only. The unique identifier of this training phrase.
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// Required. The type of the training phrase.
         #[prost(enumeration = "training_phrase::Type", tag = "2")]
         pub r#type: i32,
@@ -2610,29 +2639,30 @@ pub mod intent {
         ///     and the `entity_type`, `alias`, and `user_defined` fields are all
         ///     set.
         #[prost(message, repeated, tag = "3")]
-        pub parts: ::std::vec::Vec<training_phrase::Part>,
+        pub parts: ::prost::alloc::vec::Vec<training_phrase::Part>,
         /// Optional. Indicates how many times this example was added to
         /// the intent. Each time a developer adds an existing sample by editing an
         /// intent or training, this counter is increased.
         #[prost(int32, tag = "4")]
         pub times_added_count: i32,
     }
+    /// Nested message and enum types in `TrainingPhrase`.
     pub mod training_phrase {
         /// Represents a part of a training phrase.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Part {
             /// Required. The text for this part.
             #[prost(string, tag = "1")]
-            pub text: std::string::String,
+            pub text: ::prost::alloc::string::String,
             /// Optional. The entity type name prefixed with `@`.
             /// This field is required for annotated parts of the training phrase.
             #[prost(string, tag = "2")]
-            pub entity_type: std::string::String,
+            pub entity_type: ::prost::alloc::string::String,
             /// Optional. The parameter name for the value extracted from the
             /// annotated part of the example.
             /// This field is required for annotated parts of the training phrase.
             #[prost(string, tag = "3")]
-            pub alias: std::string::String,
+            pub alias: ::prost::alloc::string::String,
             /// Optional. Indicates whether the text was manually annotated.
             /// This field is set to true when the Dialogflow Console is used to
             /// manually annotate the part. When creating an annotated part with the
@@ -2641,7 +2671,9 @@ pub mod intent {
             pub user_defined: bool,
         }
         /// Represents different types of training phrases.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum Type {
             /// Not specified. This value should never be used.
@@ -2663,10 +2695,10 @@ pub mod intent {
     pub struct Parameter {
         /// The unique identifier of this parameter.
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// Required. The name of the parameter.
         #[prost(string, tag = "2")]
-        pub display_name: std::string::String,
+        pub display_name: ::prost::alloc::string::String,
         /// Optional. The definition of the parameter value. It can be:
         ///
         /// - a constant string,
@@ -2675,18 +2707,18 @@ pub mod intent {
         /// - a parameter value from some context defined as
         ///   `#context_name.parameter_name`.
         #[prost(string, tag = "3")]
-        pub value: std::string::String,
+        pub value: ::prost::alloc::string::String,
         /// Optional. The default value to use when the `value` yields an empty
         /// result.
         /// Default values can be extracted from contexts by using the following
         /// syntax: `#context_name.parameter_name`.
         #[prost(string, tag = "4")]
-        pub default_value: std::string::String,
+        pub default_value: ::prost::alloc::string::String,
         /// Optional. The name of the entity type, prefixed with `@`, that
         /// describes values of the parameter. If the parameter is
         /// required, this must be provided.
         #[prost(string, tag = "5")]
-        pub entity_type_display_name: std::string::String,
+        pub entity_type_display_name: ::prost::alloc::string::String,
         /// Optional. Indicates whether the parameter is required. That is,
         /// whether the intent cannot be completed without collecting the parameter
         /// value.
@@ -2695,7 +2727,7 @@ pub mod intent {
         /// Optional. The collection of prompts that the agent can present to the
         /// user in order to collect a value for the parameter.
         #[prost(string, repeated, tag = "7")]
-        pub prompts: ::std::vec::Vec<std::string::String>,
+        pub prompts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Optional. Indicates whether the parameter represents a list of values.
         #[prost(bool, tag = "8")]
         pub is_list: bool,
@@ -2711,64 +2743,66 @@ pub mod intent {
             oneof = "message::Message",
             tags = "1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, 20, 22, 23, 24"
         )]
-        pub message: ::std::option::Option<message::Message>,
+        pub message: ::core::option::Option<message::Message>,
     }
+    /// Nested message and enum types in `Message`.
     pub mod message {
         /// The text response message.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Text {
             /// Optional. The collection of the agent's responses.
             #[prost(string, repeated, tag = "1")]
-            pub text: ::std::vec::Vec<std::string::String>,
+            pub text: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// The image response message.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Image {
             /// Optional. The public URI to an image file.
             #[prost(string, tag = "1")]
-            pub image_uri: std::string::String,
+            pub image_uri: ::prost::alloc::string::String,
             /// A text description of the image to be used for accessibility,
             /// e.g., screen readers. Required if image_uri is set for CarouselSelect.
             #[prost(string, tag = "2")]
-            pub accessibility_text: std::string::String,
+            pub accessibility_text: ::prost::alloc::string::String,
         }
         /// The quick replies response message.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct QuickReplies {
             /// Optional. The title of the collection of quick replies.
             #[prost(string, tag = "1")]
-            pub title: std::string::String,
+            pub title: ::prost::alloc::string::String,
             /// Optional. The collection of quick replies.
             #[prost(string, repeated, tag = "2")]
-            pub quick_replies: ::std::vec::Vec<std::string::String>,
+            pub quick_replies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// The card response message.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Card {
             /// Optional. The title of the card.
             #[prost(string, tag = "1")]
-            pub title: std::string::String,
+            pub title: ::prost::alloc::string::String,
             /// Optional. The subtitle of the card.
             #[prost(string, tag = "2")]
-            pub subtitle: std::string::String,
+            pub subtitle: ::prost::alloc::string::String,
             /// Optional. The public URI to an image file for the card.
             #[prost(string, tag = "3")]
-            pub image_uri: std::string::String,
+            pub image_uri: ::prost::alloc::string::String,
             /// Optional. The collection of card buttons.
             #[prost(message, repeated, tag = "4")]
-            pub buttons: ::std::vec::Vec<card::Button>,
+            pub buttons: ::prost::alloc::vec::Vec<card::Button>,
         }
+        /// Nested message and enum types in `Card`.
         pub mod card {
             /// Optional. Contains information about a button.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Button {
                 /// Optional. The text to show on the button.
                 #[prost(string, tag = "1")]
-                pub text: std::string::String,
+                pub text: ::prost::alloc::string::String,
                 /// Optional. The text to send back to the Dialogflow API or a URI to
                 /// open.
                 #[prost(string, tag = "2")]
-                pub postback: std::string::String,
+                pub postback: ::prost::alloc::string::String,
             }
         }
         /// The simple response message containing speech or text.
@@ -2777,15 +2811,15 @@ pub mod intent {
             /// One of text_to_speech or ssml must be provided. The plain text of the
             /// speech output. Mutually exclusive with ssml.
             #[prost(string, tag = "1")]
-            pub text_to_speech: std::string::String,
+            pub text_to_speech: ::prost::alloc::string::String,
             /// One of text_to_speech or ssml must be provided. Structured spoken
             /// response to the user in the SSML format. Mutually exclusive with
             /// text_to_speech.
             #[prost(string, tag = "2")]
-            pub ssml: std::string::String,
+            pub ssml: ::prost::alloc::string::String,
             /// Optional. The text to display.
             #[prost(string, tag = "3")]
-            pub display_text: std::string::String,
+            pub display_text: ::prost::alloc::string::String,
         }
         /// The collection of simple response candidates.
         /// This message in `QueryResult.fulfillment_messages` and
@@ -2795,45 +2829,47 @@ pub mod intent {
         pub struct SimpleResponses {
             /// Required. The list of simple responses.
             #[prost(message, repeated, tag = "1")]
-            pub simple_responses: ::std::vec::Vec<SimpleResponse>,
+            pub simple_responses: ::prost::alloc::vec::Vec<SimpleResponse>,
         }
         /// The basic card message. Useful for displaying information.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BasicCard {
             /// Optional. The title of the card.
             #[prost(string, tag = "1")]
-            pub title: std::string::String,
+            pub title: ::prost::alloc::string::String,
             /// Optional. The subtitle of the card.
             #[prost(string, tag = "2")]
-            pub subtitle: std::string::String,
+            pub subtitle: ::prost::alloc::string::String,
             /// Required, unless image is present. The body text of the card.
             #[prost(string, tag = "3")]
-            pub formatted_text: std::string::String,
+            pub formatted_text: ::prost::alloc::string::String,
             /// Optional. The image for the card.
             #[prost(message, optional, tag = "4")]
-            pub image: ::std::option::Option<Image>,
+            pub image: ::core::option::Option<Image>,
             /// Optional. The collection of card buttons.
             #[prost(message, repeated, tag = "5")]
-            pub buttons: ::std::vec::Vec<basic_card::Button>,
+            pub buttons: ::prost::alloc::vec::Vec<basic_card::Button>,
         }
+        /// Nested message and enum types in `BasicCard`.
         pub mod basic_card {
             /// The button object that appears at the bottom of a card.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Button {
                 /// Required. The title of the button.
                 #[prost(string, tag = "1")]
-                pub title: std::string::String,
+                pub title: ::prost::alloc::string::String,
                 /// Required. Action to take when a user taps on the button.
                 #[prost(message, optional, tag = "2")]
-                pub open_uri_action: ::std::option::Option<button::OpenUriAction>,
+                pub open_uri_action: ::core::option::Option<button::OpenUriAction>,
             }
+            /// Nested message and enum types in `Button`.
             pub mod button {
                 /// Opens the given URI.
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct OpenUriAction {
                     /// Required. The HTTP or HTTPS scheme URI.
                     #[prost(string, tag = "1")]
-                    pub uri: std::string::String,
+                    pub uri: ::prost::alloc::string::String,
                 }
             }
         }
@@ -2843,14 +2879,14 @@ pub mod intent {
         pub struct Suggestion {
             /// Required. The text shown the in the suggestion chip.
             #[prost(string, tag = "1")]
-            pub title: std::string::String,
+            pub title: ::prost::alloc::string::String,
         }
         /// The collection of suggestions.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Suggestions {
             /// Required. The list of suggested replies.
             #[prost(message, repeated, tag = "1")]
-            pub suggestions: ::std::vec::Vec<Suggestion>,
+            pub suggestions: ::prost::alloc::vec::Vec<Suggestion>,
         }
         /// The suggestion chip message that allows the user to jump out to the app
         /// or website associated with this agent.
@@ -2858,41 +2894,42 @@ pub mod intent {
         pub struct LinkOutSuggestion {
             /// Required. The name of the app or site this chip is linking to.
             #[prost(string, tag = "1")]
-            pub destination_name: std::string::String,
+            pub destination_name: ::prost::alloc::string::String,
             /// Required. The URI of the app or site to open when the user taps the
             /// suggestion chip.
             #[prost(string, tag = "2")]
-            pub uri: std::string::String,
+            pub uri: ::prost::alloc::string::String,
         }
         /// The card for presenting a list of options to select from.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ListSelect {
             /// Optional. The overall title of the list.
             #[prost(string, tag = "1")]
-            pub title: std::string::String,
+            pub title: ::prost::alloc::string::String,
             /// Required. List items.
             #[prost(message, repeated, tag = "2")]
-            pub items: ::std::vec::Vec<list_select::Item>,
+            pub items: ::prost::alloc::vec::Vec<list_select::Item>,
             /// Optional. Subtitle of the list.
             #[prost(string, tag = "3")]
-            pub subtitle: std::string::String,
+            pub subtitle: ::prost::alloc::string::String,
         }
+        /// Nested message and enum types in `ListSelect`.
         pub mod list_select {
             /// An item in the list.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Item {
                 /// Required. Additional information about this option.
                 #[prost(message, optional, tag = "1")]
-                pub info: ::std::option::Option<super::SelectItemInfo>,
+                pub info: ::core::option::Option<super::SelectItemInfo>,
                 /// Required. The title of the list item.
                 #[prost(string, tag = "2")]
-                pub title: std::string::String,
+                pub title: ::prost::alloc::string::String,
                 /// Optional. The main text describing the item.
                 #[prost(string, tag = "3")]
-                pub description: std::string::String,
+                pub description: ::prost::alloc::string::String,
                 /// Optional. The image to display.
                 #[prost(message, optional, tag = "4")]
-                pub image: ::std::option::Option<super::Image>,
+                pub image: ::core::option::Option<super::Image>,
             }
         }
         /// The card for presenting a carousel of options to select from.
@@ -2900,24 +2937,25 @@ pub mod intent {
         pub struct CarouselSelect {
             /// Required. Carousel items.
             #[prost(message, repeated, tag = "1")]
-            pub items: ::std::vec::Vec<carousel_select::Item>,
+            pub items: ::prost::alloc::vec::Vec<carousel_select::Item>,
         }
+        /// Nested message and enum types in `CarouselSelect`.
         pub mod carousel_select {
             /// An item in the carousel.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Item {
                 /// Required. Additional info about the option item.
                 #[prost(message, optional, tag = "1")]
-                pub info: ::std::option::Option<super::SelectItemInfo>,
+                pub info: ::core::option::Option<super::SelectItemInfo>,
                 /// Required. Title of the carousel item.
                 #[prost(string, tag = "2")]
-                pub title: std::string::String,
+                pub title: ::prost::alloc::string::String,
                 /// Optional. The body text of the card.
                 #[prost(string, tag = "3")]
-                pub description: std::string::String,
+                pub description: ::prost::alloc::string::String,
                 /// Optional. The image to display.
                 #[prost(message, optional, tag = "4")]
-                pub image: ::std::option::Option<super::Image>,
+                pub image: ::core::option::Option<super::Image>,
             }
         }
         /// Additional info about the select item for when it is triggered in a
@@ -2927,11 +2965,11 @@ pub mod intent {
             /// Required. A unique key that will be sent back to the agent if this
             /// response is given.
             #[prost(string, tag = "1")]
-            pub key: std::string::String,
+            pub key: ::prost::alloc::string::String,
             /// Optional. A list of synonyms that can also be used to trigger this
             /// item in dialog.
             #[prost(string, repeated, tag = "2")]
-            pub synonyms: ::std::vec::Vec<std::string::String>,
+            pub synonyms: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// Plays audio from a file in Telephony Gateway.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2950,7 +2988,7 @@ pub mod intent {
             /// For audio from other sources, consider using the
             /// `TelephonySynthesizeSpeech` message with SSML.
             #[prost(string, tag = "1")]
-            pub audio_uri: std::string::String,
+            pub audio_uri: ::prost::alloc::string::String,
         }
         /// Synthesizes speech and plays back the synthesized audio to the caller in
         /// Telephony Gateway.
@@ -2962,19 +3000,20 @@ pub mod intent {
         pub struct TelephonySynthesizeSpeech {
             /// Required. The source to be synthesized.
             #[prost(oneof = "telephony_synthesize_speech::Source", tags = "1, 2")]
-            pub source: ::std::option::Option<telephony_synthesize_speech::Source>,
+            pub source: ::core::option::Option<telephony_synthesize_speech::Source>,
         }
+        /// Nested message and enum types in `TelephonySynthesizeSpeech`.
         pub mod telephony_synthesize_speech {
             /// Required. The source to be synthesized.
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Source {
                 /// The raw text to be synthesized.
                 #[prost(string, tag = "1")]
-                Text(std::string::String),
+                Text(::prost::alloc::string::String),
                 /// The SSML to be synthesized. For more information, see
                 /// [SSML](https://developers.google.com/actions/reference/ssml).
                 #[prost(string, tag = "2")]
-                Ssml(std::string::String),
+                Ssml(::prost::alloc::string::String),
             }
         }
         /// Transfers the call in Telephony Gateway.
@@ -2985,17 +3024,17 @@ pub mod intent {
             ///
             /// We currently only allow transferring to US numbers (+1xxxyyyzzzz).
             #[prost(string, tag = "1")]
-            pub phone_number: std::string::String,
+            pub phone_number: ::prost::alloc::string::String,
         }
         /// Rich Business Messaging (RBM) text response with suggestions.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct RbmText {
             /// Required. Text sent and displayed to the user.
             #[prost(string, tag = "1")]
-            pub text: std::string::String,
+            pub text: ::prost::alloc::string::String,
             /// Optional. One or more suggestions to show to the user.
             #[prost(message, repeated, tag = "2")]
-            pub rbm_suggestion: ::std::vec::Vec<RbmSuggestion>,
+            pub rbm_suggestion: ::prost::alloc::vec::Vec<RbmSuggestion>,
         }
         /// Carousel Rich Business Messaging (RBM) rich card.
         ///
@@ -3012,8 +3051,9 @@ pub mod intent {
             /// Required. The cards in the carousel. A carousel must have at least
             /// 2 cards and at most 10.
             #[prost(message, repeated, tag = "2")]
-            pub card_contents: ::std::vec::Vec<RbmCardContent>,
+            pub card_contents: ::prost::alloc::vec::Vec<RbmCardContent>,
         }
+        /// Nested message and enum types in `RbmCarouselCard`.
         pub mod rbm_carousel_card {
             /// The width of the cards in the carousel.
             #[derive(
@@ -3050,8 +3090,9 @@ pub mod intent {
             pub thumbnail_image_alignment: i32,
             /// Required. Card content.
             #[prost(message, optional, tag = "3")]
-            pub card_content: ::std::option::Option<RbmCardContent>,
+            pub card_content: ::core::option::Option<RbmCardContent>,
         }
+        /// Nested message and enum types in `RbmStandaloneCard`.
         pub mod rbm_standalone_card {
             /// Orientation of the card.
             #[derive(
@@ -3088,20 +3129,21 @@ pub mod intent {
             ///
             /// At least one of the title, description or media must be set.
             #[prost(string, tag = "1")]
-            pub title: std::string::String,
+            pub title: ::prost::alloc::string::String,
             /// Optional. Description of the card (at most 2000 bytes).
             ///
             /// At least one of the title, description or media must be set.
             #[prost(string, tag = "2")]
-            pub description: std::string::String,
+            pub description: ::prost::alloc::string::String,
             /// Optional. However at least one of the title, description or media must
             /// be set. Media (image, GIF or a video) to include in the card.
             #[prost(message, optional, tag = "3")]
-            pub media: ::std::option::Option<rbm_card_content::RbmMedia>,
+            pub media: ::core::option::Option<rbm_card_content::RbmMedia>,
             /// Optional. List of suggestions to include in the card.
             #[prost(message, repeated, tag = "4")]
-            pub suggestions: ::std::vec::Vec<RbmSuggestion>,
+            pub suggestions: ::prost::alloc::vec::Vec<RbmSuggestion>,
         }
+        /// Nested message and enum types in `RbmCardContent`.
         pub mod rbm_card_content {
             /// Rich Business Messaging (RBM) Media displayed in Cards
             /// The following media-types are currently supported:
@@ -3128,14 +3170,14 @@ pub mod intent {
                 /// the HTTP headers when the platform fetches the file. The content-type
                 /// field must be present and accurate in the HTTP response from the URL.
                 #[prost(string, tag = "1")]
-                pub file_uri: std::string::String,
+                pub file_uri: ::prost::alloc::string::String,
                 /// Optional. Publicly reachable URI of the thumbnail.If you don't
                 /// provide a thumbnail URI, the RBM platform displays a blank
                 /// placeholder thumbnail until the user's device downloads the file.
                 /// Depending on the user's setting, the file may not download
                 /// automatically and may require the user to tap a download button.
                 #[prost(string, tag = "2")]
-                pub thumbnail_uri: std::string::String,
+                pub thumbnail_uri: ::prost::alloc::string::String,
                 /// Required for cards with vertical orientation. The height of the media
                 /// within a rich card with a vertical layout.
                 /// For a standalone card with horizontal layout, height is not
@@ -3143,6 +3185,7 @@ pub mod intent {
                 #[prost(enumeration = "rbm_media::Height", tag = "3")]
                 pub height: i32,
             }
+            /// Nested message and enum types in `RbmMedia`.
             pub mod rbm_media {
                 /// Media height
                 #[derive(
@@ -3169,8 +3212,9 @@ pub mod intent {
         pub struct RbmSuggestion {
             /// Predefined suggested response or action for user to choose
             #[prost(oneof = "rbm_suggestion::Suggestion", tags = "1, 2")]
-            pub suggestion: ::std::option::Option<rbm_suggestion::Suggestion>,
+            pub suggestion: ::core::option::Option<rbm_suggestion::Suggestion>,
         }
+        /// Nested message and enum types in `RbmSuggestion`.
         pub mod rbm_suggestion {
             /// Predefined suggested response or action for user to choose
             #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3189,12 +3233,12 @@ pub mod intent {
         pub struct RbmSuggestedReply {
             /// Suggested reply text.
             #[prost(string, tag = "1")]
-            pub text: std::string::String,
+            pub text: ::prost::alloc::string::String,
             /// Opaque payload that the Dialogflow receives in a user event
             /// when the user taps the suggested reply. This data will be also
             /// forwarded to webhook to allow performing custom business logic.
             #[prost(string, tag = "2")]
-            pub postback_data: std::string::String,
+            pub postback_data: ::prost::alloc::string::String,
         }
         /// Rich Business Messaging (RBM) suggested client-side action that the user
         /// can choose from the card.
@@ -3202,16 +3246,17 @@ pub mod intent {
         pub struct RbmSuggestedAction {
             /// Text to display alongside the action.
             #[prost(string, tag = "1")]
-            pub text: std::string::String,
+            pub text: ::prost::alloc::string::String,
             /// Opaque payload that the Dialogflow receives in a user event
             /// when the user taps the suggested action. This data will be also
             /// forwarded to webhook to allow performing custom business logic.
             #[prost(string, tag = "2")]
-            pub postback_data: std::string::String,
+            pub postback_data: ::prost::alloc::string::String,
             /// Action that needs to be triggered.
             #[prost(oneof = "rbm_suggested_action::Action", tags = "3, 4, 5")]
-            pub action: ::std::option::Option<rbm_suggested_action::Action>,
+            pub action: ::core::option::Option<rbm_suggested_action::Action>,
         }
+        /// Nested message and enum types in `RbmSuggestedAction`.
         pub mod rbm_suggested_action {
             /// Opens the user's default dialer app with the specified phone number
             /// but does not dial automatically.
@@ -3222,7 +3267,7 @@ pub mod intent {
                 /// format. An example of a correctly formatted phone number:
                 /// +15556767888.
                 #[prost(string, tag = "1")]
-                pub phone_number: std::string::String,
+                pub phone_number: ::prost::alloc::string::String,
             }
             /// Opens the user's default web browser app to the specified uri
             /// If the user has an app installed that is
@@ -3232,7 +3277,7 @@ pub mod intent {
             pub struct RbmSuggestedActionOpenUri {
                 /// Required. The uri to open on the user device
                 #[prost(string, tag = "1")]
-                pub uri: std::string::String,
+                pub uri: ::prost::alloc::string::String,
             }
             /// Opens the device's location chooser so the user can pick a location
             /// to send back to the agent.
@@ -3260,25 +3305,27 @@ pub mod intent {
             pub media_type: i32,
             /// Required. List of media objects.
             #[prost(message, repeated, tag = "2")]
-            pub media_objects: ::std::vec::Vec<media_content::ResponseMediaObject>,
+            pub media_objects: ::prost::alloc::vec::Vec<media_content::ResponseMediaObject>,
         }
+        /// Nested message and enum types in `MediaContent`.
         pub mod media_content {
             /// Response media object for media content card.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ResponseMediaObject {
                 /// Required. Name of media card.
                 #[prost(string, tag = "1")]
-                pub name: std::string::String,
+                pub name: ::prost::alloc::string::String,
                 /// Optional. Description of media card.
                 #[prost(string, tag = "2")]
-                pub description: std::string::String,
+                pub description: ::prost::alloc::string::String,
                 /// Required. Url where the media is stored.
                 #[prost(string, tag = "5")]
-                pub content_url: std::string::String,
+                pub content_url: ::prost::alloc::string::String,
                 /// Image to show with the media card.
                 #[prost(oneof = "response_media_object::Image", tags = "3, 4")]
-                pub image: ::std::option::Option<response_media_object::Image>,
+                pub image: ::core::option::Option<response_media_object::Image>,
             }
+            /// Nested message and enum types in `ResponseMediaObject`.
             pub mod response_media_object {
                 /// Image to show with the media card.
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3310,12 +3357,13 @@ pub mod intent {
             /// Required. List of items in the Browse Carousel Card. Minimum of two
             /// items, maximum of ten.
             #[prost(message, repeated, tag = "1")]
-            pub items: ::std::vec::Vec<browse_carousel_card::BrowseCarouselCardItem>,
+            pub items: ::prost::alloc::vec::Vec<browse_carousel_card::BrowseCarouselCardItem>,
             /// Optional. Settings for displaying the image. Applies to every image in
             /// [items][google.cloud.dialogflow.v2beta1.Intent.Message.BrowseCarouselCard.items].
             #[prost(enumeration = "browse_carousel_card::ImageDisplayOptions", tag = "2")]
             pub image_display_options: i32,
         }
+        /// Nested message and enum types in `BrowseCarouselCard`.
         pub mod browse_carousel_card {
             /// Browsing carousel tile
             #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3323,34 +3371,36 @@ pub mod intent {
                 /// Required. Action to present to the user.
                 #[prost(message, optional, tag = "1")]
                 pub open_uri_action:
-                    ::std::option::Option<browse_carousel_card_item::OpenUrlAction>,
+                    ::core::option::Option<browse_carousel_card_item::OpenUrlAction>,
                 /// Required. Title of the carousel item. Maximum of two lines of text.
                 #[prost(string, tag = "2")]
-                pub title: std::string::String,
+                pub title: ::prost::alloc::string::String,
                 /// Optional. Description of the carousel item. Maximum of four lines of
                 /// text.
                 #[prost(string, tag = "3")]
-                pub description: std::string::String,
+                pub description: ::prost::alloc::string::String,
                 /// Optional. Hero image for the carousel item.
                 #[prost(message, optional, tag = "4")]
-                pub image: ::std::option::Option<super::Image>,
+                pub image: ::core::option::Option<super::Image>,
                 /// Optional. Text that appears at the bottom of the Browse Carousel
                 /// Card. Maximum of one line of text.
                 #[prost(string, tag = "5")]
-                pub footer: std::string::String,
+                pub footer: ::prost::alloc::string::String,
             }
+            /// Nested message and enum types in `BrowseCarouselCardItem`.
             pub mod browse_carousel_card_item {
                 /// Actions on Google action to open a given url.
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct OpenUrlAction {
                     /// Required. URL
                     #[prost(string, tag = "1")]
-                    pub url: std::string::String,
+                    pub url: ::prost::alloc::string::String,
                     /// Optional. Specifies the type of viewer that is used when opening
                     /// the URL. Defaults to opening via web browser.
                     #[prost(enumeration = "open_url_action::UrlTypeHint", tag = "3")]
                     pub url_type_hint: i32,
                 }
+                /// Nested message and enum types in `OpenUrlAction`.
                 pub mod open_url_action {
                     /// Type of the URI.
                     #[derive(
@@ -3410,33 +3460,34 @@ pub mod intent {
         pub struct TableCard {
             /// Required. Title of the card.
             #[prost(string, tag = "1")]
-            pub title: std::string::String,
+            pub title: ::prost::alloc::string::String,
             /// Optional. Subtitle to the title.
             #[prost(string, tag = "2")]
-            pub subtitle: std::string::String,
+            pub subtitle: ::prost::alloc::string::String,
             /// Optional. Image which should be displayed on the card.
             #[prost(message, optional, tag = "3")]
-            pub image: ::std::option::Option<Image>,
+            pub image: ::core::option::Option<Image>,
             /// Optional. Display properties for the columns in this table.
             #[prost(message, repeated, tag = "4")]
-            pub column_properties: ::std::vec::Vec<ColumnProperties>,
+            pub column_properties: ::prost::alloc::vec::Vec<ColumnProperties>,
             /// Optional. Rows in this table of data.
             #[prost(message, repeated, tag = "5")]
-            pub rows: ::std::vec::Vec<TableCardRow>,
+            pub rows: ::prost::alloc::vec::Vec<TableCardRow>,
             /// Optional. List of buttons for the card.
             #[prost(message, repeated, tag = "6")]
-            pub buttons: ::std::vec::Vec<basic_card::Button>,
+            pub buttons: ::prost::alloc::vec::Vec<basic_card::Button>,
         }
         /// Column properties for [TableCard][google.cloud.dialogflow.v2beta1.Intent.Message.TableCard].
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ColumnProperties {
             /// Required. Column heading.
             #[prost(string, tag = "1")]
-            pub header: std::string::String,
+            pub header: ::prost::alloc::string::String,
             /// Optional. Defines text alignment for all cells in this column.
             #[prost(enumeration = "column_properties::HorizontalAlignment", tag = "2")]
             pub horizontal_alignment: i32,
         }
+        /// Nested message and enum types in `ColumnProperties`.
         pub mod column_properties {
             /// Text alignments within a cell.
             #[derive(
@@ -3459,7 +3510,7 @@ pub mod intent {
         pub struct TableCardRow {
             /// Optional. List of cells that make up this row.
             #[prost(message, repeated, tag = "1")]
-            pub cells: ::std::vec::Vec<TableCardCell>,
+            pub cells: ::prost::alloc::vec::Vec<TableCardCell>,
             /// Optional. Whether to add a visual divider after this row.
             #[prost(bool, tag = "2")]
             pub divider_after: bool,
@@ -3469,10 +3520,12 @@ pub mod intent {
         pub struct TableCardCell {
             /// Required. Text in this cell.
             #[prost(string, tag = "1")]
-            pub text: std::string::String,
+            pub text: ::prost::alloc::string::String,
         }
         /// Represents different platforms that a rich message can be intended for.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum Platform {
             /// Not specified.
@@ -3574,11 +3627,11 @@ pub mod intent {
         /// The unique identifier of the followup intent.
         /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
         #[prost(string, tag = "1")]
-        pub followup_intent_name: std::string::String,
+        pub followup_intent_name: ::prost::alloc::string::String,
         /// The unique identifier of the followup intent's parent.
         /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
         #[prost(string, tag = "2")]
-        pub parent_followup_intent_name: std::string::String,
+        pub parent_followup_intent_name: ::prost::alloc::string::String,
     }
     /// Represents the different states that webhooks can be in.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3599,14 +3652,14 @@ pub struct ListIntentsRequest {
     /// Required. The agent to list all intents from.
     /// Format: `projects/<Project ID>/agent`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The resource view to apply to the returned intent.
     #[prost(enumeration = "IntentView", tag = "3")]
     pub intent_view: i32,
@@ -3616,7 +3669,7 @@ pub struct ListIntentsRequest {
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "5")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3624,11 +3677,11 @@ pub struct ListIntentsResponse {
     /// The list of agent intents. There will be a maximum number of items
     /// returned based on the page_size field in the request.
     #[prost(message, repeated, tag = "1")]
-    pub intents: ::std::vec::Vec<Intent>,
+    pub intents: ::prost::alloc::vec::Vec<Intent>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [Intents.GetIntent][google.cloud.dialogflow.v2beta1.Intents.GetIntent].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3639,14 +3692,14 @@ pub struct GetIntentRequest {
     /// - `projects/<Project ID>/agent/intents/<Intent ID>`
     /// - `projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The resource view to apply to the returned intent.
     #[prost(enumeration = "IntentView", tag = "3")]
     pub intent_view: i32,
@@ -3660,17 +3713,17 @@ pub struct CreateIntentRequest {
     /// - `projects/<Project ID>/agent`
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The intent to create.
     #[prost(message, optional, tag = "2")]
-    pub intent: ::std::option::Option<Intent>,
+    pub intent: ::core::option::Option<Intent>,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The resource view to apply to the returned intent.
     #[prost(enumeration = "IntentView", tag = "4")]
     pub intent_view: i32,
@@ -3680,17 +3733,17 @@ pub struct CreateIntentRequest {
 pub struct UpdateIntentRequest {
     /// Required. The intent to update.
     #[prost(message, optional, tag = "1")]
-    pub intent: ::std::option::Option<Intent>,
+    pub intent: ::core::option::Option<Intent>,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. The resource view to apply to the returned intent.
     #[prost(enumeration = "IntentView", tag = "4")]
     pub intent_view: i32,
@@ -3706,7 +3759,7 @@ pub struct DeleteIntentRequest {
     /// - `projects/<Project ID>/agent/intents/<Intent ID>`
     /// - `projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3717,17 +3770,17 @@ pub struct BatchUpdateIntentsRequest {
     /// - `projects/<Project ID>/agent`
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The language used to access language-specific data.
     /// If not specified, the agent's default language is used.
     /// For more information, see
     /// [Multilingual intent and entity
     /// data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
     #[prost(string, tag = "4")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "5")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. The resource view to apply to the returned intent.
     #[prost(enumeration = "IntentView", tag = "6")]
     pub intent_view: i32,
@@ -3738,8 +3791,9 @@ pub struct BatchUpdateIntentsRequest {
     /// *    If `name` is specified, we update an existing intent.
     /// *    If `name` is not specified, we create a new intent.
     #[prost(oneof = "batch_update_intents_request::IntentBatch", tags = "2, 3")]
-    pub intent_batch: ::std::option::Option<batch_update_intents_request::IntentBatch>,
+    pub intent_batch: ::core::option::Option<batch_update_intents_request::IntentBatch>,
 }
+/// Nested message and enum types in `BatchUpdateIntentsRequest`.
 pub mod batch_update_intents_request {
     /// Required. The source of the intent batch.
     ///
@@ -3753,7 +3807,7 @@ pub mod batch_update_intents_request {
         /// create. The file format can either be a serialized proto (of IntentBatch
         /// type) or JSON object. Note: The URI must start with "gs://".
         #[prost(string, tag = "2")]
-        IntentBatchUri(std::string::String),
+        IntentBatchUri(::prost::alloc::string::String),
         /// The collection of intents to update or create.
         #[prost(message, tag = "3")]
         IntentBatchInline(super::IntentBatch),
@@ -3764,7 +3818,7 @@ pub mod batch_update_intents_request {
 pub struct BatchUpdateIntentsResponse {
     /// The collection of updated or created intents.
     #[prost(message, repeated, tag = "1")]
-    pub intents: ::std::vec::Vec<Intent>,
+    pub intents: ::prost::alloc::vec::Vec<Intent>,
 }
 /// The request message for [Intents.BatchDeleteIntents][google.cloud.dialogflow.v2beta1.Intents.BatchDeleteIntents].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3775,18 +3829,18 @@ pub struct BatchDeleteIntentsRequest {
     /// - `projects/<Project ID>/agent`
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The collection of intents to delete. Only intent `name` must be
     /// filled in.
     #[prost(message, repeated, tag = "2")]
-    pub intents: ::std::vec::Vec<Intent>,
+    pub intents: ::prost::alloc::vec::Vec<Intent>,
 }
 /// This message is a wrapper around a collection of intents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentBatch {
     /// A collection of intents.
     #[prost(message, repeated, tag = "1")]
-    pub intents: ::std::vec::Vec<Intent>,
+    pub intents: ::prost::alloc::vec::Vec<Intent>,
 }
 /// Represents the options for views of an intent.
 /// An intent can be a sizable object. Therefore, we provide a resource view that
@@ -3979,33 +4033,34 @@ pub mod intents_client {
 pub struct KnowledgeBase {
     /// The knowledge base resource name.
     /// The name must be empty when creating a knowledge base.
-    /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The display name of the knowledge base. The name must be 1024
     /// bytes or less; otherwise, the creation request fails.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Language which represents the KnowledgeBase. When the KnowledgeBase is
     /// created/updated, this is populated for all non en-us languages. If not
     /// populated, the default language en-us applies.
     #[prost(string, tag = "4")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Request message for [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKnowledgeBasesRequest {
     /// Required. The project to list of knowledge bases for.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By
     /// default 10 and at most 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The filter expression used to filter knowledge bases returned by the list
     /// method. The expression has the following syntax:
     ///
@@ -4033,45 +4088,47 @@ pub struct ListKnowledgeBasesRequest {
     /// For more information about filtering, see
     /// [API Filtering](https://aip.dev/160).
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKnowledgeBasesResponse {
     /// The list of knowledge bases.
     #[prost(message, repeated, tag = "1")]
-    pub knowledge_bases: ::std::vec::Vec<KnowledgeBase>,
+    pub knowledge_bases: ::prost::alloc::vec::Vec<KnowledgeBase>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [KnowledgeBases.GetKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.GetKnowledgeBase].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKnowledgeBaseRequest {
     /// Required. The name of the knowledge base to retrieve.
-    /// Format `projects/<Project ID>/knowledgeBases/<Knowledge Base ID>`.
+    /// Format `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [KnowledgeBases.CreateKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.CreateKnowledgeBase].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateKnowledgeBaseRequest {
     /// Required. The project to create a knowledge base for.
-    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The knowledge base to create.
     #[prost(message, optional, tag = "2")]
-    pub knowledge_base: ::std::option::Option<KnowledgeBase>,
+    pub knowledge_base: ::core::option::Option<KnowledgeBase>,
 }
 /// Request message for [KnowledgeBases.DeleteKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.DeleteKnowledgeBase].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteKnowledgeBaseRequest {
     /// Required. The name of the knowledge base to delete.
-    /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/knowledgeBases/<Knowledge Base ID>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. Force deletes the knowledge base. When set to true, any documents
     /// in the knowledge base are also deleted.
     #[prost(bool, tag = "2")]
@@ -4082,12 +4139,12 @@ pub struct DeleteKnowledgeBaseRequest {
 pub struct UpdateKnowledgeBaseRequest {
     /// Required. The knowledge base to update.
     #[prost(message, optional, tag = "1")]
-    pub knowledge_base: ::std::option::Option<KnowledgeBase>,
+    pub knowledge_base: ::core::option::Option<KnowledgeBase>,
     /// Optional. Not specified means `update all`.
     /// Currently, only `display_name` can be updated, an InvalidArgument will be
     /// returned for attempting to update other fields.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 #[doc = r" Generated client implementations."]
 pub mod knowledge_bases_client {
@@ -4254,7 +4311,7 @@ pub struct SessionEntityType {
     /// `<Entity Type Display Name>` must be the display name of an existing entity
     /// type in the same agent that will be overridden or supplemented.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Indicates whether the additional data should override or
     /// supplement the custom entity type definition.
     #[prost(enumeration = "session_entity_type::EntityOverrideMode", tag = "2")]
@@ -4262,8 +4319,9 @@ pub struct SessionEntityType {
     /// Required. The collection of entities associated with this session entity
     /// type.
     #[prost(message, repeated, tag = "3")]
-    pub entities: ::std::vec::Vec<entity_type::Entity>,
+    pub entities: ::prost::alloc::vec::Vec<entity_type::Entity>,
 }
+/// Nested message and enum types in `SessionEntityType`.
 pub mod session_entity_type {
     /// The types of modifications for a session entity type.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4304,14 +4362,14 @@ pub struct ListSessionEntityTypesRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By
     /// default 100 and at most 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2beta1.SessionEntityTypes.ListSessionEntityTypes].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4319,11 +4377,11 @@ pub struct ListSessionEntityTypesResponse {
     /// The list of session entity types. There will be a maximum number of items
     /// returned based on the page_size field in the request.
     #[prost(message, repeated, tag = "1")]
-    pub session_entity_types: ::std::vec::Vec<SessionEntityType>,
+    pub session_entity_types: ::prost::alloc::vec::Vec<SessionEntityType>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.GetSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4343,7 +4401,7 @@ pub struct GetSessionEntityTypeRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.CreateSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4363,20 +4421,20 @@ pub struct CreateSessionEntityTypeRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The session entity type to create.
     #[prost(message, optional, tag = "2")]
-    pub session_entity_type: ::std::option::Option<SessionEntityType>,
+    pub session_entity_type: ::core::option::Option<SessionEntityType>,
 }
 /// The request message for [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.UpdateSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSessionEntityTypeRequest {
     /// Required. The session entity type to update.
     #[prost(message, optional, tag = "1")]
-    pub session_entity_type: ::std::option::Option<SessionEntityType>,
+    pub session_entity_type: ::core::option::Option<SessionEntityType>,
     /// Optional. The mask to control which fields get updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityTypes.DeleteSessionEntityType].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4397,7 +4455,7 @@ pub struct DeleteSessionEntityTypeRequest {
     /// `Environment ID` is not specified, we assume default 'draft' environment.
     /// If `User ID` is not specified, we assume default '-' user.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod session_entity_types_client {
@@ -4565,11 +4623,15 @@ pub struct DetectIntentRequest {
     /// The length of the `Session ID` and `User ID` must not exceed 36 characters.
     /// For more information, see the [API interactions
     /// guide](https://cloud.google.com/dialogflow/docs/api-overview).
+    ///
+    /// Note: Always use agent versions for production traffic.
+    /// See [Versions and
+    /// environments](https://cloud.google.com/dialogflow/es/docs/agents-versions).
     #[prost(string, tag = "1")]
-    pub session: std::string::String,
+    pub session: ::prost::alloc::string::String,
     /// The parameters of this query.
     #[prost(message, optional, tag = "2")]
-    pub query_params: ::std::option::Option<QueryParameters>,
+    pub query_params: ::core::option::Option<QueryParameters>,
     /// Required. The input specification. It can be set to:
     ///
     /// 1.  an audio config
@@ -4579,12 +4641,12 @@ pub struct DetectIntentRequest {
     ///
     /// 3.  an event that specifies which intent to trigger.
     #[prost(message, optional, tag = "3")]
-    pub query_input: ::std::option::Option<QueryInput>,
+    pub query_input: ::core::option::Option<QueryInput>,
     /// Instructs the speech synthesizer how to generate the output
     /// audio. If this field is not set and agent-level speech synthesizer is not
     /// configured, no output audio is generated.
     #[prost(message, optional, tag = "4")]
-    pub output_audio_config: ::std::option::Option<OutputAudioConfig>,
+    pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
     /// Mask for [output_audio_config][google.cloud.dialogflow.v2beta1.DetectIntentRequest.output_audio_config] indicating which settings in this
     /// request-level config should override speech synthesizer settings defined at
     /// agent-level.
@@ -4592,12 +4654,12 @@ pub struct DetectIntentRequest {
     /// If unspecified or empty, [output_audio_config][google.cloud.dialogflow.v2beta1.DetectIntentRequest.output_audio_config] replaces the agent-level
     /// config in its entirety.
     #[prost(message, optional, tag = "7")]
-    pub output_audio_config_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub output_audio_config_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The natural language speech audio to be processed. This field
     /// should be populated iff `query_input` is set to an input audio config.
     /// A single request can contain up to 1 minute of speech audio data.
-    #[prost(bytes, tag = "5")]
-    pub input_audio: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "5")]
+    pub input_audio: ::prost::alloc::vec::Vec<u8>,
 }
 /// The message returned from the DetectIntent method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4605,11 +4667,11 @@ pub struct DetectIntentResponse {
     /// The unique identifier of the response. It can be used to
     /// locate a response in the training example set or for reporting issues.
     #[prost(string, tag = "1")]
-    pub response_id: std::string::String,
+    pub response_id: ::prost::alloc::string::String,
     /// The selected results of the conversational query or event processing.
     /// See `alternative_query_results` for additional potential results.
     #[prost(message, optional, tag = "2")]
-    pub query_result: ::std::option::Option<QueryResult>,
+    pub query_result: ::core::option::Option<QueryResult>,
     /// If Knowledge Connectors are enabled, there could be more than one result
     /// returned for a given query or event, and this field will contain all
     /// results except for the top one, which is captured in query_result. The
@@ -4619,10 +4681,10 @@ pub struct DetectIntentResponse {
     /// intents are supported, at which point those additional results will be
     /// surfaced here.
     #[prost(message, repeated, tag = "5")]
-    pub alternative_query_results: ::std::vec::Vec<QueryResult>,
+    pub alternative_query_results: ::prost::alloc::vec::Vec<QueryResult>,
     /// Specifies the status of the webhook request.
     #[prost(message, optional, tag = "3")]
-    pub webhook_status: ::std::option::Option<super::super::super::rpc::Status>,
+    pub webhook_status: ::core::option::Option<super::super::super::rpc::Status>,
     /// The audio data bytes encoded as specified in the request.
     /// Note: The output audio is generated based on the values of default platform
     /// text responses found in the `query_result.fulfillment_messages` field. If
@@ -4633,11 +4695,11 @@ pub struct DetectIntentResponse {
     /// In some scenarios, multiple output audio fields may be present in the
     /// response structure. In these cases, only the top-most-level audio output
     /// has content.
-    #[prost(bytes, tag = "4")]
-    pub output_audio: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "4")]
+    pub output_audio: ::prost::alloc::vec::Vec<u8>,
     /// The config used by the speech synthesizer to generate the output audio.
     #[prost(message, optional, tag = "6")]
-    pub output_audio_config: ::std::option::Option<OutputAudioConfig>,
+    pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
 }
 /// Represents the parameters of the conversational query.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4647,14 +4709,14 @@ pub struct QueryParameters {
     /// America/New_York, Europe/Paris. If not provided, the time zone specified in
     /// agent settings is used.
     #[prost(string, tag = "1")]
-    pub time_zone: std::string::String,
+    pub time_zone: ::prost::alloc::string::String,
     /// The geo location of this conversational query.
     #[prost(message, optional, tag = "2")]
-    pub geo_location: ::std::option::Option<super::super::super::r#type::LatLng>,
+    pub geo_location: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// The collection of contexts to be activated before this query is
     /// executed.
     #[prost(message, repeated, tag = "3")]
-    pub contexts: ::std::vec::Vec<Context>,
+    pub contexts: ::prost::alloc::vec::Vec<Context>,
     /// Specifies whether to delete all contexts in the current session
     /// before the new ones are activated.
     #[prost(bool, tag = "4")]
@@ -4663,33 +4725,33 @@ pub struct QueryParameters {
     /// entity types with. The entity synonyms apply to all languages and persist
     /// for the session of this query.
     #[prost(message, repeated, tag = "5")]
-    pub session_entity_types: ::std::vec::Vec<SessionEntityType>,
+    pub session_entity_types: ::prost::alloc::vec::Vec<SessionEntityType>,
     /// This field can be used to pass custom data to your webhook.
     /// Arbitrary JSON objects are supported.
     /// If supplied, the value is used to populate the
     /// `WebhookRequest.original_detect_intent_request.payload`
     /// field sent to your webhook.
     #[prost(message, optional, tag = "6")]
-    pub payload: ::std::option::Option<::prost_types::Struct>,
+    pub payload: ::core::option::Option<::prost_types::Struct>,
     /// KnowledgeBases to get alternative results from. If not set, the
     /// KnowledgeBases enabled in the agent (through UI) will be used.
     /// Format:  `projects/<Project ID>/knowledgeBases/<Knowledge Base ID>`.
     #[prost(string, repeated, tag = "12")]
-    pub knowledge_base_names: ::std::vec::Vec<std::string::String>,
+    pub knowledge_base_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Configures the type of sentiment analysis to perform. If not
     /// provided, sentiment analysis is not performed.
     /// Note: Sentiment Analysis is only currently available for Essentials Edition
     /// agents.
     #[prost(message, optional, tag = "10")]
-    pub sentiment_analysis_request_config: ::std::option::Option<SentimentAnalysisRequestConfig>,
+    pub sentiment_analysis_request_config: ::core::option::Option<SentimentAnalysisRequestConfig>,
     /// For mega agent query, directly specify which sub agents to query.
     /// If any specified sub agent is not linked to the mega agent, an error will
     /// be returned. If empty, Dialogflow will decide which sub agents to query.
     /// If specified for a non-mega-agent query, will be silently ignored.
     #[prost(message, repeated, tag = "13")]
-    pub sub_agents: ::std::vec::Vec<SubAgent>,
+    pub sub_agents: ::prost::alloc::vec::Vec<SubAgent>,
     /// This field can be used to pass HTTP headers for a webhook
-    /// call. These headers will be sent to webhook alone with the headers that
+    /// call. These headers will be sent to webhook along with the headers that
     /// have been configured through Dialogflow web console. The headers defined
     /// within this field will overwrite the headers configured through Dialogflow
     /// console if there is a conflict. Header names are case-insensitive.
@@ -4697,7 +4759,8 @@ pub struct QueryParameters {
     /// "Content-Length", "Connection", "From", "User-Agent", "Accept-Encoding",
     /// "If-Modified-Since", "If-None-Match", "X-Forwarded-For", etc.
     #[prost(map = "string, string", tag = "14")]
-    pub webhook_headers: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub webhook_headers:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Represents the query input. It can contain either:
 ///
@@ -4711,8 +4774,9 @@ pub struct QueryParameters {
 pub struct QueryInput {
     /// Required. The input specification.
     #[prost(oneof = "query_input::Input", tags = "1, 2, 3")]
-    pub input: ::std::option::Option<query_input::Input>,
+    pub input: ::core::option::Option<query_input::Input>,
 }
+/// Nested message and enum types in `QueryInput`.
 pub mod query_input {
     /// Required. The input specification.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4741,13 +4805,13 @@ pub struct QueryResult {
     /// - If automatic spell correction is enabled, `query_text` will contain the
     ///   corrected user input.
     #[prost(string, tag = "1")]
-    pub query_text: std::string::String,
+    pub query_text: ::prost::alloc::string::String,
     /// The language that was triggered during intent detection.
     /// See [Language
     /// Support](https://cloud.google.com/dialogflow/docs/reference/language)
     /// for a list of the currently supported language codes.
     #[prost(string, tag = "15")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// The Speech recognition confidence between 0.0 and 1.0. A higher number
     /// indicates an estimated greater likelihood that the recognized words are
     /// correct. The default of 0.0 is a sentinel value indicating that confidence
@@ -4761,7 +4825,7 @@ pub struct QueryResult {
     pub speech_recognition_confidence: f32,
     /// The action name from the matched intent.
     #[prost(string, tag = "3")]
-    pub action: std::string::String,
+    pub action: ::prost::alloc::string::String,
     /// The collection of extracted parameters.
     ///
     /// Depending on your protocol or client library language, this is a
@@ -4772,13 +4836,14 @@ pub struct QueryResult {
     /// -   MapKey value: parameter name
     /// -   MapValue type:
     ///     -   If parameter's entity type is a composite entity: map
-    ///     -   Else: string or number, depending on parameter value type
+    ///     -   Else: depending on parameter value type, could be one of string,
+    ///         number, boolean, null, list or map
     /// -   MapValue value:
     ///     -   If parameter's entity type is a composite entity:
     ///         map from composite entity property names to property values
     ///     -   Else: parameter value
     #[prost(message, optional, tag = "4")]
-    pub parameters: ::std::option::Option<::prost_types::Struct>,
+    pub parameters: ::core::option::Option<::prost_types::Struct>,
     /// This field is set to:
     ///
     /// - `false` if the matched intent has required parameters and not all of
@@ -4790,29 +4855,29 @@ pub struct QueryResult {
     /// The text to be pronounced to the user or shown on the screen.
     /// Note: This is a legacy field, `fulfillment_messages` should be preferred.
     #[prost(string, tag = "6")]
-    pub fulfillment_text: std::string::String,
+    pub fulfillment_text: ::prost::alloc::string::String,
     /// The collection of rich messages to present to the user.
     #[prost(message, repeated, tag = "7")]
-    pub fulfillment_messages: ::std::vec::Vec<intent::Message>,
+    pub fulfillment_messages: ::prost::alloc::vec::Vec<intent::Message>,
     /// If the query was fulfilled by a webhook call, this field is set to the
     /// value of the `source` field returned in the webhook response.
     #[prost(string, tag = "8")]
-    pub webhook_source: std::string::String,
+    pub webhook_source: ::prost::alloc::string::String,
     /// If the query was fulfilled by a webhook call, this field is set to the
     /// value of the `payload` field returned in the webhook response.
     #[prost(message, optional, tag = "9")]
-    pub webhook_payload: ::std::option::Option<::prost_types::Struct>,
+    pub webhook_payload: ::core::option::Option<::prost_types::Struct>,
     /// The collection of output contexts. If applicable,
     /// `output_contexts.parameters` contains entries with name
     /// `<parameter name>.original` containing the original parameter values
     /// before the query.
     #[prost(message, repeated, tag = "10")]
-    pub output_contexts: ::std::vec::Vec<Context>,
+    pub output_contexts: ::prost::alloc::vec::Vec<Context>,
     /// The intent that matched the conversational query. Some, not
     /// all fields are filled in this message, including but not limited to:
     /// `name`, `display_name`, `end_interaction` and `is_fallback`.
     #[prost(message, optional, tag = "11")]
-    pub intent: ::std::option::Option<Intent>,
+    pub intent: ::core::option::Option<Intent>,
     /// The intent detection confidence. Values range from 0.0
     /// (completely uncertain) to 1.0 (completely certain).
     /// This value is for informational purpose only and is only used to
@@ -4831,23 +4896,24 @@ pub struct QueryResult {
     /// - webhook call latency
     /// - webhook errors
     #[prost(message, optional, tag = "14")]
-    pub diagnostic_info: ::std::option::Option<::prost_types::Struct>,
+    pub diagnostic_info: ::core::option::Option<::prost_types::Struct>,
     /// The sentiment analysis result, which depends on the
     /// `sentiment_analysis_request_config` specified in the request.
     #[prost(message, optional, tag = "17")]
-    pub sentiment_analysis_result: ::std::option::Option<SentimentAnalysisResult>,
+    pub sentiment_analysis_result: ::core::option::Option<SentimentAnalysisResult>,
     /// The result from Knowledge Connector (if any), ordered by decreasing
     /// `KnowledgeAnswers.match_confidence`.
     #[prost(message, optional, tag = "18")]
-    pub knowledge_answers: ::std::option::Option<KnowledgeAnswers>,
+    pub knowledge_answers: ::core::option::Option<KnowledgeAnswers>,
 }
 /// Represents the result of querying a Knowledge base.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KnowledgeAnswers {
     /// A list of answers from Knowledge Connector.
     #[prost(message, repeated, tag = "1")]
-    pub answers: ::std::vec::Vec<knowledge_answers::Answer>,
+    pub answers: ::prost::alloc::vec::Vec<knowledge_answers::Answer>,
 }
+/// Nested message and enum types in `KnowledgeAnswers`.
 pub mod knowledge_answers {
     /// An answer from Knowledge Connector.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4856,15 +4922,15 @@ pub mod knowledge_answers {
         /// Format: `projects/<Project ID>/knowledgeBases/<Knowledge Base
         /// ID>/documents/<Document ID>`.
         #[prost(string, tag = "1")]
-        pub source: std::string::String,
+        pub source: ::prost::alloc::string::String,
         /// The corresponding FAQ question if the answer was extracted from a FAQ
         /// Document, empty otherwise.
         #[prost(string, tag = "2")]
-        pub faq_question: std::string::String,
+        pub faq_question: ::prost::alloc::string::String,
         /// The piece of text from the `source` knowledge base document that answers
         /// this conversational query.
         #[prost(string, tag = "3")]
-        pub answer: std::string::String,
+        pub answer: ::prost::alloc::string::String,
         /// The system's confidence level that this knowledge answer is a good match
         /// for this conversational query.
         /// NOTE: The confidence level for a given `<query, answer>` pair may change
@@ -4884,10 +4950,13 @@ pub mod knowledge_answers {
         #[prost(float, tag = "5")]
         pub match_confidence: f32,
     }
+    /// Nested message and enum types in `Answer`.
     pub mod answer {
         /// Represents the system's confidence that this knowledge answer is a good
         /// match for this conversational query.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum MatchConfidenceLevel {
             /// Not specified.
@@ -4953,11 +5022,15 @@ pub struct StreamingDetectIntentRequest {
     ///
     /// For more information, see the [API interactions
     /// guide](https://cloud.google.com/dialogflow/docs/api-overview).
+    ///
+    /// Note: Always use agent versions for production traffic.
+    /// See [Versions and
+    /// environments](https://cloud.google.com/dialogflow/es/docs/agents-versions).
     #[prost(string, tag = "1")]
-    pub session: std::string::String,
+    pub session: ::prost::alloc::string::String,
     /// The parameters of this query.
     #[prost(message, optional, tag = "2")]
-    pub query_params: ::std::option::Option<QueryParameters>,
+    pub query_params: ::core::option::Option<QueryParameters>,
     /// Required. The input specification. It can be set to:
     ///
     /// 1.  an audio config which instructs the speech recognizer how to process
@@ -4967,7 +5040,7 @@ pub struct StreamingDetectIntentRequest {
     ///
     /// 3.  an event that specifies which intent to trigger.
     #[prost(message, optional, tag = "3")]
-    pub query_input: ::std::option::Option<QueryInput>,
+    pub query_input: ::core::option::Option<QueryInput>,
     /// DEPRECATED. Please use [InputAudioConfig.single_utterance][google.cloud.dialogflow.v2beta1.InputAudioConfig.single_utterance] instead.
     /// If `false` (default), recognition does not cease until the
     /// client closes the stream.
@@ -4977,13 +5050,14 @@ pub struct StreamingDetectIntentRequest {
     /// client should close the stream and start a new request with a new stream as
     /// needed.
     /// This setting is ignored when `query_input` is a piece of text or an event.
+    #[deprecated]
     #[prost(bool, tag = "4")]
     pub single_utterance: bool,
     /// Instructs the speech synthesizer how to generate the output
     /// audio. If this field is not set and agent-level speech synthesizer is not
     /// configured, no output audio is generated.
     #[prost(message, optional, tag = "5")]
-    pub output_audio_config: ::std::option::Option<OutputAudioConfig>,
+    pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
     /// Mask for [output_audio_config][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.output_audio_config] indicating which settings in this
     /// request-level config should override speech synthesizer settings defined at
     /// agent-level.
@@ -4991,12 +5065,12 @@ pub struct StreamingDetectIntentRequest {
     /// If unspecified or empty, [output_audio_config][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.output_audio_config] replaces the agent-level
     /// config in its entirety.
     #[prost(message, optional, tag = "7")]
-    pub output_audio_config_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub output_audio_config_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The input audio content to be recognized. Must be sent if
     /// `query_input` was set to a streaming input audio config. The complete audio
     /// over all streaming messages must not exceed 1 minute.
-    #[prost(bytes, tag = "6")]
-    pub input_audio: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "6")]
+    pub input_audio: ::prost::alloc::vec::Vec<u8>,
 }
 /// The top-level message returned from the
 /// `StreamingDetectIntent` method.
@@ -5020,14 +5094,14 @@ pub struct StreamingDetectIntentResponse {
     /// The unique identifier of the response. It can be used to
     /// locate a response in the training example set or for reporting issues.
     #[prost(string, tag = "1")]
-    pub response_id: std::string::String,
+    pub response_id: ::prost::alloc::string::String,
     /// The result of speech recognition.
     #[prost(message, optional, tag = "2")]
-    pub recognition_result: ::std::option::Option<StreamingRecognitionResult>,
+    pub recognition_result: ::core::option::Option<StreamingRecognitionResult>,
     /// The selected results of the conversational query or event processing.
     /// See `alternative_query_results` for additional potential results.
     #[prost(message, optional, tag = "3")]
-    pub query_result: ::std::option::Option<QueryResult>,
+    pub query_result: ::core::option::Option<QueryResult>,
     /// If Knowledge Connectors are enabled, there could be more than one result
     /// returned for a given query or event, and this field will contain all
     /// results except for the top one, which is captured in query_result. The
@@ -5037,10 +5111,10 @@ pub struct StreamingDetectIntentResponse {
     /// intents are supported, at which point those additional results will be
     /// surfaced here.
     #[prost(message, repeated, tag = "7")]
-    pub alternative_query_results: ::std::vec::Vec<QueryResult>,
+    pub alternative_query_results: ::prost::alloc::vec::Vec<QueryResult>,
     /// Specifies the status of the webhook request.
     #[prost(message, optional, tag = "4")]
-    pub webhook_status: ::std::option::Option<super::super::super::rpc::Status>,
+    pub webhook_status: ::core::option::Option<super::super::super::rpc::Status>,
     /// The audio data bytes encoded as specified in the request.
     /// Note: The output audio is generated based on the values of default platform
     /// text responses found in the `query_result.fulfillment_messages` field. If
@@ -5051,11 +5125,11 @@ pub struct StreamingDetectIntentResponse {
     /// In some scenarios, multiple output audio fields may be present in the
     /// response structure. In these cases, only the top-most-level audio output
     /// has content.
-    #[prost(bytes, tag = "5")]
-    pub output_audio: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "5")]
+    pub output_audio: ::prost::alloc::vec::Vec<u8>,
     /// The config used by the speech synthesizer to generate the output audio.
     #[prost(message, optional, tag = "6")]
-    pub output_audio_config: ::std::option::Option<OutputAudioConfig>,
+    pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
 }
 /// Contains a speech recognition result corresponding to a portion of the audio
 /// that is currently being processed or an indication that this is the end
@@ -5098,7 +5172,7 @@ pub struct StreamingRecognitionResult {
     /// Transcript text representing the words that the user spoke.
     /// Populated if and only if `message_type` = `TRANSCRIPT`.
     #[prost(string, tag = "2")]
-    pub transcript: std::string::String,
+    pub transcript: ::prost::alloc::string::String,
     /// If `false`, the `StreamingRecognitionResult` represents an
     /// interim result that may change. If `true`, the recognizer will not return
     /// any further hypotheses about this piece of the audio. May only be populated
@@ -5128,15 +5202,16 @@ pub struct StreamingRecognitionResult {
     /// [transcript][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult.transcript]. Populated if and only if `message_type` = `TRANSCRIPT` and
     /// [InputAudioConfig.enable_word_info] is set.
     #[prost(message, repeated, tag = "7")]
-    pub speech_word_info: ::std::vec::Vec<SpeechWordInfo>,
+    pub speech_word_info: ::prost::alloc::vec::Vec<SpeechWordInfo>,
     /// Time offset of the end of this Speech recognition result relative to the
     /// beginning of the audio. Only populated for `message_type` = `TRANSCRIPT`.
     #[prost(message, optional, tag = "8")]
-    pub speech_end_offset: ::std::option::Option<::prost_types::Duration>,
+    pub speech_end_offset: ::core::option::Option<::prost_types::Duration>,
     /// DTMF digits. Populated if and only if `message_type` = `DTMF_DIGITS`.
     #[prost(message, optional, tag = "5")]
-    pub dtmf_digits: ::std::option::Option<TelephonyDtmfEvents>,
+    pub dtmf_digits: ::core::option::Option<TelephonyDtmfEvents>,
 }
+/// Nested message and enum types in `StreamingRecognitionResult`.
 pub mod streaming_recognition_result {
     /// Type of the response message.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -5162,13 +5237,13 @@ pub struct TextInput {
     /// Required. The UTF-8 encoded natural language text to be processed.
     /// Text length must not exceed 256 characters.
     #[prost(string, tag = "1")]
-    pub text: std::string::String,
+    pub text: ::prost::alloc::string::String,
     /// Required. The language of this conversational query. See [Language
     /// Support](https://cloud.google.com/dialogflow/docs/reference/language)
     /// for a list of the currently supported language codes. Note that queries in
     /// the same session do not necessarily need to specify the same language.
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Events allow for matching intents by event name instead of the natural
 /// language input. For instance, input `<event: { name: "welcome_event",
@@ -5179,7 +5254,7 @@ pub struct TextInput {
 pub struct EventInput {
     /// Required. The unique identifier of the event.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The collection of parameters associated with the event.
     ///
     /// Depending on your protocol or client library language, this is a
@@ -5190,19 +5265,20 @@ pub struct EventInput {
     /// -   MapKey value: parameter name
     /// -   MapValue type:
     ///     -   If parameter's entity type is a composite entity: map
-    ///     -   Else: string or number, depending on parameter value type
+    ///     -   Else: depending on parameter value type, could be one of string,
+    ///         number, boolean, null, list or map
     /// -   MapValue value:
     ///     -   If parameter's entity type is a composite entity:
     ///         map from composite entity property names to property values
     ///     -   Else: parameter value
     #[prost(message, optional, tag = "2")]
-    pub parameters: ::std::option::Option<::prost_types::Struct>,
+    pub parameters: ::core::option::Option<::prost_types::Struct>,
     /// Required. The language of this query. See [Language
     /// Support](https://cloud.google.com/dialogflow/docs/reference/language)
     /// for a list of the currently supported language codes. Note that queries in
     /// the same session do not necessarily need to specify the same language.
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Configures the types of sentiment analysis to perform.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5227,7 +5303,7 @@ pub struct SentimentAnalysisRequestConfig {
 pub struct SentimentAnalysisResult {
     /// The sentiment analysis result for `query_text`.
     #[prost(message, optional, tag = "1")]
-    pub query_text_sentiment: ::std::option::Option<Sentiment>,
+    pub query_text_sentiment: ::core::option::Option<Sentiment>,
 }
 /// The sentiment, such as positive/negative feeling or association, for a unit
 /// of analysis, such as the query text.
@@ -5272,6 +5348,10 @@ pub mod sessions_client {
         #[doc = " as a result. This method is not idempotent, because it may cause contexts"]
         #[doc = " and session entity types to be updated, which in turn might affect"]
         #[doc = " results of future queries."]
+        #[doc = ""]
+        #[doc = " Note: Always use agent versions for production traffic."]
+        #[doc = " See [Versions and"]
+        #[doc = " environments](https://cloud.google.com/dialogflow/es/docs/agents-versions)."]
         pub async fn detect_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::DetectIntentRequest>,
@@ -5291,6 +5371,10 @@ pub mod sessions_client {
         #[doc = " Processes a natural language query in audio format in a streaming fashion"]
         #[doc = " and returns structured, actionable data as a result. This method is only"]
         #[doc = " available via the gRPC API (not REST)."]
+        #[doc = ""]
+        #[doc = " Note: Always use agent versions for production traffic."]
+        #[doc = " See [Versions and"]
+        #[doc = " environments](https://cloud.google.com/dialogflow/es/docs/agents-versions)."]
         pub async fn streaming_detect_intent(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::StreamingDetectIntentRequest>,
@@ -5341,22 +5425,22 @@ pub struct WebhookRequest {
     ///   ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session
     ///   ID>`,
     #[prost(string, tag = "4")]
-    pub session: std::string::String,
+    pub session: ::prost::alloc::string::String,
     /// The unique identifier of the response. Contains the same value as
     /// `[Streaming]DetectIntentResponse.response_id`.
     #[prost(string, tag = "1")]
-    pub response_id: std::string::String,
+    pub response_id: ::prost::alloc::string::String,
     /// The result of the conversational query or event processing. Contains the
     /// same value as `[Streaming]DetectIntentResponse.query_result`.
     #[prost(message, optional, tag = "2")]
-    pub query_result: ::std::option::Option<QueryResult>,
+    pub query_result: ::core::option::Option<QueryResult>,
     /// Alternative query results from KnowledgeService.
     #[prost(message, repeated, tag = "5")]
-    pub alternative_query_results: ::std::vec::Vec<QueryResult>,
+    pub alternative_query_results: ::prost::alloc::vec::Vec<QueryResult>,
     /// Optional. The contents of the original request that was passed to
     /// `[Streaming]DetectIntent` call.
     #[prost(message, optional, tag = "3")]
-    pub original_detect_intent_request: ::std::option::Option<OriginalDetectIntentRequest>,
+    pub original_detect_intent_request: ::core::option::Option<OriginalDetectIntentRequest>,
 }
 /// The response message for a webhook call.
 ///
@@ -5379,18 +5463,18 @@ pub struct WebhookResponse {
     /// When provided, Dialogflow uses this field to populate
     /// [QueryResult.fulfillment_text][google.cloud.dialogflow.v2beta1.QueryResult.fulfillment_text] sent to the integration or API caller.
     #[prost(string, tag = "1")]
-    pub fulfillment_text: std::string::String,
+    pub fulfillment_text: ::prost::alloc::string::String,
     /// Optional. The rich response messages intended for the end-user.
     /// When provided, Dialogflow uses this field to populate
     /// [QueryResult.fulfillment_messages][google.cloud.dialogflow.v2beta1.QueryResult.fulfillment_messages] sent to the integration or API caller.
     #[prost(message, repeated, tag = "2")]
-    pub fulfillment_messages: ::std::vec::Vec<intent::Message>,
+    pub fulfillment_messages: ::prost::alloc::vec::Vec<intent::Message>,
     /// Optional. A custom field used to identify the webhook source.
     /// Arbitrary strings are supported.
     /// When provided, Dialogflow uses this field to populate
     /// [QueryResult.webhook_source][google.cloud.dialogflow.v2beta1.QueryResult.webhook_source] sent to the integration or API caller.
     #[prost(string, tag = "3")]
-    pub source: std::string::String,
+    pub source: ::prost::alloc::string::String,
     /// Optional. This field can be used to pass custom data from your webhook to the
     /// integration or API caller. Arbitrary JSON objects are supported.
     /// When provided, Dialogflow uses this field to populate
@@ -5402,18 +5486,18 @@ pub struct WebhookResponse {
     /// See the format definition at [Google Assistant Dialogflow webhook
     /// format](https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json)
     #[prost(message, optional, tag = "4")]
-    pub payload: ::std::option::Option<::prost_types::Struct>,
+    pub payload: ::core::option::Option<::prost_types::Struct>,
     /// Optional. The collection of output contexts that will overwrite currently
     /// active contexts for the session and reset their lifespans.
     /// When provided, Dialogflow uses this field to populate
     /// [QueryResult.output_contexts][google.cloud.dialogflow.v2beta1.QueryResult.output_contexts] sent to the integration or API caller.
     #[prost(message, repeated, tag = "5")]
-    pub output_contexts: ::std::vec::Vec<Context>,
+    pub output_contexts: ::prost::alloc::vec::Vec<Context>,
     /// Optional. Invokes the supplied events.
     /// When this field is set, Dialogflow ignores the `fulfillment_text`,
     /// `fulfillment_messages`, and `payload` fields.
     #[prost(message, optional, tag = "6")]
-    pub followup_event_input: ::std::option::Option<EventInput>,
+    pub followup_event_input: ::core::option::Option<EventInput>,
     /// Optional. Indicates that this intent ends an interaction. Some integrations
     /// (e.g., Actions on Google or Dialogflow phone gateway) use this information
     /// to close interaction with an end user. Default is false.
@@ -5425,7 +5509,7 @@ pub struct WebhookResponse {
     /// the session entity types that have been set using `detectIntent`,
     /// `streamingDetectIntent` or [SessionEntityType][google.cloud.dialogflow.v2beta1.SessionEntityType] management methods.
     #[prost(message, repeated, tag = "10")]
-    pub session_entity_types: ::std::vec::Vec<SessionEntityType>,
+    pub session_entity_types: ::prost::alloc::vec::Vec<SessionEntityType>,
 }
 /// Represents the contents of the original request that was passed to
 /// the `[Streaming]DetectIntent` call.
@@ -5434,11 +5518,11 @@ pub struct OriginalDetectIntentRequest {
     /// The source of this request, e.g., `google`, `facebook`, `slack`. It is set
     /// by Dialogflow-owned servers.
     #[prost(string, tag = "1")]
-    pub source: std::string::String,
+    pub source: ::prost::alloc::string::String,
     /// Optional. The version of the protocol used for this request.
     /// This field is AoG-specific.
     #[prost(string, tag = "2")]
-    pub version: std::string::String,
+    pub version: ::prost::alloc::string::String,
     /// Optional. This field is set to the value of the `QueryParameters.payload`
     /// field passed in the request. Some integrations that query a Dialogflow
     /// agent may provide additional information in the payload.
@@ -5454,5 +5538,5 @@ pub struct OriginalDetectIntentRequest {
     /// Edition agents and populated with the caller ID in [E.164
     /// format](https://en.wikipedia.org/wiki/E.164) for Essentials Edition agents.
     #[prost(message, optional, tag = "3")]
-    pub payload: ::std::option::Option<::prost_types::Struct>,
+    pub payload: ::core::option::Option<::prost_types::Struct>,
 }

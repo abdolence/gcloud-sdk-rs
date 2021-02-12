@@ -5,7 +5,7 @@ pub struct CertificateAuthority {
     /// Output only. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The [Type][google.cloud.security.privateca.v1beta1.CertificateAuthority.Type] of this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[prost(enumeration = "certificate_authority::Type", tag = "2")]
     pub r#type: i32,
@@ -14,32 +14,32 @@ pub struct CertificateAuthority {
     pub tier: i32,
     /// Required. Immutable. The config used to create a self-signed X.509 certificate or CSR.
     #[prost(message, optional, tag = "4")]
-    pub config: ::std::option::Option<CertificateConfig>,
+    pub config: ::core::option::Option<CertificateConfig>,
     /// Required. The desired lifetime of the CA certificate. Used to create the
     /// "not_before_time" and "not_after_time" fields inside an X.509
     /// certificate.
     #[prost(message, optional, tag = "5")]
-    pub lifetime: ::std::option::Option<::prost_types::Duration>,
+    pub lifetime: ::core::option::Option<::prost_types::Duration>,
     /// Required. Immutable. Used when issuing certificates for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]. If this
     /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] is a self-signed CertificateAuthority, this key
     /// is also used to sign the self-signed CA certificate. Otherwise, it
     /// is used to sign a CSR.
     #[prost(message, optional, tag = "6")]
-    pub key_spec: ::std::option::Option<certificate_authority::KeyVersionSpec>,
+    pub key_spec: ::core::option::Option<certificate_authority::KeyVersionSpec>,
     /// Optional. The [CertificateAuthorityPolicy][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy] to enforce when issuing
     /// [Certificates][google.cloud.security.privateca.v1beta1.Certificate] from this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[prost(message, optional, tag = "7")]
     pub certificate_policy:
-        ::std::option::Option<certificate_authority::CertificateAuthorityPolicy>,
+        ::core::option::Option<certificate_authority::CertificateAuthorityPolicy>,
     /// Optional. The [IssuingOptions][google.cloud.security.privateca.v1beta1.CertificateAuthority.IssuingOptions] to follow when issuing [Certificates][google.cloud.security.privateca.v1beta1.Certificate]
     /// from this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[prost(message, optional, tag = "8")]
-    pub issuing_options: ::std::option::Option<certificate_authority::IssuingOptions>,
+    pub issuing_options: ::core::option::Option<certificate_authority::IssuingOptions>,
     /// Optional. If this is a subordinate [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority], this field will be set
     /// with the subordinate configuration, which describes its issuers. This may
     /// be updated, but this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] must continue to validate.
     #[prost(message, optional, tag = "19")]
-    pub subordinate_config: ::std::option::Option<SubordinateConfig>,
+    pub subordinate_config: ::core::option::Option<SubordinateConfig>,
     /// Output only. The [State][google.cloud.security.privateca.v1beta1.CertificateAuthority.State] for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[prost(enumeration = "certificate_authority::State", tag = "10")]
     pub state: i32,
@@ -48,11 +48,11 @@ pub struct CertificateAuthority {
     /// is the final element (consistent with RFC 5246). For a self-signed CA, this
     /// will only list the current [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s certificate.
     #[prost(string, repeated, tag = "9")]
-    pub pem_ca_certificates: ::std::vec::Vec<std::string::String>,
+    pub pem_ca_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. A structured description of this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s CA certificate
     /// and its issuers. Ordered as self-to-root.
     #[prost(message, repeated, tag = "12")]
-    pub ca_certificate_descriptions: ::std::vec::Vec<CertificateDescription>,
+    pub ca_certificate_descriptions: ::prost::alloc::vec::Vec<CertificateDescription>,
     /// Immutable. The name of a Cloud Storage bucket where this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] will
     /// publish content, such as the CA certificate and CRLs. This must be a bucket
     /// name, without any prefixes (such as `gs://`) or suffixes (such as
@@ -60,25 +60,27 @@ pub struct CertificateAuthority {
     /// would simply specify `my-bucket`. If not specified, a managed bucket will
     /// be created.
     #[prost(string, tag = "13")]
-    pub gcs_bucket: std::string::String,
+    pub gcs_bucket: ::prost::alloc::string::String,
     /// Output only. URLs for accessing content published by this CA, such as the CA certificate
     /// and CRLs.
     #[prost(message, optional, tag = "14")]
-    pub access_urls: ::std::option::Option<certificate_authority::AccessUrls>,
+    pub access_urls: ::core::option::Option<certificate_authority::AccessUrls>,
     /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] was created.
     #[prost(message, optional, tag = "15")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] was updated.
     #[prost(message, optional, tag = "16")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] will be deleted, if
     /// scheduled for deletion.
     #[prost(message, optional, tag = "17")]
-    pub delete_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
     #[prost(map = "string, string", tag = "18")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `CertificateAuthority`.
 pub mod certificate_authority {
     /// Options that affect all certificates issued by a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -104,13 +106,13 @@ pub mod certificate_authority {
         /// match at least one listed [Subject][google.cloud.security.privateca.v1beta1.Subject]. If a [Subject][google.cloud.security.privateca.v1beta1.Subject] has an empty
         /// field, any value will be allowed for that field.
         #[prost(message, repeated, tag = "3")]
-        pub allowed_locations_and_organizations: ::std::vec::Vec<super::Subject>,
+        pub allowed_locations_and_organizations: ::prost::alloc::vec::Vec<super::Subject>,
         /// Optional. If any value is specified here, then all
         /// [Certificates][google.cloud.security.privateca.v1beta1.Certificate] issued by the [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] must
         /// match at least one listed value. If no value is specified, all values
         /// will be allowed for this fied. Glob patterns are also supported.
         #[prost(string, repeated, tag = "4")]
-        pub allowed_common_names: ::std::vec::Vec<std::string::String>,
+        pub allowed_common_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Optional. If a [AllowedSubjectAltNames][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames] is specified here, then all
         /// [Certificates][google.cloud.security.privateca.v1beta1.Certificate] issued by the [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] must
         /// match [AllowedSubjectAltNames][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames]. If no value or an empty value
@@ -118,23 +120,24 @@ pub mod certificate_authority {
         /// field.
         #[prost(message, optional, tag = "5")]
         pub allowed_sans:
-            ::std::option::Option<certificate_authority_policy::AllowedSubjectAltNames>,
+            ::core::option::Option<certificate_authority_policy::AllowedSubjectAltNames>,
         /// Optional. The maximum lifetime allowed by the [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]. Note that
         /// if the any part if the issuing chain expires before a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]'s
         /// requested maximum_lifetime, the effective lifetime will be explicitly
         /// truncated.
         #[prost(message, optional, tag = "6")]
-        pub maximum_lifetime: ::std::option::Option<::prost_types::Duration>,
+        pub maximum_lifetime: ::core::option::Option<::prost_types::Duration>,
         /// Optional. If specified, then only methods allowed in the [IssuanceModes][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.IssuanceModes] may be
         /// used to issue [Certificates][google.cloud.security.privateca.v1beta1.Certificate].
         #[prost(message, optional, tag = "8")]
         pub allowed_issuance_modes:
-            ::std::option::Option<certificate_authority_policy::IssuanceModes>,
+            ::core::option::Option<certificate_authority_policy::IssuanceModes>,
         /// Allowed configurations or a single configuration for all issued
         /// certificates.
         #[prost(oneof = "certificate_authority_policy::ConfigPolicy", tags = "1, 2")]
-        pub config_policy: ::std::option::Option<certificate_authority_policy::ConfigPolicy>,
+        pub config_policy: ::core::option::Option<certificate_authority_policy::ConfigPolicy>,
     }
+    /// Nested message and enum types in `CertificateAuthorityPolicy`.
     pub mod certificate_authority_policy {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AllowedConfigList {
@@ -143,7 +146,8 @@ pub mod certificate_authority {
             /// [ReusableConfigWrapper][google.cloud.security.privateca.v1beta1.ReusableConfigWrapper] has an empty field, any value will be
             /// allowed for that field.
             #[prost(message, repeated, tag = "1")]
-            pub allowed_config_values: ::std::vec::Vec<super::super::ReusableConfigWrapper>,
+            pub allowed_config_values:
+                ::prost::alloc::vec::Vec<super::super::ReusableConfigWrapper>,
         }
         /// [AllowedSubjectAltNames][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames] specifies the allowed values for
         /// [SubjectAltNames][google.cloud.security.privateca.v1beta1.SubjectAltNames] by the [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] when issuing
@@ -158,22 +162,22 @@ pub mod certificate_authority {
             /// E.g. for wildcard entries: '\*.bar.com' will allow '*.bar.com', but not
             /// 'foo.bar.com'.
             #[prost(string, repeated, tag = "1")]
-            pub allowed_dns_names: ::std::vec::Vec<std::string::String>,
+            pub allowed_dns_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Optional. Contains valid RFC 3986 URIs. Glob patterns are also supported. To
             /// match across path seperators (i.e. '/') use the double star glob
             /// pattern (i.e. '**').
             #[prost(string, repeated, tag = "2")]
-            pub allowed_uris: ::std::vec::Vec<std::string::String>,
+            pub allowed_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Optional. Contains valid RFC 2822 E-mail addresses. Glob patterns are also
             /// supported.
             #[prost(string, repeated, tag = "3")]
-            pub allowed_email_addresses: ::std::vec::Vec<std::string::String>,
+            pub allowed_email_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Optional. Contains valid 32-bit IPv4 addresses and subnet ranges or RFC 4291 IPv6
             /// addresses and subnet ranges. Subnet ranges are specified using the
             /// '/' notation (e.g. 10.0.0.0/8, 2001:700:300:1800::/64). Glob patterns
             /// are supported only for ip address entries (i.e. not for subnet ranges).
             #[prost(string, repeated, tag = "4")]
-            pub allowed_ips: ::std::vec::Vec<std::string::String>,
+            pub allowed_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Optional. Specifies if glob patterns used for [allowed_dns_names][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames.allowed_dns_names] allows
             /// wildcard certificates.
             #[prost(bool, tag = "5")]
@@ -217,18 +221,19 @@ pub mod certificate_authority {
         /// The URL where this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s CA certificate is
         /// published. This will only be set for CAs that have been activated.
         #[prost(string, tag = "1")]
-        pub ca_certificate_access_url: std::string::String,
+        pub ca_certificate_access_url: ::prost::alloc::string::String,
         /// The URL where this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s CRLs are published. This
         /// will only be set for CAs that have been activated.
         #[prost(string, tag = "2")]
-        pub crl_access_url: std::string::String,
+        pub crl_access_url: ::prost::alloc::string::String,
     }
     /// A Cloud KMS key configuration that a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] will use.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyVersionSpec {
         #[prost(oneof = "key_version_spec::KeyVersion", tags = "1, 2")]
-        pub key_version: ::std::option::Option<key_version_spec::KeyVersion>,
+        pub key_version: ::core::option::Option<key_version_spec::KeyVersion>,
     }
+    /// Nested message and enum types in `KeyVersionSpec`.
     pub mod key_version_spec {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum KeyVersion {
@@ -238,7 +243,7 @@ pub mod certificate_authority {
             /// This option enables full flexibility in the key's capabilities and
             /// properties.
             #[prost(string, tag = "1")]
-            CloudKmsKeyVersion(std::string::String),
+            CloudKmsKeyVersion(::prost::alloc::string::String),
             /// Required. The algorithm to use for creating a managed Cloud KMS key for a for a
             /// simplified experience. All managed keys will be have their
             /// [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] as `HSM`.
@@ -328,32 +333,35 @@ pub struct CertificateRevocationList {
     /// `projects/*/locations/*/certificateAuthorities/*/
     ///    certificateRevocationLists/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The CRL sequence number that appears in pem_crl.
     #[prost(int64, tag = "2")]
     pub sequence_number: i64,
     /// Output only. The revoked serial numbers that appear in pem_crl.
     #[prost(message, repeated, tag = "3")]
-    pub revoked_certificates: ::std::vec::Vec<certificate_revocation_list::RevokedCertificate>,
+    pub revoked_certificates:
+        ::prost::alloc::vec::Vec<certificate_revocation_list::RevokedCertificate>,
     /// Output only. The PEM-encoded X.509 CRL.
     #[prost(string, tag = "4")]
-    pub pem_crl: std::string::String,
+    pub pem_crl: ::prost::alloc::string::String,
     /// Output only. The location where 'pem_crl' can be accessed.
     #[prost(string, tag = "5")]
-    pub access_url: std::string::String,
+    pub access_url: ::prost::alloc::string::String,
     /// Output only. The [State][google.cloud.security.privateca.v1beta1.CertificateRevocationList.State] for this [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
     #[prost(enumeration = "certificate_revocation_list::State", tag = "6")]
     pub state: i32,
     /// Output only. The time at which this [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] was created.
     #[prost(message, optional, tag = "7")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] was updated.
     #[prost(message, optional, tag = "8")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
     #[prost(map = "string, string", tag = "9")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `CertificateRevocationList`.
 pub mod certificate_revocation_list {
     /// Describes a revoked [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -361,10 +369,10 @@ pub mod certificate_revocation_list {
         /// The resource path for the [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in the format
         /// `projects/*/locations/*/certificateAuthorities/*/certificates/*`.
         #[prost(string, tag = "1")]
-        pub certificate: std::string::String,
+        pub certificate: ::prost::alloc::string::String,
         /// The serial number of the [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
         #[prost(string, tag = "2")]
-        pub hex_serial_number: std::string::String,
+        pub hex_serial_number: ::prost::alloc::string::String,
         /// The reason the [Certificate][google.cloud.security.privateca.v1beta1.Certificate] was revoked.
         #[prost(enumeration = "super::RevocationReason", tag = "3")]
         pub revocation_reason: i32,
@@ -388,40 +396,42 @@ pub struct Certificate {
     /// Output only. The resource path for this [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in the format
     /// `projects/*/locations/*/certificateAuthorities/*/certificates/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The desired lifetime of a certificate. Used to create the
     /// "not_before_time" and "not_after_time" fields inside an X.509
     /// certificate. Note that the lifetime may be truncated if it would extend
     /// past the life of any certificate authority in the issuing chain.
     #[prost(message, optional, tag = "4")]
-    pub lifetime: ::std::option::Option<::prost_types::Duration>,
+    pub lifetime: ::core::option::Option<::prost_types::Duration>,
     /// Output only. Details regarding the revocation of this [Certificate][google.cloud.security.privateca.v1beta1.Certificate]. This
     /// [Certificate][google.cloud.security.privateca.v1beta1.Certificate] is considered revoked if and only if this field is present.
     #[prost(message, optional, tag = "5")]
-    pub revocation_details: ::std::option::Option<certificate::RevocationDetails>,
+    pub revocation_details: ::core::option::Option<certificate::RevocationDetails>,
     /// Output only. The pem-encoded, signed X.509 certificate.
     #[prost(string, tag = "6")]
-    pub pem_certificate: std::string::String,
+    pub pem_certificate: ::prost::alloc::string::String,
     /// Output only. A structured description of the issued X.509 certificate.
     #[prost(message, optional, tag = "7")]
-    pub certificate_description: ::std::option::Option<CertificateDescription>,
+    pub certificate_description: ::core::option::Option<CertificateDescription>,
     /// Output only. The chain that may be used to verify the X.509 certificate. Expected to be
     /// in issuer-to-root order according to RFC 5246.
     #[prost(string, repeated, tag = "8")]
-    pub pem_certificate_chain: ::std::vec::Vec<std::string::String>,
+    pub pem_certificate_chain: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The time at which this [Certificate][google.cloud.security.privateca.v1beta1.Certificate] was created.
     #[prost(message, optional, tag = "9")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this [Certificate][google.cloud.security.privateca.v1beta1.Certificate] was updated.
     #[prost(message, optional, tag = "10")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
     #[prost(map = "string, string", tag = "11")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The config used to create a signed X.509 certificate.
     #[prost(oneof = "certificate::CertificateConfig", tags = "2, 3")]
-    pub certificate_config: ::std::option::Option<certificate::CertificateConfig>,
+    pub certificate_config: ::core::option::Option<certificate::CertificateConfig>,
 }
+/// Nested message and enum types in `Certificate`.
 pub mod certificate {
     /// Describes fields that are relavent to the revocation of a [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -431,14 +441,14 @@ pub mod certificate {
         pub revocation_state: i32,
         /// The time at which this [Certificate][google.cloud.security.privateca.v1beta1.Certificate] was revoked.
         #[prost(message, optional, tag = "2")]
-        pub revocation_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub revocation_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The config used to create a signed X.509 certificate.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CertificateConfig {
         /// Immutable. A pem-encoded X.509 certificate signing request (CSR).
         #[prost(string, tag = "2")]
-        PemCsr(std::string::String),
+        PemCsr(::prost::alloc::string::String),
         /// Immutable. A description of the certificate and key that does not require X.509 or
         /// ASN.1.
         #[prost(message, tag = "3")]
@@ -454,23 +464,24 @@ pub struct ReusableConfig {
     /// Output only. The resource path for this [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] in the format
     /// `projects/*/locations/*/reusableConfigs/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The config values.
     #[prost(message, optional, tag = "2")]
-    pub values: ::std::option::Option<ReusableConfigValues>,
+    pub values: ::core::option::Option<ReusableConfigValues>,
     /// Optional. A human-readable description of scenarios these ReusableConfigValues may be
     /// compatible with.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The time at which this [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] was created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] was updated.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
     #[prost(map = "string, string", tag = "6")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// A [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues] is used to describe certain fields of an
 /// X.509 certificate, such as the key usage fields, fields specific to CA
@@ -479,24 +490,25 @@ pub struct ReusableConfig {
 pub struct ReusableConfigValues {
     /// Optional. Indicates the intended use for keys that correspond to a certificate.
     #[prost(message, optional, tag = "1")]
-    pub key_usage: ::std::option::Option<KeyUsage>,
+    pub key_usage: ::core::option::Option<KeyUsage>,
     /// Optional. Describes options in this [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues] that are
     /// relevant in a CA certificate.
     #[prost(message, optional, tag = "2")]
-    pub ca_options: ::std::option::Option<reusable_config_values::CaOptions>,
+    pub ca_options: ::core::option::Option<reusable_config_values::CaOptions>,
     /// Optional. Describes the X.509 certificate policy object identifiers, per
     /// https://tools.ietf.org/html/rfc5280#section-4.2.1.4.
     #[prost(message, repeated, tag = "3")]
-    pub policy_ids: ::std::vec::Vec<ObjectId>,
+    pub policy_ids: ::prost::alloc::vec::Vec<ObjectId>,
     /// Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses
     /// that appear in the "Authority Information Access" extension in the
     /// certificate.
     #[prost(string, repeated, tag = "4")]
-    pub aia_ocsp_servers: ::std::vec::Vec<std::string::String>,
+    pub aia_ocsp_servers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Describes custom X.509 extensions.
     #[prost(message, repeated, tag = "5")]
-    pub additional_extensions: ::std::vec::Vec<X509Extension>,
+    pub additional_extensions: ::prost::alloc::vec::Vec<X509Extension>,
 }
+/// Nested message and enum types in `ReusableConfigValues`.
 pub mod reusable_config_values {
     /// Describes values that are relevant in a CA certificate.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -504,7 +516,7 @@ pub mod reusable_config_values {
         /// Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this
         /// value is missing, the extension will be omitted from the CA certificate.
         #[prost(message, optional, tag = "1")]
-        pub is_ca: ::std::option::Option<bool>,
+        pub is_ca: ::core::option::Option<bool>,
         /// Optional. Refers to the path length restriction X.509 extension. For a CA
         /// certificate, this value describes the depth of subordinate CA
         /// certificates that are allowed.
@@ -512,7 +524,7 @@ pub mod reusable_config_values {
         /// If this value is missing, the max path length will be omitted from the
         /// CA certificate.
         #[prost(message, optional, tag = "2")]
-        pub max_issuer_path_length: ::std::option::Option<i32>,
+        pub max_issuer_path_length: ::core::option::Option<i32>,
     }
 }
 /// A [ReusableConfigWrapper][google.cloud.security.privateca.v1beta1.ReusableConfigWrapper] describes values that may assist in creating an
@@ -521,8 +533,9 @@ pub mod reusable_config_values {
 pub struct ReusableConfigWrapper {
     /// Reusable or inline config values.
     #[prost(oneof = "reusable_config_wrapper::ConfigValues", tags = "1, 2")]
-    pub config_values: ::std::option::Option<reusable_config_wrapper::ConfigValues>,
+    pub config_values: ::core::option::Option<reusable_config_wrapper::ConfigValues>,
 }
+/// Nested message and enum types in `ReusableConfigWrapper`.
 pub mod reusable_config_wrapper {
     /// Reusable or inline config values.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -530,7 +543,7 @@ pub mod reusable_config_wrapper {
         /// Required. A resource path to a [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig] in the format
         /// `projects/*/locations/*/reusableConfigs/*`.
         #[prost(string, tag = "1")]
-        ReusableConfig(std::string::String),
+        ReusableConfig(::prost::alloc::string::String),
         /// Required. A user-specified inline [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues].
         #[prost(message, tag = "2")]
         ReusableConfigValues(super::ReusableConfigValues),
@@ -541,8 +554,9 @@ pub mod reusable_config_wrapper {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubordinateConfig {
     #[prost(oneof = "subordinate_config::SubordinateConfig", tags = "1, 2")]
-    pub subordinate_config: ::std::option::Option<subordinate_config::SubordinateConfig>,
+    pub subordinate_config: ::core::option::Option<subordinate_config::SubordinateConfig>,
 }
+/// Nested message and enum types in `SubordinateConfig`.
 pub mod subordinate_config {
     /// This message describes a subordinate CA's issuer certificate chain. This
     /// wrapper exists for compatibility reasons.
@@ -550,7 +564,7 @@ pub mod subordinate_config {
     pub struct SubordinateConfigChain {
         /// Required. Expected to be in leaf-to-root order according to RFC 5246.
         #[prost(string, repeated, tag = "1")]
-        pub pem_certificates: ::std::vec::Vec<std::string::String>,
+        pub pem_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SubordinateConfig {
@@ -559,7 +573,7 @@ pub mod subordinate_config {
         /// is used for information and usability purposes only. The resource name
         /// is in the format `projects/*/locations/*/certificateAuthorities/*`.
         #[prost(string, tag = "1")]
-        CertificateAuthority(std::string::String),
+        CertificateAuthority(::prost::alloc::string::String),
         /// Required. Contains the PEM certificate chain for the issuers of this
         /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority], but not pem certificate for this CA itself.
         #[prost(message, tag = "2")]
@@ -574,9 +588,10 @@ pub struct PublicKey {
     pub r#type: i32,
     /// Required. A public key. Padding and encoding varies by 'KeyType' and is described
     /// along with the KeyType values.
-    #[prost(bytes, tag = "2")]
-    pub key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
 }
+/// Nested message and enum types in `PublicKey`.
 pub mod public_key {
     /// Types of public keys that are supported.
     /// At a minimum, we support RSA and ECDSA, for the key sizes or curves listed:
@@ -599,17 +614,18 @@ pub struct CertificateConfig {
     /// Required. Specifies some of the values in a certificate that are related to the
     /// subject.
     #[prost(message, optional, tag = "1")]
-    pub subject_config: ::std::option::Option<certificate_config::SubjectConfig>,
+    pub subject_config: ::core::option::Option<certificate_config::SubjectConfig>,
     /// Required. Describes how some of the technical fields in a certificate should be
     /// populated.
     #[prost(message, optional, tag = "2")]
-    pub reusable_config: ::std::option::Option<ReusableConfigWrapper>,
+    pub reusable_config: ::core::option::Option<ReusableConfigWrapper>,
     /// Optional. The public key that corresponds to this config. This is, for example, used
     /// when issuing [Certificates][google.cloud.security.privateca.v1beta1.Certificate], but not when creating a
     /// self-signed [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] or [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] CSR.
     #[prost(message, optional, tag = "3")]
-    pub public_key: ::std::option::Option<PublicKey>,
+    pub public_key: ::core::option::Option<PublicKey>,
 }
+/// Nested message and enum types in `CertificateConfig`.
 pub mod certificate_config {
     /// These values are used to create the distinguished name and subject
     /// alternative name fields in an X.509 certificate.
@@ -617,13 +633,13 @@ pub mod certificate_config {
     pub struct SubjectConfig {
         /// Required. Contains distinguished name fields such as the location and organization.
         #[prost(message, optional, tag = "1")]
-        pub subject: ::std::option::Option<super::Subject>,
+        pub subject: ::core::option::Option<super::Subject>,
         /// Optional. The "common name" of the distinguished name.
         #[prost(string, tag = "2")]
-        pub common_name: std::string::String,
+        pub common_name: ::prost::alloc::string::String,
         /// Optional. The subject alternative name fields.
         #[prost(message, optional, tag = "3")]
-        pub subject_alt_name: ::std::option::Option<super::SubjectAltNames>,
+        pub subject_alt_name: ::core::option::Option<super::SubjectAltNames>,
     }
 }
 /// A [CertificateDescription][google.cloud.security.privateca.v1beta1.CertificateDescription] describes an X.509 certificate or CSR that has
@@ -633,34 +649,35 @@ pub struct CertificateDescription {
     /// Describes some of the values in a certificate that are related to the
     /// subject and lifetime.
     #[prost(message, optional, tag = "1")]
-    pub subject_description: ::std::option::Option<certificate_description::SubjectDescription>,
+    pub subject_description: ::core::option::Option<certificate_description::SubjectDescription>,
     /// Describes some of the technical fields in a certificate.
     #[prost(message, optional, tag = "2")]
-    pub config_values: ::std::option::Option<ReusableConfigValues>,
+    pub config_values: ::core::option::Option<ReusableConfigValues>,
     /// The public key that corresponds to an issued certificate.
     #[prost(message, optional, tag = "3")]
-    pub public_key: ::std::option::Option<PublicKey>,
+    pub public_key: ::core::option::Option<PublicKey>,
     /// Provides a means of identifiying certificates that contain a particular
     /// public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2.
     #[prost(message, optional, tag = "4")]
-    pub subject_key_id: ::std::option::Option<certificate_description::KeyId>,
+    pub subject_key_id: ::core::option::Option<certificate_description::KeyId>,
     /// Identifies the subject_key_id of the parent certificate, per
     /// https://tools.ietf.org/html/rfc5280#section-4.2.1.1
     #[prost(message, optional, tag = "5")]
-    pub authority_key_id: ::std::option::Option<certificate_description::KeyId>,
+    pub authority_key_id: ::core::option::Option<certificate_description::KeyId>,
     /// Describes a list of locations to obtain CRL information, i.e.
     /// the DistributionPoint.fullName described by
     /// https://tools.ietf.org/html/rfc5280#section-4.2.1.13
     #[prost(string, repeated, tag = "6")]
-    pub crl_distribution_points: ::std::vec::Vec<std::string::String>,
+    pub crl_distribution_points: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Describes lists of issuer CA certificate URLs that appear in the
     /// "Authority Information Access" extension in the certificate.
     #[prost(string, repeated, tag = "7")]
-    pub aia_issuing_certificate_urls: ::std::vec::Vec<std::string::String>,
+    pub aia_issuing_certificate_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The hash of the x.509 certificate.
     #[prost(message, optional, tag = "8")]
-    pub cert_fingerprint: ::std::option::Option<certificate_description::CertificateFingerprint>,
+    pub cert_fingerprint: ::core::option::Option<certificate_description::CertificateFingerprint>,
 }
+/// Nested message and enum types in `CertificateDescription`.
 pub mod certificate_description {
     /// These values describe fields in an issued X.509 certificate such as the
     /// distinguished name, subject alternative names, serial number, and lifetime.
@@ -668,26 +685,26 @@ pub mod certificate_description {
     pub struct SubjectDescription {
         /// Contains distinguished name fields such as the location and organization.
         #[prost(message, optional, tag = "1")]
-        pub subject: ::std::option::Option<super::Subject>,
+        pub subject: ::core::option::Option<super::Subject>,
         /// The "common name" of the distinguished name.
         #[prost(string, tag = "2")]
-        pub common_name: std::string::String,
+        pub common_name: ::prost::alloc::string::String,
         /// The subject alternative name fields.
         #[prost(message, optional, tag = "3")]
-        pub subject_alt_name: ::std::option::Option<super::SubjectAltNames>,
+        pub subject_alt_name: ::core::option::Option<super::SubjectAltNames>,
         /// The serial number encoded in lowercase hexadecimal.
         #[prost(string, tag = "4")]
-        pub hex_serial_number: std::string::String,
+        pub hex_serial_number: ::prost::alloc::string::String,
         /// For convenience, the actual lifetime of an issued certificate.
         /// Corresponds to 'not_after_time' - 'not_before_time'.
         #[prost(message, optional, tag = "5")]
-        pub lifetime: ::std::option::Option<::prost_types::Duration>,
+        pub lifetime: ::core::option::Option<::prost_types::Duration>,
         /// The time at which the certificate becomes valid.
         #[prost(message, optional, tag = "6")]
-        pub not_before_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub not_before_time: ::core::option::Option<::prost_types::Timestamp>,
         /// The time at which the certificate expires.
         #[prost(message, optional, tag = "7")]
-        pub not_after_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub not_after_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// A KeyId identifies a specific public key, usually by hashing the public
     /// key.
@@ -696,14 +713,14 @@ pub mod certificate_description {
         /// Optional. The value of this KeyId encoded in lowercase hexadecimal. This is most
         /// likely the 160 bit SHA-1 hash of the public key.
         #[prost(string, tag = "1")]
-        pub key_id: std::string::String,
+        pub key_id: ::prost::alloc::string::String,
     }
     /// A group of fingerprints for the x509 certificate.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CertificateFingerprint {
         /// The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate.
         #[prost(string, tag = "1")]
-        pub sha256_hash: std::string::String,
+        pub sha256_hash: ::prost::alloc::string::String,
     }
 }
 /// An [ObjectId][google.cloud.security.privateca.v1beta1.ObjectId] specifies an object identifier (OID). These provide context
@@ -713,7 +730,7 @@ pub struct ObjectId {
     /// Required. The parts of an OID path. The most significant parts of the path come
     /// first.
     #[prost(int32, repeated, packed = "false", tag = "1")]
-    pub object_id_path: ::std::vec::Vec<i32>,
+    pub object_id_path: ::prost::alloc::vec::Vec<i32>,
 }
 /// An [X509Extension][google.cloud.security.privateca.v1beta1.X509Extension] specifies an X.509 extension, which may be used in
 /// different parts of X.509 objects like certificates, CSRs, and CRLs.
@@ -721,15 +738,15 @@ pub struct ObjectId {
 pub struct X509Extension {
     /// Required. The OID for this X.509 extension.
     #[prost(message, optional, tag = "1")]
-    pub object_id: ::std::option::Option<ObjectId>,
+    pub object_id: ::core::option::Option<ObjectId>,
     /// Required. Indicates whether or not this extension is critical (i.e., if the client
     /// does not know how to handle this extension, the client should consider this
     /// to be an error).
     #[prost(bool, tag = "2")]
     pub critical: bool,
     /// Required. The value of this X.509 extension.
-    #[prost(bytes, tag = "3")]
-    pub value: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub value: ::prost::alloc::vec::Vec<u8>,
 }
 /// A [KeyUsage][google.cloud.security.privateca.v1beta1.KeyUsage] describes key usage values that may appear in an X.509
 /// certificate.
@@ -737,15 +754,16 @@ pub struct X509Extension {
 pub struct KeyUsage {
     /// Describes high-level ways in which a key may be used.
     #[prost(message, optional, tag = "1")]
-    pub base_key_usage: ::std::option::Option<key_usage::KeyUsageOptions>,
+    pub base_key_usage: ::core::option::Option<key_usage::KeyUsageOptions>,
     /// Detailed scenarios in which a key may be used.
     #[prost(message, optional, tag = "2")]
-    pub extended_key_usage: ::std::option::Option<key_usage::ExtendedKeyUsageOptions>,
+    pub extended_key_usage: ::core::option::Option<key_usage::ExtendedKeyUsageOptions>,
     /// Used to describe extended key usages that are not listed in the
     /// [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1beta1.KeyUsage.ExtendedKeyUsageOptions] message.
     #[prost(message, repeated, tag = "3")]
-    pub unknown_extended_key_usages: ::std::vec::Vec<ObjectId>,
+    pub unknown_extended_key_usages: ::prost::alloc::vec::Vec<ObjectId>,
 }
+/// Nested message and enum types in `KeyUsage`.
 pub mod key_usage {
     /// [KeyUsage.KeyUsageOptions][google.cloud.security.privateca.v1beta1.KeyUsage.KeyUsageOptions] corresponds to the key usage values
     /// described in https://tools.ietf.org/html/rfc5280#section-4.2.1.3.
@@ -816,25 +834,25 @@ pub mod key_usage {
 pub struct Subject {
     /// The country code of the subject.
     #[prost(string, tag = "1")]
-    pub country_code: std::string::String,
+    pub country_code: ::prost::alloc::string::String,
     /// The organization of the subject.
     #[prost(string, tag = "2")]
-    pub organization: std::string::String,
+    pub organization: ::prost::alloc::string::String,
     /// The organizational_unit of the subject.
     #[prost(string, tag = "3")]
-    pub organizational_unit: std::string::String,
+    pub organizational_unit: ::prost::alloc::string::String,
     /// The locality or city of the subject.
     #[prost(string, tag = "4")]
-    pub locality: std::string::String,
+    pub locality: ::prost::alloc::string::String,
     /// The province, territory, or regional state of the subject.
     #[prost(string, tag = "5")]
-    pub province: std::string::String,
+    pub province: ::prost::alloc::string::String,
     /// The street address of the subject.
     #[prost(string, tag = "6")]
-    pub street_address: std::string::String,
+    pub street_address: ::prost::alloc::string::String,
     /// The postal code of the subject.
     #[prost(string, tag = "7")]
-    pub postal_code: std::string::String,
+    pub postal_code: ::prost::alloc::string::String,
 }
 /// [SubjectAltNames][google.cloud.security.privateca.v1beta1.SubjectAltNames] corresponds to a more modern way of listing what
 /// the asserted identity is in a certificate (i.e., compared to the "common
@@ -843,19 +861,19 @@ pub struct Subject {
 pub struct SubjectAltNames {
     /// Contains only valid, fully-qualified host names.
     #[prost(string, repeated, tag = "1")]
-    pub dns_names: ::std::vec::Vec<std::string::String>,
+    pub dns_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Contains only valid RFC 3986 URIs.
     #[prost(string, repeated, tag = "2")]
-    pub uris: ::std::vec::Vec<std::string::String>,
+    pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Contains only valid RFC 2822 E-mail addresses.
     #[prost(string, repeated, tag = "3")]
-    pub email_addresses: ::std::vec::Vec<std::string::String>,
+    pub email_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses.
     #[prost(string, repeated, tag = "4")]
-    pub ip_addresses: ::std::vec::Vec<std::string::String>,
+    pub ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Contains additional subject alternative name values.
     #[prost(message, repeated, tag = "5")]
-    pub custom_sans: ::std::vec::Vec<X509Extension>,
+    pub custom_sans: ::prost::alloc::vec::Vec<X509Extension>,
 }
 /// A [RevocationReason][google.cloud.security.privateca.v1beta1.RevocationReason] indicates whether a [Certificate][google.cloud.security.privateca.v1beta1.Certificate] has been revoked,
 /// and the reason for revocation. These correspond to standard revocation
@@ -897,16 +915,16 @@ pub struct CreateCertificateRequest {
     /// associated with the [Certificate][google.cloud.security.privateca.v1beta1.Certificate], in the format
     /// `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. It must be unique within a location and match the regular
     /// expression `[a-zA-Z0-9_-]{1,63}`. This field is required when using a
     /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the Enterprise [CertificateAuthority.Tier][google.cloud.security.privateca.v1beta1.CertificateAuthority.Tier],
     /// but is optional and its value is ignored otherwise.
     #[prost(string, tag = "2")]
-    pub certificate_id: std::string::String,
+    pub certificate_id: ::prost::alloc::string::String,
     /// Required. A [Certificate][google.cloud.security.privateca.v1beta1.Certificate] with initial field values.
     #[prost(message, optional, tag = "3")]
-    pub certificate: ::std::option::Option<Certificate>,
+    pub certificate: ::core::option::Option<Certificate>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -921,7 +939,7 @@ pub struct CreateCertificateRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificate].
@@ -929,7 +947,7 @@ pub struct CreateCertificateRequest {
 pub struct GetCertificateRequest {
     /// Required. The [name][google.cloud.security.privateca.v1beta1.Certificate.name] of the [Certificate][google.cloud.security.privateca.v1beta1.Certificate] to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificates].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -938,7 +956,7 @@ pub struct ListCertificatesRequest {
     /// [Certificates][google.cloud.security.privateca.v1beta1.Certificate], in the format
     /// `projects/*/locations/*/certificateauthorities/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of
     /// [Certificates][google.cloud.security.privateca.v1beta1.Certificate] to include in the
     /// response. Further [Certificates][google.cloud.security.privateca.v1beta1.Certificate] can subsequently be obtained
@@ -950,32 +968,32 @@ pub struct ListCertificatesRequest {
     /// Optional. Pagination token, returned earlier via
     /// [ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificatesResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response. For details
     /// on supported filters and syntax, see [Certificates Filtering
     /// documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support).
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. For details on supported fields
     /// and syntax, see [Certificates Sorting
     /// documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support).
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificates].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesResponse {
     /// The list of [Certificates][google.cloud.security.privateca.v1beta1.Certificate].
     #[prost(message, repeated, tag = "1")]
-    pub certificates: ::std::vec::Vec<Certificate>,
+    pub certificates: ::prost::alloc::vec::Vec<Certificate>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListCertificatesRequest.next_page_token][] to retrieve the
     /// next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
 /// [CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.RevokeCertificate].
@@ -984,7 +1002,7 @@ pub struct RevokeCertificateRequest {
     /// Required. The resource name for this [Certificate][google.cloud.security.privateca.v1beta1.Certificate] in the
     /// format `projects/*/locations/*/certificateAuthorities/*/certificates/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The [RevocationReason][google.cloud.security.privateca.v1beta1.RevocationReason] for revoking this certificate.
     #[prost(enumeration = "RevocationReason", tag = "2")]
     pub reason: i32,
@@ -1002,17 +1020,17 @@ pub struct RevokeCertificateRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for [CertificateAuthorityService.UpdateCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificate].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateRequest {
     /// Required. [Certificate][google.cloud.security.privateca.v1beta1.Certificate] with updated values.
     #[prost(message, optional, tag = "1")]
-    pub certificate: ::std::option::Option<Certificate>,
+    pub certificate: ::core::option::Option<Certificate>,
     /// Required. A list of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1027,7 +1045,7 @@ pub struct UpdateCertificateRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ActivateCertificateAuthority].
@@ -1036,15 +1054,15 @@ pub struct ActivateCertificateAuthorityRequest {
     /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The signed CA certificate issued from
     /// [FetchCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1beta1.FetchCertificateAuthorityCsrResponse.pem_csr].
     #[prost(string, tag = "2")]
-    pub pem_ca_certificate: std::string::String,
+    pub pem_ca_certificate: ::prost::alloc::string::String,
     /// Required. Must include information about the issuer of 'pem_ca_certificate', and any
     /// further issuers until the self-signed CA.
     #[prost(message, optional, tag = "3")]
-    pub subordinate_config: ::std::option::Option<SubordinateConfig>,
+    pub subordinate_config: ::core::option::Option<SubordinateConfig>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1059,7 +1077,7 @@ pub struct ActivateCertificateAuthorityRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateAuthority].
@@ -1069,14 +1087,14 @@ pub struct CreateCertificateAuthorityRequest {
     /// [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority], in the format
     /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a location and match the regular
     /// expression `[a-zA-Z0-9_-]{1,63}`
     #[prost(string, tag = "2")]
-    pub certificate_authority_id: std::string::String,
+    pub certificate_authority_id: ::prost::alloc::string::String,
     /// Required. A [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] with initial field values.
     #[prost(message, optional, tag = "3")]
-    pub certificate_authority: ::std::option::Option<CertificateAuthority>,
+    pub certificate_authority: ::core::option::Option<CertificateAuthority>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1091,7 +1109,7 @@ pub struct CreateCertificateAuthorityRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.DisableCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.DisableCertificateAuthority].
@@ -1100,7 +1118,7 @@ pub struct DisableCertificateAuthorityRequest {
     /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1115,7 +1133,7 @@ pub struct DisableCertificateAuthorityRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.EnableCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.EnableCertificateAuthority].
@@ -1124,7 +1142,7 @@ pub struct EnableCertificateAuthorityRequest {
     /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1139,7 +1157,7 @@ pub struct EnableCertificateAuthorityRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
@@ -1148,7 +1166,7 @@ pub struct FetchCertificateAuthorityCsrRequest {
     /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
@@ -1156,7 +1174,7 @@ pub struct FetchCertificateAuthorityCsrRequest {
 pub struct FetchCertificateAuthorityCsrResponse {
     /// Output only. The PEM-encoded signed certificate signing request (CSR).
     #[prost(string, tag = "1")]
-    pub pem_csr: std::string::String,
+    pub pem_csr: ::prost::alloc::string::String,
 }
 /// Request message for [CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateAuthority].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1164,7 +1182,7 @@ pub struct GetCertificateAuthorityRequest {
     /// Required. The [name][google.cloud.security.privateca.v1beta1.CertificateAuthority.name] of the [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] to
     /// get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities].
@@ -1174,7 +1192,7 @@ pub struct ListCertificateAuthoritiesRequest {
     /// [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority], in the format
     /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority] to
     /// include in the response.
     /// Further [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority] can subsequently be
@@ -1186,13 +1204,13 @@ pub struct ListCertificateAuthoritiesRequest {
     /// Optional. Pagination token, returned earlier via
     /// [ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateAuthoritiesResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities].
@@ -1200,15 +1218,15 @@ pub struct ListCertificateAuthoritiesRequest {
 pub struct ListCertificateAuthoritiesResponse {
     /// The list of [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[prost(message, repeated, tag = "1")]
-    pub certificate_authorities: ::std::vec::Vec<CertificateAuthority>,
+    pub certificate_authorities: ::prost::alloc::vec::Vec<CertificateAuthority>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListCertificateAuthoritiesRequest.next_page_token][] to retrieve the next
     /// page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
 /// [CertificateAuthorityService.RestoreCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.RestoreCertificateAuthority].
@@ -1217,7 +1235,7 @@ pub struct RestoreCertificateAuthorityRequest {
     /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1232,7 +1250,7 @@ pub struct RestoreCertificateAuthorityRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.ScheduleDeleteCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ScheduleDeleteCertificateAuthority].
@@ -1241,7 +1259,7 @@ pub struct ScheduleDeleteCertificateAuthorityRequest {
     /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in the
     /// format `projects/*/locations/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1256,7 +1274,7 @@ pub struct ScheduleDeleteCertificateAuthorityRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateAuthority].
@@ -1264,10 +1282,10 @@ pub struct ScheduleDeleteCertificateAuthorityRequest {
 pub struct UpdateCertificateAuthorityRequest {
     /// Required. [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] with updated values.
     #[prost(message, optional, tag = "1")]
-    pub certificate_authority: ::std::option::Option<CertificateAuthority>,
+    pub certificate_authority: ::core::option::Option<CertificateAuthority>,
     /// Required. A list of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1282,7 +1300,7 @@ pub struct UpdateCertificateAuthorityRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateRevocationList].
@@ -1291,7 +1309,7 @@ pub struct GetCertificateRevocationListRequest {
     /// Required. The [name][google.cloud.security.privateca.v1beta1.CertificateRevocationList.name] of the
     /// [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists].
@@ -1301,7 +1319,7 @@ pub struct ListCertificateRevocationListsRequest {
     /// [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList], in the format
     /// `projects/*/locations/*/certificateauthorities/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of
     /// [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList] to include in the
     /// response. Further [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
@@ -1313,13 +1331,13 @@ pub struct ListCertificateRevocationListsRequest {
     /// Optional. Pagination token, returned earlier via
     /// [ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificateRevocationListsResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists].
@@ -1327,15 +1345,15 @@ pub struct ListCertificateRevocationListsRequest {
 pub struct ListCertificateRevocationListsResponse {
     /// The list of [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
     #[prost(message, repeated, tag = "1")]
-    pub certificate_revocation_lists: ::std::vec::Vec<CertificateRevocationList>,
+    pub certificate_revocation_lists: ::prost::alloc::vec::Vec<CertificateRevocationList>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListCertificateRevocationListsRequest.next_page_token][] to retrieve the
     /// next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
 /// [CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateRevocationList].
@@ -1343,10 +1361,10 @@ pub struct ListCertificateRevocationListsResponse {
 pub struct UpdateCertificateRevocationListRequest {
     /// Required. [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList] with updated values.
     #[prost(message, optional, tag = "1")]
-    pub certificate_revocation_list: ::std::option::Option<CertificateRevocationList>,
+    pub certificate_revocation_list: ::core::option::Option<CertificateRevocationList>,
     /// Required. A list of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
     /// retry your request, the server will know to ignore the request if it has
     /// already been completed. The server will guarantee that for at least 60
@@ -1361,7 +1379,7 @@ pub struct UpdateCertificateRevocationListRequest {
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.GetReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetReusableConfig].
@@ -1369,7 +1387,7 @@ pub struct UpdateCertificateRevocationListRequest {
 pub struct GetReusableConfigRequest {
     /// Required. The [name][ReusableConfigs.name] of the [ReusableConfigs][] to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs].
@@ -1379,7 +1397,7 @@ pub struct ListReusableConfigsRequest {
     /// [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig], in the format
     /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of
     /// [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig] to include in the response.
     /// Further [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig] can subsequently be
@@ -1391,13 +1409,13 @@ pub struct ListReusableConfigsRequest {
     /// Optional. Pagination token, returned earlier via
     /// [ListReusableConfigsResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListReusableConfigsResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs].
@@ -1405,34 +1423,34 @@ pub struct ListReusableConfigsRequest {
 pub struct ListReusableConfigsResponse {
     /// The list of [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig].
     #[prost(message, repeated, tag = "1")]
-    pub reusable_configs: ::std::vec::Vec<ReusableConfig>,
+    pub reusable_configs: ::prost::alloc::vec::Vec<ReusableConfig>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListReusableConfigsRequest.next_page_token][] to retrieve
     /// the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag = "3")]
-    pub target: std::string::String,
+    pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag = "4")]
-    pub verb: std::string::String,
+    pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag = "5")]
-    pub status_message: std::string::String,
+    pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
@@ -1441,7 +1459,7 @@ pub struct OperationMetadata {
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
-    pub api_version: std::string::String,
+    pub api_version: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod certificate_authority_service_client {
@@ -1480,7 +1498,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificate" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificate") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]."]
@@ -1495,7 +1513,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificate" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificate") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists [Certificates][google.cloud.security.privateca.v1beta1.Certificate]."]
@@ -1510,7 +1528,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificates" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificates") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Revoke a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]."]
@@ -1525,7 +1543,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RevokeCertificate" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RevokeCertificate") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Update a [Certificate][google.cloud.security.privateca.v1beta1.Certificate]. Currently, the only field you can update is the"]
@@ -1541,7 +1559,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificate" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificate") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Activate a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] that is in state"]
@@ -1564,7 +1582,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ActivateCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ActivateCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Create a new [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] in a given Project and Location."]
@@ -1582,7 +1600,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Disable a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
@@ -1600,7 +1618,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/DisableCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/DisableCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Enable a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
@@ -1618,7 +1636,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/EnableCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/EnableCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Fetch a certificate signing request (CSR) from a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]"]
@@ -1640,7 +1658,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/FetchCertificateAuthorityCsr" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/FetchCertificateAuthorityCsr") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
@@ -1655,7 +1673,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
@@ -1671,7 +1689,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateAuthorities" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateAuthorities") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Restore a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] that is scheduled for deletion."]
@@ -1689,7 +1707,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RestoreCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RestoreCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Schedule a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority] for deletion."]
@@ -1707,7 +1725,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ScheduleDeleteCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ScheduleDeleteCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Update a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]."]
@@ -1725,7 +1743,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateAuthority" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateAuthority") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns a [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
@@ -1740,7 +1758,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateRevocationList" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetCertificateRevocationList") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
@@ -1756,7 +1774,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateRevocationLists" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListCertificateRevocationLists") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Update a [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]."]
@@ -1774,7 +1792,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateRevocationList" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateRevocationList") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns a [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
@@ -1789,7 +1807,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetReusableConfig" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/GetReusableConfig") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig]."]
@@ -1804,7 +1822,7 @@ pub mod certificate_authority_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListReusableConfigs" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ListReusableConfigs") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

@@ -99,8 +99,9 @@ pub struct DateTime {
     /// and future DateTimes in the affected range had already been stored).
     /// If omitted, the DateTime is considered to be in local time.
     #[prost(oneof = "date_time::TimeOffset", tags = "8, 9")]
-    pub time_offset: ::std::option::Option<date_time::TimeOffset>,
+    pub time_offset: ::core::option::Option<date_time::TimeOffset>,
 }
+/// Nested message and enum types in `DateTime`.
 pub mod date_time {
     /// Optional. Specifies either the UTC offset or the time zone of the DateTime.
     /// Choose carefully between them, considering that time zone data may change
@@ -125,10 +126,10 @@ pub mod date_time {
 pub struct TimeZone {
     /// IANA Time Zone Database time zone, e.g. "America/New_York".
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Optional. IANA Time Zone Database version number, e.g. "2019a".
     #[prost(string, tag = "2")]
-    pub version: std::string::String,
+    pub version: ::prost::alloc::string::String,
 }
 /// Represents a textual expression in the Common Expression Language (CEL)
 /// syntax. CEL is a C-like expression language. The syntax and semantics of CEL
@@ -166,27 +167,27 @@ pub struct Expr {
     /// Textual representation of an expression in Common Expression Language
     /// syntax.
     #[prost(string, tag = "1")]
-    pub expression: std::string::String,
+    pub expression: ::prost::alloc::string::String,
     /// Optional. Title for the expression, i.e. a short string describing
     /// its purpose. This can be used e.g. in UIs which allow to enter the
     /// expression.
     #[prost(string, tag = "2")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Optional. Description of the expression. This is a longer text which
     /// describes the expression, e.g. when hovered over it in a UI.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Optional. String indicating the location of the expression for error
     /// reporting, e.g. a file name and a position in the file.
     #[prost(string, tag = "4")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
 }
 /// Represents an amount of money with its currency type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Money {
     /// The three-letter currency code defined in ISO 4217.
     #[prost(string, tag = "1")]
-    pub currency_code: std::string::String,
+    pub currency_code: ::prost::alloc::string::String,
     /// The whole units of the amount.
     /// For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
     #[prost(int64, tag = "2")]
@@ -346,7 +347,7 @@ pub struct Color {
     /// If omitted, this color object is to be rendered as a solid color
     /// (as if the alpha value had been explicitly given with a value of 1.0).
     #[prost(message, optional, tag = "4")]
-    pub alpha: ::std::option::Option<f32>,
+    pub alpha: ::core::option::Option<f32>,
 }
 /// Represents a postal address, e.g. for postal delivery or payments addresses.
 /// Given a postal address, a postal service can deliver items to a premise, P.O.
@@ -379,7 +380,7 @@ pub struct PostalAddress {
     /// http://www.unicode.org/cldr/charts/30/supplemental/territory_information.html
     /// for details. Example: "CH" for Switzerland.
     #[prost(string, tag = "2")]
-    pub region_code: std::string::String,
+    pub region_code: ::prost::alloc::string::String,
     /// Optional. BCP-47 language code of the contents of this address (if
     /// known). This is often the UI language of the input form or is expected
     /// to match one of the languages used in the address' country/region, or their
@@ -393,20 +394,20 @@ pub struct PostalAddress {
     ///
     /// Examples: "zh-Hant", "ja", "ja-Latn", "en".
     #[prost(string, tag = "3")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. Postal code of the address. Not all countries use or require
     /// postal codes to be present, but where they are used, they may trigger
     /// additional validation with other parts of the address (e.g. state/zip
     /// validation in the U.S.A.).
     #[prost(string, tag = "4")]
-    pub postal_code: std::string::String,
+    pub postal_code: ::prost::alloc::string::String,
     /// Optional. Additional, country-specific, sorting code. This is not used
     /// in most regions. Where it is used, the value is either a string like
     /// "CEDEX", optionally followed by a number (e.g. "CEDEX 7"), or just a number
     /// alone, representing the "sector code" (Jamaica), "delivery area indicator"
     /// (Malawi) or "post office indicator" (e.g. Côte d'Ivoire).
     #[prost(string, tag = "5")]
-    pub sorting_code: std::string::String,
+    pub sorting_code: ::prost::alloc::string::String,
     /// Optional. Highest administrative subdivision which is used for postal
     /// addresses of a country or region.
     /// For example, this can be a state, a province, an oblast, or a prefecture.
@@ -415,17 +416,17 @@ pub struct PostalAddress {
     /// Many countries don't use an administrative area in postal addresses. E.g.
     /// in Switzerland this should be left unpopulated.
     #[prost(string, tag = "6")]
-    pub administrative_area: std::string::String,
+    pub administrative_area: ::prost::alloc::string::String,
     /// Optional. Generally refers to the city/town portion of the address.
     /// Examples: US city, IT comune, UK post town.
     /// In regions of the world where localities are not well defined or do not fit
     /// into this structure well, leave locality empty and use address_lines.
     #[prost(string, tag = "7")]
-    pub locality: std::string::String,
+    pub locality: ::prost::alloc::string::String,
     /// Optional. Sublocality of the address.
     /// For example, this can be neighborhoods, boroughs, districts.
     #[prost(string, tag = "8")]
-    pub sublocality: std::string::String,
+    pub sublocality: ::prost::alloc::string::String,
     /// Unstructured address lines describing the lower levels of an address.
     ///
     /// Because values in address_lines do not have type information and may
@@ -449,15 +450,15 @@ pub struct PostalAddress {
     /// addresses (as opposed to guessing which parts of the address should be
     /// localities or administrative areas).
     #[prost(string, repeated, tag = "9")]
-    pub address_lines: ::std::vec::Vec<std::string::String>,
+    pub address_lines: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The recipient at the address.
     /// This field may, under certain circumstances, contain multiline information.
     /// For example, it might contain "care of" information.
     #[prost(string, repeated, tag = "10")]
-    pub recipients: ::std::vec::Vec<std::string::String>,
+    pub recipients: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The name of the organization at the address.
     #[prost(string, tag = "11")]
-    pub organization: std::string::String,
+    pub organization: ::prost::alloc::string::String,
 }
 /// Represents a day of the week.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -551,26 +552,26 @@ pub struct Interval {
     /// If specified, a Timestamp matching this interval will have to be the same
     /// or after the start.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Exclusive end of the interval.
     ///
     /// If specified, a Timestamp matching this interval will have to be before the
     /// end.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Localized variant of a text in a particular language.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalizedText {
     /// Localized string in the language corresponding to `language_code' below.
     #[prost(string, tag = "1")]
-    pub text: std::string::String,
+    pub text: ::prost::alloc::string::String,
     /// The text's BCP-47 language code, such as "en-US" or "sr-Latn".
     ///
     /// For more information, see
     /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Represents a month in the Gregorian calendar.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -641,13 +642,14 @@ pub struct PhoneNumber {
     /// separately from the E.164 number to allow for short code extensions in the
     /// future.
     #[prost(string, tag = "3")]
-    pub extension: std::string::String,
+    pub extension: ::prost::alloc::string::String,
     /// Required.  Either a regular number, or a short code.  New fields may be
     /// added to the oneof below in the future, so clients should ignore phone
     /// numbers for which none of the fields they coded against are set.
     #[prost(oneof = "phone_number::Kind", tags = "1, 2")]
-    pub kind: ::std::option::Option<phone_number::Kind>,
+    pub kind: ::core::option::Option<phone_number::Kind>,
 }
+/// Nested message and enum types in `PhoneNumber`.
 pub mod phone_number {
     /// An object representing a short code, which is a phone number that is
     /// typically much shorter than regular phone numbers and can be used to
@@ -666,11 +668,11 @@ pub mod phone_number {
         /// Reference(s):
         ///  - http://www.unicode.org/reports/tr35/#unicode_region_subtag
         #[prost(string, tag = "1")]
-        pub region_code: std::string::String,
+        pub region_code: ::prost::alloc::string::String,
         /// Required. The short code digits, without a leading plus ('+') or country
         /// calling code, e.g. "611".
         #[prost(string, tag = "2")]
-        pub number: std::string::String,
+        pub number: ::prost::alloc::string::String,
     }
     /// Required.  Either a regular number, or a short code.  New fields may be
     /// added to the oneof below in the future, so clients should ignore phone
@@ -693,7 +695,7 @@ pub mod phone_number {
         ///  - https://en.wikipedia.org/wiki/E.164.
         ///  - https://en.wikipedia.org/wiki/List_of_country_calling_codes
         #[prost(string, tag = "1")]
-        E164Number(std::string::String),
+        E164Number(::prost::alloc::string::String),
         /// A short code.
         ///
         /// Reference(s):

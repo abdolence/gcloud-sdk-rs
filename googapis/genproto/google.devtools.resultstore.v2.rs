@@ -8,17 +8,17 @@ pub struct StatusAttributes {
     pub status: i32,
     /// A longer description about the status.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 /// A generic key-value property definition.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// The key.
     #[prost(string, tag = "1")]
-    pub key: std::string::String,
+    pub key: ::prost::alloc::string::String,
     /// The value.
     #[prost(string, tag = "2")]
-    pub value: std::string::String,
+    pub value: ::prost::alloc::string::String,
 }
 /// The timing of a particular Invocation, Action, etc. The start_time is
 /// specified, stop time can be calculated by adding duration to start_time.
@@ -26,10 +26,10 @@ pub struct Property {
 pub struct Timing {
     /// The time the resource started running. This is in UTC Epoch time.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The duration for which the resource ran.
     #[prost(message, optional, tag = "2")]
-    pub duration: ::std::option::Option<::prost_types::Duration>,
+    pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Represents a dependency of a resource on another resource. This can be used
 /// to define a graph or a workflow paradigm through resources.
@@ -39,12 +39,13 @@ pub struct Dependency {
     /// The label "Root Cause" is handled specially. It is used to point to the
     /// exact resource that caused a resource to fail.
     #[prost(string, tag = "4")]
-    pub label: std::string::String,
+    pub label: ::prost::alloc::string::String,
     /// The resource depended upon. It may be a Target, ConfiguredTarget, or
     /// Action.
     #[prost(oneof = "dependency::Resource", tags = "1, 2, 3")]
-    pub resource: ::std::option::Option<dependency::Resource>,
+    pub resource: ::core::option::Option<dependency::Resource>,
 }
+/// Nested message and enum types in `Dependency`.
 pub mod dependency {
     /// The resource depended upon. It may be a Target, ConfiguredTarget, or
     /// Action.
@@ -54,17 +55,17 @@ pub mod dependency {
         /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
         /// This must point to an target under the same invocation.
         #[prost(string, tag = "1")]
-        Target(std::string::String),
+        Target(::prost::alloc::string::String),
         /// The name of a configured target.  Its format must be:
         /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}
         /// This must point to an configured target under the same invocation.
         #[prost(string, tag = "2")]
-        ConfiguredTarget(std::string::String),
+        ConfiguredTarget(::prost::alloc::string::String),
         /// The name of an action.  Its format must be:
         /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}/actions/${url_encode(ACTION_ID)}
         /// This must point to an action under the same invocation.
         #[prost(string, tag = "3")]
-        Action(std::string::String),
+        Action(::prost::alloc::string::String),
     }
 }
 /// These correspond to the prefix of the rule name. Eg cc_test has language CC.
@@ -186,8 +187,8 @@ pub struct LineCoverage {
     ///
     /// A 1 denotes the line was instrumented.
     /// A 0 denotes the line was not instrumented.
-    #[prost(bytes, tag = "1")]
-    pub instrumented_lines: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub instrumented_lines: ::prost::alloc::vec::Vec<u8>,
     /// Which of the instrumented source lines were executed by the test. Should
     /// include lines that were not instrumented.
     ///
@@ -197,8 +198,8 @@ pub struct LineCoverage {
     ///
     /// A 1 denotes the line was executed.
     /// A 0 denotes the line was not executed.
-    #[prost(bytes, tag = "2")]
-    pub executed_lines: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub executed_lines: ::prost::alloc::vec::Vec<u8>,
 }
 /// Describes branch coverage for a file
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -211,13 +212,13 @@ pub struct BranchCoverage {
     ///
     /// A 1 denotes the line contains at least one branch.
     /// A 0 denotes the line contains no branches.
-    #[prost(bytes, tag = "1")]
-    pub branch_present: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub branch_present: ::prost::alloc::vec::Vec<u8>,
     /// Contains the number of branches present, only for the lines which have the
     /// corresponding bit set in branch_present, in a relative order ignoring
     /// lines which do not have any branches.
     #[prost(int32, repeated, tag = "2")]
-    pub branches_in_line: ::std::vec::Vec<i32>,
+    pub branches_in_line: ::prost::alloc::vec::Vec<i32>,
     /// As each branch can have any one of the following three states: not
     /// executed, executed but not taken, executed and taken.
     ///
@@ -231,24 +232,24 @@ pub struct BranchCoverage {
     /// not executed: i-th bit of executed == 0 && i-th bit of taken == 0
     /// executed but not taken: i-th bit of executed == 1 && i-th bit of taken == 0
     /// executed and taken: i-th bit of executed == 1 && i-th bit of taken == 1
-    #[prost(bytes, tag = "3")]
-    pub executed: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub executed: ::prost::alloc::vec::Vec<u8>,
     /// Described above.
-    #[prost(bytes, tag = "4")]
-    pub taken: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "4")]
+    pub taken: ::prost::alloc::vec::Vec<u8>,
 }
 /// Describes code coverage for a particular file under test.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileCoverage {
     /// Path of source file within the SourceContext of this Invocation.
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Details of lines in a file required to calculate line coverage.
     #[prost(message, optional, tag = "2")]
-    pub line_coverage: ::std::option::Option<LineCoverage>,
+    pub line_coverage: ::core::option::Option<LineCoverage>,
     /// Details of branches in a file required to calculate branch coverage.
     #[prost(message, optional, tag = "3")]
-    pub branch_coverage: ::std::option::Option<BranchCoverage>,
+    pub branch_coverage: ::core::option::Option<BranchCoverage>,
 }
 /// Describes code coverage for a build or test Action. This is used to store
 /// baseline coverage for build Actions and test coverage for test Actions.
@@ -256,7 +257,7 @@ pub struct FileCoverage {
 pub struct ActionCoverage {
     /// List of coverage info for all source files that the TestResult covers.
     #[prost(message, repeated, tag = "2")]
-    pub file_coverages: ::std::vec::Vec<FileCoverage>,
+    pub file_coverages: ::prost::alloc::vec::Vec<FileCoverage>,
 }
 /// Describes aggregate code coverage for a collection of build or test Actions.
 /// A line or branch is covered if and only if it is covered in any of the build
@@ -265,7 +266,7 @@ pub struct ActionCoverage {
 pub struct AggregateCoverage {
     /// Aggregated coverage info for all source files that the actions cover.
     #[prost(message, repeated, tag = "1")]
-    pub file_coverages: ::std::vec::Vec<FileCoverage>,
+    pub file_coverages: ::prost::alloc::vec::Vec<FileCoverage>,
 }
 /// The metadata for a file or an archive file entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -275,33 +276,33 @@ pub struct File {
     /// Append RPC is called with a Files field populated, if a File already exists
     /// with this ID, that File will be overwritten with the new File proto.
     #[prost(string, tag = "1")]
-    pub uid: std::string::String,
+    pub uid: ::prost::alloc::string::String,
     /// The URI of a file.
     /// This could also be the URI of an entire archive.
     /// Most log data doesn't need to be stored forever, so a ttl is suggested.
     /// Note that if you ever move or delete the file at this URI, the link from
     /// the server will be broken.
     #[prost(string, tag = "2")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
     /// (Optional) The length of the file in bytes.  Allows the filesize to be
     /// shown in the UI.  Omit if file is still being written or length is
     /// not known.  This could also be the length of an entire archive.
     #[prost(message, optional, tag = "3")]
-    pub length: ::std::option::Option<i64>,
+    pub length: ::core::option::Option<i64>,
     /// (Optional) The content-type (aka MIME-type) of the file.  This is sent to
     /// the web browser so it knows how to handle the file. (e.g. text/plain,
     /// image/jpeg, text/html, etc). For zip archives, use "application/zip".
     #[prost(string, tag = "4")]
-    pub content_type: std::string::String,
+    pub content_type: ::prost::alloc::string::String,
     /// (Optional) If the above path, length, and content_type are referring to an
     /// archive, and you wish to refer to a particular entry within that archive,
     /// put the particular archive entry data here.
     #[prost(message, optional, tag = "5")]
-    pub archive_entry: ::std::option::Option<ArchiveEntry>,
+    pub archive_entry: ::core::option::Option<ArchiveEntry>,
     /// (Optional) A url to a content display app/site for this file or archive
     /// entry.
     #[prost(string, tag = "6")]
-    pub content_viewer: std::string::String,
+    pub content_viewer: ::prost::alloc::string::String,
     /// (Optional) Whether to hide this file or archive entry in the UI.  Defaults
     /// to false. A checkbox lets users see hidden files, but they're hidden by
     /// default.
@@ -312,14 +313,15 @@ pub struct File {
     /// files to understand the purpose of this file and what they would want to
     /// view it for.
     #[prost(string, tag = "8")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// (Optional) digest of this file in hexadecimal-like string if known.
     #[prost(string, tag = "9")]
-    pub digest: std::string::String,
+    pub digest: ::prost::alloc::string::String,
     /// (Optional) The algorithm corresponding to the digest if known.
     #[prost(enumeration = "file::HashType", tag = "10")]
     pub hash_type: i32,
 }
+/// Nested message and enum types in `File`.
 pub mod file {
     /// If known, the hash function used to compute this digest.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -340,26 +342,26 @@ pub mod file {
 pub struct ArchiveEntry {
     /// The relative path of the entry within the archive.
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// (Optional) The uncompressed length of the archive entry in bytes.  Allows
     /// the entry size to be shown in the UI.  Omit if the length is not known.
     #[prost(message, optional, tag = "2")]
-    pub length: ::std::option::Option<i64>,
+    pub length: ::core::option::Option<i64>,
     /// (Optional) The content-type (aka MIME-type) of the archive entry. (e.g.
     /// text/plain, image/jpeg, text/html, etc). This is sent to the web browser
     /// so it knows how to handle the entry.
     #[prost(string, tag = "3")]
-    pub content_type: std::string::String,
+    pub content_type: ::prost::alloc::string::String,
 }
 /// Stores errors reading or parsing a file during post-processing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileProcessingErrors {
     /// The uid of the File being read or parsed.
     #[prost(string, tag = "1")]
-    pub file_uid: std::string::String,
+    pub file_uid: ::prost::alloc::string::String,
     /// What went wrong.
     #[prost(message, repeated, tag = "3")]
-    pub file_processing_errors: ::std::vec::Vec<FileProcessingError>,
+    pub file_processing_errors: ::prost::alloc::vec::Vec<FileProcessingError>,
 }
 /// Stores an error reading or parsing a file during post-processing.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -369,7 +371,7 @@ pub struct FileProcessingError {
     pub r#type: i32,
     /// Error message describing the problem.
     #[prost(string, tag = "2")]
-    pub message: std::string::String,
+    pub message: ::prost::alloc::string::String,
 }
 /// Errors in file post-processing are categorized using this enum.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -402,33 +404,33 @@ pub struct TestSuite {
     /// tests, this is normally the fully qualified class name. Eg.
     /// "com.google.common.hash.BloomFilterTest".
     #[prost(string, tag = "1")]
-    pub suite_name: std::string::String,
+    pub suite_name: ::prost::alloc::string::String,
     /// The results of the test cases and test suites contained in this suite,
     /// as reported in the <testcase> and <testsuite> elements contained within
     /// this <testsuite>.
     #[prost(message, repeated, tag = "2")]
-    pub tests: ::std::vec::Vec<Test>,
+    pub tests: ::prost::alloc::vec::Vec<Test>,
     /// Failures reported in <failure> elements within this <testsuite>.
     #[prost(message, repeated, tag = "3")]
-    pub failures: ::std::vec::Vec<TestFailure>,
+    pub failures: ::prost::alloc::vec::Vec<TestFailure>,
     /// Errors reported in <error> elements within this <testsuite>.
     #[prost(message, repeated, tag = "4")]
-    pub errors: ::std::vec::Vec<TestError>,
+    pub errors: ::prost::alloc::vec::Vec<TestError>,
     /// The timing for the entire TestSuite, as reported by the time attribute.
     #[prost(message, optional, tag = "6")]
-    pub timing: ::std::option::Option<Timing>,
+    pub timing: ::core::option::Option<Timing>,
     /// Arbitrary name-value pairs, as reported in custom attributes or in a
     /// <properties> element within this <testsuite>. Multiple properties are
     /// allowed with the same key. Properties will be returned in lexicographical
     /// order by key.
     #[prost(message, repeated, tag = "7")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// Files produced by this test suite, as reported by undeclared output
     /// annotations.
     /// The file IDs must be unique within this list. Duplicate file IDs will
     /// result in an error. Files will be returned in lexicographical order by ID.
     #[prost(message, repeated, tag = "8")]
-    pub files: ::std::vec::Vec<File>,
+    pub files: ::prost::alloc::vec::Vec<File>,
 }
 /// The result of running a test case or test suite. JUnit3 TestDecorators are
 /// represented as a TestSuite with a single test.
@@ -436,8 +438,9 @@ pub struct TestSuite {
 pub struct Test {
     /// Either a TestCase of a TestSuite
     #[prost(oneof = "test::TestType", tags = "1, 2")]
-    pub test_type: ::std::option::Option<test::TestType>,
+    pub test_type: ::core::option::Option<test::TestType>,
 }
+/// Nested message and enum types in `Test`.
 pub mod test {
     /// Either a TestCase of a TestSuite
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -457,38 +460,39 @@ pub struct TestCase {
     /// The name of the test case, as reported in the name attribute. For Java,
     /// this is normally the method name. Eg. "testBasic".
     #[prost(string, tag = "1")]
-    pub case_name: std::string::String,
+    pub case_name: ::prost::alloc::string::String,
     /// The name of the class in which the test case was defined, as reported in
     /// the classname attribute. For Java, this is normally the fully qualified
     /// class name. Eg. "com.google.common.hash.BloomFilterTest".
     #[prost(string, tag = "2")]
-    pub class_name: std::string::String,
+    pub class_name: ::prost::alloc::string::String,
     /// An enum reported in the result attribute that is used in conjunction with
     /// failures and errors below to report the outcome.
     #[prost(enumeration = "test_case::Result", tag = "3")]
     pub result: i32,
     /// Failures reported in <failure> elements within this <testcase>.
     #[prost(message, repeated, tag = "4")]
-    pub failures: ::std::vec::Vec<TestFailure>,
+    pub failures: ::prost::alloc::vec::Vec<TestFailure>,
     /// Errors reported in <error> elements within this <testcase>.
     #[prost(message, repeated, tag = "5")]
-    pub errors: ::std::vec::Vec<TestError>,
+    pub errors: ::prost::alloc::vec::Vec<TestError>,
     /// The timing for the TestCase, as reported by the time attribute.
     #[prost(message, optional, tag = "7")]
-    pub timing: ::std::option::Option<Timing>,
+    pub timing: ::core::option::Option<Timing>,
     /// Arbitrary name-value pairs, as reported in custom attributes or in a
     /// <properties> element within this <testcase>. Multiple properties are
     /// allowed with the same key. Properties will be returned in lexicographical
     /// order by key.
     #[prost(message, repeated, tag = "8")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// Files produced by this test case, as reported by undeclared output
     /// annotations.
     /// The file IDs must be unique within this list. Duplicate file IDs will
     /// result in an error. Files will be returned in lexicographical order by ID.
     #[prost(message, repeated, tag = "9")]
-    pub files: ::std::vec::Vec<File>,
+    pub files: ::prost::alloc::vec::Vec<File>,
 }
+/// Nested message and enum types in `TestCase`.
 pub mod test_case {
     /// The result of running a test case.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -526,32 +530,32 @@ pub struct TestFailure {
     /// The exception message reported in the message attribute. Typically short,
     /// but may be multi-line. Eg. "Expected 'foo' but was 'bar'".
     #[prost(string, tag = "1")]
-    pub failure_message: std::string::String,
+    pub failure_message: ::prost::alloc::string::String,
     /// The type of the exception being thrown, reported in the type attribute.
     /// Eg: "org.junit.ComparisonFailure"
     #[prost(string, tag = "2")]
-    pub exception_type: std::string::String,
+    pub exception_type: ::prost::alloc::string::String,
     /// The stack trace reported as the content of the <failure> element, often in
     /// a CDATA block. This contains one line for each stack frame, each including
     /// a method/function name, a class/file name, and a line number. Most recent
     /// call is usually first, but not for Python stack traces. May contain the
     /// exception_type and message.
     #[prost(string, tag = "3")]
-    pub stack_trace: std::string::String,
+    pub stack_trace: ::prost::alloc::string::String,
     /// The expected values.
     ///
     /// These values can be diffed against the actual values. Often, there is just
     /// one actual and one expected value. If there is more than one, they should
     /// be compared as an unordered collection.
     #[prost(string, repeated, tag = "4")]
-    pub expected: ::std::vec::Vec<std::string::String>,
+    pub expected: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The actual values.
     ///
     /// These values can be diffed against the expected values. Often, there is
     /// just one actual and one expected value. If there is more than one, they
     /// should be compared as an unordered collection.
     #[prost(string, repeated, tag = "5")]
-    pub actual: ::std::vec::Vec<std::string::String>,
+    pub actual: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents an exception that prevented a test case from completing, as
 /// reported in an <error> element within a <testcase>. For Java, multiple
@@ -561,19 +565,19 @@ pub struct TestError {
     /// The exception message, as reported in the message attribute. Typically
     /// short, but may be multi-line. Eg. "argument cannot be null".
     #[prost(string, tag = "1")]
-    pub error_message: std::string::String,
+    pub error_message: ::prost::alloc::string::String,
     /// The type of the exception being thrown, reported in the type attribute.
     /// For Java, this is a fully qualified Throwable class name.
     /// Eg: "java.lang.IllegalArgumentException"
     #[prost(string, tag = "2")]
-    pub exception_type: std::string::String,
+    pub exception_type: ::prost::alloc::string::String,
     /// The stack trace reported as the content of the <error> element, often in
     /// a CDATA block. This contains one line for each stack frame, each including
     /// a method/function name, a class/file name, and a line number. Most recent
     /// call is usually first, but not for Python stack traces. May contain the
     /// exception_type and message.
     #[prost(string, tag = "3")]
-    pub stack_trace: std::string::String,
+    pub stack_trace: ::prost::alloc::string::String,
 }
 /// An action that happened as part of a configured target. This action could be
 /// a build, a test, or another type of action, as specified in action_type
@@ -591,31 +595,31 @@ pub struct Action {
     ///
     /// See CreateActionRequest proto for more information.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the Action. They must match the
     /// resource name after proper encoding.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<action::Id>,
+    pub id: ::core::option::Option<action::Id>,
     /// The status of the action.
     #[prost(message, optional, tag = "3")]
-    pub status_attributes: ::std::option::Option<StatusAttributes>,
+    pub status_attributes: ::core::option::Option<StatusAttributes>,
     /// The timing of the whole action. For TestActions, the start time may be
     /// before the test actually started, and the duration may last until after the
     /// test actually finished.
     #[prost(message, optional, tag = "4")]
-    pub timing: ::std::option::Option<Timing>,
+    pub timing: ::core::option::Option<Timing>,
     /// General attributes of the action.
     #[prost(message, optional, tag = "5")]
-    pub action_attributes: ::std::option::Option<ActionAttributes>,
+    pub action_attributes: ::core::option::Option<ActionAttributes>,
     /// A list of resources that this action depended upon. May be used to provide
     /// the cause of a build failure in the case of a failed build action.
     #[prost(message, repeated, tag = "14")]
-    pub action_dependencies: ::std::vec::Vec<Dependency>,
+    pub action_dependencies: ::prost::alloc::vec::Vec<Dependency>,
     /// Arbitrary name-value pairs.
     /// This is implemented as a multi-map. Multiple properties are allowed with
     /// the same key. Properties will be returned in lexicographical order by key.
     #[prost(message, repeated, tag = "7")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// A list of file references for action level files.
     /// The file IDs must be unique within this list. Duplicate file IDs will
     /// result in an error. Files will be returned in lexicographical order by ID.
@@ -638,12 +642,12 @@ pub struct Action {
     ///     down implementation of the LCOV standard.
     ///     http://ltp.sourceforge.net/coverage/lcov/geninfo.1.php
     #[prost(message, repeated, tag = "8")]
-    pub files: ::std::vec::Vec<File>,
+    pub files: ::prost::alloc::vec::Vec<File>,
     /// List of names of file sets that are referenced from this Action.
     /// Each name must point to a file set under the same Invocation. The name
     /// format must be: invocations/${INVOCATION_ID}/fileSets/${FILE_SET_ID}
     #[prost(string, repeated, tag = "15")]
-    pub file_sets: ::std::vec::Vec<std::string::String>,
+    pub file_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Coverage data was collected while running the build or test action. This
     /// usually includes line coverage, and may also include branch coverage.
     /// For test actions, this is usually only for the source files which were
@@ -652,14 +656,14 @@ pub struct Action {
     /// instrumented files and lines, without any lines being executed. This
     /// ensures files that are never covered at all are included.
     #[prost(message, optional, tag = "11")]
-    pub coverage: ::std::option::Option<ActionCoverage>,
+    pub coverage: ::core::option::Option<ActionCoverage>,
     /// ResultStore will read and parse Files with reserved IDs listed above. Read
     /// and parse errors for all these Files are reported here.
     /// This is implemented as a map, with one FileProcessingErrors for each file.
     /// Typically produced when parsing Files, but may also be provided directly
     /// by clients.
     #[prost(message, repeated, tag = "13")]
-    pub file_processing_errors: ::std::vec::Vec<FileProcessingErrors>,
+    pub file_processing_errors: ::prost::alloc::vec::Vec<FileProcessingErrors>,
     /// The type of the action. The type of an action may not change over the
     /// lifetime of the invocation. If one of these fields is to be set, it must be
     /// set in the CreateAction method. It may be set to an empty message that is
@@ -667,24 +671,25 @@ pub struct Action {
     /// can be created by not setting any of these fields. An untyped action will
     /// be untyped for the lifetime of the invocation.
     #[prost(oneof = "action::ActionType", tags = "9, 10")]
-    pub action_type: ::std::option::Option<action::ActionType>,
+    pub action_type: ::core::option::Option<action::ActionType>,
 }
+/// Nested message and enum types in `Action`.
 pub mod action {
     /// The resource ID components that identify the Action.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
         #[prost(string, tag = "1")]
-        pub invocation_id: std::string::String,
+        pub invocation_id: ::prost::alloc::string::String,
         /// The Target ID.
         #[prost(string, tag = "2")]
-        pub target_id: std::string::String,
+        pub target_id: ::prost::alloc::string::String,
         /// The Configuration ID.
         #[prost(string, tag = "3")]
-        pub configuration_id: std::string::String,
+        pub configuration_id: ::prost::alloc::string::String,
         /// The Action ID.
         #[prost(string, tag = "4")]
-        pub action_id: std::string::String,
+        pub action_id: ::prost::alloc::string::String,
     }
     /// The type of the action. The type of an action may not change over the
     /// lifetime of the invocation. If one of these fields is to be set, it must be
@@ -709,24 +714,24 @@ pub struct BuildAction {
     /// of the action should be parsed. For example "javac" for a Java compile
     /// action.
     #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// The "primary" input artifact processed by this action.  E.g., the .cc file
     /// of a C++ compile action.  Empty string ("") if the action has no input
     /// artifacts or no "primary" input artifact.
     #[prost(string, tag = "2")]
-    pub primary_input_path: std::string::String,
+    pub primary_input_path: ::prost::alloc::string::String,
     /// The "primary" output artifact processed by this action.  E.g., the .o file
     /// of a C++ compile action.  Empty string ("") if the action has no output
     /// artifacts or no "primary" output artifact.
     #[prost(string, tag = "3")]
-    pub primary_output_path: std::string::String,
+    pub primary_output_path: ::prost::alloc::string::String,
 }
 /// A test action, such as running a JUnit4 test binary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestAction {
     /// Timing data for execution of the test action.
     #[prost(message, optional, tag = "1")]
-    pub test_timing: ::std::option::Option<TestTiming>,
+    pub test_timing: ::core::option::Option<TestTiming>,
     /// If the test is divided up into shards to improve performance, set this to
     /// indicate which shard this test action is for. Value must be in interval
     /// [0, total_shard_count). Defaults to 0, which is appropriate if all test
@@ -750,10 +755,10 @@ pub struct TestAction {
     /// Typically produced by parsing an XML Log, but may also be provided directly
     /// by clients.
     #[prost(message, optional, tag = "5")]
-    pub test_suite: ::std::option::Option<TestSuite>,
+    pub test_suite: ::core::option::Option<TestSuite>,
     /// Warnings for this test action.
     #[prost(message, repeated, tag = "8")]
-    pub warnings: ::std::vec::Vec<TestWarning>,
+    pub warnings: ::prost::alloc::vec::Vec<TestWarning>,
     /// Estimated memory consumption of the test action, in bytes. A default value
     /// of 0 means there is no memory consumption estimate specified.
     #[prost(int64, tag = "10")]
@@ -771,11 +776,11 @@ pub struct ActionAttributes {
     pub exit_code: i32,
     /// Where the action was run.
     #[prost(string, tag = "3")]
-    pub hostname: std::string::String,
+    pub hostname: ::prost::alloc::string::String,
     /// Information about the input files used in all actions under this configured
     /// target.
     #[prost(message, optional, tag = "4")]
-    pub input_file_info: ::std::option::Option<InputFileInfo>,
+    pub input_file_info: ::core::option::Option<InputFileInfo>,
 }
 /// File count and size information for the input files to a configured target.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -803,23 +808,23 @@ pub struct LocalTestTiming {
     /// Time taken by the test process, typically surrounded by a small wrapper
     /// script.
     #[prost(message, optional, tag = "1")]
-    pub test_process_duration: ::std::option::Option<::prost_types::Duration>,
+    pub test_process_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Timing data for one attempt to execute a test action remotely.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoteTestAttemptTiming {
     /// Idle period before the test process is invoked on the remote machine.
     #[prost(message, optional, tag = "1")]
-    pub queue_duration: ::std::option::Option<::prost_types::Duration>,
+    pub queue_duration: ::core::option::Option<::prost_types::Duration>,
     /// Time to upload data dependencies from the local machine to the remote
     /// machine running the test, or to the distributed cache.
     #[prost(message, optional, tag = "2")]
-    pub upload_duration: ::std::option::Option<::prost_types::Duration>,
+    pub upload_duration: ::core::option::Option<::prost_types::Duration>,
     /// Time to set up the remote machine.
     /// Not to be confused with setup time in
     /// xUnit test frameworks, which falls within the test_process_time.
     #[prost(message, optional, tag = "3")]
-    pub machine_setup_duration: ::std::option::Option<::prost_types::Duration>,
+    pub machine_setup_duration: ::core::option::Option<::prost_types::Duration>,
     /// Time taken by the test process, typically surrounded by a small wrapper
     /// script.
     /// For Java tests, this includes JVM setup, flag parsing, class path setup,
@@ -827,22 +832,22 @@ pub struct RemoteTestAttemptTiming {
     /// In many cases, only a small fraction of the test process time is spent
     /// running the test methods.
     #[prost(message, optional, tag = "4")]
-    pub test_process_duration: ::std::option::Option<::prost_types::Duration>,
+    pub test_process_duration: ::core::option::Option<::prost_types::Duration>,
     /// Time spent retrieving test logs and any other test outputs, back to the
     /// local machine.
     #[prost(message, optional, tag = "5")]
-    pub download_duration: ::std::option::Option<::prost_types::Duration>,
+    pub download_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Timing data for the part of the test execution that is done remotely.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoteTestTiming {
     /// Time taken locally to determine what to do.
     #[prost(message, optional, tag = "1")]
-    pub local_analysis_duration: ::std::option::Option<::prost_types::Duration>,
+    pub local_analysis_duration: ::core::option::Option<::prost_types::Duration>,
     /// Normally there is only one attempt, but the system may retry on internal
     /// errors, leading to multiple attempts.
     #[prost(message, repeated, tag = "2")]
-    pub attempts: ::std::vec::Vec<RemoteTestAttemptTiming>,
+    pub attempts: ::prost::alloc::vec::Vec<RemoteTestAttemptTiming>,
 }
 /// Timing data for execution of a test action. The action may be performed
 /// locally, on the machine running the build, or remotely.
@@ -852,13 +857,13 @@ pub struct TestTiming {
     /// within the kernel, as opposed to library code. Time the test process spent
     /// blocked does not count towards this figure.
     #[prost(message, optional, tag = "3")]
-    pub system_time_duration: ::std::option::Option<::prost_types::Duration>,
+    pub system_time_duration: ::core::option::Option<::prost_types::Duration>,
     /// The amount of CPU time spent by the test process executing user-mode code
     /// outside the kernel, as opposed to library code. Time the test process
     /// spent blocked does not count towards this figure. You can add user_time to
     /// system_time to get total CPU time taken by the test process.
     #[prost(message, optional, tag = "4")]
-    pub user_time_duration: ::std::option::Option<::prost_types::Duration>,
+    pub user_time_duration: ::core::option::Option<::prost_types::Duration>,
     /// Most build systems cache build results to speed up incremental builds.
     /// Some also cache test results too. This indicates whether the test results
     /// were found in a cache, and where that cache was located.
@@ -866,8 +871,9 @@ pub struct TestTiming {
     pub test_caching: i32,
     /// Test timing for either a local or remote execution.
     #[prost(oneof = "test_timing::Location", tags = "1, 2")]
-    pub location: ::std::option::Option<test_timing::Location>,
+    pub location: ::core::option::Option<test_timing::Location>,
 }
+/// Nested message and enum types in `TestTiming`.
 pub mod test_timing {
     /// Test timing for either a local or remote execution.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -885,7 +891,7 @@ pub mod test_timing {
 pub struct TestWarning {
     /// Contains the message detailing the warning.
     #[prost(string, tag = "1")]
-    pub warning_message: std::string::String,
+    pub warning_message: ::prost::alloc::string::String,
 }
 /// Indicates how/where this Action was executed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -927,38 +933,39 @@ pub struct Configuration {
     /// The configuration ID of "default" should be preferred for the default
     /// configuration in a single-config invocation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the Configuration. They must match
     /// the resource name after proper encoding.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<configuration::Id>,
+    pub id: ::core::option::Option<configuration::Id>,
     /// The aggregate status for this configuration.
     #[prost(message, optional, tag = "3")]
-    pub status_attributes: ::std::option::Option<StatusAttributes>,
+    pub status_attributes: ::core::option::Option<StatusAttributes>,
     /// Attributes that apply only to this configuration.
     #[prost(message, optional, tag = "5")]
-    pub configuration_attributes: ::std::option::Option<ConfigurationAttributes>,
+    pub configuration_attributes: ::core::option::Option<ConfigurationAttributes>,
     /// Arbitrary name-value pairs.
     /// This is implemented as a multi-map. Multiple properties are allowed with
     /// the same key. Properties will be returned in lexicographical order by key.
     #[prost(message, repeated, tag = "6")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// A human-readable name for Configuration.
     /// It is recommended that this name be unique.
     /// If omitted, the configuration_id should be used as display_name instead.
     #[prost(string, tag = "8")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Configuration`.
 pub mod configuration {
     /// The resource ID components that identify the Configuration.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
         #[prost(string, tag = "1")]
-        pub invocation_id: std::string::String,
+        pub invocation_id: ::prost::alloc::string::String,
         /// The Configuration ID.
         #[prost(string, tag = "2")]
-        pub configuration_id: std::string::String,
+        pub configuration_id: ::prost::alloc::string::String,
     }
 }
 /// Attributes that apply only to the configuration.
@@ -966,7 +973,7 @@ pub mod configuration {
 pub struct ConfigurationAttributes {
     /// The type of cpu. (e.g. "x86", "powerpc")
     #[prost(string, tag = "1")]
-    pub cpu: std::string::String,
+    pub cpu: ::prost::alloc::string::String,
 }
 /// Each ConfiguredTarget represents data for a given configuration of a given
 /// target in a given Invocation.
@@ -980,46 +987,47 @@ pub struct ConfiguredTarget {
     /// where ${CONFIG_ID} must match the ID of an existing Configuration under
     /// this Invocation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the ConfiguredTarget. They must
     /// match the resource name after proper encoding.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<configured_target::Id>,
+    pub id: ::core::option::Option<configured_target::Id>,
     /// The aggregate status for this configuration of this target. If testing
     /// was not requested, set this to the build status (e.g. BUILT or
     /// FAILED_TO_BUILD).
     #[prost(message, optional, tag = "3")]
-    pub status_attributes: ::std::option::Option<StatusAttributes>,
+    pub status_attributes: ::core::option::Option<StatusAttributes>,
     /// Captures the start time and duration of this configured target.
     #[prost(message, optional, tag = "4")]
-    pub timing: ::std::option::Option<Timing>,
+    pub timing: ::core::option::Option<Timing>,
     /// Test specific attributes for this ConfiguredTarget.
     #[prost(message, optional, tag = "6")]
-    pub test_attributes: ::std::option::Option<ConfiguredTestAttributes>,
+    pub test_attributes: ::core::option::Option<ConfiguredTestAttributes>,
     /// Arbitrary name-value pairs.
     /// This is implemented as a multi-map. Multiple properties are allowed with
     /// the same key. Properties will be returned in lexicographical order by key.
     #[prost(message, repeated, tag = "7")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// A list of file references for configured target level files.
     /// The file IDs must be unique within this list. Duplicate file IDs will
     /// result in an error. Files will be returned in lexicographical order by ID.
     #[prost(message, repeated, tag = "8")]
-    pub files: ::std::vec::Vec<File>,
+    pub files: ::prost::alloc::vec::Vec<File>,
 }
+/// Nested message and enum types in `ConfiguredTarget`.
 pub mod configured_target {
     /// The resource ID components that identify the ConfiguredTarget.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
         #[prost(string, tag = "1")]
-        pub invocation_id: std::string::String,
+        pub invocation_id: ::prost::alloc::string::String,
         /// The Target ID.
         #[prost(string, tag = "2")]
-        pub target_id: std::string::String,
+        pub target_id: ::prost::alloc::string::String,
         /// The Configuration ID.
         #[prost(string, tag = "3")]
-        pub configuration_id: std::string::String,
+        pub configuration_id: ::prost::alloc::string::String,
     }
 }
 /// Attributes that apply only to test actions under this configured target.
@@ -1034,7 +1042,7 @@ pub struct ConfiguredTestAttributes {
     pub total_shard_count: i32,
     /// How long test is allowed to run.
     #[prost(message, optional, tag = "5")]
-    pub timeout_duration: ::std::option::Option<::prost_types::Duration>,
+    pub timeout_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Summary of line coverage
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1075,10 +1083,10 @@ pub struct LanguageCoverageSummary {
     pub language: i32,
     /// Summary of lines covered vs instrumented.
     #[prost(message, optional, tag = "2")]
-    pub line_summary: ::std::option::Option<LineCoverageSummary>,
+    pub line_summary: ::core::option::Option<LineCoverageSummary>,
     /// Summary of branch coverage.
     #[prost(message, optional, tag = "3")]
-    pub branch_summary: ::std::option::Option<BranchCoverageSummary>,
+    pub branch_summary: ::core::option::Option<BranchCoverageSummary>,
 }
 /// The download metadata for an invocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1086,7 +1094,7 @@ pub struct DownloadMetadata {
     /// The name of the download metadata.  Its format will be:
     /// invocations/${INVOCATION_ID}/downloadMetadata
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Indicates the upload status of the invocation, whether it is
     /// post-processing, or immutable, etc.
     #[prost(enumeration = "UploadStatus", tag = "2")]
@@ -1109,31 +1117,32 @@ pub struct FileSet {
     /// The format of this FileSet resource name must be:
     /// invocations/${INVOCATION_ID}/fileSets/${url_encode(FILE_SET_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the file set. They must match the
     /// resource name after proper encoding.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<file_set::Id>,
+    pub id: ::core::option::Option<file_set::Id>,
     /// List of names of other file sets that are referenced from this one.
     /// Each name must point to a file set under the same invocation. The name
     /// format must be: invocations/${INVOCATION_ID}/fileSets/${FILE_SET_ID}
     #[prost(string, repeated, tag = "3")]
-    pub file_sets: ::std::vec::Vec<std::string::String>,
+    pub file_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Files that are contained within this file set.
     /// The uid field in the file should be unique for the Invocation.
     #[prost(message, repeated, tag = "4")]
-    pub files: ::std::vec::Vec<File>,
+    pub files: ::prost::alloc::vec::Vec<File>,
 }
+/// Nested message and enum types in `FileSet`.
 pub mod file_set {
     /// The resource ID components that identify the FileSet.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
         #[prost(string, tag = "1")]
-        pub invocation_id: std::string::String,
+        pub invocation_id: ::prost::alloc::string::String,
         /// The FileSet ID.
         #[prost(string, tag = "2")]
-        pub file_set_id: std::string::String,
+        pub file_set_id: ::prost::alloc::string::String,
     }
 }
 /// An Invocation typically represents the result of running a tool. Each has a
@@ -1144,28 +1153,28 @@ pub struct Invocation {
     /// The resource name.  Its format must be:
     /// invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the Invocation. They must match
     /// the resource name after proper encoding.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<invocation::Id>,
+    pub id: ::core::option::Option<invocation::Id>,
     /// The aggregate status of the invocation.
     #[prost(message, optional, tag = "3")]
-    pub status_attributes: ::std::option::Option<StatusAttributes>,
+    pub status_attributes: ::core::option::Option<StatusAttributes>,
     /// When this invocation started and its duration.
     #[prost(message, optional, tag = "4")]
-    pub timing: ::std::option::Option<Timing>,
+    pub timing: ::core::option::Option<Timing>,
     /// Attributes of this invocation.
     #[prost(message, optional, tag = "5")]
-    pub invocation_attributes: ::std::option::Option<InvocationAttributes>,
+    pub invocation_attributes: ::core::option::Option<InvocationAttributes>,
     /// The workspace the tool was run in.
     #[prost(message, optional, tag = "6")]
-    pub workspace_info: ::std::option::Option<WorkspaceInfo>,
+    pub workspace_info: ::core::option::Option<WorkspaceInfo>,
     /// Arbitrary name-value pairs.
     /// This is implemented as a multi-map. Multiple properties are allowed with
     /// the same key. Properties will be returned in lexicographical order by key.
     #[prost(message, repeated, tag = "7")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// A list of file references for invocation level files.
     /// The file IDs must be unique within this list. Duplicate file IDs will
     /// result in an error. Files will be returned in lexicographical order by ID.
@@ -1178,19 +1187,19 @@ pub struct Invocation {
     /// build.log: The primary log for the Invocation.
     /// coverage_report.lcov: Aggregate coverage report for the invocation.
     #[prost(message, repeated, tag = "8")]
-    pub files: ::std::vec::Vec<File>,
+    pub files: ::prost::alloc::vec::Vec<File>,
     /// Summary of aggregate coverage across all Actions in this Invocation.
     /// If missing, this data will be populated by the server from the
     /// coverage_report.lcov file or the union of all ActionCoverages under this
     /// invocation (in that order).
     #[prost(message, repeated, tag = "9")]
-    pub coverage_summaries: ::std::vec::Vec<LanguageCoverageSummary>,
+    pub coverage_summaries: ::prost::alloc::vec::Vec<LanguageCoverageSummary>,
     /// Aggregate code coverage for all build and test Actions within this
     /// Invocation. If missing, this data will be populated by the server
     /// from the coverage_report.lcov file or the union of all ActionCoverages
     /// under this invocation (in that order).
     #[prost(message, optional, tag = "10")]
-    pub aggregate_coverage: ::std::option::Option<AggregateCoverage>,
+    pub aggregate_coverage: ::core::option::Option<AggregateCoverage>,
     /// NOT IMPLEMENTED.
     /// ResultStore will read and parse Files with reserved IDs listed above. Read
     /// and parse errors for all these Files are reported here.
@@ -1198,15 +1207,16 @@ pub struct Invocation {
     /// Typically produced when parsing Files, but may also be provided directly
     /// by clients.
     #[prost(message, repeated, tag = "11")]
-    pub file_processing_errors: ::std::vec::Vec<FileProcessingErrors>,
+    pub file_processing_errors: ::prost::alloc::vec::Vec<FileProcessingErrors>,
 }
+/// Nested message and enum types in `Invocation`.
 pub mod invocation {
     /// The resource ID components that identify the Invocation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
         #[prost(string, tag = "1")]
-        pub invocation_id: std::string::String,
+        pub invocation_id: ::prost::alloc::string::String,
     }
 }
 /// If known, represents the state of the user/build-system workspace.
@@ -1219,39 +1229,39 @@ pub struct WorkspaceContext {}
 pub struct WorkspaceInfo {
     /// Data about the workspace that might be useful for debugging.
     #[prost(message, optional, tag = "1")]
-    pub workspace_context: ::std::option::Option<WorkspaceContext>,
+    pub workspace_context: ::core::option::Option<WorkspaceContext>,
     /// Where the tool was invoked
     #[prost(string, tag = "3")]
-    pub hostname: std::string::String,
+    pub hostname: ::prost::alloc::string::String,
     /// The client's working directory where the build/test was run from.
     #[prost(string, tag = "4")]
-    pub working_directory: std::string::String,
+    pub working_directory: ::prost::alloc::string::String,
     /// Tools should set tool_tag to the name of the tool or use case.
     #[prost(string, tag = "5")]
-    pub tool_tag: std::string::String,
+    pub tool_tag: ::prost::alloc::string::String,
     /// The command lines invoked. The first command line is the one typed by the
     /// user, then each one after that should be an expansion of the previous
     /// command line.
     #[prost(message, repeated, tag = "7")]
-    pub command_lines: ::std::vec::Vec<CommandLine>,
+    pub command_lines: ::prost::alloc::vec::Vec<CommandLine>,
 }
 /// The command and arguments that produced this Invocation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandLine {
     /// A label describing this command line.
     #[prost(string, tag = "1")]
-    pub label: std::string::String,
+    pub label: ::prost::alloc::string::String,
     /// The command-line tool that is run: argv[0].
     #[prost(string, tag = "2")]
-    pub tool: std::string::String,
+    pub tool: ::prost::alloc::string::String,
     /// The arguments to the above tool: argv[1]...argv[N].
     #[prost(string, repeated, tag = "3")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The actual command that was run with the tool.  (e.g. "build", or "test")
     /// Omit if the tool doesn't accept a command.
     /// This is a duplicate of one of the fields in args.
     #[prost(string, tag = "4")]
-    pub command: std::string::String,
+    pub command: ::prost::alloc::string::String,
 }
 /// Attributes that apply to all invocations.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1260,14 +1270,14 @@ pub struct InvocationAttributes {
     /// Consumer Cloud Project that calls this API).
     /// This must be set in the CreateInvocation call, and can't be changed.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// The list of users in the command chain.  The first user in this sequence
     /// is the one who instigated the first command in the chain. For example,
     /// this might contain just the user that ran a Bazel command, or a robot
     /// that tested a change as part of a CI system. It could also contain the user
     /// that manually triggered a CI test, then the robot that ran the test.
     #[prost(string, repeated, tag = "2")]
-    pub users: ::std::vec::Vec<std::string::String>,
+    pub users: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Labels to categorize this invocation.
     /// This is implemented as a set. All labels will be unique. Any duplicate
     /// labels added will be ignored. Labels will be returned in lexicographical
@@ -1276,27 +1286,27 @@ pub struct InvocationAttributes {
     /// Labels should not be used for unique properties such as unique IDs. Use
     /// properties in cases that don't meet these conditions.
     #[prost(string, repeated, tag = "3")]
-    pub labels: ::std::vec::Vec<std::string::String>,
+    pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// This field describes the overall context or purpose of this invocation.
     /// It will be used in the UI to give users more information about
     /// how or why this invocation was run.
     #[prost(string, tag = "4")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// If this Invocation was run in the context of a larger Continuous
     /// Integration build or other automated system, this field may contain more
     /// information about the greater context.
     #[prost(message, repeated, tag = "6")]
-    pub invocation_contexts: ::std::vec::Vec<InvocationContext>,
+    pub invocation_contexts: ::prost::alloc::vec::Vec<InvocationContext>,
 }
 /// Describes the invocation context which includes a display name and URL.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvocationContext {
     /// A human readable name for the context under which this Invocation was run.
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// A URL pointing to a UI containing more information
     #[prost(string, tag = "2")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
 }
 /// Each Target represents data for a given target in a given Invocation.
 /// ConfiguredTarget and Action resources under each Target contain the bulk of
@@ -1306,50 +1316,51 @@ pub struct Target {
     /// The resource name.  Its format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the Target. They must match the
     /// resource name after proper encoding.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<target::Id>,
+    pub id: ::core::option::Option<target::Id>,
     /// This is the aggregate status of the target.
     #[prost(message, optional, tag = "3")]
-    pub status_attributes: ::std::option::Option<StatusAttributes>,
+    pub status_attributes: ::core::option::Option<StatusAttributes>,
     /// When this target started and its duration.
     #[prost(message, optional, tag = "4")]
-    pub timing: ::std::option::Option<Timing>,
+    pub timing: ::core::option::Option<Timing>,
     /// Attributes that apply to all targets.
     #[prost(message, optional, tag = "5")]
-    pub target_attributes: ::std::option::Option<TargetAttributes>,
+    pub target_attributes: ::core::option::Option<TargetAttributes>,
     /// Attributes that apply to all test actions under this target.
     #[prost(message, optional, tag = "6")]
-    pub test_attributes: ::std::option::Option<TestAttributes>,
+    pub test_attributes: ::core::option::Option<TestAttributes>,
     /// Arbitrary name-value pairs.
     /// This is implemented as a multi-map. Multiple properties are allowed with
     /// the same key. Properties will be returned in lexicographical order by key.
     #[prost(message, repeated, tag = "7")]
-    pub properties: ::std::vec::Vec<Property>,
+    pub properties: ::prost::alloc::vec::Vec<Property>,
     /// A list of file references for target level files.
     /// The file IDs must be unique within this list. Duplicate file IDs will
     /// result in an error. Files will be returned in lexicographical order by ID.
     /// Use this field to specify outputs not related to a configuration.
     #[prost(message, repeated, tag = "8")]
-    pub files: ::std::vec::Vec<File>,
+    pub files: ::prost::alloc::vec::Vec<File>,
     /// Provides a hint to clients as to whether to display the Target to users.
     /// If true then clients likely want to display the Target by default.
     /// Once set to true, this may not be set back to false.
     #[prost(bool, tag = "10")]
     pub visible: bool,
 }
+/// Nested message and enum types in `Target`.
 pub mod target {
     /// The resource ID components that identify the Target.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
         #[prost(string, tag = "1")]
-        pub invocation_id: std::string::String,
+        pub invocation_id: ::prost::alloc::string::String,
         /// The Target ID.
         #[prost(string, tag = "2")]
-        pub target_id: std::string::String,
+        pub target_id: ::prost::alloc::string::String,
     }
 }
 /// Attributes that apply to all targets.
@@ -1367,7 +1378,7 @@ pub struct TargetAttributes {
     /// This is implemented as a set. All tags will be unique. Any duplicate tags
     /// will be ignored. Tags will be returned in lexicographical order.
     #[prost(string, repeated, tag = "3")]
-    pub tags: ::std::vec::Vec<std::string::String>,
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Attributes that apply only to test actions under this target.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1417,7 +1428,7 @@ pub struct GetInvocationRequest {
     /// invocations/${INVOCATION_ID}
     /// where INVOCATION_ID must be an RFC 4122-compliant random UUID.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into SearchInvocations
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1450,10 +1461,10 @@ pub struct SearchInvocationsRequest {
     ///
     /// propertyEquals("key", "value")
     #[prost(string, tag = "4")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// The project id to search under.
     #[prost(string, tag = "5")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// If true, all equals or contains restrictions on string fields in query will
     /// require exact match. Otherwise, a string field restriction may ignore case
     /// and punctuation.
@@ -1461,8 +1472,9 @@ pub struct SearchInvocationsRequest {
     pub exact_match: bool,
     /// Options for pagination.
     #[prost(oneof = "search_invocations_request::PageStart", tags = "2, 3")]
-    pub page_start: ::std::option::Option<search_invocations_request::PageStart>,
+    pub page_start: ::core::option::Option<search_invocations_request::PageStart>,
 }
+/// Nested message and enum types in `SearchInvocationsRequest`.
 pub mod search_invocations_request {
     /// Options for pagination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1470,7 +1482,7 @@ pub mod search_invocations_request {
         /// The next_page_token value returned from a previous Search request, if
         /// any.
         #[prost(string, tag = "2")]
-        PageToken(std::string::String),
+        PageToken(::prost::alloc::string::String),
         /// Absolute number of results to skip. May be rejected if too high.
         #[prost(int64, tag = "3")]
         Offset(i64),
@@ -1482,11 +1494,11 @@ pub struct SearchInvocationsResponse {
     /// Invocations matching the search, possibly capped at request.page_size or a
     /// server limit.
     #[prost(message, repeated, tag = "1")]
-    pub invocations: ::std::vec::Vec<Invocation>,
+    pub invocations: ::prost::alloc::vec::Vec<Invocation>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetInvocationDownloadMetadata
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1495,7 +1507,7 @@ pub struct GetInvocationDownloadMetadataRequest {
     /// invocations/${INVOCATION_ID}/downloadMetadata
     /// where INVOCATION_ID must be an RFC 4122-compliant random UUID.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into GetConfiguration
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1503,7 +1515,7 @@ pub struct GetConfigurationRequest {
     /// The name of the configuration to retrieve. It must match this format:
     /// invocations/${INVOCATION_ID}/configs/${url_encode(CONFIGURATION_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListConfigurations
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1511,7 +1523,7 @@ pub struct ListConfigurationsRequest {
     /// The invocation name of the configurations to retrieve.
     /// It must match this format: invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     /// Zero means all, but may be capped by the server.
     #[prost(int32, tag = "2")]
@@ -1520,18 +1532,19 @@ pub struct ListConfigurationsRequest {
     /// Any fields used in the filter must be also specified in the field mask.
     /// May cause pages with 0 results and a next_page_token to be returned.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Options for pagination.
     #[prost(oneof = "list_configurations_request::PageStart", tags = "3, 4")]
-    pub page_start: ::std::option::Option<list_configurations_request::PageStart>,
+    pub page_start: ::core::option::Option<list_configurations_request::PageStart>,
 }
+/// Nested message and enum types in `ListConfigurationsRequest`.
 pub mod list_configurations_request {
     /// Options for pagination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
         #[prost(string, tag = "3")]
-        PageToken(std::string::String),
+        PageToken(::prost::alloc::string::String),
         /// Absolute number of results to skip.
         #[prost(int64, tag = "4")]
         Offset(i64),
@@ -1543,11 +1556,11 @@ pub struct ListConfigurationsResponse {
     /// Configurations matching the request invocation,
     /// possibly capped at request.page_size or a server limit.
     #[prost(message, repeated, tag = "1")]
-    pub configurations: ::std::vec::Vec<Configuration>,
+    pub configurations: ::prost::alloc::vec::Vec<Configuration>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1555,7 +1568,7 @@ pub struct GetTargetRequest {
     /// The name of the target to retrieve. It must match this format:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListTargets
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1563,7 +1576,7 @@ pub struct ListTargetsRequest {
     /// The invocation name of the targets to retrieve. It must match this format:
     /// invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     /// Zero means all, but may be capped by the server.
     #[prost(int32, tag = "2")]
@@ -1572,18 +1585,19 @@ pub struct ListTargetsRequest {
     /// Any fields used in the filter must be also specified in the field mask.
     /// May cause pages with 0 results and a next_page_token to be returned.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Options for pagination.
     #[prost(oneof = "list_targets_request::PageStart", tags = "3, 4")]
-    pub page_start: ::std::option::Option<list_targets_request::PageStart>,
+    pub page_start: ::core::option::Option<list_targets_request::PageStart>,
 }
+/// Nested message and enum types in `ListTargetsRequest`.
 pub mod list_targets_request {
     /// Options for pagination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
         #[prost(string, tag = "3")]
-        PageToken(std::string::String),
+        PageToken(::prost::alloc::string::String),
         /// Absolute number of results to skip.
         #[prost(int64, tag = "4")]
         Offset(i64),
@@ -1595,11 +1609,11 @@ pub struct ListTargetsResponse {
     /// Targets matching the request invocation,
     /// possibly capped at request.page_size or a server limit.
     #[prost(message, repeated, tag = "1")]
-    pub targets: ::std::vec::Vec<Target>,
+    pub targets: ::prost::alloc::vec::Vec<Target>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetConfiguredTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1607,7 +1621,7 @@ pub struct GetConfiguredTargetRequest {
     /// The name of the configured target to retrieve. It must match this format:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIGURATION_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListConfiguredTargets
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1617,7 +1631,7 @@ pub struct ListConfiguredTargetsRequest {
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     /// Supports '-' for ${TARGET_ID} meaning all targets.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     /// Zero means all, but may be capped by the server.
     #[prost(int32, tag = "2")]
@@ -1626,18 +1640,19 @@ pub struct ListConfiguredTargetsRequest {
     /// Any fields used in the filter must be also specified in the field mask.
     /// May cause pages with 0 results and a next_page_token to be returned.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Options for pagination.
     #[prost(oneof = "list_configured_targets_request::PageStart", tags = "3, 4")]
-    pub page_start: ::std::option::Option<list_configured_targets_request::PageStart>,
+    pub page_start: ::core::option::Option<list_configured_targets_request::PageStart>,
 }
+/// Nested message and enum types in `ListConfiguredTargetsRequest`.
 pub mod list_configured_targets_request {
     /// Options for pagination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
         #[prost(string, tag = "3")]
-        PageToken(std::string::String),
+        PageToken(::prost::alloc::string::String),
         /// Absolute number of results to skip.
         #[prost(int64, tag = "4")]
         Offset(i64),
@@ -1649,11 +1664,11 @@ pub struct ListConfiguredTargetsResponse {
     /// ConfiguredTargets matching the request,
     /// possibly capped at request.page_size or a server limit.
     #[prost(message, repeated, tag = "1")]
-    pub configured_targets: ::std::vec::Vec<ConfiguredTarget>,
+    pub configured_targets: ::prost::alloc::vec::Vec<ConfiguredTarget>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetAction
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1661,7 +1676,7 @@ pub struct GetActionRequest {
     /// The name of the action to retrieve. It must match this format:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIGURATION_ID)}/actions/${url_encode(ACTION_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListActions
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1674,7 +1689,7 @@ pub struct ListActionsRequest {
     /// ${CONFIGURATION_ID} to mean all Actions for all Configurations and all
     /// Targets. Does not support ${TARGET_ID} '-' with a specified configuration.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     /// Zero means all, but may be capped by the server.
     #[prost(int32, tag = "2")]
@@ -1683,18 +1698,19 @@ pub struct ListActionsRequest {
     /// Any fields used in the filter must be also specified in the field mask.
     /// May cause pages with 0 results and a next_page_token to be returned.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Options for pagination.
     #[prost(oneof = "list_actions_request::PageStart", tags = "3, 4")]
-    pub page_start: ::std::option::Option<list_actions_request::PageStart>,
+    pub page_start: ::core::option::Option<list_actions_request::PageStart>,
 }
+/// Nested message and enum types in `ListActionsRequest`.
 pub mod list_actions_request {
     /// Options for pagination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
         #[prost(string, tag = "3")]
-        PageToken(std::string::String),
+        PageToken(::prost::alloc::string::String),
         /// Absolute number of results to skip.
         #[prost(int64, tag = "4")]
         Offset(i64),
@@ -1706,11 +1722,11 @@ pub struct ListActionsResponse {
     /// Actions matching the request,
     /// possibly capped at request.page_size or a server limit.
     #[prost(message, repeated, tag = "1")]
-    pub actions: ::std::vec::Vec<Action>,
+    pub actions: ::prost::alloc::vec::Vec<Action>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetFileSet
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1718,7 +1734,7 @@ pub struct GetFileSetRequest {
     /// The name of the file set to retrieve. It must match this format:
     /// invocations/${INVOCATION_ID}/fileSets/${url_encode(FILE_SET_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListFileSets
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1726,7 +1742,7 @@ pub struct ListFileSetsRequest {
     /// The invocation name of the file sets to retrieve.
     /// It must match this format: invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     /// Zero means all, but may be capped by the server.
     #[prost(int32, tag = "2")]
@@ -1735,18 +1751,19 @@ pub struct ListFileSetsRequest {
     /// Any fields used in the filter must be also specified in the field mask.
     /// May cause pages with 0 results and a next_page_token to be returned.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Options for pagination.
     #[prost(oneof = "list_file_sets_request::PageStart", tags = "3, 4")]
-    pub page_start: ::std::option::Option<list_file_sets_request::PageStart>,
+    pub page_start: ::core::option::Option<list_file_sets_request::PageStart>,
 }
+/// Nested message and enum types in `ListFileSetsRequest`.
 pub mod list_file_sets_request {
     /// Options for pagination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
         #[prost(string, tag = "3")]
-        PageToken(std::string::String),
+        PageToken(::prost::alloc::string::String),
         /// Absolute number of results to skip.
         #[prost(int64, tag = "4")]
         Offset(i64),
@@ -1758,11 +1775,11 @@ pub struct ListFileSetsResponse {
     /// File sets matching the request,
     /// possibly capped at request.page_size or a server limit.
     #[prost(message, repeated, tag = "1")]
-    pub file_sets: ::std::vec::Vec<FileSet>,
+    pub file_sets: ::prost::alloc::vec::Vec<FileSet>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into TraverseFileSets
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1779,15 +1796,16 @@ pub struct TraverseFileSetsRequest {
     /// Action. If ${ACTION_ID} is "-", this returns the transitive closure of
     /// FileSets referenced by all Actions under the given ConfiguredTarget.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     /// Zero means all, but may be capped by the server.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Options for pagination.
     #[prost(oneof = "traverse_file_sets_request::PageStart", tags = "3, 4")]
-    pub page_start: ::std::option::Option<traverse_file_sets_request::PageStart>,
+    pub page_start: ::core::option::Option<traverse_file_sets_request::PageStart>,
 }
+/// Nested message and enum types in `TraverseFileSetsRequest`.
 pub mod traverse_file_sets_request {
     /// Options for pagination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1799,7 +1817,7 @@ pub mod traverse_file_sets_request {
         /// Bad request (HTTPS), or a INVALID_ARGUMENT (gRPC ) when
         /// this happens.
         #[prost(string, tag = "3")]
-        PageToken(std::string::String),
+        PageToken(::prost::alloc::string::String),
         /// Absolute number of results to skip.
         /// Not yet implemented. 0 for default.
         #[prost(int64, tag = "4")]
@@ -1812,11 +1830,11 @@ pub struct TraverseFileSetsResponse {
     /// File sets matching the request.
     /// The order in which results are returned is undefined, but stable.
     #[prost(message, repeated, tag = "1")]
-    pub file_sets: ::std::vec::Vec<FileSet>,
+    pub file_sets: ::prost::alloc::vec::Vec<FileSet>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod result_store_download_client {
@@ -2194,7 +2212,7 @@ pub mod result_store_download_client {
 pub struct GetFileRequest {
     /// This corresponds to the uri field in the File message.
     #[prost(string, tag = "1")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
     /// The offset for the first byte to return in the read, relative to the start
     /// of the resource.
     ///
@@ -2215,21 +2233,21 @@ pub struct GetFileRequest {
     /// The above read_offset and read_limit fields are applied to this entry.
     /// If this file is not an archive, INVALID_ARGUMENT is thrown.
     #[prost(string, tag = "4")]
-    pub archive_entry: std::string::String,
+    pub archive_entry: ::prost::alloc::string::String,
 }
 /// Response object for GetFile
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileResponse {
     /// The file data.
-    #[prost(bytes, tag = "1")]
-    pub data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request object for GetFileTail
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileTailRequest {
     /// This corresponds to the uri field in the File message.
     #[prost(string, tag = "1")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
     /// The offset for the first byte to return in the read, relative to the end
     /// of the resource.
     ///
@@ -2248,14 +2266,14 @@ pub struct GetFileTailRequest {
     /// The above read_offset and read_limit fields are applied to this entry.
     /// If this file is not an archive, INVALID_ARGUMENT is thrown.
     #[prost(string, tag = "4")]
-    pub archive_entry: std::string::String,
+    pub archive_entry: ::prost::alloc::string::String,
 }
 /// Response object for GetFileTail
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileTailResponse {
     /// The file data, encoded with UTF-8.
-    #[prost(bytes, tag = "1")]
-    pub data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
 }
 #[doc = r" Generated client implementations."]
 pub mod result_store_file_download_client {
@@ -2347,17 +2365,17 @@ pub struct UploadMetadata {
     /// The name of the upload metadata.  Its format will be:
     /// invocations/${INVOCATION_ID}/uploadMetadata
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resume token of the last batch that was committed in the most recent
     /// batch upload.
     /// More information with resume_token could be found in
     /// resultstore_upload.proto
     #[prost(string, tag = "2")]
-    pub resume_token: std::string::String,
+    pub resume_token: ::prost::alloc::string::String,
     /// Client-specific data used to resume batch upload if an error occurs and
     /// retry action is needed.
-    #[prost(bytes, tag = "3")]
-    pub uploader_state: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub uploader_state: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request passed into CreateInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2369,18 +2387,18 @@ pub struct CreateInvocationRequest {
     /// request ID. If set, invocation_id must also be provided.
     /// Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// The invocation ID. It is optional, but strongly recommended.
     ///
     /// If left empty then a new unique ID will be assigned by the server. If
     /// populated, a RFC 4122-compliant v4 UUID is preferred, but v3 or v5 UUIDs
     /// are allowed too.
     #[prost(string, tag = "2")]
-    pub invocation_id: std::string::String,
+    pub invocation_id: ::prost::alloc::string::String,
     /// The invocation to create.  Its name field will be ignored, since the name
     /// will be derived from the id field above and assigned by the server.
     #[prost(message, optional, tag = "3")]
-    pub invocation: ::std::option::Option<Invocation>,
+    pub invocation: ::core::option::Option<Invocation>,
     /// This is a token to authorize upload access to this invocation. It must be
     /// set to a RFC 4122-compliant v3, v4, or v5 UUID. Once this is set in
     /// CreateInvocation, all other upload RPCs for that Invocation and any of its
@@ -2394,12 +2412,12 @@ pub struct CreateInvocationRequest {
     /// created, and storing them together during the upload. Essentially, this is
     /// a "password" to the invocation.
     #[prost(string, tag = "4")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// By default, Invocations are auto-finalized if they are not modified for 24
     /// hours. If you need auto-finalize to happen sooner, set this field to the
     /// time you'd like auto-finalize to occur.
     #[prost(message, optional, tag = "6")]
-    pub auto_finalize_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub auto_finalize_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Client provided unique token for batch upload to ensure data integrity and
     /// to provide a way to resume batch upload in case of a distributed failure on
     /// the client side. The standard uploading client is presumed to have many
@@ -2419,7 +2437,7 @@ pub struct CreateInvocationRequest {
     /// UploadBatch. This token must not be combined with request_id.
     /// Must be web safe Base64 encoded bytes.
     #[prost(string, tag = "7")]
-    pub initial_resume_token: std::string::String,
+    pub initial_resume_token: ::prost::alloc::string::String,
     /// Client-specific data used to resume batch upload if an error occurs and
     /// retry is needed. This serves a role closely related to resume_token, as
     /// both fields may be used to provide state required to restore a Batch
@@ -2430,8 +2448,8 @@ pub struct CreateInvocationRequest {
     ///    inspected/compared;
     /// The size of the message must be within 1 MiB. Too large requests will be
     /// rejected.
-    #[prost(bytes, tag = "8")]
-    pub uploader_state: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "8")]
+    pub uploader_state: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request passed into UpdateInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2439,14 +2457,14 @@ pub struct UpdateInvocationRequest {
     /// Contains the name and the fields of the invocation to be updated.  The
     /// name format must be: invocations/${INVOCATION_ID}
     #[prost(message, optional, tag = "3")]
-    pub invocation: ::std::option::Option<Invocation>,
+    pub invocation: ::core::option::Option<Invocation>,
     /// Indicates which fields to update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into MergeInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2457,18 +2475,18 @@ pub struct MergeInvocationRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Contains the name and the fields of the invocation to be merged.  The
     /// name format must be: invocations/${INVOCATION_ID}
     #[prost(message, optional, tag = "3")]
-    pub invocation: ::std::option::Option<Invocation>,
+    pub invocation: ::core::option::Option<Invocation>,
     /// Indicates which fields to merge.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into TouchInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2476,11 +2494,11 @@ pub struct TouchInvocationRequest {
     /// The name of the invocation.  Its format must be:
     /// invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "2")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from TouchInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2488,10 +2506,10 @@ pub struct TouchInvocationResponse {
     /// The name of the invocation.  Its format will be:
     /// invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the Invocation.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<invocation::Id>,
+    pub id: ::core::option::Option<invocation::Id>,
 }
 /// Request passed into DeleteInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2499,7 +2517,7 @@ pub struct DeleteInvocationRequest {
     /// The name of the invocation.  Its format must be:
     /// invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed into FinalizeInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2507,11 +2525,11 @@ pub struct FinalizeInvocationRequest {
     /// The name of the invocation.  Its format must be:
     /// invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "3")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from FinalizeInvocation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2519,10 +2537,10 @@ pub struct FinalizeInvocationResponse {
     /// The name of the invocation.  Its format will be:
     /// invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the Invocation.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<invocation::Id>,
+    pub id: ::core::option::Option<invocation::Id>,
 }
 /// Request passed into CreateTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2533,23 +2551,23 @@ pub struct CreateTargetRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// The name of the parent invocation in which the target is created.
     /// Its format must be invocations/${INVOCATION_ID}
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The target identifier.  It can be any string up to 1024 Unicode characters
     /// long except for the reserved id '-'.
     #[prost(string, tag = "3")]
-    pub target_id: std::string::String,
+    pub target_id: ::prost::alloc::string::String,
     /// The target to create.  Its name field will be ignored, since the name will
     /// be derived from the id field above and assigned by the server.
     #[prost(message, optional, tag = "4")]
-    pub target: ::std::option::Option<Target>,
+    pub target: ::core::option::Option<Target>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2558,14 +2576,14 @@ pub struct UpdateTargetRequest {
     /// format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     #[prost(message, optional, tag = "3")]
-    pub target: ::std::option::Option<Target>,
+    pub target: ::core::option::Option<Target>,
     /// Indicates which fields to update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Update operation will become a Create operation if the
     /// Target is NOT_FOUND.
     #[prost(bool, tag = "6")]
@@ -2580,19 +2598,19 @@ pub struct MergeTargetRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Contains the name and the fields of the target to be merged.  The name
     /// format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     #[prost(message, optional, tag = "3")]
-    pub target: ::std::option::Option<Target>,
+    pub target: ::core::option::Option<Target>,
     /// Indicates which fields to merge.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Merge operation will become a Create operation if the
     /// Target is NOT_FOUND.
     #[prost(bool, tag = "6")]
@@ -2604,11 +2622,11 @@ pub struct FinalizeTargetRequest {
     /// The name of the target.  Its format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "3")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from FinalizeTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2616,10 +2634,10 @@ pub struct FinalizeTargetResponse {
     /// The name of the target.  Its format will be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the Target.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<target::Id>,
+    pub id: ::core::option::Option<target::Id>,
 }
 /// Request passed into CreateConfiguredTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2630,24 +2648,24 @@ pub struct CreateConfiguredTargetRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// The name of the parent target in which the configured target is created.
     /// Its format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The configuration identifier. This must match the ID of an existing
     /// Configuration under this Invocation. Cannot be the reserved id '-'.
     #[prost(string, tag = "3")]
-    pub config_id: std::string::String,
+    pub config_id: ::prost::alloc::string::String,
     /// The configured target to create. Its name field will be ignored, since the
     /// name will be derived from the id field above and assigned by the server.
     #[prost(message, optional, tag = "4")]
-    pub configured_target: ::std::option::Option<ConfiguredTarget>,
+    pub configured_target: ::core::option::Option<ConfiguredTarget>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateConfiguredTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2656,14 +2674,14 @@ pub struct UpdateConfiguredTargetRequest {
     /// The name format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}
     #[prost(message, optional, tag = "3")]
-    pub configured_target: ::std::option::Option<ConfiguredTarget>,
+    pub configured_target: ::core::option::Option<ConfiguredTarget>,
     /// Indicates which fields to update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Update operation will become a Create operation if the
     /// ConfiguredTarget is NOT_FOUND.
     #[prost(bool, tag = "6")]
@@ -2678,19 +2696,19 @@ pub struct MergeConfiguredTargetRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Contains the name and the fields of the configured target to be merged.
     /// The name format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}
     #[prost(message, optional, tag = "3")]
-    pub configured_target: ::std::option::Option<ConfiguredTarget>,
+    pub configured_target: ::core::option::Option<ConfiguredTarget>,
     /// Indicates which fields to merge.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Merge operation will become a Create operation if the
     /// ConfiguredTarget is NOT_FOUND.
     #[prost(bool, tag = "6")]
@@ -2702,11 +2720,11 @@ pub struct FinalizeConfiguredTargetRequest {
     /// The name of the configured target. Its format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "3")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from FinalizeConfiguredTarget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2714,10 +2732,10 @@ pub struct FinalizeConfiguredTargetResponse {
     /// The name of the configured target. Its format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource ID components that identify the ConfiguredTarget.
     #[prost(message, optional, tag = "2")]
-    pub id: ::std::option::Option<configured_target::Id>,
+    pub id: ::core::option::Option<configured_target::Id>,
 }
 /// Request passed into CreateAction
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2728,12 +2746,12 @@ pub struct CreateActionRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// The name of the parent configured target in which the action is created.
     /// Its format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The action identifier. It can be any string up to 512 Unicode characters
     /// long, except for the reserved id '-'.
     ///
@@ -2745,15 +2763,15 @@ pub struct CreateActionRequest {
     /// Recommended IDs for Build Actions:
     /// "build": If you only have a single build action.
     #[prost(string, tag = "3")]
-    pub action_id: std::string::String,
+    pub action_id: ::prost::alloc::string::String,
     /// The action to create.  Its name field will be ignored, since the
     /// name will be derived from the id field above and assigned by the server.
     #[prost(message, optional, tag = "4")]
-    pub action: ::std::option::Option<Action>,
+    pub action: ::core::option::Option<Action>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateAction
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2762,14 +2780,14 @@ pub struct UpdateActionRequest {
     /// name format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}/actions/${url_encode(ACTION_ID)}
     #[prost(message, optional, tag = "3")]
-    pub action: ::std::option::Option<Action>,
+    pub action: ::core::option::Option<Action>,
     /// Indicates which fields to update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Update operation will become a Create operation if the
     /// Action is NOT_FOUND.
     #[prost(bool, tag = "6")]
@@ -2784,19 +2802,19 @@ pub struct MergeActionRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Contains the name and the fields of the action to be merged.  The
     /// name format must be:
     /// invocations/${INVOCATION_ID}/targets/${url_encode(TARGET_ID)}/configuredTargets/${url_encode(CONFIG_ID)}/actions/${url_encode(ACTION_ID)}
     #[prost(message, optional, tag = "3")]
-    pub action: ::std::option::Option<Action>,
+    pub action: ::core::option::Option<Action>,
     /// Indicates which fields to merge.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Merge operation will become a Create operation if the
     /// Action is NOT_FOUND.
     #[prost(bool, tag = "6")]
@@ -2811,25 +2829,25 @@ pub struct CreateConfigurationRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// The name of the parent invocation in which the configuration is created.
     /// Its format must be invocations/${INVOCATION_ID}
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The configuration identifier. It can be any string up to 256 Unicode
     /// characters long. The configuration ID of "default" should be preferred for
     /// the default configuration in a single-config invocation. Cannot be the
     /// reserved id '-'.
     #[prost(string, tag = "3")]
-    pub config_id: std::string::String,
+    pub config_id: ::prost::alloc::string::String,
     /// The configuration to create. Its name field will be ignored, since the name
     /// will be derived from the id field above and assigned by the server.
     #[prost(message, optional, tag = "4")]
-    pub configuration: ::std::option::Option<Configuration>,
+    pub configuration: ::core::option::Option<Configuration>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateConfiguration
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2838,14 +2856,14 @@ pub struct UpdateConfigurationRequest {
     /// format must be:
     /// invocations/${INVOCATION_ID}/configs/${url_encode(CONFIG_ID)}
     #[prost(message, optional, tag = "3")]
-    pub configuration: ::std::option::Option<Configuration>,
+    pub configuration: ::core::option::Option<Configuration>,
     /// Indicates which fields to update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Update operation will become a Create operation if the
     /// Configuration is NOT_FOUND.
     #[prost(bool, tag = "6")]
@@ -2860,23 +2878,23 @@ pub struct CreateFileSetRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// The name of the parent invocation in which the file set is created.
     /// Its format must be invocations/${INVOCATION_ID}
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The file set identifier. It can be any string up to 256 Unicode characters
     /// long.
     #[prost(string, tag = "3")]
-    pub file_set_id: std::string::String,
+    pub file_set_id: ::prost::alloc::string::String,
     /// The file set to create. Its name field will be ignored, since the name will
     /// be derived from the id field above and assigned by the server.
     #[prost(message, optional, tag = "4")]
-    pub file_set: ::std::option::Option<FileSet>,
+    pub file_set: ::core::option::Option<FileSet>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "5")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateFileSet
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2884,14 +2902,14 @@ pub struct UpdateFileSetRequest {
     /// Contains the name and fields of the file set to be updated. The name format
     /// must be: invocations/${INVOCATION_ID}/fileSets/${url_encode(FILE_SET_ID)}
     #[prost(message, optional, tag = "1")]
-    pub file_set: ::std::option::Option<FileSet>,
+    pub file_set: ::core::option::Option<FileSet>,
     /// Indicates which fields to update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "3")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Update operation will become a Create operation if the
     /// FileSet is NOT_FOUND.
     #[prost(bool, tag = "4")]
@@ -2906,19 +2924,19 @@ pub struct MergeFileSetRequest {
     /// request if the last successful operation on the resource had the same
     /// request ID.  Restricted to 36 Unicode characters.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Contains the name and fields of the file set to be merged. The name
     /// format must be:
     /// invocations/${INVOCATION_ID}/fileSets/${url_encode(FILE_SET_ID)}
     #[prost(message, optional, tag = "2")]
-    pub file_set: ::std::option::Option<FileSet>,
+    pub file_set: ::core::option::Option<FileSet>,
     /// Indicates which fields to merge.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// This is a token to authorize access to this invocation. It must be set to
     /// the same value that was provided in the CreateInvocationRequest.
     #[prost(string, tag = "4")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// If true then the Merge operation will become a Create operation if the
     /// FileSet is NOT_FOUND.
     #[prost(bool, tag = "5")]
@@ -2930,17 +2948,17 @@ pub struct UploadBatchRequest {
     /// Required. The name of the invocation being modified.
     /// The name format must be: invocations/${INVOCATION_ID}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. A UUID that must match the value provided in CreateInvocationRequest.
     #[prost(string, tag = "2")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
     /// Required. The token of this batch, that will be committed in this UploadBatchRequest.
     /// If this matches the previously uploaded resume_token, then this request
     /// will silently do nothing.
     /// See CreateInvocationRequest.initial_resume_token for more information.
     /// Must be web safe Base64 encoded bytes.
     #[prost(string, tag = "3")]
-    pub next_resume_token: std::string::String,
+    pub next_resume_token: ::prost::alloc::string::String,
     /// Required. The token of the previous batch that was committed in a UploadBatchRequest.
     /// This will be checked after next_resume_token match is checked. If this does
     /// not match the previously uploaded resume_token, a 409 Conflict (HTTPS) or
@@ -2951,7 +2969,7 @@ pub struct UploadBatchRequest {
     /// See CreateInvocationRequest.initial_resume_token for more information.
     /// Must be web safe Base64 encoded bytes.
     #[prost(string, tag = "4")]
-    pub resume_token: std::string::String,
+    pub resume_token: ::prost::alloc::string::String,
     /// Client-specific data used to resume batch upload if an error occurs and
     /// retry is needed. This serves a role closely related to resume_token, as
     /// both fields may be used to provide state required to restore a Batch
@@ -2962,14 +2980,14 @@ pub struct UploadBatchRequest {
     ///    inspected/compared;
     /// The size of the message must be within 1 MiB. Too large requests will be
     /// rejected.
-    #[prost(bytes, tag = "6")]
-    pub uploader_state: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "6")]
+    pub uploader_state: ::prost::alloc::vec::Vec<u8>,
     /// The individual upload requests for this batch.
     /// The recommend total size for a batch is 10 MiB. Too large requests may be
     /// rejected.
     /// This field may be empty, allowing this RPC to be used like TouchInvocation.
     #[prost(message, repeated, tag = "5")]
-    pub upload_requests: ::std::vec::Vec<UploadRequest>,
+    pub upload_requests: ::prost::alloc::vec::Vec<UploadRequest>,
 }
 /// Response for UploadBatch
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2979,7 +2997,7 @@ pub struct UploadBatchResponse {}
 pub struct UploadRequest {
     /// The resource ID components that identify the resource being uploaded.
     #[prost(message, optional, tag = "1")]
-    pub id: ::std::option::Option<upload_request::Id>,
+    pub id: ::core::option::Option<upload_request::Id>,
     /// The operation for the request (e.g. Create(), Update(), etc.)
     #[prost(enumeration = "upload_request::UploadOperation", tag = "2")]
     pub upload_operation: i32,
@@ -2998,15 +3016,16 @@ pub struct UploadRequest {
     /// test_action.infrastructure_failure_info].
     /// FileSet: [*].
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If true then the Update, Merge operation will become a Create operation if
     /// the resource is NOT_FOUND. Not supported for Invocation resource.
     #[prost(bool, tag = "10")]
     pub create_if_not_found: bool,
     /// The proto of the resource being uploaded.
     #[prost(oneof = "upload_request::Resource", tags = "4, 5, 6, 7, 8, 9")]
-    pub resource: ::std::option::Option<upload_request::Resource>,
+    pub resource: ::core::option::Option<upload_request::Resource>,
 }
+/// Nested message and enum types in `UploadRequest`.
 pub mod upload_request {
     /// The resource ID components that identify the resource being uploaded.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3014,19 +3033,19 @@ pub mod upload_request {
         /// Required for Target, ConfiguredTarget, or Action.
         /// The Target ID.
         #[prost(string, tag = "1")]
-        pub target_id: std::string::String,
+        pub target_id: ::prost::alloc::string::String,
         /// Required for Configuration, ConfiguredTarget, or Action.
         /// The Configuration ID.
         #[prost(string, tag = "2")]
-        pub configuration_id: std::string::String,
+        pub configuration_id: ::prost::alloc::string::String,
         /// Required for Action.
         /// The Action ID.
         #[prost(string, tag = "3")]
-        pub action_id: std::string::String,
+        pub action_id: ::prost::alloc::string::String,
         /// Required for FileSet.
         /// The FileSet ID.
         #[prost(string, tag = "4")]
-        pub file_set_id: std::string::String,
+        pub file_set_id: ::prost::alloc::string::String,
     }
     /// The operation for the request (e.g. Create(), Update(), etc.)
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3085,10 +3104,10 @@ pub struct GetInvocationUploadMetadataRequest {
     /// The name of the UploadMetadata being requested.
     /// The name format must be: invocations/${INVOCATION_ID}/uploadMetadata
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. A UUID that must match the value provided in CreateInvocationRequest.
     #[prost(string, tag = "2")]
-    pub authorization_token: std::string::String,
+    pub authorization_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod result_store_upload_client {

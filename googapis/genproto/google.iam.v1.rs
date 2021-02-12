@@ -91,7 +91,7 @@ pub struct Policy {
     /// `condition` that determines when binding is in effect.
     /// `bindings` with no members will result in an error.
     #[prost(message, repeated, tag = "4")]
-    pub bindings: ::std::vec::Vec<Binding>,
+    pub bindings: ::prost::alloc::vec::Vec<Binding>,
     /// `etag` is used for optimistic concurrency control as a way to help
     /// prevent simultaneous updates of a policy from overwriting each other.
     /// It is strongly suggested that systems make use of the `etag` in the
@@ -104,8 +104,8 @@ pub struct Policy {
     /// policy is overwritten. Due to blind-set semantics of an etag-less policy,
     /// 'setIamPolicy' will not fail even if the incoming policy version does not
     /// meet the requirements for modifying the stored policy.
-    #[prost(bytes, tag = "3")]
-    pub etag: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub etag: ::prost::alloc::vec::Vec<u8>,
 }
 /// Associates `members` with a `role`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -113,7 +113,7 @@ pub struct Binding {
     /// Role that is assigned to `members`.
     /// For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
     #[prost(string, tag = "1")]
-    pub role: std::string::String,
+    pub role: ::prost::alloc::string::String,
     /// Specifies the identities requesting access for a Cloud Platform resource.
     /// `members` can have the following values:
     ///
@@ -139,23 +139,23 @@ pub struct Binding {
     ///
     ///
     #[prost(string, repeated, tag = "2")]
-    pub members: ::std::vec::Vec<std::string::String>,
+    pub members: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The condition that is associated with this binding.
     /// NOTE: An unsatisfied condition will not allow user access via current
     /// binding. Different bindings, including their conditions, are examined
     /// independently.
     #[prost(message, optional, tag = "3")]
-    pub condition: ::std::option::Option<super::super::r#type::Expr>,
+    pub condition: ::core::option::Option<super::super::r#type::Expr>,
 }
 /// The difference delta between two policies.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyDelta {
     /// The delta for Bindings between two policies.
     #[prost(message, repeated, tag = "1")]
-    pub binding_deltas: ::std::vec::Vec<BindingDelta>,
+    pub binding_deltas: ::prost::alloc::vec::Vec<BindingDelta>,
     /// The delta for AuditConfigs between two policies.
     #[prost(message, repeated, tag = "2")]
-    pub audit_config_deltas: ::std::vec::Vec<AuditConfigDelta>,
+    pub audit_config_deltas: ::prost::alloc::vec::Vec<AuditConfigDelta>,
 }
 /// One delta entry for Binding. Each individual change (only one member in each
 /// entry) to a binding will be a separate entry.
@@ -169,16 +169,17 @@ pub struct BindingDelta {
     /// For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
     /// Required
     #[prost(string, tag = "2")]
-    pub role: std::string::String,
+    pub role: ::prost::alloc::string::String,
     /// A single identity requesting access for a Cloud Platform resource.
     /// Follows the same format of Binding.members.
     /// Required
     #[prost(string, tag = "3")]
-    pub member: std::string::String,
+    pub member: ::prost::alloc::string::String,
     /// The condition that is associated with this binding.
     #[prost(message, optional, tag = "4")]
-    pub condition: ::std::option::Option<super::super::r#type::Expr>,
+    pub condition: ::core::option::Option<super::super::r#type::Expr>,
 }
+/// Nested message and enum types in `BindingDelta`.
 pub mod binding_delta {
     /// The type of action performed on a Binding in a policy.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -205,18 +206,19 @@ pub struct AuditConfigDelta {
     /// `allServices` is a special value that covers all services.
     /// Required
     #[prost(string, tag = "2")]
-    pub service: std::string::String,
+    pub service: ::prost::alloc::string::String,
     /// A single identity that is exempted from "data access" audit
     /// logging for the `service` specified above.
     /// Follows the same format of Binding.members.
     #[prost(string, tag = "3")]
-    pub exempted_member: std::string::String,
+    pub exempted_member: ::prost::alloc::string::String,
     /// Specifies the log_type that was be enabled. ADMIN_ACTIVITY is always
     /// enabled, and cannot be configured.
     /// Required
     #[prost(string, tag = "4")]
-    pub log_type: std::string::String,
+    pub log_type: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `AuditConfigDelta`.
 pub mod audit_config_delta {
     /// The type of action performed on an audit configuration in a policy.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -236,13 +238,13 @@ pub struct SetIamPolicyRequest {
     /// REQUIRED: The resource for which the policy is being specified.
     /// See the operation documentation for the appropriate value for this field.
     #[prost(string, tag = "1")]
-    pub resource: std::string::String,
+    pub resource: ::prost::alloc::string::String,
     /// REQUIRED: The complete policy to be applied to the `resource`. The size of
     /// the policy is limited to a few 10s of KB. An empty policy is a
     /// valid policy but certain Cloud Platform services (such as Projects)
     /// might reject them.
     #[prost(message, optional, tag = "2")]
-    pub policy: ::std::option::Option<Policy>,
+    pub policy: ::core::option::Option<Policy>,
 }
 /// Request message for `GetIamPolicy` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -250,11 +252,11 @@ pub struct GetIamPolicyRequest {
     /// REQUIRED: The resource for which the policy is being requested.
     /// See the operation documentation for the appropriate value for this field.
     #[prost(string, tag = "1")]
-    pub resource: std::string::String,
+    pub resource: ::prost::alloc::string::String,
     /// OPTIONAL: A `GetPolicyOptions` object for specifying options to
     /// `GetIamPolicy`. This field is only used by Cloud IAM.
     #[prost(message, optional, tag = "2")]
-    pub options: ::std::option::Option<GetPolicyOptions>,
+    pub options: ::core::option::Option<GetPolicyOptions>,
 }
 /// Request message for `TestIamPermissions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -262,13 +264,13 @@ pub struct TestIamPermissionsRequest {
     /// REQUIRED: The resource for which the policy detail is being requested.
     /// See the operation documentation for the appropriate value for this field.
     #[prost(string, tag = "1")]
-    pub resource: std::string::String,
+    pub resource: ::prost::alloc::string::String,
     /// The set of permissions to check for the `resource`. Permissions with
     /// wildcards (such as '*' or 'storage.*') are not allowed. For more
     /// information see
     /// [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
     #[prost(string, repeated, tag = "2")]
-    pub permissions: ::std::vec::Vec<std::string::String>,
+    pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for `TestIamPermissions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -276,7 +278,7 @@ pub struct TestIamPermissionsResponse {
     /// A subset of `TestPermissionsRequest.permissions` that the caller is
     /// allowed.
     #[prost(string, repeated, tag = "1")]
-    pub permissions: ::std::vec::Vec<std::string::String>,
+    pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[doc = r" Generated client implementations."]
 pub mod iam_policy_client {

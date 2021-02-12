@@ -5,7 +5,7 @@ pub struct GenerateAccessTokenRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The sequence of service accounts in a delegation chain. Each service
     /// account must be granted the `roles/iam.serviceAccountTokenCreator` role
     /// on its next service account in the chain. The last service account in the
@@ -17,29 +17,29 @@ pub struct GenerateAccessTokenRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, repeated, tag = "2")]
-    pub delegates: ::std::vec::Vec<std::string::String>,
+    pub delegates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Code to identify the scopes to be included in the OAuth 2.0 access token.
     /// See https://developers.google.com/identity/protocols/googlescopes for more
     /// information.
     /// At least one value required.
     #[prost(string, repeated, tag = "4")]
-    pub scope: ::std::vec::Vec<std::string::String>,
+    pub scope: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The desired lifetime duration of the access token in seconds.
     /// Must be set to a value less than or equal to 3600 (1 hour). If a value is
     /// not specified, the token's lifetime will be set to a default value of one
     /// hour.
     #[prost(message, optional, tag = "7")]
-    pub lifetime: ::std::option::Option<::prost_types::Duration>,
+    pub lifetime: ::core::option::Option<::prost_types::Duration>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAccessTokenResponse {
     /// The OAuth 2.0 access token.
     #[prost(string, tag = "1")]
-    pub access_token: std::string::String,
+    pub access_token: ::prost::alloc::string::String,
     /// Token expiration time.
     /// The expiration time is always set.
     #[prost(message, optional, tag = "3")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobRequest {
@@ -48,7 +48,7 @@ pub struct SignBlobRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The sequence of service accounts in a delegation chain. Each service
     /// account must be granted the `roles/iam.serviceAccountTokenCreator` role
     /// on its next service account in the chain. The last service account in the
@@ -60,19 +60,19 @@ pub struct SignBlobRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, repeated, tag = "3")]
-    pub delegates: ::std::vec::Vec<std::string::String>,
+    pub delegates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The bytes to sign.
-    #[prost(bytes, tag = "5")]
-    pub payload: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "5")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobResponse {
     /// The ID of the key used to sign the blob.
     #[prost(string, tag = "1")]
-    pub key_id: std::string::String,
+    pub key_id: ::prost::alloc::string::String,
     /// The signed blob.
-    #[prost(bytes, tag = "4")]
-    pub signed_blob: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "4")]
+    pub signed_blob: ::prost::alloc::vec::Vec<u8>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtRequest {
@@ -81,7 +81,7 @@ pub struct SignJwtRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The sequence of service accounts in a delegation chain. Each service
     /// account must be granted the `roles/iam.serviceAccountTokenCreator` role
     /// on its next service account in the chain. The last service account in the
@@ -93,19 +93,19 @@ pub struct SignJwtRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, repeated, tag = "3")]
-    pub delegates: ::std::vec::Vec<std::string::String>,
+    pub delegates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The JWT payload to sign: a JSON object that contains a JWT Claims Set.
     #[prost(string, tag = "5")]
-    pub payload: std::string::String,
+    pub payload: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtResponse {
     /// The ID of the key used to sign the JWT.
     #[prost(string, tag = "1")]
-    pub key_id: std::string::String,
+    pub key_id: ::prost::alloc::string::String,
     /// The signed JWT.
     #[prost(string, tag = "2")]
-    pub signed_jwt: std::string::String,
+    pub signed_jwt: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateIdTokenRequest {
@@ -114,7 +114,7 @@ pub struct GenerateIdTokenRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The sequence of service accounts in a delegation chain. Each service
     /// account must be granted the `roles/iam.serviceAccountTokenCreator` role
     /// on its next service account in the chain. The last service account in the
@@ -126,11 +126,11 @@ pub struct GenerateIdTokenRequest {
     /// `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`. The `-` wildcard
     /// character is required; replacing it with a project ID is invalid.
     #[prost(string, repeated, tag = "2")]
-    pub delegates: ::std::vec::Vec<std::string::String>,
+    pub delegates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The audience for the token, such as the API or account that this token
     /// grants access to.
     #[prost(string, tag = "3")]
-    pub audience: std::string::String,
+    pub audience: ::prost::alloc::string::String,
     /// Include the service account email in the token. If set to `true`, the
     /// token will contain `email` and `email_verified` claims.
     #[prost(bool, tag = "4")]
@@ -140,7 +140,7 @@ pub struct GenerateIdTokenRequest {
 pub struct GenerateIdTokenResponse {
     /// The OpenId Connect ID token.
     #[prost(string, tag = "1")]
-    pub token: std::string::String,
+    pub token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod iam_credentials_client {

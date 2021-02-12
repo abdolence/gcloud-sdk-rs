@@ -8,23 +8,24 @@ pub struct AccessLevel {
     /// `accessPolicies/{policy_id}/accessLevels/{short_name}`. The maximum length
     /// of the `short_name` component is 50 characters.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Human readable title. Must be unique within the Policy.
     #[prost(string, tag = "2")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Description of the `AccessLevel` and its use. Does not affect behavior.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. Time the `AccessLevel` was created in UTC.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the `AccessLevel` was updated in UTC.
     #[prost(message, optional, tag = "7")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Describes the necessary conditions for the level to apply.
     #[prost(oneof = "access_level::Level", tags = "4, 5")]
-    pub level: ::std::option::Option<access_level::Level>,
+    pub level: ::core::option::Option<access_level::Level>,
 }
+/// Nested message and enum types in `AccessLevel`.
 pub mod access_level {
     /// Required. Describes the necessary conditions for the level to apply.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -42,7 +43,7 @@ pub mod access_level {
 pub struct BasicLevel {
     /// Required. A list of requirements for the `AccessLevel` to be granted.
     #[prost(message, repeated, tag = "1")]
-    pub conditions: ::std::vec::Vec<Condition>,
+    pub conditions: ::prost::alloc::vec::Vec<Condition>,
     /// How the `conditions` list should be combined to determine if a request is
     /// granted this `AccessLevel`. If AND is used, each `Condition` in
     /// `conditions` must be satisfied for the `AccessLevel` to be applied. If OR
@@ -51,6 +52,7 @@ pub struct BasicLevel {
     #[prost(enumeration = "basic_level::ConditionCombiningFunction", tag = "2")]
     pub combining_function: i32,
 }
+/// Nested message and enum types in `BasicLevel`.
 pub mod basic_level {
     /// Options for how the `conditions` list should be combined to determine if
     /// this `AccessLevel` is applied. Default is AND.
@@ -79,18 +81,18 @@ pub struct Condition {
     /// the listed subnets in order for this Condition to be true. If empty, all IP
     /// addresses are allowed.
     #[prost(string, repeated, tag = "1")]
-    pub ip_subnetworks: ::std::vec::Vec<std::string::String>,
+    pub ip_subnetworks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Device specific restrictions, all restrictions must hold for the
     /// Condition to be true. If not specified, all devices are allowed.
     #[prost(message, optional, tag = "2")]
-    pub device_policy: ::std::option::Option<DevicePolicy>,
+    pub device_policy: ::core::option::Option<DevicePolicy>,
     /// A list of other access levels defined in the same `Policy`, referenced by
     /// resource name. Referencing an `AccessLevel` which does not exist is an
     /// error. All access levels listed must be granted for the Condition
     /// to be true. Example:
     /// "`accessPolicies/MY_POLICY/accessLevels/LEVEL_NAME"`
     #[prost(string, repeated, tag = "3")]
-    pub required_access_levels: ::std::vec::Vec<std::string::String>,
+    pub required_access_levels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Whether to negate the Condition. If true, the Condition becomes a NAND over
     /// its non-empty fields, each field must be false for the Condition overall to
     /// be satisfied. Defaults to false.
@@ -103,11 +105,11 @@ pub struct Condition {
     /// `serviceAccount:{emailid}`
     /// If not specified, a request may come from any user.
     #[prost(string, repeated, tag = "6")]
-    pub members: ::std::vec::Vec<std::string::String>,
+    pub members: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The request must originate from one of the provided countries/regions.
     /// Must be valid ISO 3166-1 alpha-2 codes.
     #[prost(string, repeated, tag = "7")]
-    pub regions: ::std::vec::Vec<std::string::String>,
+    pub regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `CustomLevel` is an `AccessLevel` using the Cloud Common Expression Language
 /// to represent the necessary conditions for the level to apply to a request.
@@ -116,7 +118,7 @@ pub struct Condition {
 pub struct CustomLevel {
     /// Required. A Cloud CEL expression evaluating to a boolean.
     #[prost(message, optional, tag = "1")]
-    pub expr: ::std::option::Option<super::super::super::r#type::Expr>,
+    pub expr: ::core::option::Option<super::super::super::r#type::Expr>,
 }
 /// `DevicePolicy` specifies device specific restrictions necessary to acquire a
 /// given access level. A `DevicePolicy` specifies requirements for requests from
@@ -139,10 +141,10 @@ pub struct DevicePolicy {
         repeated,
         tag = "2"
     )]
-    pub allowed_encryption_statuses: ::std::vec::Vec<i32>,
+    pub allowed_encryption_statuses: ::prost::alloc::vec::Vec<i32>,
     /// Allowed OS versions, an empty list allows all types and all versions.
     #[prost(message, repeated, tag = "3")]
-    pub os_constraints: ::std::vec::Vec<OsConstraint>,
+    pub os_constraints: ::prost::alloc::vec::Vec<OsConstraint>,
     /// Allowed device management levels, an empty list allows all management
     /// levels.
     #[prost(
@@ -150,7 +152,7 @@ pub struct DevicePolicy {
         repeated,
         tag = "6"
     )]
-    pub allowed_device_management_levels: ::std::vec::Vec<i32>,
+    pub allowed_device_management_levels: ::prost::alloc::vec::Vec<i32>,
     /// Whether the device needs to be approved by the customer admin.
     #[prost(bool, tag = "7")]
     pub require_admin_approval: bool,
@@ -168,7 +170,7 @@ pub struct OsConstraint {
     /// satisfies the constraint. Format: `"major.minor.patch"`.
     /// Examples: `"10.5.301"`, `"9.2.1"`.
     #[prost(string, tag = "2")]
-    pub minimum_version: std::string::String,
+    pub minimum_version: ::prost::alloc::string::String,
     /// Only allows requests from devices with a verified Chrome OS.
     /// Verifications includes requirements that the device is enterprise-managed,
     /// conformant to domain policies, and the caller has permission to call
@@ -186,27 +188,27 @@ pub struct AccessPolicy {
     /// Output only. Resource name of the `AccessPolicy`. Format:
     /// `accessPolicies/{policy_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The parent of this `AccessPolicy` in the Cloud Resource
     /// Hierarchy. Currently immutable once created. Format:
     /// `organizations/{organization_id}`
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Human readable title. Does not affect behavior.
     #[prost(string, tag = "3")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Output only. Time the `AccessPolicy` was created in UTC.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the `AccessPolicy` was updated in UTC.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. An opaque identifier for the current version of the
     /// `AccessPolicy`. This will always be a strongly validated etag, meaning that
     /// two Access Polices will be identical if and only if their etags are
     /// identical. Clients should not expect this to be in any specific format.
     #[prost(string, tag = "6")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// `ServicePerimeter` describes a set of Google Cloud resources which can freely
 /// import and export data amongst themselves, but not export outside of the
@@ -224,20 +226,20 @@ pub struct ServicePerimeter {
     /// component must begin with a letter and only include alphanumeric and '_'.
     /// Format: `accessPolicies/{policy_id}/servicePerimeters/{short_name}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Human readable title. Must be unique within the Policy.
     #[prost(string, tag = "2")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Description of the `ServicePerimeter` and its use. Does not affect
     /// behavior.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. Time the `ServicePerimeter` was created in UTC.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the `ServicePerimeter` was updated in UTC.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Perimeter type indicator. A single project is
     /// allowed to be a member of single regular perimeter, but multiple service
     /// perimeter bridges. A project cannot be a included in a perimeter bridge
@@ -250,13 +252,13 @@ pub struct ServicePerimeter {
     /// restricted services and access levels that determine perimeter
     /// content and boundaries.
     #[prost(message, optional, tag = "7")]
-    pub status: ::std::option::Option<ServicePerimeterConfig>,
+    pub status: ::core::option::Option<ServicePerimeterConfig>,
     /// Proposed (or dry run) ServicePerimeter configuration. This configuration
     /// allows to specify and test ServicePerimeter configuration without enforcing
     /// actual access restrictions. Only allowed to be set when the
     /// "use_explicit_dry_run_spec" flag is set.
     #[prost(message, optional, tag = "8")]
-    pub spec: ::std::option::Option<ServicePerimeterConfig>,
+    pub spec: ::core::option::Option<ServicePerimeterConfig>,
     /// Use explicit dry run spec flag. Ordinarily, a dry-run spec implicitly
     /// exists  for all Service Perimeters, and that spec is identical to the
     /// status for those Service Perimeters. When this flag is set, it inhibits the
@@ -270,6 +272,7 @@ pub struct ServicePerimeter {
     #[prost(bool, tag = "9")]
     pub use_explicit_dry_run_spec: bool,
 }
+/// Nested message and enum types in `ServicePerimeter`.
 pub mod service_perimeter {
     /// Specifies the type of the Perimeter. There are two types: regular and
     /// bridge. Regular Service Perimeter contains resources, access levels, and
@@ -302,7 +305,7 @@ pub struct ServicePerimeterConfig {
     /// A list of Google Cloud resources that are inside of the service perimeter.
     /// Currently only projects are allowed. Format: `projects/{project_number}`
     #[prost(string, repeated, tag = "1")]
-    pub resources: ::std::vec::Vec<std::string::String>,
+    pub resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of `AccessLevel` resource names that allow resources within the
     /// `ServicePerimeter` to be accessed from the internet. `AccessLevels` listed
     /// must be in the same policy as this `ServicePerimeter`. Referencing a
@@ -312,18 +315,19 @@ pub struct ServicePerimeterConfig {
     /// `"accessPolicies/MY_POLICY/accessLevels/MY_LEVEL"`.
     /// For Service Perimeter Bridge, must be empty.
     #[prost(string, repeated, tag = "2")]
-    pub access_levels: ::std::vec::Vec<std::string::String>,
+    pub access_levels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Google Cloud services that are subject to the Service Perimeter
     /// restrictions. For example, if `storage.googleapis.com` is specified, access
     /// to the storage buckets inside the perimeter must meet the perimeter's
     /// access restrictions.
     #[prost(string, repeated, tag = "4")]
-    pub restricted_services: ::std::vec::Vec<std::string::String>,
+    pub restricted_services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Configuration for APIs allowed within Perimeter.
     #[prost(message, optional, tag = "10")]
     pub vpc_accessible_services:
-        ::std::option::Option<service_perimeter_config::VpcAccessibleServices>,
+        ::core::option::Option<service_perimeter_config::VpcAccessibleServices>,
 }
+/// Nested message and enum types in `ServicePerimeterConfig`.
 pub mod service_perimeter_config {
     /// Specifies how APIs are allowed to communicate within the Service
     /// Perimeter.
@@ -336,6 +340,6 @@ pub mod service_perimeter_config {
         /// The list of APIs usable within the Service Perimeter. Must be empty
         /// unless 'enable_restriction' is True.
         #[prost(string, repeated, tag = "2")]
-        pub allowed_services: ::std::vec::Vec<std::string::String>,
+        pub allowed_services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }

@@ -17,7 +17,7 @@ pub struct AccessLocations {
     /// - ANY: Any location
     ///
     #[prost(string, tag = "1")]
-    pub principal_office_country: std::string::String,
+    pub principal_office_country: ::prost::alloc::string::String,
     /// Physical location of the principal at the time of the access. A
     /// two-letter country code (ISO 3166-1 alpha-2), such as "US", "DE" or "GB" or
     /// a region code. In some limited situations Google systems may refer refer to
@@ -34,7 +34,7 @@ pub struct AccessLocations {
     /// - ANY: Any location
     ///
     #[prost(string, tag = "2")]
-    pub principal_physical_location_country: std::string::String,
+    pub principal_physical_location_country: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessReason {
@@ -43,8 +43,9 @@ pub struct AccessReason {
     pub r#type: i32,
     /// More detail about certain reason types. See comments for each type above.
     #[prost(string, tag = "2")]
-    pub detail: std::string::String,
+    pub detail: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `AccessReason`.
 pub mod access_reason {
     /// Type of access justification.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -78,17 +79,17 @@ pub mod access_reason {
 pub struct ApproveDecision {
     /// The time at which approval was granted.
     #[prost(message, optional, tag = "1")]
-    pub approve_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub approve_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the approval expires.
     #[prost(message, optional, tag = "2")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A decision that has been made to dismiss an approval request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissDecision {
     /// The time at which the approval request was dismissed.
     #[prost(message, optional, tag = "1")]
-    pub dismiss_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub dismiss_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The properties associated with the resource of the request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -104,7 +105,7 @@ pub struct ApprovalRequest {
     /// The resource name of the request. Format is
     /// "{projects|folders|organizations}/{id}/approvalRequests/{approval_request_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource for which approval is being requested. The format of the
     /// resource name is defined at
     /// https://cloud.google.com/apis/design/resource_names. The resource name here
@@ -113,27 +114,28 @@ pub struct ApprovalRequest {
     /// resource name (e.g. "shelves/shelf1/books/book2") as described in the
     /// resource name specification.
     #[prost(string, tag = "2")]
-    pub requested_resource_name: std::string::String,
+    pub requested_resource_name: ::prost::alloc::string::String,
     /// Properties related to the resource represented by requested_resource_name.
     #[prost(message, optional, tag = "9")]
-    pub requested_resource_properties: ::std::option::Option<ResourceProperties>,
+    pub requested_resource_properties: ::core::option::Option<ResourceProperties>,
     /// The justification for which approval is being requested.
     #[prost(message, optional, tag = "3")]
-    pub requested_reason: ::std::option::Option<AccessReason>,
+    pub requested_reason: ::core::option::Option<AccessReason>,
     /// The locations for which approval is being requested.
     #[prost(message, optional, tag = "4")]
-    pub requested_locations: ::std::option::Option<AccessLocations>,
+    pub requested_locations: ::core::option::Option<AccessLocations>,
     /// The time at which approval was requested.
     #[prost(message, optional, tag = "5")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The requested expiration for the approval. If the request is approved,
     /// access will be granted from the time of approval until the expiration time.
     #[prost(message, optional, tag = "6")]
-    pub requested_expiration: ::std::option::Option<::prost_types::Timestamp>,
+    pub requested_expiration: ::core::option::Option<::prost_types::Timestamp>,
     /// The current decision on the approval request.
     #[prost(oneof = "approval_request::Decision", tags = "7, 8")]
-    pub decision: ::std::option::Option<approval_request::Decision>,
+    pub decision: ::core::option::Option<approval_request::Decision>,
 }
+/// Nested message and enum types in `ApprovalRequest`.
 pub mod approval_request {
     /// The current decision on the approval request.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -164,7 +166,7 @@ pub struct EnrolledService {
     /// - storage.googleapis.com
     ///
     #[prost(string, tag = "1")]
-    pub cloud_product: std::string::String,
+    pub cloud_product: ::prost::alloc::string::String,
     /// The enrollment level of the service.
     #[prost(enumeration = "EnrollmentLevel", tag = "2")]
     pub enrollment_level: i32,
@@ -179,13 +181,13 @@ pub struct AccessApprovalSettings {
     /// - "organizations/{organization_id}/accessApprovalSettings"
     ///
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A list of email addresses to which notifications relating to approval
     /// requests should be sent. Notifications relating to a resource will be sent
     /// to all emails in the settings of ancestor resources of that resource. A
     /// maximum of 50 email addresses are allowed.
     #[prost(string, repeated, tag = "2")]
-    pub notification_emails: ::std::vec::Vec<std::string::String>,
+    pub notification_emails: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of Google Cloud Services for which the given resource has Access
     /// Approval enrolled. Access requests for the resource given by name against
     /// any of these services contained here will be required to have explicit
@@ -198,7 +200,7 @@ pub struct AccessApprovalSettings {
     /// enrolled services will be enforced, to be expanded as the set of supported
     /// services is expanded.
     #[prost(message, repeated, tag = "3")]
-    pub enrolled_services: ::std::vec::Vec<EnrolledService>,
+    pub enrolled_services: ::prost::alloc::vec::Vec<EnrolledService>,
     /// Output only. This field is read only (not settable via
     /// UpdateAccessAccessApprovalSettings method). If the field is true, that
     /// indicates that at least one service is enrolled for Access Approval in one
@@ -213,7 +215,7 @@ pub struct ListApprovalRequestsMessage {
     /// The parent resource. This may be "projects/{project_id}",
     /// "folders/{folder_id}", or "organizations/{organization_id}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// A filter on the type of approval requests to retrieve. Must be one of the
     /// following values:
     ///
@@ -224,61 +226,61 @@ pub struct ListApprovalRequestsMessage {
     /// - DISMISSED: Only dismissed (including expired) requests.
     ///
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Requested page size.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A token identifying the page of results to return.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response to listing of ApprovalRequest objects.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApprovalRequestsResponse {
     /// Approval request details.
     #[prost(message, repeated, tag = "1")]
-    pub approval_requests: ::std::vec::Vec<ApprovalRequest>,
+    pub approval_requests: ::prost::alloc::vec::Vec<ApprovalRequest>,
     /// Token to retrieve the next page of results, or empty if there are no more.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to get an approval request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApprovalRequestMessage {
     /// Name of the approval request to retrieve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to approve an ApprovalRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApproveApprovalRequestMessage {
     /// Name of the approval request to approve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The expiration time of this approval.
     #[prost(message, optional, tag = "2")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request to dismiss an approval request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissApprovalRequestMessage {
     /// Name of the ApprovalRequest to dismiss.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to get access approval settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccessApprovalSettingsMessage {
     /// Name of the AccessApprovalSettings to retrieve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to update access approval settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAccessApprovalSettingsMessage {
     /// The new AccessApprovalSettings.
     #[prost(message, optional, tag = "1")]
-    pub settings: ::std::option::Option<AccessApprovalSettings>,
+    pub settings: ::core::option::Option<AccessApprovalSettings>,
     /// The update mask applies to the settings. Only the top level fields of
     /// AccessApprovalSettings (notification_emails & enrolled_services) are
     /// supported. For each field, if it is included, the currently stored value
@@ -290,14 +292,14 @@ pub struct UpdateAccessApprovalSettingsMessage {
     /// If this field is left unset, only the notification_emails field will be
     /// updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete access approval settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAccessApprovalSettingsMessage {
     /// Name of the AccessApprovalSettings to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Represents the type of enrollment for a given service to Access Approval.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

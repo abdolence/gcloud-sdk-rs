@@ -3,20 +3,20 @@
 pub struct Device {
     /// Third-party device ID.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Hardware type of the device.
     /// See [device
     /// types](https://developers.google.com/assistant/smarthome/guides).
     #[prost(string, tag = "2")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// Traits supported by the device.
     /// See [device
     /// traits](https://developers.google.com/assistant/smarthome/traits).
     #[prost(string, repeated, tag = "3")]
-    pub traits: ::std::vec::Vec<std::string::String>,
+    pub traits: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Names given to this device by your smart home Action.
     #[prost(message, optional, tag = "4")]
-    pub name: ::std::option::Option<DeviceNames>,
+    pub name: ::core::option::Option<DeviceNames>,
     /// Indicates whether your smart home Action will report state of this device
     /// to Google via
     /// [ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification].
@@ -25,17 +25,17 @@ pub struct Device {
     /// Suggested name for the room where this device is installed.
     /// Google attempts to use this value during user setup.
     #[prost(string, tag = "6")]
-    pub room_hint: std::string::String,
+    pub room_hint: ::prost::alloc::string::String,
     /// Suggested name for the structure where this device is installed.
     /// Google attempts to use this value during user setup.
     #[prost(string, tag = "7")]
-    pub structure_hint: std::string::String,
+    pub structure_hint: ::prost::alloc::string::String,
     /// Device manufacturer, model, hardware version, and software version.
     #[prost(message, optional, tag = "8")]
-    pub device_info: ::std::option::Option<DeviceInfo>,
+    pub device_info: ::core::option::Option<DeviceInfo>,
     /// Attributes for the traits supported by the device.
     #[prost(message, optional, tag = "9")]
-    pub attributes: ::std::option::Option<::prost_types::Struct>,
+    pub attributes: ::core::option::Option<::prost_types::Struct>,
     /// Custom device attributes stored in Home Graph and provided to your
     /// smart home Action in each
     /// [QUERY](https://developers.google.com/assistant/smarthome/reference/intent/query)
@@ -43,12 +43,12 @@ pub struct Device {
     /// [EXECUTE](https://developers.google.com/assistant/smarthome/reference/intent/execute)
     /// intent.
     #[prost(message, optional, tag = "10")]
-    pub custom_data: ::std::option::Option<::prost_types::Struct>,
+    pub custom_data: ::core::option::Option<::prost_types::Struct>,
     /// Alternate IDs associated with this device.
     /// This is used to identify cloud synced devices enabled for [local
     /// fulfillment](https://developers.google.com/assistant/smarthome/concepts/local).
     #[prost(message, repeated, tag = "11")]
-    pub other_device_ids: ::std::vec::Vec<AgentOtherDeviceId>,
+    pub other_device_ids: ::prost::alloc::vec::Vec<AgentOtherDeviceId>,
     /// Indicates whether your smart home Action will report notifications
     /// to Google for this device via
     /// [ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification].
@@ -64,40 +64,40 @@ pub struct Device {
 pub struct DeviceNames {
     /// Primary name of the device, generally provided by the user.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Additional names provided by the user for the device.
     #[prost(string, repeated, tag = "2")]
-    pub nicknames: ::std::vec::Vec<std::string::String>,
+    pub nicknames: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of names provided by the manufacturer rather than the user, such as
     /// serial numbers, SKUs, etc.
     #[prost(string, repeated, tag = "3")]
-    pub default_names: ::std::vec::Vec<std::string::String>,
+    pub default_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Device information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceInfo {
     /// Device manufacturer.
     #[prost(string, tag = "1")]
-    pub manufacturer: std::string::String,
+    pub manufacturer: ::prost::alloc::string::String,
     /// Device model.
     #[prost(string, tag = "2")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// Device hardware version.
     #[prost(string, tag = "3")]
-    pub hw_version: std::string::String,
+    pub hw_version: ::prost::alloc::string::String,
     /// Device software version.
     #[prost(string, tag = "4")]
-    pub sw_version: std::string::String,
+    pub sw_version: ::prost::alloc::string::String,
 }
 /// Alternate third-party device ID.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentOtherDeviceId {
     /// Project ID for your smart home Action.
     #[prost(string, tag = "1")]
-    pub agent_id: std::string::String,
+    pub agent_id: ::prost::alloc::string::String,
     /// Unique third-party device ID.
     #[prost(string, tag = "2")]
-    pub device_id: std::string::String,
+    pub device_id: ::prost::alloc::string::String,
 }
 /// Request type for the
 /// [`RequestSyncDevices`](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)
@@ -106,7 +106,7 @@ pub struct AgentOtherDeviceId {
 pub struct RequestSyncDevicesRequest {
     /// Required. Third-party user ID.
     #[prost(string, tag = "1")]
-    pub agent_user_id: std::string::String,
+    pub agent_user_id: ::prost::alloc::string::String,
     /// Optional. If set, the request will be added to a queue and a response will
     /// be returned immediately. This enables concurrent requests for the given
     /// `agent_user_id`, but the caller will not receive any error responses.
@@ -151,22 +151,23 @@ pub struct RequestSyncDevicesResponse {}
 pub struct ReportStateAndNotificationRequest {
     /// Request ID used for debugging.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Unique identifier per event (for example, a doorbell press).
     #[prost(string, tag = "4")]
-    pub event_id: std::string::String,
+    pub event_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
     #[prost(string, tag = "2")]
-    pub agent_user_id: std::string::String,
+    pub agent_user_id: ::prost::alloc::string::String,
     /// Token to maintain state in the follow up notification response.
     /// Deprecated. See the [notifications
     /// guide](https://developers.google.com/assistant/smarthome/develop/notifications)
     /// for details on implementing follow up notifications.
+    #[deprecated]
     #[prost(string, tag = "5")]
-    pub follow_up_token: std::string::String,
+    pub follow_up_token: ::prost::alloc::string::String,
     /// Required. State of devices to update and notification metadata for devices.
     #[prost(message, optional, tag = "3")]
-    pub payload: ::std::option::Option<StateAndNotificationPayload>,
+    pub payload: ::core::option::Option<StateAndNotificationPayload>,
 }
 /// Response type for the
 /// [`ReportStateAndNotification`](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)
@@ -176,14 +177,14 @@ pub struct ReportStateAndNotificationResponse {
     /// Request ID copied from
     /// [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest].
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Payload containing the state and notification information for devices.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateAndNotificationPayload {
     /// The devices for updating state and sending notifications.
     #[prost(message, optional, tag = "1")]
-    pub devices: ::std::option::Option<ReportStateAndNotificationDevice>,
+    pub devices: ::core::option::Option<ReportStateAndNotificationDevice>,
 }
 /// The states and notifications specific to a device.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -192,12 +193,12 @@ pub struct ReportStateAndNotificationDevice {
     /// of the individual trait [reference
     /// guides](https://developers.google.com/assistant/smarthome/traits).
     #[prost(message, optional, tag = "1")]
-    pub states: ::std::option::Option<::prost_types::Struct>,
+    pub states: ::core::option::Option<::prost_types::Struct>,
     /// Notifications metadata for devices. See the **Device NOTIFICATIONS**
     /// section of the individual trait [reference
     /// guides](https://developers.google.com/assistant/smarthome/traits).
     #[prost(message, optional, tag = "2")]
-    pub notifications: ::std::option::Option<::prost_types::Struct>,
+    pub notifications: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request type for the
 /// [`DeleteAgentUser`](#google.home.graph.v1.HomeGraphApiService.DeleteAgentUser)
@@ -206,10 +207,10 @@ pub struct ReportStateAndNotificationDevice {
 pub struct DeleteAgentUserRequest {
     /// Request ID used for debugging.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
     #[prost(string, tag = "2")]
-    pub agent_user_id: std::string::String,
+    pub agent_user_id: ::prost::alloc::string::String,
 }
 /// Request type for the
 /// [`Query`](#google.home.graph.v1.HomeGraphApiService.Query) call.
@@ -217,35 +218,35 @@ pub struct DeleteAgentUserRequest {
 pub struct QueryRequest {
     /// Request ID used for debugging.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
     #[prost(string, tag = "2")]
-    pub agent_user_id: std::string::String,
+    pub agent_user_id: ::prost::alloc::string::String,
     /// Required. Inputs containing third-party device IDs for which to
     /// get the device states.
     #[prost(message, repeated, tag = "3")]
-    pub inputs: ::std::vec::Vec<QueryRequestInput>,
+    pub inputs: ::prost::alloc::vec::Vec<QueryRequestInput>,
 }
 /// Device ID inputs to [QueryRequest][google.home.graph.v1.QueryRequest].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequestInput {
     /// Payload containing third-party device IDs.
     #[prost(message, optional, tag = "1")]
-    pub payload: ::std::option::Option<QueryRequestPayload>,
+    pub payload: ::core::option::Option<QueryRequestPayload>,
 }
 /// Payload containing device IDs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequestPayload {
     /// Third-party device IDs for which to get the device states.
     #[prost(message, repeated, tag = "1")]
-    pub devices: ::std::vec::Vec<AgentDeviceId>,
+    pub devices: ::prost::alloc::vec::Vec<AgentDeviceId>,
 }
 /// Third-party device ID for one device.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentDeviceId {
     /// Third-party device ID.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
 }
 /// Response type for the
 /// [`Query`](#google.home.graph.v1.HomeGraphApiService.Query) call.
@@ -280,10 +281,10 @@ pub struct AgentDeviceId {
 pub struct QueryResponse {
     /// Request ID used for debugging. Copied from the request.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Device states for the devices given in the request.
     #[prost(message, optional, tag = "2")]
-    pub payload: ::std::option::Option<QueryResponsePayload>,
+    pub payload: ::core::option::Option<QueryResponsePayload>,
 }
 /// Payload containing device states information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -291,7 +292,7 @@ pub struct QueryResponsePayload {
     /// States of the devices. Map of third-party device ID to struct of device
     /// states.
     #[prost(map = "string, message", tag = "1")]
-    pub devices: ::std::collections::HashMap<std::string::String, ::prost_types::Struct>,
+    pub devices: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Struct>,
 }
 /// Request type for the [`Sync`](#google.home.graph.v1.HomeGraphApiService.Sync)
 /// call.
@@ -299,10 +300,10 @@ pub struct QueryResponsePayload {
 pub struct SyncRequest {
     /// Request ID used for debugging.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
     #[prost(string, tag = "2")]
-    pub agent_user_id: std::string::String,
+    pub agent_user_id: ::prost::alloc::string::String,
 }
 /// Response type for the
 /// [`Sync`](#google.home.graph.v1.HomeGraphApiService.Sync) call.
@@ -347,20 +348,20 @@ pub struct SyncRequest {
 pub struct SyncResponse {
     /// Request ID used for debugging. Copied from the request.
     #[prost(string, tag = "1")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Devices associated with the third-party user.
     #[prost(message, optional, tag = "2")]
-    pub payload: ::std::option::Option<SyncResponsePayload>,
+    pub payload: ::core::option::Option<SyncResponsePayload>,
 }
 /// Payload containing device information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncResponsePayload {
     /// Third-party user ID
     #[prost(string, tag = "1")]
-    pub agent_user_id: std::string::String,
+    pub agent_user_id: ::prost::alloc::string::String,
     /// Devices associated with the third-party user.
     #[prost(message, repeated, tag = "2")]
-    pub devices: ::std::vec::Vec<Device>,
+    pub devices: ::prost::alloc::vec::Vec<Device>,
 }
 #[doc = r" Generated client implementations."]
 pub mod home_graph_api_service_client {

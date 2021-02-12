@@ -4,10 +4,10 @@ pub struct ReportPhishingRequest {
     /// Required. The name of the project for which the report will be created,
     /// in the format "projects/{project_number}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The URI that is being reported for phishing content to be analyzed.
     #[prost(string, tag = "2")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
 }
 /// The ReportPhishing (empty) response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -53,7 +53,7 @@ pub mod phishing_protection_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.phishingprotection.v1beta1.PhishingProtectionServiceV1Beta1/ReportPhishing" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.phishingprotection.v1beta1.PhishingProtectionServiceV1Beta1/ReportPhishing") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

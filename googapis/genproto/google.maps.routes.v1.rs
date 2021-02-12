@@ -2,9 +2,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
-    #[prost(oneof = "polyline::PolylineType", tags = "1")]
-    pub polyline_type: ::std::option::Option<polyline::PolylineType>,
+    #[prost(oneof = "polyline::PolylineType", tags = "1, 2")]
+    pub polyline_type: ::core::option::Option<polyline::PolylineType>,
 }
+/// Nested message and enum types in `Polyline`.
 pub mod polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -12,7 +13,11 @@ pub mod polyline {
         /// The string encoding of the polyline using the [polyline encoding
         /// algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
         #[prost(string, tag = "1")]
-        EncodedPolyline(std::string::String),
+        EncodedPolyline(::prost::alloc::string::String),
+        /// Specifies a polyline using the [GeoJSON LineString
+        /// format](https://tools.ietf.org/html/rfc7946#section-3.1.4)
+        #[prost(message, tag = "2")]
+        GeoJsonLinestring(::prost_types::Struct),
     }
 }
 /// A set of values that specify the quality of the polyline.
@@ -42,6 +47,8 @@ pub enum TollPass {
     /// Australia-wide toll pass.
     /// See additional details at https://www.linkt.com.au/.
     AuLinkt = 2,
+    /// Argentina toll pass. See additional details at https://telepase.com.ar
+    ArTelepase = 3,
 }
 /// A set of values describing the vehicle's emission type.
 /// Applies only to the DRIVE travel mode.
@@ -88,8 +95,9 @@ pub struct Waypoint {
     pub side_of_road: bool,
     /// Different ways to represent a location.
     #[prost(oneof = "waypoint::LocationType", tags = "1, 2")]
-    pub location_type: ::std::option::Option<waypoint::LocationType>,
+    pub location_type: ::core::option::Option<waypoint::LocationType>,
 }
+/// Nested message and enum types in `Waypoint`.
 pub mod waypoint {
     /// Different ways to represent a location.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -100,7 +108,7 @@ pub mod waypoint {
         Location(super::Location),
         /// The POI Place ID associated with the waypoint.
         #[prost(string, tag = "2")]
-        PlaceId(std::string::String),
+        PlaceId(::prost::alloc::string::String),
     }
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
@@ -108,29 +116,29 @@ pub mod waypoint {
 pub struct Location {
     /// The waypoint's geographic coordinates.
     #[prost(message, optional, tag = "1")]
-    pub lat_lng: ::std::option::Option<super::super::super::r#type::LatLng>,
+    pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// The compass heading associated with the direction of the flow of traffic.
     /// This value is used to specify the side of the road to use for pickup and
     /// drop-off. Heading values can be from 0 to 360, where 0 specifies a heading
     /// of due North, 90 specifies a heading of due East, etc. You can use this
     /// field only for `DRIVE` and `TWO_WHEELER` travel modes.
     #[prost(message, optional, tag = "2")]
-    pub heading: ::std::option::Option<i32>,
+    pub heading: ::core::option::Option<i32>,
 }
 /// ComputeRoutes request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesRequest {
     /// Required. Origin waypoint.
     #[prost(message, optional, tag = "1")]
-    pub origin: ::std::option::Option<Waypoint>,
+    pub origin: ::core::option::Option<Waypoint>,
     /// Required. Destination waypoint.
     #[prost(message, optional, tag = "2")]
-    pub destination: ::std::option::Option<Waypoint>,
+    pub destination: ::core::option::Option<Waypoint>,
     /// Optional. A set of waypoints along the route (excluding terminal points),
     /// for either stopping at or passing by. Up to 25 intermediate waypoints are
     /// supported.
     #[prost(message, repeated, tag = "3")]
-    pub intermediates: ::std::vec::Vec<Waypoint>,
+    pub intermediates: ::prost::alloc::vec::Vec<Waypoint>,
     /// Optional. Specifies the mode of transportation.
     #[prost(enumeration = "RouteTravelMode", tag = "4")]
     pub travel_mode: i32,
@@ -150,14 +158,14 @@ pub struct ComputeRoutesRequest {
     /// defaults to the time that you made the request. If you set this value to a
     /// time that has already occurred, then the request fails.
     #[prost(message, optional, tag = "7")]
-    pub departure_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Specifies whether to calculate alternate routes in addition to the route.
     #[prost(bool, tag = "8")]
     pub compute_alternative_routes: bool,
     /// Optional. A set of conditions to satisfy that affect the way routes are
     /// calculated.
     #[prost(message, optional, tag = "9")]
-    pub route_modifiers: ::std::option::Option<RouteModifiers>,
+    pub route_modifiers: ::core::option::Option<RouteModifiers>,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
     /// information, see
     /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. See
@@ -165,7 +173,7 @@ pub struct ComputeRoutesRequest {
     /// for the list of supported languages. When you don't provide this value, the
     /// display language is inferred from the location of the route request.
     #[prost(string, tag = "10")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Optional. Specifies the units of measure for the display fields. This
     /// includes the `instruction` field in `NavigationInstruction`. The units of
     /// measure used for the route, leg, step distance, and duration are not
@@ -200,12 +208,12 @@ pub struct RouteModifiers {
     pub avoid_indoor: bool,
     /// Optional. Specifies the vehicle information.
     #[prost(message, optional, tag = "5")]
-    pub vehicle_info: ::std::option::Option<VehicleInfo>,
+    pub vehicle_info: ::core::option::Option<VehicleInfo>,
     /// Encapsulates information about toll passes.
     /// TollPass is unset means no available pass.
     /// Applies only to the DRIVE and TWO_WHEELER travel modes.
     #[prost(enumeration = "TollPass", repeated, tag = "6")]
-    pub toll_passes: ::std::vec::Vec<i32>,
+    pub toll_passes: ::prost::alloc::vec::Vec<i32>,
 }
 /// Encapsulates the vehicle information, such as the license plate last
 /// character.
@@ -213,7 +221,7 @@ pub struct RouteModifiers {
 pub struct VehicleInfo {
     /// Specifies the license plate last character. Could be a digit or a letter.
     #[prost(string, tag = "1")]
-    pub license_plate_last_character: std::string::String,
+    pub license_plate_last_character: ::prost::alloc::string::String,
     /// Describes the vehicle's emission type.
     /// Applies only to the DRIVE travel mode.
     #[prost(enumeration = "VehicleEmissionType", tag = "2")]
@@ -271,11 +279,20 @@ pub enum Units {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRouteMatrixRequest {
     /// Required. Array of origins, which determines the rows of the response matrix.
+    /// Several size restrictions apply to the cardinality of origins and
+    /// destinations:
+    ///
+    /// * The number of elements (origins × destinations) must be no greater than
+    /// 625 in any case.
+    /// * The number of elements (origins × destinations) must be no greater than
+    /// 100 if routing_preference is set to `TRAFFIC_AWARE_OPTIMAL`.
+    /// * The number of waypoints (origins + destinations) specified as `place_id`
+    /// must be no greater than 50.
     #[prost(message, repeated, tag = "1")]
-    pub origins: ::std::vec::Vec<RouteMatrixOrigin>,
+    pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
     /// Required. Array of destinations, which determines the columns of the response matrix.
     #[prost(message, repeated, tag = "2")]
-    pub destinations: ::std::vec::Vec<RouteMatrixDestination>,
+    pub destinations: ::prost::alloc::vec::Vec<RouteMatrixDestination>,
     /// Optional. Specifies the mode of transportation.
     #[prost(enumeration = "RouteTravelMode", tag = "3")]
     pub travel_mode: i32,
@@ -292,24 +309,24 @@ pub struct ComputeRouteMatrixRequest {
     /// that you made the request. If you set this value to a time that has already
     /// occurred, the request fails.
     #[prost(message, optional, tag = "5")]
-    pub departure_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A single origin for ComputeRouteMatrixRequest
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixOrigin {
     /// Required. Origin waypoint
     #[prost(message, optional, tag = "1")]
-    pub waypoint: ::std::option::Option<Waypoint>,
+    pub waypoint: ::core::option::Option<Waypoint>,
     /// Optional. Modifiers for every route that takes this as the origin
     #[prost(message, optional, tag = "2")]
-    pub route_modifiers: ::std::option::Option<RouteModifiers>,
+    pub route_modifiers: ::core::option::Option<RouteModifiers>,
 }
 /// A single destination for ComputeRouteMatrixRequest
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixDestination {
     /// Required. Destination waypoint
     #[prost(message, optional, tag = "1")]
-    pub waypoint: ::std::option::Option<Waypoint>,
+    pub waypoint: ::core::option::Option<Waypoint>,
 }
 /// Information related to how and why a fallback result was used. If this field
 /// is set, then it means the server used a different routing mode from your
@@ -367,7 +384,7 @@ pub struct Route {
     /// of the legs matches the order of Waypoints from `origin` to `intermediates`
     /// to `destination`.
     #[prost(message, repeated, tag = "1")]
-    pub legs: ::std::vec::Vec<RouteLeg>,
+    pub legs: ::prost::alloc::vec::Vec<RouteLeg>,
     /// The travel distance of the route, in meters.
     #[prost(int32, tag = "2")]
     pub distance_meters: i32,
@@ -377,27 +394,27 @@ pub struct Route {
     /// `TRAFFIC_AWARE` or `TRAFFIC_AWARE_OPTIMAL`, then this value is calculated
     /// taking traffic conditions into account.
     #[prost(message, optional, tag = "3")]
-    pub duration: ::std::option::Option<::prost_types::Duration>,
+    pub duration: ::core::option::Option<::prost_types::Duration>,
     /// The duration of traveling through the route without taking traffic
     /// conditions into consideration.
     #[prost(message, optional, tag = "4")]
-    pub static_duration: ::std::option::Option<::prost_types::Duration>,
+    pub static_duration: ::core::option::Option<::prost_types::Duration>,
     /// The overall route polyline. This polyline will be the combined polyline of
     /// all `legs`.
     #[prost(message, optional, tag = "5")]
-    pub polyline: ::std::option::Option<Polyline>,
+    pub polyline: ::core::option::Option<Polyline>,
     /// A description of the route.
     #[prost(string, tag = "6")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// An array of warnings to show when displaying the route.
     #[prost(string, repeated, tag = "7")]
-    pub warnings: ::std::vec::Vec<std::string::String>,
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The viewport bounding box of the polyline.
     #[prost(message, optional, tag = "8")]
-    pub viewport: ::std::option::Option<super::super::super::geo::r#type::Viewport>,
+    pub viewport: ::core::option::Option<super::super::super::geo::r#type::Viewport>,
     /// Additional information about the route.
     #[prost(message, optional, tag = "9")]
-    pub travel_advisory: ::std::option::Option<RouteTravelAdvisory>,
+    pub travel_advisory: ::core::option::Option<RouteTravelAdvisory>,
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc.
@@ -407,14 +424,14 @@ pub struct RouteTravelAdvisory {
     /// subject to the restriction is not allowed to travel on the route. As of
     /// October 2019, only Jakarta, Indonesia takes into consideration.
     #[prost(message, optional, tag = "1")]
-    pub traffic_restriction: ::std::option::Option<TrafficRestriction>,
+    pub traffic_restriction: ::core::option::Option<TrafficRestriction>,
     /// Encapsulates information about tolls on the Route.
     /// This field is only populated if we expect there are tolls on the Route.
     /// If this field is set but the estimated_price subfield is not populated,
     /// we expect that road contains tolls but we do not know an estimated price.
     /// If this field is not set, then we expect there is no toll on the Route.
     #[prost(message, optional, tag = "2")]
-    pub toll_info: ::std::option::Option<TollInfo>,
+    pub toll_info: ::core::option::Option<TollInfo>,
     /// Speed reading intervals detailing traffic density. Applicable in case of
     /// TRAFFIC_AWARE and TRAFFIC_AWARE_OPTIMAL routing preferences.
     /// The intervals cover the entire polyline of the route without overlaps, i.e.
@@ -424,7 +441,7 @@ pub struct RouteTravelAdvisory {
     ///   polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
     ///   speed_reading_intervals: [A,C),  [C,D), [D,G).
     #[prost(message, repeated, tag = "3")]
-    pub speed_reading_intervals: ::std::vec::Vec<SpeedReadingInterval>,
+    pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc. on a route leg.
@@ -436,7 +453,7 @@ pub struct RouteLegTravelAdvisory {
     /// we expect that road contains tolls but we do not know an estimated price.
     /// If this field does not exist, then there is no toll on the RouteLeg.
     #[prost(message, optional, tag = "1")]
-    pub toll_info: ::std::option::Option<TollInfo>,
+    pub toll_info: ::core::option::Option<TollInfo>,
 }
 /// Encapsulates the traffic restriction applied to the route. As of October
 /// 2019, only Jakarta, Indonesia takes into consideration.
@@ -446,7 +463,7 @@ pub struct TrafficRestriction {
     /// this field does not exist, then no restriction on route.
     #[prost(message, optional, tag = "1")]
     pub license_plate_last_character_restriction:
-        ::std::option::Option<LicensePlateLastCharacterRestriction>,
+        ::core::option::Option<LicensePlateLastCharacterRestriction>,
 }
 /// Encapsulates the license plate last character restriction.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -455,7 +472,7 @@ pub struct LicensePlateLastCharacterRestriction {
     /// whose license plate's last characters match these are allowed to travel on
     /// the route. If empty, no vehicle is allowed.
     #[prost(string, repeated, tag = "1")]
-    pub allowed_last_characters: ::std::vec::Vec<std::string::String>,
+    pub allowed_last_characters: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Encapsulates a segment between non-`via` waypoints.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -469,33 +486,33 @@ pub struct RouteLeg {
     /// `TRAFFIC_AWARE_OPTIMAL`, then this value is calculated taking traffic
     /// conditions into account.
     #[prost(message, optional, tag = "2")]
-    pub duration: ::std::option::Option<::prost_types::Duration>,
+    pub duration: ::core::option::Option<::prost_types::Duration>,
     /// The duration of traveling through the leg, calculated without taking
     /// traffic conditions into consideration.
     #[prost(message, optional, tag = "3")]
-    pub static_duration: ::std::option::Option<::prost_types::Duration>,
+    pub static_duration: ::core::option::Option<::prost_types::Duration>,
     /// The overall polyline for this leg. This includes that each `step`'s
     /// polyline.
     #[prost(message, optional, tag = "4")]
-    pub polyline: ::std::option::Option<Polyline>,
+    pub polyline: ::core::option::Option<Polyline>,
     /// The start location of this leg. This might be different from the provided
     /// `origin`. For example, when the provided `origin` is not near a road, this
     /// is a point on the road.
     #[prost(message, optional, tag = "5")]
-    pub start_location: ::std::option::Option<Location>,
+    pub start_location: ::core::option::Option<Location>,
     /// The end location of this leg. This might be different from the provided
     /// `destination`. For example, when the provided `destination` is not near a
     /// road, this is a point on the road.
     #[prost(message, optional, tag = "6")]
-    pub end_location: ::std::option::Option<Location>,
+    pub end_location: ::core::option::Option<Location>,
     /// An array of steps denoting segments within this leg. Each step represents
     /// one navigation instruction.
     #[prost(message, repeated, tag = "7")]
-    pub steps: ::std::vec::Vec<RouteLegStep>,
+    pub steps: ::prost::alloc::vec::Vec<RouteLegStep>,
     /// Encapsulates the additional information that the user should be informed
     /// about, such as possible traffic zone restriction etc. on a route leg.
     #[prost(message, optional, tag = "8")]
-    pub travel_advisory: ::std::option::Option<RouteLegTravelAdvisory>,
+    pub travel_advisory: ::core::option::Option<RouteLegTravelAdvisory>,
 }
 /// Encapsulates toll information on a `Route` or on a `RouteLeg`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -507,7 +524,7 @@ pub struct TollInfo {
     /// this list may contain multiple items to reflect tolls in different
     /// currencies.
     #[prost(message, repeated, tag = "1")]
-    pub estimated_price: ::std::vec::Vec<super::super::super::r#type::Money>,
+    pub estimated_price: ::prost::alloc::vec::Vec<super::super::super::r#type::Money>,
 }
 /// Encapsulates a segment of a `RouteLeg`. A step corresponds to a single
 /// navigation instruction. Route legs are made up of steps.
@@ -521,19 +538,19 @@ pub struct RouteLegStep {
     /// into consideration. In some circumstances, this field might not have a
     /// value.
     #[prost(message, optional, tag = "2")]
-    pub static_duration: ::std::option::Option<::prost_types::Duration>,
+    pub static_duration: ::core::option::Option<::prost_types::Duration>,
     /// The polyline associated with this step.
     #[prost(message, optional, tag = "3")]
-    pub polyline: ::std::option::Option<Polyline>,
+    pub polyline: ::core::option::Option<Polyline>,
     /// The start location of this step.
     #[prost(message, optional, tag = "4")]
-    pub start_location: ::std::option::Option<Location>,
+    pub start_location: ::core::option::Option<Location>,
     /// The end location of this step.
     #[prost(message, optional, tag = "5")]
-    pub end_location: ::std::option::Option<Location>,
+    pub end_location: ::core::option::Option<Location>,
     /// Navigation instructions.
     #[prost(message, optional, tag = "6")]
-    pub navigation_instruction: ::std::option::Option<NavigationInstruction>,
+    pub navigation_instruction: ::core::option::Option<NavigationInstruction>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NavigationInstruction {
@@ -543,7 +560,7 @@ pub struct NavigationInstruction {
     pub maneuver: i32,
     /// Instructions for navigating this step.
     #[prost(string, tag = "2")]
-    pub instructions: std::string::String,
+    pub instructions: ::prost::alloc::string::String,
 }
 /// Traffic density indicator on a contiguous segment of a polyline or path.
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
@@ -563,6 +580,7 @@ pub struct SpeedReadingInterval {
     #[prost(enumeration = "speed_reading_interval::Speed", tag = "3")]
     pub speed: i32,
 }
+/// Nested message and enum types in `SpeedReadingInterval`.
 pub mod speed_reading_interval {
     /// The classification of polyline speed based on traffic data.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -631,13 +649,13 @@ pub struct ComputeRoutesResponse {
     /// recommended route. If the array is empty, then it means no route could be
     /// found.
     #[prost(message, repeated, tag = "1")]
-    pub routes: ::std::vec::Vec<Route>,
+    pub routes: ::prost::alloc::vec::Vec<Route>,
     /// In some cases when the server is not able to compute the route results with
     /// all of the input preferences, it may fallback to using a different way of
     /// computation. When fallback mode is used, this field contains detailed info
     /// about the fallback response. Otherwise this field is unset.
     #[prost(message, optional, tag = "2")]
-    pub fallback_info: ::std::option::Option<FallbackInfo>,
+    pub fallback_info: ::core::option::Option<FallbackInfo>,
 }
 /// Encapsulates route information computed for an origin/destination pair in the
 /// ComputeRouteMatrix API. This proto can be streamed to the client.
@@ -651,7 +669,7 @@ pub struct RouteMatrixElement {
     pub destination_index: i32,
     /// Error status code for this element.
     #[prost(message, optional, tag = "3")]
-    pub status: ::std::option::Option<super::super::super::rpc::Status>,
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
     /// Indicates whether the route was found or not. Independent of status.
     #[prost(enumeration = "RouteMatrixElementCondition", tag = "9")]
     pub condition: i32,
@@ -664,34 +682,34 @@ pub struct RouteMatrixElement {
     /// `TRAFFIC_AWARE` or `TRAFFIC_AWARE_OPTIMAL`, then this value is calculated
     /// taking traffic conditions into account.
     #[prost(message, optional, tag = "5")]
-    pub duration: ::std::option::Option<::prost_types::Duration>,
+    pub duration: ::core::option::Option<::prost_types::Duration>,
     /// The duration of traveling through the route without taking traffic
     /// conditions into consideration.
     #[prost(message, optional, tag = "6")]
-    pub static_duration: ::std::option::Option<::prost_types::Duration>,
+    pub static_duration: ::core::option::Option<::prost_types::Duration>,
     /// Additional information about the route. For example: restriction
     /// information and toll information
     #[prost(message, optional, tag = "7")]
-    pub travel_advisory: ::std::option::Option<RouteTravelAdvisory>,
+    pub travel_advisory: ::core::option::Option<RouteTravelAdvisory>,
     /// In some cases when the server is not able to compute the route with the
     /// given preferences for this particular origin/destination pair, it may
     /// fall back to using a different mode of computation. When fallback mode is
     /// used, this field contains detailed information about the fallback response.
     /// Otherwise this field is unset.
     #[prost(message, optional, tag = "8")]
-    pub fallback_info: ::std::option::Option<FallbackInfo>,
+    pub fallback_info: ::core::option::Option<FallbackInfo>,
 }
 /// The condition of the route being returned.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RouteMatrixElementCondition {
-    /// Not used.
+    /// Only used when the `status` of the element is not OK.
     Unspecified = 0,
     /// A route was found, and the corresponding information was filled out for the
     /// element.
     RouteExists = 1,
     /// No route could be found. Fields containing route information, such as
-    /// distance_meters or duration, will not be filled out in the element.
+    /// `distance_meters` or `duration`, will not be filled out in the element.
     RouteNotFound = 2,
 }
 #[doc = r" Generated client implementations."]
@@ -767,6 +785,62 @@ pub mod routes_preferred_client {
                 "/google.maps.routes.v1.RoutesPreferred/ComputeRoutes",
             );
             self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Takes in a list of origins and destinations and returns a stream containing"]
+        #[doc = " route information for each combination of origin and destination."]
+        #[doc = ""]
+        #[doc = " **NOTE:** This method requires that you specify a response field mask in"]
+        #[doc = " the input. You can provide the response field mask by using the URL"]
+        #[doc = " parameter `$fields` or `fields`, or by using the HTTP/gRPC header"]
+        #[doc = " `X-Goog-FieldMask` (see the [available URL parameters and"]
+        #[doc = " headers](https://cloud.google.com/apis/docs/system-parameters). The value"]
+        #[doc = " is a comma separated list of field paths. See this detailed documentation"]
+        #[doc = " about [how to construct the field"]
+        #[doc = " paths](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto)."]
+        #[doc = ""]
+        #[doc = " For example, in this method:"]
+        #[doc = ""]
+        #[doc = " * Field mask of all available fields (for manual inspection):"]
+        #[doc = "   `X-Goog-FieldMask: *`"]
+        #[doc = " * Field mask of route durations, distances, element status, condition, and"]
+        #[doc = "   element indices (an example production setup):"]
+        #[doc = "   `X-Goog-FieldMask:"]
+        #[doc = "   originIndex,destinationIndex,status,condition,distanceMeters,duration`"]
+        #[doc = ""]
+        #[doc = " It is critical that you include `status` in your field mask as otherwise"]
+        #[doc = " all messages will appear to be OK. Google discourages the use of the"]
+        #[doc = " wildcard (`*`) response field mask, because:"]
+        #[doc = ""]
+        #[doc = " * Selecting only the fields that you need helps our server save computation"]
+        #[doc = " cycles, allowing us to return the result to you with a lower latency."]
+        #[doc = " * Selecting only the fields that you need in your production job ensures"]
+        #[doc = " stable latency performance. We might add more response fields in the"]
+        #[doc = " future, and those new fields might require extra computation time. If you"]
+        #[doc = " select all fields, or if you select all fields at the top level, then you"]
+        #[doc = " might experience performance degradation because any new field we add will"]
+        #[doc = " be automatically included in the response."]
+        #[doc = " * Selecting only the fields that you need results in a smaller response"]
+        #[doc = " size, and thus higher network throughput."]
+        pub async fn compute_route_matrix(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ComputeRouteMatrixRequest>,
+        ) -> Result<
+            tonic::Response<tonic::codec::Streaming<super::RouteMatrixElement>>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.maps.routes.v1.RoutesPreferred/ComputeRouteMatrix",
+            );
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
     }
     impl<T: Clone> Clone for RoutesPreferredClient<T> {

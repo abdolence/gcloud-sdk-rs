@@ -15,14 +15,14 @@ pub enum IntegratedSystem {
 pub struct SystemTimestamps {
     /// The creation time of the resource within the given system.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The last-modified time of the resource within the given system.
     #[prost(message, optional, tag = "2")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The expiration time of the resource within the given system.
     /// Currently only apllicable to BigQuery resources.
     #[prost(message, optional, tag = "3")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Describes a Cloud Storage fileset entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -56,21 +56,21 @@ pub struct GcsFilesetSpec {
     ///
     ///  * `gs://bucket_name/[a-m]??.j*g`
     #[prost(string, repeated, tag = "1")]
-    pub file_patterns: ::std::vec::Vec<std::string::String>,
+    pub file_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Sample files contained in this fileset, not all files
     /// contained in this fileset are represented here.
     #[prost(message, repeated, tag = "2")]
-    pub sample_gcs_file_specs: ::std::vec::Vec<GcsFileSpec>,
+    pub sample_gcs_file_specs: ::prost::alloc::vec::Vec<GcsFileSpec>,
 }
 /// Specifications of a single file in Cloud Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsFileSpec {
     /// Required. The full file path. Example: `gs://bucket_name/a/b.txt`.
     #[prost(string, tag = "1")]
-    pub file_path: std::string::String,
+    pub file_path: ::prost::alloc::string::String,
     /// Output only. Timestamps about the Cloud Storage file.
     #[prost(message, optional, tag = "2")]
-    pub gcs_timestamps: ::std::option::Option<SystemTimestamps>,
+    pub gcs_timestamps: ::core::option::Option<SystemTimestamps>,
     /// Output only. The size of the file, in bytes.
     #[prost(int64, tag = "4")]
     pub size_bytes: i64,
@@ -81,7 +81,7 @@ pub struct Schema {
     /// Required. Schema of columns. A maximum of 10,000 columns and sub-columns can be
     /// specified.
     #[prost(message, repeated, tag = "2")]
-    pub columns: ::std::vec::Vec<ColumnSchema>,
+    pub columns: ::prost::alloc::vec::Vec<ColumnSchema>,
 }
 /// Representation of a column within a schema. Columns could be nested inside
 /// other columns.
@@ -89,21 +89,21 @@ pub struct Schema {
 pub struct ColumnSchema {
     /// Required. Name of the column.
     #[prost(string, tag = "6")]
-    pub column: std::string::String,
+    pub column: ::prost::alloc::string::String,
     /// Required. Type of the column.
     #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// Optional. Description of the column. Default value is an empty string.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Optional. A column's mode indicates whether the values in this column are required,
     /// nullable, etc. Only `NULLABLE`, `REQUIRED` and `REPEATED` are supported.
     /// Default mode is `NULLABLE`.
     #[prost(string, tag = "3")]
-    pub mode: std::string::String,
+    pub mode: ::prost::alloc::string::String,
     /// Optional. Schema of sub-columns. A column can have zero or more sub-columns.
     #[prost(message, repeated, tag = "7")]
-    pub subcolumns: ::std::vec::Vec<ColumnSchema>,
+    pub subcolumns: ::prost::alloc::vec::Vec<ColumnSchema>,
 }
 /// A result that appears in the response of a search request. Each result
 /// captures details of one entry that matches the search.
@@ -118,26 +118,27 @@ pub struct SearchCatalogResult {
     /// the "type" search facet.  Examples: `entry.table`, `entry.dataStream`,
     /// `tagTemplate`.
     #[prost(string, tag = "2")]
-    pub search_result_subtype: std::string::String,
+    pub search_result_subtype: ::prost::alloc::string::String,
     /// The relative resource name of the resource in URL format.
     /// Examples:
     ///
     ///  * `projects/{project_id}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`
     ///  * `projects/{project_id}/tagTemplates/{tag_template_id}`
     #[prost(string, tag = "3")]
-    pub relative_resource_name: std::string::String,
+    pub relative_resource_name: ::prost::alloc::string::String,
     /// The full name of the cloud resource the entry belongs to. See:
     /// https://cloud.google.com/apis/design/resource_names#full_resource_name.
     /// Example:
     ///
     ///  * `//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId`
     #[prost(string, tag = "4")]
-    pub linked_resource: std::string::String,
+    pub linked_resource: ::prost::alloc::string::String,
     /// The source system of the entry. Only applicable when `search_result_type`
     /// is ENTRY.
     #[prost(oneof = "search_catalog_result::System", tags = "8, 9")]
-    pub system: ::std::option::Option<search_catalog_result::System>,
+    pub system: ::core::option::Option<search_catalog_result::System>,
 }
+/// Nested message and enum types in `SearchCatalogResult`.
 pub mod search_catalog_result {
     /// The source system of the entry. Only applicable when `search_result_type`
     /// is ENTRY.
@@ -150,7 +151,7 @@ pub mod search_catalog_result {
         /// This field indicates the entry's source system that Data Catalog does not
         /// integrate with.
         #[prost(string, tag = "9")]
-        UserSpecifiedSystem(std::string::String),
+        UserSpecifiedSystem(::prost::alloc::string::String),
     }
 }
 /// The different types of resources that can be returned in search.
@@ -174,8 +175,9 @@ pub struct BigQueryTableSpec {
     pub table_source_type: i32,
     /// Output only.
     #[prost(oneof = "big_query_table_spec::TypeSpec", tags = "2, 3")]
-    pub type_spec: ::std::option::Option<big_query_table_spec::TypeSpec>,
+    pub type_spec: ::core::option::Option<big_query_table_spec::TypeSpec>,
 }
+/// Nested message and enum types in `BigQueryTableSpec`.
 pub mod big_query_table_spec {
     /// Output only.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -195,7 +197,7 @@ pub mod big_query_table_spec {
 pub struct ViewSpec {
     /// Output only. The query that defines the table view.
     #[prost(string, tag = "1")]
-    pub view_query: std::string::String,
+    pub view_query: ::prost::alloc::string::String,
 }
 /// Normal BigQuery table spec.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -206,7 +208,7 @@ pub struct TableSpec {
     /// `projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}`.
     /// Otherwise, `grouped_entry` is empty.
     #[prost(string, tag = "1")]
-    pub grouped_entry: std::string::String,
+    pub grouped_entry: ::prost::alloc::string::String,
 }
 /// Spec for a group of BigQuery tables with name pattern `[prefix]YYYYMMDD`.
 /// Context:
@@ -217,12 +219,12 @@ pub struct BigQueryDateShardedSpec {
     /// belongs to, for example,
     /// `projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}`.
     #[prost(string, tag = "1")]
-    pub dataset: std::string::String,
+    pub dataset: ::prost::alloc::string::String,
     /// Output only. The table name prefix of the shards. The name of any given shard is
     /// `[table_prefix]YYYYMMDD`, for example, for shard `MyTable20180101`, the
     /// `table_prefix` is `MyTable`.
     #[prost(string, tag = "2")]
-    pub table_prefix: std::string::String,
+    pub table_prefix: ::prost::alloc::string::String,
     /// Output only. Total number of shards.
     #[prost(int64, tag = "3")]
     pub shard_count: i64,
@@ -253,29 +255,30 @@ pub struct Tag {
     /// where `tag_id` is a system-generated identifier.
     /// Note that this Tag may not actually be stored in the location in this name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The resource name of the tag template that this tag uses. Example:
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
     ///
     /// This field cannot be modified after creation.
     #[prost(string, tag = "2")]
-    pub template: std::string::String,
+    pub template: ::prost::alloc::string::String,
     /// Output only. The display name of the tag template.
     #[prost(string, tag = "5")]
-    pub template_display_name: std::string::String,
+    pub template_display_name: ::prost::alloc::string::String,
     /// Required. This maps the ID of a tag field to the value of and additional information
     /// about that field. Valid field IDs are defined by the tag's template. A tag
     /// must have at least 1 field and at most 500 fields.
     #[prost(map = "string, message", tag = "3")]
-    pub fields: ::std::collections::HashMap<std::string::String, TagField>,
+    pub fields: ::std::collections::HashMap<::prost::alloc::string::String, TagField>,
     /// The scope within the parent resource that this tag is attached to. If not
     /// provided, the tag is attached to the parent resource itself.
     /// Deleting the scope from the parent resource will delete all tags attached
     /// to that scope. These fields cannot be updated after creation.
     #[prost(oneof = "tag::Scope", tags = "4")]
-    pub scope: ::std::option::Option<tag::Scope>,
+    pub scope: ::core::option::Option<tag::Scope>,
 }
+/// Nested message and enum types in `Tag`.
 pub mod tag {
     /// The scope within the parent resource that this tag is attached to. If not
     /// provided, the tag is attached to the parent resource itself.
@@ -291,7 +294,7 @@ pub mod tag {
         ///
         /// * `outer_column.inner_column`
         #[prost(string, tag = "4")]
-        Column(std::string::String),
+        Column(::prost::alloc::string::String),
     }
 }
 /// Contains the value and supporting information for a field within
@@ -300,7 +303,7 @@ pub mod tag {
 pub struct TagField {
     /// Output only. The display name of this field.
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Output only. The order of this field with respect to other fields in this tag. It can be
     /// set in [Tag][google.cloud.datacatalog.v1.TagTemplateField.order]. For
     /// example, a higher value can indicate a more important field. The value can
@@ -310,15 +313,16 @@ pub struct TagField {
     pub order: i32,
     /// Required. The value of this field.
     #[prost(oneof = "tag_field::Kind", tags = "2, 3, 4, 5, 6")]
-    pub kind: ::std::option::Option<tag_field::Kind>,
+    pub kind: ::core::option::Option<tag_field::Kind>,
 }
+/// Nested message and enum types in `TagField`.
 pub mod tag_field {
     /// Holds an enum value.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnumValue {
         /// The display name of the enum value.
         #[prost(string, tag = "1")]
-        pub display_name: std::string::String,
+        pub display_name: ::prost::alloc::string::String,
     }
     /// Required. The value of this field.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -328,7 +332,7 @@ pub mod tag_field {
         DoubleValue(f64),
         /// Holds the value for a tag field with string type.
         #[prost(string, tag = "3")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// Holds the value for a tag field with boolean type.
         #[prost(bool, tag = "4")]
         BoolValue(bool),
@@ -358,10 +362,10 @@ pub struct TagTemplate {
     /// Note that this TagTemplate and its child resources may not actually be
     /// stored in the location in this name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The display name for this template. Defaults to an empty string.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. Map of tag template field IDs to the settings for the field.
     /// This map is an exhaustive list of the allowed fields. This map must contain
     /// at least one field and at most 500 fields.
@@ -371,7 +375,7 @@ pub struct TagTemplate {
     /// Field IDs must be at least 1 character long and at most
     /// 64 characters long. Field IDs must start with a letter or underscore.
     #[prost(map = "string, message", tag = "3")]
-    pub fields: ::std::collections::HashMap<std::string::String, TagTemplateField>,
+    pub fields: ::std::collections::HashMap<::prost::alloc::string::String, TagTemplateField>,
 }
 /// The template for an individual field within a tag template.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -383,13 +387,13 @@ pub struct TagTemplateField {
     /// Note that this TagTemplateField may not actually be stored in the location
     /// in this name.
     #[prost(string, tag = "6")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The display name for this field. Defaults to an empty string.
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. The type of value this tag field can contain.
     #[prost(message, optional, tag = "2")]
-    pub r#type: ::std::option::Option<FieldType>,
+    pub r#type: ::core::option::Option<FieldType>,
     /// Whether this is a required field. Defaults to false.
     #[prost(bool, tag = "3")]
     pub is_required: bool,
@@ -404,8 +408,9 @@ pub struct TagTemplateField {
 pub struct FieldType {
     /// Required.
     #[prost(oneof = "field_type::TypeDecl", tags = "1, 2")]
-    pub type_decl: ::std::option::Option<field_type::TypeDecl>,
+    pub type_decl: ::core::option::Option<field_type::TypeDecl>,
 }
+/// Nested message and enum types in `FieldType`.
 pub mod field_type {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnumType {
@@ -416,14 +421,15 @@ pub mod field_type {
         /// only be added to the list of allowed values. Deletion and renaming of
         /// enum values are not supported. Can have up to 500 allowed values.
         #[prost(message, repeated, tag = "1")]
-        pub allowed_values: ::std::vec::Vec<enum_type::EnumValue>,
+        pub allowed_values: ::prost::alloc::vec::Vec<enum_type::EnumValue>,
     }
+    /// Nested message and enum types in `EnumType`.
     pub mod enum_type {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct EnumValue {
             /// Required. The display name of the enum value. Must not be an empty string.
             #[prost(string, tag = "1")]
-            pub display_name: std::string::String,
+            pub display_name: ::prost::alloc::string::String,
         }
     }
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -460,7 +466,7 @@ pub struct SearchCatalogRequest {
     /// `include_gcp_public_datasets` is considered invalid. Data Catalog will
     /// return an error in such a case.
     #[prost(message, optional, tag = "6")]
-    pub scope: ::std::option::Option<search_catalog_request::Scope>,
+    pub scope: ::core::option::Option<search_catalog_request::Scope>,
     /// Required. The query string in search query syntax. The query must be
     /// non-empty.
     ///
@@ -475,7 +481,7 @@ pub struct SearchCatalogRequest {
     /// Syntax](https://cloud.google.com/data-catalog/docs/how-to/search-reference)
     /// for more information.
     #[prost(string, tag = "1")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// Number of results in the search page. If <=0 then defaults to 10. Max limit
     /// for page_size is 1000. Throws an invalid argument for page_size > 1000.
     #[prost(int32, tag = "2")]
@@ -487,7 +493,7 @@ pub struct SearchCatalogRequest {
     /// call, and that the system should return the next page of data. If empty,
     /// the first page is returned.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Specifies the ordering of results, currently supported case-sensitive
     /// choices are:
     ///
@@ -497,8 +503,9 @@ pub struct SearchCatalogRequest {
     ///
     /// If not specified, defaults to `relevance` descending.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `SearchCatalogRequest`.
 pub mod search_catalog_request {
     /// The criteria that select the subspace used for query matching.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -507,12 +514,12 @@ pub mod search_catalog_request {
         /// ID, follow instructions in
         /// https://cloud.google.com/resource-manager/docs/creating-managing-organization.
         #[prost(string, repeated, tag = "2")]
-        pub include_org_ids: ::std::vec::Vec<std::string::String>,
+        pub include_org_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The list of project IDs to search within. To learn more about the
         /// distinction between project names/IDs/numbers, go to
         /// https://cloud.google.com/docs/overview/#projects.
         #[prost(string, repeated, tag = "3")]
-        pub include_project_ids: ::std::vec::Vec<std::string::String>,
+        pub include_project_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// If `true`, include Google Cloud Platform (GCP) public datasets in the
         /// search results. Info on GCP public datasets is available at
         /// https://cloud.google.com/public-datasets/. By default, GCP public
@@ -555,7 +562,7 @@ pub mod search_catalog_request {
         ///  * us-west1
         ///  * us-west2
         #[prost(string, repeated, tag = "16")]
-        pub restricted_locations: ::std::vec::Vec<std::string::String>,
+        pub restricted_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// Response message for
@@ -564,16 +571,16 @@ pub mod search_catalog_request {
 pub struct SearchCatalogResponse {
     /// Search results.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<SearchCatalogResult>,
+    pub results: ::prost::alloc::vec::Vec<SearchCatalogResult>,
     /// The token that can be used to retrieve the next page of results.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Unreachable locations. Search result does not include data from those
     /// locations. Users can get additional information on the error by repeating
     /// the search request with a more restrictive parameter -- setting the value
     /// for `SearchDataCatalogRequest.scope.include_locations`.
     #[prost(string, repeated, tag = "6")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
 /// [CreateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.CreateEntryGroup].
@@ -586,15 +593,15 @@ pub struct CreateEntryGroupRequest {
     /// Note that this EntryGroup and its child resources may not actually be
     /// stored in the location in this name.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The id of the entry group to create.
     /// The id must begin with a letter or underscore, contain only English
     /// letters, numbers and underscores, and be at most 64 characters.
     #[prost(string, tag = "3")]
-    pub entry_group_id: std::string::String,
+    pub entry_group_id: ::prost::alloc::string::String,
     /// The entry group to create. Defaults to an empty entry group.
     #[prost(message, optional, tag = "2")]
-    pub entry_group: ::std::option::Option<EntryGroup>,
+    pub entry_group: ::core::option::Option<EntryGroup>,
 }
 /// Request message for
 /// [UpdateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.UpdateEntryGroup].
@@ -602,11 +609,11 @@ pub struct CreateEntryGroupRequest {
 pub struct UpdateEntryGroupRequest {
     /// Required. The updated entry group. "name" field must be set.
     #[prost(message, optional, tag = "1")]
-    pub entry_group: ::std::option::Option<EntryGroup>,
+    pub entry_group: ::core::option::Option<EntryGroup>,
     /// The fields to update on the entry group. If absent or empty, all modifiable
     /// fields are updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [GetEntryGroup][google.cloud.datacatalog.v1.DataCatalog.GetEntryGroup].
@@ -615,10 +622,10 @@ pub struct GetEntryGroupRequest {
     /// Required. The name of the entry group. For example,
     /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The fields to return. If not set or empty, all fields are returned.
     #[prost(message, optional, tag = "2")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [DeleteEntryGroup][google.cloud.datacatalog.v1.DataCatalog.DeleteEntryGroup].
@@ -627,7 +634,7 @@ pub struct DeleteEntryGroupRequest {
     /// Required. The name of the entry group. For example,
     /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. If true, deletes all entries in the entry group.
     #[prost(bool, tag = "2")]
     pub force: bool,
@@ -641,7 +648,7 @@ pub struct ListEntryGroupsRequest {
     ///
     /// * projects/{project_id}/locations/{location}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return. Default is 10. Max limit
     /// is 1000. Throws an invalid argument for `page_size > 1000`.
     #[prost(int32, tag = "2")]
@@ -649,7 +656,7 @@ pub struct ListEntryGroupsRequest {
     /// Optional. Token that specifies which page is requested. If empty, the first
     /// page is returned.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
@@ -657,11 +664,11 @@ pub struct ListEntryGroupsRequest {
 pub struct ListEntryGroupsResponse {
     /// EntryGroup details.
     #[prost(message, repeated, tag = "1")]
-    pub entry_groups: ::std::vec::Vec<EntryGroup>,
+    pub entry_groups: ::prost::alloc::vec::Vec<EntryGroup>,
     /// Token to retrieve the next page of results. It is set to empty if no items
     /// remain in results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry].
@@ -674,13 +681,13 @@ pub struct CreateEntryRequest {
     /// Note that this Entry and its child resources may not actually be stored in
     /// the location in this name.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The id of the entry to create.
     #[prost(string, tag = "3")]
-    pub entry_id: std::string::String,
+    pub entry_id: ::prost::alloc::string::String,
     /// Required. The entry to create.
     #[prost(message, optional, tag = "2")]
-    pub entry: ::std::option::Option<Entry>,
+    pub entry: ::core::option::Option<Entry>,
 }
 /// Request message for
 /// [UpdateEntry][google.cloud.datacatalog.v1.DataCatalog.UpdateEntry].
@@ -688,7 +695,7 @@ pub struct CreateEntryRequest {
 pub struct UpdateEntryRequest {
     /// Required. The updated entry. The "name" field must be set.
     #[prost(message, optional, tag = "1")]
-    pub entry: ::std::option::Option<Entry>,
+    pub entry: ::core::option::Option<Entry>,
     /// The fields to update on the entry. If absent or empty, all modifiable
     /// fields are updated.
     ///
@@ -710,7 +717,7 @@ pub struct UpdateEntryRequest {
     ///    * linked_resource
     ///    * source_system_timestamps
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [DeleteEntry][google.cloud.datacatalog.v1.DataCatalog.DeleteEntry].
@@ -720,7 +727,7 @@ pub struct DeleteEntryRequest {
     ///
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [GetEntry][google.cloud.datacatalog.v1.DataCatalog.GetEntry].
@@ -730,7 +737,7 @@ pub struct GetEntryRequest {
     ///
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [LookupEntry][google.cloud.datacatalog.v1.DataCatalog.LookupEntry].
@@ -739,8 +746,9 @@ pub struct LookupEntryRequest {
     /// Required. Represents either the Google Cloud Platform resource or SQL name
     /// for a Google Cloud Platform resource.
     #[prost(oneof = "lookup_entry_request::TargetName", tags = "1, 3")]
-    pub target_name: ::std::option::Option<lookup_entry_request::TargetName>,
+    pub target_name: ::core::option::Option<lookup_entry_request::TargetName>,
 }
+/// Nested message and enum types in `LookupEntryRequest`.
 pub mod lookup_entry_request {
     /// Required. Represents either the Google Cloud Platform resource or SQL name
     /// for a Google Cloud Platform resource.
@@ -756,7 +764,7 @@ pub mod lookup_entry_request {
         ///  * //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
         ///  * //pubsub.googleapis.com/projects/projectId/topics/topicId
         #[prost(string, tag = "1")]
-        LinkedResource(std::string::String),
+        LinkedResource(::prost::alloc::string::String),
         /// The SQL name of the entry. SQL names are case-sensitive.
         ///
         /// Examples:
@@ -770,7 +778,7 @@ pub mod lookup_entry_request {
         /// `*_id`s shoud satisfy the standard SQL rules for identifiers.
         /// https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.
         #[prost(string, tag = "3")]
-        SqlResource(std::string::String),
+        SqlResource(::prost::alloc::string::String),
     }
 }
 /// Entry Metadata.
@@ -792,7 +800,7 @@ pub struct Entry {
     /// Note that this Entry and its child resources may not actually be stored in
     /// the location in this name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The resource this metadata entry refers to.
     ///
     /// For Google Cloud Platform resources, `linked_resource` is the [full name of
@@ -806,35 +814,36 @@ pub struct Entry {
     /// user_specified_type, this field is optional and defaults to an empty
     /// string.
     #[prost(string, tag = "9")]
-    pub linked_resource: std::string::String,
+    pub linked_resource: ::prost::alloc::string::String,
     /// Display information such as title and description. A short name to identify
     /// the entry, for example, "Analytics Data - Jan 2011". Default value is an
     /// empty string.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Entry description, which can consist of several sentences or paragraphs
     /// that describe entry contents. Default value is an empty string.
     #[prost(string, tag = "4")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Schema of the entry. An entry might not have any schema attached to it.
     #[prost(message, optional, tag = "5")]
-    pub schema: ::std::option::Option<Schema>,
+    pub schema: ::core::option::Option<Schema>,
     /// Timestamps about the underlying resource, not about this Data Catalog
     /// entry. Output only when Entry is of type in the EntryType enum. For entries
     /// with user_specified_type, this field is optional and defaults to an empty
     /// timestamp.
     #[prost(message, optional, tag = "7")]
-    pub source_system_timestamps: ::std::option::Option<SystemTimestamps>,
+    pub source_system_timestamps: ::core::option::Option<SystemTimestamps>,
     /// Required. Entry type.
     #[prost(oneof = "entry::EntryType", tags = "2, 16")]
-    pub entry_type: ::std::option::Option<entry::EntryType>,
+    pub entry_type: ::core::option::Option<entry::EntryType>,
     /// The source system of the entry.
     #[prost(oneof = "entry::System", tags = "17, 18")]
-    pub system: ::std::option::Option<entry::System>,
+    pub system: ::core::option::Option<entry::System>,
     /// Type specification information.
     #[prost(oneof = "entry::TypeSpec", tags = "6, 12, 15")]
-    pub type_spec: ::std::option::Option<entry::TypeSpec>,
+    pub type_spec: ::core::option::Option<entry::TypeSpec>,
 }
+/// Nested message and enum types in `Entry`.
 pub mod entry {
     /// Required. Entry type.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -854,7 +863,7 @@ pub mod entry {
         /// Currently, only FILESET enum value is allowed. All other entries created
         /// through Data Catalog must use `user_specified_type`.
         #[prost(string, tag = "16")]
-        UserSpecifiedType(std::string::String),
+        UserSpecifiedType(::prost::alloc::string::String),
     }
     /// The source system of the entry.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -869,7 +878,7 @@ pub mod entry {
         /// case insensitive; must be at least 1 character and at most 64 characters
         /// long.
         #[prost(string, tag = "18")]
-        UserSpecifiedSystem(std::string::String),
+        UserSpecifiedSystem(::prost::alloc::string::String),
     }
     /// Type specification information.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -901,20 +910,20 @@ pub struct EntryGroup {
     /// Note that this EntryGroup and its child resources may not actually be
     /// stored in the location in this name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A short name to identify the entry group, for example,
     /// "analytics data - jan 2011". Default value is an empty string.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Entry group description, which can consist of several sentences or
     /// paragraphs that describe entry group contents. Default value is an empty
     /// string.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. Timestamps about this EntryGroup. Default value is empty
     /// timestamps.
     #[prost(message, optional, tag = "4")]
-    pub data_catalog_timestamps: ::std::option::Option<SystemTimestamps>,
+    pub data_catalog_timestamps: ::core::option::Option<SystemTimestamps>,
 }
 /// Request message for
 /// [CreateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplate].
@@ -927,13 +936,13 @@ pub struct CreateTagTemplateRequest {
     ///
     /// * projects/{project_id}/locations/us-central1
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The id of the tag template to create.
     #[prost(string, tag = "3")]
-    pub tag_template_id: std::string::String,
+    pub tag_template_id: ::prost::alloc::string::String,
     /// Required. The tag template to create.
     #[prost(message, optional, tag = "2")]
-    pub tag_template: ::std::option::Option<TagTemplate>,
+    pub tag_template: ::core::option::Option<TagTemplate>,
 }
 /// Request message for
 /// [GetTagTemplate][google.cloud.datacatalog.v1.DataCatalog.GetTagTemplate].
@@ -943,7 +952,7 @@ pub struct GetTagTemplateRequest {
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [UpdateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplate].
@@ -951,7 +960,7 @@ pub struct GetTagTemplateRequest {
 pub struct UpdateTagTemplateRequest {
     /// Required. The template to update. The "name" field must be set.
     #[prost(message, optional, tag = "1")]
-    pub tag_template: ::std::option::Option<TagTemplate>,
+    pub tag_template: ::core::option::Option<TagTemplate>,
     /// The field mask specifies the parts of the template to overwrite.
     ///
     /// Allowed fields:
@@ -960,7 +969,7 @@ pub struct UpdateTagTemplateRequest {
     ///
     /// If absent or empty, all of the allowed fields above will be updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [DeleteTagTemplate][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplate].
@@ -970,7 +979,7 @@ pub struct DeleteTagTemplateRequest {
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Currently, this field must always be set to `true`.
     /// This confirms the deletion of any possible tags using this template.
     /// `force = false` will be supported in the future.
@@ -989,10 +998,10 @@ pub struct CreateTagRequest {
     /// Note that this Tag and its child resources may not actually be stored in
     /// the location in this name.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The tag to create.
     #[prost(message, optional, tag = "2")]
-    pub tag: ::std::option::Option<Tag>,
+    pub tag: ::core::option::Option<Tag>,
 }
 /// Request message for
 /// [UpdateTag][google.cloud.datacatalog.v1.DataCatalog.UpdateTag].
@@ -1000,11 +1009,11 @@ pub struct CreateTagRequest {
 pub struct UpdateTagRequest {
     /// Required. The updated tag. The "name" field must be set.
     #[prost(message, optional, tag = "1")]
-    pub tag: ::std::option::Option<Tag>,
+    pub tag: ::core::option::Option<Tag>,
     /// The fields to update on the Tag. If absent or empty, all modifiable fields
     /// are updated. Currently the only modifiable field is the field `fields`.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [DeleteTag][google.cloud.datacatalog.v1.DataCatalog.DeleteTag].
@@ -1014,7 +1023,7 @@ pub struct DeleteTagRequest {
     ///
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CreateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplateField].
@@ -1027,17 +1036,17 @@ pub struct CreateTagTemplateFieldRequest {
     ///
     /// * projects/{project_id}/locations/us-central1/tagTemplates/{tag_template_id}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the tag template field to create.
     /// Field ids can contain letters (both uppercase and lowercase), numbers
     /// (0-9), underscores (_) and dashes (-). Field IDs must be at least 1
     /// character long and at most 128 characters long. Field IDs must also be
     /// unique within their template.
     #[prost(string, tag = "2")]
-    pub tag_template_field_id: std::string::String,
+    pub tag_template_field_id: ::prost::alloc::string::String,
     /// Required. The tag template field to create.
     #[prost(message, optional, tag = "3")]
-    pub tag_template_field: ::std::option::Option<TagTemplateField>,
+    pub tag_template_field: ::core::option::Option<TagTemplateField>,
 }
 /// Request message for
 /// [UpdateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplateField].
@@ -1047,10 +1056,10 @@ pub struct UpdateTagTemplateFieldRequest {
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The template to update.
     #[prost(message, optional, tag = "2")]
-    pub tag_template_field: ::std::option::Option<TagTemplateField>,
+    pub tag_template_field: ::core::option::Option<TagTemplateField>,
     /// Optional. The field mask specifies the parts of the template to be updated.
     /// Allowed fields:
     ///
@@ -1066,7 +1075,7 @@ pub struct UpdateTagTemplateFieldRequest {
     /// values cannot be deleted nor renamed. Updating a template field from
     /// optional to required is NOT allowed.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [RenameTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateField].
@@ -1076,11 +1085,11 @@ pub struct RenameTagTemplateFieldRequest {
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The new ID of this tag template field. For example,
     /// `my_new_field`.
     #[prost(string, tag = "2")]
-    pub new_tag_template_field_id: std::string::String,
+    pub new_tag_template_field_id: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [DeleteTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplateField].
@@ -1090,7 +1099,7 @@ pub struct DeleteTagTemplateFieldRequest {
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Currently, this field must always be set to `true`.
     /// This confirms the deletion of this field from any tags using this field.
     /// `force = false` will be supported in the future.
@@ -1110,14 +1119,14 @@ pub struct ListTagsRequest {
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of tags to return. Default is 10. Max limit is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token that specifies which page is requested. If empty, the first page is
     /// returned.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
@@ -1125,11 +1134,11 @@ pub struct ListTagsRequest {
 pub struct ListTagsResponse {
     /// [Tag][google.cloud.datacatalog.v1.Tag] details.
     #[prost(message, repeated, tag = "1")]
-    pub tags: ::std::vec::Vec<Tag>,
+    pub tags: ::prost::alloc::vec::Vec<Tag>,
     /// Token to retrieve the next page of results. It is set to empty if no items
     /// remain in results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
@@ -1140,7 +1149,7 @@ pub struct ListEntriesRequest {
     ///
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return. Default is 10. Max limit is 1000.
     /// Throws an invalid argument for `page_size > 1000`.
     #[prost(int32, tag = "2")]
@@ -1148,13 +1157,13 @@ pub struct ListEntriesRequest {
     /// Token that specifies which page is requested. If empty, the first page is
     /// returned.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The fields to return for each Entry. If not set or empty, all
     /// fields are returned.
     /// For example, setting read_mask to contain only one path "name" will cause
     /// ListEntries to return a list of Entries with only "name" field.
     #[prost(message, optional, tag = "4")]
-    pub read_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for
 /// [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
@@ -1162,11 +1171,11 @@ pub struct ListEntriesRequest {
 pub struct ListEntriesResponse {
     /// Entry details.
     #[prost(message, repeated, tag = "1")]
-    pub entries: ::std::vec::Vec<Entry>,
+    pub entries: ::prost::alloc::vec::Vec<Entry>,
     /// Token to retrieve the next page of results. It is set to empty if no items
     /// remain in results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Entry resources in Data Catalog can be of different types e.g. a BigQuery
 /// Table entry is of type `TABLE`. This enum describes all the possible types

@@ -1,24 +1,25 @@
-/// A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container image binary authorization.
+/// A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container
+/// image binary authorization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Output only. The resource name, in the format `projects/*/policy`. There is
     /// at most one policy per project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. A descriptive comment.
     #[prost(string, tag = "6")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Optional. Controls the evaluation of a Google-maintained global admission
     /// policy for common system-level images. Images not covered by the global
     /// policy will be subject to the project admission policy. This setting
     /// has no effect when specified inside a global admission policy.
     #[prost(enumeration = "policy::GlobalPolicyEvaluationMode", tag = "7")]
     pub global_policy_evaluation_mode: i32,
-    /// Optional. Admission policy whitelisting. A matching admission request will
+    /// Optional. Admission policy allowlisting. A matching admission request will
     /// always be permitted. This feature is typically used to exclude Google or
     /// third-party infrastructure images from Binary Authorization policies.
     #[prost(message, repeated, tag = "2")]
-    pub admission_whitelist_patterns: ::std::vec::Vec<AdmissionWhitelistPattern>,
+    pub admission_whitelist_patterns: ::prost::alloc::vec::Vec<AdmissionWhitelistPattern>,
     /// Optional. Per-cluster admission rules. Cluster spec format:
     /// `location.clusterId`. There can be at most one admission rule per cluster
     /// spec.
@@ -27,15 +28,17 @@ pub struct Policy {
     /// For `clusterId` syntax restrictions see
     /// https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.
     #[prost(map = "string, message", tag = "3")]
-    pub cluster_admission_rules: ::std::collections::HashMap<std::string::String, AdmissionRule>,
+    pub cluster_admission_rules:
+        ::std::collections::HashMap<::prost::alloc::string::String, AdmissionRule>,
     /// Required. Default admission rule for a cluster without a per-cluster, per-
     /// kubernetes-service-account, or per-istio-service-identity admission rule.
     #[prost(message, optional, tag = "4")]
-    pub default_admission_rule: ::std::option::Option<AdmissionRule>,
+    pub default_admission_rule: ::core::option::Option<AdmissionRule>,
     /// Output only. Time when the policy was last updated.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `Policy`.
 pub mod policy {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -48,22 +51,26 @@ pub mod policy {
         Disable = 2,
     }
 }
-/// An [admission whitelist pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern] exempts images
-/// from checks by [admission rules][google.cloud.binaryauthorization.v1beta1.AdmissionRule].
+/// An [admission allowlist
+/// pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]
+/// exempts images from checks by [admission
+/// rules][google.cloud.binaryauthorization.v1beta1.AdmissionRule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdmissionWhitelistPattern {
-    /// An image name pattern to whitelist, in the form `registry/path/to/image`.
+    /// An image name pattern to allow, in the form `registry/path/to/image`.
     /// This supports a trailing `*` as a wildcard, but this is allowed only in
     /// text after the `registry/` part.
     #[prost(string, tag = "1")]
-    pub name_pattern: std::string::String,
+    pub name_pattern: ::prost::alloc::string::String,
 }
-/// An [admission rule][google.cloud.binaryauthorization.v1beta1.AdmissionRule] specifies either that all container images
-/// used in a pod creation request must be attested to by one or more
-/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor], that all pod creations will be allowed, or that all
-/// pod creations will be denied.
+/// An [admission rule][google.cloud.binaryauthorization.v1beta1.AdmissionRule]
+/// specifies either that all container images used in a pod creation request
+/// must be attested to by one or more
+/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor], that all pod
+/// creations will be allowed, or that all pod creations will be denied.
 ///
-/// Images matching an [admission whitelist pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]
+/// Images matching an [admission allowlist
+/// pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]
 /// are exempted from admission rules and will never block a pod creation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdmissionRule {
@@ -79,11 +86,12 @@ pub struct AdmissionRule {
     /// Note: this field must be non-empty when the evaluation_mode field specifies
     /// REQUIRE_ATTESTATION, otherwise it must be empty.
     #[prost(string, repeated, tag = "2")]
-    pub require_attestations_by: ::std::vec::Vec<std::string::String>,
+    pub require_attestations_by: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The action when a pod creation is denied by the admission rule.
     #[prost(enumeration = "admission_rule::EnforcementMode", tag = "3")]
     pub enforcement_mode: i32,
 }
+/// Nested message and enum types in `AdmissionRule`.
 pub mod admission_rule {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -113,36 +121,37 @@ pub mod admission_rule {
         DryrunAuditLogOnly = 2,
     }
 }
-/// An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
-/// artifacts. An existing attestor cannot be modified except where
-/// indicated.
+/// An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+/// to container image artifacts. An existing attestor cannot be modified except
+/// where indicated.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Attestor {
     /// Required. The resource name, in the format:
     /// `projects/*/attestors/*`. This field may not be updated.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. A descriptive comment.  This field may be updated.
     /// The field may be displayed in chooser dialogs.
     #[prost(string, tag = "6")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. Time when the attestor was last updated.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
-    /// Required. Identifies an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to a
-    /// container image artifact. This determines how an attestation will
-    /// be stored, and how it will be used during policy
-    /// enforcement. Updates may not change the attestor type, but individual
-    /// attestor fields may be updated
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Identifies an
+    /// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+    /// to a container image artifact. This determines how an attestation will be
+    /// stored, and how it will be used during policy enforcement. Updates may not
+    /// change the attestor type, but individual attestor fields may be updated
     #[prost(oneof = "attestor::AttestorType", tags = "3")]
-    pub attestor_type: ::std::option::Option<attestor::AttestorType>,
+    pub attestor_type: ::core::option::Option<attestor::AttestorType>,
 }
+/// Nested message and enum types in `Attestor`.
 pub mod attestor {
-    /// Required. Identifies an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to a
-    /// container image artifact. This determines how an attestation will
-    /// be stored, and how it will be used during policy
-    /// enforcement. Updates may not change the attestor type, but individual
-    /// attestor fields may be updated
+    /// Required. Identifies an
+    /// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+    /// to a container image artifact. This determines how an attestation will be
+    /// stored, and how it will be used during policy enforcement. Updates may not
+    /// change the attestor type, but individual attestor fields may be updated
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AttestorType {
         /// A Drydock ATTESTATION_AUTHORITY Note, created by the user.
@@ -150,8 +159,9 @@ pub mod attestor {
         UserOwnedDrydockNote(super::UserOwnedDrydockNote),
     }
 }
-/// An [user owned drydock note][google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote] references a Drydock
-/// ATTESTATION_AUTHORITY Note created by the user.
+/// An [user owned drydock
+/// note][google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote]
+/// references a Drydock ATTESTATION_AUTHORITY Note created by the user.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserOwnedDrydockNote {
     /// Required. The Drydock resource name of a ATTESTATION_AUTHORITY Note,
@@ -162,7 +172,7 @@ pub struct UserOwnedDrydockNote {
     /// ATTESTATION_AUTHORITY Occurrence that names a container image and that
     /// links to this Note. Drydock is an external dependency.
     #[prost(string, tag = "1")]
-    pub note_reference: std::string::String,
+    pub note_reference: ::prost::alloc::string::String,
     /// Optional. Public keys that verify attestations signed by this
     /// attestor.  This field may be updated.
     ///
@@ -173,7 +183,7 @@ pub struct UserOwnedDrydockNote {
     /// If this field is empty, this attestor always returns that no
     /// valid attestations exist.
     #[prost(message, repeated, tag = "2")]
-    pub public_keys: ::std::vec::Vec<AttestorPublicKey>,
+    pub public_keys: ::prost::alloc::vec::Vec<AttestorPublicKey>,
     /// Output only. This field will contain the service account email address
     /// that this Attestor will use as the principal when querying Container
     /// Analysis. Attestor administrators must grant this service account the
@@ -184,7 +194,7 @@ pub struct UserOwnedDrydockNote {
     /// should not make any other assumptions about the service account email;
     /// future versions may use an email based on a different naming pattern.
     #[prost(string, tag = "3")]
-    pub delegation_service_account_email: std::string::String,
+    pub delegation_service_account_email: ::prost::alloc::string::String,
 }
 /// A public key in the PkixPublicKey format (see
 /// https://tools.ietf.org/html/rfc5280#section-4.1.2.7 for details).
@@ -195,7 +205,7 @@ pub struct PkixPublicKey {
     /// A PEM-encoded public key, as described in
     /// https://tools.ietf.org/html/rfc7468#section-13
     #[prost(string, tag = "1")]
-    pub public_key_pem: std::string::String,
+    pub public_key_pem: ::prost::alloc::string::String,
     /// The signature algorithm used to verify a message against a signature using
     /// this key.
     /// These signature algorithm must match the structure and any object
@@ -204,6 +214,7 @@ pub struct PkixPublicKey {
     #[prost(enumeration = "pkix_public_key::SignatureAlgorithm", tag = "2")]
     pub signature_algorithm: i32,
 }
+/// Nested message and enum types in `PkixPublicKey`.
 pub mod pkix_public_key {
     /// Represents a signature algorithm and other information necessary to verify
     /// signatures with a given public key.
@@ -240,13 +251,14 @@ pub mod pkix_public_key {
         EcdsaP521Sha512 = 11,
     }
 }
-/// An [attestor public key][google.cloud.binaryauthorization.v1beta1.AttestorPublicKey] that will be used to verify
-/// attestations signed by this attestor.
+/// An [attestor public
+/// key][google.cloud.binaryauthorization.v1beta1.AttestorPublicKey] that will be
+/// used to verify attestations signed by this attestor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttestorPublicKey {
     /// Optional. A descriptive comment. This field may be updated.
     #[prost(string, tag = "1")]
-    pub comment: std::string::String,
+    pub comment: ::prost::alloc::string::String,
     /// The ID of this public key.
     /// Signatures verified by BinAuthz must include the ID of the public key that
     /// can be used to verify them, and that ID must match the contents of this
@@ -255,12 +267,13 @@ pub struct AttestorPublicKey {
     /// key type is encapsulated. See the documentation on `public_key` cases below
     /// for details.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Required. A public key reference or serialized instance. This field may be
     /// updated.
     #[prost(oneof = "attestor_public_key::PublicKey", tags = "3, 5")]
-    pub public_key: ::std::option::Option<attestor_public_key::PublicKey>,
+    pub public_key: ::core::option::Option<attestor_public_key::PublicKey>,
 }
+/// Nested message and enum types in `AttestorPublicKey`.
 pub mod attestor_public_key {
     /// Required. A public key reference or serialized instance. This field may be
     /// updated.
@@ -275,7 +288,7 @@ pub mod attestor_public_key {
         /// upper-case hex.  If `id` is provided by the caller, it will be
         /// overwritten by the API-calculated ID.
         #[prost(string, tag = "3")]
-        AsciiArmoredPgpPublicKey(std::string::String),
+        AsciiArmoredPgpPublicKey(::prost::alloc::string::String),
         /// A raw PKIX SubjectPublicKeyInfo format public key.
         ///
         /// NOTE: `id` may be explicitly provided by the caller when using this
@@ -292,7 +305,7 @@ pub struct GetPolicyRequest {
     /// Required. The resource name of the [policy][google.cloud.binaryauthorization.v1beta1.Policy] to retrieve,
     /// in the format `projects/*/policy`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [BinauthzManagementService.UpdatePolicy][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -301,22 +314,22 @@ pub struct UpdatePolicyRequest {
     /// overwrite the [policy name][google.cloud.binaryauthorization.v1beta1.Policy.name] field with the resource name in
     /// the request URL, in the format `projects/*/policy`.
     #[prost(message, optional, tag = "1")]
-    pub policy: ::std::option::Option<Policy>,
+    pub policy: ::core::option::Option<Policy>,
 }
 /// Request message for [BinauthzManagementService.CreateAttestor][].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAttestorRequest {
     /// Required. The parent of this [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] ID.
     #[prost(string, tag = "2")]
-    pub attestor_id: std::string::String,
+    pub attestor_id: ::prost::alloc::string::String,
     /// Required. The initial [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] value. The service will
     /// overwrite the [attestor name][google.cloud.binaryauthorization.v1beta1.Attestor.name] field with the resource name,
     /// in the format `projects/*/attestors/*`.
     #[prost(message, optional, tag = "3")]
-    pub attestor: ::std::option::Option<Attestor>,
+    pub attestor: ::core::option::Option<Attestor>,
 }
 /// Request message for [BinauthzManagementService.GetAttestor][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -324,7 +337,7 @@ pub struct GetAttestorRequest {
     /// Required. The name of the [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] to retrieve, in the format
     /// `projects/*/attestors/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [BinauthzManagementService.UpdateAttestor][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -333,7 +346,7 @@ pub struct UpdateAttestorRequest {
     /// overwrite the [attestor name][google.cloud.binaryauthorization.v1beta1.Attestor.name] field with the resource name
     /// in the request URL, in the format `projects/*/attestors/*`.
     #[prost(message, optional, tag = "1")]
-    pub attestor: ::std::option::Option<Attestor>,
+    pub attestor: ::core::option::Option<Attestor>,
 }
 /// Request message for [BinauthzManagementService.ListAttestors][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -341,7 +354,7 @@ pub struct ListAttestorsRequest {
     /// Required. The resource name of the project associated with the
     /// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor], in the format `projects/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Requested page size. The server may return fewer results than requested. If
     /// unspecified, the server will pick an appropriate default.
     #[prost(int32, tag = "2")]
@@ -350,19 +363,19 @@ pub struct ListAttestorsRequest {
     /// this is the value of [ListAttestorsResponse.next_page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsResponse.next_page_token] returned
     /// from the previous call to the `ListAttestors` method.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for [BinauthzManagementService.ListAttestors][].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttestorsResponse {
     /// The list of [attestors][google.cloud.binaryauthorization.v1beta1.Attestor].
     #[prost(message, repeated, tag = "1")]
-    pub attestors: ::std::vec::Vec<Attestor>,
+    pub attestors: ::prost::alloc::vec::Vec<Attestor>,
     /// A token to retrieve the next page of results. Pass this value in the
     /// [ListAttestorsRequest.page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsRequest.page_token] field in the subsequent call to the
     /// `ListAttestors` method to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [BinauthzManagementService.DeleteAttestor][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -370,7 +383,7 @@ pub struct DeleteAttestorRequest {
     /// Required. The name of the [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] to delete, in the format
     /// `projects/*/attestors/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod binauthz_management_service_v1_beta1_client {
@@ -419,7 +432,7 @@ pub mod binauthz_management_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/GetPolicy" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/GetPolicy") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates or updates a project's [policy][google.cloud.binaryauthorization.v1beta1.Policy], and returns a copy of the"]
@@ -438,7 +451,7 @@ pub mod binauthz_management_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/UpdatePolicy" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/UpdatePolicy") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor], and returns a copy of the new"]
@@ -456,7 +469,7 @@ pub mod binauthz_management_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/CreateAttestor" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/CreateAttestor") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Gets an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]."]
@@ -472,7 +485,7 @@ pub mod binauthz_management_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/GetAttestor" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/GetAttestor") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]."]
@@ -488,7 +501,7 @@ pub mod binauthz_management_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/UpdateAttestor" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/UpdateAttestor") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists [attestors][google.cloud.binaryauthorization.v1beta1.Attestor]."]
@@ -504,7 +517,7 @@ pub mod binauthz_management_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/ListAttestors" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/ListAttestors") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Deletes an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]. Returns NOT_FOUND if the"]
@@ -520,7 +533,7 @@ pub mod binauthz_management_service_v1_beta1_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/DeleteAttestor" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/DeleteAttestor") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

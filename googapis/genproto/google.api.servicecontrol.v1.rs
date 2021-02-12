@@ -12,16 +12,17 @@ pub struct CheckError {
     /// - "folder:<folder-id>"
     /// - "organization:<organization-id>"
     #[prost(string, tag = "4")]
-    pub subject: std::string::String,
+    pub subject: ::prost::alloc::string::String,
     /// Free-form text providing details on the error cause of the error.
     #[prost(string, tag = "2")]
-    pub detail: std::string::String,
+    pub detail: ::prost::alloc::string::String,
     /// Contains public information about the check error. If available,
     /// `status.code` will be non zero and client can propagate it out as public
     /// error.
     #[prost(message, optional, tag = "3")]
-    pub status: ::std::option::Option<super::super::super::rpc::Status>,
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
 }
+/// Nested message and enum types in `CheckError`.
 pub mod check_error {
     /// Error codes for Check responses.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -119,7 +120,7 @@ pub struct Distribution {
     ///
     /// Any suffix of trailing zeros may be omitted.
     #[prost(int64, repeated, tag = "6")]
-    pub bucket_counts: ::std::vec::Vec<i64>,
+    pub bucket_counts: ::prost::alloc::vec::Vec<i64>,
     /// Defines the buckets in the histogram. `bucket_option` and `bucket_counts`
     /// must be both set, or both unset.
     ///
@@ -144,8 +145,9 @@ pub struct Distribution {
     /// overflow bucket is equal to the upper bound of the largest finite
     /// bucket.
     #[prost(oneof = "distribution::BucketOption", tags = "7, 8, 9")]
-    pub bucket_option: ::std::option::Option<distribution::BucketOption>,
+    pub bucket_option: ::core::option::Option<distribution::BucketOption>,
 }
+/// Nested message and enum types in `Distribution`.
 pub mod distribution {
     /// Describing buckets with constant width.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -207,7 +209,7 @@ pub mod distribution {
         ///  0 < i < bound_size()            bound[i-1]     bound[i]
         ///  i == bound_size() (overflow)    bound[i-1]     +inf
         #[prost(double, repeated, tag = "1")]
-        pub bounds: ::std::vec::Vec<f64>,
+        pub bounds: ::prost::alloc::vec::Vec<f64>,
     }
     /// Defines the buckets in the histogram. `bucket_option` and `bucket_counts`
     /// must be both set, or both unset.
@@ -252,12 +254,12 @@ pub mod distribution {
 pub struct HttpRequest {
     /// The request method. Examples: `"GET"`, `"HEAD"`, `"PUT"`, `"POST"`.
     #[prost(string, tag = "1")]
-    pub request_method: std::string::String,
+    pub request_method: ::prost::alloc::string::String,
     /// The scheme (http, https), the host name, the path, and the query
     /// portion of the URL that was requested.
     /// Example: `"http://example.com/some/info?color=red"`.
     #[prost(string, tag = "2")]
-    pub request_url: std::string::String,
+    pub request_url: ::prost::alloc::string::String,
     /// The size of the HTTP request message in bytes, including the request
     /// headers and the request body.
     #[prost(int64, tag = "3")]
@@ -274,24 +276,24 @@ pub struct HttpRequest {
     /// `"Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; Q312461; .NET
     /// CLR 1.0.3705)"`.
     #[prost(string, tag = "6")]
-    pub user_agent: std::string::String,
+    pub user_agent: ::prost::alloc::string::String,
     /// The IP address (IPv4 or IPv6) of the client that issued the HTTP
     /// request. Examples: `"192.168.1.1"`, `"FE80::0202:B3FF:FE1E:8329"`.
     #[prost(string, tag = "7")]
-    pub remote_ip: std::string::String,
+    pub remote_ip: ::prost::alloc::string::String,
     /// The IP address (IPv4 or IPv6) of the origin server that the request was
     /// sent to.
     #[prost(string, tag = "13")]
-    pub server_ip: std::string::String,
+    pub server_ip: ::prost::alloc::string::String,
     /// The referer URL of the request, as defined in
     /// [HTTP/1.1 Header Field
     /// Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).
     #[prost(string, tag = "8")]
-    pub referer: std::string::String,
+    pub referer: ::prost::alloc::string::String,
     /// The request processing latency on the server, from the time the request was
     /// received until the response was sent.
     #[prost(message, optional, tag = "14")]
-    pub latency: ::std::option::Option<::prost_types::Duration>,
+    pub latency: ::core::option::Option<::prost_types::Duration>,
     /// Whether or not a cache lookup was attempted.
     #[prost(bool, tag = "11")]
     pub cache_lookup: bool,
@@ -310,7 +312,7 @@ pub struct HttpRequest {
     pub cache_fill_bytes: i64,
     /// Protocol used for the request. Examples: "HTTP/1.1", "HTTP/2", "websocket"
     #[prost(string, tag = "15")]
-    pub protocol: std::string::String,
+    pub protocol: ::prost::alloc::string::String,
 }
 /// An individual log entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -318,11 +320,11 @@ pub struct LogEntry {
     /// Required. The log to which this log entry belongs. Examples: `"syslog"`,
     /// `"book_log"`.
     #[prost(string, tag = "10")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The time the event described by the log entry occurred. If
     /// omitted, defaults to operation start time.
     #[prost(message, optional, tag = "11")]
-    pub timestamp: ::std::option::Option<::prost_types::Timestamp>,
+    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// The severity of the log entry. The default value is
     /// `LogSeverity.DEFAULT`.
     #[prost(
@@ -333,33 +335,35 @@ pub struct LogEntry {
     /// Optional. Information about the HTTP request associated with this
     /// log entry, if applicable.
     #[prost(message, optional, tag = "14")]
-    pub http_request: ::std::option::Option<HttpRequest>,
+    pub http_request: ::core::option::Option<HttpRequest>,
     /// Optional. Resource name of the trace associated with the log entry, if any.
     /// If this field contains a relative resource name, you can assume the name is
     /// relative to `//tracing.googleapis.com`. Example:
     /// `projects/my-projectid/traces/06796866738c859f2f19b7cfb3214824`
     #[prost(string, tag = "15")]
-    pub trace: std::string::String,
+    pub trace: ::prost::alloc::string::String,
     /// A unique ID for the log entry used for deduplication. If omitted,
     /// the implementation will generate one based on operation_id.
     #[prost(string, tag = "4")]
-    pub insert_id: std::string::String,
+    pub insert_id: ::prost::alloc::string::String,
     /// A set of user-defined (key, value) data that provides additional
     /// information about the log entry.
     #[prost(map = "string, string", tag = "13")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. Information about an operation associated with the log entry, if
     /// applicable.
     #[prost(message, optional, tag = "16")]
-    pub operation: ::std::option::Option<LogEntryOperation>,
+    pub operation: ::core::option::Option<LogEntryOperation>,
     /// Optional. Source code location information associated with the log entry,
     /// if any.
     #[prost(message, optional, tag = "17")]
-    pub source_location: ::std::option::Option<LogEntrySourceLocation>,
+    pub source_location: ::core::option::Option<LogEntrySourceLocation>,
     /// The log entry payload, which can be one of multiple types.
     #[prost(oneof = "log_entry::Payload", tags = "2, 3, 6")]
-    pub payload: ::std::option::Option<log_entry::Payload>,
+    pub payload: ::core::option::Option<log_entry::Payload>,
 }
+/// Nested message and enum types in `LogEntry`.
 pub mod log_entry {
     /// The log entry payload, which can be one of multiple types.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -371,7 +375,7 @@ pub mod log_entry {
         ProtoPayload(::prost_types::Any),
         /// The log entry payload, represented as a Unicode string (UTF-8).
         #[prost(string, tag = "3")]
-        TextPayload(std::string::String),
+        TextPayload(::prost::alloc::string::String),
         /// The log entry payload, represented as a structure that
         /// is expressed as a JSON object.
         #[prost(message, tag = "6")]
@@ -385,12 +389,12 @@ pub struct LogEntryOperation {
     /// Optional. An arbitrary operation identifier. Log entries with the
     /// same identifier are assumed to be part of the same operation.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Optional. An arbitrary producer identifier. The combination of
     /// `id` and `producer` must be globally unique.  Examples for `producer`:
     /// `"MyDivision.MyBigCompany.com"`, `"github.com/MyProject/MyApplication"`.
     #[prost(string, tag = "2")]
-    pub producer: std::string::String,
+    pub producer: ::prost::alloc::string::String,
     /// Optional. Set this to True if this is the first log entry in the operation.
     #[prost(bool, tag = "3")]
     pub first: bool,
@@ -405,7 +409,7 @@ pub struct LogEntrySourceLocation {
     /// Optional. Source file name. Depending on the runtime environment, this
     /// might be a simple name or a fully-qualified name.
     #[prost(string, tag = "1")]
-    pub file: std::string::String,
+    pub file: ::prost::alloc::string::String,
     /// Optional. Line within the source file. 1-based; 0 indicates no line number
     /// available.
     #[prost(int64, tag = "2")]
@@ -417,7 +421,7 @@ pub struct LogEntrySourceLocation {
     /// `qual.if.ied.Class.method` (Java), `dir/package.func` (Go), `function`
     /// (Python).
     #[prost(string, tag = "3")]
-    pub function: std::string::String,
+    pub function: ::prost::alloc::string::String,
 }
 /// Represents a single metric value.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -427,23 +431,25 @@ pub struct MetricValue {
     /// the overriding relationship.
     /// Note that this map must not contain monitored resource labels.
     #[prost(map = "string, string", tag = "1")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The start of the time period over which this metric value's measurement
     /// applies. The time period has different semantics for different metric
     /// types (cumulative, delta, and gauge). See the metric definition
     /// documentation in the service configuration for details.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end of the time period over which this metric value's measurement
     /// applies.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value. The type of value used in the request must
     /// agree with the metric definition in the service configuration, otherwise
     /// the MetricValue is rejected.
     #[prost(oneof = "metric_value::Value", tags = "4, 5, 6, 7, 8")]
-    pub value: ::std::option::Option<metric_value::Value>,
+    pub value: ::core::option::Option<metric_value::Value>,
 }
+/// Nested message and enum types in `MetricValue`.
 pub mod metric_value {
     /// The value. The type of value used in the request must
     /// agree with the metric definition in the service configuration, otherwise
@@ -461,7 +467,7 @@ pub mod metric_value {
         DoubleValue(f64),
         /// A text string value.
         #[prost(string, tag = "7")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// A distribution value.
         #[prost(message, tag = "8")]
         DistributionValue(super::Distribution),
@@ -474,10 +480,10 @@ pub mod metric_value {
 pub struct MetricValueSet {
     /// The metric name defined in the service configuration.
     #[prost(string, tag = "1")]
-    pub metric_name: std::string::String,
+    pub metric_name: ::prost::alloc::string::String,
     /// The values in this metric.
     #[prost(message, repeated, tag = "2")]
-    pub metric_values: ::std::vec::Vec<MetricValue>,
+    pub metric_values: ::prost::alloc::vec::Vec<MetricValue>,
 }
 /// Represents information regarding an operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -492,10 +498,10 @@ pub struct Operation {
     /// and an idempotent id is desirable for deduplication purpose, UUID version 5
     /// is recommended. See RFC 4122 for details.
     #[prost(string, tag = "1")]
-    pub operation_id: std::string::String,
+    pub operation_id: ::prost::alloc::string::String,
     /// Fully qualified name of the operation. Reserved for future use.
     #[prost(string, tag = "2")]
-    pub operation_name: std::string::String,
+    pub operation_name: ::prost::alloc::string::String,
     /// Identity of the consumer who is using the service.
     /// This field should be filled in for the operations initiated by a
     /// consumer, but not for service-initiated operations that are
@@ -509,15 +515,15 @@ pub struct Operation {
     ///     - organizations/ORGANIZATION_NUMBER,
     ///     - api`_`key:API_KEY.
     #[prost(string, tag = "3")]
-    pub consumer_id: std::string::String,
+    pub consumer_id: ::prost::alloc::string::String,
     /// Required. Start time of the operation.
     #[prost(message, optional, tag = "4")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of the operation.
     /// Required when the operation is used in [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],
     /// but optional when the operation is used in [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].
     #[prost(message, optional, tag = "5")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels describing the operation. Only the following labels are allowed:
     ///
     /// - Labels describing monitored resources as defined in
@@ -535,7 +541,8 @@ pub struct Operation {
     ///        where the API is served, such as App Engine, Compute Engine, or
     ///        Kubernetes Engine.
     #[prost(map = "string, string", tag = "6")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Represents information about this operation. Each MetricValueSet
     /// corresponds to a metric defined in the service configuration.
     /// The data type used in the MetricValueSet must agree with
@@ -547,17 +554,18 @@ pub struct Operation {
     /// instances, the entire request is rejected with
     /// an invalid argument error.
     #[prost(message, repeated, tag = "7")]
-    pub metric_value_sets: ::std::vec::Vec<MetricValueSet>,
+    pub metric_value_sets: ::prost::alloc::vec::Vec<MetricValueSet>,
     /// Represents information to be logged.
     #[prost(message, repeated, tag = "8")]
-    pub log_entries: ::std::vec::Vec<LogEntry>,
+    pub log_entries: ::prost::alloc::vec::Vec<LogEntry>,
     /// DO NOT USE. This is an experimental field.
     #[prost(enumeration = "operation::Importance", tag = "11")]
     pub importance: i32,
     /// Unimplemented.
     #[prost(message, repeated, tag = "16")]
-    pub extensions: ::std::vec::Vec<::prost_types::Any>,
+    pub extensions: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
+/// Nested message and enum types in `Operation`.
 pub mod operation {
     /// Defines the importance of the data contained in the operation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -580,15 +588,15 @@ pub struct AllocateQuotaRequest {
     ///
     /// See [google.api.Service][google.api.Service] for the definition of a service name.
     #[prost(string, tag = "1")]
-    pub service_name: std::string::String,
+    pub service_name: ::prost::alloc::string::String,
     /// Operation that describes the quota allocation.
     #[prost(message, optional, tag = "2")]
-    pub allocate_operation: ::std::option::Option<QuotaOperation>,
+    pub allocate_operation: ::core::option::Option<QuotaOperation>,
     /// Specifies which version of service configuration should be used to process
     /// the request. If unspecified or no matching version can be found, the latest
     /// one will be used.
     #[prost(string, tag = "4")]
-    pub service_config_id: std::string::String,
+    pub service_config_id: ::prost::alloc::string::String,
 }
 /// Represents information regarding a quota operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -603,7 +611,7 @@ pub struct QuotaOperation {
     /// recommended token for services that intend to operate at a high QPS is
     /// Unix time in nanos + UUID
     #[prost(string, tag = "1")]
-    pub operation_id: std::string::String,
+    pub operation_id: ::prost::alloc::string::String,
     /// Fully qualified name of the API method for which this quota operation is
     /// requested. This name is used for matching quota rules or metric rules and
     /// billing status rules defined in service configuration.
@@ -615,7 +623,7 @@ pub struct QuotaOperation {
     /// Example of an RPC method name:
     ///     google.example.library.v1.LibraryService.CreateShelf
     #[prost(string, tag = "2")]
-    pub method_name: std::string::String,
+    pub method_name: ::prost::alloc::string::String,
     /// Identity of the consumer for whom this quota operation is being performed.
     ///
     /// This can be in one of the following formats:
@@ -623,10 +631,11 @@ pub struct QuotaOperation {
     ///   project_number:<project_number>,
     ///   api_key:<api_key>.
     #[prost(string, tag = "3")]
-    pub consumer_id: std::string::String,
+    pub consumer_id: ::prost::alloc::string::String,
     /// Labels describing the operation.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Represents information about this operation. Each MetricValueSet
     /// corresponds to a metric defined in the service configuration.
     /// The data type used in the MetricValueSet must agree with
@@ -640,11 +649,12 @@ pub struct QuotaOperation {
     ///
     /// This field is mutually exclusive with method_name.
     #[prost(message, repeated, tag = "5")]
-    pub quota_metrics: ::std::vec::Vec<MetricValueSet>,
+    pub quota_metrics: ::prost::alloc::vec::Vec<MetricValueSet>,
     /// Quota mode for this operation.
     #[prost(enumeration = "quota_operation::QuotaMode", tag = "6")]
     pub quota_mode: i32,
 }
+/// Nested message and enum types in `QuotaOperation`.
 pub mod quota_operation {
     /// Supported quota modes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -692,10 +702,10 @@ pub struct AllocateQuotaResponse {
     /// The same operation_id value used in the AllocateQuotaRequest. Used for
     /// logging and diagnostics purposes.
     #[prost(string, tag = "1")]
-    pub operation_id: std::string::String,
+    pub operation_id: ::prost::alloc::string::String,
     /// Indicates the decision of the allocate.
     #[prost(message, repeated, tag = "2")]
-    pub allocate_errors: ::std::vec::Vec<QuotaError>,
+    pub allocate_errors: ::prost::alloc::vec::Vec<QuotaError>,
     /// Quota metrics to indicate the result of allocation. Depending on the
     /// request, one or more of the following metrics will be included:
     ///
@@ -707,10 +717,10 @@ pub struct AllocateQuotaResponse {
     /// boolean metric :
     ///   "serviceruntime.googleapis.com/quota/exceeded"
     #[prost(message, repeated, tag = "3")]
-    pub quota_metrics: ::std::vec::Vec<MetricValueSet>,
+    pub quota_metrics: ::prost::alloc::vec::Vec<MetricValueSet>,
     /// ID of the actual config used to process the request.
     #[prost(string, tag = "4")]
-    pub service_config_id: std::string::String,
+    pub service_config_id: ::prost::alloc::string::String,
 }
 /// Represents error information for [QuotaOperation][google.api.servicecontrol.v1.QuotaOperation].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -722,11 +732,12 @@ pub struct QuotaError {
     /// on this field. For example, "clientip:<ip address of client>" or
     /// "project:<Google developer project id>".
     #[prost(string, tag = "2")]
-    pub subject: std::string::String,
+    pub subject: ::prost::alloc::string::String,
     /// Free-form text that provides details on the cause of the error.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `QuotaError`.
 pub mod quota_error {
     /// Error codes related to project config validations are deprecated since the
     /// quota controller methods do not perform these validations. Instead services
@@ -829,17 +840,17 @@ pub struct CheckRequest {
     /// [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
-    pub service_name: std::string::String,
+    pub service_name: ::prost::alloc::string::String,
     /// The operation to be checked.
     #[prost(message, optional, tag = "2")]
-    pub operation: ::std::option::Option<Operation>,
+    pub operation: ::core::option::Option<Operation>,
     /// Specifies which version of service configuration should be used to process
     /// the request.
     ///
     /// If unspecified or no matching version can be found, the
     /// latest one will be used.
     #[prost(string, tag = "4")]
-    pub service_config_id: std::string::String,
+    pub service_config_id: ::prost::alloc::string::String,
 }
 /// Response message for the Check method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -847,24 +858,25 @@ pub struct CheckResponse {
     /// The same operation_id value used in the [CheckRequest][google.api.servicecontrol.v1.CheckRequest].
     /// Used for logging and diagnostics purposes.
     #[prost(string, tag = "1")]
-    pub operation_id: std::string::String,
+    pub operation_id: ::prost::alloc::string::String,
     /// Indicate the decision of the check.
     ///
     /// If no check errors are present, the service should process the operation.
     /// Otherwise the service should use the list of errors to determine the
     /// appropriate action.
     #[prost(message, repeated, tag = "2")]
-    pub check_errors: ::std::vec::Vec<CheckError>,
+    pub check_errors: ::prost::alloc::vec::Vec<CheckError>,
     /// The actual config id used to process the request.
     #[prost(string, tag = "5")]
-    pub service_config_id: std::string::String,
+    pub service_config_id: ::prost::alloc::string::String,
     /// The current service rollout id used to process the request.
     #[prost(string, tag = "11")]
-    pub service_rollout_id: std::string::String,
+    pub service_rollout_id: ::prost::alloc::string::String,
     /// Feedback data returned from the server during processing a Check request.
     #[prost(message, optional, tag = "6")]
-    pub check_info: ::std::option::Option<check_response::CheckInfo>,
+    pub check_info: ::core::option::Option<check_response::CheckInfo>,
 }
+/// Nested message and enum types in `CheckResponse`.
 pub mod check_response {
     /// Contains additional information about the check operation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -873,10 +885,10 @@ pub mod check_response {
         /// The client doesn't need to send them for following requests to improve
         /// performance and allow better aggregation.
         #[prost(string, repeated, tag = "1")]
-        pub unused_arguments: ::std::vec::Vec<std::string::String>,
+        pub unused_arguments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Consumer info of this check.
         #[prost(message, optional, tag = "2")]
-        pub consumer_info: ::std::option::Option<ConsumerInfo>,
+        pub consumer_info: ::core::option::Option<ConsumerInfo>,
     }
     /// `ConsumerInfo` provides information about the consumer.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -898,10 +910,13 @@ pub mod check_response {
         #[prost(int64, tag = "3")]
         pub consumer_number: i64,
     }
+    /// Nested message and enum types in `ConsumerInfo`.
     pub mod consumer_info {
         /// The type of the consumer as defined in
         /// [Google Resource Manager](https://cloud.google.com/resource-manager/).
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ConsumerType {
             /// This is never used.
@@ -929,7 +944,7 @@ pub struct ReportRequest {
     /// [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
-    pub service_name: std::string::String,
+    pub service_name: ::prost::alloc::string::String,
     /// Operations to be reported.
     ///
     /// Typically the service should report one operation per request.
@@ -941,14 +956,14 @@ pub struct ReportRequest {
     /// however the ReportRequest size should be no larger than 1MB. See
     /// [ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors] for partial failure behavior.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<Operation>,
+    pub operations: ::prost::alloc::vec::Vec<Operation>,
     /// Specifies which version of service config should be used to process the
     /// request.
     ///
     /// If unspecified or no matching version can be found, the
     /// latest one will be used.
     #[prost(string, tag = "3")]
-    pub service_config_id: std::string::String,
+    pub service_config_id: ::prost::alloc::string::String,
 }
 /// Response message for the Report method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -968,24 +983,25 @@ pub struct ReportResponse {
     ///    When this happens, it's impossible to know which of the
     ///    'Operations' in the request succeeded or failed.
     #[prost(message, repeated, tag = "1")]
-    pub report_errors: ::std::vec::Vec<report_response::ReportError>,
+    pub report_errors: ::prost::alloc::vec::Vec<report_response::ReportError>,
     /// The actual config id used to process the request.
     #[prost(string, tag = "2")]
-    pub service_config_id: std::string::String,
+    pub service_config_id: ::prost::alloc::string::String,
     /// The current service rollout id used to process the request.
     #[prost(string, tag = "4")]
-    pub service_rollout_id: std::string::String,
+    pub service_rollout_id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ReportResponse`.
 pub mod report_response {
     /// Represents the processing error of one [Operation][google.api.servicecontrol.v1.Operation] in the request.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReportError {
         /// The [Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id] value from the request.
         #[prost(string, tag = "1")]
-        pub operation_id: std::string::String,
+        pub operation_id: ::prost::alloc::string::String,
         /// Details of the error when processing the [Operation][google.api.servicecontrol.v1.Operation].
         #[prost(message, optional, tag = "2")]
-        pub status: ::std::option::Option<super::super::super::super::rpc::Status>,
+        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
 }
 #[doc = r" Generated client implementations."]

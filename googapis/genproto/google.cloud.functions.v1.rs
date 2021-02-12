@@ -5,10 +5,10 @@ pub struct CloudFunction {
     /// A user-defined name of the function. Function names must be unique
     /// globally and match pattern `projects/*/locations/*/functions/*`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// User-provided description of a function.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. Status of the function deployment.
     #[prost(enumeration = "CloudFunctionStatus", tag = "7")]
     pub status: i32,
@@ -19,19 +19,19 @@ pub struct CloudFunction {
     /// For Node.js this is name of a function exported by the module specified
     /// in `source_location`.
     #[prost(string, tag = "8")]
-    pub entry_point: std::string::String,
+    pub entry_point: ::prost::alloc::string::String,
     /// The runtime in which to run the function. Required when deploying a new
     /// function, optional when updating an existing function. For a complete
     /// list of possible choices, see the
     /// [`gcloud` command
     /// reference](/sdk/gcloud/reference/functions/deploy#--runtime).
     #[prost(string, tag = "19")]
-    pub runtime: std::string::String,
+    pub runtime: ::prost::alloc::string::String,
     /// The function execution timeout. Execution is considered failed and
     /// can be terminated if the function is not completed at the end of the
     /// timeout period. Defaults to 60 seconds.
     #[prost(message, optional, tag = "9")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// The amount of memory in MB available for a function.
     /// Defaults to 256MB.
     #[prost(int32, tag = "10")]
@@ -39,21 +39,22 @@ pub struct CloudFunction {
     /// The email of the function's service account. If empty, defaults to
     /// `{project_id}@appspot.gserviceaccount.com`.
     #[prost(string, tag = "11")]
-    pub service_account_email: std::string::String,
+    pub service_account_email: ::prost::alloc::string::String,
     /// Output only. The last update timestamp of a Cloud Function.
     #[prost(message, optional, tag = "12")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The version identifier of the Cloud Function. Each deployment attempt
     /// results in a new version of a function being created.
     #[prost(int64, tag = "14")]
     pub version_id: i64,
     /// Labels associated with this Cloud Function.
     #[prost(map = "string, string", tag = "15")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Environment variables that shall be available during function execution.
     #[prost(map = "string, string", tag = "17")]
     pub environment_variables:
-        ::std::collections::HashMap<std::string::String, std::string::String>,
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The VPC Network that this cloud function can connect to. It can be
     /// either the fully-qualified URI, or the short name of the network resource.
     /// If the short network name is used, the network must belong to the same
@@ -69,7 +70,7 @@ pub struct CloudFunction {
     /// See [the VPC documentation](https://cloud.google.com/compute/docs/vpc) for
     /// more information on connecting Cloud projects.
     #[prost(string, tag = "18")]
-    pub network: std::string::String,
+    pub network: ::prost::alloc::string::String,
     /// The limit on the maximum number of function instances that may coexist at a
     /// given time.
     #[prost(int32, tag = "20")]
@@ -85,7 +86,7 @@ pub struct CloudFunction {
     /// See [the VPC documentation](https://cloud.google.com/compute/docs/vpc) for
     /// more information on connecting Cloud projects.
     #[prost(string, tag = "22")]
-    pub vpc_connector: std::string::String,
+    pub vpc_connector: ::prost::alloc::string::String,
     /// The egress settings for the connector, controlling what traffic is diverted
     /// through it.
     #[prost(enumeration = "cloud_function::VpcConnectorEgressSettings", tag = "23")]
@@ -97,14 +98,15 @@ pub struct CloudFunction {
     /// Output only. The Cloud Build ID of the latest successful deployment of the
     /// function.
     #[prost(string, tag = "27")]
-    pub build_id: std::string::String,
+    pub build_id: ::prost::alloc::string::String,
     /// The location of the function source code.
     #[prost(oneof = "cloud_function::SourceCode", tags = "3, 4, 16")]
-    pub source_code: ::std::option::Option<cloud_function::SourceCode>,
+    pub source_code: ::core::option::Option<cloud_function::SourceCode>,
     /// An event that triggers the function.
     #[prost(oneof = "cloud_function::Trigger", tags = "5, 6")]
-    pub trigger: ::std::option::Option<cloud_function::Trigger>,
+    pub trigger: ::core::option::Option<cloud_function::Trigger>,
 }
+/// Nested message and enum types in `CloudFunction`.
 pub mod cloud_function {
     /// Available egress settings.
     ///
@@ -144,7 +146,7 @@ pub mod cloud_function {
         /// The Google Cloud Storage URL, starting with gs://, pointing to the zip
         /// archive which contains the function.
         #[prost(string, tag = "3")]
-        SourceArchiveUrl(std::string::String),
+        SourceArchiveUrl(::prost::alloc::string::String),
         /// **Beta Feature**
         ///
         /// The source repository where a function is hosted.
@@ -153,7 +155,7 @@ pub mod cloud_function {
         /// The Google Cloud Storage signed URL used for source uploading, generated
         /// by [google.cloud.functions.v1.GenerateUploadUrl][]
         #[prost(string, tag = "16")]
-        SourceUploadUrl(std::string::String),
+        SourceUploadUrl(::prost::alloc::string::String),
     }
     /// An event that triggers the function.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -184,19 +186,19 @@ pub struct SourceRepository {
     ///
     /// You may omit `paths/*` if you want to use the main directory.
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
     /// Output only. The URL pointing to the hosted repository where the function
     /// were defined at the time of deployment. It always points to a specific
     /// commit in the format described above.
     #[prost(string, tag = "2")]
-    pub deployed_url: std::string::String,
+    pub deployed_url: ::prost::alloc::string::String,
 }
 /// Describes HttpsTrigger, could be used to connect web hooks to function.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpsTrigger {
     /// Output only. The deployed url for the function.
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
 }
 /// Describes EventTrigger, used to request events be sent from another
 /// service.
@@ -217,7 +219,7 @@ pub struct EventTrigger {
     ///    a Google Cloud Storage Object is 'change'.
     /// These parts are lower case.
     #[prost(string, tag = "1")]
-    pub event_type: std::string::String,
+    pub event_type: ::prost::alloc::string::String,
     /// Required. The resource(s) from which to observe events, for example,
     /// `projects/_/buckets/myBucket`.
     ///
@@ -238,17 +240,17 @@ pub struct EventTrigger {
     ///
     /// See each *service's* documentation for supported formats.
     #[prost(string, tag = "2")]
-    pub resource: std::string::String,
+    pub resource: ::prost::alloc::string::String,
     /// The hostname of the service that should be observed.
     ///
     /// If no string is provided, the default service implementing the API will
     /// be used. For example, `storage.googleapis.com` is the default for all
     /// event types in the `google.storage` namespace.
     #[prost(string, tag = "3")]
-    pub service: std::string::String,
+    pub service: ::prost::alloc::string::String,
     /// Specifies policy for failed executions.
     #[prost(message, optional, tag = "5")]
-    pub failure_policy: ::std::option::Option<FailurePolicy>,
+    pub failure_policy: ::core::option::Option<FailurePolicy>,
 }
 /// Describes the policy in case of function's execution failure.
 /// If empty, then defaults to ignoring failures (i.e. not retrying them).
@@ -256,8 +258,9 @@ pub struct EventTrigger {
 pub struct FailurePolicy {
     /// Defines the action taken in case of a function execution failure.
     #[prost(oneof = "failure_policy::Action", tags = "1")]
-    pub action: ::std::option::Option<failure_policy::Action>,
+    pub action: ::core::option::Option<failure_policy::Action>,
 }
+/// Nested message and enum types in `FailurePolicy`.
 pub mod failure_policy {
     /// Describes the retry policy in case of function's execution failure.
     /// A function execution will be retried on any failure.
@@ -280,27 +283,27 @@ pub struct CreateFunctionRequest {
     /// Required. The project and location in which the function should be created, specified
     /// in the format `projects/*/locations/*`
     #[prost(string, tag = "1")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// Required. Function to be created.
     #[prost(message, optional, tag = "2")]
-    pub function: ::std::option::Option<CloudFunction>,
+    pub function: ::core::option::Option<CloudFunction>,
 }
 /// Request for the `UpdateFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFunctionRequest {
     /// Required. New version of the function.
     #[prost(message, optional, tag = "1")]
-    pub function: ::std::option::Option<CloudFunction>,
+    pub function: ::core::option::Option<CloudFunction>,
     /// Required list of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `GetFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFunctionRequest {
     /// Required. The name of the function which details should be obtained.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListFunctions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -312,7 +315,7 @@ pub struct ListFunctionsRequest {
     /// location(s) are unreachable, the response will contain functions from all
     /// reachable locations along with the names of any unreachable locations.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum number of functions to return per call.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -321,56 +324,56 @@ pub struct ListFunctionsRequest {
     /// this is a continuation of a prior `ListFunctions` call, and that the
     /// system should return the next page of data.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListFunctions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFunctionsResponse {
     /// The functions that match the request.
     #[prost(message, repeated, tag = "1")]
-    pub functions: ::std::vec::Vec<CloudFunction>,
+    pub functions: ::prost::alloc::vec::Vec<CloudFunction>,
     /// If not empty, indicates that there may be more functions that match
     /// the request; this value should be passed in a new
     /// [google.cloud.functions.v1.ListFunctionsRequest][google.cloud.functions.v1.ListFunctionsRequest]
     /// to get more functions.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. The response does not include any
     /// functions from these locations.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `DeleteFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFunctionRequest {
     /// Required. The name of the function which should be deleted.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CallFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallFunctionRequest {
     /// Required. The name of the function to be called.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Input to be passed to the function.
     #[prost(string, tag = "2")]
-    pub data: std::string::String,
+    pub data: ::prost::alloc::string::String,
 }
 /// Response of `CallFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallFunctionResponse {
     /// Execution id of function invocation.
     #[prost(string, tag = "1")]
-    pub execution_id: std::string::String,
+    pub execution_id: ::prost::alloc::string::String,
     /// Result populated for successful execution of synchronous function. Will
     /// not be populated if function does not return a result through context.
     #[prost(string, tag = "2")]
-    pub result: std::string::String,
+    pub result: ::prost::alloc::string::String,
     /// Either system or user-function generated error. Set if execution
     /// was not successful.
     #[prost(string, tag = "3")]
-    pub error: std::string::String,
+    pub error: ::prost::alloc::string::String,
 }
 /// Request of `GenerateSourceUploadUrl` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -378,7 +381,7 @@ pub struct GenerateUploadUrlRequest {
     /// The project and location in which the Google Cloud Storage signed URL
     /// should be generated, specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// Response of `GenerateSourceUploadUrl` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -387,7 +390,7 @@ pub struct GenerateUploadUrlResponse {
     /// function source code upload. The uploaded file should be a zip archive
     /// which contains a function.
     #[prost(string, tag = "1")]
-    pub upload_url: std::string::String,
+    pub upload_url: ::prost::alloc::string::String,
 }
 /// Request of `GenerateDownloadUrl` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -395,7 +398,7 @@ pub struct GenerateDownloadUrlRequest {
     /// The name of function for which source code Google Cloud Storage signed
     /// URL should be generated.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The optional version of function. If not set, default, current version
     /// is used.
     #[prost(uint64, tag = "2")]
@@ -407,7 +410,7 @@ pub struct GenerateDownloadUrlResponse {
     /// The generated Google Cloud Storage signed URL that should be used for
     /// function source code download.
     #[prost(string, tag = "1")]
-    pub download_url: std::string::String,
+    pub download_url: ::prost::alloc::string::String,
 }
 /// Describes the current stage of a deployment.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -714,24 +717,24 @@ pub struct OperationMetadataV1 {
     /// Target of the operation - for example
     /// projects/project-1/locations/region-1/functions/function-1
     #[prost(string, tag = "1")]
-    pub target: std::string::String,
+    pub target: ::prost::alloc::string::String,
     /// Type of operation.
     #[prost(enumeration = "OperationType", tag = "2")]
     pub r#type: i32,
     /// The original request that started the operation.
     #[prost(message, optional, tag = "3")]
-    pub request: ::std::option::Option<::prost_types::Any>,
+    pub request: ::core::option::Option<::prost_types::Any>,
     /// Version id of the function created or updated by an API call.
     /// This field is only populated for Create and Update operations.
     #[prost(int64, tag = "4")]
     pub version_id: i64,
     /// The last update timestamp of the operation.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The Cloud Build ID of the function created or updated by an API call.
     /// This field is only populated for Create and Update operations.
     #[prost(string, tag = "6")]
-    pub build_id: std::string::String,
+    pub build_id: ::prost::alloc::string::String,
 }
 /// A type of an operation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

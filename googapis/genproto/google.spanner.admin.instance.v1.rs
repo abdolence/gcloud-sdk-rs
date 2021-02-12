@@ -2,7 +2,7 @@
 pub struct ReplicaInfo {
     /// The location of the serving resources, e.g. "us-central1".
     #[prost(string, tag = "1")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// The type of replica.
     #[prost(enumeration = "replica_info::ReplicaType", tag = "2")]
     pub r#type: i32,
@@ -13,6 +13,7 @@ pub struct ReplicaInfo {
     #[prost(bool, tag = "3")]
     pub default_leader_location: bool,
 }
+/// Nested message and enum types in `ReplicaInfo`.
 pub mod replica_info {
     /// Indicates the type of replica.  See the [replica types
     /// documentation](https://cloud.google.com/spanner/docs/replication#replica_types)
@@ -55,14 +56,14 @@ pub struct InstanceConfig {
     /// are of the form
     /// `projects/<project>/instanceConfigs/[a-z][-a-z0-9]*`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The name of this instance configuration as it appears in UIs.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The geographic placement of nodes in this instance configuration and their
     /// replication properties.
     #[prost(message, repeated, tag = "3")]
-    pub replicas: ::std::vec::Vec<ReplicaInfo>,
+    pub replicas: ::prost::alloc::vec::Vec<ReplicaInfo>,
 }
 /// An isolated set of Cloud Spanner resources on which databases can be hosted.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -72,17 +73,17 @@ pub struct Instance {
     /// `projects/<project>/instances/[a-z][-a-z0-9]*[a-z0-9]`. The final
     /// segment of the name must be between 2 and 64 characters in length.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The name of the instance's configuration. Values are of the form
     /// `projects/<project>/instanceConfigs/<configuration>`. See
     /// also [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig] and
     /// [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
     #[prost(string, tag = "2")]
-    pub config: std::string::String,
+    pub config: ::prost::alloc::string::String,
     /// Required. The descriptive name for this instance as it appears in UIs.
     /// Must be unique per project and between 4 and 30 characters in length.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Required. The number of nodes allocated to this instance. This may be zero
     /// in API responses for instances that are not yet in state `READY`.
     ///
@@ -120,11 +121,13 @@ pub struct Instance {
     /// as the string:  name + "_" + value  would prove problematic if we were to
     /// allow "_" in a future release.
     #[prost(map = "string, string", tag = "7")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Deprecated. This field is not populated.
     #[prost(string, repeated, tag = "8")]
-    pub endpoint_uris: ::std::vec::Vec<std::string::String>,
+    pub endpoint_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Indicates the current state of the instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -148,7 +151,7 @@ pub struct ListInstanceConfigsRequest {
     /// configurations is requested. Values are of the form
     /// `projects/<project>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Number of instance configurations to be returned in the response. If 0 or
     /// less, defaults to the server's maximum allowed page size.
     #[prost(int32, tag = "2")]
@@ -157,19 +160,19 @@ pub struct ListInstanceConfigsRequest {
     /// [next_page_token][google.spanner.admin.instance.v1.ListInstanceConfigsResponse.next_page_token]
     /// from a previous [ListInstanceConfigsResponse][google.spanner.admin.instance.v1.ListInstanceConfigsResponse].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceConfigsResponse {
     /// The list of requested instance configurations.
     #[prost(message, repeated, tag = "1")]
-    pub instance_configs: ::std::vec::Vec<InstanceConfig>,
+    pub instance_configs: ::prost::alloc::vec::Vec<InstanceConfig>,
     /// `next_page_token` can be sent in a subsequent
     /// [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs] call to
     /// fetch more of the matching instance configurations.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
 /// [GetInstanceConfigRequest][google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig].
@@ -178,7 +181,7 @@ pub struct GetInstanceConfigRequest {
     /// Required. The name of the requested instance configuration. Values are of
     /// the form `projects/<project>/instanceConfigs/<config>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [GetInstance][google.spanner.admin.instance.v1.InstanceAdmin.GetInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -186,12 +189,12 @@ pub struct GetInstanceRequest {
     /// Required. The name of the requested instance. Values are of the form
     /// `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If field_mask is present, specifies the subset of [Instance][google.spanner.admin.instance.v1.Instance] fields that
     /// should be returned.
     /// If absent, all [Instance][google.spanner.admin.instance.v1.Instance] fields are returned.
     #[prost(message, optional, tag = "2")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -199,16 +202,16 @@ pub struct CreateInstanceRequest {
     /// Required. The name of the project in which to create the instance. Values
     /// are of the form `projects/<project>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the instance to create.  Valid identifiers are of the
     /// form `[a-z][-a-z0-9]*[a-z0-9]` and must be between 2 and 64 characters in
     /// length.
     #[prost(string, tag = "2")]
-    pub instance_id: std::string::String,
+    pub instance_id: ::prost::alloc::string::String,
     /// Required. The instance to create.  The name may be omitted, but if
     /// specified must be `<parent>/instances/<instance_id>`.
     #[prost(message, optional, tag = "3")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
 }
 /// The request for [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -216,7 +219,7 @@ pub struct ListInstancesRequest {
     /// Required. The name of the project for which a list of instances is
     /// requested. Values are of the form `projects/<project>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Number of instances to be returned in the response. If 0 or less, defaults
     /// to the server's maximum allowed page size.
     #[prost(int32, tag = "2")]
@@ -225,7 +228,7 @@ pub struct ListInstancesRequest {
     /// [next_page_token][google.spanner.admin.instance.v1.ListInstancesResponse.next_page_token] from a
     /// previous [ListInstancesResponse][google.spanner.admin.instance.v1.ListInstancesResponse].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// An expression for filtering the results of the request. Filter rules are
     /// case insensitive. The fields eligible for filtering are:
     ///
@@ -246,19 +249,19 @@ pub struct ListInstancesRequest {
     ///                                  it has the label "env" with its value
     ///                                  containing "dev".
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// The response for [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// The list of requested instances.
     #[prost(message, repeated, tag = "1")]
-    pub instances: ::std::vec::Vec<Instance>,
+    pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// `next_page_token` can be sent in a subsequent
     /// [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances] call to fetch more
     /// of the matching instances.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -266,13 +269,13 @@ pub struct UpdateInstanceRequest {
     /// Required. The instance to update, which must always include the instance
     /// name.  Otherwise, only fields mentioned in [field_mask][google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask] need be included.
     #[prost(message, optional, tag = "1")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
     /// Required. A mask specifying which fields in [Instance][google.spanner.admin.instance.v1.Instance] should be updated.
     /// The field mask must always be specified; this prevents any future fields in
     /// [Instance][google.spanner.admin.instance.v1.Instance] from being erased accidentally by clients that do not know
     /// about them.
     #[prost(message, optional, tag = "2")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for [DeleteInstance][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -280,7 +283,7 @@ pub struct DeleteInstanceRequest {
     /// Required. The name of the instance to be deleted. Values are of the form
     /// `projects/<project>/instances/<instance>`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Metadata type for the operation returned by
 /// [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
@@ -288,20 +291,20 @@ pub struct DeleteInstanceRequest {
 pub struct CreateInstanceMetadata {
     /// The instance being created.
     #[prost(message, optional, tag = "1")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
     /// The time at which the
     /// [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance] request was
     /// received.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation was cancelled. If set, this operation is
     /// in the process of undoing itself (which is guaranteed to succeed) and
     /// cannot be cancelled again.
     #[prost(message, optional, tag = "3")]
-    pub cancel_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation failed or was completed successfully.
     #[prost(message, optional, tag = "4")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata type for the operation returned by
 /// [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
@@ -309,19 +312,19 @@ pub struct CreateInstanceMetadata {
 pub struct UpdateInstanceMetadata {
     /// The desired end state of the update.
     #[prost(message, optional, tag = "1")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
     /// The time at which [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance]
     /// request was received.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation was cancelled. If set, this operation is
     /// in the process of undoing itself (which is guaranteed to succeed) and
     /// cannot be cancelled again.
     #[prost(message, optional, tag = "3")]
-    pub cancel_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation failed or was completed successfully.
     #[prost(message, optional, tag = "4")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[doc = r" Generated client implementations."]
 pub mod instance_admin_client {

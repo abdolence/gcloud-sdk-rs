@@ -7,8 +7,9 @@
 pub struct AssistRequest {
     /// Exactly one of these fields must be specified in each `AssistRequest`.
     #[prost(oneof = "assist_request::Type", tags = "1, 2")]
-    pub r#type: ::std::option::Option<assist_request::Type>,
+    pub r#type: ::core::option::Option<assist_request::Type>,
 }
+/// Nested message and enum types in `AssistRequest`.
 pub mod assist_request {
     /// Exactly one of these fields must be specified in each `AssistRequest`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -27,7 +28,7 @@ pub mod assist_request {
         /// An error will be returned if audio is sent significantly faster or
         /// slower.
         #[prost(bytes, tag = "2")]
-        AudioIn(std::vec::Vec<u8>),
+        AudioIn(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// The top-level message received by the client. A series of one or more
@@ -39,14 +40,14 @@ pub struct AssistResponse {
     pub event_type: i32,
     /// *Output-only* The audio containing the Assistant's response to the query.
     #[prost(message, optional, tag = "3")]
-    pub audio_out: ::std::option::Option<AudioOut>,
+    pub audio_out: ::core::option::Option<AudioOut>,
     /// *Output-only* Contains the Assistant's visual response to the query.
     #[prost(message, optional, tag = "4")]
-    pub screen_out: ::std::option::Option<ScreenOut>,
+    pub screen_out: ::core::option::Option<ScreenOut>,
     /// *Output-only* Contains the action triggered by the query with the
     /// appropriate payloads and semantic parsing.
     #[prost(message, optional, tag = "6")]
-    pub device_action: ::std::option::Option<DeviceAction>,
+    pub device_action: ::core::option::Option<DeviceAction>,
     /// *Output-only* This repeated list contains zero or more speech recognition
     /// results that correspond to consecutive portions of the audio currently
     /// being processed, starting with the portion corresponding to the earliest
@@ -55,15 +56,16 @@ pub struct AssistResponse {
     /// in-progress response. When the speech recognition completes, this list
     /// will contain one item with `stability` of `1.0`.
     #[prost(message, repeated, tag = "2")]
-    pub speech_results: ::std::vec::Vec<SpeechRecognitionResult>,
+    pub speech_results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
     /// *Output-only* Contains output related to the user's query.
     #[prost(message, optional, tag = "5")]
-    pub dialog_state_out: ::std::option::Option<DialogStateOut>,
+    pub dialog_state_out: ::core::option::Option<DialogStateOut>,
     /// *Output-only* Debugging info for developer. Only returned if request set
     /// `return_debug_info` to true.
     #[prost(message, optional, tag = "8")]
-    pub debug_info: ::std::option::Option<DebugInfo>,
+    pub debug_info: ::core::option::Option<DebugInfo>,
 }
+/// Nested message and enum types in `AssistResponse`.
 pub mod assist_response {
     /// Indicates the type of event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -90,30 +92,31 @@ pub struct DebugInfo {
     /// It will only be populated if the request maker owns the AoG project and the
     /// AoG project is in preview mode.
     #[prost(string, tag = "1")]
-    pub aog_agent_to_assistant_json: std::string::String,
+    pub aog_agent_to_assistant_json: ::prost::alloc::string::String,
 }
 /// Specifies how to process the `AssistRequest` messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistConfig {
     /// *Required* Specifies how to format the audio that will be returned.
     #[prost(message, optional, tag = "2")]
-    pub audio_out_config: ::std::option::Option<AudioOutConfig>,
+    pub audio_out_config: ::core::option::Option<AudioOutConfig>,
     /// *Optional* Specifies the desired format to use when server returns a
     /// visual screen response.
     #[prost(message, optional, tag = "8")]
-    pub screen_out_config: ::std::option::Option<ScreenOutConfig>,
+    pub screen_out_config: ::core::option::Option<ScreenOutConfig>,
     /// *Required* Represents the current dialog state.
     #[prost(message, optional, tag = "3")]
-    pub dialog_state_in: ::std::option::Option<DialogStateIn>,
+    pub dialog_state_in: ::core::option::Option<DialogStateIn>,
     /// Device configuration that uniquely identifies a specific device.
     #[prost(message, optional, tag = "4")]
-    pub device_config: ::std::option::Option<DeviceConfig>,
+    pub device_config: ::core::option::Option<DeviceConfig>,
     /// *Optional* Debugging parameters for the whole `Assist` RPC.
     #[prost(message, optional, tag = "5")]
-    pub debug_config: ::std::option::Option<DebugConfig>,
+    pub debug_config: ::core::option::Option<DebugConfig>,
     #[prost(oneof = "assist_config::Type", tags = "1, 6")]
-    pub r#type: ::std::option::Option<assist_config::Type>,
+    pub r#type: ::core::option::Option<assist_config::Type>,
 }
+/// Nested message and enum types in `AssistConfig`.
 pub mod assist_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
@@ -125,7 +128,7 @@ pub mod assist_config {
         /// The text input to be sent to the Assistant. This can be populated from a
         /// text interface if audio input is not available.
         #[prost(string, tag = "6")]
-        TextQuery(std::string::String),
+        TextQuery(::prost::alloc::string::String),
     }
 }
 /// Specifies how to process the `audio_in` data that will be provided in
@@ -145,6 +148,7 @@ pub struct AudioInConfig {
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
 }
+/// Nested message and enum types in `AudioInConfig`.
 pub mod audio_in_config {
     /// Audio encoding of the data sent in the audio message.
     /// Audio must be one-channel (mono).
@@ -183,6 +187,7 @@ pub struct AudioOutConfig {
     #[prost(int32, tag = "3")]
     pub volume_percentage: i32,
 }
+/// Nested message and enum types in `AudioOutConfig`.
 pub mod audio_out_config {
     /// Audio encoding of the data returned in the audio message. All encodings are
     /// raw audio bytes with no header, except as indicated below.
@@ -210,6 +215,7 @@ pub struct ScreenOutConfig {
     #[prost(enumeration = "screen_out_config::ScreenMode", tag = "1")]
     pub screen_mode: i32,
 }
+/// Nested message and enum types in `ScreenOutConfig`.
 pub mod screen_out_config {
     /// Possible modes for visual screen-output on the device.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -236,8 +242,8 @@ pub struct DialogStateIn {
     /// omitted (field not set) if there was no prior `Assist` RPC because this is
     /// the first `Assist` RPC made by this device after it was first setup and/or
     /// a factory-default reset.
-    #[prost(bytes, tag = "1")]
-    pub conversation_state: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub conversation_state: ::prost::alloc::vec::Vec<u8>,
     /// *Required* Language of the request in
     /// [IETF BCP 47 syntax](https://tools.ietf.org/html/bcp47) (for example,
     /// "en-US"). See [Language
@@ -248,10 +254,10 @@ pub struct DialogStateIn {
     /// menu in your phone's Google Assistant app, that selection will override
     /// this value.
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// *Optional* Location of the device where the query originated.
     #[prost(message, optional, tag = "5")]
-    pub device_location: ::std::option::Option<DeviceLocation>,
+    pub device_location: ::core::option::Option<DeviceLocation>,
     /// *Optional* If true, the server will treat the request as a new conversation
     /// and not use state from the prior request. Set this field to true when the
     /// conversation should be restarted, such as after a device reboot, or after a
@@ -279,12 +285,12 @@ pub struct DeviceConfig {
     /// device reboots. However, it should not be saved across
     /// factory-default resets.
     #[prost(string, tag = "1")]
-    pub device_id: std::string::String,
+    pub device_id: ::prost::alloc::string::String,
     /// *Required* Unique identifier for the device model. The combination of
     /// device_model_id and device_id must have been previously associated through
     /// device registration.
     #[prost(string, tag = "3")]
-    pub device_model_id: std::string::String,
+    pub device_model_id: ::prost::alloc::string::String,
 }
 /// The audio containing the Assistant's response to the query. Sequential chunks
 /// of audio data are received in sequential `AssistResponse` messages.
@@ -293,8 +299,8 @@ pub struct AudioOut {
     /// *Output-only* The audio data containing the Assistant's response to the
     /// query. Sequential chunks of audio data are received in sequential
     /// `AssistResponse` messages.
-    #[prost(bytes, tag = "1")]
-    pub audio_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub audio_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The Assistant's visual output response to query. Enabled by
 /// `screen_out_config`.
@@ -305,9 +311,10 @@ pub struct ScreenOut {
     pub format: i32,
     /// *Output-only* The raw screen data to be displayed as the result of the
     /// Assistant query.
-    #[prost(bytes, tag = "2")]
-    pub data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
 }
+/// Nested message and enum types in `ScreenOut`.
 pub mod screen_out {
     /// Possible formats of the screen data.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -333,7 +340,7 @@ pub struct DeviceAction {
     /// `action.devices.EXECUTE` intent for a given
     /// [trait](https://developers.google.com/assistant/sdk/reference/traits/).
     #[prost(string, tag = "1")]
-    pub device_request_json: std::string::String,
+    pub device_request_json: ::prost::alloc::string::String,
 }
 /// The estimated transcription of a phrase the user has spoken. This could be
 /// a single segment or the full guess of the user's spoken query.
@@ -341,7 +348,7 @@ pub struct DeviceAction {
 pub struct SpeechRecognitionResult {
     /// *Output-only* Transcript text representing the words that the user spoke.
     #[prost(string, tag = "1")]
-    pub transcript: std::string::String,
+    pub transcript: ::prost::alloc::string::String,
     /// *Output-only* An estimate of the likelihood that the Assistant will not
     /// change its guess about this result. Values range from 0.0 (completely
     /// unstable) to 1.0 (completely stable and final). The default of 0.0 is a
@@ -357,7 +364,7 @@ pub struct DialogStateOut {
     /// the same as the speech spoken in `AssistResponse.audio_out` or it could
     /// be some additional information which aids the user's understanding.
     #[prost(string, tag = "1")]
-    pub supplemental_display_text: std::string::String,
+    pub supplemental_display_text: ::prost::alloc::string::String,
     /// *Output-only* State information for the subsequent `Assist` RPC. This
     /// value should be saved in the client and returned in the
     /// [`DialogStateIn.conversation_state`](#dialogstatein) field with the next
@@ -365,8 +372,8 @@ pub struct DialogStateOut {
     /// value.) This information should be saved across device reboots. However,
     /// this value should be cleared (not saved in the client) during a
     /// factory-default reset.
-    #[prost(bytes, tag = "2")]
-    pub conversation_state: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub conversation_state: ::prost::alloc::vec::Vec<u8>,
     /// *Output-only* Specifies the mode of the microphone after this `Assist`
     /// RPC is processed.
     #[prost(enumeration = "dialog_state_out::MicrophoneMode", tag = "3")]
@@ -383,6 +390,7 @@ pub struct DialogStateOut {
     #[prost(int32, tag = "4")]
     pub volume_percentage: i32,
 }
+/// Nested message and enum types in `DialogStateOut`.
 pub mod dialog_state_out {
     /// Possible states of the microphone after a `Assist` RPC completes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -419,8 +427,9 @@ pub struct DebugConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceLocation {
     #[prost(oneof = "device_location::Type", tags = "1")]
-    pub r#type: ::std::option::Option<device_location::Type>,
+    pub r#type: ::core::option::Option<device_location::Type>,
 }
+/// Nested message and enum types in `DeviceLocation`.
 pub mod device_location {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {

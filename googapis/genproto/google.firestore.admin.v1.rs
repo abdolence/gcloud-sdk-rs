@@ -7,7 +7,7 @@ pub struct Index {
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{composite_index_id}`
     /// For single field indexes, this field will be empty.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Indexes with a collection query scope specified allow queries
     /// against a collection that is the child of a specific document, specified at
     /// query time, and that has the same collection id.
@@ -29,11 +29,12 @@ pub struct Index {
     /// For single field indexes, this will always be exactly one entry with a
     /// field path equal to the field path of the associated field.
     #[prost(message, repeated, tag = "3")]
-    pub fields: ::std::vec::Vec<index::IndexField>,
+    pub fields: ::prost::alloc::vec::Vec<index::IndexField>,
     /// Output only. The serving state of the index.
     #[prost(enumeration = "index::State", tag = "4")]
     pub state: i32,
 }
+/// Nested message and enum types in `Index`.
 pub mod index {
     /// A field in an index.
     /// The field_path describes which field is indexed, the value_mode describes
@@ -44,14 +45,17 @@ pub mod index {
         /// For single field indexes, this must match the name of the field or may
         /// be omitted.
         #[prost(string, tag = "1")]
-        pub field_path: std::string::String,
+        pub field_path: ::prost::alloc::string::String,
         /// How the field value is indexed.
         #[prost(oneof = "index_field::ValueMode", tags = "2, 3")]
-        pub value_mode: ::std::option::Option<index_field::ValueMode>,
+        pub value_mode: ::core::option::Option<index_field::ValueMode>,
     }
+    /// Nested message and enum types in `IndexField`.
     pub mod index_field {
         /// The supported orderings.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum Order {
             /// The ordering is unspecified. Not a valid option.
@@ -62,7 +66,9 @@ pub mod index {
             Descending = 2,
         }
         /// The supported array value configurations.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ArrayConfig {
             /// The index does not support additional array queries.
@@ -160,21 +166,22 @@ pub struct Field {
     /// Indexes defined on this `Field` will be applied to all fields which do not
     /// have their own `Field` index configuration.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The index configuration for this field. If unset, field indexing will
     /// revert to the configuration defined by the `ancestor_field`. To
     /// explicitly remove all indexes for this field, specify an index config
     /// with an empty list of indexes.
     #[prost(message, optional, tag = "2")]
-    pub index_config: ::std::option::Option<field::IndexConfig>,
+    pub index_config: ::core::option::Option<field::IndexConfig>,
 }
+/// Nested message and enum types in `Field`.
 pub mod field {
     /// The index configuration for this field.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfig {
         /// The indexes supported for this field.
         #[prost(message, repeated, tag = "1")]
-        pub indexes: ::std::vec::Vec<super::Index>,
+        pub indexes: ::prost::alloc::vec::Vec<super::Index>,
         /// Output only. When true, the `Field`'s index configuration is set from the
         /// configuration specified by the `ancestor_field`.
         /// When false, the `Field`'s index configuration is defined explicitly.
@@ -185,7 +192,7 @@ pub mod field {
         /// or from which it *would* be set if this field had no index configuration
         /// (when `uses_ancestor_config` is false).
         #[prost(string, tag = "3")]
-        pub ancestor_field: std::string::String,
+        pub ancestor_field: ::prost::alloc::string::String,
         /// Output only
         /// When true, the `Field`'s index configuration is in the process of being
         /// reverted. Once complete, the index config will transition to the same
@@ -201,10 +208,10 @@ pub struct CreateIndexRequest {
     /// Required. A parent name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The composite index to create.
     #[prost(message, optional, tag = "2")]
-    pub index: ::std::option::Option<Index>,
+    pub index: ::core::option::Option<Index>,
 }
 /// The request for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -212,10 +219,10 @@ pub struct ListIndexesRequest {
     /// Required. A parent name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The filter to apply to list results.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The number of results to return.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -223,18 +230,18 @@ pub struct ListIndexesRequest {
     /// [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes], that may be used to get the next
     /// page of results.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The requested indexes.
     #[prost(message, repeated, tag = "1")]
-    pub indexes: ::std::vec::Vec<Index>,
+    pub indexes: ::prost::alloc::vec::Vec<Index>,
     /// A page token that may be used to request another page of results. If blank,
     /// this is the last page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for [FirestoreAdmin.GetIndex][google.firestore.admin.v1.FirestoreAdmin.GetIndex].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -242,7 +249,7 @@ pub struct GetIndexRequest {
     /// Required. A name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [FirestoreAdmin.DeleteIndex][google.firestore.admin.v1.FirestoreAdmin.DeleteIndex].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -250,18 +257,18 @@ pub struct DeleteIndexRequest {
     /// Required. A name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFieldRequest {
     /// Required. The field to be updated.
     #[prost(message, optional, tag = "1")]
-    pub field: ::std::option::Option<Field>,
+    pub field: ::core::option::Option<Field>,
     /// A mask, relative to the field. If specified, only configuration specified
     /// by this field_mask will be updated in the field.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for [FirestoreAdmin.GetField][google.firestore.admin.v1.FirestoreAdmin.GetField].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -269,7 +276,7 @@ pub struct GetFieldRequest {
     /// Required. A name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -277,14 +284,14 @@ pub struct ListFieldsRequest {
     /// Required. A parent name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The filter to apply to list results. Currently,
     /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] only supports listing fields
     /// that have been explicitly overridden. To issue this query, call
     /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] with the filter set to
     /// `indexConfig.usesAncestorConfig:false`.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The number of results to return.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -292,18 +299,18 @@ pub struct ListFieldsRequest {
     /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields], that may be used to get the next
     /// page of results.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsResponse {
     /// The requested fields.
     #[prost(message, repeated, tag = "1")]
-    pub fields: ::std::vec::Vec<Field>,
+    pub fields: ::prost::alloc::vec::Vec<Field>,
     /// A page token that may be used to request another page of results. If blank,
     /// this is the last page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1.FirestoreAdmin.ExportDocuments].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -311,10 +318,10 @@ pub struct ExportDocumentsRequest {
     /// Required. Database to export. Should be of the form:
     /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Which collection ids to export. Unspecified means all collections.
     #[prost(string, repeated, tag = "2")]
-    pub collection_ids: ::std::vec::Vec<std::string::String>,
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The output URI. Currently only supports Google Cloud Storage URIs of the
     /// form: `gs://BUCKET_NAME[/NAMESPACE_PATH]`, where `BUCKET_NAME` is the name
     /// of the Google Cloud Storage bucket and `NAMESPACE_PATH` is an optional
@@ -324,7 +331,7 @@ pub struct ExportDocumentsRequest {
     /// If the URI is a bucket (without a namespace path), a prefix will be
     /// generated based on the start time.
     #[prost(string, tag = "3")]
-    pub output_uri_prefix: std::string::String,
+    pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// The request for [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -332,18 +339,18 @@ pub struct ImportDocumentsRequest {
     /// Required. Database to import into. Should be of the form:
     /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Which collection ids to import. Unspecified means all collections included
     /// in the import.
     #[prost(string, repeated, tag = "2")]
-    pub collection_ids: ::std::vec::Vec<std::string::String>,
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Location of the exported files.
     /// This must match the output_uri_prefix of an ExportDocumentsResponse from
     /// an export that has completed successfully.
     /// See:
     /// [google.firestore.admin.v1.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1.ExportDocumentsResponse.output_uri_prefix].
     #[prost(string, tag = "3")]
-    pub input_uri_prefix: std::string::String,
+    pub input_uri_prefix: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod firestore_admin_client {
@@ -587,24 +594,24 @@ pub struct LocationMetadata {}
 pub struct IndexOperationMetadata {
     /// The time this operation started.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The index resource that this operation is acting on. For example:
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}`
     #[prost(string, tag = "3")]
-    pub index: std::string::String,
+    pub index: ::prost::alloc::string::String,
     /// The state of the operation.
     #[prost(enumeration = "OperationState", tag = "4")]
     pub state: i32,
     /// The progress, in documents, of this operation.
     #[prost(message, optional, tag = "5")]
-    pub progress_documents: ::std::option::Option<Progress>,
+    pub progress_documents: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
     #[prost(message, optional, tag = "6")]
-    pub progress_bytes: ::std::option::Option<Progress>,
+    pub progress_bytes: ::core::option::Option<Progress>,
 }
 /// Metadata for [google.longrunning.Operation][google.longrunning.Operation] results from
 /// [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField].
@@ -612,29 +619,30 @@ pub struct IndexOperationMetadata {
 pub struct FieldOperationMetadata {
     /// The time this operation started.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The field resource that this operation is acting on. For example:
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}`
     #[prost(string, tag = "3")]
-    pub field: std::string::String,
+    pub field: ::prost::alloc::string::String,
     /// A list of [IndexConfigDelta][google.firestore.admin.v1.FieldOperationMetadata.IndexConfigDelta], which describe the intent of this
     /// operation.
     #[prost(message, repeated, tag = "4")]
-    pub index_config_deltas: ::std::vec::Vec<field_operation_metadata::IndexConfigDelta>,
+    pub index_config_deltas: ::prost::alloc::vec::Vec<field_operation_metadata::IndexConfigDelta>,
     /// The state of the operation.
     #[prost(enumeration = "OperationState", tag = "5")]
     pub state: i32,
     /// The progress, in documents, of this operation.
     #[prost(message, optional, tag = "6")]
-    pub progress_documents: ::std::option::Option<Progress>,
+    pub progress_documents: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
     #[prost(message, optional, tag = "7")]
-    pub progress_bytes: ::std::option::Option<Progress>,
+    pub progress_bytes: ::core::option::Option<Progress>,
 }
+/// Nested message and enum types in `FieldOperationMetadata`.
 pub mod field_operation_metadata {
     /// Information about an index configuration change.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -644,11 +652,14 @@ pub mod field_operation_metadata {
         pub change_type: i32,
         /// The index being changed.
         #[prost(message, optional, tag = "2")]
-        pub index: ::std::option::Option<super::Index>,
+        pub index: ::core::option::Option<super::Index>,
     }
+    /// Nested message and enum types in `IndexConfigDelta`.
     pub mod index_config_delta {
         /// Specifies how the index is changing.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ChangeType {
             /// The type of change is not specified or known.
@@ -666,26 +677,26 @@ pub mod field_operation_metadata {
 pub struct ExportDocumentsMetadata {
     /// The time this operation started.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The state of the export operation.
     #[prost(enumeration = "OperationState", tag = "3")]
     pub operation_state: i32,
     /// The progress, in documents, of this operation.
     #[prost(message, optional, tag = "4")]
-    pub progress_documents: ::std::option::Option<Progress>,
+    pub progress_documents: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
     #[prost(message, optional, tag = "5")]
-    pub progress_bytes: ::std::option::Option<Progress>,
+    pub progress_bytes: ::core::option::Option<Progress>,
     /// Which collection ids are being exported.
     #[prost(string, repeated, tag = "6")]
-    pub collection_ids: ::std::vec::Vec<std::string::String>,
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Where the entities are being exported to.
     #[prost(string, tag = "7")]
-    pub output_uri_prefix: std::string::String,
+    pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Metadata for [google.longrunning.Operation][google.longrunning.Operation] results from
 /// [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments].
@@ -693,26 +704,26 @@ pub struct ExportDocumentsMetadata {
 pub struct ImportDocumentsMetadata {
     /// The time this operation started.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The state of the import operation.
     #[prost(enumeration = "OperationState", tag = "3")]
     pub operation_state: i32,
     /// The progress, in documents, of this operation.
     #[prost(message, optional, tag = "4")]
-    pub progress_documents: ::std::option::Option<Progress>,
+    pub progress_documents: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
     #[prost(message, optional, tag = "5")]
-    pub progress_bytes: ::std::option::Option<Progress>,
+    pub progress_bytes: ::core::option::Option<Progress>,
     /// Which collection ids are being imported.
     #[prost(string, repeated, tag = "6")]
-    pub collection_ids: ::std::vec::Vec<std::string::String>,
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The location of the documents being imported.
     #[prost(string, tag = "7")]
-    pub input_uri_prefix: std::string::String,
+    pub input_uri_prefix: ::prost::alloc::string::String,
 }
 /// Returned in the [google.longrunning.Operation][google.longrunning.Operation] response field.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -721,7 +732,7 @@ pub struct ExportDocumentsResponse {
     /// into Cloud Firestore (this project or another project) after the operation
     /// completes successfully.
     #[prost(string, tag = "1")]
-    pub output_uri_prefix: std::string::String,
+    pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Describes the progress of the operation.
 /// Unit of work is generic and must be interpreted based on where [Progress][google.firestore.admin.v1.Progress]

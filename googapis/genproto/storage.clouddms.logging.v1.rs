@@ -14,13 +14,14 @@ pub struct DatabaseType {
 pub struct LoggedMigrationJob {
     /// The unique identifier for a migration job.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Labels.
     #[prost(map = "string, string", tag = "2")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The display name.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The current migration job state.
     #[prost(enumeration = "logged_migration_job::State", tag = "4")]
     pub state: i32,
@@ -32,33 +33,34 @@ pub struct LoggedMigrationJob {
     pub r#type: i32,
     /// An optional dump path (gs://[BUCKET_NAME]/[OBJECT_NAME]).
     #[prost(string, tag = "7")]
-    pub dump_path: std::string::String,
+    pub dump_path: ::prost::alloc::string::String,
     /// The migration job source connection profile name.
     #[prost(string, tag = "8")]
-    pub source: std::string::String,
+    pub source: ::prost::alloc::string::String,
     /// The migration job destination connection profile name.
     #[prost(string, tag = "9")]
-    pub destination: std::string::String,
+    pub destination: ::prost::alloc::string::String,
     /// the migration job duration in seconds.
     #[prost(message, optional, tag = "10")]
-    pub duration: ::std::option::Option<::prost_types::Duration>,
+    pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Type of connectivity to source database.
     #[prost(enumeration = "logged_migration_job::ConnectivityType", tag = "11")]
     pub connectivity_type: i32,
     /// The error details in case of state FAILED.
     #[prost(message, optional, tag = "12")]
-    pub error: ::std::option::Option<super::super::super::super::google::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::super::google::rpc::Status>,
     /// The time when this migration job was completed. Should only be set when the
     /// phase of the migration job is COMPLETED.
     #[prost(message, optional, tag = "13")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The indicative source database.
     #[prost(message, optional, tag = "14")]
-    pub source_database: ::std::option::Option<DatabaseType>,
+    pub source_database: ::core::option::Option<DatabaseType>,
     /// The indicative destination database.
     #[prost(message, optional, tag = "15")]
-    pub destination_database: ::std::option::Option<DatabaseType>,
+    pub destination_database: ::core::option::Option<DatabaseType>,
 }
+/// Nested message and enum types in `LoggedMigrationJob`.
 pub mod logged_migration_job {
     /// The migration job states enum.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -147,8 +149,9 @@ pub struct MySqlConnectionProfile {
     pub version: i32,
     /// The Cloud SQL id for a Cloud SQL instance.
     #[prost(string, tag = "2")]
-    pub cloud_sql_id: std::string::String,
+    pub cloud_sql_id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `MySqlConnectionProfile`.
 pub mod my_sql_connection_profile {
     /// The MySQL database version.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -174,8 +177,9 @@ pub struct PostgreSqlConnectionProfile {
     pub version: i32,
     /// The Cloud SQL id for a Cloud SQL instance.
     #[prost(string, tag = "2")]
-    pub cloud_sql_id: std::string::String,
+    pub cloud_sql_id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `PostgreSqlConnectionProfile`.
 pub mod postgre_sql_connection_profile {
     /// The PostgreSQL database version.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -194,7 +198,7 @@ pub mod postgre_sql_connection_profile {
 pub struct CloudSqlConnectionProfile {
     /// The Cloud SQL id.
     #[prost(string, tag = "1")]
-    pub cloud_sql_id: std::string::String,
+    pub cloud_sql_id: ::prost::alloc::string::String,
 }
 /// An producer connection profile definition.
 /// NEXT_TAG = 18.
@@ -202,19 +206,20 @@ pub struct CloudSqlConnectionProfile {
 pub struct LoggedConnectionProfile {
     /// The unique identifier for a connection profile.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Labels.
     #[prost(map = "string, string", tag = "2")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The current connection profile state.
     #[prost(enumeration = "logged_connection_profile::State", tag = "3")]
     pub state: i32,
     /// The display name.
     #[prost(string, tag = "4")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The error details in case of state FAILED.
     #[prost(message, optional, tag = "5")]
-    pub error: ::std::option::Option<super::super::super::super::google::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::super::google::rpc::Status>,
     /// The database provider.
     #[prost(enumeration = "DatabaseProvider", tag = "6")]
     pub provider: i32,
@@ -223,8 +228,9 @@ pub struct LoggedConnectionProfile {
         oneof = "logged_connection_profile::ConnectionProfile",
         tags = "100, 101, 102"
     )]
-    pub connection_profile: ::std::option::Option<logged_connection_profile::ConnectionProfile>,
+    pub connection_profile: ::core::option::Option<logged_connection_profile::ConnectionProfile>,
 }
+/// Nested message and enum types in `LoggedConnectionProfile`.
 pub mod logged_connection_profile {
     /// The connection profile states enum.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -266,20 +272,21 @@ pub mod logged_connection_profile {
 pub struct MigrationJobEventLog {
     /// The migration job resource
     #[prost(message, optional, tag = "1")]
-    pub migration_job: ::std::option::Option<LoggedMigrationJob>,
+    pub migration_job: ::core::option::Option<LoggedMigrationJob>,
     /// Timestamp of the event
     #[prost(message, optional, tag = "2")]
-    pub occurrence_timestamp: ::std::option::Option<::prost_types::Timestamp>,
+    pub occurrence_timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// Event code
     #[prost(int32, tag = "3")]
     pub code: i32,
     /// Event message
     #[prost(string, tag = "4")]
-    pub text_message: std::string::String,
+    pub text_message: ::prost::alloc::string::String,
     /// Original event data
     #[prost(oneof = "migration_job_event_log::OriginalCause", tags = "200, 201")]
-    pub original_cause: ::std::option::Option<migration_job_event_log::OriginalCause>,
+    pub original_cause: ::core::option::Option<migration_job_event_log::OriginalCause>,
 }
+/// Nested message and enum types in `MigrationJobEventLog`.
 pub mod migration_job_event_log {
     /// Original event data
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -289,7 +296,7 @@ pub mod migration_job_event_log {
         OriginalCode(i32),
         /// Original event message
         #[prost(string, tag = "201")]
-        OriginalMessage(std::string::String),
+        OriginalMessage(::prost::alloc::string::String),
     }
 }
 /// Log definition for Connection Profile event
@@ -297,23 +304,24 @@ pub mod migration_job_event_log {
 pub struct ConnectionProfileEventLog {
     /// The connection profilr resource
     #[prost(message, optional, tag = "1")]
-    pub connection_profile: ::std::option::Option<LoggedConnectionProfile>,
+    pub connection_profile: ::core::option::Option<LoggedConnectionProfile>,
     /// Timestamp of the event
     #[prost(message, optional, tag = "2")]
-    pub occurrence_timestamp: ::std::option::Option<::prost_types::Timestamp>,
+    pub occurrence_timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// Event code
     #[prost(int32, tag = "3")]
     pub code: i32,
     /// Event message
     #[prost(string, tag = "4")]
-    pub text_message: std::string::String,
+    pub text_message: ::prost::alloc::string::String,
     /// Original event data
     #[prost(
         oneof = "connection_profile_event_log::OriginalCause",
         tags = "200, 201"
     )]
-    pub original_cause: ::std::option::Option<connection_profile_event_log::OriginalCause>,
+    pub original_cause: ::core::option::Option<connection_profile_event_log::OriginalCause>,
 }
+/// Nested message and enum types in `ConnectionProfileEventLog`.
 pub mod connection_profile_event_log {
     /// Original event data
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -323,7 +331,7 @@ pub mod connection_profile_event_log {
         OriginalCode(i32),
         /// Original event message
         #[prost(string, tag = "201")]
-        OriginalMessage(std::string::String),
+        OriginalMessage(::prost::alloc::string::String),
     }
 }
 /// The database engines.
@@ -336,6 +344,8 @@ pub enum DatabaseEngine {
     Mysql = 1,
     /// The source engine is PostgreSQL.
     Postgresql = 2,
+    /// The source engine is SQL Server.
+    Sqlserver = 3,
 }
 /// The database providers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

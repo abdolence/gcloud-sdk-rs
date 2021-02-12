@@ -4,10 +4,10 @@ pub struct KeyRing {
     /// Output only. The resource name for the [KeyRing][google.cloud.kms.v1.KeyRing] in the format
     /// `projects/*/locations/*/keyRings/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The time at which this [KeyRing][google.cloud.kms.v1.KeyRing] was created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
 /// operations.
@@ -19,7 +19,7 @@ pub struct CryptoKey {
     /// Output only. The resource name for this [CryptoKey][google.cloud.kms.v1.CryptoKey] in the format
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. A copy of the "primary" [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] that will be used
     /// by [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt] when this [CryptoKey][google.cloud.kms.v1.CryptoKey] is given
     /// in [EncryptRequest.name][google.cloud.kms.v1.EncryptRequest.name].
@@ -31,13 +31,13 @@ pub struct CryptoKey {
     /// [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT] may have a
     /// primary. For other keys, this field will be omitted.
     #[prost(message, optional, tag = "2")]
-    pub primary: ::std::option::Option<CryptoKeyVersion>,
+    pub primary: ::core::option::Option<CryptoKeyVersion>,
     /// Immutable. The immutable purpose of this [CryptoKey][google.cloud.kms.v1.CryptoKey].
     #[prost(enumeration = "crypto_key::CryptoKeyPurpose", tag = "3")]
     pub purpose: i32,
     /// Output only. The time at which this [CryptoKey][google.cloud.kms.v1.CryptoKey] was created.
     #[prost(message, optional, tag = "5")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// At [next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time], the Key Management Service will automatically:
     ///
     /// 1. Create a new version of this [CryptoKey][google.cloud.kms.v1.CryptoKey].
@@ -52,21 +52,23 @@ pub struct CryptoKey {
     /// [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT] support
     /// automatic rotation. For other keys, this field must be omitted.
     #[prost(message, optional, tag = "7")]
-    pub next_rotation_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A template describing settings for new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] instances.
     /// The properties of new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] instances created by either
     /// [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion] or
     /// auto-rotation are controlled by this template.
     #[prost(message, optional, tag = "11")]
-    pub version_template: ::std::option::Option<CryptoKeyVersionTemplate>,
+    pub version_template: ::core::option::Option<CryptoKeyVersionTemplate>,
     /// Labels with user-defined metadata. For more information, see
     /// [Labeling Keys](https://cloud.google.com/kms/docs/labeling-keys).
     #[prost(map = "string, string", tag = "10")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Controls the rate of automatic rotation.
     #[prost(oneof = "crypto_key::RotationSchedule", tags = "8")]
-    pub rotation_schedule: ::std::option::Option<crypto_key::RotationSchedule>,
+    pub rotation_schedule: ::core::option::Option<crypto_key::RotationSchedule>,
 }
+/// Nested message and enum types in `CryptoKey`.
 pub mod crypto_key {
     /// [CryptoKeyPurpose][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose] describes the cryptographic capabilities of a
     /// [CryptoKey][google.cloud.kms.v1.CryptoKey]. A given key can only be used for the operations allowed by
@@ -141,9 +143,10 @@ pub struct KeyOperationAttestation {
     pub format: i32,
     /// Output only. The attestation data provided by the HSM when the key
     /// operation was performed.
-    #[prost(bytes, tag = "5")]
-    pub content: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "5")]
+    pub content: ::prost::alloc::vec::Vec<u8>,
 }
+/// Nested message and enum types in `KeyOperationAttestation`.
 pub mod key_operation_attestation {
     /// Attestation formats provided by the HSM.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -174,7 +177,7 @@ pub struct CryptoKeyVersion {
     /// Output only. The resource name for this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in the format
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The current state of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
     #[prost(enumeration = "crypto_key_version::CryptoKeyVersionState", tag = "3")]
     pub state: i32,
@@ -194,44 +197,45 @@ pub struct CryptoKeyVersion {
     /// on the HSM, independently of Google. Only provided for key versions with
     /// [protection_level][google.cloud.kms.v1.CryptoKeyVersion.protection_level] [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
     #[prost(message, optional, tag = "8")]
-    pub attestation: ::std::option::Option<KeyOperationAttestation>,
+    pub attestation: ::core::option::Option<KeyOperationAttestation>,
     /// Output only. The time at which this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] was created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s key material was
     /// generated.
     #[prost(message, optional, tag = "11")]
-    pub generate_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub generate_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s key material is scheduled
     /// for destruction. Only present if [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
     /// [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED].
     #[prost(message, optional, tag = "5")]
-    pub destroy_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub destroy_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this CryptoKeyVersion's key material was
     /// destroyed. Only present if [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
     /// [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED].
     #[prost(message, optional, tag = "6")]
-    pub destroy_event_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub destroy_event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The name of the [ImportJob][google.cloud.kms.v1.ImportJob] used to import this
     /// [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Only present if the underlying key material was
     /// imported.
     #[prost(string, tag = "14")]
-    pub import_job: std::string::String,
+    pub import_job: ::prost::alloc::string::String,
     /// Output only. The time at which this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s key material
     /// was imported.
     #[prost(message, optional, tag = "15")]
-    pub import_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub import_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The root cause of an import failure. Only present if
     /// [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
     /// [IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED].
     #[prost(string, tag = "16")]
-    pub import_failure_reason: std::string::String,
+    pub import_failure_reason: ::prost::alloc::string::String,
     /// ExternalProtectionLevelOptions stores a group of additional fields for
     /// configuring a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] that are specific to the
     /// [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL] protection level.
     #[prost(message, optional, tag = "17")]
-    pub external_protection_level_options: ::std::option::Option<ExternalProtectionLevelOptions>,
+    pub external_protection_level_options: ::core::option::Option<ExternalProtectionLevelOptions>,
 }
+/// Nested message and enum types in `CryptoKeyVersion`.
 pub mod crypto_key_version {
     /// The algorithm of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion], indicating what
     /// parameters must be used for each cryptographic operation.
@@ -363,7 +367,7 @@ pub struct PublicKey {
     /// [Textual Encoding of Subject Public Key Info]
     /// (https://tools.ietf.org/html/rfc7468#section-13).
     #[prost(string, tag = "1")]
-    pub pem: std::string::String,
+    pub pem: ::prost::alloc::string::String,
     /// The [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm] associated
     /// with this key.
     #[prost(
@@ -385,13 +389,13 @@ pub struct PublicKey {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "3")]
-    pub pem_crc32c: ::std::option::Option<i64>,
+    pub pem_crc32c: ::core::option::Option<i64>,
     /// The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key.
     /// Provided here for verification.
     ///
     /// NOTE: This field is in Beta.
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
 /// [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] using pre-existing key material,
@@ -425,7 +429,7 @@ pub struct ImportJob {
     /// Output only. The resource name for this [ImportJob][google.cloud.kms.v1.ImportJob] in the format
     /// `projects/*/locations/*/keyRings/*/importJobs/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The wrapping method to be used for incoming key material.
     #[prost(enumeration = "import_job::ImportMethod", tag = "2")]
     pub import_method: i32,
@@ -437,18 +441,18 @@ pub struct ImportJob {
     pub protection_level: i32,
     /// Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob] was created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]'s key material was generated.
     #[prost(message, optional, tag = "4")]
-    pub generate_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub generate_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob] is scheduled for
     /// expiration and can no longer be used to import key material.
     #[prost(message, optional, tag = "5")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob] expired. Only present if
     /// [state][google.cloud.kms.v1.ImportJob.state] is [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED].
     #[prost(message, optional, tag = "10")]
-    pub expire_event_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the [ImportJob][google.cloud.kms.v1.ImportJob], indicating if it can
     /// be used.
     #[prost(enumeration = "import_job::ImportJobState", tag = "6")]
@@ -457,15 +461,16 @@ pub struct ImportJob {
     /// import. Only returned if [state][google.cloud.kms.v1.ImportJob.state] is
     /// [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
     #[prost(message, optional, tag = "7")]
-    pub public_key: ::std::option::Option<import_job::WrappingPublicKey>,
+    pub public_key: ::core::option::Option<import_job::WrappingPublicKey>,
     /// Output only. Statement that was generated and signed by the key creator
     /// (for example, an HSM) at key creation time. Use this statement to verify
     /// attributes of the key as stored on the HSM, independently of Google.
     /// Only present if the chosen [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is one with a protection
     /// level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
     #[prost(message, optional, tag = "8")]
-    pub attestation: ::std::option::Option<KeyOperationAttestation>,
+    pub attestation: ::core::option::Option<KeyOperationAttestation>,
 }
+/// Nested message and enum types in `ImportJob`.
 pub mod import_job {
     /// The public key component of the wrapping key. For details of the type of
     /// key this public key corresponds to, see the [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod].
@@ -477,7 +482,7 @@ pub mod import_job {
         /// [Textual Encoding of Subject Public Key Info]
         /// (https://tools.ietf.org/html/rfc7468#section-13).
         #[prost(string, tag = "1")]
-        pub pem: std::string::String,
+        pub pem: ::prost::alloc::string::String,
     }
     /// [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] describes the key wrapping method chosen for this
     /// [ImportJob][google.cloud.kms.v1.ImportJob].
@@ -527,7 +532,7 @@ pub mod import_job {
 pub struct ExternalProtectionLevelOptions {
     /// The URI for an external resource that this [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents.
     #[prost(string, tag = "1")]
-    pub external_key_uri: std::string::String,
+    pub external_key_uri: ::prost::alloc::string::String,
 }
 /// [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] specifies how cryptographic operations are performed.
 /// For more information, see [Protection levels]
@@ -550,7 +555,7 @@ pub struct ListKeyRingsRequest {
     /// Required. The resource name of the location associated with the
     /// [KeyRings][google.cloud.kms.v1.KeyRing], in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of [KeyRings][google.cloud.kms.v1.KeyRing] to include in the
     /// response.  Further [KeyRings][google.cloud.kms.v1.KeyRing] can subsequently be obtained by
     /// including the [ListKeyRingsResponse.next_page_token][google.cloud.kms.v1.ListKeyRingsResponse.next_page_token] in a subsequent
@@ -560,19 +565,19 @@ pub struct ListKeyRingsRequest {
     /// Optional. Optional pagination token, returned earlier via
     /// [ListKeyRingsResponse.next_page_token][google.cloud.kms.v1.ListKeyRingsResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response. For
     /// more information, see
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order.  For more information, see
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -580,7 +585,7 @@ pub struct ListCryptoKeysRequest {
     /// Required. The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the format
     /// `projects/*/locations/*/keyRings/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of [CryptoKeys][google.cloud.kms.v1.CryptoKey] to include in the
     /// response.  Further [CryptoKeys][google.cloud.kms.v1.CryptoKey] can subsequently be obtained by
     /// including the [ListCryptoKeysResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeysResponse.next_page_token] in a subsequent
@@ -590,7 +595,7 @@ pub struct ListCryptoKeysRequest {
     /// Optional. Optional pagination token, returned earlier via
     /// [ListCryptoKeysResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeysResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The fields of the primary version to include in the response.
     #[prost(enumeration = "crypto_key_version::CryptoKeyVersionView", tag = "4")]
     pub version_view: i32,
@@ -599,13 +604,13 @@ pub struct ListCryptoKeysRequest {
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order. For more information, see
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -613,7 +618,7 @@ pub struct ListCryptoKeyVersionsRequest {
     /// Required. The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in the format
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] to
     /// include in the response. Further [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] can
     /// subsequently be obtained by including the
@@ -624,7 +629,7 @@ pub struct ListCryptoKeyVersionsRequest {
     /// Optional. Optional pagination token, returned earlier via
     /// [ListCryptoKeyVersionsResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeyVersionsResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The fields to include in the response.
     #[prost(enumeration = "crypto_key_version::CryptoKeyVersionView", tag = "4")]
     pub view: i32,
@@ -633,13 +638,13 @@ pub struct ListCryptoKeyVersionsRequest {
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order. For more information, see
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -647,7 +652,7 @@ pub struct ListImportJobsRequest {
     /// Required. The resource name of the [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the format
     /// `projects/*/locations/*/keyRings/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of [ImportJobs][google.cloud.kms.v1.ImportJob] to include in the
     /// response. Further [ImportJobs][google.cloud.kms.v1.ImportJob] can subsequently be obtained by
     /// including the [ListImportJobsResponse.next_page_token][google.cloud.kms.v1.ListImportJobsResponse.next_page_token] in a subsequent
@@ -657,30 +662,30 @@ pub struct ListImportJobsRequest {
     /// Optional. Optional pagination token, returned earlier via
     /// [ListImportJobsResponse.next_page_token][google.cloud.kms.v1.ListImportJobsResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response. For
     /// more information, see
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order. For more information, see
     /// [Sorting and filtering list
     /// results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeyRingsResponse {
     /// The list of [KeyRings][google.cloud.kms.v1.KeyRing].
     #[prost(message, repeated, tag = "1")]
-    pub key_rings: ::std::vec::Vec<KeyRing>,
+    pub key_rings: ::prost::alloc::vec::Vec<KeyRing>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListKeyRingsRequest.page_token][google.cloud.kms.v1.ListKeyRingsRequest.page_token] to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of [KeyRings][google.cloud.kms.v1.KeyRing] that matched the query.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
@@ -690,11 +695,11 @@ pub struct ListKeyRingsResponse {
 pub struct ListCryptoKeysResponse {
     /// The list of [CryptoKeys][google.cloud.kms.v1.CryptoKey].
     #[prost(message, repeated, tag = "1")]
-    pub crypto_keys: ::std::vec::Vec<CryptoKey>,
+    pub crypto_keys: ::prost::alloc::vec::Vec<CryptoKey>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListCryptoKeysRequest.page_token][google.cloud.kms.v1.ListCryptoKeysRequest.page_token] to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of [CryptoKeys][google.cloud.kms.v1.CryptoKey] that matched the query.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
@@ -704,12 +709,12 @@ pub struct ListCryptoKeysResponse {
 pub struct ListCryptoKeyVersionsResponse {
     /// The list of [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
     #[prost(message, repeated, tag = "1")]
-    pub crypto_key_versions: ::std::vec::Vec<CryptoKeyVersion>,
+    pub crypto_key_versions: ::prost::alloc::vec::Vec<CryptoKeyVersion>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListCryptoKeyVersionsRequest.page_token][google.cloud.kms.v1.ListCryptoKeyVersionsRequest.page_token] to retrieve the next page of
     /// results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] that matched the
     /// query.
     #[prost(int32, tag = "3")]
@@ -720,11 +725,11 @@ pub struct ListCryptoKeyVersionsResponse {
 pub struct ListImportJobsResponse {
     /// The list of [ImportJobs][google.cloud.kms.v1.ImportJob].
     #[prost(message, repeated, tag = "1")]
-    pub import_jobs: ::std::vec::Vec<ImportJob>,
+    pub import_jobs: ::prost::alloc::vec::Vec<ImportJob>,
     /// A token to retrieve next page of results. Pass this value in
     /// [ListImportJobsRequest.page_token][google.cloud.kms.v1.ListImportJobsRequest.page_token] to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of [ImportJobs][google.cloud.kms.v1.ImportJob] that matched the query.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
@@ -734,21 +739,21 @@ pub struct ListImportJobsResponse {
 pub struct GetKeyRingRequest {
     /// Required. The [name][google.cloud.kms.v1.KeyRing.name] of the [KeyRing][google.cloud.kms.v1.KeyRing] to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.GetCryptoKey][google.cloud.kms.v1.KeyManagementService.GetCryptoKey].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCryptoKeyRequest {
     /// Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.GetCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.GetCryptoKeyVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCryptoKeyVersionRequest {
     /// Required. The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -756,14 +761,14 @@ pub struct GetPublicKeyRequest {
     /// Required. The [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key to
     /// get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetImportJobRequest {
     /// Required. The [name][google.cloud.kms.v1.ImportJob.name] of the [ImportJob][google.cloud.kms.v1.ImportJob] to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.CreateKeyRing][google.cloud.kms.v1.KeyManagementService.CreateKeyRing].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -771,14 +776,14 @@ pub struct CreateKeyRingRequest {
     /// Required. The resource name of the location associated with the
     /// [KeyRings][google.cloud.kms.v1.KeyRing], in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a location and match the regular
     /// expression `[a-zA-Z0-9_-]{1,63}`
     #[prost(string, tag = "2")]
-    pub key_ring_id: std::string::String,
+    pub key_ring_id: ::prost::alloc::string::String,
     /// Required. A [KeyRing][google.cloud.kms.v1.KeyRing] with initial field values.
     #[prost(message, optional, tag = "3")]
-    pub key_ring: ::std::option::Option<KeyRing>,
+    pub key_ring: ::core::option::Option<KeyRing>,
 }
 /// Request message for [KeyManagementService.CreateCryptoKey][google.cloud.kms.v1.KeyManagementService.CreateCryptoKey].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -786,14 +791,14 @@ pub struct CreateCryptoKeyRequest {
     /// Required. The [name][google.cloud.kms.v1.KeyRing.name] of the KeyRing associated with the
     /// [CryptoKeys][google.cloud.kms.v1.CryptoKey].
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a KeyRing and match the regular
     /// expression `[a-zA-Z0-9_-]{1,63}`
     #[prost(string, tag = "2")]
-    pub crypto_key_id: std::string::String,
+    pub crypto_key_id: ::prost::alloc::string::String,
     /// Required. A [CryptoKey][google.cloud.kms.v1.CryptoKey] with initial field values.
     #[prost(message, optional, tag = "3")]
-    pub crypto_key: ::std::option::Option<CryptoKey>,
+    pub crypto_key: ::core::option::Option<CryptoKey>,
     /// If set to true, the request will create a [CryptoKey][google.cloud.kms.v1.CryptoKey] without any
     /// [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]. You must manually call
     /// [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion] or
@@ -808,10 +813,10 @@ pub struct CreateCryptoKeyVersionRequest {
     /// Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the [CryptoKey][google.cloud.kms.v1.CryptoKey] associated with
     /// the [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with initial field values.
     #[prost(message, optional, tag = "2")]
-    pub crypto_key_version: ::std::option::Option<CryptoKeyVersion>,
+    pub crypto_key_version: ::core::option::Option<CryptoKeyVersion>,
 }
 /// Request message for [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -819,7 +824,7 @@ pub struct ImportCryptoKeyVersionRequest {
     /// Required. The [name][google.cloud.kms.v1.CryptoKey.name] of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to
     /// be imported into.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The [algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm] of
     /// the key being imported. This does not need to match the
     /// [version_template][google.cloud.kms.v1.CryptoKey.version_template] of the [CryptoKey][google.cloud.kms.v1.CryptoKey] this
@@ -832,15 +837,16 @@ pub struct ImportCryptoKeyVersionRequest {
     /// Required. The [name][google.cloud.kms.v1.ImportJob.name] of the [ImportJob][google.cloud.kms.v1.ImportJob] that was used to
     /// wrap this key material.
     #[prost(string, tag = "4")]
-    pub import_job: std::string::String,
+    pub import_job: ::prost::alloc::string::String,
     /// Required. The incoming wrapped key material that is to be imported.
     #[prost(
         oneof = "import_crypto_key_version_request::WrappedKeyMaterial",
         tags = "5"
     )]
     pub wrapped_key_material:
-        ::std::option::Option<import_crypto_key_version_request::WrappedKeyMaterial>,
+        ::core::option::Option<import_crypto_key_version_request::WrappedKeyMaterial>,
 }
+/// Nested message and enum types in `ImportCryptoKeyVersionRequest`.
 pub mod import_crypto_key_version_request {
     /// Required. The incoming wrapped key material that is to be imported.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -869,7 +875,7 @@ pub mod import_crypto_key_version_request {
         /// This format is the same as the format produced by PKCS#11 mechanism
         /// CKM_RSA_AES_KEY_WRAP.
         #[prost(bytes, tag = "5")]
-        RsaAesWrappedKey(std::vec::Vec<u8>),
+        RsaAesWrappedKey(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Request message for [KeyManagementService.CreateImportJob][google.cloud.kms.v1.KeyManagementService.CreateImportJob].
@@ -878,34 +884,34 @@ pub struct CreateImportJobRequest {
     /// Required. The [name][google.cloud.kms.v1.KeyRing.name] of the [KeyRing][google.cloud.kms.v1.KeyRing] associated with the
     /// [ImportJobs][google.cloud.kms.v1.ImportJob].
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a KeyRing and match the regular
     /// expression `[a-zA-Z0-9_-]{1,63}`
     #[prost(string, tag = "2")]
-    pub import_job_id: std::string::String,
+    pub import_job_id: ::prost::alloc::string::String,
     /// Required. An [ImportJob][google.cloud.kms.v1.ImportJob] with initial field values.
     #[prost(message, optional, tag = "3")]
-    pub import_job: ::std::option::Option<ImportJob>,
+    pub import_job: ::core::option::Option<ImportJob>,
 }
 /// Request message for [KeyManagementService.UpdateCryptoKey][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCryptoKeyRequest {
     /// Required. [CryptoKey][google.cloud.kms.v1.CryptoKey] with updated values.
     #[prost(message, optional, tag = "1")]
-    pub crypto_key: ::std::option::Option<CryptoKey>,
+    pub crypto_key: ::core::option::Option<CryptoKey>,
     /// Required. List of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [KeyManagementService.UpdateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCryptoKeyVersionRequest {
     /// Required. [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with updated values.
     #[prost(message, optional, tag = "1")]
-    pub crypto_key_version: ::std::option::Option<CryptoKeyVersion>,
+    pub crypto_key_version: ::core::option::Option<CryptoKeyVersion>,
     /// Required. List of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -916,7 +922,7 @@ pub struct EncryptRequest {
     /// If a [CryptoKey][google.cloud.kms.v1.CryptoKey] is specified, the server will use its
     /// [primary version][google.cloud.kms.v1.CryptoKey.primary].
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The data to encrypt. Must be no larger than 64KiB.
     ///
     /// The maximum size depends on the key version's
@@ -925,8 +931,8 @@ pub struct EncryptRequest {
     /// than 64KiB. For [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the combined length of the
     /// plaintext and additional_authenticated_data fields must be no larger than
     /// 8KiB.
-    #[prost(bytes, tag = "2")]
-    pub plaintext: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub plaintext: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Optional data that, if specified, must also be provided during decryption
     /// through [DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data].
     ///
@@ -936,8 +942,8 @@ pub struct EncryptRequest {
     /// 64KiB. For [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] keys, the combined length of the
     /// plaintext and additional_authenticated_data fields must be no larger than
     /// 8KiB.
-    #[prost(bytes, tag = "3")]
-    pub additional_authenticated_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub additional_authenticated_data: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext]. If
     /// specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
     /// received [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext] using this checksum.
@@ -954,7 +960,7 @@ pub struct EncryptRequest {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "7")]
-    pub plaintext_crc32c: ::std::option::Option<i64>,
+    pub plaintext_crc32c: ::core::option::Option<i64>,
     /// Optional. An optional CRC32C checksum of the
     /// [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data]. If specified,
     /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the received
@@ -972,7 +978,7 @@ pub struct EncryptRequest {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "8")]
-    pub additional_authenticated_data_crc32c: ::std::option::Option<i64>,
+    pub additional_authenticated_data_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -980,15 +986,15 @@ pub struct DecryptRequest {
     /// Required. The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for decryption.
     /// The server will choose the appropriate version.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The encrypted data originally returned in
     /// [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
-    #[prost(bytes, tag = "2")]
-    pub ciphertext: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub ciphertext: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Optional data that must match the data originally supplied in
     /// [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data].
-    #[prost(bytes, tag = "3")]
-    pub additional_authenticated_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub additional_authenticated_data: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the [DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext]. If
     /// specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
     /// received [DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext] using this checksum.
@@ -1005,7 +1011,7 @@ pub struct DecryptRequest {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "5")]
-    pub ciphertext_crc32c: ::std::option::Option<i64>,
+    pub ciphertext_crc32c: ::core::option::Option<i64>,
     /// Optional. An optional CRC32C checksum of the
     /// [DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data]. If specified,
     /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the received
@@ -1023,19 +1029,19 @@ pub struct DecryptRequest {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "6")]
-    pub additional_authenticated_data_crc32c: ::std::option::Option<i64>,
+    pub additional_authenticated_data_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricSignRequest {
     /// Required. The resource name of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for signing.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The digest of the data to sign. The digest must be produced with
     /// the same digest algorithm as specified by the key version's
     /// [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
     #[prost(message, optional, tag = "3")]
-    pub digest: ::std::option::Option<Digest>,
+    pub digest: ::core::option::Option<Digest>,
     /// Optional. An optional CRC32C checksum of the [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest]. If
     /// specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
     /// received [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest] using this checksum.
@@ -1052,7 +1058,7 @@ pub struct AsymmetricSignRequest {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "4")]
-    pub digest_crc32c: ::std::option::Option<i64>,
+    pub digest_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1060,11 +1066,11 @@ pub struct AsymmetricDecryptRequest {
     /// Required. The resource name of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use for
     /// decryption.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The data encrypted with the named [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s public
     /// key using OAEP.
-    #[prost(bytes, tag = "3")]
-    pub ciphertext: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub ciphertext: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the [AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext].
     /// If specified, [KeyManagementService][google.cloud.kms.v1.KeyManagementService] will verify the integrity of the
     /// received [AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext] using this checksum.
@@ -1081,14 +1087,14 @@ pub struct AsymmetricDecryptRequest {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "4")]
-    pub ciphertext_crc32c: ::std::option::Option<i64>,
+    pub ciphertext_crc32c: ::core::option::Option<i64>,
 }
 /// Response message for [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DecryptResponse {
     /// The decrypted data originally supplied in [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext].
-    #[prost(bytes, tag = "1")]
-    pub plaintext: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub plaintext: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext]. An integrity check of
     /// [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext] can be performed by computing the CRC32C
@@ -1105,7 +1111,7 @@ pub struct DecryptResponse {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "2")]
-    pub plaintext_crc32c: ::std::option::Option<i64>,
+    pub plaintext_crc32c: ::core::option::Option<i64>,
 }
 /// Response message for [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1113,10 +1119,10 @@ pub struct EncryptResponse {
     /// The resource name of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] used in encryption. Check
     /// this field to verify that the intended resource was used for encryption.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The encrypted data.
-    #[prost(bytes, tag = "2")]
-    pub ciphertext: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub ciphertext: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext]. An integrity check of
     /// [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext] can be performed by computing the CRC32C
@@ -1131,7 +1137,7 @@ pub struct EncryptResponse {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "4")]
-    pub ciphertext_crc32c: ::std::option::Option<i64>,
+    pub ciphertext_crc32c: ::core::option::Option<i64>,
     /// Integrity verification field. A flag indicating whether
     /// [EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c] was received by
     /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] and used for the integrity verification of the
@@ -1162,8 +1168,8 @@ pub struct EncryptResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricSignResponse {
     /// The created signature.
-    #[prost(bytes, tag = "1")]
-    pub signature: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub signature: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature]. An integrity check of
     /// [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature] can be performed by computing the
@@ -1178,7 +1184,7 @@ pub struct AsymmetricSignResponse {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "2")]
-    pub signature_crc32c: ::std::option::Option<i64>,
+    pub signature_crc32c: ::core::option::Option<i64>,
     /// Integrity verification field. A flag indicating whether
     /// [AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c] was received by
     /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] and used for the integrity verification of the
@@ -1196,14 +1202,14 @@ pub struct AsymmetricSignResponse {
     ///
     /// NOTE: This field is in Beta.
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricDecryptResponse {
     /// The decrypted data originally encrypted with the matching public key.
-    #[prost(bytes, tag = "1")]
-    pub plaintext: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub plaintext: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext]. An integrity check of
     /// [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext] can be performed by computing the
@@ -1218,7 +1224,7 @@ pub struct AsymmetricDecryptResponse {
     ///
     /// NOTE: This field is in Beta.
     #[prost(message, optional, tag = "2")]
-    pub plaintext_crc32c: ::std::option::Option<i64>,
+    pub plaintext_crc32c: ::core::option::Option<i64>,
     /// Integrity verification field. A flag indicating whether
     /// [AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c] was received by
     /// [KeyManagementService][google.cloud.kms.v1.KeyManagementService] and used for the integrity verification of the
@@ -1237,45 +1243,46 @@ pub struct AsymmetricDecryptResponse {
 pub struct UpdateCryptoKeyPrimaryVersionRequest {
     /// Required. The resource name of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The id of the child [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to use as primary.
     #[prost(string, tag = "2")]
-    pub crypto_key_version_id: std::string::String,
+    pub crypto_key_version_id: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestroyCryptoKeyVersionRequest {
     /// Required. The resource name of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to destroy.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreCryptoKeyVersionRequest {
     /// Required. The resource name of the [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to restore.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A [Digest][google.cloud.kms.v1.Digest] holds a cryptographic message digest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
     /// Required. The message digest.
     #[prost(oneof = "digest::Digest", tags = "1, 2, 3")]
-    pub digest: ::std::option::Option<digest::Digest>,
+    pub digest: ::core::option::Option<digest::Digest>,
 }
+/// Nested message and enum types in `Digest`.
 pub mod digest {
     /// Required. The message digest.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Digest {
         /// A message digest produced with the SHA-256 algorithm.
         #[prost(bytes, tag = "1")]
-        Sha256(std::vec::Vec<u8>),
+        Sha256(::prost::alloc::vec::Vec<u8>),
         /// A message digest produced with the SHA-384 algorithm.
         #[prost(bytes, tag = "2")]
-        Sha384(std::vec::Vec<u8>),
+        Sha384(::prost::alloc::vec::Vec<u8>),
         /// A message digest produced with the SHA-512 algorithm.
         #[prost(bytes, tag = "3")]
-        Sha512(std::vec::Vec<u8>),
+        Sha512(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Cloud KMS metadata for the given [google.cloud.location.Location][google.cloud.location.Location].

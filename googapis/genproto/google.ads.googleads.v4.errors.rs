@@ -3,6 +3,7 @@
 /// Container for enum describing possible AccessInvitation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessInvitationErrorEnum {}
+/// Nested message and enum types in `AccessInvitationErrorEnum`.
 pub mod access_invitation_error_enum {
     /// Enum describing possible AccessInvitation errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -23,6 +24,7 @@ pub mod access_invitation_error_enum {
 /// Container for enum describing possible account budget proposal errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountBudgetProposalErrorEnum {}
+/// Nested message and enum types in `AccountBudgetProposalErrorEnum`.
 pub mod account_budget_proposal_error_enum {
     /// Enum describing possible account budget proposal errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -93,6 +95,7 @@ pub mod account_budget_proposal_error_enum {
 /// Container for enum describing possible ad customizer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdCustomizerErrorEnum {}
+/// Nested message and enum types in `AdCustomizerErrorEnum`.
 pub mod ad_customizer_error_enum {
     /// Enum describing possible ad customizer errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -119,6 +122,7 @@ pub mod ad_customizer_error_enum {
 /// Container for enum describing possible ad errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdErrorEnum {}
+/// Nested message and enum types in `AdErrorEnum`.
 pub mod ad_error_enum {
     /// Enum describing possible ad errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -452,6 +456,7 @@ pub mod ad_error_enum {
 /// Container for enum describing possible ad group ad errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupAdErrorEnum {}
+/// Nested message and enum types in `AdGroupAdErrorEnum`.
 pub mod ad_group_ad_error_enum {
     /// Enum describing possible ad group ad errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -490,6 +495,7 @@ pub mod ad_group_ad_error_enum {
 /// Container for enum describing possible ad group bid modifier errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupBidModifierErrorEnum {}
+/// Nested message and enum types in `AdGroupBidModifierErrorEnum`.
 pub mod ad_group_bid_modifier_error_enum {
     /// Enum describing possible ad group bid modifier errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -511,6 +517,7 @@ pub mod ad_group_bid_modifier_error_enum {
 /// Container for enum describing possible ad group criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCriterionErrorEnum {}
+/// Nested message and enum types in `AdGroupCriterionErrorEnum`.
 pub mod ad_group_criterion_error_enum {
     /// Enum describing possible ad group criterion errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -592,6 +599,7 @@ pub mod ad_group_criterion_error_enum {
 /// Container for enum describing possible ad group errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupErrorEnum {}
+/// Nested message and enum types in `AdGroupErrorEnum`.
 pub mod ad_group_error_enum {
     /// Enum describing possible ad group errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -638,6 +646,7 @@ pub mod ad_group_error_enum {
 /// Container for enum describing possible ad group feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupFeedErrorEnum {}
+/// Nested message and enum types in `AdGroupFeedErrorEnum`.
 pub mod ad_group_feed_error_enum {
     /// Enum describing possible ad group feed errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -670,6 +679,7 @@ pub mod ad_group_feed_error_enum {
 /// Container for enum describing possible ad parameter errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdParameterErrorEnum {}
+/// Nested message and enum types in `AdParameterErrorEnum`.
 pub mod ad_parameter_error_enum {
     /// Enum describing possible ad parameter errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -690,6 +700,7 @@ pub mod ad_parameter_error_enum {
 /// Container for enum describing possible ad sharing errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdSharingErrorEnum {}
+/// Nested message and enum types in `AdSharingErrorEnum`.
 pub mod ad_sharing_error_enum {
     /// Enum describing possible ad sharing errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -713,6 +724,7 @@ pub mod ad_sharing_error_enum {
 /// Container for enum describing possible adx errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdxErrorEnum {}
+/// Nested message and enum types in `AdxErrorEnum`.
 pub mod adx_error_enum {
     /// Enum describing possible adx errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -731,6 +743,7 @@ pub mod adx_error_enum {
 /// Container for enum describing possible asset errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetErrorEnum {}
+/// Nested message and enum types in `AssetErrorEnum`.
 pub mod asset_error_enum {
     /// Enum describing possible asset errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -759,6 +772,7 @@ pub mod asset_error_enum {
 /// Container for enum describing possible asset link errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetLinkErrorEnum {}
+/// Nested message and enum types in `AssetLinkErrorEnum`.
 pub mod asset_link_error_enum {
     /// Enum describing possible asset link errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -777,6 +791,7 @@ pub mod asset_link_error_enum {
 /// Container for enum describing possible authentication errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthenticationErrorEnum {}
+/// Nested message and enum types in `AuthenticationErrorEnum`.
 pub mod authentication_error_enum {
     /// Enum describing possible authentication errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -834,6 +849,7 @@ pub mod authentication_error_enum {
 /// Container for enum describing possible authorization errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizationErrorEnum {}
+/// Nested message and enum types in `AuthorizationErrorEnum`.
 pub mod authorization_error_enum {
     /// Enum describing possible authorization errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -882,6 +898,7 @@ pub mod authorization_error_enum {
 /// Container for enum describing possible batch job errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchJobErrorEnum {}
+/// Nested message and enum types in `BatchJobErrorEnum`.
 pub mod batch_job_error_enum {
     /// Enum describing possible request errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -911,6 +928,7 @@ pub mod batch_job_error_enum {
 /// Container for enum describing possible bidding errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingErrorEnum {}
+/// Nested message and enum types in `BiddingErrorEnum`.
 pub mod bidding_error_enum {
     /// Enum describing possible bidding errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -981,6 +999,7 @@ pub mod bidding_error_enum {
 /// Container for enum describing possible bidding strategy errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingStrategyErrorEnum {}
+/// Nested message and enum types in `BiddingStrategyErrorEnum`.
 pub mod bidding_strategy_error_enum {
     /// Enum describing possible bidding strategy errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1009,6 +1028,7 @@ pub mod bidding_strategy_error_enum {
 /// Container for enum describing possible billing setup errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingSetupErrorEnum {}
+/// Nested message and enum types in `BillingSetupErrorEnum`.
 pub mod billing_setup_error_enum {
     /// Enum describing possible billing setup errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1069,6 +1089,7 @@ pub mod billing_setup_error_enum {
 /// Container for enum describing possible campaign budget errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignBudgetErrorEnum {}
+/// Nested message and enum types in `CampaignBudgetErrorEnum`.
 pub mod campaign_budget_error_enum {
     /// Enum describing possible campaign budget errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1122,6 +1143,7 @@ pub mod campaign_budget_error_enum {
 /// Container for enum describing possible campaign criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignCriterionErrorEnum {}
+/// Nested message and enum types in `CampaignCriterionErrorEnum`.
 pub mod campaign_criterion_error_enum {
     /// Enum describing possible campaign criterion errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1164,6 +1186,7 @@ pub mod campaign_criterion_error_enum {
 /// Container for enum describing possible campaign draft errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignDraftErrorEnum {}
+/// Nested message and enum types in `CampaignDraftErrorEnum`.
 pub mod campaign_draft_error_enum {
     /// Enum describing possible campaign draft errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1205,6 +1228,7 @@ pub mod campaign_draft_error_enum {
 /// Container for enum describing possible campaign errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignErrorEnum {}
+/// Nested message and enum types in `CampaignErrorEnum`.
 pub mod campaign_error_enum {
     /// Enum describing possible campaign errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1316,6 +1340,7 @@ pub mod campaign_error_enum {
 /// Container for enum describing possible campaign experiment errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignExperimentErrorEnum {}
+/// Nested message and enum types in `CampaignExperimentErrorEnum`.
 pub mod campaign_experiment_error_enum {
     /// Enum describing possible campaign experiment errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1359,6 +1384,7 @@ pub mod campaign_experiment_error_enum {
 /// Container for enum describing possible campaign feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignFeedErrorEnum {}
+/// Nested message and enum types in `CampaignFeedErrorEnum`.
 pub mod campaign_feed_error_enum {
     /// Enum describing possible campaign feed errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1391,6 +1417,7 @@ pub mod campaign_feed_error_enum {
 /// Container for enum describing possible campaign shared set errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignSharedSetErrorEnum {}
+/// Nested message and enum types in `CampaignSharedSetErrorEnum`.
 pub mod campaign_shared_set_error_enum {
     /// Enum describing possible campaign shared set errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1409,6 +1436,7 @@ pub mod campaign_shared_set_error_enum {
 /// Container for enum describing possible change status errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeStatusErrorEnum {}
+/// Nested message and enum types in `ChangeStatusErrorEnum`.
 pub mod change_status_error_enum {
     /// Enum describing possible change status errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1427,6 +1455,7 @@ pub mod change_status_error_enum {
 /// Container for enum describing possible collection size errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CollectionSizeErrorEnum {}
+/// Nested message and enum types in `CollectionSizeErrorEnum`.
 pub mod collection_size_error_enum {
     /// Enum describing possible collection size errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1447,6 +1476,7 @@ pub mod collection_size_error_enum {
 /// Container for enum describing possible context errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContextErrorEnum {}
+/// Nested message and enum types in `ContextErrorEnum`.
 pub mod context_error_enum {
     /// Enum describing possible context errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1467,6 +1497,7 @@ pub mod context_error_enum {
 /// Container for enum describing possible conversion action errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionActionErrorEnum {}
+/// Nested message and enum types in `ConversionActionErrorEnum`.
 pub mod conversion_action_error_enum {
     /// Enum describing possible conversion action errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1509,6 +1540,7 @@ pub mod conversion_action_error_enum {
 /// Container for enum describing possible conversion adjustment upload errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionAdjustmentUploadErrorEnum {}
+/// Nested message and enum types in `ConversionAdjustmentUploadErrorEnum`.
 pub mod conversion_adjustment_upload_error_enum {
     /// Enum describing possible conversion adjustment upload errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1555,6 +1587,7 @@ pub mod conversion_adjustment_upload_error_enum {
 /// Container for enum describing possible conversion upload errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionUploadErrorEnum {}
+/// Nested message and enum types in `ConversionUploadErrorEnum`.
 pub mod conversion_upload_error_enum {
     /// Enum describing possible conversion upload errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1612,7 +1645,7 @@ pub mod conversion_upload_error_enum {
         /// The request contained two or more conversions with the same order id and
         /// conversion action combination.
         DuplicateOrderId = 16,
-        /// The call occurred too recently. Please try uploading again after 6 hours
+        /// The call occurred too recently. Please try uploading again after 12 hours
         /// have passed since the call occurred.
         TooRecentCall = 17,
         /// The click that initiated the call is too old for this conversion to be
@@ -1636,6 +1669,7 @@ pub mod conversion_upload_error_enum {
 /// Container for enum describing country code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CountryCodeErrorEnum {}
+/// Nested message and enum types in `CountryCodeErrorEnum`.
 pub mod country_code_error_enum {
     /// Enum describing country code errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1654,6 +1688,7 @@ pub mod country_code_error_enum {
 /// Container for enum describing possible criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionErrorEnum {}
+/// Nested message and enum types in `CriterionErrorEnum`.
 pub mod criterion_error_enum {
     /// Enum describing possible criterion errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1924,6 +1959,7 @@ pub mod criterion_error_enum {
 /// Container for enum describing possible currency code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CurrencyCodeErrorEnum {}
+/// Nested message and enum types in `CurrencyCodeErrorEnum`.
 pub mod currency_code_error_enum {
     /// Enum describing possible currency code errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1942,6 +1978,7 @@ pub mod currency_code_error_enum {
 /// Container for enum describing possible custom interest errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomInterestErrorEnum {}
+/// Nested message and enum types in `CustomInterestErrorEnum`.
 pub mod custom_interest_error_enum {
     /// Enum describing possible custom interest errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1973,6 +2010,7 @@ pub mod custom_interest_error_enum {
 /// Container for enum describing possible CustomeClientLink errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerClientLinkErrorEnum {}
+/// Nested message and enum types in `CustomerClientLinkErrorEnum`.
 pub mod customer_client_link_error_enum {
     /// Enum describing possible CustomerClientLink errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2003,6 +2041,7 @@ pub mod customer_client_link_error_enum {
 /// Container for enum describing possible customer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerErrorEnum {}
+/// Nested message and enum types in `CustomerErrorEnum`.
 pub mod customer_error_enum {
     /// Set of errors that are related to requests dealing with Customer.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2025,6 +2064,7 @@ pub mod customer_error_enum {
 /// Container for enum describing possible customer feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerFeedErrorEnum {}
+/// Nested message and enum types in `CustomerFeedErrorEnum`.
 pub mod customer_feed_error_enum {
     /// Enum describing possible customer feed errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2056,6 +2096,7 @@ pub mod customer_feed_error_enum {
 /// Container for enum describing possible CustomerManagerLink errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerManagerLinkErrorEnum {}
+/// Nested message and enum types in `CustomerManagerLinkErrorEnum`.
 pub mod customer_manager_link_error_enum {
     /// Enum describing possible CustomerManagerLink errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2094,6 +2135,7 @@ pub mod customer_manager_link_error_enum {
 /// Container for enum describing possible database errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseErrorEnum {}
+/// Nested message and enum types in `DatabaseErrorEnum`.
 pub mod database_error_enum {
     /// Enum describing possible database errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2119,6 +2161,7 @@ pub mod database_error_enum {
 /// Container for enum describing possible date errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateErrorEnum {}
+/// Nested message and enum types in `DateErrorEnum`.
 pub mod date_error_enum {
     /// Enum describing possible date errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2155,6 +2198,7 @@ pub mod date_error_enum {
 /// Container for enum describing possible date range errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRangeErrorEnum {}
+/// Nested message and enum types in `DateRangeErrorEnum`.
 pub mod date_range_error_enum {
     /// Enum describing possible date range errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2181,6 +2225,7 @@ pub mod date_range_error_enum {
 /// Container for enum describing possible distinct errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistinctErrorEnum {}
+/// Nested message and enum types in `DistinctErrorEnum`.
 pub mod distinct_error_enum {
     /// Enum describing possible distinct errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2201,6 +2246,7 @@ pub mod distinct_error_enum {
 /// Container for enum describing possible enum errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnumErrorEnum {}
+/// Nested message and enum types in `EnumErrorEnum`.
 pub mod enum_error_enum {
     /// Enum describing possible enum errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2219,6 +2265,7 @@ pub mod enum_error_enum {
 /// Container for enum describing possible extension feed item error.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtensionFeedItemErrorEnum {}
+/// Nested message and enum types in `ExtensionFeedItemErrorEnum`.
 pub mod extension_feed_item_error_enum {
     /// Enum describing possible extension feed item errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2341,6 +2388,7 @@ pub mod extension_feed_item_error_enum {
 /// Container for enum describing validation errors of extension settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtensionSettingErrorEnum {}
+/// Nested message and enum types in `ExtensionSettingErrorEnum`.
 pub mod extension_setting_error_enum {
     /// Enum describing possible extension setting errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2507,6 +2555,7 @@ pub mod extension_setting_error_enum {
 /// Container for enum describing possible feed attribute reference errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedAttributeReferenceErrorEnum {}
+/// Nested message and enum types in `FeedAttributeReferenceErrorEnum`.
 pub mod feed_attribute_reference_error_enum {
     /// Enum describing possible feed attribute reference errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2529,6 +2578,7 @@ pub mod feed_attribute_reference_error_enum {
 /// Container for enum describing possible feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedErrorEnum {}
+/// Nested message and enum types in `FeedErrorEnum`.
 pub mod feed_error_enum {
     /// Enum describing possible feed errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2590,6 +2640,7 @@ pub mod feed_error_enum {
 /// Container for enum describing possible feed item errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemErrorEnum {}
+/// Nested message and enum types in `FeedItemErrorEnum`.
 pub mod feed_item_error_enum {
     /// Enum describing possible feed item errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2624,6 +2675,7 @@ pub mod feed_item_error_enum {
 /// Container for enum describing possible feed item target errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemTargetErrorEnum {}
+/// Nested message and enum types in `FeedItemTargetErrorEnum`.
 pub mod feed_item_target_error_enum {
     /// Enum describing possible feed item target errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2658,6 +2710,7 @@ pub mod feed_item_target_error_enum {
 /// Container for enum describing possible validation errors of a feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemValidationErrorEnum {}
+/// Nested message and enum types in `FeedItemValidationErrorEnum`.
 pub mod feed_item_validation_error_enum {
     /// The possible validation errors of a feed item.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2886,6 +2939,7 @@ pub mod feed_item_validation_error_enum {
 /// Container for enum describing possible feed item errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedMappingErrorEnum {}
+/// Nested message and enum types in `FeedMappingErrorEnum`.
 pub mod feed_mapping_error_enum {
     /// Enum describing possible feed item errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2941,6 +2995,7 @@ pub mod feed_mapping_error_enum {
 /// Container for enum describing possible field errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldErrorEnum {}
+/// Nested message and enum types in `FieldErrorEnum`.
 pub mod field_error_enum {
     /// Enum describing possible field errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2971,6 +3026,7 @@ pub mod field_error_enum {
 /// Container for enum describing possible field mask errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldMaskErrorEnum {}
+/// Nested message and enum types in `FieldMaskErrorEnum`.
 pub mod field_mask_error_enum {
     /// Enum describing possible field mask errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2997,6 +3053,7 @@ pub mod field_mask_error_enum {
 /// Container for enum describing possible function errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionErrorEnum {}
+/// Nested message and enum types in `FunctionErrorEnum`.
 pub mod function_error_enum {
     /// Enum describing possible function errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3046,6 +3103,7 @@ pub mod function_error_enum {
 /// Container for enum describing possible function parsing errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionParsingErrorEnum {}
+/// Nested message and enum types in `FunctionParsingErrorEnum`.
 pub mod function_parsing_error_enum {
     /// Enum describing possible function parsing errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3082,6 +3140,7 @@ pub mod function_parsing_error_enum {
 /// Container for enum describing possible geo target constant suggestion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoTargetConstantSuggestionErrorEnum {}
+/// Nested message and enum types in `GeoTargetConstantSuggestionErrorEnum`.
 pub mod geo_target_constant_suggestion_error_enum {
     /// Enum describing possible geo target constant suggestion errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3108,6 +3167,7 @@ pub mod geo_target_constant_suggestion_error_enum {
 /// Container for enum describing possible header errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HeaderErrorEnum {}
+/// Nested message and enum types in `HeaderErrorEnum`.
 pub mod header_error_enum {
     /// Enum describing possible header errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3128,6 +3188,7 @@ pub mod header_error_enum {
 /// Container for enum describing possible id errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IdErrorEnum {}
+/// Nested message and enum types in `IdErrorEnum`.
 pub mod id_error_enum {
     /// Enum describing possible id errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3146,6 +3207,7 @@ pub mod id_error_enum {
 /// Container for enum describing possible image errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageErrorEnum {}
+/// Nested message and enum types in `ImageErrorEnum`.
 pub mod image_error_enum {
     /// Enum describing possible image errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3241,6 +3303,7 @@ pub mod image_error_enum {
 /// Container for enum describing possible internal errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InternalErrorEnum {}
+/// Nested message and enum types in `InternalErrorEnum`.
 pub mod internal_error_enum {
     /// Enum describing possible internal errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3267,6 +3330,7 @@ pub mod internal_error_enum {
 /// Container for enum describing possible invoice errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvoiceErrorEnum {}
+/// Nested message and enum types in `InvoiceErrorEnum`.
 pub mod invoice_error_enum {
     /// Enum describing possible invoice errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3288,6 +3352,7 @@ pub mod invoice_error_enum {
 /// ad group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAdGroupErrorEnum {}
+/// Nested message and enum types in `KeywordPlanAdGroupErrorEnum`.
 pub mod keyword_plan_ad_group_error_enum {
     /// Enum describing possible errors from applying a keyword plan ad group.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3312,6 +3377,7 @@ pub mod keyword_plan_ad_group_error_enum {
 /// keyword or a campaign keyword from a keyword plan.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAdGroupKeywordErrorEnum {}
+/// Nested message and enum types in `KeywordPlanAdGroupKeywordErrorEnum`.
 pub mod keyword_plan_ad_group_keyword_error_enum {
     /// Enum describing possible errors from applying a keyword plan ad group
     /// keyword or keyword plan campaign keyword.
@@ -3345,6 +3411,7 @@ pub mod keyword_plan_ad_group_keyword_error_enum {
 /// campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanCampaignErrorEnum {}
+/// Nested message and enum types in `KeywordPlanCampaignErrorEnum`.
 pub mod keyword_plan_campaign_error_enum {
     /// Enum describing possible errors from applying a keyword plan campaign.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3376,6 +3443,7 @@ pub mod keyword_plan_campaign_error_enum {
 /// campaign keyword.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanCampaignKeywordErrorEnum {}
+/// Nested message and enum types in `KeywordPlanCampaignKeywordErrorEnum`.
 pub mod keyword_plan_campaign_keyword_error_enum {
     /// Enum describing possible errors from applying a keyword plan campaign
     /// keyword.
@@ -3399,6 +3467,7 @@ pub mod keyword_plan_campaign_keyword_error_enum {
 /// keyword plan keyword) or KeywordPlanService RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanErrorEnum {}
+/// Nested message and enum types in `KeywordPlanErrorEnum`.
 pub mod keyword_plan_error_enum {
     /// Enum describing possible errors from applying a keyword plan.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3444,6 +3513,7 @@ pub mod keyword_plan_error_enum {
 /// Container for enum describing possible errors from KeywordPlanIdeaService.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanIdeaErrorEnum {}
+/// Nested message and enum types in `KeywordPlanIdeaErrorEnum`.
 pub mod keyword_plan_idea_error_enum {
     /// Enum describing possible errors from KeywordPlanIdeaService.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3464,6 +3534,7 @@ pub mod keyword_plan_idea_error_enum {
 /// Container for enum describing possible label errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelErrorEnum {}
+/// Nested message and enum types in `LabelErrorEnum`.
 pub mod label_error_enum {
     /// Enum describing possible label errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3500,6 +3571,7 @@ pub mod label_error_enum {
 /// Container for enum describing language code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LanguageCodeErrorEnum {}
+/// Nested message and enum types in `LanguageCodeErrorEnum`.
 pub mod language_code_error_enum {
     /// Enum describing language code errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3520,6 +3592,7 @@ pub mod language_code_error_enum {
 /// Container for enum describing possible list operation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationErrorEnum {}
+/// Nested message and enum types in `ListOperationErrorEnum`.
 pub mod list_operation_error_enum {
     /// Enum describing possible list operation errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3540,6 +3613,7 @@ pub mod list_operation_error_enum {
 /// Container for enum describing possible ManagerLink errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagerLinkErrorEnum {}
+/// Nested message and enum types in `ManagerLinkErrorEnum`.
 pub mod manager_link_error_enum {
     /// Enum describing possible ManagerLink errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3592,6 +3666,7 @@ pub mod manager_link_error_enum {
 /// Container for enum describing possible media bundle errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaBundleErrorEnum {}
+/// Nested message and enum types in `MediaBundleErrorEnum`.
 pub mod media_bundle_error_enum {
     /// Enum describing possible media bundle errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3652,6 +3727,7 @@ pub mod media_bundle_error_enum {
 /// Container for enum describing possible media file errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaFileErrorEnum {}
+/// Nested message and enum types in `MediaFileErrorEnum`.
 pub mod media_file_error_enum {
     /// Enum describing possible media file errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3714,6 +3790,7 @@ pub mod media_file_error_enum {
 /// Container for enum describing possible media uploading errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaUploadErrorEnum {}
+/// Nested message and enum types in `MediaUploadErrorEnum`.
 pub mod media_upload_error_enum {
     /// Enum describing possible media uploading errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3744,6 +3821,7 @@ pub mod media_upload_error_enum {
 /// Container for enum describing possible multiplier errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MultiplierErrorEnum {}
+/// Nested message and enum types in `MultiplierErrorEnum`.
 pub mod multiplier_error_enum {
     /// Enum describing possible multiplier errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3785,6 +3863,7 @@ pub mod multiplier_error_enum {
 /// Container for enum describing possible mutate errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateErrorEnum {}
+/// Nested message and enum types in `MutateErrorEnum`.
 pub mod mutate_error_enum {
     /// Enum describing possible mutate errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3818,6 +3897,7 @@ pub mod mutate_error_enum {
 /// Container for enum describing possible new resource creation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NewResourceCreationErrorEnum {}
+/// Nested message and enum types in `NewResourceCreationErrorEnum`.
 pub mod new_resource_creation_error_enum {
     /// Enum describing possible new resource creation errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3841,6 +3921,7 @@ pub mod new_resource_creation_error_enum {
 /// Container for enum describing possible not empty errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotEmptyErrorEnum {}
+/// Nested message and enum types in `NotEmptyErrorEnum`.
 pub mod not_empty_error_enum {
     /// Enum describing possible not empty errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3859,6 +3940,7 @@ pub mod not_empty_error_enum {
 /// Container for enum describing possible not whitelisted errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotWhitelistedErrorEnum {}
+/// Nested message and enum types in `NotWhitelistedErrorEnum`.
 pub mod not_whitelisted_error_enum {
     /// Enum describing possible not whitelisted errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3877,6 +3959,7 @@ pub mod not_whitelisted_error_enum {
 /// Container for enum describing possible null errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NullErrorEnum {}
+/// Nested message and enum types in `NullErrorEnum`.
 pub mod null_error_enum {
     /// Enum describing possible null errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3895,6 +3978,7 @@ pub mod null_error_enum {
 /// Container for enum describing possible offline user data job errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobErrorEnum {}
+/// Nested message and enum types in `OfflineUserDataJobErrorEnum`.
 pub mod offline_user_data_job_error_enum {
     /// Enum describing possible request errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3917,7 +4001,7 @@ pub mod offline_user_data_job_error_enum {
         MissingUserIdentifier = 7,
         /// The mobile ID is malformed.
         InvalidMobileIdFormat = 8,
-        /// Request is exceeding the maximum number of user identifiers allowed.
+        /// Maximum number of user identifiers allowed per request is 100,000.
         TooManyUserIdentifiers = 9,
         /// Customer is not on the allow-list for store sales direct data.
         NotWhitelistedForStoreSalesDirect = 10,
@@ -3974,6 +4058,7 @@ pub mod offline_user_data_job_error_enum {
 /// Container for enum describing possible operation access denied errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationAccessDeniedErrorEnum {}
+/// Nested message and enum types in `OperationAccessDeniedErrorEnum`.
 pub mod operation_access_denied_error_enum {
     /// Enum describing possible operation access denied errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4010,6 +4095,7 @@ pub mod operation_access_denied_error_enum {
 /// Container for enum describing possible operator errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperatorErrorEnum {}
+/// Nested message and enum types in `OperatorErrorEnum`.
 pub mod operator_error_enum {
     /// Enum describing possible operator errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4028,6 +4114,7 @@ pub mod operator_error_enum {
 /// Container for enum describing possible partial failure errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialFailureErrorEnum {}
+/// Nested message and enum types in `PartialFailureErrorEnum`.
 pub mod partial_failure_error_enum {
     /// Enum describing possible partial failure errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4047,6 +4134,7 @@ pub mod partial_failure_error_enum {
 /// Container for enum describing possible errors in payments account service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaymentsAccountErrorEnum {}
+/// Nested message and enum types in `PaymentsAccountErrorEnum`.
 pub mod payments_account_error_enum {
     /// Enum describing possible errors in payments account service.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4065,6 +4153,7 @@ pub mod payments_account_error_enum {
 /// Container for enum describing possible policy finding errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyFindingErrorEnum {}
+/// Nested message and enum types in `PolicyFindingErrorEnum`.
 pub mod policy_finding_error_enum {
     /// Enum describing possible policy finding errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4086,6 +4175,7 @@ pub mod policy_finding_error_enum {
 /// Container for enum describing possible policy validation parameter errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyValidationParameterErrorEnum {}
+/// Nested message and enum types in `PolicyValidationParameterErrorEnum`.
 pub mod policy_validation_parameter_error_enum {
     /// Enum describing possible policy validation parameter errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4109,6 +4199,7 @@ pub mod policy_validation_parameter_error_enum {
 /// Container for enum describing possible policy violation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyViolationErrorEnum {}
+/// Nested message and enum types in `PolicyViolationErrorEnum`.
 pub mod policy_violation_error_enum {
     /// Enum describing possible policy violation errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4127,6 +4218,7 @@ pub mod policy_violation_error_enum {
 /// Container for enum describing possible query errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryErrorEnum {}
+/// Nested message and enum types in `QueryErrorEnum`.
 pub mod query_error_enum {
     /// Enum describing possible query errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4264,6 +4356,7 @@ pub mod query_error_enum {
 /// Container for enum describing possible quota errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaErrorEnum {}
+/// Nested message and enum types in `QuotaErrorEnum`.
 pub mod quota_error_enum {
     /// Enum describing possible quota errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4286,6 +4379,7 @@ pub mod quota_error_enum {
 /// Container for enum describing possible range errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RangeErrorEnum {}
+/// Nested message and enum types in `RangeErrorEnum`.
 pub mod range_error_enum {
     /// Enum describing possible range errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4307,6 +4401,7 @@ pub mod range_error_enum {
 /// the ReachPlanService.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachPlanErrorEnum {}
+/// Nested message and enum types in `ReachPlanErrorEnum`.
 pub mod reach_plan_error_enum {
     /// Enum describing possible errors from ReachPlanService.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4323,6 +4418,7 @@ pub mod reach_plan_error_enum {
 /// Container for enum describing possible errors from applying a recommendation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendationErrorEnum {}
+/// Nested message and enum types in `RecommendationErrorEnum`.
 pub mod recommendation_error_enum {
     /// Enum describing possible errors from applying a recommendation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4371,6 +4467,7 @@ pub mod recommendation_error_enum {
 /// Container for enum describing possible region code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionCodeErrorEnum {}
+/// Nested message and enum types in `RegionCodeErrorEnum`.
 pub mod region_code_error_enum {
     /// Enum describing possible region code errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4389,6 +4486,7 @@ pub mod region_code_error_enum {
 /// Container for enum describing possible request errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestErrorEnum {}
+/// Nested message and enum types in `RequestErrorEnum`.
 pub mod request_error_enum {
     /// Enum describing possible request errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4455,6 +4553,7 @@ pub mod request_error_enum {
 /// Container for enum describing possible resource access denied errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceAccessDeniedErrorEnum {}
+/// Nested message and enum types in `ResourceAccessDeniedErrorEnum`.
 pub mod resource_access_denied_error_enum {
     /// Enum describing possible resource access denied errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4473,6 +4572,7 @@ pub mod resource_access_denied_error_enum {
 /// Container for enum describing possible resource count limit exceeded errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceCountLimitExceededErrorEnum {}
+/// Nested message and enum types in `ResourceCountLimitExceededErrorEnum`.
 pub mod resource_count_limit_exceeded_error_enum {
     /// Enum describing possible resource count limit exceeded errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4529,6 +4629,7 @@ pub mod resource_count_limit_exceeded_error_enum {
 /// Container for enum describing possible setting errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettingErrorEnum {}
+/// Nested message and enum types in `SettingErrorEnum`.
 pub mod setting_error_enum {
     /// Enum describing possible setting errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4575,6 +4676,7 @@ pub mod setting_error_enum {
 /// Container for enum describing possible shared criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SharedCriterionErrorEnum {}
+/// Nested message and enum types in `SharedCriterionErrorEnum`.
 pub mod shared_criterion_error_enum {
     /// Enum describing possible shared criterion errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4593,6 +4695,7 @@ pub mod shared_criterion_error_enum {
 /// Container for enum describing possible shared set errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SharedSetErrorEnum {}
+/// Nested message and enum types in `SharedSetErrorEnum`.
 pub mod shared_set_error_enum {
     /// Enum describing possible shared set errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4617,6 +4720,7 @@ pub mod shared_set_error_enum {
 /// Container for enum describing possible size limit errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SizeLimitErrorEnum {}
+/// Nested message and enum types in `SizeLimitErrorEnum`.
 pub mod size_limit_error_enum {
     /// Enum describing possible size limit errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4637,6 +4741,7 @@ pub mod size_limit_error_enum {
 /// Container for enum describing possible string format errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringFormatErrorEnum {}
+/// Nested message and enum types in `StringFormatErrorEnum`.
 pub mod string_format_error_enum {
     /// Enum describing possible string format errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4657,6 +4762,7 @@ pub mod string_format_error_enum {
 /// Container for enum describing possible string length errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringLengthErrorEnum {}
+/// Nested message and enum types in `StringLengthErrorEnum`.
 pub mod string_length_error_enum {
     /// Enum describing possible string length errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4680,6 +4786,7 @@ pub mod string_length_error_enum {
 /// Container for enum describing possible time zone errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeZoneErrorEnum {}
+/// Nested message and enum types in `TimeZoneErrorEnum`.
 pub mod time_zone_error_enum {
     /// Enum describing possible currency code errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4698,6 +4805,7 @@ pub mod time_zone_error_enum {
 /// Container for enum describing possible url field errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlFieldErrorEnum {}
+/// Nested message and enum types in `UrlFieldErrorEnum`.
 pub mod url_field_error_enum {
     /// Enum describing possible url field errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4833,6 +4941,7 @@ pub mod url_field_error_enum {
 /// Container for enum describing possible user data errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserDataErrorEnum {}
+/// Nested message and enum types in `UserDataErrorEnum`.
 pub mod user_data_error_enum {
     /// Enum describing possible request errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4855,6 +4964,7 @@ pub mod user_data_error_enum {
 /// Container for enum describing possible user list errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListErrorEnum {}
+/// Nested message and enum types in `UserListErrorEnum`.
 pub mod user_list_error_enum {
     /// Enum describing possible user list errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4930,6 +5040,7 @@ pub mod user_list_error_enum {
 /// Container for enum describing YouTube video registration errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YoutubeVideoRegistrationErrorEnum {}
+/// Nested message and enum types in `YoutubeVideoRegistrationErrorEnum`.
 pub mod youtube_video_registration_error_enum {
     /// Enum describing YouTube video registration errors.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4955,27 +5066,27 @@ pub mod youtube_video_registration_error_enum {
 pub struct GoogleAdsFailure {
     /// The list of errors that occurred.
     #[prost(message, repeated, tag = "1")]
-    pub errors: ::std::vec::Vec<GoogleAdsError>,
+    pub errors: ::prost::alloc::vec::Vec<GoogleAdsError>,
 }
 /// GoogleAds-specific error.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsError {
     /// An enum value that indicates which error occurred.
     #[prost(message, optional, tag = "1")]
-    pub error_code: ::std::option::Option<ErrorCode>,
+    pub error_code: ::core::option::Option<ErrorCode>,
     /// A human-readable description of the error.
     #[prost(string, tag = "2")]
-    pub message: std::string::String,
+    pub message: ::prost::alloc::string::String,
     /// The value that triggered the error.
     #[prost(message, optional, tag = "3")]
-    pub trigger: ::std::option::Option<super::common::Value>,
+    pub trigger: ::core::option::Option<super::common::Value>,
     /// Describes the part of the request proto that caused the error.
     #[prost(message, optional, tag = "4")]
-    pub location: ::std::option::Option<ErrorLocation>,
+    pub location: ::core::option::Option<ErrorLocation>,
     /// Additional error details, which are returned by certain error codes. Most
     /// error codes do not include details.
     #[prost(message, optional, tag = "5")]
-    pub details: ::std::option::Option<ErrorDetails>,
+    pub details: ::core::option::Option<ErrorDetails>,
 }
 /// The error reason represented by type and enum.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4985,8 +5096,9 @@ pub struct ErrorCode {
         oneof = "error_code::ErrorCode",
         tags = "1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 21, 24, 25, 107, 26, 29, 31, 109, 32, 90, 33, 34, 35, 36, 37, 38, 39, 40, 110, 42, 116, 86, 44, 45, 46, 47, 48, 49, 58, 51, 52, 53, 54, 55, 56, 57, 117, 59, 60, 61, 62, 63, 64, 65, 115, 111, 66, 67, 68, 70, 71, 72, 132, 74, 133, 76, 77, 78, 79, 80, 81, 82, 83, 84, 87, 88, 91, 92, 93, 94, 96, 97, 98, 100, 101, 102, 103, 104, 105, 112, 114, 118, 119, 120, 121, 122, 124, 125, 126, 127, 128, 129, 130, 131"
     )]
-    pub error_code: ::std::option::Option<error_code::ErrorCode>,
+    pub error_code: ::core::option::Option<error_code::ErrorCode>,
 }
+/// Nested message and enum types in `ErrorCode`.
 pub mod error_code {
     /// The list of error enums
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5565,18 +5677,19 @@ pub mod error_code {
 pub struct ErrorLocation {
     /// A field path that indicates which field was invalid in the request.
     #[prost(message, repeated, tag = "2")]
-    pub field_path_elements: ::std::vec::Vec<error_location::FieldPathElement>,
+    pub field_path_elements: ::prost::alloc::vec::Vec<error_location::FieldPathElement>,
 }
+/// Nested message and enum types in `ErrorLocation`.
 pub mod error_location {
     /// A part of a field path.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FieldPathElement {
         /// The name of a field or a oneof
         #[prost(string, tag = "1")]
-        pub field_name: std::string::String,
+        pub field_name: ::prost::alloc::string::String,
         /// If field_name is a repeated field, this is the element that failed
         #[prost(message, optional, tag = "2")]
-        pub index: ::std::option::Option<i64>,
+        pub index: ::core::option::Option<i64>,
     }
 }
 /// Additional error details.
@@ -5585,13 +5698,13 @@ pub struct ErrorDetails {
     /// The error code that should have been returned, but wasn't. This is used
     /// when the error code is not published in the client specified version.
     #[prost(string, tag = "1")]
-    pub unpublished_error_code: std::string::String,
+    pub unpublished_error_code: ::prost::alloc::string::String,
     /// Describes an ad policy violation.
     #[prost(message, optional, tag = "2")]
-    pub policy_violation_details: ::std::option::Option<PolicyViolationDetails>,
+    pub policy_violation_details: ::core::option::Option<PolicyViolationDetails>,
     /// Describes policy violation findings.
     #[prost(message, optional, tag = "3")]
-    pub policy_finding_details: ::std::option::Option<PolicyFindingDetails>,
+    pub policy_finding_details: ::core::option::Option<PolicyFindingDetails>,
 }
 /// Error returned as part of a mutate response.
 /// This error indicates single policy violation by some text
@@ -5600,14 +5713,14 @@ pub struct ErrorDetails {
 pub struct PolicyViolationDetails {
     /// Human readable description of policy violation.
     #[prost(string, tag = "2")]
-    pub external_policy_description: std::string::String,
+    pub external_policy_description: ::prost::alloc::string::String,
     /// Unique identifier for this violation.
     /// If policy is exemptible, this key may be used to request exemption.
     #[prost(message, optional, tag = "4")]
-    pub key: ::std::option::Option<super::common::PolicyViolationKey>,
+    pub key: ::core::option::Option<super::common::PolicyViolationKey>,
     /// Human readable name of the policy.
     #[prost(string, tag = "5")]
-    pub external_policy_name: std::string::String,
+    pub external_policy_name: ::prost::alloc::string::String,
     /// Whether user can file an exemption request for this violation.
     #[prost(bool, tag = "6")]
     pub is_exemptible: bool,
@@ -5621,5 +5734,5 @@ pub struct PolicyFindingDetails {
     /// FULLY_LIMITED policy topic entries that prevented the resource from being
     /// saved (among any other entries the resource may also have).
     #[prost(message, repeated, tag = "1")]
-    pub policy_topic_entries: ::std::vec::Vec<super::common::PolicyTopicEntry>,
+    pub policy_topic_entries: ::prost::alloc::vec::Vec<super::common::PolicyTopicEntry>,
 }

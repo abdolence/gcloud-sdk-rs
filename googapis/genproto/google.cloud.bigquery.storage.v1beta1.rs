@@ -2,15 +2,15 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowSchema {
     /// IPC serialized Arrow schema.
-    #[prost(bytes, tag = "1")]
-    pub serialized_schema: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub serialized_schema: ::prost::alloc::vec::Vec<u8>,
 }
 /// Arrow RecordBatch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowRecordBatch {
     /// IPC serialized Arrow RecordBatch.
-    #[prost(bytes, tag = "1")]
-    pub serialized_record_batch: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub serialized_record_batch: ::prost::alloc::vec::Vec<u8>,
     /// The count of rows in the returning block.
     #[prost(int64, tag = "2")]
     pub row_count: i64,
@@ -21,14 +21,14 @@ pub struct AvroSchema {
     /// Json serialized schema, as described at
     /// https://avro.apache.org/docs/1.8.1/spec.html
     #[prost(string, tag = "1")]
-    pub schema: std::string::String,
+    pub schema: ::prost::alloc::string::String,
 }
 /// Avro rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroRows {
     /// Binary serialized rows in a block.
-    #[prost(bytes, tag = "1")]
-    pub serialized_binary_rows: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub serialized_binary_rows: ::prost::alloc::vec::Vec<u8>,
     /// The count of rows in the returning block.
     #[prost(int64, tag = "2")]
     pub row_count: i64,
@@ -41,7 +41,7 @@ pub struct TableReadOptions {
     /// sub-fields in the field will be selected. The output field order is
     /// unrelated to the order of fields in selected_fields.
     #[prost(string, repeated, tag = "1")]
-    pub selected_fields: ::std::vec::Vec<std::string::String>,
+    pub selected_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. SQL text filtering statement, similar to a WHERE clause in
     /// a query. Aggregates are not supported.
     ///
@@ -51,27 +51,27 @@ pub struct TableReadOptions {
     ///           "st_equals(geo_field, st_geofromtext("POINT(2, 2)"))"
     ///           "numeric_field BETWEEN 1.0 AND 5.0"
     #[prost(string, tag = "2")]
-    pub row_restriction: std::string::String,
+    pub row_restriction: ::prost::alloc::string::String,
 }
 /// Table reference that includes just the 3 strings needed to identify a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReference {
     /// The assigned project ID of the project.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// The ID of the dataset in the above project.
     #[prost(string, tag = "2")]
-    pub dataset_id: std::string::String,
+    pub dataset_id: ::prost::alloc::string::String,
     /// The ID of the table in the above dataset.
     #[prost(string, tag = "3")]
-    pub table_id: std::string::String,
+    pub table_id: ::prost::alloc::string::String,
 }
 /// All fields in this message optional.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableModifiers {
     /// The snapshot time of the table. If not set, interpreted as now.
     #[prost(message, optional, tag = "1")]
-    pub snapshot_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Information about a single data stream within a read session.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -79,14 +79,14 @@ pub struct Stream {
     /// Name of the stream, in the form
     /// `projects/{project_id}/locations/{location}/streams/{stream_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Expresses a point within a given stream using an offset position.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamPosition {
     /// Identifier for a given Stream.
     #[prost(message, optional, tag = "1")]
-    pub stream: ::std::option::Option<Stream>,
+    pub stream: ::core::option::Option<Stream>,
     /// Position in the stream.
     #[prost(int64, tag = "2")]
     pub offset: i64,
@@ -97,20 +97,20 @@ pub struct ReadSession {
     /// Unique identifier for the session, in the form
     /// `projects/{project_id}/locations/{location}/sessions/{session_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Time at which the session becomes invalid. After this time, subsequent
     /// requests to read this Session will return errors.
     #[prost(message, optional, tag = "2")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Streams associated with this session.
     #[prost(message, repeated, tag = "4")]
-    pub streams: ::std::vec::Vec<Stream>,
+    pub streams: ::prost::alloc::vec::Vec<Stream>,
     /// Table that this ReadSession is reading from.
     #[prost(message, optional, tag = "7")]
-    pub table_reference: ::std::option::Option<TableReference>,
+    pub table_reference: ::core::option::Option<TableReference>,
     /// Any modifiers which are applied when reading from the specified table.
     #[prost(message, optional, tag = "8")]
-    pub table_modifiers: ::std::option::Option<TableModifiers>,
+    pub table_modifiers: ::core::option::Option<TableModifiers>,
     /// The strategy to use for distributing data among the streams.
     #[prost(enumeration = "ShardingStrategy", tag = "9")]
     pub sharding_strategy: i32,
@@ -118,8 +118,9 @@ pub struct ReadSession {
     /// schema may be different from the table schema as it will only contain
     /// the selected fields.
     #[prost(oneof = "read_session::Schema", tags = "5, 6")]
-    pub schema: ::std::option::Option<read_session::Schema>,
+    pub schema: ::core::option::Option<read_session::Schema>,
 }
+/// Nested message and enum types in `ReadSession`.
 pub mod read_session {
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
@@ -140,15 +141,15 @@ pub mod read_session {
 pub struct CreateReadSessionRequest {
     /// Required. Reference to the table to read.
     #[prost(message, optional, tag = "1")]
-    pub table_reference: ::std::option::Option<TableReference>,
+    pub table_reference: ::core::option::Option<TableReference>,
     /// Required. String of the form `projects/{project_id}` indicating the
     /// project this ReadSession is associated with. This is the project that will
     /// be billed for usage.
     #[prost(string, tag = "6")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Any modifiers to the Table (e.g. snapshot timestamp).
     #[prost(message, optional, tag = "2")]
-    pub table_modifiers: ::std::option::Option<TableModifiers>,
+    pub table_modifiers: ::core::option::Option<TableModifiers>,
     /// Initial number of streams. If unset or 0, we will
     /// provide a value of streams so as to produce reasonable throughput. Must be
     /// non-negative. The number of streams may be lower than the requested number,
@@ -160,7 +161,7 @@ pub struct CreateReadSessionRequest {
     pub requested_streams: i32,
     /// Read options for this session (e.g. column selection, filters).
     #[prost(message, optional, tag = "4")]
-    pub read_options: ::std::option::Option<TableReadOptions>,
+    pub read_options: ::core::option::Option<TableReadOptions>,
     /// Data output format. Currently default to Avro.
     #[prost(enumeration = "DataFormat", tag = "5")]
     pub format: i32,
@@ -176,7 +177,7 @@ pub struct ReadRowsRequest {
     /// The offset requested must be less than the last row read from ReadRows.
     /// Requesting a larger offset is undefined.
     #[prost(message, optional, tag = "1")]
-    pub read_position: ::std::option::Option<StreamPosition>,
+    pub read_position: ::core::option::Option<StreamPosition>,
 }
 /// Progress information for a given Stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -197,7 +198,7 @@ pub struct StreamStatus {
     pub fraction_consumed: f32,
     /// Represents the progress of the current stream.
     #[prost(message, optional, tag = "4")]
-    pub progress: ::std::option::Option<Progress>,
+    pub progress: ::core::option::Option<Progress>,
     /// Whether this stream can be split. For sessions that use the LIQUID sharding
     /// strategy, this value is always false. For BALANCED sessions, this value is
     /// false when enough data have been read such that no more splits are possible
@@ -246,15 +247,16 @@ pub struct ReadRowsResponse {
     pub row_count: i64,
     /// Estimated stream statistics.
     #[prost(message, optional, tag = "2")]
-    pub status: ::std::option::Option<StreamStatus>,
+    pub status: ::core::option::Option<StreamStatus>,
     /// Throttling status. If unset, the latest response still describes
     /// the current throttling status.
     #[prost(message, optional, tag = "5")]
-    pub throttle_status: ::std::option::Option<ThrottleStatus>,
+    pub throttle_status: ::core::option::Option<ThrottleStatus>,
     /// Row data is returned in format specified during session creation.
     #[prost(oneof = "read_rows_response::Rows", tags = "3, 4")]
-    pub rows: ::std::option::Option<read_rows_response::Rows>,
+    pub rows: ::core::option::Option<read_rows_response::Rows>,
 }
+/// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
     /// Row data is returned in format specified during session creation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -274,7 +276,7 @@ pub struct BatchCreateReadSessionStreamsRequest {
     /// Required. Must be a non-expired session obtained from a call to
     /// CreateReadSession. Only the name field needs to be set.
     #[prost(message, optional, tag = "1")]
-    pub session: ::std::option::Option<ReadSession>,
+    pub session: ::core::option::Option<ReadSession>,
     /// Required. Number of new streams requested. Must be positive.
     /// Number of added streams may be less than this, see CreateReadSessionRequest
     /// for more information.
@@ -287,21 +289,21 @@ pub struct BatchCreateReadSessionStreamsRequest {
 pub struct BatchCreateReadSessionStreamsResponse {
     /// Newly added streams.
     #[prost(message, repeated, tag = "1")]
-    pub streams: ::std::vec::Vec<Stream>,
+    pub streams: ::prost::alloc::vec::Vec<Stream>,
 }
 /// Request information for invoking `FinalizeStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeStreamRequest {
     /// Required. Stream to finalize.
     #[prost(message, optional, tag = "2")]
-    pub stream: ::std::option::Option<Stream>,
+    pub stream: ::core::option::Option<Stream>,
 }
 /// Request information for `SplitReadStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamRequest {
     /// Required. Stream to split.
     #[prost(message, optional, tag = "1")]
-    pub original_stream: ::std::option::Option<Stream>,
+    pub original_stream: ::core::option::Option<Stream>,
     /// A value in the range (0.0, 1.0) that specifies the fractional point at
     /// which the original stream should be split. The actual split point is
     /// evaluated on pre-filtered rows, so if a filter is provided, then there is
@@ -319,11 +321,11 @@ pub struct SplitReadStreamResponse {
     /// |original_stream|. An empty value indicates that the original stream can no
     /// longer be split.
     #[prost(message, optional, tag = "1")]
-    pub primary_stream: ::std::option::Option<Stream>,
+    pub primary_stream: ::core::option::Option<Stream>,
     /// Remainder stream, which contains the tail of |original_stream|. An empty
     /// value indicates that the original stream can no longer be split.
     #[prost(message, optional, tag = "2")]
-    pub remainder_stream: ::std::option::Option<Stream>,
+    pub remainder_stream: ::core::option::Option<Stream>,
 }
 /// Data format for input or output data.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -451,7 +453,7 @@ pub mod big_query_storage_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/BatchCreateReadSessionStreams" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/BatchCreateReadSessionStreams") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Triggers the graceful termination of a single stream in a ReadSession. This"]

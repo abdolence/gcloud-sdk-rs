@@ -5,19 +5,19 @@ pub struct Device {
     /// Required. The resource name of the device. For example:
     /// "enterprises/XYZ/devices/123".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Type of the device for general display purposes.
     /// For example: "THERMOSTAT". The device type should not be used to deduce or
     /// infer functionality of the actual device it is assigned to. Instead, use
     /// the returned traits for the device.
     #[prost(string, tag = "2")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// Output only. Device traits.
     #[prost(message, optional, tag = "4")]
-    pub traits: ::std::option::Option<::prost_types::Struct>,
+    pub traits: ::core::option::Option<::prost_types::Struct>,
     /// Assignee details of the device.
     #[prost(message, repeated, tag = "5")]
-    pub parent_relations: ::std::vec::Vec<ParentRelation>,
+    pub parent_relations: ::prost::alloc::vec::Vec<ParentRelation>,
 }
 /// Represents device relationships, for instance, structure/room to which the
 /// device is assigned to. For now this is only filled in the enterprise flow.
@@ -27,11 +27,11 @@ pub struct ParentRelation {
     /// device is assigned to. For example: "enterprises/XYZ/structures/ABC" or
     /// "enterprises/XYZ/structures/ABC/rooms/123"
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Output only. The custom name of the relation -- e.g., structure/room where
     /// the device is assigned to.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
 }
 /// Structure resource represents an instance of enterprise managed home or hotel
 /// room.
@@ -40,10 +40,10 @@ pub struct Structure {
     /// Output only. The resource name of the structure. For example:
     /// "enterprises/XYZ/structures/ABC".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Structure traits.
     #[prost(message, optional, tag = "2")]
-    pub traits: ::std::option::Option<::prost_types::Struct>,
+    pub traits: ::core::option::Option<::prost_types::Struct>,
 }
 /// Room resource represents an instance of sub-space within a structure such as
 /// rooms in a hotel suite or rental apartment.
@@ -52,10 +52,10 @@ pub struct Room {
     /// Output only. The resource name of the room. For example:
     /// "enterprises/XYZ/structures/ABC/rooms/123".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Room traits.
     #[prost(message, optional, tag = "2")]
-    pub traits: ::std::option::Option<::prost_types::Struct>,
+    pub traits: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request message for SmartDeviceManagementService.GetDevice
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -63,21 +63,21 @@ pub struct GetDeviceRequest {
     /// The name of the device requested. For example:
     /// "enterprises/XYZ/devices/123"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ListDevices
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDevicesRequest {
     /// The parent enterprise to list devices under. E.g. "enterprises/XYZ".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional requested page size. Server may return fewer devices than
     /// requested. If unspecified, server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional token of the page to retrieve.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional filter to list devices.
     ///
     /// Filters can match the exact parent (could be a structure or a room):
@@ -85,17 +85,17 @@ pub struct ListDevicesRequest {
     /// or filter by device custom name (substring match):
     /// 'customName=wing'
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for SmartDeviceManagementService.ListDevices
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDevicesResponse {
     /// The list of devices.
     #[prost(message, repeated, tag = "1")]
-    pub devices: ::std::vec::Vec<Device>,
+    pub devices: ::prost::alloc::vec::Vec<Device>,
     /// The pagination token to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ExecuteDeviceCommand
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -103,21 +103,21 @@ pub struct ExecuteDeviceCommandRequest {
     /// The name of the device requested. For example:
     /// "enterprises/XYZ/devices/123"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The command name to execute, represented by the fully qualified protobuf
     /// message name.
     #[prost(string, tag = "2")]
-    pub command: std::string::String,
+    pub command: ::prost::alloc::string::String,
     /// The command message to execute, represented as a Struct.
     #[prost(message, optional, tag = "3")]
-    pub params: ::std::option::Option<::prost_types::Struct>,
+    pub params: ::core::option::Option<::prost_types::Struct>,
 }
 /// Response message for SmartDeviceManagementService.ExecuteDeviceCommand
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteDeviceCommandResponse {
     /// The results of executing the command.
     #[prost(message, optional, tag = "1")]
-    pub results: ::std::option::Option<::prost_types::Struct>,
+    pub results: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request message for SmartDeviceManagementService.GetStructure
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -125,35 +125,35 @@ pub struct GetStructureRequest {
     /// The name of the structure requested. For example:
     /// "enterprises/XYZ/structures/ABC".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ListStructures
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStructuresRequest {
     /// The parent enterprise to list structures under. E.g. "enterprises/XYZ".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer structures than requested.
     /// If unspecified, server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The token of the page to retrieve.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional filter to list structures.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for SmartDeviceManagementService.ListStructures
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStructuresResponse {
     /// The list of structures.
     #[prost(message, repeated, tag = "1")]
-    pub structures: ::std::vec::Vec<Structure>,
+    pub structures: ::prost::alloc::vec::Vec<Structure>,
     /// The pagination token to retrieve the next page of results.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.GetRoom
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -161,7 +161,7 @@ pub struct GetRoomRequest {
     /// The name of the room requested. For example:
     /// "enterprises/XYZ/structures/ABC/rooms/123".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ListRooms
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -169,25 +169,25 @@ pub struct ListRoomsRequest {
     /// The parent resource name of the rooms requested. For example:
     /// "enterprises/XYZ/structures/ABC".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer rooms than requested.
     /// If unspecified, server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The token of the page to retrieve.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for SmartDeviceManagementService.ListRooms
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoomsResponse {
     /// The list of rooms.
     #[prost(message, repeated, tag = "1")]
-    pub rooms: ::std::vec::Vec<Room>,
+    pub rooms: ::prost::alloc::vec::Vec<Room>,
     /// The pagination token to retrieve the next page of results.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod smart_device_management_service_client {

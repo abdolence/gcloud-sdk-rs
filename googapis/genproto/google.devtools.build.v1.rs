@@ -7,15 +7,16 @@ pub struct BuildStatus {
     /// Final invocation ID of the build, if there was one.
     /// This field is only set on a status in BuildFinished event.
     #[prost(string, tag = "3")]
-    pub final_invocation_id: std::string::String,
+    pub final_invocation_id: ::prost::alloc::string::String,
     /// Build tool exit code. Integer value returned by the executed build tool.
     /// Might not be available in some cases, e.g., a build timeout.
     #[prost(message, optional, tag = "4")]
-    pub build_tool_exit_code: ::std::option::Option<i32>,
+    pub build_tool_exit_code: ::core::option::Option<i32>,
     /// Fine-grained diagnostic information to complement the status.
     #[prost(message, optional, tag = "2")]
-    pub details: ::std::option::Option<::prost_types::Any>,
+    pub details: ::core::option::Option<::prost_types::Any>,
 }
+/// Nested message and enum types in `BuildStatus`.
 pub mod build_status {
     /// The end result of the Build.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -47,7 +48,7 @@ pub mod build_status {
 pub struct BuildEvent {
     /// The timestamp of this event.
     #[prost(message, optional, tag = "1")]
-    pub event_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// //////////////////////////////////////////////////////////////////////////
     /// Events that indicate a state change of a build request in the build
     /// queue.
@@ -55,8 +56,9 @@ pub struct BuildEvent {
         oneof = "build_event::Event",
         tags = "51, 52, 53, 55, 56, 59, 60, 61, 62"
     )]
-    pub event: ::std::option::Option<build_event::Event>,
+    pub event: ::core::option::Option<build_event::Event>,
 }
+/// Nested message and enum types in `BuildEvent`.
 pub mod build_event {
     /// Notification that the build system has attempted to run the build tool.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -68,24 +70,24 @@ pub mod build_event {
         pub attempt_number: i64,
         /// Arbitrary details about the invocation attempt.
         #[prost(message, optional, tag = "2")]
-        pub details: ::std::option::Option<::prost_types::Any>,
+        pub details: ::core::option::Option<::prost_types::Any>,
     }
     /// Notification that an invocation attempt has finished.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvocationAttemptFinished {
         /// Final status of the invocation.
         #[prost(message, optional, tag = "3")]
-        pub invocation_status: ::std::option::Option<super::BuildStatus>,
+        pub invocation_status: ::core::option::Option<super::BuildStatus>,
         /// Arbitrary details about the invocation attempt.
         #[prost(message, optional, tag = "4")]
-        pub details: ::std::option::Option<::prost_types::Any>,
+        pub details: ::core::option::Option<::prost_types::Any>,
     }
     /// Notification that the build request is enqueued.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BuildEnqueued {
         /// Additional details about the Build.
         #[prost(message, optional, tag = "1")]
-        pub details: ::std::option::Option<::prost_types::Any>,
+        pub details: ::core::option::Option<::prost_types::Any>,
     }
     /// Notification that the build request has finished, and no further
     /// invocations will occur.  Note that this applies to the entire Build.
@@ -94,10 +96,10 @@ pub mod build_event {
     pub struct BuildFinished {
         /// Final status of the build.
         #[prost(message, optional, tag = "1")]
-        pub status: ::std::option::Option<super::BuildStatus>,
+        pub status: ::core::option::Option<super::BuildStatus>,
         /// Additional details about the Build.
         #[prost(message, optional, tag = "2")]
-        pub details: ::std::option::Option<::prost_types::Any>,
+        pub details: ::core::option::Option<::prost_types::Any>,
     }
     /// Textual output written to standard output or standard error.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -107,18 +109,19 @@ pub mod build_event {
         pub r#type: i32,
         /// The output stream content.
         #[prost(oneof = "console_output::Output", tags = "2, 3")]
-        pub output: ::std::option::Option<console_output::Output>,
+        pub output: ::core::option::Option<console_output::Output>,
     }
+    /// Nested message and enum types in `ConsoleOutput`.
     pub mod console_output {
         /// The output stream content.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Output {
             /// Regular UTF-8 output; normal text.
             #[prost(string, tag = "2")]
-            TextOutput(std::string::String),
+            TextOutput(::prost::alloc::string::String),
             /// Used if the output is not UTF-8 text (for example, a binary proto).
             #[prost(bytes, tag = "3")]
-            BinaryOutput(std::vec::Vec<u8>),
+            BinaryOutput(::prost::alloc::vec::Vec<u8>),
         }
     }
     /// Notification of the end of a build event stream published by a build
@@ -129,9 +132,12 @@ pub mod build_event {
         #[prost(enumeration = "build_component_stream_finished::FinishType", tag = "1")]
         pub r#type: i32,
     }
+    /// Nested message and enum types in `BuildComponentStreamFinished`.
     pub mod build_component_stream_finished {
         /// How did the event stream finish.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum FinishType {
             /// Unknown or unspecified; callers should never set this value.
@@ -188,15 +194,16 @@ pub mod build_event {
 pub struct StreamId {
     /// The id of a Build message.
     #[prost(string, tag = "1")]
-    pub build_id: std::string::String,
+    pub build_id: ::prost::alloc::string::String,
     /// The unique invocation ID within this build.
     /// It should be the same as {invocation} (below) during the migration.
     #[prost(string, tag = "6")]
-    pub invocation_id: std::string::String,
+    pub invocation_id: ::prost::alloc::string::String,
     /// The component that emitted this event.
     #[prost(enumeration = "stream_id::BuildComponent", tag = "3")]
     pub component: i32,
 }
+/// Nested message and enum types in `StreamId`.
 pub mod stream_id {
     /// Which build component generates this event stream. Each build component
     /// may generate one event stream.
@@ -241,26 +248,27 @@ pub struct PublishLifecycleEventRequest {
     /// Required. The lifecycle build event. If this is a build tool event, the RPC will fail
     /// with INVALID_REQUEST.
     #[prost(message, optional, tag = "2")]
-    pub build_event: ::std::option::Option<OrderedBuildEvent>,
+    pub build_event: ::core::option::Option<OrderedBuildEvent>,
     /// If the next event for this build or invocation (depending on the event
     /// type) hasn't been published after this duration from when {build_event}
     /// is written to BES, consider this stream expired. If this field is not set,
     /// BES backend will use its own default value.
     #[prost(message, optional, tag = "3")]
-    pub stream_timeout: ::std::option::Option<::prost_types::Duration>,
+    pub stream_timeout: ::core::option::Option<::prost_types::Duration>,
     /// Additional information about a build request. These are define by the event
     /// publishers, and the Build Event Service does not validate or interpret
     /// them. They are used while notifying internal systems of new builds and
     /// invocations if the OrderedBuildEvent.event type is
     /// BuildEnqueued/InvocationAttemptStarted.
     #[prost(string, repeated, tag = "4")]
-    pub notification_keywords: ::std::vec::Vec<std::string::String>,
+    pub notification_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The project this build is associated with.
     /// This should match the project used for the initial call to
     /// PublishLifecycleEvent (containing a BuildEnqueued message).
     #[prost(string, tag = "6")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `PublishLifecycleEventRequest`.
 pub mod publish_lifecycle_event_request {
     /// The service level of the build request. Backends only uses this value when
     /// the BuildEnqueued event is published to determine what level of service
@@ -281,7 +289,7 @@ pub mod publish_lifecycle_event_request {
 pub struct PublishBuildToolEventStreamResponse {
     /// The stream that contains this event.
     #[prost(message, optional, tag = "1")]
-    pub stream_id: ::std::option::Option<StreamId>,
+    pub stream_id: ::core::option::Option<StreamId>,
     /// The sequence number of this event that has been committed.
     #[prost(int64, tag = "2")]
     pub sequence_number: i64,
@@ -292,7 +300,7 @@ pub struct PublishBuildToolEventStreamResponse {
 pub struct OrderedBuildEvent {
     /// Which build event stream this event belongs to.
     #[prost(message, optional, tag = "1")]
-    pub stream_id: ::std::option::Option<StreamId>,
+    pub stream_id: ::core::option::Option<StreamId>,
     /// The position of this event in the stream. The sequence numbers for a build
     /// event stream should be a sequence of consecutive natural numbers starting
     /// from one. (1, 2, 3, ...)
@@ -300,7 +308,7 @@ pub struct OrderedBuildEvent {
     pub sequence_number: i64,
     /// The actual event.
     #[prost(message, optional, tag = "3")]
-    pub event: ::std::option::Option<BuildEvent>,
+    pub event: ::core::option::Option<BuildEvent>,
 }
 /// Streaming request message for PublishBuildToolEventStream.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -308,18 +316,18 @@ pub struct PublishBuildToolEventStreamRequest {
     /// Required. The build event with position info.
     /// New publishing clients should use this field rather than the 3 above.
     #[prost(message, optional, tag = "4")]
-    pub ordered_build_event: ::std::option::Option<OrderedBuildEvent>,
+    pub ordered_build_event: ::core::option::Option<OrderedBuildEvent>,
     /// The keywords to be attached to the notification which notifies the start
     /// of a new build event stream. BES only reads this field when sequence_number
     /// or ordered_build_event.sequence_number is 1 in this message. If this field
     /// is empty, BES will not publish notification messages for this stream.
     #[prost(string, repeated, tag = "5")]
-    pub notification_keywords: ::std::vec::Vec<std::string::String>,
+    pub notification_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The project this build is associated with.
     /// This should match the project used for the initial call to
     /// PublishLifecycleEvent (containing a BuildEnqueued message).
     #[prost(string, tag = "6")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod publish_build_event_client {

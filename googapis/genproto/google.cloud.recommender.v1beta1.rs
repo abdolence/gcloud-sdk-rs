@@ -4,43 +4,44 @@
 pub struct Insight {
     /// Name of the insight.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Free-form human readable summary in English. The maximum length is 500
     /// characters.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Fully qualified resource names that this insight is targeting.
     #[prost(string, repeated, tag = "9")]
-    pub target_resources: ::std::vec::Vec<std::string::String>,
+    pub target_resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Insight subtype. Insight content schema will be stable for a given subtype.
     #[prost(string, tag = "10")]
-    pub insight_subtype: std::string::String,
+    pub insight_subtype: ::prost::alloc::string::String,
     /// A struct of custom fields to explain the insight.
     /// Example: "grantedPermissionsCount": "1000"
     #[prost(message, optional, tag = "3")]
-    pub content: ::std::option::Option<::prost_types::Struct>,
+    pub content: ::core::option::Option<::prost_types::Struct>,
     /// Timestamp of the latest data used to generate the insight.
     #[prost(message, optional, tag = "4")]
-    pub last_refresh_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_refresh_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Observation period that led to the insight. The source data used to
     /// generate the insight ends at last_refresh_time and begins at
     /// (last_refresh_time - observation_period).
     #[prost(message, optional, tag = "5")]
-    pub observation_period: ::std::option::Option<::prost_types::Duration>,
+    pub observation_period: ::core::option::Option<::prost_types::Duration>,
     /// Information state and metadata.
     #[prost(message, optional, tag = "6")]
-    pub state_info: ::std::option::Option<InsightStateInfo>,
+    pub state_info: ::core::option::Option<InsightStateInfo>,
     /// Category being targeted by the insight.
     #[prost(enumeration = "insight::Category", tag = "7")]
     pub category: i32,
     /// Fingerprint of the Insight. Provides optimistic locking when updating
     /// states.
     #[prost(string, tag = "11")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Recommendations derived from this insight.
     #[prost(message, repeated, tag = "8")]
-    pub associated_recommendations: ::std::vec::Vec<insight::RecommendationReference>,
+    pub associated_recommendations: ::prost::alloc::vec::Vec<insight::RecommendationReference>,
 }
+/// Nested message and enum types in `Insight`.
 pub mod insight {
     /// Reference to an associated recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -48,7 +49,7 @@ pub mod insight {
         /// Recommendation resource name, e.g.
         /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
         #[prost(string, tag = "1")]
-        pub recommendation: std::string::String,
+        pub recommendation: ::prost::alloc::string::String,
     }
     /// Insight category.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -74,8 +75,10 @@ pub struct InsightStateInfo {
     pub state: i32,
     /// A map of metadata for the state, provided by user or automations systems.
     #[prost(map = "string, string", tag = "2")]
-    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub state_metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `InsightStateInfo`.
 pub mod insight_state_info {
     /// Represents insight state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -103,11 +106,11 @@ pub mod insight_state_info {
 pub struct Recommendation {
     /// Name of recommendation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Free-form human readable summary in English. The maximum length is 500
     /// characters.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Contains an identifier for a subtype of recommendations produced for the
     /// same recommender. Subtype is a function of content and impact, meaning a
     /// new subtype might be added when significant changes to `content` or
@@ -118,34 +121,35 @@ pub struct Recommendation {
     ///   For recommender = "google.iam.policy.Recommender",
     ///   recommender_subtype can be one of "REMOVE_ROLE"/"REPLACE_ROLE"
     #[prost(string, tag = "12")]
-    pub recommender_subtype: std::string::String,
+    pub recommender_subtype: ::prost::alloc::string::String,
     /// Last time this recommendation was refreshed by the system that created it
     /// in the first place.
     #[prost(message, optional, tag = "4")]
-    pub last_refresh_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_refresh_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The primary impact that this recommendation can have while trying to
     /// optimize for one category.
     #[prost(message, optional, tag = "5")]
-    pub primary_impact: ::std::option::Option<Impact>,
+    pub primary_impact: ::core::option::Option<Impact>,
     /// Optional set of additional impact that this recommendation may have when
     /// trying to optimize for the primary category. These may be positive
     /// or negative.
     #[prost(message, repeated, tag = "6")]
-    pub additional_impact: ::std::vec::Vec<Impact>,
+    pub additional_impact: ::prost::alloc::vec::Vec<Impact>,
     /// Content of the recommendation describing recommended changes to resources.
     #[prost(message, optional, tag = "7")]
-    pub content: ::std::option::Option<RecommendationContent>,
+    pub content: ::core::option::Option<RecommendationContent>,
     /// Information for state. Contains state and metadata.
     #[prost(message, optional, tag = "10")]
-    pub state_info: ::std::option::Option<RecommendationStateInfo>,
+    pub state_info: ::core::option::Option<RecommendationStateInfo>,
     /// Fingerprint of the Recommendation. Provides optimistic locking when
     /// updating states.
     #[prost(string, tag = "11")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Insights that led to this recommendation.
     #[prost(message, repeated, tag = "14")]
-    pub associated_insights: ::std::vec::Vec<recommendation::InsightReference>,
+    pub associated_insights: ::prost::alloc::vec::Vec<recommendation::InsightReference>,
 }
+/// Nested message and enum types in `Recommendation`.
 pub mod recommendation {
     /// Reference to an associated insight.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -153,7 +157,7 @@ pub mod recommendation {
         /// Insight resource name, e.g.
         /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/insights/[INSIGHT_ID]
         #[prost(string, tag = "1")]
-        pub insight: std::string::String,
+        pub insight: ::prost::alloc::string::String,
     }
 }
 /// Contains what resources are changing and how they are changing.
@@ -163,7 +167,7 @@ pub struct RecommendationContent {
     /// that, all operations within one group are expected to be performed
     /// atomically and in an order.
     #[prost(message, repeated, tag = "2")]
-    pub operation_groups: ::std::vec::Vec<OperationGroup>,
+    pub operation_groups: ::prost::alloc::vec::Vec<OperationGroup>,
 }
 /// Group of operations that need to be performed atomically.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -171,7 +175,7 @@ pub struct OperationGroup {
     /// List of operations across one or more resources that belong to this group.
     /// Loosely based on RFC6902 and should be performed in the order they appear.
     #[prost(message, repeated, tag = "1")]
-    pub operations: ::std::vec::Vec<Operation>,
+    pub operations: ::prost::alloc::vec::Vec<Operation>,
 }
 /// Contains an operation for a resource loosely based on the JSON-PATCH format
 /// with support for:
@@ -188,31 +192,31 @@ pub struct Operation {
     /// 'copy', 'test' and 'custom' operations. This field is case-insensitive and
     /// always populated.
     #[prost(string, tag = "1")]
-    pub action: std::string::String,
+    pub action: ::prost::alloc::string::String,
     /// Type of GCP resource being modified/tested. This field is always populated.
     /// Example: cloudresourcemanager.googleapis.com/Project,
     /// compute.googleapis.com/Instance
     #[prost(string, tag = "2")]
-    pub resource_type: std::string::String,
+    pub resource_type: ::prost::alloc::string::String,
     /// Contains the fully qualified resource name. This field is always populated.
     /// ex: //cloudresourcemanager.googleapis.com/projects/foo.
     #[prost(string, tag = "3")]
-    pub resource: std::string::String,
+    pub resource: ::prost::alloc::string::String,
     /// Path to the target field being operated on. If the operation is at the
     /// resource level, then path should be "/". This field is always populated.
     #[prost(string, tag = "4")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Can be set with action 'copy' to copy resource configuration across
     /// different resources of the same type. Example: A resource clone can be
     /// done via action = 'copy', path = "/", from = "/",
     /// source_resource = <source> and resource_name = <target>.
     /// This field is empty for all other values of `action`.
     #[prost(string, tag = "5")]
-    pub source_resource: std::string::String,
+    pub source_resource: ::prost::alloc::string::String,
     /// Can be set with action 'copy' or 'move' to indicate the source field within
     /// resource or source_resource, ignored if provided for other operation types.
     #[prost(string, tag = "6")]
-    pub source_path: std::string::String,
+    pub source_path: ::prost::alloc::string::String,
     /// Set of filters to apply if `path` refers to array elements or nested array
     /// elements in order to narrow down to a single unique element that is being
     /// tested/modified.
@@ -224,29 +228,32 @@ pub struct Operation {
     ///   "/versions/*/targetSize/percent": 20
     ///   }
     /// * Example: {
-    ///   "/bindings/*/role": "roles/admin"
+    ///   "/bindings/*/role": "roles/owner"
     ///   "/bindings/*/condition" : null
     ///   }
     /// * Example: {
-    ///   "/bindings/*/role": "roles/admin"
-    ///   "/bindings/*/members/*" : ["x@google.com", "y@google.com"]
+    ///   "/bindings/*/role": "roles/owner"
+    ///   "/bindings/*/members/*" : ["x@example.com", "y@example.com"]
     ///   }
     /// When both path_filters and path_value_matchers are set, an implicit AND
     /// must be performed.
     #[prost(map = "string, message", tag = "8")]
-    pub path_filters: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
+    pub path_filters:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     /// Similar to path_filters, this contains set of filters to apply if `path`
     /// field referes to array elements. This is meant to support value matching
     /// beyond exact match. To perform exact match, use path_filters.
     /// When both path_filters and path_value_matchers are set, an implicit AND
     /// must be performed.
     #[prost(map = "string, message", tag = "11")]
-    pub path_value_matchers: ::std::collections::HashMap<std::string::String, ValueMatcher>,
+    pub path_value_matchers:
+        ::std::collections::HashMap<::prost::alloc::string::String, ValueMatcher>,
     /// One of the fields in the following block will be set and intend to
     /// describe a value for 'path' field.
     #[prost(oneof = "operation::PathValue", tags = "7, 10")]
-    pub path_value: ::std::option::Option<operation::PathValue>,
+    pub path_value: ::core::option::Option<operation::PathValue>,
 }
+/// Nested message and enum types in `Operation`.
 pub mod operation {
     /// One of the fields in the following block will be set and intend to
     /// describe a value for 'path' field.
@@ -267,8 +274,9 @@ pub mod operation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueMatcher {
     #[prost(oneof = "value_matcher::MatchVariant", tags = "1")]
-    pub match_variant: ::std::option::Option<value_matcher::MatchVariant>,
+    pub match_variant: ::core::option::Option<value_matcher::MatchVariant>,
 }
+/// Nested message and enum types in `ValueMatcher`.
 pub mod value_matcher {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MatchVariant {
@@ -276,7 +284,7 @@ pub mod value_matcher {
         /// Google RE2 syntax (https://github.com/google/re2/wiki/Syntax), so to be
         /// used with RE2::FullMatch
         #[prost(string, tag = "1")]
-        MatchesPattern(std::string::String),
+        MatchesPattern(::prost::alloc::string::String),
     }
 }
 /// Contains metadata about how much money a recommendation can save or incur.
@@ -286,10 +294,10 @@ pub struct CostProjection {
     /// units indicate cost savings and positive cost units indicate increase.
     /// See google.type.Money documentation for positive/negative units.
     #[prost(message, optional, tag = "1")]
-    pub cost: ::std::option::Option<super::super::super::r#type::Money>,
+    pub cost: ::core::option::Option<super::super::super::r#type::Money>,
     /// Duration for which this cost applies.
     #[prost(message, optional, tag = "2")]
-    pub duration: ::std::option::Option<::prost_types::Duration>,
+    pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Contains the impact a recommendation can have for a given category.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -299,8 +307,9 @@ pub struct Impact {
     pub category: i32,
     /// Contains projections (if any) for this category.
     #[prost(oneof = "impact::Projection", tags = "100")]
-    pub projection: ::std::option::Option<impact::Projection>,
+    pub projection: ::core::option::Option<impact::Projection>,
 }
+/// Nested message and enum types in `Impact`.
 pub mod impact {
     /// The category of the impact.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -333,8 +342,10 @@ pub struct RecommendationStateInfo {
     pub state: i32,
     /// A map of metadata for the state, provided by user or automations systems.
     #[prost(map = "string, string", tag = "2")]
-    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub state_metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `RecommendationStateInfo`.
 pub mod recommendation_state_info {
     /// Represents Recommendation State.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -380,8 +391,10 @@ pub struct ListInsightsRequest {
     ///
     /// LOCATION here refers to GCP Locations:
     /// https://cloud.google.com/about/locations/
+    /// INSIGHT_TYPE_ID refers to supported insight types:
+    /// https://cloud.google.com/recommender/docs/insights/insight-types.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return from this request.  Non-positive
     /// values are ignored. If not specified, the server will determine the number
     /// of results to return.
@@ -392,44 +405,45 @@ pub struct ListInsightsRequest {
     /// previous response. The values of other method parameters must be identical
     /// to those in the previous call.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Filter expression to restrict the insights returned. Supported
     /// filter fields: state
     /// Eg: `state:"DISMISSED" or state:"ACTIVE"
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response to the `ListInsights` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInsightsResponse {
     /// The set of insights for the `parent` resource.
     #[prost(message, repeated, tag = "1")]
-    pub insights: ::std::vec::Vec<Insight>,
+    pub insights: ::prost::alloc::vec::Vec<Insight>,
     /// A token that can be used to request the next page of results. This field is
     /// empty if there are no additional results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to the `GetInsight` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInsightRequest {
     /// Required. Name of the insight.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for the `MarkInsightAccepted` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkInsightAcceptedRequest {
     /// Required. Name of the insight.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. State properties user wish to include with this state.  Full replace of the
     /// current state_metadata.
     #[prost(map = "string, string", tag = "2")]
-    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub state_metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Fingerprint of the Insight. Provides optimistic locking.
     #[prost(string, tag = "3")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request for the `ListRecommendations` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -442,8 +456,10 @@ pub struct ListRecommendationsRequest {
     ///
     /// LOCATION here refers to GCP Locations:
     /// https://cloud.google.com/about/locations/
+    /// RECOMMENDER_ID refers to supported recommenders:
+    /// https://cloud.google.com/recommender/docs/recommenders.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return from this request.  Non-positive
     /// values are ignored. If not specified, the server will determine the number
     /// of results to return.
@@ -454,78 +470,81 @@ pub struct ListRecommendationsRequest {
     /// previous response. The values of other method parameters must be identical
     /// to those in the previous call.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Filter expression to restrict the recommendations returned. Supported
     /// filter fields: state_info.state
     /// Eg: `state_info.state:"DISMISSED" or state_info.state:"FAILED"
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response to the `ListRecommendations` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecommendationsResponse {
     /// The set of recommendations for the `parent` resource.
     #[prost(message, repeated, tag = "1")]
-    pub recommendations: ::std::vec::Vec<Recommendation>,
+    pub recommendations: ::prost::alloc::vec::Vec<Recommendation>,
     /// A token that can be used to request the next page of results. This field is
     /// empty if there are no additional results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to the `GetRecommendation` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRecommendationRequest {
     /// Required. Name of the recommendation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for the `MarkRecommendationClaimed` Method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkRecommendationClaimedRequest {
     /// Required. Name of the recommendation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// State properties to include with this state. Overwrites any existing
     /// `state_metadata`.
     /// Keys must match the regex /^[a-z0-9][a-z0-9_.-]{0,62}$/.
     /// Values must match the regex /^[a-zA-Z0-9_./-]{0,255}$/.
     #[prost(map = "string, string", tag = "2")]
-    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub state_metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Fingerprint of the Recommendation. Provides optimistic locking.
     #[prost(string, tag = "3")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request for the `MarkRecommendationSucceeded` Method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkRecommendationSucceededRequest {
     /// Required. Name of the recommendation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// State properties to include with this state. Overwrites any existing
     /// `state_metadata`.
     /// Keys must match the regex /^[a-z0-9][a-z0-9_.-]{0,62}$/.
     /// Values must match the regex /^[a-zA-Z0-9_./-]{0,255}$/.
     #[prost(map = "string, string", tag = "2")]
-    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub state_metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Fingerprint of the Recommendation. Provides optimistic locking.
     #[prost(string, tag = "3")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request for the `MarkRecommendationFailed` Method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkRecommendationFailedRequest {
     /// Required. Name of the recommendation.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// State properties to include with this state. Overwrites any existing
     /// `state_metadata`.
     /// Keys must match the regex /^[a-z0-9][a-z0-9_.-]{0,62}$/.
     /// Values must match the regex /^[a-zA-Z0-9_./-]{0,255}$/.
     #[prost(map = "string, string", tag = "2")]
-    pub state_metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub state_metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Fingerprint of the Recommendation. Provides optimistic locking.
     #[prost(string, tag = "3")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod recommender_client {

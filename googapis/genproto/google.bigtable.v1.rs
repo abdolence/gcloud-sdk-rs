@@ -5,12 +5,12 @@ pub struct Row {
     /// The unique key which identifies this row within its table. This is the same
     /// key that's used to identify the row in, for example, a MutateRowRequest.
     /// May contain any non-empty byte string up to 4KiB in length.
-    #[prost(bytes, tag = "1")]
-    pub key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
     /// May be empty, but only if the entire row is empty.
     /// The mutual ordering of column families is not specified.
     #[prost(message, repeated, tag = "2")]
-    pub families: ::std::vec::Vec<Family>,
+    pub families: ::prost::alloc::vec::Vec<Family>,
 }
 /// Specifies (some of) the contents of a single row/column family of a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -22,10 +22,10 @@ pub struct Family {
     /// produce cells in a sentinel family with an empty name.
     /// Must be no greater than 64 characters in length.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Must not be empty. Sorted in order of increasing "qualifier".
     #[prost(message, repeated, tag = "2")]
-    pub columns: ::std::vec::Vec<Column>,
+    pub columns: ::prost::alloc::vec::Vec<Column>,
 }
 /// Specifies (some of) the contents of a single row/column of a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -35,11 +35,11 @@ pub struct Column {
     /// which sets its "column_qualifier_regex_filter" field.
     /// May contain any byte string, including the empty string, up to 16kiB in
     /// length.
-    #[prost(bytes, tag = "1")]
-    pub qualifier: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub qualifier: ::prost::alloc::vec::Vec<u8>,
     /// Must not be empty. Sorted in order of decreasing "timestamp_micros".
     #[prost(message, repeated, tag = "2")]
-    pub cells: ::std::vec::Vec<Cell>,
+    pub cells: ::prost::alloc::vec::Vec<Cell>,
 }
 /// Specifies (some of) the contents of a single row/column/timestamp of a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -55,31 +55,31 @@ pub struct Cell {
     /// The value stored in the cell.
     /// May contain any byte string, including the empty string, up to 100MiB in
     /// length.
-    #[prost(bytes, tag = "2")]
-    pub value: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub value: ::prost::alloc::vec::Vec<u8>,
     /// Labels applied to the cell by a [RowFilter][google.bigtable.v1.RowFilter].
     #[prost(string, repeated, tag = "3")]
-    pub labels: ::std::vec::Vec<std::string::String>,
+    pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Specifies a contiguous range of rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RowRange {
     /// Inclusive lower bound. If left empty, interpreted as the empty string.
-    #[prost(bytes, tag = "2")]
-    pub start_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub start_key: ::prost::alloc::vec::Vec<u8>,
     /// Exclusive upper bound. If left empty, interpreted as infinity.
-    #[prost(bytes, tag = "3")]
-    pub end_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub end_key: ::prost::alloc::vec::Vec<u8>,
 }
 /// Specifies a non-contiguous set of rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RowSet {
     /// Single rows included in the set.
-    #[prost(bytes, repeated, tag = "1")]
-    pub row_keys: ::std::vec::Vec<std::vec::Vec<u8>>,
+    #[prost(bytes = "vec", repeated, tag = "1")]
+    pub row_keys: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
     /// Contiguous row ranges included in the set.
     #[prost(message, repeated, tag = "2")]
-    pub row_ranges: ::std::vec::Vec<RowRange>,
+    pub row_ranges: ::prost::alloc::vec::Vec<RowRange>,
 }
 /// Specifies a contiguous range of columns within a single column family.
 /// The range spans from <column_family>:<start_qualifier> to
@@ -89,16 +89,17 @@ pub struct RowSet {
 pub struct ColumnRange {
     /// The name of the column family within which this range falls.
     #[prost(string, tag = "1")]
-    pub family_name: std::string::String,
+    pub family_name: ::prost::alloc::string::String,
     /// The column qualifier at which to start the range (within 'column_family').
     /// If neither field is set, interpreted as the empty string, inclusive.
     #[prost(oneof = "column_range::StartQualifier", tags = "2, 3")]
-    pub start_qualifier: ::std::option::Option<column_range::StartQualifier>,
+    pub start_qualifier: ::core::option::Option<column_range::StartQualifier>,
     /// The column qualifier at which to end the range (within 'column_family').
     /// If neither field is set, interpreted as the infinite string, exclusive.
     #[prost(oneof = "column_range::EndQualifier", tags = "4, 5")]
-    pub end_qualifier: ::std::option::Option<column_range::EndQualifier>,
+    pub end_qualifier: ::core::option::Option<column_range::EndQualifier>,
 }
+/// Nested message and enum types in `ColumnRange`.
 pub mod column_range {
     /// The column qualifier at which to start the range (within 'column_family').
     /// If neither field is set, interpreted as the empty string, inclusive.
@@ -106,10 +107,10 @@ pub mod column_range {
     pub enum StartQualifier {
         /// Used when giving an inclusive lower bound for the range.
         #[prost(bytes, tag = "2")]
-        StartQualifierInclusive(std::vec::Vec<u8>),
+        StartQualifierInclusive(::prost::alloc::vec::Vec<u8>),
         /// Used when giving an exclusive lower bound for the range.
         #[prost(bytes, tag = "3")]
-        StartQualifierExclusive(std::vec::Vec<u8>),
+        StartQualifierExclusive(::prost::alloc::vec::Vec<u8>),
     }
     /// The column qualifier at which to end the range (within 'column_family').
     /// If neither field is set, interpreted as the infinite string, exclusive.
@@ -117,10 +118,10 @@ pub mod column_range {
     pub enum EndQualifier {
         /// Used when giving an inclusive upper bound for the range.
         #[prost(bytes, tag = "4")]
-        EndQualifierInclusive(std::vec::Vec<u8>),
+        EndQualifierInclusive(::prost::alloc::vec::Vec<u8>),
         /// Used when giving an exclusive upper bound for the range.
         #[prost(bytes, tag = "5")]
-        EndQualifierExclusive(std::vec::Vec<u8>),
+        EndQualifierExclusive(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Specified a contiguous range of microsecond timestamps.
@@ -139,12 +140,13 @@ pub struct ValueRange {
     /// The value at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
     #[prost(oneof = "value_range::StartValue", tags = "1, 2")]
-    pub start_value: ::std::option::Option<value_range::StartValue>,
+    pub start_value: ::core::option::Option<value_range::StartValue>,
     /// The value at which to end the range.
     /// If neither field is set, interpreted as the infinite string, exclusive.
     #[prost(oneof = "value_range::EndValue", tags = "3, 4")]
-    pub end_value: ::std::option::Option<value_range::EndValue>,
+    pub end_value: ::core::option::Option<value_range::EndValue>,
 }
+/// Nested message and enum types in `ValueRange`.
 pub mod value_range {
     /// The value at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
@@ -152,10 +154,10 @@ pub mod value_range {
     pub enum StartValue {
         /// Used when giving an inclusive lower bound for the range.
         #[prost(bytes, tag = "1")]
-        StartValueInclusive(std::vec::Vec<u8>),
+        StartValueInclusive(::prost::alloc::vec::Vec<u8>),
         /// Used when giving an exclusive lower bound for the range.
         #[prost(bytes, tag = "2")]
-        StartValueExclusive(std::vec::Vec<u8>),
+        StartValueExclusive(::prost::alloc::vec::Vec<u8>),
     }
     /// The value at which to end the range.
     /// If neither field is set, interpreted as the infinite string, exclusive.
@@ -163,10 +165,10 @@ pub mod value_range {
     pub enum EndValue {
         /// Used when giving an inclusive upper bound for the range.
         #[prost(bytes, tag = "3")]
-        EndValueInclusive(std::vec::Vec<u8>),
+        EndValueInclusive(::prost::alloc::vec::Vec<u8>),
         /// Used when giving an exclusive upper bound for the range.
         #[prost(bytes, tag = "4")]
-        EndValueExclusive(std::vec::Vec<u8>),
+        EndValueExclusive(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// Takes a row as input and produces an alternate view of the row based on
@@ -210,8 +212,9 @@ pub struct RowFilter {
         oneof = "row_filter::Filter",
         tags = "1, 2, 3, 16, 17, 18, 4, 14, 5, 6, 7, 8, 9, 15, 10, 11, 12, 13, 19"
     )]
-    pub filter: ::std::option::Option<row_filter::Filter>,
+    pub filter: ::core::option::Option<row_filter::Filter>,
 }
+/// Nested message and enum types in `RowFilter`.
 pub mod row_filter {
     /// A RowFilter which sends rows through several RowFilters in sequence.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -220,7 +223,7 @@ pub mod row_filter {
         /// in row -> f(0) -> intermediate row -> f(1) -> ... -> f(N) -> out row
         /// The full chain is executed atomically.
         #[prost(message, repeated, tag = "1")]
-        pub filters: ::std::vec::Vec<super::RowFilter>,
+        pub filters: ::prost::alloc::vec::Vec<super::RowFilter>,
     }
     /// A RowFilter which sends each row to each of several component
     /// RowFilters and interleaves the results.
@@ -251,7 +254,7 @@ pub mod row_filter {
         /// 6:                        far,blah,5,x     // identical to #5
         /// All interleaved filters are executed atomically.
         #[prost(message, repeated, tag = "1")]
-        pub filters: ::std::vec::Vec<super::RowFilter>,
+        pub filters: ::prost::alloc::vec::Vec<super::RowFilter>,
     }
     /// A RowFilter which evaluates one of two possible RowFilters, depending on
     /// whether or not a predicate RowFilter outputs any cells from the input row.
@@ -265,16 +268,16 @@ pub mod row_filter {
         /// If "predicate_filter" outputs any cells, then "true_filter" will be
         /// evaluated on the input row. Otherwise, "false_filter" will be evaluated.
         #[prost(message, optional, boxed, tag = "1")]
-        pub predicate_filter: ::std::option::Option<::std::boxed::Box<super::RowFilter>>,
+        pub predicate_filter: ::core::option::Option<::prost::alloc::boxed::Box<super::RowFilter>>,
         /// The filter to apply to the input row if "predicate_filter" returns any
         /// results. If not provided, no results will be returned in the true case.
         #[prost(message, optional, boxed, tag = "2")]
-        pub true_filter: ::std::option::Option<::std::boxed::Box<super::RowFilter>>,
+        pub true_filter: ::core::option::Option<::prost::alloc::boxed::Box<super::RowFilter>>,
         /// The filter to apply to the input row if "predicate_filter" does not
         /// return any results. If not provided, no results will be returned in the
         /// false case.
         #[prost(message, optional, boxed, tag = "3")]
-        pub false_filter: ::std::option::Option<::std::boxed::Box<super::RowFilter>>,
+        pub false_filter: ::core::option::Option<::prost::alloc::boxed::Box<super::RowFilter>>,
     }
     /// Which of the possible RowFilter types to apply. If none are set, this
     /// RowFilter returns all cells in the input row.
@@ -291,7 +294,7 @@ pub mod row_filter {
         /// Applies one of two possible RowFilters to the data based on the output of
         /// a predicate RowFilter.
         #[prost(message, tag = "3")]
-        Condition(Box<Condition>),
+        Condition(::prost::alloc::boxed::Box<Condition>),
         /// ADVANCED USE ONLY.
         /// Hook for introspection into the RowFilter. Outputs all cells directly to
         /// the output of the read rather than to any parent filter. Consider the
@@ -369,7 +372,7 @@ pub mod row_filter {
         /// will not match the new line character '\n', which may be present in a
         /// binary key.
         #[prost(bytes, tag = "4")]
-        RowKeyRegexFilter(std::vec::Vec<u8>),
+        RowKeyRegexFilter(::prost::alloc::vec::Vec<u8>),
         /// Matches all cells from a row with probability p, and matches no cells
         /// from the row with probability 1-p.
         #[prost(double, tag = "14")]
@@ -381,7 +384,7 @@ pub mod row_filter {
         /// '\n', it is sufficient to use '.' as a full wildcard when matching
         /// column family names.
         #[prost(string, tag = "5")]
-        FamilyNameRegexFilter(std::string::String),
+        FamilyNameRegexFilter(::prost::alloc::string::String),
         /// Matches only cells from columns whose qualifiers satisfy the given RE2
         /// regex.
         /// Note that, since column qualifiers can contain arbitrary bytes, the '\C'
@@ -389,7 +392,7 @@ pub mod row_filter {
         /// character will not match the new line character '\n', which may be
         /// present in a binary qualifier.
         #[prost(bytes, tag = "6")]
-        ColumnQualifierRegexFilter(std::vec::Vec<u8>),
+        ColumnQualifierRegexFilter(::prost::alloc::vec::Vec<u8>),
         /// Matches only cells from columns within the given range.
         #[prost(message, tag = "7")]
         ColumnRangeFilter(super::ColumnRange),
@@ -402,7 +405,7 @@ pub mod row_filter {
         /// will not match the new line character '\n', which may be present in a
         /// binary value.
         #[prost(bytes, tag = "9")]
-        ValueRegexFilter(std::vec::Vec<u8>),
+        ValueRegexFilter(::prost::alloc::vec::Vec<u8>),
         /// Matches only cells with values that fall within the given range.
         #[prost(message, tag = "15")]
         ValueRangeFilter(super::ValueRange),
@@ -441,7 +444,7 @@ pub mod row_filter {
         /// be applied to separate copies of the input. This may be relaxed in the
         /// future.
         #[prost(string, tag = "19")]
-        ApplyLabelTransformer(std::string::String),
+        ApplyLabelTransformer(::prost::alloc::string::String),
     }
 }
 /// Specifies a particular change to be made to the contents of a row.
@@ -449,8 +452,9 @@ pub mod row_filter {
 pub struct Mutation {
     /// Which of the possible Mutation types to apply.
     #[prost(oneof = "mutation::Mutation", tags = "1, 2, 3, 4")]
-    pub mutation: ::std::option::Option<mutation::Mutation>,
+    pub mutation: ::core::option::Option<mutation::Mutation>,
 }
+/// Nested message and enum types in `Mutation`.
 pub mod mutation {
     /// A Mutation which sets the value of the specified cell.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -458,11 +462,11 @@ pub mod mutation {
         /// The name of the family into which new data should be written.
         /// Must match [-_.a-zA-Z0-9]+
         #[prost(string, tag = "1")]
-        pub family_name: std::string::String,
+        pub family_name: ::prost::alloc::string::String,
         /// The qualifier of the column into which new data should be written.
         /// Can be any byte string, including the empty string.
-        #[prost(bytes, tag = "2")]
-        pub column_qualifier: std::vec::Vec<u8>,
+        #[prost(bytes = "vec", tag = "2")]
+        pub column_qualifier: ::prost::alloc::vec::Vec<u8>,
         /// The timestamp of the cell into which new data should be written.
         /// Use -1 for current Bigtable server time.
         /// Otherwise, the client should set this value itself, noting that the
@@ -471,8 +475,8 @@ pub mod mutation {
         #[prost(int64, tag = "3")]
         pub timestamp_micros: i64,
         /// The value to be written into the specified cell.
-        #[prost(bytes, tag = "4")]
-        pub value: std::vec::Vec<u8>,
+        #[prost(bytes = "vec", tag = "4")]
+        pub value: ::prost::alloc::vec::Vec<u8>,
     }
     /// A Mutation which deletes cells from the specified column, optionally
     /// restricting the deletions to a given timestamp range.
@@ -481,14 +485,14 @@ pub mod mutation {
         /// The name of the family from which cells should be deleted.
         /// Must match [-_.a-zA-Z0-9]+
         #[prost(string, tag = "1")]
-        pub family_name: std::string::String,
+        pub family_name: ::prost::alloc::string::String,
         /// The qualifier of the column from which cells should be deleted.
         /// Can be any byte string, including the empty string.
-        #[prost(bytes, tag = "2")]
-        pub column_qualifier: std::vec::Vec<u8>,
+        #[prost(bytes = "vec", tag = "2")]
+        pub column_qualifier: ::prost::alloc::vec::Vec<u8>,
         /// The range of timestamps within which cells should be deleted.
         #[prost(message, optional, tag = "3")]
-        pub time_range: ::std::option::Option<super::TimestampRange>,
+        pub time_range: ::core::option::Option<super::TimestampRange>,
     }
     /// A Mutation which deletes all cells from the specified column family.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -496,7 +500,7 @@ pub mod mutation {
         /// The name of the family from which cells should be deleted.
         /// Must match [-_.a-zA-Z0-9]+
         #[prost(string, tag = "1")]
-        pub family_name: std::string::String,
+        pub family_name: ::prost::alloc::string::String,
     }
     /// A Mutation which deletes all cells from the containing row.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -525,17 +529,18 @@ pub struct ReadModifyWriteRule {
     /// The name of the family to which the read/modify/write should be applied.
     /// Must match [-_.a-zA-Z0-9]+
     #[prost(string, tag = "1")]
-    pub family_name: std::string::String,
+    pub family_name: ::prost::alloc::string::String,
     /// The qualifier of the column to which the read/modify/write should be
     /// applied.
     /// Can be any byte string, including the empty string.
-    #[prost(bytes, tag = "2")]
-    pub column_qualifier: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub column_qualifier: ::prost::alloc::vec::Vec<u8>,
     /// The rule used to determine the column's new latest value from its current
     /// latest value.
     #[prost(oneof = "read_modify_write_rule::Rule", tags = "3, 4")]
-    pub rule: ::std::option::Option<read_modify_write_rule::Rule>,
+    pub rule: ::core::option::Option<read_modify_write_rule::Rule>,
 }
+/// Nested message and enum types in `ReadModifyWriteRule`.
 pub mod read_modify_write_rule {
     /// The rule used to determine the column's new latest value from its current
     /// latest value.
@@ -545,7 +550,7 @@ pub mod read_modify_write_rule {
         /// If the targeted cell is unset, it will be treated as containing the
         /// empty string.
         #[prost(bytes, tag = "3")]
-        AppendValue(std::vec::Vec<u8>),
+        AppendValue(::prost::alloc::vec::Vec<u8>),
         /// Rule specifying that "increment_amount" be added to the existing value.
         /// If the targeted cell is unset, it will be treated as containing a zero.
         /// Otherwise, the targeted cell must contain an 8-byte value (interpreted
@@ -559,11 +564,11 @@ pub mod read_modify_write_rule {
 pub struct ReadRowsRequest {
     /// The unique name of the table from which to read.
     #[prost(string, tag = "1")]
-    pub table_name: std::string::String,
+    pub table_name: ::prost::alloc::string::String,
     /// The filter to apply to the contents of the specified row(s). If unset,
     /// reads the entire table.
     #[prost(message, optional, tag = "5")]
-    pub filter: ::std::option::Option<RowFilter>,
+    pub filter: ::core::option::Option<RowFilter>,
     /// By default, rows are read sequentially, producing results which are
     /// guaranteed to arrive in increasing row order. Setting
     /// "allow_row_interleaving" to true allows multiple rows to be interleaved in
@@ -579,15 +584,16 @@ pub struct ReadRowsRequest {
     pub num_rows_limit: i64,
     /// If neither row_key nor row_range is set, reads from all rows.
     #[prost(oneof = "read_rows_request::Target", tags = "2, 3, 8")]
-    pub target: ::std::option::Option<read_rows_request::Target>,
+    pub target: ::core::option::Option<read_rows_request::Target>,
 }
+/// Nested message and enum types in `ReadRowsRequest`.
 pub mod read_rows_request {
     /// If neither row_key nor row_range is set, reads from all rows.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// The key of a single row from which to read.
         #[prost(bytes, tag = "2")]
-        RowKey(std::vec::Vec<u8>),
+        RowKey(::prost::alloc::vec::Vec<u8>),
         /// A range of rows from which to read.
         #[prost(message, tag = "3")]
         RowRange(super::RowRange),
@@ -604,20 +610,22 @@ pub struct ReadRowsResponse {
     /// The key of the row for which we're receiving data.
     /// Results will be received in increasing row key order, unless
     /// "allow_row_interleaving" was specified in the request.
-    #[prost(bytes, tag = "1")]
-    pub row_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// One or more chunks of the row specified by "row_key".
     #[prost(message, repeated, tag = "2")]
-    pub chunks: ::std::vec::Vec<read_rows_response::Chunk>,
+    pub chunks: ::prost::alloc::vec::Vec<read_rows_response::Chunk>,
 }
+/// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
     /// Specifies a piece of a row's contents returned as part of the read
     /// response stream.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Chunk {
         #[prost(oneof = "chunk::Chunk", tags = "1, 2, 3")]
-        pub chunk: ::std::option::Option<chunk::Chunk>,
+        pub chunk: ::core::option::Option<chunk::Chunk>,
     }
+    /// Nested message and enum types in `Chunk`.
     pub mod chunk {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Chunk {
@@ -643,7 +651,7 @@ pub mod read_rows_response {
 pub struct SampleRowKeysRequest {
     /// The unique name of the table from which to sample row keys.
     #[prost(string, tag = "1")]
-    pub table_name: std::string::String,
+    pub table_name: ::prost::alloc::string::String,
 }
 /// Response message for BigtableService.SampleRowKeys.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -655,8 +663,8 @@ pub struct SampleRowKeysResponse {
     /// Note that row keys in this list may not have ever been written to or read
     /// from, and users should therefore not make any assumptions about the row key
     /// structure that are specific to their use case.
-    #[prost(bytes, tag = "1")]
-    pub row_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// Approximate total storage space used by all rows in the table which precede
     /// "row_key". Buffering the contents of all rows between two subsequent
     /// samples would require space roughly equal to the difference in their
@@ -669,42 +677,43 @@ pub struct SampleRowKeysResponse {
 pub struct MutateRowRequest {
     /// The unique name of the table to which the mutation should be applied.
     #[prost(string, tag = "1")]
-    pub table_name: std::string::String,
+    pub table_name: ::prost::alloc::string::String,
     /// The key of the row to which the mutation should be applied.
-    #[prost(bytes, tag = "2")]
-    pub row_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// Changes to be atomically applied to the specified row. Entries are applied
     /// in order, meaning that earlier mutations can be masked by later ones.
     /// Must contain at least one entry and at most 100000.
     #[prost(message, repeated, tag = "3")]
-    pub mutations: ::std::vec::Vec<Mutation>,
+    pub mutations: ::prost::alloc::vec::Vec<Mutation>,
 }
 /// Request message for BigtableService.MutateRows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRowsRequest {
     /// The unique name of the table to which the mutations should be applied.
     #[prost(string, tag = "1")]
-    pub table_name: std::string::String,
+    pub table_name: ::prost::alloc::string::String,
     /// The row keys/mutations to be applied in bulk.
     /// Each entry is applied as an atomic mutation, but the entries may be
     /// applied in arbitrary order (even between entries for the same row).
     /// At least one entry must be specified, and in total the entries may
     /// contain at most 100000 mutations.
     #[prost(message, repeated, tag = "2")]
-    pub entries: ::std::vec::Vec<mutate_rows_request::Entry>,
+    pub entries: ::prost::alloc::vec::Vec<mutate_rows_request::Entry>,
 }
+/// Nested message and enum types in `MutateRowsRequest`.
 pub mod mutate_rows_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The key of the row to which the `mutations` should be applied.
-        #[prost(bytes, tag = "1")]
-        pub row_key: std::vec::Vec<u8>,
+        #[prost(bytes = "vec", tag = "1")]
+        pub row_key: ::prost::alloc::vec::Vec<u8>,
         /// Changes to be atomically applied to the specified row. Mutations are
         /// applied in order, meaning that earlier mutations can be masked by
         /// later ones.
         /// At least one mutation must be specified.
         #[prost(message, repeated, tag = "2")]
-        pub mutations: ::std::vec::Vec<super::Mutation>,
+        pub mutations: ::prost::alloc::vec::Vec<super::Mutation>,
     }
 }
 /// Response message for BigtableService.MutateRows.
@@ -716,7 +725,7 @@ pub struct MutateRowsResponse {
     /// for one Entry to fail due to an error with another Entry. In the event
     /// that this occurs, the same error will be reported for both entries.
     #[prost(message, repeated, tag = "1")]
-    pub statuses: ::std::vec::Vec<super::super::rpc::Status>,
+    pub statuses: ::prost::alloc::vec::Vec<super::super::rpc::Status>,
 }
 /// Request message for BigtableService.CheckAndMutateRowRequest
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -724,30 +733,30 @@ pub struct CheckAndMutateRowRequest {
     /// The unique name of the table to which the conditional mutation should be
     /// applied.
     #[prost(string, tag = "1")]
-    pub table_name: std::string::String,
+    pub table_name: ::prost::alloc::string::String,
     /// The key of the row to which the conditional mutation should be applied.
-    #[prost(bytes, tag = "2")]
-    pub row_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// The filter to be applied to the contents of the specified row. Depending
     /// on whether or not any results are yielded, either "true_mutations" or
     /// "false_mutations" will be executed. If unset, checks that the row contains
     /// any values at all.
     #[prost(message, optional, tag = "6")]
-    pub predicate_filter: ::std::option::Option<RowFilter>,
+    pub predicate_filter: ::core::option::Option<RowFilter>,
     /// Changes to be atomically applied to the specified row if "predicate_filter"
     /// yields at least one cell when applied to "row_key". Entries are applied in
     /// order, meaning that earlier mutations can be masked by later ones.
     /// Must contain at least one entry if "false_mutations" is empty, and at most
     /// 100000.
     #[prost(message, repeated, tag = "4")]
-    pub true_mutations: ::std::vec::Vec<Mutation>,
+    pub true_mutations: ::prost::alloc::vec::Vec<Mutation>,
     /// Changes to be atomically applied to the specified row if "predicate_filter"
     /// does not yield any cells when applied to "row_key". Entries are applied in
     /// order, meaning that earlier mutations can be masked by later ones.
     /// Must contain at least one entry if "true_mutations" is empty, and at most
     /// 100000.
     #[prost(message, repeated, tag = "5")]
-    pub false_mutations: ::std::vec::Vec<Mutation>,
+    pub false_mutations: ::prost::alloc::vec::Vec<Mutation>,
 }
 /// Response message for BigtableService.CheckAndMutateRowRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -763,15 +772,15 @@ pub struct ReadModifyWriteRowRequest {
     /// The unique name of the table to which the read/modify/write rules should be
     /// applied.
     #[prost(string, tag = "1")]
-    pub table_name: std::string::String,
+    pub table_name: ::prost::alloc::string::String,
     /// The key of the row to which the read/modify/write rules should be applied.
-    #[prost(bytes, tag = "2")]
-    pub row_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// Rules specifying how the specified row's contents are to be transformed
     /// into writes. Entries are applied in order, meaning that earlier rules will
     /// affect the results of later ones.
     #[prost(message, repeated, tag = "3")]
-    pub rules: ::std::vec::Vec<ReadModifyWriteRule>,
+    pub rules: ::prost::alloc::vec::Vec<ReadModifyWriteRule>,
 }
 #[doc = r" Generated client implementations."]
 pub mod bigtable_service_client {

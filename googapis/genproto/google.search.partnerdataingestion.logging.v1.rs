@@ -3,8 +3,8 @@
 pub struct IngestDetailsLog {
     /// Identification of the successfully accepted request.
     #[prost(string, tag = "1")]
-    pub ingestion_tracking_id: std::string::String,
+    pub ingestion_tracking_id: ::prost::alloc::string::String,
     /// The message content will be sent to Platform Logging.
     #[prost(string, tag = "2")]
-    pub content: std::string::String,
+    pub content: ::prost::alloc::string::String,
 }

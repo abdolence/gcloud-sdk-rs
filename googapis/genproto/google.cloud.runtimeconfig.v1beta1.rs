@@ -15,10 +15,10 @@ pub struct RuntimeConfig {
     /// the name adheres to this format. After you create the resource, you cannot
     /// change the resource's name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// An optional description of the RuntimeConfig object.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 /// Describes a single variable within a RuntimeConfig resource.
 /// The name denotes the hierarchical variable name. For example,
@@ -44,10 +44,10 @@ pub struct Variable {
     ///
     /// Once you create a variable, you cannot change the variable name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// [Output Only] The time of the last variable update.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Ouput only] The current state of the variable. The variable state
     /// indicates the outcome of the `variables().watch` call and is visible
     /// through the `get` and `list` calls.
@@ -57,8 +57,9 @@ pub struct Variable {
     /// value. You must specify one of either `value` or `text`. Specifying both
     /// will cause the server to return an error.
     #[prost(oneof = "variable::Contents", tags = "2, 5")]
-    pub contents: ::std::option::Option<variable::Contents>,
+    pub contents: ::core::option::Option<variable::Contents>,
 }
+/// Nested message and enum types in `Variable`.
 pub mod variable {
     /// The value of the variable. It can be either a binary or a string
     /// value. You must specify one of either `value` or `text`. Specifying both
@@ -69,12 +70,12 @@ pub mod variable {
         /// than 4096 bytes. Empty values are also accepted. The value must be
         /// base64 encoded. Only one of `value` or `text` can be set.
         #[prost(bytes, tag = "2")]
-        Value(std::vec::Vec<u8>),
+        Value(::prost::alloc::vec::Vec<u8>),
         /// The string value of the variable. The length of the value must be less
         /// than 4096 bytes. Empty values are also accepted. For example,
         /// `text: "my text value"`. The string must be valid UTF-8.
         #[prost(string, tag = "5")]
-        Text(std::string::String),
+        Text(::prost::alloc::string::String),
     }
 }
 /// The condition that a Waiter resource is waiting for.
@@ -83,8 +84,9 @@ pub struct EndCondition {
     /// The condition oneof holds the available condition types for this
     /// EndCondition. Currently, the only available type is Cardinality.
     #[prost(oneof = "end_condition::Condition", tags = "1")]
-    pub condition: ::std::option::Option<end_condition::Condition>,
+    pub condition: ::core::option::Option<end_condition::Condition>,
 }
+/// Nested message and enum types in `EndCondition`.
 pub mod end_condition {
     /// A Cardinality condition for the Waiter resource. A cardinality condition is
     /// met when the number of variables under a specified path prefix reaches a
@@ -104,7 +106,7 @@ pub mod end_condition {
     pub struct Cardinality {
         /// The root of the variable subtree to monitor. For example, `/foo`.
         #[prost(string, tag = "1")]
-        pub path: std::string::String,
+        pub path: ::prost::alloc::string::String,
         /// The number variables under the `path` that must exist to meet this
         /// condition. Defaults to 1 if not specified.
         #[prost(int32, tag = "2")]
@@ -148,31 +150,31 @@ pub struct Waiter {
     ///
     /// After you create a Waiter resource, you cannot change the resource name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// [Required] Specifies the timeout of the waiter in seconds, beginning from
     /// the instant that `waiters().create` method is called. If this time elapses
     /// before the success or failure conditions are met, the waiter fails and sets
     /// the `error` code to `DEADLINE_EXCEEDED`.
     #[prost(message, optional, tag = "2")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// [Optional] The failure condition of this waiter. If this condition is met,
     /// `done` will be set to `true` and the `error` code will be set to `ABORTED`.
     /// The failure condition takes precedence over the success condition. If both
     /// conditions are met, a failure will be indicated. This value is optional; if
     /// no failure condition is set, the only failure scenario will be a timeout.
     #[prost(message, optional, tag = "3")]
-    pub failure: ::std::option::Option<EndCondition>,
+    pub failure: ::core::option::Option<EndCondition>,
     /// [Required] The success condition. If this condition is met, `done` will be
     /// set to `true` and the `error` value will remain unset. The failure
     /// condition takes precedence over the success condition. If both conditions
     /// are met, a failure will be indicated.
     #[prost(message, optional, tag = "4")]
-    pub success: ::std::option::Option<EndCondition>,
+    pub success: ::core::option::Option<EndCondition>,
     /// [Output Only] The instant at which this Waiter resource was created. Adding
     /// the value of `timeout` to this instant yields the timeout deadline for the
     /// waiter.
     #[prost(message, optional, tag = "5")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Output Only] If the value is `false`, it means the waiter is still waiting
     /// for one of its conditions to be met.
     ///
@@ -183,7 +185,7 @@ pub struct Waiter {
     /// [Output Only] If the waiter ended due to a failure or timeout, this value
     /// will be set.
     #[prost(message, optional, tag = "7")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// The `VariableState` describes the last known state of the variable and is
 /// used during a `variables().watch` call to distinguish the state of the
@@ -205,7 +207,7 @@ pub struct ListConfigsRequest {
     /// ID](https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848)
     /// for this request, in the format `projects/[PROJECT_ID]`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Specifies the number of results to return per page. If there are fewer
     /// elements than the specified number, returns all elements.
     #[prost(int32, tag = "2")]
@@ -213,7 +215,7 @@ pub struct ListConfigsRequest {
     /// Specifies a page token to use. Set `pageToken` to a `nextPageToken`
     /// returned by a previous list request to get the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// `ListConfigs()` returns the following response. The order of returned
 /// objects is arbitrary; that is, it is not ordered in any particular way.
@@ -222,14 +224,14 @@ pub struct ListConfigsResponse {
     /// A list of the configurations in the project. The order of returned
     /// objects is arbitrary; that is, it is not ordered in any particular way.
     #[prost(message, repeated, tag = "1")]
-    pub configs: ::std::vec::Vec<RuntimeConfig>,
+    pub configs: ::prost::alloc::vec::Vec<RuntimeConfig>,
     /// This token allows you to get the next page of results for list requests.
     /// If the number of results is larger than `pageSize`, use the `nextPageToken`
     /// as a value for the query parameter `pageToken` in the next list request.
     /// Subsequent list requests will have their own `nextPageToken` to continue
     /// paging through the results
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Gets a RuntimeConfig resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -238,7 +240,7 @@ pub struct GetConfigRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Creates a RuntimeConfig resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -247,10 +249,10 @@ pub struct CreateConfigRequest {
     /// ID](https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848)
     /// for this request, in the format `projects/[PROJECT_ID]`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The RuntimeConfig to create.
     #[prost(message, optional, tag = "2")]
-    pub config: ::std::option::Option<RuntimeConfig>,
+    pub config: ::core::option::Option<RuntimeConfig>,
     /// An optional but recommended unique `request_id`. If the server
     /// receives two `create()` requests  with the same
     /// `request_id`, then the second request will be ignored and the
@@ -262,7 +264,7 @@ pub struct CreateConfigRequest {
     ///
     /// `request_id` strings are limited to 64 characters.
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `UpdateConfig()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -271,10 +273,10 @@ pub struct UpdateConfigRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The config resource to update.
     #[prost(message, optional, tag = "2")]
-    pub config: ::std::option::Option<RuntimeConfig>,
+    pub config: ::core::option::Option<RuntimeConfig>,
 }
 /// Request for the `DeleteConfig()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -283,7 +285,7 @@ pub struct DeleteConfigRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListVariables()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -294,12 +296,12 @@ pub struct ListVariablesRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Filters variables by matching the specified filter. For example:
     ///
     /// `projects/example-project/config/[CONFIG_NAME]/variables/example-variable`.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Specifies the number of results to return per page. If there are fewer
     /// elements than the specified number, returns all elements.
     #[prost(int32, tag = "3")]
@@ -307,7 +309,7 @@ pub struct ListVariablesRequest {
     /// Specifies a page token to use. Set `pageToken` to a `nextPageToken`
     /// returned by a previous list request to get the next page of results.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The flag indicates whether the user wants to return values of variables.
     /// If true, then only those variables that user has IAM GetVariable permission
     /// will be returned along with their values.
@@ -320,14 +322,14 @@ pub struct ListVariablesResponse {
     /// A list of variables and their values. The order of returned variable
     /// objects is arbitrary.
     #[prost(message, repeated, tag = "1")]
-    pub variables: ::std::vec::Vec<Variable>,
+    pub variables: ::prost::alloc::vec::Vec<Variable>,
     /// This token allows you to get the next page of results for list requests.
     /// If the number of results is larger than `pageSize`, use the `nextPageToken`
     /// as a value for the query parameter `pageToken` in the next list request.
     /// Subsequent list requests will have their own `nextPageToken` to continue
     /// paging through the results
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `WatchVariable()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -336,7 +338,7 @@ pub struct WatchVariableRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If specified, checks the current timestamp of the variable and if the
     /// current timestamp is newer than `newerThan` timestamp, the method returns
     /// immediately.
@@ -344,7 +346,7 @@ pub struct WatchVariableRequest {
     /// If not specified or the variable has an older timestamp, the watcher waits
     /// for a the value to change before returning.
     #[prost(message, optional, tag = "4")]
-    pub newer_than: ::std::option::Option<::prost_types::Timestamp>,
+    pub newer_than: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `GetVariable()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -353,7 +355,7 @@ pub struct GetVariableRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIBLE_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateVariable()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -363,10 +365,10 @@ pub struct CreateVariableRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The variable to create.
     #[prost(message, optional, tag = "2")]
-    pub variable: ::std::option::Option<Variable>,
+    pub variable: ::core::option::Option<Variable>,
     /// An optional but recommended unique `request_id`. If the server
     /// receives two `create()` requests  with the same
     /// `request_id`, then the second request will be ignored and the
@@ -378,7 +380,7 @@ pub struct CreateVariableRequest {
     ///
     /// `request_id` strings are limited to 64 characters.
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for the `UpdateVariable()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -387,10 +389,10 @@ pub struct UpdateVariableRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The variable to update.
     #[prost(message, optional, tag = "2")]
-    pub variable: ::std::option::Option<Variable>,
+    pub variable: ::core::option::Option<Variable>,
 }
 /// Request for the `DeleteVariable()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -399,7 +401,7 @@ pub struct DeleteVariableRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Set to `true` to recursively delete multiple variables with the same
     /// prefix.
     #[prost(bool, tag = "2")]
@@ -413,7 +415,7 @@ pub struct ListWaitersRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Specifies the number of results to return per page. If there are fewer
     /// elements than the specified number, returns all elements.
     #[prost(int32, tag = "2")]
@@ -421,7 +423,7 @@ pub struct ListWaitersRequest {
     /// Specifies a page token to use. Set `pageToken` to a `nextPageToken`
     /// returned by a previous list request to get the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListWaiters()` method.
 /// Order of returned waiter objects is arbitrary.
@@ -429,14 +431,14 @@ pub struct ListWaitersRequest {
 pub struct ListWaitersResponse {
     /// Found waiters in the project.
     #[prost(message, repeated, tag = "1")]
-    pub waiters: ::std::vec::Vec<Waiter>,
+    pub waiters: ::prost::alloc::vec::Vec<Waiter>,
     /// This token allows you to get the next page of results for list requests.
     /// If the number of results is larger than `pageSize`, use the `nextPageToken`
     /// as a value for the query parameter `pageToken` in the next list request.
     /// Subsequent list requests will have their own `nextPageToken` to continue
     /// paging through the results
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetWaiter()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -446,7 +448,7 @@ pub struct GetWaiterRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `CreateWaiter()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -456,10 +458,10 @@ pub struct CreateWaiterRequest {
     ///
     /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The Waiter resource to create.
     #[prost(message, optional, tag = "2")]
-    pub waiter: ::std::option::Option<Waiter>,
+    pub waiter: ::core::option::Option<Waiter>,
     /// An optional but recommended unique `request_id`. If the server
     /// receives two `create()` requests  with the same
     /// `request_id`, then the second request will be ignored and the
@@ -471,7 +473,7 @@ pub struct CreateWaiterRequest {
     ///
     /// `request_id` strings are limited to 64 characters.
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for the `DeleteWaiter()` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -480,7 +482,7 @@ pub struct DeleteWaiterRequest {
     ///
     ///  `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME]`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod runtime_config_manager_client {

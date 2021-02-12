@@ -7,15 +7,15 @@
 pub struct Secret {
     /// Output only. The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] in the format `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The replication policy of the secret data attached to the [Secret][google.cloud.secretmanager.v1.Secret].
     ///
     /// The replication policy cannot be changed after the Secret has been created.
     #[prost(message, optional, tag = "2")]
-    pub replication: ::std::option::Option<Replication>,
+    pub replication: ::core::option::Option<Replication>,
     /// Output only. The time at which the [Secret][google.cloud.secretmanager.v1.Secret] was created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels assigned to this Secret.
     ///
     /// Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
@@ -28,7 +28,39 @@ pub struct Secret {
     ///
     /// No more than 64 labels can be assigned to a given resource.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Expiration policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. If specified the [Secret][google.cloud.secretmanager.v1.Secret]
+    /// and all [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be automatically deleted at
+    /// expiration. Expired secrets are irreversibly deleted.
+    ///
+    /// Expiration is *not* the recommended way to set time-based permissions. [IAM
+    /// Conditions](https://cloud.google.com/secret-manager/docs/access-control#conditions)
+    /// is recommended for granting time-based permissions because the operation
+    /// can be reversed.
+    #[prost(oneof = "secret::Expiration", tags = "6, 7")]
+    pub expiration: ::core::option::Option<secret::Expiration>,
+}
+/// Nested message and enum types in `Secret`.
+pub mod secret {
+    /// Expiration policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. If specified the [Secret][google.cloud.secretmanager.v1.Secret]
+    /// and all [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be automatically deleted at
+    /// expiration. Expired secrets are irreversibly deleted.
+    ///
+    /// Expiration is *not* the recommended way to set time-based permissions. [IAM
+    /// Conditions](https://cloud.google.com/secret-manager/docs/access-control#conditions)
+    /// is recommended for granting time-based permissions because the operation
+    /// can be reversed.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Expiration {
+        /// Optional. Timestamp in UTC when the [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to expire. This is
+        /// always provided on output, regardless of what was sent on input.
+        #[prost(message, tag = "6")]
+        ExpireTime(::prost_types::Timestamp),
+        /// Input only. The TTL for the [Secret][google.cloud.secretmanager.v1.Secret].
+        #[prost(message, tag = "7")]
+        Ttl(::prost_types::Duration),
+    }
 }
 /// A secret version resource in the Secret Manager API.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -39,22 +71,23 @@ pub struct SecretVersion {
     /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a [Secret][google.cloud.secretmanager.v1.Secret] start at 1 and
     /// are incremented for each subsequent version of the secret.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The time at which the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed.
     /// Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state] is
     /// [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED].
     #[prost(message, optional, tag = "3")]
-    pub destroy_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub destroy_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(enumeration = "secret_version::State", tag = "4")]
     pub state: i32,
     /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(message, optional, tag = "5")]
-    pub replication_status: ::std::option::Option<ReplicationStatus>,
+    pub replication_status: ::core::option::Option<ReplicationStatus>,
 }
+/// Nested message and enum types in `SecretVersion`.
 pub mod secret_version {
     /// The state of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion], indicating if it can be accessed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -78,8 +111,9 @@ pub mod secret_version {
 pub struct Replication {
     /// The replication policy for this secret.
     #[prost(oneof = "replication::Replication", tags = "1, 2")]
-    pub replication: ::std::option::Option<replication::Replication>,
+    pub replication: ::core::option::Option<replication::Replication>,
 }
+/// Nested message and enum types in `Replication`.
 pub mod replication {
     /// A replication policy that replicates the [Secret][google.cloud.secretmanager.v1.Secret] payload without any
     /// restrictions.
@@ -92,7 +126,7 @@ pub mod replication {
         /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added afterwards. They do not apply
         /// retroactively to existing [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
         #[prost(message, optional, tag = "1")]
-        pub customer_managed_encryption: ::std::option::Option<super::CustomerManagedEncryption>,
+        pub customer_managed_encryption: ::core::option::Option<super::CustomerManagedEncryption>,
     }
     /// A replication policy that replicates the [Secret][google.cloud.secretmanager.v1.Secret] payload into the
     /// locations specified in [Secret.replication.user_managed.replicas][]
@@ -102,8 +136,9 @@ pub mod replication {
         ///
         /// Cannot be empty.
         #[prost(message, repeated, tag = "1")]
-        pub replicas: ::std::vec::Vec<user_managed::Replica>,
+        pub replicas: ::prost::alloc::vec::Vec<user_managed::Replica>,
     }
+    /// Nested message and enum types in `UserManaged`.
     pub mod user_managed {
         /// Represents a Replica for this [Secret][google.cloud.secretmanager.v1.Secret].
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -111,7 +146,7 @@ pub mod replication {
             /// The canonical IDs of the location to replicate data.
             /// For example: `"us-east1"`.
             #[prost(string, tag = "1")]
-            pub location: std::string::String,
+            pub location: ::prost::alloc::string::String,
             /// Optional. The customer-managed encryption configuration of the [User-Managed
             /// Replica][Replication.UserManaged.Replica]. If no configuration is
             /// provided, Google-managed default encryption is used.
@@ -121,7 +156,7 @@ pub mod replication {
             /// retroactively to existing [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
             #[prost(message, optional, tag = "2")]
             pub customer_managed_encryption:
-                ::std::option::Option<super::super::CustomerManagedEncryption>,
+                ::core::option::Option<super::super::CustomerManagedEncryption>,
         }
     }
     /// The replication policy for this secret.
@@ -151,15 +186,16 @@ pub struct CustomerManagedEncryption {
     ///
     /// The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     #[prost(string, tag = "1")]
-    pub kms_key_name: std::string::String,
+    pub kms_key_name: ::prost::alloc::string::String,
 }
 /// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationStatus {
     /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(oneof = "replication_status::ReplicationStatus", tags = "1, 2")]
-    pub replication_status: ::std::option::Option<replication_status::ReplicationStatus>,
+    pub replication_status: ::core::option::Option<replication_status::ReplicationStatus>,
 }
+/// Nested message and enum types in `ReplicationStatus`.
 pub mod replication_status {
     /// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using automatic replication.
     ///
@@ -171,7 +207,7 @@ pub mod replication_status {
         /// populated if customer-managed encryption is used.
         #[prost(message, optional, tag = "1")]
         pub customer_managed_encryption:
-            ::std::option::Option<super::CustomerManagedEncryptionStatus>,
+            ::core::option::Option<super::CustomerManagedEncryptionStatus>,
     }
     /// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using user-managed
     /// replication.
@@ -182,8 +218,9 @@ pub mod replication_status {
     pub struct UserManagedStatus {
         /// Output only. The list of replica statuses for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
         #[prost(message, repeated, tag = "1")]
-        pub replicas: ::std::vec::Vec<user_managed_status::ReplicaStatus>,
+        pub replicas: ::prost::alloc::vec::Vec<user_managed_status::ReplicaStatus>,
     }
+    /// Nested message and enum types in `UserManagedStatus`.
     pub mod user_managed_status {
         /// Describes the status of a user-managed replica for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -191,12 +228,12 @@ pub mod replication_status {
             /// Output only. The canonical ID of the replica location.
             /// For example: `"us-east1"`.
             #[prost(string, tag = "1")]
-            pub location: std::string::String,
+            pub location: ::prost::alloc::string::String,
             /// Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
             /// populated if customer-managed encryption is used.
             #[prost(message, optional, tag = "2")]
             pub customer_managed_encryption:
-                ::std::option::Option<super::super::CustomerManagedEncryptionStatus>,
+                ::core::option::Option<super::super::CustomerManagedEncryptionStatus>,
         }
     }
     /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
@@ -225,15 +262,15 @@ pub struct CustomerManagedEncryptionStatus {
     /// secret payload, in the following format:
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.
     #[prost(string, tag = "1")]
-    pub kms_key_version_name: std::string::String,
+    pub kms_key_version_name: ::prost::alloc::string::String,
 }
 /// A secret payload resource in the Secret Manager API. This contains the
 /// sensitive secret payload that is associated with a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretPayload {
     /// The secret data. Must be no larger than 64KiB.
-    #[prost(bytes, tag = "1")]
-    pub data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request message for [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -241,7 +278,7 @@ pub struct ListSecretsRequest {
     /// Required. The resource name of the project associated with the
     /// [Secrets][google.cloud.secretmanager.v1.Secret], in the format `projects/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to be returned in a single page. If
     /// set to 0, the server decides the number of results to return. If the
     /// number is greater than 25000, it is capped at 25000.
@@ -250,7 +287,7 @@ pub struct ListSecretsRequest {
     /// Optional. Pagination token, returned earlier via
     /// [ListSecretsResponse.next_page_token][google.cloud.secretmanager.v1.ListSecretsResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -258,11 +295,11 @@ pub struct ListSecretsResponse {
     /// The list of [Secrets][google.cloud.secretmanager.v1.Secret] sorted in reverse by create_time (newest
     /// first).
     #[prost(message, repeated, tag = "1")]
-    pub secrets: ::std::vec::Vec<Secret>,
+    pub secrets: ::prost::alloc::vec::Vec<Secret>,
     /// A token to retrieve the next page of results. Pass this value in
     /// [ListSecretsRequest.page_token][google.cloud.secretmanager.v1.ListSecretsRequest.page_token] to retrieve the next page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of [Secrets][google.cloud.secretmanager.v1.Secret].
     #[prost(int32, tag = "3")]
     pub total_size: i32,
@@ -273,17 +310,17 @@ pub struct CreateSecretRequest {
     /// Required. The resource name of the project to associate with the
     /// [Secret][google.cloud.secretmanager.v1.Secret], in the format `projects/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. This must be unique within the project.
     ///
     /// A secret ID is a string with a maximum length of 255 characters and can
     /// contain uppercase and lowercase letters, numerals, and the hyphen (`-`) and
     /// underscore (`_`) characters.
     #[prost(string, tag = "2")]
-    pub secret_id: std::string::String,
+    pub secret_id: ::prost::alloc::string::String,
     /// Required. A [Secret][google.cloud.secretmanager.v1.Secret] with initial field values.
     #[prost(message, optional, tag = "3")]
-    pub secret: ::std::option::Option<Secret>,
+    pub secret: ::core::option::Option<Secret>,
 }
 /// Request message for [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -291,17 +328,17 @@ pub struct AddSecretVersionRequest {
     /// Required. The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to associate with the
     /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the format `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The secret payload of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(message, optional, tag = "2")]
-    pub payload: ::std::option::Option<SecretPayload>,
+    pub payload: ::core::option::Option<SecretPayload>,
 }
 /// Request message for [SecretManagerService.GetSecret][google.cloud.secretmanager.v1.SecretManagerService.GetSecret].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretRequest {
     /// Required. The resource name of the [Secret][google.cloud.secretmanager.v1.Secret], in the format `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -310,7 +347,7 @@ pub struct ListSecretVersionsRequest {
     /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] to list, in the format
     /// `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to be returned in a single page. If
     /// set to 0, the server decides the number of results to return. If the
     /// number is greater than 25000, it is capped at 25000.
@@ -319,7 +356,7 @@ pub struct ListSecretVersionsRequest {
     /// Optional. Pagination token, returned earlier via
     /// ListSecretVersionsResponse.next_page_token][].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -327,11 +364,11 @@ pub struct ListSecretVersionsResponse {
     /// The list of [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] sorted in reverse by
     /// create_time (newest first).
     #[prost(message, repeated, tag = "1")]
-    pub versions: ::std::vec::Vec<SecretVersion>,
+    pub versions: ::prost::alloc::vec::Vec<SecretVersion>,
     /// A token to retrieve the next page of results. Pass this value in
     /// [ListSecretVersionsRequest.page_token][google.cloud.secretmanager.v1.ListSecretVersionsRequest.page_token] to retrieve the next page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(int32, tag = "3")]
     pub total_size: i32,
@@ -344,17 +381,17 @@ pub struct GetSecretVersionRequest {
     /// `projects/*/secrets/*/versions/latest` is an alias to the `latest`
     /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.UpdateSecret][google.cloud.secretmanager.v1.SecretManagerService.UpdateSecret].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecretRequest {
     /// Required. [Secret][google.cloud.secretmanager.v1.Secret] with updated field values.
     #[prost(message, optional, tag = "1")]
-    pub secret: ::std::option::Option<Secret>,
+    pub secret: ::core::option::Option<Secret>,
     /// Required. Specifies the fields to be updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -362,7 +399,7 @@ pub struct AccessSecretVersionRequest {
     /// Required. The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -370,10 +407,10 @@ pub struct AccessSecretVersionResponse {
     /// The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Secret payload
     #[prost(message, optional, tag = "2")]
-    pub payload: ::std::option::Option<SecretPayload>,
+    pub payload: ::core::option::Option<SecretPayload>,
 }
 /// Request message for [SecretManagerService.DeleteSecret][google.cloud.secretmanager.v1.SecretManagerService.DeleteSecret].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -381,7 +418,7 @@ pub struct DeleteSecretRequest {
     /// Required. The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to delete in the format
     /// `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.DisableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -389,7 +426,7 @@ pub struct DisableSecretVersionRequest {
     /// Required. The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] to disable in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.EnableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -397,7 +434,7 @@ pub struct EnableSecretVersionRequest {
     /// Required. The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] to enable in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.DestroySecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -405,7 +442,7 @@ pub struct DestroySecretVersionRequest {
     /// Required. The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] to destroy in the format
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod secret_manager_service_client {

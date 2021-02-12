@@ -5,10 +5,10 @@
 pub struct ParsedExpr {
     /// The parsed expression.
     #[prost(message, optional, tag = "2")]
-    pub expr: ::std::option::Option<Expr>,
+    pub expr: ::core::option::Option<Expr>,
     /// The source info derived from input that generated the parsed `expr`.
     #[prost(message, optional, tag = "3")]
-    pub source_info: ::std::option::Option<SourceInfo>,
+    pub source_info: ::core::option::Option<SourceInfo>,
 }
 /// An abstract representation of a common expression.
 ///
@@ -34,8 +34,9 @@ pub struct Expr {
     pub id: i64,
     /// Required. Variants of expressions.
     #[prost(oneof = "expr::ExprKind", tags = "3, 4, 5, 6, 7, 8, 9")]
-    pub expr_kind: ::std::option::Option<expr::ExprKind>,
+    pub expr_kind: ::core::option::Option<expr::ExprKind>,
 }
+/// Nested message and enum types in `Expr`.
 pub mod expr {
     /// An identifier expression. e.g. `request`.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -45,7 +46,7 @@ pub mod expr {
         ///
         /// Qualified names are represented by the [Expr.Select][google.api.expr.v1alpha1.Expr.Select] expression.
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
     }
     /// A field selection expression. e.g. `request.auth`.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -55,13 +56,13 @@ pub mod expr {
         /// For example, in the select expression `request.auth`, the `request`
         /// portion of the expression is the `operand`.
         #[prost(message, optional, boxed, tag = "1")]
-        pub operand: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub operand: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// Required. The name of the field to select.
         ///
         /// For example, in the select expression `request.auth`, the `auth` portion
         /// of the expression would be the `field`.
         #[prost(string, tag = "2")]
-        pub field: std::string::String,
+        pub field: ::prost::alloc::string::String,
         /// Whether the select is to be interpreted as a field presence test.
         ///
         /// This results from the macro `has(request.auth)`.
@@ -76,13 +77,13 @@ pub mod expr {
         /// The target of an method call-style expression. For example, `x` in
         /// `x.f()`.
         #[prost(message, optional, boxed, tag = "1")]
-        pub target: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub target: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// Required. The name of the function or method being called.
         #[prost(string, tag = "2")]
-        pub function: std::string::String,
+        pub function: ::prost::alloc::string::String,
         /// The arguments.
         #[prost(message, repeated, tag = "3")]
-        pub args: ::std::vec::Vec<super::Expr>,
+        pub args: ::prost::alloc::vec::Vec<super::Expr>,
     }
     /// A list creation expression.
     ///
@@ -92,7 +93,7 @@ pub mod expr {
     pub struct CreateList {
         /// The elements part of the list.
         #[prost(message, repeated, tag = "1")]
-        pub elements: ::std::vec::Vec<super::Expr>,
+        pub elements: ::prost::alloc::vec::Vec<super::Expr>,
     }
     /// A map or message creation expression.
     ///
@@ -104,11 +105,12 @@ pub mod expr {
         /// The type name of the message to be created, empty when creating map
         /// literals.
         #[prost(string, tag = "1")]
-        pub message_name: std::string::String,
+        pub message_name: ::prost::alloc::string::String,
         /// The entries in the creation expression.
         #[prost(message, repeated, tag = "2")]
-        pub entries: ::std::vec::Vec<create_struct::Entry>,
+        pub entries: ::prost::alloc::vec::Vec<create_struct::Entry>,
     }
+    /// Nested message and enum types in `CreateStruct`.
     pub mod create_struct {
         /// Represents an entry.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -120,18 +122,19 @@ pub mod expr {
             pub id: i64,
             /// Required. The value assigned to the key.
             #[prost(message, optional, tag = "4")]
-            pub value: ::std::option::Option<super::super::Expr>,
+            pub value: ::core::option::Option<super::super::Expr>,
             /// The `Entry` key kinds.
             #[prost(oneof = "entry::KeyKind", tags = "2, 3")]
-            pub key_kind: ::std::option::Option<entry::KeyKind>,
+            pub key_kind: ::core::option::Option<entry::KeyKind>,
         }
+        /// Nested message and enum types in `Entry`.
         pub mod entry {
             /// The `Entry` key kinds.
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum KeyKind {
                 /// The field key for a message creator statement.
                 #[prost(string, tag = "2")]
-                FieldKey(std::string::String),
+                FieldKey(::prost::alloc::string::String),
                 /// The key expression for a map creation statement.
                 #[prost(message, tag = "3")]
                 MapKey(super::super::super::Expr),
@@ -168,32 +171,32 @@ pub mod expr {
     pub struct Comprehension {
         /// The name of the iteration variable.
         #[prost(string, tag = "1")]
-        pub iter_var: std::string::String,
+        pub iter_var: ::prost::alloc::string::String,
         /// The range over which var iterates.
         #[prost(message, optional, boxed, tag = "2")]
-        pub iter_range: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub iter_range: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// The name of the variable used for accumulation of the result.
         #[prost(string, tag = "3")]
-        pub accu_var: std::string::String,
+        pub accu_var: ::prost::alloc::string::String,
         /// The initial value of the accumulator.
         #[prost(message, optional, boxed, tag = "4")]
-        pub accu_init: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub accu_init: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// An expression which can contain iter_var and accu_var.
         ///
         /// Returns false when the result has been computed and may be used as
         /// a hint to short-circuit the remainder of the comprehension.
         #[prost(message, optional, boxed, tag = "5")]
-        pub loop_condition: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub loop_condition: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// An expression which can contain iter_var and accu_var.
         ///
         /// Computes the next value of accu_var.
         #[prost(message, optional, boxed, tag = "6")]
-        pub loop_step: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub loop_step: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// An expression which can contain accu_var.
         ///
         /// Computes the result.
         #[prost(message, optional, boxed, tag = "7")]
-        pub result: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub result: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
     }
     /// Required. Variants of expressions.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -206,10 +209,10 @@ pub mod expr {
         IdentExpr(Ident),
         /// A field selection expression, e.g. `request.auth`.
         #[prost(message, tag = "5")]
-        SelectExpr(Box<Select>),
+        SelectExpr(::prost::alloc::boxed::Box<Select>),
         /// A call expression, including calls to predefined functions and operators.
         #[prost(message, tag = "6")]
-        CallExpr(Box<Call>),
+        CallExpr(::prost::alloc::boxed::Box<Call>),
         /// A list creation expression.
         #[prost(message, tag = "7")]
         ListExpr(CreateList),
@@ -218,7 +221,7 @@ pub mod expr {
         StructExpr(CreateStruct),
         /// A comprehension expression.
         #[prost(message, tag = "9")]
-        ComprehensionExpr(Box<Comprehension>),
+        ComprehensionExpr(::prost::alloc::boxed::Box<Comprehension>),
     }
 }
 /// Represents a primitive literal.
@@ -238,8 +241,9 @@ pub mod expr {
 pub struct Constant {
     /// Required. The valid constant kinds.
     #[prost(oneof = "constant::ConstantKind", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9")]
-    pub constant_kind: ::std::option::Option<constant::ConstantKind>,
+    pub constant_kind: ::core::option::Option<constant::ConstantKind>,
 }
+/// Nested message and enum types in `Constant`.
 pub mod constant {
     /// Required. The valid constant kinds.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -261,10 +265,10 @@ pub mod constant {
         DoubleValue(f64),
         /// string value.
         #[prost(string, tag = "6")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// bytes value.
         #[prost(bytes, tag = "7")]
-        BytesValue(std::vec::Vec<u8>),
+        BytesValue(::prost::alloc::vec::Vec<u8>),
         /// protobuf.Duration value.
         ///
         /// Deprecated: duration is no longer considered a builtin cel type.
@@ -282,21 +286,21 @@ pub mod constant {
 pub struct SourceInfo {
     /// The syntax version of the source, e.g. `cel1`.
     #[prost(string, tag = "1")]
-    pub syntax_version: std::string::String,
+    pub syntax_version: ::prost::alloc::string::String,
     /// The location name. All position information attached to an expression is
     /// relative to this location.
     ///
     /// The location could be a file, UI element, or similar. For example,
     /// `acme/app/AnvilPolicy.cel`.
     #[prost(string, tag = "2")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// Monotonically increasing list of character offsets where newlines appear.
     ///
     /// The line number of a given position is the index `i` where for a given
     /// `id` the `line_offsets[i] < id_positions[id] < line_offsets[i+1]`. The
     /// column may be derivd from `id_positions[id] - line_offsets[i]`.
     #[prost(int32, repeated, tag = "3")]
-    pub line_offsets: ::std::vec::Vec<i32>,
+    pub line_offsets: ::prost::alloc::vec::Vec<i32>,
     /// A map from the parse node id (e.g. `Expr.id`) to the character offset
     /// within source.
     #[prost(map = "int64, int32", tag = "4")]
@@ -317,7 +321,7 @@ pub struct SourceInfo {
 pub struct SourcePosition {
     /// The soucre location name (e.g. file name).
     #[prost(string, tag = "1")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// The character offset.
     #[prost(int32, tag = "2")]
     pub offset: i32,
@@ -362,11 +366,11 @@ pub struct CheckedExpr {
     /// The source info derived from input that generated the parsed `expr` and
     /// any optimizations made during the type-checking pass.
     #[prost(message, optional, tag = "5")]
-    pub source_info: ::std::option::Option<SourceInfo>,
+    pub source_info: ::core::option::Option<SourceInfo>,
     /// The checked expression. Semantically equivalent to the parsed `expr`, but
     /// may have structural differences.
     #[prost(message, optional, tag = "4")]
-    pub expr: ::std::option::Option<Expr>,
+    pub expr: ::core::option::Option<Expr>,
 }
 /// Represents a CEL type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -376,45 +380,46 @@ pub struct Type {
         oneof = "r#type::TypeKind",
         tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14"
     )]
-    pub type_kind: ::std::option::Option<r#type::TypeKind>,
+    pub type_kind: ::core::option::Option<r#type::TypeKind>,
 }
+/// Nested message and enum types in `Type`.
 pub mod r#type {
     /// List type with typed elements, e.g. `list<example.proto.MyMessage>`.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListType {
         /// The element type.
         #[prost(message, optional, boxed, tag = "1")]
-        pub elem_type: ::std::option::Option<::std::boxed::Box<super::Type>>,
+        pub elem_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
     }
     /// Map type with parameterized key and value types, e.g. `map<string, int>`.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MapType {
         /// The type of the key.
         #[prost(message, optional, boxed, tag = "1")]
-        pub key_type: ::std::option::Option<::std::boxed::Box<super::Type>>,
+        pub key_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
         /// The type of the value.
         #[prost(message, optional, boxed, tag = "2")]
-        pub value_type: ::std::option::Option<::std::boxed::Box<super::Type>>,
+        pub value_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
     }
     /// Function type with result and arg types.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FunctionType {
         /// Result type of the function.
         #[prost(message, optional, boxed, tag = "1")]
-        pub result_type: ::std::option::Option<::std::boxed::Box<super::Type>>,
+        pub result_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
         /// Argument types of the function.
         #[prost(message, repeated, tag = "2")]
-        pub arg_types: ::std::vec::Vec<super::Type>,
+        pub arg_types: ::prost::alloc::vec::Vec<super::Type>,
     }
     /// Application defined abstract type.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AbstractType {
         /// The fully qualified name of this abstract type.
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// Parameter types for this abstract type.
         #[prost(message, repeated, tag = "2")]
-        pub parameter_types: ::std::vec::Vec<super::Type>,
+        pub parameter_types: ::prost::alloc::vec::Vec<super::Type>,
     }
     /// CEL primitive types.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -478,32 +483,32 @@ pub mod r#type {
         WellKnown(i32),
         /// Parameterized list with elements of `list_type`, e.g. `list<timestamp>`.
         #[prost(message, tag = "6")]
-        ListType(Box<ListType>),
+        ListType(::prost::alloc::boxed::Box<ListType>),
         /// Parameterized map with typed keys and values.
         #[prost(message, tag = "7")]
-        MapType(Box<MapType>),
+        MapType(::prost::alloc::boxed::Box<MapType>),
         /// Function type.
         #[prost(message, tag = "8")]
-        Function(Box<FunctionType>),
+        Function(::prost::alloc::boxed::Box<FunctionType>),
         /// Protocol buffer message type.
         ///
         /// The `message_type` string specifies the qualified message type name. For
         /// example, `google.plus.Profile`.
         #[prost(string, tag = "9")]
-        MessageType(std::string::String),
+        MessageType(::prost::alloc::string::String),
         /// Type param type.
         ///
         /// The `type_param` string specifies the type parameter name, e.g. `list<E>`
         /// would be a `list_type` whose element type was a `type_param` type
         /// named `E`.
         #[prost(string, tag = "10")]
-        TypeParam(std::string::String),
+        TypeParam(::prost::alloc::string::String),
         /// Type type.
         ///
         /// The `type` value specifies the target type. e.g. int is type with a
         /// target type of `Primitive.INT`.
         #[prost(message, tag = "11")]
-        Type(Box<super::Type>),
+        Type(::prost::alloc::boxed::Box<super::Type>),
         /// Error type.
         ///
         /// During type-checking if an expression is an error, its type is propagated
@@ -531,11 +536,12 @@ pub struct Decl {
     /// have a name depending on whether the overload is function declaration or a
     /// function definition containing a result [Expr][google.api.expr.v1alpha1.Expr].
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The declaration kind.
     #[prost(oneof = "decl::DeclKind", tags = "2, 3")]
-    pub decl_kind: ::std::option::Option<decl::DeclKind>,
+    pub decl_kind: ::core::option::Option<decl::DeclKind>,
 }
+/// Nested message and enum types in `Decl`.
 pub mod decl {
     /// Identifier declaration which specifies its type and optional `Expr` value.
     ///
@@ -547,14 +553,14 @@ pub mod decl {
     pub struct IdentDecl {
         /// Required. The type of the identifier.
         #[prost(message, optional, tag = "1")]
-        pub r#type: ::std::option::Option<super::Type>,
+        pub r#type: ::core::option::Option<super::Type>,
         /// The constant value of the identifier. If not specified, the identifier
         /// must be supplied at evaluation time.
         #[prost(message, optional, tag = "2")]
-        pub value: ::std::option::Option<super::Constant>,
+        pub value: ::core::option::Option<super::Constant>,
         /// Documentation string for the identifier.
         #[prost(string, tag = "3")]
-        pub doc: std::string::String,
+        pub doc: ::prost::alloc::string::String,
     }
     /// Function declaration specifies one or more overloads which indicate the
     /// function's parameter types and return type, and may optionally specify a
@@ -566,8 +572,9 @@ pub mod decl {
     pub struct FunctionDecl {
         /// Required. List of function overloads, must contain at least one overload.
         #[prost(message, repeated, tag = "1")]
-        pub overloads: ::std::vec::Vec<function_decl::Overload>,
+        pub overloads: ::prost::alloc::vec::Vec<function_decl::Overload>,
     }
+    /// Nested message and enum types in `FunctionDecl`.
     pub mod function_decl {
         /// An overload indicates a function's parameter types and return type, and
         /// may optionally include a function body described in terms of [Expr][google.api.expr.v1alpha1.Expr]
@@ -587,7 +594,7 @@ pub mod decl {
             /// This will be used by a [Reference][google.api.expr.v1alpha1.Reference] to indicate the `overload_id` that
             /// was resolved for the function `name`.
             #[prost(string, tag = "1")]
-            pub overload_id: std::string::String,
+            pub overload_id: ::prost::alloc::string::String,
             /// List of function parameter [Type][google.api.expr.v1alpha1.Type] values.
             ///
             /// Param types are disjoint after generic type parameters have been
@@ -599,17 +606,17 @@ pub mod decl {
             /// When the `result_type` of a function is a generic type param, the
             /// type param name also appears as the `type` of on at least one params.
             #[prost(message, repeated, tag = "2")]
-            pub params: ::std::vec::Vec<super::super::Type>,
+            pub params: ::prost::alloc::vec::Vec<super::super::Type>,
             /// The type param names associated with the function declaration.
             ///
             /// For example, `function ex<K,V>(K key, map<K, V> map) : V` would yield
             /// the type params of `K, V`.
             #[prost(string, repeated, tag = "3")]
-            pub type_params: ::std::vec::Vec<std::string::String>,
+            pub type_params: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Required. The result type of the function. For example, the operator
             /// `string.isEmpty()` would have `result_type` of `kind: BOOL`.
             #[prost(message, optional, tag = "4")]
-            pub result_type: ::std::option::Option<super::super::Type>,
+            pub result_type: ::core::option::Option<super::super::Type>,
             /// Whether the function is to be used in a method call-style `x.f(...)`
             /// of a function call-style `f(x, ...)`.
             ///
@@ -619,7 +626,7 @@ pub mod decl {
             pub is_instance_function: bool,
             /// Documentation string for the overload.
             #[prost(string, tag = "6")]
-            pub doc: std::string::String,
+            pub doc: ::prost::alloc::string::String,
         }
     }
     /// Required. The declaration kind.
@@ -638,7 +645,7 @@ pub mod decl {
 pub struct Reference {
     /// The fully qualified name of the declaration.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// For references to functions, this is a list of `Overload.overload_id`
     /// values which match according to typing rules.
     ///
@@ -648,11 +655,11 @@ pub struct Reference {
     ///
     /// Empty if this is not a reference to a [Decl.FunctionDecl][google.api.expr.v1alpha1.Decl.FunctionDecl].
     #[prost(string, repeated, tag = "3")]
-    pub overload_id: ::std::vec::Vec<std::string::String>,
+    pub overload_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// For references to constants, this may contain the value of the
     /// constant if known at compile time.
     #[prost(message, optional, tag = "4")]
-    pub value: ::std::option::Option<Constant>,
+    pub value: ::core::option::Option<Constant>,
 }
 // Contains representations for CEL runtime values.
 
@@ -664,8 +671,9 @@ pub struct Reference {
 pub struct Value {
     /// Required. The valid kinds of values.
     #[prost(oneof = "value::Kind", tags = "1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 15")]
-    pub kind: ::std::option::Option<value::Kind>,
+    pub kind: ::core::option::Option<value::Kind>,
 }
+/// Nested message and enum types in `Value`.
 pub mod value {
     /// Required. The valid kinds of values.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -687,10 +695,10 @@ pub mod value {
         DoubleValue(f64),
         /// UTF-8 string value.
         #[prost(string, tag = "6")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// Byte string value.
         #[prost(bytes, tag = "7")]
-        BytesValue(std::vec::Vec<u8>),
+        BytesValue(::prost::alloc::vec::Vec<u8>),
         /// An enum value.
         #[prost(message, tag = "9")]
         EnumValue(super::EnumValue),
@@ -705,7 +713,7 @@ pub mod value {
         ListValue(super::ListValue),
         /// Type value.
         #[prost(string, tag = "15")]
-        TypeValue(std::string::String),
+        TypeValue(::prost::alloc::string::String),
     }
 }
 /// An enum value.
@@ -713,7 +721,7 @@ pub mod value {
 pub struct EnumValue {
     /// The fully qualified name of the enum type.
     #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// The value of the enum.
     #[prost(int32, tag = "2")]
     pub value: i32,
@@ -726,7 +734,7 @@ pub struct EnumValue {
 pub struct ListValue {
     /// The ordered values in the list.
     #[prost(message, repeated, tag = "1")]
-    pub values: ::std::vec::Vec<Value>,
+    pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// A map.
 ///
@@ -739,8 +747,9 @@ pub struct MapValue {
     /// CEL has fewer restrictions on keys, so a protobuf map represenation
     /// cannot be used.
     #[prost(message, repeated, tag = "1")]
-    pub entries: ::std::vec::Vec<map_value::Entry>,
+    pub entries: ::prost::alloc::vec::Vec<map_value::Entry>,
 }
+/// Nested message and enum types in `MapValue`.
 pub mod map_value {
     /// An entry in the map.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -750,10 +759,10 @@ pub mod map_value {
         /// Must be unique with in the map.
         /// Currently only boolean, int, uint, and string values can be keys.
         #[prost(message, optional, tag = "1")]
-        pub key: ::std::option::Option<super::Value>,
+        pub key: ::core::option::Option<super::Value>,
         /// The value.
         #[prost(message, optional, tag = "2")]
-        pub value: ::std::option::Option<super::Value>,
+        pub value: ::core::option::Option<super::Value>,
     }
 }
 /// The state of an evaluation.
@@ -763,14 +772,15 @@ pub mod map_value {
 pub struct EvalState {
     /// The unique values referenced in this message.
     #[prost(message, repeated, tag = "1")]
-    pub values: ::std::vec::Vec<ExprValue>,
+    pub values: ::prost::alloc::vec::Vec<ExprValue>,
     /// An ordered list of results.
     ///
     /// Tracks the flow of evaluation through the expression.
     /// May be sparse.
     #[prost(message, repeated, tag = "3")]
-    pub results: ::std::vec::Vec<eval_state::Result>,
+    pub results: ::prost::alloc::vec::Vec<eval_state::Result>,
 }
+/// Nested message and enum types in `EvalState`.
 pub mod eval_state {
     /// A single evalution result.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -788,8 +798,9 @@ pub mod eval_state {
 pub struct ExprValue {
     /// An expression can resolve to a value, error or unknown.
     #[prost(oneof = "expr_value::Kind", tags = "1, 2, 3")]
-    pub kind: ::std::option::Option<expr_value::Kind>,
+    pub kind: ::core::option::Option<expr_value::Kind>,
 }
+/// Nested message and enum types in `ExprValue`.
 pub mod expr_value {
     /// An expression can resolve to a value, error or unknown.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -850,7 +861,7 @@ pub mod expr_value {
 pub struct ErrorSet {
     /// The errors in the set.
     #[prost(message, repeated, tag = "1")]
-    pub errors: ::std::vec::Vec<super::super::super::rpc::Status>,
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// A set of expressions for which the value is unknown.
 ///
@@ -859,20 +870,20 @@ pub struct ErrorSet {
 pub struct UnknownSet {
     /// The ids of the expressions with unknown values.
     #[prost(int64, repeated, tag = "1")]
-    pub exprs: ::std::vec::Vec<i64>,
+    pub exprs: ::prost::alloc::vec::Vec<i64>,
 }
 /// Request message for the Parse method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParseRequest {
     /// Required. Source text in CEL syntax.
     #[prost(string, tag = "1")]
-    pub cel_source: std::string::String,
+    pub cel_source: ::prost::alloc::string::String,
     /// Tag for version of CEL syntax, for future use.
     #[prost(string, tag = "2")]
-    pub syntax_version: std::string::String,
+    pub syntax_version: ::prost::alloc::string::String,
     /// File or resource for source text, used in [SourceInfo][google.api.expr.v1alpha1.SourceInfo].
     #[prost(string, tag = "3")]
-    pub source_location: std::string::String,
+    pub source_location: ::prost::alloc::string::String,
     /// Prevent macro expansion.  See "Macros" in Language Defiinition.
     #[prost(bool, tag = "4")]
     pub disable_macros: bool,
@@ -882,26 +893,26 @@ pub struct ParseRequest {
 pub struct ParseResponse {
     /// The parsed representation, or unset if parsing failed.
     #[prost(message, optional, tag = "1")]
-    pub parsed_expr: ::std::option::Option<ParsedExpr>,
+    pub parsed_expr: ::core::option::Option<ParsedExpr>,
     /// Any number of issues with [StatusDetails][] as the details.
     #[prost(message, repeated, tag = "2")]
-    pub issues: ::std::vec::Vec<super::super::super::rpc::Status>,
+    pub issues: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// Request message for the Check method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckRequest {
     /// Required. The parsed representation of the CEL program.
     #[prost(message, optional, tag = "1")]
-    pub parsed_expr: ::std::option::Option<ParsedExpr>,
+    pub parsed_expr: ::core::option::Option<ParsedExpr>,
     /// Declarations of types for external variables and functions.
     /// Required if program uses external variables or functions
     /// not in the default environment.
     #[prost(message, repeated, tag = "2")]
-    pub type_env: ::std::vec::Vec<Decl>,
+    pub type_env: ::prost::alloc::vec::Vec<Decl>,
     /// The protocol buffer context.  See "Name Resolution" in the
     /// Language Definition.
     #[prost(string, tag = "3")]
-    pub container: std::string::String,
+    pub container: ::prost::alloc::string::String,
     /// If true, use only the declarations in [type_env][google.api.expr.v1alpha1.CheckRequest.type_env].  If false (default),
     /// add declarations for the standard definitions to the type environment.  See
     /// "Standard Definitions" in the Language Definition.
@@ -913,10 +924,10 @@ pub struct CheckRequest {
 pub struct CheckResponse {
     /// The annotated representation, or unset if checking failed.
     #[prost(message, optional, tag = "1")]
-    pub checked_expr: ::std::option::Option<CheckedExpr>,
+    pub checked_expr: ::core::option::Option<CheckedExpr>,
     /// Any number of issues with [StatusDetails][] as the details.
     #[prost(message, repeated, tag = "2")]
-    pub issues: ::std::vec::Vec<super::super::super::rpc::Status>,
+    pub issues: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// Request message for the Eval method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -924,14 +935,15 @@ pub struct EvalRequest {
     /// Bindings for the external variables.  The types SHOULD be compatible
     /// with the type environment in [CheckRequest][google.api.expr.v1alpha1.CheckRequest], if checked.
     #[prost(map = "string, message", tag = "3")]
-    pub bindings: ::std::collections::HashMap<std::string::String, ExprValue>,
+    pub bindings: ::std::collections::HashMap<::prost::alloc::string::String, ExprValue>,
     /// SHOULD be the same container as used in [CheckRequest][google.api.expr.v1alpha1.CheckRequest], if checked.
     #[prost(string, tag = "4")]
-    pub container: std::string::String,
+    pub container: ::prost::alloc::string::String,
     /// Required. Either the parsed or annotated representation of the CEL program.
     #[prost(oneof = "eval_request::ExprKind", tags = "1, 2")]
-    pub expr_kind: ::std::option::Option<eval_request::ExprKind>,
+    pub expr_kind: ::core::option::Option<eval_request::ExprKind>,
 }
+/// Nested message and enum types in `EvalRequest`.
 pub mod eval_request {
     /// Required. Either the parsed or annotated representation of the CEL program.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -949,13 +961,13 @@ pub mod eval_request {
 pub struct EvalResponse {
     /// The execution result, or unset if execution couldn't start.
     #[prost(message, optional, tag = "1")]
-    pub result: ::std::option::Option<ExprValue>,
+    pub result: ::core::option::Option<ExprValue>,
     /// Any number of issues with [StatusDetails][] as the details.
     /// Note that CEL execution errors are reified into [ExprValue][google.api.expr.v1alpha1.ExprValue].
     /// Nevertheless, we'll allow out-of-band issues to be raised,
     /// which also makes the replies more regular.
     #[prost(message, repeated, tag = "2")]
-    pub issues: ::std::vec::Vec<super::super::super::rpc::Status>,
+    pub issues: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// Warnings or errors in service execution are represented by
 /// [google.rpc.Status][google.rpc.Status] messages, with the following message
@@ -967,11 +979,12 @@ pub struct IssueDetails {
     pub severity: i32,
     /// Position in the source, if known.
     #[prost(message, optional, tag = "2")]
-    pub position: ::std::option::Option<SourcePosition>,
+    pub position: ::core::option::Option<SourcePosition>,
     /// Expression ID from [Expr][google.api.expr.v1alpha1.Expr], 0 if unknown.
     #[prost(int64, tag = "3")]
     pub id: i64,
 }
+/// Nested message and enum types in `IssueDetails`.
 pub mod issue_details {
     /// Severities of issues.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1091,15 +1104,16 @@ pub struct Explain {
     /// The field value_index is an index in the values list.
     /// Separating values from steps is needed to remove redundant values.
     #[prost(message, repeated, tag = "1")]
-    pub values: ::std::vec::Vec<Value>,
+    pub values: ::prost::alloc::vec::Vec<Value>,
     /// List of steps.
     ///
     /// Repeated evaluations of the same expression generate new ExprStep
     /// instances. The order of such ExprStep instances matches the order of
     /// elements returned by Comprehension.iter_range.
     #[prost(message, repeated, tag = "2")]
-    pub expr_steps: ::std::vec::Vec<explain::ExprStep>,
+    pub expr_steps: ::prost::alloc::vec::Vec<explain::ExprStep>,
 }
+/// Nested message and enum types in `Explain`.
 pub mod explain {
     /// ID and value index of one step.
     #[derive(Clone, PartialEq, ::prost::Message)]

@@ -5,14 +5,14 @@ pub struct SnapToRoadsRequest {
     /// The path to be snapped as a series of lat, lng points. Specified as
     /// a string of the format: lat,lng|lat,lng|...
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Whether to interpolate the points to return full road geometry.
     #[prost(bool, tag = "2")]
     pub interpolate: bool,
     /// The asset ID of the asset to which this path relates. This is used for
     /// abuse detection purposes for clients with asset-based SKUs.
     #[prost(string, tag = "3")]
-    pub asset_id: std::string::String,
+    pub asset_id: ::prost::alloc::string::String,
     /// The type of travel being tracked. This will constrain the paths we snap to.
     #[prost(enumeration = "TravelMode", tag = "4")]
     pub travel_mode: i32,
@@ -22,16 +22,16 @@ pub struct SnapToRoadsRequest {
 pub struct SnappedPoint {
     /// The lat,lng of the snapped location.
     #[prost(message, optional, tag = "1")]
-    pub location: ::std::option::Option<super::super::super::r#type::LatLng>,
+    pub location: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// The index into the original path of the equivalent pre-snapped point.
     /// This allows for identification of points which have been interpolated if
     /// this index is missing.
     #[prost(message, optional, tag = "2")]
-    pub original_index: ::std::option::Option<u32>,
+    pub original_index: ::core::option::Option<u32>,
     /// The place ID for this snapped location (road segment). These are the same
     /// as are currently used by the Places API.
     #[prost(string, tag = "3")]
-    pub place_id: std::string::String,
+    pub place_id: ::prost::alloc::string::String,
 }
 /// The response from the SnapToRoads method, returning a sequence of snapped
 /// points.
@@ -39,11 +39,11 @@ pub struct SnappedPoint {
 pub struct SnapToRoadsResponse {
     /// A list of snapped points.
     #[prost(message, repeated, tag = "1")]
-    pub snapped_points: ::std::vec::Vec<SnappedPoint>,
+    pub snapped_points: ::prost::alloc::vec::Vec<SnappedPoint>,
     /// User-visible warning message, if any, which can be shown alongside a valid
     /// result.
     #[prost(string, tag = "2")]
-    pub warning_message: std::string::String,
+    pub warning_message: ::prost::alloc::string::String,
 }
 /// A request to the ListNearestRoads method, requesting that a sequence of
 /// points be snapped individually to the road segment that each is closest to.
@@ -52,7 +52,7 @@ pub struct ListNearestRoadsRequest {
     /// The points to be snapped as a series of lat, lng points. Specified as
     /// a string of the format: lat,lng|lat,lng|...
     #[prost(string, tag = "1")]
-    pub points: std::string::String,
+    pub points: ::prost::alloc::string::String,
     /// The type of travel being tracked. This will constrain the roads we snap to.
     #[prost(enumeration = "TravelMode", tag = "2")]
     pub travel_mode: i32,
@@ -63,7 +63,7 @@ pub struct ListNearestRoadsRequest {
 pub struct ListNearestRoadsResponse {
     /// A list of snapped points.
     #[prost(message, repeated, tag = "1")]
-    pub snapped_points: ::std::vec::Vec<SnappedPoint>,
+    pub snapped_points: ::prost::alloc::vec::Vec<SnappedPoint>,
 }
 /// An enum representing the mode of travel used for snapping.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

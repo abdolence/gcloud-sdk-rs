@@ -3,8 +3,9 @@
 pub struct TypedValue {
     /// The typed value field.
     #[prost(oneof = "typed_value::Value", tags = "1, 2, 3, 4, 5")]
-    pub value: ::std::option::Option<typed_value::Value>,
+    pub value: ::core::option::Option<typed_value::Value>,
 }
+/// Nested message and enum types in `TypedValue`.
 pub mod typed_value {
     /// The typed value field.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -22,7 +23,7 @@ pub mod typed_value {
         DoubleValue(f64),
         /// A variable-length string value.
         #[prost(string, tag = "4")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// A distribution value.
         #[prost(message, tag = "5")]
         DistributionValue(super::super::super::api::Distribution),
@@ -54,12 +55,12 @@ pub mod typed_value {
 pub struct TimeInterval {
     /// Required. The end of the time interval.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The beginning of the time interval.  The default value
     /// for the start time is the end time. The start time must not be
     /// later than the end time.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Describes how to combine multiple time series to provide a different view of
 /// the data.  Aggregation of time series is done in two steps. First, each time
@@ -100,7 +101,7 @@ pub struct Aggregation {
     /// If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
     /// specified, then this field is ignored.
     #[prost(message, optional, tag = "1")]
-    pub alignment_period: ::std::option::Option<::prost_types::Duration>,
+    pub alignment_period: ::core::option::Option<::prost_types::Duration>,
     /// An `Aligner` describes how to bring the data points in a single
     /// time series into temporal alignment. Except for `ALIGN_NONE`, all
     /// alignments cause all the data points in an `alignment_period` to be
@@ -150,8 +151,9 @@ pub struct Aggregation {
     /// a single output time series. If `cross_series_reducer` is not
     /// defined, this field is ignored.
     #[prost(string, repeated, tag = "5")]
-    pub group_by_fields: ::std::vec::Vec<std::string::String>,
+    pub group_by_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Aggregation`.
 pub mod aggregation {
     /// The `Aligner` specifies the operation that will be applied to the data
     /// points in each alignment period in a time series. Except for
@@ -427,10 +429,10 @@ pub enum ServiceTier {
 pub struct MutationRecord {
     /// When the change occurred.
     #[prost(message, optional, tag = "1")]
-    pub mutate_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub mutate_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The email address of the user making the change.
     #[prost(string, tag = "2")]
-    pub mutated_by: std::string::String,
+    pub mutated_by: ::prost::alloc::string::String,
 }
 /// A description of the conditions under which some aspect of your system is
 /// considered to be "unhealthy" and the ways to notify people or services about
@@ -449,20 +451,20 @@ pub struct AlertPolicy {
     /// method, do not include the `name` field in the alerting policy passed as
     /// part of the request.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A short name or phrase used to identify the policy in dashboards,
     /// notifications, and incidents. To avoid confusion, don't use the same
     /// display name for multiple policies in the same project. The name is
     /// limited to 512 Unicode characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Documentation that is included with notifications and incidents related to
     /// this policy. Best practice is for the documentation to include information
     /// to help responders understand, mitigate, escalate, and correct the
     /// underlying problems detected by the alerting policy. Notification channels
     /// that have limited capacity might not show this documentation.
     #[prost(message, optional, tag = "13")]
-    pub documentation: ::std::option::Option<alert_policy::Documentation>,
+    pub documentation: ::core::option::Option<alert_policy::Documentation>,
     /// User-supplied key/value data to be used for organizing and
     /// identifying the `AlertPolicy` objects.
     ///
@@ -471,7 +473,8 @@ pub struct AlertPolicy {
     /// values can contain only lowercase letters, numerals, underscores, and
     /// dashes. Keys must begin with a letter.
     #[prost(map = "string, string", tag = "16")]
-    pub user_labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub user_labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// A list of conditions for the policy. The conditions are combined by AND or
     /// OR according to the `combiner` field. If the combined conditions evaluate
     /// to true, then an incident is created. A policy can have from one to six
@@ -479,7 +482,7 @@ pub struct AlertPolicy {
     /// If `condition_time_series_query_language` is present, it must be the only
     /// `condition`.
     #[prost(message, repeated, tag = "12")]
-    pub conditions: ::std::vec::Vec<alert_policy::Condition>,
+    pub conditions: ::prost::alloc::vec::Vec<alert_policy::Condition>,
     /// How to combine the results of multiple conditions to determine if an
     /// incident should be opened.
     /// If `condition_time_series_query_language` is present, this must be
@@ -492,11 +495,11 @@ pub struct AlertPolicy {
     /// field should always be populated on List and Get operations, unless
     /// a field projection has been specified that strips it out.
     #[prost(message, optional, tag = "17")]
-    pub enabled: ::std::option::Option<bool>,
+    pub enabled: ::core::option::Option<bool>,
     /// Read-only description of how the alert policy is invalid. OK if the alert
     /// policy is valid. If not OK, the alert policy will not generate incidents.
     #[prost(message, optional, tag = "18")]
-    pub validity: ::std::option::Option<super::super::rpc::Status>,
+    pub validity: ::core::option::Option<super::super::rpc::Status>,
     /// Identifies the notification channels to which notifications should be sent
     /// when incidents are opened or closed or when new violations occur on
     /// an already opened incident. Each element of this array corresponds to
@@ -508,16 +511,17 @@ pub struct AlertPolicy {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
     #[prost(string, repeated, tag = "14")]
-    pub notification_channels: ::std::vec::Vec<std::string::String>,
+    pub notification_channels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A read-only record of the creation of the alerting policy. If provided
     /// in a call to create or update, this field will be ignored.
     #[prost(message, optional, tag = "10")]
-    pub creation_record: ::std::option::Option<MutationRecord>,
+    pub creation_record: ::core::option::Option<MutationRecord>,
     /// A read-only record of the most recent change to the alerting policy. If
     /// provided in a call to create or update, this field will be ignored.
     #[prost(message, optional, tag = "11")]
-    pub mutation_record: ::std::option::Option<MutationRecord>,
+    pub mutation_record: ::core::option::Option<MutationRecord>,
 }
+/// Nested message and enum types in `AlertPolicy`.
 pub mod alert_policy {
     /// A content string and a MIME type that describes the content string's
     /// format.
@@ -528,12 +532,12 @@ pub mod alert_policy {
         /// more than 10,240 bytes when encoded in UTF-8 format, whichever is
         /// smaller.
         #[prost(string, tag = "1")]
-        pub content: std::string::String,
+        pub content: ::prost::alloc::string::String,
         /// The format of the `content` field. Presently, only the value
         /// `"text/markdown"` is supported. See
         /// [Markdown](https://en.wikipedia.org/wiki/Markdown) for more information.
         #[prost(string, tag = "2")]
-        pub mime_type: std::string::String,
+        pub mime_type: ::prost::alloc::string::String,
     }
     /// A condition is a true/false test that determines when an alerting policy
     /// should open an incident. If a condition evaluates to true, it signifies
@@ -566,16 +570,17 @@ pub mod alert_policy {
         /// values.  Otherwise, treat the change as a new condition and let the
         /// existing condition be deleted.
         #[prost(string, tag = "12")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// A short name or phrase used to identify the condition in dashboards,
         /// notifications, and incidents. To avoid confusion, don't use the same
         /// display name for multiple conditions in the same policy.
         #[prost(string, tag = "6")]
-        pub display_name: std::string::String,
+        pub display_name: ::prost::alloc::string::String,
         /// Only one of the following condition types will be specified.
         #[prost(oneof = "condition::Condition", tags = "1, 2")]
-        pub condition: ::std::option::Option<condition::Condition>,
+        pub condition: ::core::option::Option<condition::Condition>,
     }
+    /// Nested message and enum types in `Condition`.
     pub mod condition {
         /// Specifies how many time series must fail a predicate to trigger a
         /// condition. If not specified, then a `{count: 1}` trigger is used.
@@ -583,8 +588,9 @@ pub mod alert_policy {
         pub struct Trigger {
             /// A type of trigger.
             #[prost(oneof = "trigger::Type", tags = "1, 2")]
-            pub r#type: ::std::option::Option<trigger::Type>,
+            pub r#type: ::core::option::Option<trigger::Type>,
         }
+        /// Nested message and enum types in `Trigger`.
         pub mod trigger {
             /// A type of trigger.
             #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -614,7 +620,7 @@ pub mod alert_policy {
             /// restrictions on resource type, resource labels, and metric labels.
             /// This field may not exceed 2048 Unicode characters in length.
             #[prost(string, tag = "2")]
-            pub filter: std::string::String,
+            pub filter: ::prost::alloc::string::String,
             /// Specifies the alignment of data points in individual time series as
             /// well as how to combine the retrieved time series together (such as
             /// when aggregating multiple streams on each resource to a single
@@ -627,7 +633,7 @@ pub mod alert_policy {
             /// It is advisable to use the `ListTimeSeries` method when debugging this
             /// field.
             #[prost(message, repeated, tag = "8")]
-            pub aggregations: ::std::vec::Vec<super::super::Aggregation>,
+            pub aggregations: ::prost::alloc::vec::Vec<super::super::Aggregation>,
             /// A [filter](https://cloud.google.com/monitoring/api/v3/filters) that
             /// identifies a time series that should be used as the denominator of a
             /// ratio that will be compared with the threshold. If a
@@ -638,7 +644,7 @@ pub mod alert_policy {
             /// restrictions on resource type, resource labels, and metric labels.
             /// This field may not exceed 2048 Unicode characters in length.
             #[prost(string, tag = "9")]
-            pub denominator_filter: std::string::String,
+            pub denominator_filter: ::prost::alloc::string::String,
             /// Specifies the alignment of data points in individual time series
             /// selected by `denominatorFilter` as
             /// well as how to combine the retrieved time series together (such as
@@ -650,7 +656,7 @@ pub mod alert_policy {
             /// `denominator_aggregations` fields must use the same alignment period
             /// and produce time series that have the same periodicity and labels.
             #[prost(message, repeated, tag = "10")]
-            pub denominator_aggregations: ::std::vec::Vec<super::super::Aggregation>,
+            pub denominator_aggregations: ::prost::alloc::vec::Vec<super::super::Aggregation>,
             /// The comparison to apply between the time series (indicated by `filter`
             /// and `aggregation`) and the threshold (indicated by `threshold_value`).
             /// The comparison is applied on each time series, with the time series
@@ -673,7 +679,7 @@ pub mod alert_policy {
             /// outlier does not generate spurious alerts, but short enough that
             /// unhealthy states are detected and alerted on quickly.
             #[prost(message, optional, tag = "6")]
-            pub duration: ::std::option::Option<::prost_types::Duration>,
+            pub duration: ::core::option::Option<::prost_types::Duration>,
             /// The number/percent of time series for which the comparison must hold
             /// in order for the condition to trigger. If unspecified, then the
             /// condition will trigger if the comparison is true for any of the
@@ -681,7 +687,7 @@ pub mod alert_policy {
             /// or by the ratio, if `denominator_filter` and `denominator_aggregations`
             /// are specified.
             #[prost(message, optional, tag = "7")]
-            pub trigger: ::std::option::Option<Trigger>,
+            pub trigger: ::core::option::Option<Trigger>,
         }
         /// A condition type that checks that monitored resources
         /// are reporting data. The configuration defines a metric and
@@ -701,7 +707,7 @@ pub mod alert_policy {
             /// restrictions on resource type, resource labels, and metric labels.
             /// This field may not exceed 2048 Unicode characters in length.
             #[prost(string, tag = "1")]
-            pub filter: std::string::String,
+            pub filter: ::prost::alloc::string::String,
             /// Specifies the alignment of data points in individual time series as
             /// well as how to combine the retrieved time series together (such as
             /// when aggregating multiple streams on each resource to a single
@@ -714,7 +720,7 @@ pub mod alert_policy {
             /// It is advisable to use the `ListTimeSeries` method when debugging this
             /// field.
             #[prost(message, repeated, tag = "5")]
-            pub aggregations: ::std::vec::Vec<super::super::Aggregation>,
+            pub aggregations: ::prost::alloc::vec::Vec<super::super::Aggregation>,
             /// The amount of time that a time series must fail to report new
             /// data to be considered failing. Currently, only values that
             /// are a multiple of a minute--e.g.  60, 120, or 300
@@ -722,13 +728,13 @@ pub mod alert_policy {
             /// error will be returned. The `Duration.nanos` field is
             /// ignored.
             #[prost(message, optional, tag = "2")]
-            pub duration: ::std::option::Option<::prost_types::Duration>,
+            pub duration: ::core::option::Option<::prost_types::Duration>,
             /// The number/percent of time series for which the comparison must hold
             /// in order for the condition to trigger. If unspecified, then the
             /// condition will trigger if the comparison is true for any of the
             /// time series that have been identified by `filter` and `aggregations`.
             #[prost(message, optional, tag = "3")]
-            pub trigger: ::std::option::Option<Trigger>,
+            pub trigger: ::core::option::Option<Trigger>,
         }
         /// Only one of the following condition types will be specified.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -776,12 +782,12 @@ pub struct CreateAlertPolicyRequest {
     /// `/alertPolicies/[ALERT_POLICY_ID]`, identifying the policy in the
     /// container.
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The requested alerting policy. You should omit the `name` field in this
     /// policy. The name will be returned in the new policy, including
     /// a new `[ALERT_POLICY_ID]` value.
     #[prost(message, optional, tag = "2")]
-    pub alert_policy: ::std::option::Option<AlertPolicy>,
+    pub alert_policy: ::core::option::Option<AlertPolicy>,
 }
 /// The protocol for the `GetAlertPolicy` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -790,7 +796,7 @@ pub struct GetAlertPolicyRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListAlertPolicies` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -805,14 +811,14 @@ pub struct ListAlertPoliciesRequest {
     /// [GetAlertPolicy][google.monitoring.v3.AlertPolicyService.GetAlertPolicy]
     /// operation, instead.
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If provided, this field specifies the criteria that must be met by
     /// alert policies to be included in the response.
     ///
     /// For more details, see [sorting and
     /// filtering](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// A comma-separated list of fields by which to sort the result. Supports
     /// the same set of field references as the `filter` field. Entries can be
     /// prefixed with a minus sign to sort by the field in descending order.
@@ -820,7 +826,7 @@ pub struct ListAlertPoliciesRequest {
     /// For more details, see [sorting and
     /// filtering](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -828,19 +834,19 @@ pub struct ListAlertPoliciesRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return more results from the previous method call.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListAlertPolicies` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertPoliciesResponse {
     /// The returned alert policies.
     #[prost(message, repeated, tag = "3")]
-    pub alert_policies: ::std::vec::Vec<AlertPolicy>,
+    pub alert_policies: ::prost::alloc::vec::Vec<AlertPolicy>,
     /// If there might be more results than were returned, then this field is set
     /// to a non-empty value. To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The protocol for the `UpdateAlertPolicy` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -867,13 +873,13 @@ pub struct UpdateAlertPolicyRequest {
     ///     `[CONDITION_ID]`. If the supplied condition omits the `name` field,
     ///     then a new `[CONDITION_ID]` is created.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The updated alerting policy or the updated values for the
     /// fields listed in `update_mask`.
     /// If `update_mask` is not empty, any fields in this policy that are
     /// not in `update_mask` are ignored.
     #[prost(message, optional, tag = "3")]
-    pub alert_policy: ::std::option::Option<AlertPolicy>,
+    pub alert_policy: ::core::option::Option<AlertPolicy>,
 }
 /// The protocol for the `DeleteAlertPolicy` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -884,7 +890,7 @@ pub struct DeleteAlertPolicyRequest {
     ///
     /// For more information, see [AlertPolicy][google.monitoring.v3.AlertPolicy].
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod alert_policy_service_client {
@@ -1038,7 +1044,8 @@ pub mod alert_policy_service_client {
 pub struct DroppedLabels {
     /// Map from label to its value, for all labels dropped in any aggregation.
     #[prost(map = "string, string", tag = "1")]
-    pub label: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub label:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// The description of a dynamic collection of monitored resources. Each group
 /// has a filter that is matched against monitored resources and their associated
@@ -1076,21 +1083,21 @@ pub struct Group {
     /// consisting of the project specified in the call to `CreateGroup`
     /// and a unique `[GROUP_ID]` that is generated automatically.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A user-assigned name for this group, used only for display purposes.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The name of the group's parent, if it has one. The format is:
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     ///
     /// For groups with no parent, `parent_name` is the empty string, `""`.
     #[prost(string, tag = "3")]
-    pub parent_name: std::string::String,
+    pub parent_name: ::prost::alloc::string::String,
     /// The filter used to determine which monitored resources belong to this
     /// group.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// If true, the members of this group are considered to be a cluster.
     /// The system can perform additional analysis on groups that are clusters.
     #[prost(bool, tag = "6")]
@@ -1103,7 +1110,7 @@ pub struct ListGroupsRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "7")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of results to return.
     #[prost(int32, tag = "5")]
     pub page_size: i32,
@@ -1111,13 +1118,14 @@ pub struct ListGroupsRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "6")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// An optional filter consisting of a single group name.  The filters limit
     /// the groups returned based on their parent-child relationship with the
     /// specified group. If no filter is specified, all groups are returned.
     #[prost(oneof = "list_groups_request::Filter", tags = "2, 3, 4")]
-    pub filter: ::std::option::Option<list_groups_request::Filter>,
+    pub filter: ::core::option::Option<list_groups_request::Filter>,
 }
+/// Nested message and enum types in `ListGroupsRequest`.
 pub mod list_groups_request {
     /// An optional filter consisting of a single group name.  The filters limit
     /// the groups returned based on their parent-child relationship with the
@@ -1131,7 +1139,7 @@ pub mod list_groups_request {
         /// Returns groups whose `parent_name` field contains the group
         /// name.  If no groups have this parent, the results are empty.
         #[prost(string, tag = "2")]
-        ChildrenOfGroup(std::string::String),
+        ChildrenOfGroup(::prost::alloc::string::String),
         /// A group name. The format is:
         ///
         ///     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
@@ -1141,7 +1149,7 @@ pub mod list_groups_request {
         /// ending with the most distant ancestor.  If the specified group has no
         /// immediate parent, the results are empty.
         #[prost(string, tag = "3")]
-        AncestorsOfGroup(std::string::String),
+        AncestorsOfGroup(::prost::alloc::string::String),
         /// A group name. The format is:
         ///
         ///     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
@@ -1150,7 +1158,7 @@ pub mod list_groups_request {
         /// the results returned by the `children_of_group` filter, and includes
         /// children-of-children, and so forth.
         #[prost(string, tag = "4")]
-        DescendantsOfGroup(std::string::String),
+        DescendantsOfGroup(::prost::alloc::string::String),
     }
 }
 /// The `ListGroups` response.
@@ -1158,12 +1166,12 @@ pub mod list_groups_request {
 pub struct ListGroupsResponse {
     /// The groups that match the specified filters.
     #[prost(message, repeated, tag = "1")]
-    pub group: ::std::vec::Vec<Group>,
+    pub group: ::prost::alloc::vec::Vec<Group>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetGroup` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1172,7 +1180,7 @@ pub struct GetGroupRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `CreateGroup` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1181,11 +1189,11 @@ pub struct CreateGroupRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. A group definition. It is an error to define the `name` field because
     /// the system assigns the name.
     #[prost(message, optional, tag = "2")]
-    pub group: ::std::option::Option<Group>,
+    pub group: ::core::option::Option<Group>,
     /// If true, validate this request but do not create the group.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
@@ -1196,7 +1204,7 @@ pub struct UpdateGroupRequest {
     /// Required. The new definition of the group.  All fields of the existing group,
     /// excepting `name`, are replaced with the corresponding fields of this group.
     #[prost(message, optional, tag = "2")]
-    pub group: ::std::option::Option<Group>,
+    pub group: ::core::option::Option<Group>,
     /// If true, validate this request but do not update the existing group.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
@@ -1209,7 +1217,7 @@ pub struct DeleteGroupRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If this field is true, then the request means to delete a group with all
     /// its descendants. Otherwise, the request means to delete a group only when
     /// it has no descendants. The default value is false.
@@ -1223,7 +1231,7 @@ pub struct ListGroupMembersRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     #[prost(string, tag = "7")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of results to return.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -1231,7 +1239,7 @@ pub struct ListGroupMembersRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// An optional [list
     /// filter](https://cloud.google.com/monitoring/api/learn_more#filtering)
     /// describing the members to be returned.  The filter may reference the type,
@@ -1241,25 +1249,25 @@ pub struct ListGroupMembersRequest {
     ///
     ///     `resource.type = "gce_instance"`
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// An optional time interval for which results should be returned. Only
     /// members that were part of the group during the specified interval are
     /// included in the response.  If no interval is provided then the group
     /// membership over the last minute is returned.
     #[prost(message, optional, tag = "6")]
-    pub interval: ::std::option::Option<TimeInterval>,
+    pub interval: ::core::option::Option<TimeInterval>,
 }
 /// The `ListGroupMembers` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupMembersResponse {
     /// A set of monitored resources in the group.
     #[prost(message, repeated, tag = "1")]
-    pub members: ::std::vec::Vec<super::super::api::MonitoredResource>,
+    pub members: ::prost::alloc::vec::Vec<super::super::api::MonitoredResource>,
     /// If there are more results than have been returned, then this field is
     /// set to a non-empty value.  To see the additional results, use that value as
     /// `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of elements matching this request.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
@@ -1427,10 +1435,10 @@ pub struct Point {
     /// until an event resets the cumulative value to zero and sets a new start
     /// time for the following points.
     #[prost(message, optional, tag = "1")]
-    pub interval: ::std::option::Option<TimeInterval>,
+    pub interval: ::core::option::Option<TimeInterval>,
     /// The value of the data point.
     #[prost(message, optional, tag = "2")]
-    pub value: ::std::option::Option<TypedValue>,
+    pub value: ::core::option::Option<TypedValue>,
 }
 /// A collection of data points that describes the time-varying values
 /// of a metric. A time series is identified by a combination of a
@@ -1441,16 +1449,16 @@ pub struct TimeSeries {
     /// The associated metric. A fully-specified metric used to identify the time
     /// series.
     #[prost(message, optional, tag = "1")]
-    pub metric: ::std::option::Option<super::super::api::Metric>,
+    pub metric: ::core::option::Option<super::super::api::Metric>,
     /// The associated monitored resource.  Custom metrics can use only certain
     /// monitored resource types in their time series data.
     #[prost(message, optional, tag = "2")]
-    pub resource: ::std::option::Option<super::super::api::MonitoredResource>,
+    pub resource: ::core::option::Option<super::super::api::MonitoredResource>,
     /// Output only. The associated monitored resource metadata. When reading a
     /// a timeseries, this field will include metadata labels that are explicitly
     /// named in the reduction. When creating a timeseries, this field is ignored.
     #[prost(message, optional, tag = "7")]
-    pub metadata: ::std::option::Option<super::super::api::MonitoredResourceMetadata>,
+    pub metadata: ::core::option::Option<super::super::api::MonitoredResourceMetadata>,
     /// The metric kind of the time series. When listing time series, this metric
     /// kind might be different from the metric kind of the associated metric if
     /// this time series is an alignment or reduction of other time series.
@@ -1485,25 +1493,26 @@ pub struct TimeSeries {
     /// the value type of the descriptor is determined by the point's type, which
     /// must be `BOOL`, `INT64`, `DOUBLE`, or `DISTRIBUTION`.
     #[prost(message, repeated, tag = "5")]
-    pub points: ::std::vec::Vec<Point>,
+    pub points: ::prost::alloc::vec::Vec<Point>,
 }
 /// A descriptor for the labels and points in a timeseries.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesDescriptor {
     /// Descriptors for the labels.
     #[prost(message, repeated, tag = "1")]
-    pub label_descriptors: ::std::vec::Vec<super::super::api::LabelDescriptor>,
+    pub label_descriptors: ::prost::alloc::vec::Vec<super::super::api::LabelDescriptor>,
     /// Descriptors for the point data value columns.
     #[prost(message, repeated, tag = "5")]
-    pub point_descriptors: ::std::vec::Vec<time_series_descriptor::ValueDescriptor>,
+    pub point_descriptors: ::prost::alloc::vec::Vec<time_series_descriptor::ValueDescriptor>,
 }
+/// Nested message and enum types in `TimeSeriesDescriptor`.
 pub mod time_series_descriptor {
     /// A descriptor for the value columns in a data point.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ValueDescriptor {
         /// The value key.
         #[prost(string, tag = "1")]
-        pub key: std::string::String,
+        pub key: ::prost::alloc::string::String,
         /// The value type.
         #[prost(
             enumeration = "super::super::super::api::metric_descriptor::ValueType",
@@ -1527,11 +1536,12 @@ pub struct TimeSeriesData {
     /// associated with this object. Each value must have a value of the type
     /// given in the corresponding entry of `label_descriptors`.
     #[prost(message, repeated, tag = "1")]
-    pub label_values: ::std::vec::Vec<LabelValue>,
+    pub label_values: ::prost::alloc::vec::Vec<LabelValue>,
     /// The points in the time series.
     #[prost(message, repeated, tag = "2")]
-    pub point_data: ::std::vec::Vec<time_series_data::PointData>,
+    pub point_data: ::prost::alloc::vec::Vec<time_series_data::PointData>,
 }
+/// Nested message and enum types in `TimeSeriesData`.
 pub mod time_series_data {
     /// A point's value columns and time interval. Each point has one or more
     /// point values corresponding to the entries in `point_descriptors` field in
@@ -1540,10 +1550,10 @@ pub mod time_series_data {
     pub struct PointData {
         /// The values that make up the point.
         #[prost(message, repeated, tag = "1")]
-        pub values: ::std::vec::Vec<super::TypedValue>,
+        pub values: ::prost::alloc::vec::Vec<super::TypedValue>,
         /// The time interval associated with the point.
         #[prost(message, optional, tag = "2")]
-        pub time_interval: ::std::option::Option<super::TimeInterval>,
+        pub time_interval: ::core::option::Option<super::TimeInterval>,
     }
 }
 /// A label value.
@@ -1551,8 +1561,9 @@ pub mod time_series_data {
 pub struct LabelValue {
     /// The label value can be a bool, int64, or string.
     #[prost(oneof = "label_value::Value", tags = "1, 2, 3")]
-    pub value: ::std::option::Option<label_value::Value>,
+    pub value: ::core::option::Option<label_value::Value>,
 }
+/// Nested message and enum types in `LabelValue`.
 pub mod label_value {
     /// The label value can be a bool, int64, or string.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1565,7 +1576,7 @@ pub mod label_value {
         Int64Value(i64),
         /// A string label value.
         #[prost(string, tag = "3")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
     }
 }
 /// An error associated with a query in the time series query language format.
@@ -1574,10 +1585,10 @@ pub struct QueryError {
     /// The location of the time series query language text that this error applies
     /// to.
     #[prost(message, optional, tag = "1")]
-    pub locator: ::std::option::Option<TextLocator>,
+    pub locator: ::core::option::Option<TextLocator>,
     /// The error message.
     #[prost(string, tag = "2")]
-    pub message: std::string::String,
+    pub message: ::prost::alloc::string::String,
 }
 /// A locator for text. Indicates a particular part of the text of a request or
 /// of an object referenced in the request.
@@ -1609,19 +1620,19 @@ pub struct TextLocator {
     /// referenced in the text of the query), in which case this is the name of
     /// the source (e.g. the macro name).
     #[prost(string, tag = "1")]
-    pub source: std::string::String,
+    pub source: ::prost::alloc::string::String,
     /// The position of the first byte within the text.
     #[prost(message, optional, tag = "2")]
-    pub start_position: ::std::option::Option<text_locator::Position>,
+    pub start_position: ::core::option::Option<text_locator::Position>,
     /// The position of the last byte within the text.
     #[prost(message, optional, tag = "3")]
-    pub end_position: ::std::option::Option<text_locator::Position>,
+    pub end_position: ::core::option::Option<text_locator::Position>,
     /// If `source`, `start_position`, and `end_position` describe a call on
     /// some object (e.g. a macro in the time series query language text) and a
     /// location is to be designated in that object's text, `nested_locator`
     /// identifies the location within that object.
     #[prost(message, optional, boxed, tag = "4")]
-    pub nested_locator: ::std::option::Option<::std::boxed::Box<TextLocator>>,
+    pub nested_locator: ::core::option::Option<::prost::alloc::boxed::Box<TextLocator>>,
     /// When `nested_locator` is set, this field gives the reason for the nesting.
     /// Usually, the reason is a macro invocation. In that case, the macro name
     /// (including the leading '@') signals the location of the macro call
@@ -1629,8 +1640,9 @@ pub struct TextLocator {
     /// the location of the macro argument inside the macro body that got
     /// substituted away.
     #[prost(string, tag = "5")]
-    pub nesting_reason: std::string::String,
+    pub nesting_reason: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `TextLocator`.
 pub mod text_locator {
     /// The position of a byte within the text.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1651,7 +1663,7 @@ pub struct ListMonitoredResourceDescriptorsRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "5")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// An optional [filter](https://cloud.google.com/monitoring/api/v3/filters)
     /// describing the descriptors to be returned.  The filter can reference the
     /// descriptor's type and labels. For example, the following filter returns
@@ -1659,7 +1671,7 @@ pub struct ListMonitoredResourceDescriptorsRequest {
     ///
     ///     resource.type = starts_with("gce_") AND resource.label:id
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of results to return.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -1667,7 +1679,7 @@ pub struct ListMonitoredResourceDescriptorsRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListMonitoredResourceDescriptors` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1675,12 +1687,13 @@ pub struct ListMonitoredResourceDescriptorsResponse {
     /// The monitored resource descriptors that are available to this project
     /// and that match `filter`, if present.
     #[prost(message, repeated, tag = "1")]
-    pub resource_descriptors: ::std::vec::Vec<super::super::api::MonitoredResourceDescriptor>,
+    pub resource_descriptors:
+        ::prost::alloc::vec::Vec<super::super::api::MonitoredResourceDescriptor>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetMonitoredResourceDescriptor` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1692,7 +1705,7 @@ pub struct GetMonitoredResourceDescriptorRequest {
     /// The `[RESOURCE_TYPE]` is a predefined type, such as
     /// `cloudsql_database`.
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `ListMetricDescriptors` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1701,7 +1714,7 @@ pub struct ListMetricDescriptorsRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "5")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If this field is empty, all custom and
     /// system-defined metric descriptors are returned.
     /// Otherwise, the [filter](https://cloud.google.com/monitoring/api/v3/filters)
@@ -1711,7 +1724,7 @@ pub struct ListMetricDescriptorsRequest {
     ///
     ///     metric.type = starts_with("custom.googleapis.com/")
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of results to return.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -1719,7 +1732,7 @@ pub struct ListMetricDescriptorsRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListMetricDescriptors` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1727,12 +1740,12 @@ pub struct ListMetricDescriptorsResponse {
     /// The metric descriptors that are available to the project
     /// and that match the value of `filter`, if present.
     #[prost(message, repeated, tag = "1")]
-    pub metric_descriptors: ::std::vec::Vec<super::super::api::MetricDescriptor>,
+    pub metric_descriptors: ::prost::alloc::vec::Vec<super::super::api::MetricDescriptor>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetMetricDescriptor` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1744,7 +1757,7 @@ pub struct GetMetricDescriptorRequest {
     /// An example value of `[METRIC_ID]` is
     /// `"compute.googleapis.com/instance/disk/read_bytes_count"`.
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `CreateMetricDescriptor` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1753,11 +1766,11 @@ pub struct CreateMetricDescriptorRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The new [custom metric](https://cloud.google.com/monitoring/custom-metrics)
     /// descriptor.
     #[prost(message, optional, tag = "2")]
-    pub metric_descriptor: ::std::option::Option<super::super::api::MetricDescriptor>,
+    pub metric_descriptor: ::core::option::Option<super::super::api::MetricDescriptor>,
 }
 /// The `DeleteMetricDescriptor` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1769,7 +1782,7 @@ pub struct DeleteMetricDescriptorRequest {
     /// An example of `[METRIC_ID]` is:
     /// `"custom.googleapis.com/my_test_metric"`.
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `ListTimeSeries` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1778,7 +1791,7 @@ pub struct ListTimeSeriesRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "10")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
     /// that specifies which time series should be returned.  The filter must
     /// specify a single metric type, and can additionally specify metric labels
@@ -1787,23 +1800,23 @@ pub struct ListTimeSeriesRequest {
     ///     metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
     ///         metric.labels.instance_name = "my-instance-name"
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Required. The time interval for which results should be returned. Only time series
     /// that contain data points in the specified interval are included
     /// in the response.
     #[prost(message, optional, tag = "4")]
-    pub interval: ::std::option::Option<TimeInterval>,
+    pub interval: ::core::option::Option<TimeInterval>,
     /// Specifies the alignment of data points in individual time series as
     /// well as how to combine the retrieved time series across specified labels.
     ///
     /// By default (if no `aggregation` is explicitly specified), the raw time
     /// series data is returned.
     #[prost(message, optional, tag = "5")]
-    pub aggregation: ::std::option::Option<Aggregation>,
+    pub aggregation: ::core::option::Option<Aggregation>,
     /// Unsupported: must be left blank. The points in each time series are
     /// currently returned in reverse time order (most recent to oldest).
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Required. Specifies which information is returned about the time series.
     #[prost(enumeration = "list_time_series_request::TimeSeriesView", tag = "7")]
     pub view: i32,
@@ -1818,8 +1831,9 @@ pub struct ListTimeSeriesRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "9")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ListTimeSeriesRequest`.
 pub mod list_time_series_request {
     /// Controls which fields are returned by `ListTimeSeries`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1838,16 +1852,16 @@ pub mod list_time_series_request {
 pub struct ListTimeSeriesResponse {
     /// One or more time series that match the filter included in the request.
     #[prost(message, repeated, tag = "1")]
-    pub time_series: ::std::vec::Vec<TimeSeries>,
+    pub time_series: ::prost::alloc::vec::Vec<TimeSeries>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Query execution errors that may have caused the time series data returned
     /// to be incomplete.
     #[prost(message, repeated, tag = "3")]
-    pub execution_errors: ::std::vec::Vec<super::super::rpc::Status>,
+    pub execution_errors: ::prost::alloc::vec::Vec<super::super::rpc::Status>,
 }
 /// The `CreateTimeSeries` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1856,7 +1870,7 @@ pub struct CreateTimeSeriesRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The new data to be added to a list of time series.
     /// Adds at most one data point to each of several time series.  The new data
     /// point must be more recent than any other point in its time series.  Each
@@ -1865,17 +1879,19 @@ pub struct CreateTimeSeriesRequest {
     ///
     /// The maximum number of `TimeSeries` objects per `Create` request is 200.
     #[prost(message, repeated, tag = "2")]
-    pub time_series: ::std::vec::Vec<TimeSeries>,
+    pub time_series: ::prost::alloc::vec::Vec<TimeSeries>,
 }
 /// DEPRECATED. Used to hold per-time-series error status.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTimeSeriesError {
     /// DEPRECATED. Time series ID that resulted in the `status` error.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
-    pub time_series: ::std::option::Option<TimeSeries>,
+    pub time_series: ::core::option::Option<TimeSeries>,
     /// DEPRECATED. The status of the requested write operation for `time_series`.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
-    pub status: ::std::option::Option<super::super::rpc::Status>,
+    pub status: ::core::option::Option<super::super::rpc::Status>,
 }
 /// Summary of the result of a failed request to write data to a time series.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1888,15 +1904,16 @@ pub struct CreateTimeSeriesSummary {
     pub success_point_count: i32,
     /// The number of points that failed to be written. Order is not guaranteed.
     #[prost(message, repeated, tag = "3")]
-    pub errors: ::std::vec::Vec<create_time_series_summary::Error>,
+    pub errors: ::prost::alloc::vec::Vec<create_time_series_summary::Error>,
 }
+/// Nested message and enum types in `CreateTimeSeriesSummary`.
 pub mod create_time_series_summary {
     /// Detailed information about an error category.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Error {
         /// The status of the requested write operation.
         #[prost(message, optional, tag = "1")]
-        pub status: ::std::option::Option<super::super::super::rpc::Status>,
+        pub status: ::core::option::Option<super::super::super::rpc::Status>,
         /// The number of points that couldn't be written because of `status`.
         #[prost(int32, tag = "2")]
         pub point_count: i32,
@@ -1909,11 +1926,11 @@ pub struct QueryTimeSeriesRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The query in the monitoring query language format. The default
     /// time zone is in UTC.
     #[prost(string, tag = "7")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of time_series_data to return.
     #[prost(int32, tag = "9")]
     pub page_size: i32,
@@ -1921,27 +1938,27 @@ pub struct QueryTimeSeriesRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "10")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The `QueryTimeSeries` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryTimeSeriesResponse {
     /// The descriptor for the time series data.
     #[prost(message, optional, tag = "8")]
-    pub time_series_descriptor: ::std::option::Option<TimeSeriesDescriptor>,
+    pub time_series_descriptor: ::core::option::Option<TimeSeriesDescriptor>,
     /// The time series data.
     #[prost(message, repeated, tag = "9")]
-    pub time_series_data: ::std::vec::Vec<TimeSeriesData>,
+    pub time_series_data: ::prost::alloc::vec::Vec<TimeSeriesData>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results, use that value as
     /// `page_token` in the next call to this method.
     #[prost(string, tag = "10")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Query execution errors that may have caused the time series data returned
     /// to be incomplete. The available data will be available in the
     /// response.
     #[prost(message, repeated, tag = "11")]
-    pub partial_errors: ::std::vec::Vec<super::super::rpc::Status>,
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::rpc::Status>,
 }
 /// This is an error detail intended to be used with INVALID_ARGUMENT errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1949,10 +1966,10 @@ pub struct QueryErrorList {
     /// Errors in parsing the time series query language text. The number of errors
     /// in the response may be limited.
     #[prost(message, repeated, tag = "1")]
-    pub errors: ::std::vec::Vec<QueryError>,
+    pub errors: ::prost::alloc::vec::Vec<QueryError>,
     /// A summary of all the errors.
     #[prost(string, tag = "2")]
-    pub error_summary: std::string::String,
+    pub error_summary: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod metric_service_client {
@@ -2152,29 +2169,30 @@ pub struct NotificationChannelDescriptor {
     ///
     /// In the above, `[TYPE]` is the value of the `type` field.
     #[prost(string, tag = "6")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The type of notification channel, such as "email", "sms", etc.
     /// Notification channel types are globally unique.
     #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// A human-readable name for the notification channel type.  This
     /// form of the name is suitable for a user interface.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// A human-readable description of the notification channel
     /// type. The description may include a description of the properties
     /// of the channel and pointers to external documentation.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// The set of labels that must be defined to identify a particular
     /// channel of the corresponding type. Each label includes a
     /// description for how that field should be populated.
     #[prost(message, repeated, tag = "4")]
-    pub labels: ::std::vec::Vec<super::super::api::LabelDescriptor>,
+    pub labels: ::prost::alloc::vec::Vec<super::super::api::LabelDescriptor>,
     /// The tiers that support this notification channel; the project service tier
     /// must be one of the supported_tiers.
+    #[deprecated]
     #[prost(enumeration = "ServiceTier", repeated, packed = "false", tag = "5")]
-    pub supported_tiers: ::std::vec::Vec<i32>,
+    pub supported_tiers: ::prost::alloc::vec::Vec<i32>,
     /// The product launch stage for channels of this type.
     #[prost(enumeration = "super::super::api::LaunchStage", tag = "7")]
     pub launch_stage: i32,
@@ -2189,31 +2207,32 @@ pub struct NotificationChannel {
     /// The type of the notification channel. This field matches the
     /// value of the [NotificationChannelDescriptor.type][google.monitoring.v3.NotificationChannelDescriptor.type] field.
     #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// The full REST resource name for this channel. The format is:
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
     ///
     /// The `[CHANNEL_ID]` is automatically assigned by the server on creation.
     #[prost(string, tag = "6")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// An optional human-readable name for this notification channel. It is
     /// recommended that you specify a non-empty and unique name in order to
     /// make it easier to identify the channels in your project, though this is
     /// not enforced. The display name is limited to 512 Unicode characters.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// An optional human-readable description of this notification channel. This
     /// description may provide additional details, beyond the display
     /// name, for the channel. This may not exceed 1024 Unicode characters.
     #[prost(string, tag = "4")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Configuration fields that define the channel and its behavior. The
     /// permissible and required labels are specified in the
     /// [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels] of the
     /// `NotificationChannelDescriptor` corresponding to the `type` field.
     #[prost(map = "string, string", tag = "5")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// User-supplied key/value data that does not need to conform to
     /// the corresponding `NotificationChannelDescriptor`'s schema, unlike
     /// the `labels` field. This field is intended to be used for organizing
@@ -2224,7 +2243,8 @@ pub struct NotificationChannel {
     /// values can contain only lowercase letters, numerals, underscores, and
     /// dashes. Keys must begin with a letter.
     #[prost(map = "string, string", tag = "8")]
-    pub user_labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub user_labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Indicates whether this channel has been verified or not. On a
     /// [`ListNotificationChannels`][google.monitoring.v3.NotificationChannelService.ListNotificationChannels]
     /// or
@@ -2253,8 +2273,9 @@ pub struct NotificationChannel {
     /// temporary and you want to receive notifications from the same set
     /// of alerting policies on the channel at some point in the future.
     #[prost(message, optional, tag = "11")]
-    pub enabled: ::std::option::Option<bool>,
+    pub enabled: ::core::option::Option<bool>,
 }
+/// Nested message and enum types in `NotificationChannel`.
 pub mod notification_channel {
     /// Indicates whether the channel has been verified or not. It is illegal
     /// to specify this field in a
@@ -2293,7 +2314,7 @@ pub struct ListNotificationChannelDescriptorsRequest {
     /// [GetNotificationChannelDescriptor][google.monitoring.v3.NotificationChannelService.GetNotificationChannelDescriptor]
     /// operation, instead.
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. If
     /// not set to a positive number, a reasonable value will be chosen by the
     /// service.
@@ -2303,7 +2324,7 @@ pub struct ListNotificationChannelDescriptorsRequest {
     /// `next_page_token` in a previous response to request the next set
     /// of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListNotificationChannelDescriptors` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2311,13 +2332,13 @@ pub struct ListNotificationChannelDescriptorsResponse {
     /// The monitored resource descriptors supported for the specified
     /// project, optionally filtered.
     #[prost(message, repeated, tag = "1")]
-    pub channel_descriptors: ::std::vec::Vec<NotificationChannelDescriptor>,
+    pub channel_descriptors: ::prost::alloc::vec::Vec<NotificationChannelDescriptor>,
     /// If not empty, indicates that there may be more results that match
     /// the request. Use the value in the `page_token` field in a
     /// subsequent request to fetch the next set of results. If empty,
     /// all results have been returned.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetNotificationChannelDescriptor` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2326,7 +2347,7 @@ pub struct GetNotificationChannelDescriptorRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `CreateNotificationChannel` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2340,10 +2361,10 @@ pub struct CreateNotificationChannelRequest {
     /// channel's name will have a normalized version of this field as a prefix,
     /// but will add `/notificationChannels/[CHANNEL_ID]` to identify the channel.
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The definition of the `NotificationChannel` to create.
     #[prost(message, optional, tag = "2")]
-    pub notification_channel: ::std::option::Option<NotificationChannel>,
+    pub notification_channel: ::core::option::Option<NotificationChannel>,
 }
 /// The `ListNotificationChannels` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2359,14 +2380,14 @@ pub struct ListNotificationChannelsRequest {
     /// [`GetNotificationChannel`][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
     /// operation.
     #[prost(string, tag = "5")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If provided, this field specifies the criteria that must be met by
     /// notification channels to be included in the response.
     ///
     /// For more details, see [sorting and
     /// filtering](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
     #[prost(string, tag = "6")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// A comma-separated list of fields by which to sort the result. Supports
     /// the same set of fields as in `filter`. Entries can be prefixed with
     /// a minus sign to sort in descending rather than ascending order.
@@ -2374,7 +2395,7 @@ pub struct ListNotificationChannelsRequest {
     /// For more details, see [sorting and
     /// filtering](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
     #[prost(string, tag = "7")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. If
     /// not set to a positive number, a reasonable value will be chosen by the
     /// service.
@@ -2384,20 +2405,20 @@ pub struct ListNotificationChannelsRequest {
     /// `next_page_token` in a previous response to request the next set
     /// of results.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListNotificationChannels` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationChannelsResponse {
     /// The notification channels defined for the specified project.
     #[prost(message, repeated, tag = "3")]
-    pub notification_channels: ::std::vec::Vec<NotificationChannel>,
+    pub notification_channels: ::prost::alloc::vec::Vec<NotificationChannel>,
     /// If not empty, indicates that there may be more results that match
     /// the request. Use the value in the `page_token` field in a
     /// subsequent request to fetch the next set of results. If empty,
     /// all results have been returned.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetNotificationChannel` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2406,20 +2427,20 @@ pub struct GetNotificationChannelRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `UpdateNotificationChannel` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNotificationChannelRequest {
     /// The fields to update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. A description of the changes to be applied to the specified
     /// notification channel. The description must provide a definition for
     /// fields to be updated; the names of these fields should also be
     /// included in the `update_mask`.
     #[prost(message, optional, tag = "3")]
-    pub notification_channel: ::std::option::Option<NotificationChannel>,
+    pub notification_channel: ::core::option::Option<NotificationChannel>,
 }
 /// The `DeleteNotificationChannel` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2428,7 +2449,7 @@ pub struct DeleteNotificationChannelRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If true, the notification channel will be deleted regardless of its
     /// use in alert policies (the policies will be updated to remove the
     /// channel). If false, channels that are still referenced by an existing
@@ -2441,7 +2462,7 @@ pub struct DeleteNotificationChannelRequest {
 pub struct SendNotificationChannelVerificationCodeRequest {
     /// Required. The notification channel to which to send a verification code.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `GetNotificationChannelVerificationCode` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2450,7 +2471,7 @@ pub struct GetNotificationChannelVerificationCodeRequest {
     /// and retrieved. This must name a channel that is already verified; if
     /// the specified channel is not verified, the request will fail.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The desired expiration time. If specified, the API will guarantee that
     /// the returned code will not be valid after the specified timestamp;
     /// however, the API cannot guarantee that the returned code will be
@@ -2461,7 +2482,7 @@ pub struct GetNotificationChannelVerificationCodeRequest {
     /// code's lifetime over omitting an expiration, even though the API does
     /// impose an upper limit on the maximum expiration that is permitted).
     #[prost(message, optional, tag = "2")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The `GetNotificationChannelVerificationCode` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2471,19 +2492,19 @@ pub struct GetNotificationChannelVerificationCodeResponse {
     /// type with the same fingerprint such as other email channels with
     /// the same email address or other sms channels with the same number).
     #[prost(string, tag = "1")]
-    pub code: std::string::String,
+    pub code: ::prost::alloc::string::String,
     /// The expiration time associated with the code that was returned. If
     /// an expiration was provided in the request, this is the minimum of the
     /// requested expiration in the request and the max permitted expiration.
     #[prost(message, optional, tag = "2")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The `VerifyNotificationChannel` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyNotificationChannelRequest {
     /// Required. The notification channel to verify.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The verification code that was delivered to the channel as
     /// a result of invoking the `SendNotificationChannelVerificationCode` API
     /// method or that was retrieved from a verified channel via
@@ -2492,7 +2513,7 @@ pub struct VerifyNotificationChannelRequest {
     /// guaranteed that the code is valid UTF-8; one should not
     /// make any assumptions regarding the structure or format of the code).
     #[prost(string, tag = "2")]
-    pub code: std::string::String,
+    pub code: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod notification_channel_service_client {
@@ -2532,7 +2553,7 @@ pub mod notification_channel_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.monitoring.v3.NotificationChannelService/ListNotificationChannelDescriptors" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.monitoring.v3.NotificationChannelService/ListNotificationChannelDescriptors") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Gets a single channel descriptor. The descriptor indicates which fields"]
@@ -2658,7 +2679,7 @@ pub mod notification_channel_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.monitoring.v3.NotificationChannelService/SendNotificationChannelVerificationCode" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.monitoring.v3.NotificationChannelService/SendNotificationChannelVerificationCode") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Requests a verification code for an already verified channel that can then"]
@@ -2696,7 +2717,7 @@ pub mod notification_channel_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.monitoring.v3.NotificationChannelService/GetNotificationChannelVerificationCode" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.monitoring.v3.NotificationChannelService/GetNotificationChannelVerificationCode") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Verifies a `NotificationChannel` by proving receipt of the code"]
@@ -2743,17 +2764,18 @@ pub struct Service {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Name used for UI elements listing this Service.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Configuration for how to query telemetry on a Service.
     #[prost(message, optional, tag = "13")]
-    pub telemetry: ::std::option::Option<service::Telemetry>,
+    pub telemetry: ::core::option::Option<service::Telemetry>,
     /// REQUIRED. Service-identifying atoms specifying the underlying service.
     #[prost(oneof = "service::Identifier", tags = "6, 7, 8, 9, 10")]
-    pub identifier: ::std::option::Option<service::Identifier>,
+    pub identifier: ::core::option::Option<service::Identifier>,
 }
+/// Nested message and enum types in `Service`.
 pub mod service {
     /// Custom view of service telemetry. Currently a place-holder pending final
     /// design.
@@ -2766,7 +2788,7 @@ pub mod service {
         /// the `module_id` resource label in the `gae_app` monitored resource:
         /// https://cloud.google.com/monitoring/api/resources#tag_gae_app
         #[prost(string, tag = "1")]
-        pub module_id: std::string::String,
+        pub module_id: ::prost::alloc::string::String,
     }
     /// Cloud Endpoints service. Learn more at https://cloud.google.com/endpoints.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2775,7 +2797,7 @@ pub mod service {
         /// Corresponds to the `service` resource label in the `api` monitored
         /// resource: https://cloud.google.com/monitoring/api/resources#tag_api
         #[prost(string, tag = "1")]
-        pub service: std::string::String,
+        pub service: ::prost::alloc::string::String,
     }
     /// Istio service scoped to a single Kubernetes cluster. Learn more at
     /// http://istio.io.
@@ -2785,20 +2807,20 @@ pub mod service {
         /// defined. Corresponds to the `location` resource label in `k8s_cluster`
         /// resources.
         #[prost(string, tag = "1")]
-        pub location: std::string::String,
+        pub location: ::prost::alloc::string::String,
         /// The name of the Kubernetes cluster in which this Istio service is
         /// defined. Corresponds to the `cluster_name` resource label in
         /// `k8s_cluster` resources.
         #[prost(string, tag = "2")]
-        pub cluster_name: std::string::String,
+        pub cluster_name: ::prost::alloc::string::String,
         /// The namespace of the Istio service underlying this service. Corresponds
         /// to the `destination_service_namespace` metric label in Istio metrics.
         #[prost(string, tag = "3")]
-        pub service_namespace: std::string::String,
+        pub service_namespace: ::prost::alloc::string::String,
         /// The name of the Istio service underlying this service. Corresponds to the
         /// `destination_service_name` metric label in Istio metrics.
         #[prost(string, tag = "4")]
-        pub service_name: std::string::String,
+        pub service_name: ::prost::alloc::string::String,
     }
     /// Istio service scoped to an Istio mesh
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2806,15 +2828,15 @@ pub mod service {
         /// Identifier for the mesh in which this Istio service is defined.
         /// Corresponds to the `mesh_uid` metric label in Istio metrics.
         #[prost(string, tag = "1")]
-        pub mesh_uid: std::string::String,
+        pub mesh_uid: ::prost::alloc::string::String,
         /// The namespace of the Istio service underlying this service. Corresponds
         /// to the `destination_service_namespace` metric label in Istio metrics.
         #[prost(string, tag = "3")]
-        pub service_namespace: std::string::String,
+        pub service_namespace: ::prost::alloc::string::String,
         /// The name of the Istio service underlying this service. Corresponds to the
         /// `destination_service_name` metric label in Istio metrics.
         #[prost(string, tag = "4")]
-        pub service_name: std::string::String,
+        pub service_name: ::prost::alloc::string::String,
     }
     /// Configuration for how to query telemetry on a Service.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2822,7 +2844,7 @@ pub mod service {
         /// The full name of the resource that defines this service. Formatted as
         /// described in https://cloud.google.com/apis/design/resource_names.
         #[prost(string, tag = "1")]
-        pub resource_name: std::string::String,
+        pub resource_name: ::prost::alloc::string::String,
     }
     /// REQUIRED. Service-identifying atoms specifying the underlying service.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2856,23 +2878,24 @@ pub struct ServiceLevelObjective {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Name used for UI elements listing this SLO.
     #[prost(string, tag = "11")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The definition of good service, used to measure and calculate the quality
     /// of the `Service`'s performance with respect to a single aspect of service
     /// quality.
     #[prost(message, optional, tag = "3")]
-    pub service_level_indicator: ::std::option::Option<ServiceLevelIndicator>,
+    pub service_level_indicator: ::core::option::Option<ServiceLevelIndicator>,
     /// The fraction of service that must be good in order for this objective to be
     /// met. `0 < goal <= 0.999`.
     #[prost(double, tag = "4")]
     pub goal: f64,
     /// The time period over which the objective will be evaluated.
     #[prost(oneof = "service_level_objective::Period", tags = "5, 6")]
-    pub period: ::std::option::Option<service_level_objective::Period>,
+    pub period: ::core::option::Option<service_level_objective::Period>,
 }
+/// Nested message and enum types in `ServiceLevelObjective`.
 pub mod service_level_objective {
     /// `ServiceLevelObjective.View` determines what form of
     /// `ServiceLevelObjective` is returned from `GetServiceLevelObjective`,
@@ -2925,8 +2948,9 @@ pub struct ServiceLevelIndicator {
     /// being measured is based on counts of good requests or on counts of good
     /// time windows
     #[prost(oneof = "service_level_indicator::Type", tags = "4, 1, 2")]
-    pub r#type: ::std::option::Option<service_level_indicator::Type>,
+    pub r#type: ::core::option::Option<service_level_indicator::Type>,
 }
+/// Nested message and enum types in `ServiceLevelIndicator`.
 pub mod service_level_indicator {
     /// Service level indicators can be grouped by whether the "unit" of service
     /// being measured is based on counts of good requests or on counts of good
@@ -2958,25 +2982,26 @@ pub struct BasicSli {
     /// that don't support breaking down by method, setting this field will result
     /// in an error.
     #[prost(string, repeated, tag = "7")]
-    pub method: ::std::vec::Vec<std::string::String>,
+    pub method: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// OPTIONAL: The set of locations to which this SLI is relevant. Telemetry
     /// from other locations will not be used to calculate performance for this
     /// SLI. If omitted, this SLI applies to all locations in which the Service has
     /// activity. For service types that don't support breaking down by location,
     /// setting this field will result in an error.
     #[prost(string, repeated, tag = "8")]
-    pub location: ::std::vec::Vec<std::string::String>,
+    pub location: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry
     /// from other API versions will not be used to calculate performance for this
     /// SLI. If omitted, this SLI applies to all API versions. For service types
     /// that don't support breaking down by version, setting this field will result
     /// in an error.
     #[prost(string, repeated, tag = "9")]
-    pub version: ::std::vec::Vec<std::string::String>,
+    pub version: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// This SLI can be evaluated on the basis of availability or latency.
     #[prost(oneof = "basic_sli::SliCriteria", tags = "2, 3")]
-    pub sli_criteria: ::std::option::Option<basic_sli::SliCriteria>,
+    pub sli_criteria: ::core::option::Option<basic_sli::SliCriteria>,
 }
+/// Nested message and enum types in `BasicSli`.
 pub mod basic_sli {
     /// Future parameters for the availability SLI.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2987,7 +3012,7 @@ pub mod basic_sli {
         /// Good service is defined to be the count of requests made to this service
         /// that return in no more than `threshold`.
         #[prost(message, optional, tag = "3")]
-        pub threshold: ::std::option::Option<::prost_types::Duration>,
+        pub threshold: ::core::option::Option<::prost_types::Duration>,
     }
     /// This SLI can be evaluated on the basis of availability or latency.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3020,8 +3045,9 @@ pub struct Range {
 pub struct RequestBasedSli {
     /// The means to compute a ratio of `good_service` to `total_service`.
     #[prost(oneof = "request_based_sli::Method", tags = "1, 3")]
-    pub method: ::std::option::Option<request_based_sli::Method>,
+    pub method: ::core::option::Option<request_based_sli::Method>,
 }
+/// Nested message and enum types in `RequestBasedSli`.
 pub mod request_based_sli {
     /// The means to compute a ratio of `good_service` to `total_service`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3051,20 +3077,20 @@ pub struct TimeSeriesRatio {
     /// `ValueType = DOUBLE` or `ValueType = INT64` and must have `MetricKind =
     /// DELTA` or `MetricKind = CUMULATIVE`.
     #[prost(string, tag = "4")]
-    pub good_service_filter: std::string::String,
+    pub good_service_filter: ::prost::alloc::string::String,
     /// A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
     /// specifying a `TimeSeries` quantifying bad service, either demanded service
     /// that was not provided or demanded service that was of inadequate quality.
     /// Must have `ValueType = DOUBLE` or `ValueType = INT64` and must have
     /// `MetricKind = DELTA` or `MetricKind = CUMULATIVE`.
     #[prost(string, tag = "5")]
-    pub bad_service_filter: std::string::String,
+    pub bad_service_filter: ::prost::alloc::string::String,
     /// A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
     /// specifying a `TimeSeries` quantifying total demanded service. Must have
     /// `ValueType = DOUBLE` or `ValueType = INT64` and must have `MetricKind =
     /// DELTA` or `MetricKind = CUMULATIVE`.
     #[prost(string, tag = "6")]
-    pub total_service_filter: std::string::String,
+    pub total_service_filter: ::prost::alloc::string::String,
 }
 /// A `DistributionCut` defines a `TimeSeries` and thresholds used for measuring
 /// good service and total service. The `TimeSeries` must have `ValueType =
@@ -3077,11 +3103,11 @@ pub struct DistributionCut {
     /// specifying a `TimeSeries` aggregating values. Must have `ValueType =
     /// DISTRIBUTION` and `MetricKind = DELTA` or `MetricKind = CUMULATIVE`.
     #[prost(string, tag = "4")]
-    pub distribution_filter: std::string::String,
+    pub distribution_filter: ::prost::alloc::string::String,
     /// Range of values considered "good." For a one-sided range, set one bound to
     /// an infinite value.
     #[prost(message, optional, tag = "5")]
-    pub range: ::std::option::Option<Range>,
+    pub range: ::core::option::Option<Range>,
 }
 /// A `WindowsBasedSli` defines `good_service` as the count of time windows for
 /// which the provided service was of good quality. Criteria for determining
@@ -3091,11 +3117,12 @@ pub struct WindowsBasedSli {
     /// Duration over which window quality is evaluated. Must be an integer
     /// fraction of a day and at least `60s`.
     #[prost(message, optional, tag = "4")]
-    pub window_period: ::std::option::Option<::prost_types::Duration>,
+    pub window_period: ::core::option::Option<::prost_types::Duration>,
     /// The criterion to use for evaluating window goodness.
     #[prost(oneof = "windows_based_sli::WindowCriterion", tags = "5, 2, 6, 7")]
-    pub window_criterion: ::std::option::Option<windows_based_sli::WindowCriterion>,
+    pub window_criterion: ::core::option::Option<windows_based_sli::WindowCriterion>,
 }
+/// Nested message and enum types in `WindowsBasedSli`.
 pub mod windows_based_sli {
     /// A `PerformanceThreshold` is used when each window is good when that window
     /// has a sufficiently high `performance`.
@@ -3107,8 +3134,9 @@ pub mod windows_based_sli {
         /// The means, either a request-based SLI or a basic SLI, by which to compute
         /// performance over a window.
         #[prost(oneof = "performance_threshold::Type", tags = "1, 3")]
-        pub r#type: ::std::option::Option<performance_threshold::Type>,
+        pub r#type: ::core::option::Option<performance_threshold::Type>,
     }
+    /// Nested message and enum types in `PerformanceThreshold`.
     pub mod performance_threshold {
         /// The means, either a request-based SLI or a basic SLI, by which to compute
         /// performance over a window.
@@ -3131,11 +3159,11 @@ pub mod windows_based_sli {
         /// A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
         /// specifying the `TimeSeries` to use for evaluating window quality.
         #[prost(string, tag = "1")]
-        pub time_series: std::string::String,
+        pub time_series: ::prost::alloc::string::String,
         /// Range of values considered "good." For a one-sided range, set one bound
         /// to an infinite value.
         #[prost(message, optional, tag = "4")]
-        pub range: ::std::option::Option<super::Range>,
+        pub range: ::core::option::Option<super::Range>,
     }
     /// The criterion to use for evaluating window goodness.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3144,7 +3172,7 @@ pub mod windows_based_sli {
         /// specifying a `TimeSeries` with `ValueType = BOOL`. The window is good if
         /// any `true` values appear in the window.
         #[prost(string, tag = "5")]
-        GoodBadMetricFilter(std::string::String),
+        GoodBadMetricFilter(::prost::alloc::string::String),
         /// A window is good if its `performance` is high enough.
         #[prost(message, tag = "2")]
         GoodTotalRatioThreshold(PerformanceThreshold),
@@ -3165,14 +3193,14 @@ pub struct CreateServiceRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The Service id to use for this Service. If omitted, an id will be
     /// generated instead. Must match the pattern `[a-z0-9\-]+`
     #[prost(string, tag = "3")]
-    pub service_id: std::string::String,
+    pub service_id: ::prost::alloc::string::String,
     /// Required. The `Service` to create.
     #[prost(message, optional, tag = "2")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
 }
 /// The `GetService` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3181,7 +3209,7 @@ pub struct GetServiceRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `ListServices` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3192,7 +3220,7 @@ pub struct ListServicesRequest {
     ///     projects/[PROJECT_ID_OR_NUMBER]
     ///     workspaces/[HOST_PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// A filter specifying what `Service`s to return. The filter currently
     /// supports the following fields:
     ///
@@ -3209,7 +3237,7 @@ pub struct ListServicesRequest {
     /// all services with a value for the `custom` field. Valid options are
     /// "CUSTOM", "APP_ENGINE", "CLOUD_ENDPOINTS", and "CLUSTER_ISTIO".
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// A non-negative number that is the maximum number of results to return.
     /// When 0, use default page size.
     #[prost(int32, tag = "3")]
@@ -3218,19 +3246,19 @@ pub struct ListServicesRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListServices` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The `Service`s matching the specified filter.
     #[prost(message, repeated, tag = "1")]
-    pub services: ::std::vec::Vec<Service>,
+    pub services: ::prost::alloc::vec::Vec<Service>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `UpdateService` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3238,10 +3266,10 @@ pub struct UpdateServiceRequest {
     /// Required. The `Service` to draw updates from.
     /// The given `name` specifies the resource to update.
     #[prost(message, optional, tag = "1")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
     /// A set of field paths defining which fields to use for the update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The `DeleteService` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3250,7 +3278,7 @@ pub struct DeleteServiceRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `CreateServiceLevelObjective` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3259,17 +3287,17 @@ pub struct CreateServiceLevelObjectiveRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The ServiceLevelObjective id to use for this
     /// ServiceLevelObjective. If omitted, an id will be generated instead. Must
     /// match the pattern `[a-z0-9\-]+`
     #[prost(string, tag = "3")]
-    pub service_level_objective_id: std::string::String,
+    pub service_level_objective_id: ::prost::alloc::string::String,
     /// Required. The `ServiceLevelObjective` to create.
     /// The provided `name` will be respected if no `ServiceLevelObjective` exists
     /// with this name.
     #[prost(message, optional, tag = "2")]
-    pub service_level_objective: ::std::option::Option<ServiceLevelObjective>,
+    pub service_level_objective: ::core::option::Option<ServiceLevelObjective>,
 }
 /// The `GetServiceLevelObjective` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3278,7 +3306,7 @@ pub struct GetServiceLevelObjectiveRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// View of the `ServiceLevelObjective` to return. If `DEFAULT`, return the
     /// `ServiceLevelObjective` as originally defined. If `EXPLICIT` and the
     /// `ServiceLevelObjective` is defined in terms of a `BasicSli`, replace the
@@ -3295,10 +3323,10 @@ pub struct ListServiceLevelObjectivesRequest {
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
     ///     workspaces/[HOST_PROJECT_ID_OR_NUMBER]/services/-
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// A filter specifying what `ServiceLevelObjective`s to return.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// A non-negative number that is the maximum number of results to return.
     /// When 0, use default page size.
     #[prost(int32, tag = "3")]
@@ -3307,7 +3335,7 @@ pub struct ListServiceLevelObjectivesRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// View of the `ServiceLevelObjective`s to return. If `DEFAULT`, return each
     /// `ServiceLevelObjective` as originally defined. If `EXPLICIT` and the
     /// `ServiceLevelObjective` is defined in terms of a `BasicSli`, replace the
@@ -3320,12 +3348,12 @@ pub struct ListServiceLevelObjectivesRequest {
 pub struct ListServiceLevelObjectivesResponse {
     /// The `ServiceLevelObjective`s matching the specified filter.
     #[prost(message, repeated, tag = "1")]
-    pub service_level_objectives: ::std::vec::Vec<ServiceLevelObjective>,
+    pub service_level_objectives: ::prost::alloc::vec::Vec<ServiceLevelObjective>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `UpdateServiceLevelObjective` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3333,10 +3361,10 @@ pub struct UpdateServiceLevelObjectiveRequest {
     /// Required. The `ServiceLevelObjective` to draw updates from.
     /// The given `name` specifies the resource to update.
     #[prost(message, optional, tag = "1")]
-    pub service_level_objective: ::std::option::Option<ServiceLevelObjective>,
+    pub service_level_objective: ::core::option::Option<ServiceLevelObjective>,
     /// A set of field paths defining which fields to use for the update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The `DeleteServiceLevelObjective` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3345,7 +3373,7 @@ pub struct DeleteServiceLevelObjectiveRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]/serviceLevelObjectives/[SLO_NAME]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod service_monitoring_service_client {
@@ -3577,7 +3605,7 @@ pub struct SpanContext {
     /// `[SPAN_ID]` is a unique identifier for a span within a trace; it
     /// is a 16-character hexadecimal encoding of an 8-byte array.
     #[prost(string, tag = "1")]
-    pub span_name: std::string::String,
+    pub span_name: ::prost::alloc::string::String,
 }
 /// An internal checker allows Uptime checks to run on private/internal GCP
 /// resources.
@@ -3590,28 +3618,29 @@ pub struct InternalChecker {
     /// `[PROJECT_ID_OR_NUMBER]` is the Stackdriver Workspace project for the
     /// Uptime check config associated with the internal checker.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The checker's human-readable name. The display name
     /// should be unique within a Stackdriver Workspace in order to make it easier
     /// to identify; however, uniqueness is not enforced.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The [GCP VPC network](https://cloud.google.com/vpc/docs/vpc) where the
     /// internal resource lives (ex: "default").
     #[prost(string, tag = "3")]
-    pub network: std::string::String,
+    pub network: ::prost::alloc::string::String,
     /// The GCP zone the Uptime check should egress from. Only respected for
     /// internal Uptime checks, where internal_network is specified.
     #[prost(string, tag = "4")]
-    pub gcp_zone: std::string::String,
+    pub gcp_zone: ::prost::alloc::string::String,
     /// The GCP project ID where the internal checker lives. Not necessary
     /// the same as the Workspace project.
     #[prost(string, tag = "6")]
-    pub peer_project_id: std::string::String,
+    pub peer_project_id: ::prost::alloc::string::String,
     /// The current operational state of the internal checker.
     #[prost(enumeration = "internal_checker::State", tag = "7")]
     pub state: i32,
 }
+/// Nested message and enum types in `InternalChecker`.
 pub mod internal_checker {
     /// Operational states for an internal checker.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3647,55 +3676,58 @@ pub struct UptimeCheckConfig {
     /// on create, the resource name is assigned by the server and included in the
     /// response.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A human-friendly name for the Uptime check configuration. The display name
     /// should be unique within a Stackdriver Workspace in order to make it easier
     /// to identify; however, uniqueness is not enforced. Required.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// How often, in seconds, the Uptime check is performed.
     /// Currently, the only supported values are `60s` (1 minute), `300s`
     /// (5 minutes), `600s` (10 minutes), and `900s` (15 minutes). Optional,
     /// defaults to `60s`.
     #[prost(message, optional, tag = "7")]
-    pub period: ::std::option::Option<::prost_types::Duration>,
+    pub period: ::core::option::Option<::prost_types::Duration>,
     /// The maximum amount of time to wait for the request to complete (must be
     /// between 1 and 60 seconds). Required.
     #[prost(message, optional, tag = "8")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// The content that is expected to appear in the data returned by the target
     /// server against which the check is run.  Currently, only the first entry
     /// in the `content_matchers` list is supported, and additional entries will
     /// be ignored. This field is optional and should only be specified if a
     /// content match is required as part of the/ Uptime check.
     #[prost(message, repeated, tag = "9")]
-    pub content_matchers: ::std::vec::Vec<uptime_check_config::ContentMatcher>,
+    pub content_matchers: ::prost::alloc::vec::Vec<uptime_check_config::ContentMatcher>,
     /// The list of regions from which the check will be run.
     /// Some regions contain one location, and others contain more than one.
     /// If this field is specified, enough regions must be provided to include a
     /// minimum of 3 locations.  Not specifying this field will result in Uptime
     /// checks running from all available regions.
     #[prost(enumeration = "UptimeCheckRegion", repeated, tag = "10")]
-    pub selected_regions: ::std::vec::Vec<i32>,
+    pub selected_regions: ::prost::alloc::vec::Vec<i32>,
     /// If this is `true`, then checks are made only from the 'internal_checkers'.
     /// If it is `false`, then checks are made only from the 'selected_regions'.
     /// It is an error to provide 'selected_regions' when is_internal is `true`,
     /// or to provide 'internal_checkers' when is_internal is `false`.
+    #[deprecated]
     #[prost(bool, tag = "15")]
     pub is_internal: bool,
     /// The internal checkers that this check will egress from. If `is_internal` is
     /// `true` and this list is empty, the check will egress from all the
     /// InternalCheckers configured for the project that owns this
     /// `UptimeCheckConfig`.
+    #[deprecated]
     #[prost(message, repeated, tag = "14")]
-    pub internal_checkers: ::std::vec::Vec<InternalChecker>,
+    pub internal_checkers: ::prost::alloc::vec::Vec<InternalChecker>,
     /// The resource the check is checking. Required.
     #[prost(oneof = "uptime_check_config::Resource", tags = "3, 4")]
-    pub resource: ::std::option::Option<uptime_check_config::Resource>,
+    pub resource: ::core::option::Option<uptime_check_config::Resource>,
     /// The type of Uptime check request.
     #[prost(oneof = "uptime_check_config::CheckRequestType", tags = "5, 6")]
-    pub check_request_type: ::std::option::Option<uptime_check_config::CheckRequestType>,
+    pub check_request_type: ::core::option::Option<uptime_check_config::CheckRequestType>,
 }
+/// Nested message and enum types in `UptimeCheckConfig`.
 pub mod uptime_check_config {
     /// The resource submessage for group checks. It can be used instead of a
     /// monitored resource, when multiple resources are being monitored.
@@ -3705,7 +3737,7 @@ pub mod uptime_check_config {
         /// and not the full-path
         /// `projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]`.
         #[prost(string, tag = "1")]
-        pub group_id: std::string::String,
+        pub group_id: ::prost::alloc::string::String,
         /// The resource type of the group members.
         #[prost(enumeration = "super::GroupResourceType", tag = "2")]
         pub resource_type: i32,
@@ -3725,7 +3757,7 @@ pub mod uptime_check_config {
         /// provided path does not begin with "/", a "/" will be prepended
         /// automatically.
         #[prost(string, tag = "2")]
-        pub path: std::string::String,
+        pub path: ::prost::alloc::string::String,
         /// Optional (defaults to 80 when `use_ssl` is `false`, and 443 when
         /// `use_ssl` is `true`). The TCP port on the HTTP server against which to
         /// run the check. Will be combined with host (specified within the
@@ -3735,7 +3767,7 @@ pub mod uptime_check_config {
         /// The authentication information. Optional when creating an HTTP check;
         /// defaults to empty.
         #[prost(message, optional, tag = "4")]
-        pub auth_info: ::std::option::Option<http_check::BasicAuthentication>,
+        pub auth_info: ::core::option::Option<http_check::BasicAuthentication>,
         /// Boolean specifiying whether to encrypt the header information.
         /// Encryption should be specified for any headers related to authentication
         /// that you do not wish to be seen when retrieving the configuration. The
@@ -3753,7 +3785,10 @@ pub mod uptime_check_config {
         /// cause the first to be overwritten by the second.
         /// The maximum number of headers allowed is 100.
         #[prost(map = "string, string", tag = "6")]
-        pub headers: ::std::collections::HashMap<std::string::String, std::string::String>,
+        pub headers: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
         /// The content type to use for the check.
         #[prost(enumeration = "http_check::ContentType", tag = "9")]
         pub content_type: i32,
@@ -3768,9 +3803,10 @@ pub mod uptime_check_config {
         /// a `Content-Length` header via the `headers` field or the API will do
         /// so. The maximum byte size is 1 megabyte. Note: As with all `bytes` fields
         /// JSON representations are base64 encoded.
-        #[prost(bytes, tag = "10")]
-        pub body: std::vec::Vec<u8>,
+        #[prost(bytes = "vec", tag = "10")]
+        pub body: ::prost::alloc::vec::Vec<u8>,
     }
+    /// Nested message and enum types in `HttpCheck`.
     pub mod http_check {
         /// The authentication parameters to provide to the specified resource or
         /// URL that requires a username and password. Currently, only
@@ -3780,13 +3816,15 @@ pub mod uptime_check_config {
         pub struct BasicAuthentication {
             /// The username to use when authenticating with the HTTP server.
             #[prost(string, tag = "1")]
-            pub username: std::string::String,
+            pub username: ::prost::alloc::string::String,
             /// The password to use when authenticating with the HTTP server.
             #[prost(string, tag = "2")]
-            pub password: std::string::String,
+            pub password: ::prost::alloc::string::String,
         }
         /// The HTTP request method options.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum RequestMethod {
             /// No request method specified.
@@ -3799,7 +3837,9 @@ pub mod uptime_check_config {
         /// Header options corresponding to the Content-Type of the body in HTTP
         /// requests. Note that a `Content-Type` header cannot be present in the
         /// `headers` field if this field is specified.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ContentType {
             /// No content type specified. If the request method is POST, an
@@ -3829,15 +3869,18 @@ pub mod uptime_check_config {
         /// String or regex content to match. Maximum 1024 bytes. An empty `content`
         /// string indicates no content matching is to be performed.
         #[prost(string, tag = "1")]
-        pub content: std::string::String,
+        pub content: ::prost::alloc::string::String,
         /// The type of content matcher that will be applied to the server output,
         /// compared to the `content` string when the check is run.
         #[prost(enumeration = "content_matcher::ContentMatcherOption", tag = "2")]
         pub matcher: i32,
     }
+    /// Nested message and enum types in `ContentMatcher`.
     pub mod content_matcher {
         /// Options to perform content matching.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ContentMatcherOption {
             /// No content matcher type specified (maintained for backward
@@ -3901,14 +3944,14 @@ pub struct UptimeCheckIp {
     /// a particular city/town/metro (and its containing state/province or country)
     /// within the broader umbrella region category.
     #[prost(string, tag = "2")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// The IP address from which the Uptime check originates. This is a fully
     /// specified IP address (not an IP address range). Most IP addresses, as of
     /// this publication, are in IPv4 format; however, one should not rely on the
     /// IP addresses being in IPv4 format indefinitely, and should support
     /// interpreting this field in either IPv4 or IPv6 format.
     #[prost(string, tag = "3")]
-    pub ip_address: std::string::String,
+    pub ip_address: ::prost::alloc::string::String,
 }
 /// The regions from which an Uptime check can be run.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3951,7 +3994,7 @@ pub struct ListUptimeCheckConfigsRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. The server
     /// may further constrain the maximum number of results returned in a single
     /// page. If the page_size is <=0, the server will decide the number of results
@@ -3962,21 +4005,21 @@ pub struct ListUptimeCheckConfigsRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return more results from the previous method call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListUptimeCheckConfigs` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUptimeCheckConfigsResponse {
     /// The returned Uptime check configurations.
     #[prost(message, repeated, tag = "1")]
-    pub uptime_check_configs: ::std::vec::Vec<UptimeCheckConfig>,
+    pub uptime_check_configs: ::prost::alloc::vec::Vec<UptimeCheckConfig>,
     /// This field represents the pagination token to retrieve the next page of
     /// results. If the value is empty, it means no further results for the
     /// request. To retrieve the next page of results, the value of the
     /// next_page_token is passed to the subsequent List method call (in the
     /// request message's page_token field).
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of Uptime check configurations for the project,
     /// irrespective of any pagination.
     #[prost(int32, tag = "3")]
@@ -3989,7 +4032,7 @@ pub struct GetUptimeCheckConfigRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The protocol for the `CreateUptimeCheckConfig` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3998,10 +4041,10 @@ pub struct CreateUptimeCheckConfigRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The new Uptime check configuration.
     #[prost(message, optional, tag = "2")]
-    pub uptime_check_config: ::std::option::Option<UptimeCheckConfig>,
+    pub uptime_check_config: ::core::option::Option<UptimeCheckConfig>,
 }
 /// The protocol for the `UpdateUptimeCheckConfig` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4011,7 +4054,7 @@ pub struct UpdateUptimeCheckConfigRequest {
     /// field is empty, then the current configuration is completely replaced with
     /// the new configuration.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. If an `updateMask` has been specified, this field gives
     /// the values for the set of fields mentioned in the `updateMask`. If an
     /// `updateMask` has not been given, this Uptime check configuration replaces
@@ -4024,7 +4067,7 @@ pub struct UpdateUptimeCheckConfigRequest {
     /// `http_check`, `tcp_check`, `timeout`, `content_matchers`, and
     /// `selected_regions`.
     #[prost(message, optional, tag = "3")]
-    pub uptime_check_config: ::std::option::Option<UptimeCheckConfig>,
+    pub uptime_check_config: ::core::option::Option<UptimeCheckConfig>,
 }
 /// The protocol for the `DeleteUptimeCheckConfig` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4033,7 +4076,7 @@ pub struct DeleteUptimeCheckConfigRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListUptimeCheckIps` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4050,7 +4093,7 @@ pub struct ListUptimeCheckIpsRequest {
     /// method to return more results from the previous method call.
     /// NOTE: this field is not yet implemented
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListUptimeCheckIps` response.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4058,7 +4101,7 @@ pub struct ListUptimeCheckIpsResponse {
     /// The returned list of IP addresses (including region and location) that the
     /// checkers run from.
     #[prost(message, repeated, tag = "1")]
-    pub uptime_check_ips: ::std::vec::Vec<UptimeCheckIp>,
+    pub uptime_check_ips: ::prost::alloc::vec::Vec<UptimeCheckIp>,
     /// This field represents the pagination token to retrieve the next page of
     /// results. If the value is empty, it means no further results for the
     /// request. To retrieve the next page of results, the value of the
@@ -4066,7 +4109,7 @@ pub struct ListUptimeCheckIpsResponse {
     /// request message's page_token field).
     /// NOTE: this field is not yet implemented
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod uptime_check_service_client {

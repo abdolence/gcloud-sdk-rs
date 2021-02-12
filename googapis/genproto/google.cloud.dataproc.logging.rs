@@ -14,11 +14,11 @@ pub struct ClusterSize {
 pub struct AutoscalerLog {
     /// The current Autoscaler status.
     #[prost(message, optional, tag = "1")]
-    pub status: ::std::option::Option<AutoscalerStatus>,
+    pub status: ::core::option::Option<AutoscalerStatus>,
     /// Optional. The autoscaling recommendation including its inputs, outputs,
     /// scaling decision, and detailed explanation.
     #[prost(message, optional, tag = "2")]
-    pub recommendation: ::std::option::Option<AutoscalerRecommendation>,
+    pub recommendation: ::core::option::Option<AutoscalerRecommendation>,
 }
 /// The Autoscaler's status, including its state and other details.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -28,13 +28,13 @@ pub struct AutoscalerStatus {
     pub state: i32,
     /// The detailed description of Autoscaler status.
     #[prost(string, tag = "2")]
-    pub details: std::string::String,
+    pub details: ::prost::alloc::string::String,
     /// The cluster update operation ID.
     #[prost(string, tag = "3")]
-    pub update_cluster_operation_id: std::string::String,
+    pub update_cluster_operation_id: ::prost::alloc::string::String,
     /// Error message from an Autoscaler exception, if any.
     #[prost(string, tag = "4")]
-    pub error: std::string::String,
+    pub error: ::prost::alloc::string::String,
 }
 /// The inputs, outputs, and detailed explanation of the Autoscaling
 /// recommendation.
@@ -42,11 +42,12 @@ pub struct AutoscalerStatus {
 pub struct AutoscalerRecommendation {
     /// The autoscaling algorithm inputs.
     #[prost(message, optional, tag = "1")]
-    pub inputs: ::std::option::Option<autoscaler_recommendation::Inputs>,
+    pub inputs: ::core::option::Option<autoscaler_recommendation::Inputs>,
     /// The algorithm outputs for the recommended cluster size.
     #[prost(message, optional, tag = "2")]
-    pub outputs: ::std::option::Option<autoscaler_recommendation::Outputs>,
+    pub outputs: ::core::option::Option<autoscaler_recommendation::Outputs>,
 }
+/// Nested message and enum types in `AutoscalerRecommendation`.
 pub mod autoscaler_recommendation {
     /// The input values for the Autoscaling recommendation alogirthm.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -54,16 +55,19 @@ pub mod autoscaler_recommendation {
         /// The metrics collected by the Dataproc agent running on the cluster.
         /// For example, {"avg-yarn-pending-memory": "1040 MB"}
         #[prost(map = "string, string", tag = "1")]
-        pub cluster_metrics: ::std::collections::HashMap<std::string::String, std::string::String>,
+        pub cluster_metrics: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
         /// The cluster configuration before updating the cluster.
         #[prost(message, optional, tag = "2")]
-        pub current_cluster_size: ::std::option::Option<super::ClusterSize>,
+        pub current_cluster_size: ::core::option::Option<super::ClusterSize>,
         /// The minimum worker counts for each instance group.
         #[prost(message, optional, tag = "3")]
-        pub min_worker_counts: ::std::option::Option<super::ClusterSize>,
+        pub min_worker_counts: ::core::option::Option<super::ClusterSize>,
         /// The maximum worker counts for each instance group.
         #[prost(message, optional, tag = "4")]
-        pub max_worker_counts: ::std::option::Option<super::ClusterSize>,
+        pub max_worker_counts: ::core::option::Option<super::ClusterSize>,
     }
     /// Autoscaler recommendations.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -74,21 +78,22 @@ pub mod autoscaler_recommendation {
         pub decision: i32,
         /// The recommended cluster size.
         #[prost(message, optional, tag = "2")]
-        pub recommended_cluster_size: ::std::option::Option<super::ClusterSize>,
+        pub recommended_cluster_size: ::core::option::Option<super::ClusterSize>,
         /// The graceful decommission timeout for downscaling operations.
         #[prost(message, optional, tag = "3")]
-        pub graceful_decommission_timeout: ::std::option::Option<::prost_types::Duration>,
+        pub graceful_decommission_timeout: ::core::option::Option<::prost_types::Duration>,
         /// Reasons why the Autoscaler didn't add or remove more workers.
         #[prost(enumeration = "super::ConstrainingFactor", repeated, tag = "4")]
-        pub constraints_reached: ::std::vec::Vec<i32>,
+        pub constraints_reached: ::prost::alloc::vec::Vec<i32>,
         /// Less significant recommendations that are not included in the
         /// `AutoscalerStatus.details` message.
         #[prost(string, repeated, tag = "5")]
-        pub additional_recommendation_details: ::std::vec::Vec<std::string::String>,
+        pub additional_recommendation_details:
+            ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// A unique id for this recommendation that should be included when opening
         /// a support ticket.
         #[prost(string, tag = "6")]
-        pub recommendation_id: std::string::String,
+        pub recommendation_id: ::prost::alloc::string::String,
     }
 }
 /// The Autoscaler state.

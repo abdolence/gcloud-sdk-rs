@@ -4,26 +4,26 @@ pub struct RetryBuildRequest {
     /// The name of the `Build` to retry.
     /// Format: `projects/{project}/locations/{location}/builds/{build}`
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. ID of the project.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. Build ID of the original build.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
 }
 /// Specifies a build trigger to run and the source to use.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunBuildTriggerRequest {
     /// Required. ID of the project.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. ID of the trigger.
     #[prost(string, tag = "2")]
-    pub trigger_id: std::string::String,
+    pub trigger_id: ::prost::alloc::string::String,
     /// Required. Source to build against this trigger.
     #[prost(message, optional, tag = "3")]
-    pub source: ::std::option::Option<RepoSource>,
+    pub source: ::core::option::Option<RepoSource>,
 }
 /// Location of the source in an archive file in Google Cloud Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -32,13 +32,13 @@ pub struct StorageSource {
     /// [Bucket Name
     /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
     #[prost(string, tag = "1")]
-    pub bucket: std::string::String,
+    pub bucket: ::prost::alloc::string::String,
     /// Google Cloud Storage object containing the source.
     ///
     /// This object must be a gzipped archive file (`.tar.gz`) containing source to
     /// build.
     #[prost(string, tag = "2")]
-    pub object: std::string::String,
+    pub object: ::prost::alloc::string::String,
     /// Google Cloud Storage generation for the object. If the generation is
     /// omitted, the latest generation will be used.
     #[prost(int64, tag = "3")]
@@ -50,16 +50,16 @@ pub struct RepoSource {
     /// ID of the project that owns the Cloud Source Repository. If omitted, the
     /// project ID requesting the build is assumed.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. Name of the Cloud Source Repository.
     #[prost(string, tag = "2")]
-    pub repo_name: std::string::String,
+    pub repo_name: ::prost::alloc::string::String,
     /// Directory, relative to the source root, in which to run the build.
     ///
     /// This must be a relative path. If a step's `dir` is specified and is an
     /// absolute path, this value is ignored for that step's execution.
     #[prost(string, tag = "7")]
-    pub dir: std::string::String,
+    pub dir: ::prost::alloc::string::String,
     /// Only trigger a build if the revision regex does NOT match the revision
     /// regex.
     #[prost(bool, tag = "8")]
@@ -67,12 +67,14 @@ pub struct RepoSource {
     /// Substitutions to use in a triggered build.
     /// Should only be used with RunBuildTrigger
     #[prost(map = "string, string", tag = "9")]
-    pub substitutions: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub substitutions:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// A revision within the Cloud Source Repository must be specified in
     /// one of these ways.
     #[prost(oneof = "repo_source::Revision", tags = "3, 4, 5")]
-    pub revision: ::std::option::Option<repo_source::Revision>,
+    pub revision: ::core::option::Option<repo_source::Revision>,
 }
+/// Nested message and enum types in `RepoSource`.
 pub mod repo_source {
     /// A revision within the Cloud Source Repository must be specified in
     /// one of these ways.
@@ -83,16 +85,16 @@ pub mod repo_source {
         /// The syntax of the regular expressions accepted is the syntax accepted by
         /// RE2 and described at https://github.com/google/re2/wiki/Syntax
         #[prost(string, tag = "3")]
-        BranchName(std::string::String),
+        BranchName(::prost::alloc::string::String),
         /// Regex matching tags to build.
         ///
         /// The syntax of the regular expressions accepted is the syntax accepted by
         /// RE2 and described at https://github.com/google/re2/wiki/Syntax
         #[prost(string, tag = "4")]
-        TagName(std::string::String),
+        TagName(::prost::alloc::string::String),
         /// Explicit commit SHA to build.
         #[prost(string, tag = "5")]
-        CommitSha(std::string::String),
+        CommitSha(::prost::alloc::string::String),
     }
 }
 /// Location of the source in a supported storage service.
@@ -100,8 +102,9 @@ pub mod repo_source {
 pub struct Source {
     /// Location of source.
     #[prost(oneof = "source::Source", tags = "2, 3")]
-    pub source: ::std::option::Option<source::Source>,
+    pub source: ::core::option::Option<source::Source>,
 }
+/// Nested message and enum types in `Source`.
 pub mod source {
     /// Location of source.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -121,13 +124,13 @@ pub struct BuiltImage {
     /// Name used to push the container image to Google Container Registry, as
     /// presented to `docker push`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Docker Registry 2.0 digest.
     #[prost(string, tag = "3")]
-    pub digest: std::string::String,
+    pub digest: ::prost::alloc::string::String,
     /// Output only. Stores timing information for pushing the specified image.
     #[prost(message, optional, tag = "4")]
-    pub push_timing: ::std::option::Option<TimeSpan>,
+    pub push_timing: ::core::option::Option<TimeSpan>,
 }
 /// A step in the build pipeline.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -150,13 +153,13 @@ pub struct BuildStep {
     /// host's Docker daemon's cache and is available to use as the name for a
     /// later build step.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A list of environment variable definitions to be used when running a step.
     ///
     /// The elements are of the form "KEY=VALUE" for the environment variable "KEY"
     /// being given the value "VALUE".
     #[prost(string, repeated, tag = "2")]
-    pub env: ::std::vec::Vec<std::string::String>,
+    pub env: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of arguments that will be presented to the step when it is started.
     ///
     /// If the image used to run the step's container has an entrypoint, the `args`
@@ -164,7 +167,7 @@ pub struct BuildStep {
     /// an entrypoint, the first element in args is used as the entrypoint,
     /// and the remainder will be used as arguments.
     #[prost(string, repeated, tag = "3")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Working directory to use when running this step's container.
     ///
     /// If this value is a relative path, it is relative to the build's working
@@ -176,27 +179,27 @@ pub struct BuildStep {
     /// which specifies an absolute path, the `RepoSource` `dir` is ignored for
     /// the step's execution.
     #[prost(string, tag = "4")]
-    pub dir: std::string::String,
+    pub dir: ::prost::alloc::string::String,
     /// Unique identifier for this build step, used in `wait_for` to
     /// reference this build step as a dependency.
     #[prost(string, tag = "5")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// The ID(s) of the step(s) that this build step depends on.
     /// This build step will not start until all the build steps in `wait_for`
     /// have completed successfully. If `wait_for` is empty, this build step will
     /// start when all previous build steps in the `Build.Steps` list have
     /// completed successfully.
     #[prost(string, repeated, tag = "6")]
-    pub wait_for: ::std::vec::Vec<std::string::String>,
+    pub wait_for: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Entrypoint to be used instead of the build step image's default entrypoint.
     /// If unset, the image's default entrypoint is used.
     #[prost(string, tag = "7")]
-    pub entrypoint: std::string::String,
+    pub entrypoint: ::prost::alloc::string::String,
     /// A list of environment variables which are encrypted using a Cloud Key
     /// Management Service crypto key. These values must be specified in the
     /// build's `Secret`.
     #[prost(string, repeated, tag = "8")]
-    pub secret_env: ::std::vec::Vec<std::string::String>,
+    pub secret_env: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of volumes to mount into the build step.
     ///
     /// Each volume is created as an empty volume prior to execution of the
@@ -206,19 +209,19 @@ pub struct BuildStep {
     /// Using a named volume in only one step is not valid as it is indicative
     /// of a build request with an incorrect configuration.
     #[prost(message, repeated, tag = "9")]
-    pub volumes: ::std::vec::Vec<Volume>,
+    pub volumes: ::prost::alloc::vec::Vec<Volume>,
     /// Output only. Stores timing information for executing this build step.
     #[prost(message, optional, tag = "10")]
-    pub timing: ::std::option::Option<TimeSpan>,
+    pub timing: ::core::option::Option<TimeSpan>,
     /// Output only. Stores timing information for pulling this build step's
     /// builder image only.
     #[prost(message, optional, tag = "13")]
-    pub pull_timing: ::std::option::Option<TimeSpan>,
+    pub pull_timing: ::core::option::Option<TimeSpan>,
     /// Time limit for executing this build step. If not defined, the step has no
     /// time limit and will be allowed to continue to run until either it completes
     /// or the build itself times out.
     #[prost(message, optional, tag = "11")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Output only. Status of the build step. At this time, build step status is
     /// only updated on build completion; step status is not updated in real-time
     /// as the build progresses.
@@ -234,27 +237,27 @@ pub struct Volume {
     /// Volume names must be unique per build step and must be valid names for
     /// Docker volumes. Each named volume must be used by at least two build steps.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Path at which to mount the volume.
     ///
     /// Paths must be absolute and cannot conflict with other volume paths on the
     /// same build step or with certain reserved volume paths.
     #[prost(string, tag = "2")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
 }
 /// Artifacts created by the build pipeline.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Results {
     /// Container images that were built as a part of the build.
     #[prost(message, repeated, tag = "2")]
-    pub images: ::std::vec::Vec<BuiltImage>,
+    pub images: ::prost::alloc::vec::Vec<BuiltImage>,
     /// List of build step digests, in the order corresponding to build step
     /// indices.
     #[prost(string, repeated, tag = "3")]
-    pub build_step_images: ::std::vec::Vec<std::string::String>,
+    pub build_step_images: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Path to the artifact manifest. Only populated when artifacts are uploaded.
     #[prost(string, tag = "4")]
-    pub artifact_manifest: std::string::String,
+    pub artifact_manifest: ::prost::alloc::string::String,
     /// Number of artifacts uploaded. Only populated when artifacts are uploaded.
     #[prost(int64, tag = "5")]
     pub num_artifacts: i64,
@@ -264,11 +267,11 @@ pub struct Results {
     /// [Cloud Builders](https://cloud.google.com/cloud-build/docs/cloud-builders)
     /// can produce this output by writing to `$BUILDER_OUTPUT/output`.
     /// Only the first 4KB of data is stored.
-    #[prost(bytes, repeated, tag = "6")]
-    pub build_step_outputs: ::std::vec::Vec<std::vec::Vec<u8>>,
+    #[prost(bytes = "vec", repeated, tag = "6")]
+    pub build_step_outputs: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
     /// Time to push all non-container artifacts.
     #[prost(message, optional, tag = "7")]
-    pub artifact_timing: ::std::option::Option<TimeSpan>,
+    pub artifact_timing: ::core::option::Option<TimeSpan>,
 }
 /// An artifact that was uploaded during a build. This
 /// is a single record in the artifact manifest JSON file.
@@ -278,10 +281,10 @@ pub struct ArtifactResult {
     /// generation number. For example,
     /// `gs://mybucket/path/to/output.jar#generation`.
     #[prost(string, tag = "1")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// The file hash of the artifact.
     #[prost(message, repeated, tag = "2")]
-    pub file_hash: ::std::vec::Vec<FileHashes>,
+    pub file_hash: ::prost::alloc::vec::Vec<FileHashes>,
 }
 /// A build resource in the Cloud Build API.
 ///
@@ -306,40 +309,40 @@ pub struct Build {
     /// `projects/{project}/locations/{location}/builds/{build}`, where {build}
     /// is a unique identifier generated by the service.
     #[prost(string, tag = "45")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Unique identifier of the build.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Output only. ID of the project.
     #[prost(string, tag = "16")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Output only. Status of the build.
     #[prost(enumeration = "build::Status", tag = "2")]
     pub status: i32,
     /// Output only. Customer-readable message about the current status.
     #[prost(string, tag = "24")]
-    pub status_detail: std::string::String,
+    pub status_detail: ::prost::alloc::string::String,
     /// The location of the source files to build.
     #[prost(message, optional, tag = "3")]
-    pub source: ::std::option::Option<Source>,
+    pub source: ::core::option::Option<Source>,
     /// Required. The operations to be performed on the workspace.
     #[prost(message, repeated, tag = "11")]
-    pub steps: ::std::vec::Vec<BuildStep>,
+    pub steps: ::prost::alloc::vec::Vec<BuildStep>,
     /// Output only. Results of the build.
     #[prost(message, optional, tag = "10")]
-    pub results: ::std::option::Option<Results>,
+    pub results: ::core::option::Option<Results>,
     /// Output only. Time at which the request to create the build was received.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time at which execution of the build was started.
     #[prost(message, optional, tag = "7")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time at which execution of the build was finished.
     ///
     /// The difference between finish_time and start_time is the duration of the
     /// build's execution.
     #[prost(message, optional, tag = "8")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Amount of time that this build should be allowed to run, to second
     /// granularity. If this amount of time elapses, work on the build will cease
     /// and the build status will be `TIMEOUT`.
@@ -348,7 +351,7 @@ pub struct Build {
     ///
     /// Default time is ten minutes.
     #[prost(message, optional, tag = "12")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// A list of images to be pushed upon the successful completion of all build
     /// steps.
     ///
@@ -360,46 +363,47 @@ pub struct Build {
     /// If any of the images fail to be pushed, the build status is marked
     /// `FAILURE`.
     #[prost(string, repeated, tag = "13")]
-    pub images: ::std::vec::Vec<std::string::String>,
+    pub images: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// TTL in queue for this build. If provided and the build is enqueued longer
     /// than this value, the build will expire and the build status will be
     /// `EXPIRED`.
     ///
     /// The TTL starts ticking from create_time.
     #[prost(message, optional, tag = "40")]
-    pub queue_ttl: ::std::option::Option<::prost_types::Duration>,
+    pub queue_ttl: ::core::option::Option<::prost_types::Duration>,
     /// Artifacts produced by the build that should be uploaded upon
     /// successful completion of all build steps.
     #[prost(message, optional, tag = "37")]
-    pub artifacts: ::std::option::Option<Artifacts>,
+    pub artifacts: ::core::option::Option<Artifacts>,
     /// Google Cloud Storage bucket where logs should be written (see
     /// [Bucket Name
     /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
     /// Logs file names will be of the format `${logs_bucket}/log-${build_id}.txt`.
     #[prost(string, tag = "19")]
-    pub logs_bucket: std::string::String,
+    pub logs_bucket: ::prost::alloc::string::String,
     /// Output only. A permanent fixed identifier for source.
     #[prost(message, optional, tag = "21")]
-    pub source_provenance: ::std::option::Option<SourceProvenance>,
+    pub source_provenance: ::core::option::Option<SourceProvenance>,
     /// Output only. The ID of the `BuildTrigger` that triggered this build, if it
     /// was triggered automatically.
     #[prost(string, tag = "22")]
-    pub build_trigger_id: std::string::String,
+    pub build_trigger_id: ::prost::alloc::string::String,
     /// Special options for this build.
     #[prost(message, optional, tag = "23")]
-    pub options: ::std::option::Option<BuildOptions>,
+    pub options: ::core::option::Option<BuildOptions>,
     /// Output only. URL to logs for this build in Google Cloud Console.
     #[prost(string, tag = "25")]
-    pub log_url: std::string::String,
+    pub log_url: ::prost::alloc::string::String,
     /// Substitutions data for `Build` resource.
     #[prost(map = "string, string", tag = "29")]
-    pub substitutions: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub substitutions:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Tags for annotation of a `Build`. These are not docker tags.
     #[prost(string, repeated, tag = "31")]
-    pub tags: ::std::vec::Vec<std::string::String>,
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Secrets to decrypt using Cloud Key Management Service.
     #[prost(message, repeated, tag = "32")]
-    pub secrets: ::std::vec::Vec<Secret>,
+    pub secrets: ::prost::alloc::vec::Vec<Secret>,
     /// Output only. Stores timing information for phases of the build. Valid keys
     /// are:
     ///
@@ -410,15 +414,16 @@ pub struct Build {
     /// If the build does not specify source or images,
     /// these keys will not be included.
     #[prost(map = "string, message", tag = "33")]
-    pub timing: ::std::collections::HashMap<std::string::String, TimeSpan>,
+    pub timing: ::std::collections::HashMap<::prost::alloc::string::String, TimeSpan>,
     /// IAM service account whose credentials will be used at build runtime.
     /// Must be of the format `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
     /// ACCOUNT can be email address or uniqueId of the service account.
     ///
     /// This field is in alpha and is not publicly available.
     #[prost(string, tag = "42")]
-    pub service_account: std::string::String,
+    pub service_account: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Build`.
 pub mod build {
     /// Possible status of a build or build step.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -458,7 +463,7 @@ pub struct Artifacts {
     ///
     /// If any of the images fail to be pushed, the build is marked FAILURE.
     #[prost(string, repeated, tag = "1")]
-    pub images: ::std::vec::Vec<std::string::String>,
+    pub images: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of objects to be uploaded to Cloud Storage upon successful
     /// completion of all build steps.
     ///
@@ -471,8 +476,9 @@ pub struct Artifacts {
     ///
     /// If any objects fail to be pushed, the build is marked FAILURE.
     #[prost(message, optional, tag = "2")]
-    pub objects: ::std::option::Option<artifacts::ArtifactObjects>,
+    pub objects: ::core::option::Option<artifacts::ArtifactObjects>,
 }
+/// Nested message and enum types in `Artifacts`.
 pub mod artifacts {
     /// Files in the workspace to upload to Cloud Storage upon successful
     /// completion of all build steps.
@@ -485,13 +491,13 @@ pub mod artifacts {
         /// Files in the workspace matching any path pattern will be uploaded to
         /// Cloud Storage with this location as a prefix.
         #[prost(string, tag = "1")]
-        pub location: std::string::String,
+        pub location: ::prost::alloc::string::String,
         /// Path globs used to match files in the build's workspace.
         #[prost(string, repeated, tag = "2")]
-        pub paths: ::std::vec::Vec<std::string::String>,
+        pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Output only. Stores timing information for pushing all artifact objects.
         #[prost(message, optional, tag = "3")]
-        pub timing: ::std::option::Option<super::TimeSpan>,
+        pub timing: ::core::option::Option<super::TimeSpan>,
     }
 }
 /// Start and end times for a build execution phase.
@@ -499,17 +505,17 @@ pub mod artifacts {
 pub struct TimeSpan {
     /// Start of time span.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End of time span.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata for build operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildOperationMetadata {
     /// The build that the operation is tracking.
     #[prost(message, optional, tag = "1")]
-    pub build: ::std::option::Option<Build>,
+    pub build: ::core::option::Option<Build>,
 }
 /// Provenance of the source. Ways to find the original source, or verify that
 /// some source was used for this build.
@@ -518,11 +524,11 @@ pub struct SourceProvenance {
     /// A copy of the build's `source.storage_source`, if exists, with any
     /// generations resolved.
     #[prost(message, optional, tag = "3")]
-    pub resolved_storage_source: ::std::option::Option<StorageSource>,
+    pub resolved_storage_source: ::core::option::Option<StorageSource>,
     /// A copy of the build's `source.repo_source`, if exists, with any
     /// revisions resolved.
     #[prost(message, optional, tag = "6")]
-    pub resolved_repo_source: ::std::option::Option<RepoSource>,
+    pub resolved_repo_source: ::core::option::Option<RepoSource>,
     /// Output only. Hash(es) of the build source, which can be used to verify that
     /// the original source integrity was maintained in the build. Note that
     /// `FileHashes` will only be populated if `BuildOptions` has requested a
@@ -534,7 +540,7 @@ pub struct SourceProvenance {
     /// If the build source came in a single package such as a gzipped tarfile
     /// (`.tar.gz`), the `FileHash` will be for the single path to that file.
     #[prost(map = "string, message", tag = "4")]
-    pub file_hashes: ::std::collections::HashMap<std::string::String, FileHashes>,
+    pub file_hashes: ::std::collections::HashMap<::prost::alloc::string::String, FileHashes>,
 }
 /// Container message for hashes of byte content of files, used in
 /// SourceProvenance messages to verify integrity of source input to the build.
@@ -542,7 +548,7 @@ pub struct SourceProvenance {
 pub struct FileHashes {
     /// Collection of file hashes.
     #[prost(message, repeated, tag = "1")]
-    pub file_hash: ::std::vec::Vec<Hash>,
+    pub file_hash: ::prost::alloc::vec::Vec<Hash>,
 }
 /// Container message for hash values.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -551,9 +557,10 @@ pub struct Hash {
     #[prost(enumeration = "hash::HashType", tag = "1")]
     pub r#type: i32,
     /// The hash value.
-    #[prost(bytes, tag = "2")]
-    pub value: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub value: ::prost::alloc::vec::Vec<u8>,
 }
+/// Nested message and enum types in `Hash`.
 pub mod hash {
     /// Specifies the hash algorithm, if any.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -573,7 +580,7 @@ pub mod hash {
 pub struct Secret {
     /// Cloud KMS key name to use to decrypt these envs.
     #[prost(string, tag = "1")]
-    pub kms_key_name: std::string::String,
+    pub kms_key_name: ::prost::alloc::string::String,
     /// Map of environment variable name to its encrypted value.
     ///
     /// Secret environment variables must be unique across all of a build's
@@ -581,7 +588,8 @@ pub struct Secret {
     /// 64 KB in size. There can be at most 100 secret values across all of a
     /// build's secrets.
     #[prost(map = "string, bytes", tag = "3")]
-    pub secret_env: ::std::collections::HashMap<std::string::String, std::vec::Vec<u8>>,
+    pub secret_env:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::vec::Vec<u8>>,
 }
 /// Request to create a new build.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -589,13 +597,13 @@ pub struct CreateBuildRequest {
     /// The parent resource where this build will be created.
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "4")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. ID of the project.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. Build resource to create.
     #[prost(message, optional, tag = "2")]
-    pub build: ::std::option::Option<Build>,
+    pub build: ::core::option::Option<Build>,
 }
 /// Request to get a build.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -603,13 +611,13 @@ pub struct GetBuildRequest {
     /// The name of the `Build` to retrieve.
     /// Format: `projects/{project}/locations/{location}/builds/{build}`
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. ID of the project.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. ID of the build.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
 }
 /// Request to list builds.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -617,29 +625,29 @@ pub struct ListBuildsRequest {
     /// The parent of the collection of `Builds`.
     /// Format: `projects/{project}/locations/location`
     #[prost(string, tag = "9")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. ID of the project.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Number of results to return in the list.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The raw filter text to constrain the results.
     #[prost(string, tag = "8")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response including listed builds.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildsResponse {
     /// Builds will be sorted by `create_time`, descending.
     #[prost(message, repeated, tag = "1")]
-    pub builds: ::std::vec::Vec<Build>,
+    pub builds: ::prost::alloc::vec::Vec<Build>,
     /// Token to receive the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to cancel an ongoing build.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -647,13 +655,13 @@ pub struct CancelBuildRequest {
     /// The name of the `Build` to retrieve.
     /// Format: `projects/{project}/locations/{location}/builds/{build}`
     #[prost(string, tag = "4")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. ID of the project.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. ID of the build.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
 }
 /// Configuration for an automated build in response to source repository
 /// changes.
@@ -661,10 +669,10 @@ pub struct CancelBuildRequest {
 pub struct BuildTrigger {
     /// Output only. Unique identifier of the trigger.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Human-readable description of this trigger.
     #[prost(string, tag = "10")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// User-assigned name of the trigger. Must be unique within the project.
     /// Trigger names must meet the following requirements:
     ///
@@ -672,10 +680,10 @@ pub struct BuildTrigger {
     /// + They can be 1-64 characters long.
     /// + They must begin and end with an alphanumeric character.
     #[prost(string, tag = "21")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Tags for annotation of a `BuildTrigger`
     #[prost(string, repeated, tag = "19")]
-    pub tags: ::std::vec::Vec<std::string::String>,
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Template describing the types of source changes to trigger a build.
     ///
     /// Branch and tag names in trigger templates are interpreted as regular
@@ -684,23 +692,24 @@ pub struct BuildTrigger {
     ///
     /// Mutually exclusive with `github`.
     #[prost(message, optional, tag = "7")]
-    pub trigger_template: ::std::option::Option<RepoSource>,
+    pub trigger_template: ::core::option::Option<RepoSource>,
     /// GitHubEventsConfig describes the configuration of a trigger that creates
     /// a build whenever a GitHub event is received.
     ///
     /// Mutually exclusive with `trigger_template`.
     #[prost(message, optional, tag = "13")]
-    pub github: ::std::option::Option<GitHubEventsConfig>,
+    pub github: ::core::option::Option<GitHubEventsConfig>,
     /// Output only. Time when the trigger was created.
     #[prost(message, optional, tag = "5")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If true, the trigger will never automatically execute a build.
     #[prost(bool, tag = "9")]
     pub disabled: bool,
     /// Substitutions for Build resource. The keys must match the following
     /// regular expression: `^_[A-Z0-9_]+$`.
     #[prost(map = "string, string", tag = "11")]
-    pub substitutions: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub substitutions:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// ignored_files and included_files are file glob matches using
     /// https://golang.org/pkg/path/filepath/#Match extended with support for "**".
     ///
@@ -711,7 +720,7 @@ pub struct BuildTrigger {
     /// any of the ignored_file globs. If the change has no files that are
     /// outside of the ignored_files globs, then we do not trigger a build.
     #[prost(string, repeated, tag = "15")]
-    pub ignored_files: ::std::vec::Vec<std::string::String>,
+    pub ignored_files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If any of the files altered in the commit pass the ignored_files
     /// filter and included_files is empty, then as far as this filter is
     /// concerned, we should trigger the build.
@@ -721,11 +730,12 @@ pub struct BuildTrigger {
     /// least one of those files matches a included_files glob. If not,
     /// then we do not trigger a build.
     #[prost(string, repeated, tag = "16")]
-    pub included_files: ::std::vec::Vec<std::string::String>,
+    pub included_files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Template describing the Build request to make when the trigger is matched.
     #[prost(oneof = "build_trigger::BuildTemplate", tags = "4, 8")]
-    pub build_template: ::std::option::Option<build_trigger::BuildTemplate>,
+    pub build_template: ::core::option::Option<build_trigger::BuildTemplate>,
 }
+/// Nested message and enum types in `BuildTrigger`.
 pub mod build_trigger {
     /// Template describing the Build request to make when the trigger is matched.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -736,7 +746,7 @@ pub mod build_trigger {
         /// Path, from the source root, to a file whose contents is used for the
         /// template.
         #[prost(string, tag = "8")]
-        Filename(std::string::String),
+        Filename(::prost::alloc::string::String),
     }
 }
 /// GitHubEventsConfig describes the configuration of a trigger that creates a
@@ -746,22 +756,24 @@ pub mod build_trigger {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitHubEventsConfig {
     /// The installationID that emits the GitHub event.
+    #[deprecated]
     #[prost(int64, tag = "1")]
     pub installation_id: i64,
     /// Owner of the repository. For example: The owner for
     /// https://github.com/googlecloudplatform/cloud-builders is
     /// "googlecloudplatform".
     #[prost(string, tag = "6")]
-    pub owner: std::string::String,
+    pub owner: ::prost::alloc::string::String,
     /// Name of the repository. For example: The name for
     /// https://github.com/googlecloudplatform/cloud-builders is "cloud-builders".
     #[prost(string, tag = "7")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Filter describing the types of events to trigger a build.
     /// Currently supported event types: push, pull_request.
     #[prost(oneof = "git_hub_events_config::Event", tags = "4, 5")]
-    pub event: ::std::option::Option<git_hub_events_config::Event>,
+    pub event: ::core::option::Option<git_hub_events_config::Event>,
 }
+/// Nested message and enum types in `GitHubEventsConfig`.
 pub mod git_hub_events_config {
     /// Filter describing the types of events to trigger a build.
     /// Currently supported event types: push, pull_request.
@@ -789,8 +801,9 @@ pub struct PullRequestFilter {
     /// Target refs to match.
     /// A target ref is the git reference where the pull request will be applied.
     #[prost(oneof = "pull_request_filter::GitRef", tags = "2")]
-    pub git_ref: ::std::option::Option<pull_request_filter::GitRef>,
+    pub git_ref: ::core::option::Option<pull_request_filter::GitRef>,
 }
+/// Nested message and enum types in `PullRequestFilter`.
 pub mod pull_request_filter {
     /// Controls behavior of Pull Request comments.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -811,7 +824,7 @@ pub mod pull_request_filter {
         /// The syntax of the regular expressions accepted is the syntax accepted by
         /// RE2 and described at https://github.com/google/re2/wiki/Syntax
         #[prost(string, tag = "2")]
-        Branch(std::string::String),
+        Branch(::prost::alloc::string::String),
     }
 }
 /// Push contains filter properties for matching GitHub git pushes.
@@ -824,8 +837,9 @@ pub struct PushFilter {
     /// Modified refs to match.
     /// A modified refs are the refs modified by a git push operation.
     #[prost(oneof = "push_filter::GitRef", tags = "2, 3")]
-    pub git_ref: ::std::option::Option<push_filter::GitRef>,
+    pub git_ref: ::core::option::Option<push_filter::GitRef>,
 }
+/// Nested message and enum types in `PushFilter`.
 pub mod push_filter {
     /// Modified refs to match.
     /// A modified refs are the refs modified by a git push operation.
@@ -836,13 +850,13 @@ pub mod push_filter {
         /// The syntax of the regular expressions accepted is the syntax accepted by
         /// RE2 and described at https://github.com/google/re2/wiki/Syntax
         #[prost(string, tag = "2")]
-        Branch(std::string::String),
+        Branch(::prost::alloc::string::String),
         /// Regexes matching tags to build.
         ///
         /// The syntax of the regular expressions accepted is the syntax accepted by
         /// RE2 and described at https://github.com/google/re2/wiki/Syntax
         #[prost(string, tag = "3")]
-        Tag(std::string::String),
+        Tag(::prost::alloc::string::String),
     }
 }
 /// Request to create a new `BuildTrigger`.
@@ -850,73 +864,73 @@ pub mod push_filter {
 pub struct CreateBuildTriggerRequest {
     /// Required. ID of the project for which to configure automatic builds.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. `BuildTrigger` to create.
     #[prost(message, optional, tag = "2")]
-    pub trigger: ::std::option::Option<BuildTrigger>,
+    pub trigger: ::core::option::Option<BuildTrigger>,
 }
 /// Returns the `BuildTrigger` with the specified ID.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBuildTriggerRequest {
     /// Required. ID of the project that owns the trigger.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. Identifier (`id` or `name`) of the `BuildTrigger` to get.
     #[prost(string, tag = "2")]
-    pub trigger_id: std::string::String,
+    pub trigger_id: ::prost::alloc::string::String,
 }
 /// Request to list existing `BuildTriggers`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildTriggersRequest {
     /// Required. ID of the project for which to list BuildTriggers.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Number of results to return in the list.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response containing existing `BuildTriggers`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildTriggersResponse {
     /// `BuildTriggers` for the project, sorted by `create_time` descending.
     #[prost(message, repeated, tag = "1")]
-    pub triggers: ::std::vec::Vec<BuildTrigger>,
+    pub triggers: ::prost::alloc::vec::Vec<BuildTrigger>,
     /// Token to receive the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete a `BuildTrigger`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBuildTriggerRequest {
     /// Required. ID of the project that owns the trigger.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. ID of the `BuildTrigger` to delete.
     #[prost(string, tag = "2")]
-    pub trigger_id: std::string::String,
+    pub trigger_id: ::prost::alloc::string::String,
 }
 /// Request to update an existing `BuildTrigger`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBuildTriggerRequest {
     /// Required. ID of the project that owns the trigger.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. ID of the `BuildTrigger` to update.
     #[prost(string, tag = "2")]
-    pub trigger_id: std::string::String,
+    pub trigger_id: ::prost::alloc::string::String,
     /// Required. `BuildTrigger` to update.
     #[prost(message, optional, tag = "3")]
-    pub trigger: ::std::option::Option<BuildTrigger>,
+    pub trigger: ::core::option::Option<BuildTrigger>,
 }
 /// Optional arguments to enable specific features of builds.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildOptions {
     /// Requested hash for SourceProvenance.
     #[prost(enumeration = "hash::HashType", repeated, tag = "1")]
-    pub source_provenance_hash: ::std::vec::Vec<i32>,
+    pub source_provenance_hash: ::prost::alloc::vec::Vec<i32>,
     /// Requested verifiability options.
     #[prost(enumeration = "build_options::VerifyOption", tag = "2")]
     pub requested_verify_option: i32,
@@ -954,7 +968,7 @@ pub struct BuildOptions {
     ///
     /// This field is experimental.
     #[prost(string, tag = "7")]
-    pub worker_pool: std::string::String,
+    pub worker_pool: ::prost::alloc::string::String,
     /// Option to specify the logging mode, which determines if and where build
     /// logs are stored.
     #[prost(enumeration = "build_options::LoggingMode", tag = "11")]
@@ -966,13 +980,13 @@ pub struct BuildOptions {
     /// The elements are of the form "KEY=VALUE" for the environment variable "KEY"
     /// being given the value "VALUE".
     #[prost(string, repeated, tag = "12")]
-    pub env: ::std::vec::Vec<std::string::String>,
+    pub env: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of global environment variables, which are encrypted using a Cloud
     /// Key Management Service crypto key. These values must be specified in the
     /// build's `Secret`. These variables will be available to all build steps
     /// in this build.
     #[prost(string, repeated, tag = "13")]
-    pub secret_env: ::std::vec::Vec<std::string::String>,
+    pub secret_env: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Global list of volumes to mount for ALL build steps
     ///
     /// Each volume is created as an empty volume prior to starting the build
@@ -983,8 +997,9 @@ pub struct BuildOptions {
     /// Using a global volume in a build with only one step is not valid as
     /// it is indicative of a build request with an incorrect configuration.
     #[prost(message, repeated, tag = "14")]
-    pub volumes: ::std::vec::Vec<Volume>,
+    pub volumes: ::prost::alloc::vec::Vec<Volume>,
 }
+/// Nested message and enum types in `BuildOptions`.
 pub mod build_options {
     /// Specifies the manner in which the build should be verified, if at all.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1063,44 +1078,45 @@ pub mod build_options {
 pub struct WorkerPool {
     /// User-defined name of the `WorkerPool`.
     #[prost(string, tag = "14")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The project ID of the GCP project for which the `WorkerPool` is created.
     #[prost(string, tag = "2")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Output only. The service account used to manage the `WorkerPool`. The
     /// service account must have the Compute Instance Admin (Beta) permission at
     /// the project level.
     #[prost(string, tag = "3")]
-    pub service_account_email: std::string::String,
+    pub service_account_email: ::prost::alloc::string::String,
     /// Total number of workers to be created across all requested regions.
     #[prost(int64, tag = "4")]
     pub worker_count: i64,
     /// Configuration to be used for a creating workers in the `WorkerPool`.
     #[prost(message, optional, tag = "16")]
-    pub worker_config: ::std::option::Option<WorkerConfig>,
+    pub worker_config: ::core::option::Option<WorkerConfig>,
     /// List of regions to create the `WorkerPool`. Regions can't be empty.
     /// If Cloud Build adds a new GCP region in the future, the existing
     /// `WorkerPool` will not be enabled in the new region automatically;
     /// you must add the new region to the `regions` field to enable the
     /// `WorkerPool` in that region.
     #[prost(enumeration = "worker_pool::Region", repeated, tag = "9")]
-    pub regions: ::std::vec::Vec<i32>,
+    pub regions: ::prost::alloc::vec::Vec<i32>,
     /// Output only. Time at which the request to create the `WorkerPool` was
     /// received.
     #[prost(message, optional, tag = "11")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time at which the request to update the `WorkerPool` was
     /// received.
     #[prost(message, optional, tag = "17")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time at which the request to delete the `WorkerPool` was
     /// received.
     #[prost(message, optional, tag = "12")]
-    pub delete_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. WorkerPool Status.
     #[prost(enumeration = "worker_pool::Status", tag = "13")]
     pub status: i32,
 }
+/// Nested message and enum types in `WorkerPool`.
 pub mod worker_pool {
     /// Supported GCP regions to create the `WorkerPool`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1146,7 +1162,7 @@ pub struct WorkerConfig {
     /// will be created on demand at build time. For more information see
     /// https://cloud.google.com/cloud-build/docs/speeding-up-builds#using_custom_virtual_machine_sizes
     #[prost(string, tag = "1")]
-    pub machine_type: std::string::String,
+    pub machine_type: ::prost::alloc::string::String,
     /// Size of the disk attached to the worker, in GB.
     /// See https://cloud.google.com/compute/docs/disks/
     /// If `0` is specified, Cloud Build will use a standard disk size.
@@ -1161,12 +1177,12 @@ pub struct WorkerConfig {
     /// If this section is left empty, the workers will be created in
     /// WorkerPool.project_id on the default network.
     #[prost(message, optional, tag = "3")]
-    pub network: ::std::option::Option<Network>,
+    pub network: ::core::option::Option<Network>,
     /// The tag applied to the worker, and the same tag used by the firewall rule.
     /// It is used to identify the Cloud Build workers among other VMs.
     /// The default value for tag is `worker`.
     #[prost(string, tag = "4")]
-    pub tag: std::string::String,
+    pub tag: ::prost::alloc::string::String,
 }
 /// Network describes the GCP network used to create workers in.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1177,25 +1193,25 @@ pub struct Network {
     /// project_id project in which workers will be created. For custom workers
     /// with no VPC, this will be the same as project_id.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Network on which the workers are created.
     /// "default" network is used if empty.
     #[prost(string, tag = "2")]
-    pub network: std::string::String,
+    pub network: ::prost::alloc::string::String,
     /// Subnetwork on which the workers are created.
     /// "default" subnetwork is used if empty.
     #[prost(string, tag = "3")]
-    pub subnetwork: std::string::String,
+    pub subnetwork: ::prost::alloc::string::String,
 }
 /// Request to create a new `WorkerPool`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkerPoolRequest {
     /// ID of the parent project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// `WorkerPool` resource to create.
     #[prost(message, optional, tag = "2")]
-    pub worker_pool: ::std::option::Option<WorkerPool>,
+    pub worker_pool: ::core::option::Option<WorkerPool>,
 }
 /// Request to get a `WorkerPool` with the specified name.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1203,7 +1219,7 @@ pub struct GetWorkerPoolRequest {
     /// The field will contain name of the resource requested, for example:
     /// "projects/project-1/workerPools/workerpool-name"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to delete a `WorkerPool`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1211,7 +1227,7 @@ pub struct DeleteWorkerPoolRequest {
     /// The field will contain name of the resource requested, for example:
     /// "projects/project-1/workerPools/workerpool-name"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to update a `WorkerPool`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1219,24 +1235,24 @@ pub struct UpdateWorkerPoolRequest {
     /// The field will contain name of the resource requested, for example:
     /// "projects/project-1/workerPools/workerpool-name"
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// `WorkerPool` resource to update.
     #[prost(message, optional, tag = "3")]
-    pub worker_pool: ::std::option::Option<WorkerPool>,
+    pub worker_pool: ::core::option::Option<WorkerPool>,
 }
 /// Request to list `WorkerPools`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkerPoolsRequest {
     /// ID of the parent project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// Response containing existing `WorkerPools`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkerPoolsResponse {
     /// `WorkerPools` for the project.
     #[prost(message, repeated, tag = "1")]
-    pub worker_pools: ::std::vec::Vec<WorkerPool>,
+    pub worker_pools: ::prost::alloc::vec::Vec<WorkerPool>,
 }
 #[doc = r" Generated client implementations."]
 pub mod cloud_build_client {

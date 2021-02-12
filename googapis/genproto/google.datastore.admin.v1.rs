@@ -3,30 +3,31 @@
 pub struct Index {
     /// Output only. Project ID.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Output only. The resource ID of the index.
     #[prost(string, tag = "3")]
-    pub index_id: std::string::String,
+    pub index_id: ::prost::alloc::string::String,
     /// Required. The entity kind to which this index applies.
     #[prost(string, tag = "4")]
-    pub kind: std::string::String,
+    pub kind: ::prost::alloc::string::String,
     /// Required. The index's ancestor mode.  Must not be ANCESTOR_MODE_UNSPECIFIED.
     #[prost(enumeration = "index::AncestorMode", tag = "5")]
     pub ancestor: i32,
     /// Required. An ordered sequence of property names and their index attributes.
     #[prost(message, repeated, tag = "6")]
-    pub properties: ::std::vec::Vec<index::IndexedProperty>,
+    pub properties: ::prost::alloc::vec::Vec<index::IndexedProperty>,
     /// Output only. The state of the index.
     #[prost(enumeration = "index::State", tag = "7")]
     pub state: i32,
 }
+/// Nested message and enum types in `Index`.
 pub mod index {
     /// A property of an index.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexedProperty {
         /// Required. The property name to index.
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
         /// Required. The indexed property's direction.  Must not be DIRECTION_UNSPECIFIED.
         #[prost(enumeration = "Direction", tag = "2")]
         pub direction: i32,
@@ -90,10 +91,10 @@ pub mod index {
 pub struct CommonMetadata {
     /// The time that work began on the operation.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time the operation ended, either successfully or otherwise.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The type of the operation. Can be used as a filter in
     /// ListOperationsRequest.
     #[prost(enumeration = "OperationType", tag = "3")]
@@ -101,11 +102,13 @@ pub struct CommonMetadata {
     /// The client-assigned labels which were provided when the operation was
     /// created. May also include additional labels.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The current state of the Operation.
     #[prost(enumeration = "common_metadata::State", tag = "5")]
     pub state: i32,
 }
+/// Nested message and enum types in `CommonMetadata`.
 pub mod common_metadata {
     /// The various possible states for an ongoing Operation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -149,13 +152,14 @@ pub struct Progress {
 pub struct ExportEntitiesRequest {
     /// Required. Project ID against which to make the request.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Client-assigned labels.
     #[prost(map = "string, string", tag = "2")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Description of what data from the project is included in the export.
     #[prost(message, optional, tag = "3")]
-    pub entity_filter: ::std::option::Option<EntityFilter>,
+    pub entity_filter: ::core::option::Option<EntityFilter>,
     /// Required. Location for the export metadata and data files.
     ///
     /// The full resource URL of the external storage location. Currently, only
@@ -175,7 +179,7 @@ pub struct ExportEntitiesRequest {
     /// By nesting the data files deeper, the same Cloud Storage bucket can be used
     /// in multiple ExportEntities operations without conflict.
     #[prost(string, tag = "4")]
-    pub output_url_prefix: std::string::String,
+    pub output_url_prefix: ::prost::alloc::string::String,
 }
 /// The request for
 /// [google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities].
@@ -183,10 +187,11 @@ pub struct ExportEntitiesRequest {
 pub struct ImportEntitiesRequest {
     /// Required. Project ID against which to make the request.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Client-assigned labels.
     #[prost(map = "string, string", tag = "2")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. The full resource URL of the external storage location. Currently, only
     /// Google Cloud Storage is supported. So input_url should be of the form:
     /// `gs://BUCKET_NAME[/NAMESPACE_PATH]/OVERALL_EXPORT_METADATA_FILE`, where
@@ -201,13 +206,13 @@ pub struct ImportEntitiesRequest {
     /// For more information, see
     /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
     #[prost(string, tag = "3")]
-    pub input_url: std::string::String,
+    pub input_url: ::prost::alloc::string::String,
     /// Optionally specify which kinds/namespaces are to be imported. If provided,
     /// the list must be a subset of the EntityFilter used in creating the export,
     /// otherwise a FAILED_PRECONDITION error will be returned. If no filter is
     /// specified then all entities from the export are imported.
     #[prost(message, optional, tag = "4")]
-    pub entity_filter: ::std::option::Option<EntityFilter>,
+    pub entity_filter: ::core::option::Option<EntityFilter>,
 }
 /// The response for
 /// [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
@@ -218,50 +223,50 @@ pub struct ExportEntitiesResponse {
     /// [google.datastore.admin.v1.ImportEntitiesRequest.input_url][google.datastore.admin.v1.ImportEntitiesRequest.input_url].
     /// Only present if the operation completed successfully.
     #[prost(string, tag = "1")]
-    pub output_url: std::string::String,
+    pub output_url: ::prost::alloc::string::String,
 }
 /// Metadata for ExportEntities operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesMetadata {
     /// Metadata common to all Datastore Admin operations.
     #[prost(message, optional, tag = "1")]
-    pub common: ::std::option::Option<CommonMetadata>,
+    pub common: ::core::option::Option<CommonMetadata>,
     /// An estimate of the number of entities processed.
     #[prost(message, optional, tag = "2")]
-    pub progress_entities: ::std::option::Option<Progress>,
+    pub progress_entities: ::core::option::Option<Progress>,
     /// An estimate of the number of bytes processed.
     #[prost(message, optional, tag = "3")]
-    pub progress_bytes: ::std::option::Option<Progress>,
+    pub progress_bytes: ::core::option::Option<Progress>,
     /// Description of which entities are being exported.
     #[prost(message, optional, tag = "4")]
-    pub entity_filter: ::std::option::Option<EntityFilter>,
+    pub entity_filter: ::core::option::Option<EntityFilter>,
     /// Location for the export metadata and data files. This will be the same
     /// value as the
     /// [google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix]
     /// field. The final output location is provided in
     /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
     #[prost(string, tag = "5")]
-    pub output_url_prefix: std::string::String,
+    pub output_url_prefix: ::prost::alloc::string::String,
 }
 /// Metadata for ImportEntities operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesMetadata {
     /// Metadata common to all Datastore Admin operations.
     #[prost(message, optional, tag = "1")]
-    pub common: ::std::option::Option<CommonMetadata>,
+    pub common: ::core::option::Option<CommonMetadata>,
     /// An estimate of the number of entities processed.
     #[prost(message, optional, tag = "2")]
-    pub progress_entities: ::std::option::Option<Progress>,
+    pub progress_entities: ::core::option::Option<Progress>,
     /// An estimate of the number of bytes processed.
     #[prost(message, optional, tag = "3")]
-    pub progress_bytes: ::std::option::Option<Progress>,
+    pub progress_bytes: ::core::option::Option<Progress>,
     /// Description of which entities are being imported.
     #[prost(message, optional, tag = "4")]
-    pub entity_filter: ::std::option::Option<EntityFilter>,
+    pub entity_filter: ::core::option::Option<EntityFilter>,
     /// The location of the import metadata file. This will be the same value as
     /// the [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url] field.
     #[prost(string, tag = "5")]
-    pub input_url: std::string::String,
+    pub input_url: ::prost::alloc::string::String,
 }
 /// Identifies a subset of entities in a project. This is specified as
 /// combinations of kinds and namespaces (either or both of which may be all, as
@@ -286,7 +291,7 @@ pub struct ImportEntitiesMetadata {
 pub struct EntityFilter {
     /// If empty, then this represents all kinds.
     #[prost(string, repeated, tag = "1")]
-    pub kinds: ::std::vec::Vec<std::string::String>,
+    pub kinds: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// An empty list represents all namespaces. This is the preferred
     /// usage for projects that don't use namespaces.
     ///
@@ -295,17 +300,17 @@ pub struct EntityFilter {
     /// include them.
     /// Each namespace in this list must be unique.
     #[prost(string, repeated, tag = "2")]
-    pub namespace_ids: ::std::vec::Vec<std::string::String>,
+    pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
     /// Project ID against which to make the request.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// The resource ID of the index to get.
     #[prost(string, tag = "3")]
-    pub index_id: std::string::String,
+    pub index_id: ::prost::alloc::string::String,
 }
 /// The request for
 /// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
@@ -313,16 +318,16 @@ pub struct GetIndexRequest {
 pub struct ListIndexesRequest {
     /// Project ID against which to make the request.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The maximum number of items to return.  If zero, then all results will be
     /// returned.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag = "5")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
 /// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
@@ -330,23 +335,23 @@ pub struct ListIndexesRequest {
 pub struct ListIndexesResponse {
     /// The indexes.
     #[prost(message, repeated, tag = "1")]
-    pub indexes: ::std::vec::Vec<Index>,
+    pub indexes: ::prost::alloc::vec::Vec<Index>,
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Metadata for Index operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// Metadata common to all Datastore Admin operations.
     #[prost(message, optional, tag = "1")]
-    pub common: ::std::option::Option<CommonMetadata>,
+    pub common: ::core::option::Option<CommonMetadata>,
     /// An estimate of the number of entities processed.
     #[prost(message, optional, tag = "2")]
-    pub progress_entities: ::std::option::Option<Progress>,
+    pub progress_entities: ::core::option::Option<Progress>,
     /// The index resource ID that this operation is acting on.
     #[prost(string, tag = "3")]
-    pub index_id: std::string::String,
+    pub index_id: ::prost::alloc::string::String,
 }
 /// Operation types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

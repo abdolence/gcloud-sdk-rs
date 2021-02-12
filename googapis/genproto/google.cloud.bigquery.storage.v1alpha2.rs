@@ -7,7 +7,7 @@ pub struct ProtoSchema {
     /// and zetasql public protos
     /// (https://github.com/google/zetasql/tree/master/zetasql/public/proto).
     #[prost(message, optional, tag = "1")]
-    pub proto_descriptor: ::std::option::Option<::prost_types::DescriptorProto>,
+    pub proto_descriptor: ::core::option::Option<::prost_types::DescriptorProto>,
 }
 /// Protobuf rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16,15 +16,15 @@ pub struct ProtoRows {
     ///
     /// See https://developers.google.com/protocol-buffers/docs/overview for more
     /// information on deserializing this field.
-    #[prost(bytes, repeated, tag = "1")]
-    pub serialized_rows: ::std::vec::Vec<std::vec::Vec<u8>>,
+    #[prost(bytes = "vec", repeated, tag = "1")]
+    pub serialized_rows: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
 }
 /// Schema of a table
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSchema {
     /// Describes the fields in a table.
     #[prost(message, repeated, tag = "1")]
-    pub fields: ::std::vec::Vec<TableFieldSchema>,
+    pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
 }
 /// A field in TableSchema
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -33,7 +33,7 @@ pub struct TableFieldSchema {
     /// numbers (0-9), or underscores (_), and must start with a letter or
     /// underscore. The maximum length is 128 characters.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The field data type.
     #[prost(enumeration = "table_field_schema::Type", tag = "2")]
     pub r#type: i32,
@@ -42,11 +42,12 @@ pub struct TableFieldSchema {
     pub mode: i32,
     /// Optional. Describes the nested schema fields if the type property is set to STRUCT.
     #[prost(message, repeated, tag = "4")]
-    pub fields: ::std::vec::Vec<TableFieldSchema>,
+    pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
     /// Optional. The field description. The maximum length is 1,024 characters.
     #[prost(string, tag = "6")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `TableFieldSchema`.
 pub mod table_field_schema {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -94,28 +95,29 @@ pub struct WriteStream {
     /// Output only. Name of the stream, in the form
     /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     #[prost(enumeration = "write_stream::Type", tag = "2")]
     pub r#type: i32,
     /// Output only. Create time of the stream.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Commit time of the stream.
     /// If a stream is of `COMMITTED` type, then it will have a commit_time same as
     /// `create_time`. If the stream is of `PENDING` type, commit_time being empty
     /// means it is not committed.
     #[prost(message, optional, tag = "4")]
-    pub commit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The schema of the destination table. It is only returned in
     /// `CreateWriteStream` response. Caller should generate data that's
     /// compatible with this schema to send in initial `AppendRowsRequest`.
     /// The table schema could go out of date during the life time of the stream.
     #[prost(message, optional, tag = "5")]
-    pub table_schema: ::std::option::Option<TableSchema>,
+    pub table_schema: ::core::option::Option<TableSchema>,
     /// Id set by client to annotate its identity.
     #[prost(string, tag = "6")]
-    pub external_id: std::string::String,
+    pub external_id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `WriteStream`.
 pub mod write_stream {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -137,10 +139,10 @@ pub struct CreateWriteStreamRequest {
     /// Required. Reference to the table to which the stream belongs, in the format
     /// of `projects/{project}/datasets/{dataset}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Stream to be created.
     #[prost(message, optional, tag = "2")]
-    pub write_stream: ::std::option::Option<WriteStream>,
+    pub write_stream: ::core::option::Option<WriteStream>,
 }
 /// Request message for `AppendRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -149,12 +151,12 @@ pub struct AppendRowsRequest {
     /// specified for the initial request. If subsequent requests specify the
     /// stream name, it must equal to the value provided in the first request.
     #[prost(string, tag = "1")]
-    pub write_stream: std::string::String,
+    pub write_stream: ::prost::alloc::string::String,
     /// Optional. If present, the write is only performed if the next append offset is same
     /// as the provided value. If not present, the write is performed at the
     /// current end of stream.
     #[prost(message, optional, tag = "2")]
-    pub offset: ::std::option::Option<i64>,
+    pub offset: ::core::option::Option<i64>,
     /// Only initial request setting is respected. If true, drop unknown input
     /// fields. Otherwise, the extra fields will cause append to fail. Default
     /// value is false.
@@ -165,17 +167,18 @@ pub struct AppendRowsRequest {
     /// requests. Following requests must have data in the same format as the
     /// initial request.
     #[prost(oneof = "append_rows_request::Rows", tags = "4")]
-    pub rows: ::std::option::Option<append_rows_request::Rows>,
+    pub rows: ::core::option::Option<append_rows_request::Rows>,
 }
+/// Nested message and enum types in `AppendRowsRequest`.
 pub mod append_rows_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProtoData {
         /// Proto schema used to serialize the data.
         #[prost(message, optional, tag = "1")]
-        pub writer_schema: ::std::option::Option<super::ProtoSchema>,
+        pub writer_schema: ::core::option::Option<super::ProtoSchema>,
         /// Serialized row data in protobuf message format.
         #[prost(message, optional, tag = "2")]
-        pub rows: ::std::option::Option<super::ProtoRows>,
+        pub rows: ::core::option::Option<super::ProtoRows>,
     }
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
@@ -194,10 +197,11 @@ pub struct AppendRowsResponse {
     /// use it to input new type of message. It will be empty when there is no
     /// schema updates.
     #[prost(message, optional, tag = "3")]
-    pub updated_schema: ::std::option::Option<TableSchema>,
+    pub updated_schema: ::core::option::Option<TableSchema>,
     #[prost(oneof = "append_rows_response::Response", tags = "1, 2")]
-    pub response: ::std::option::Option<append_rows_response::Response>,
+    pub response: ::core::option::Option<append_rows_response::Response>,
 }
+/// Nested message and enum types in `AppendRowsResponse`.
 pub mod append_rows_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
@@ -216,7 +220,7 @@ pub struct GetWriteStreamRequest {
     /// Required. Name of the stream to get, in the form of
     /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `BatchCommitWriteStreams`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -224,17 +228,17 @@ pub struct BatchCommitWriteStreamsRequest {
     /// Required. Parent table that all the streams should belong to, in the form of
     /// `projects/{project}/datasets/{dataset}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The group of streams that will be committed atomically.
     #[prost(string, repeated, tag = "2")]
-    pub write_streams: ::std::vec::Vec<std::string::String>,
+    pub write_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for `BatchCommitWriteStreams`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCommitWriteStreamsResponse {
     /// The time at which streams were committed in microseconds granularity.
     #[prost(message, optional, tag = "1")]
-    pub commit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for invoking `FinalizeWriteStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -242,7 +246,7 @@ pub struct FinalizeWriteStreamRequest {
     /// Required. Name of the stream to finalize, in the form of
     /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for `FinalizeWriteStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -256,7 +260,7 @@ pub struct FinalizeWriteStreamResponse {
 pub struct FlushRowsRequest {
     /// Required. The stream that is the target of the flush operation.
     #[prost(string, tag = "1")]
-    pub write_stream: std::string::String,
+    pub write_stream: ::prost::alloc::string::String,
     /// Ending offset of the flush operation. Rows before this offset(including
     /// this offset) will be flushed.
     #[prost(int64, tag = "2")]

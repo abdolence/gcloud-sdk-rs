@@ -5,43 +5,44 @@ pub struct Execution {
     /// Format:
     /// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Marks the beginning of execution.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Marks the end of execution, successful or not.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Current state of the execution.
     #[prost(enumeration = "execution::State", tag = "4")]
     pub state: i32,
     /// Input parameters of the execution represented as a JSON string.
     /// The size limit is 32KB.
     #[prost(string, tag = "5")]
-    pub argument: std::string::String,
+    pub argument: ::prost::alloc::string::String,
     /// Output only. Output of the execution represented as a JSON string. The
     /// value can only be present if the execution's state is `SUCCEEDED`.
     #[prost(string, tag = "6")]
-    pub result: std::string::String,
+    pub result: ::prost::alloc::string::String,
     /// Output only. The error which caused the execution to finish prematurely.
     /// The value is only present if the execution's state is `FAILED`
     /// or `CANCELLED`.
     #[prost(message, optional, tag = "7")]
-    pub error: ::std::option::Option<execution::Error>,
+    pub error: ::core::option::Option<execution::Error>,
     /// Output only. Revision of the workflow this execution is using.
     #[prost(string, tag = "8")]
-    pub workflow_revision_id: std::string::String,
+    pub workflow_revision_id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Execution`.
 pub mod execution {
     /// Error describes why the execution was abnormally terminated.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Error {
         /// Error payload returned by the execution, represented as a JSON string.
         #[prost(string, tag = "1")]
-        pub payload: std::string::String,
+        pub payload: ::prost::alloc::string::String,
         /// Human readable error context, helpful for debugging purposes.
         #[prost(string, tag = "2")]
-        pub context: std::string::String,
+        pub context: ::prost::alloc::string::String,
     }
     /// Describes the current state of the execution. More states may be added
     /// in the future.
@@ -68,7 +69,7 @@ pub struct ListExecutionsRequest {
     /// Required. Name of the workflow for which the executions should be listed.
     /// Format: projects/{project}/locations/{location}/workflows/{workflow}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum number of executions to return per call.
     /// Max supported value depends on the selected Execution view: it's 10000 for
     /// BASIC and 100 for FULL. The default value used if the field is not
@@ -82,7 +83,7 @@ pub struct ListExecutionsRequest {
     /// When paginating, all other parameters provided to `ListExecutions` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. A view defining which fields should be filled in the returned executions.
     /// The API will default to the BASIC view.
     #[prost(enumeration = "ExecutionView", tag = "4")]
@@ -95,11 +96,11 @@ pub struct ListExecutionsRequest {
 pub struct ListExecutionsResponse {
     /// The executions which match the request.
     #[prost(message, repeated, tag = "1")]
-    pub executions: ::std::vec::Vec<Execution>,
+    pub executions: ::prost::alloc::vec::Vec<Execution>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the
 /// [CreateExecution][google.cloud.workflows.executions.v1beta.Executions.CreateExecution]
@@ -110,10 +111,10 @@ pub struct CreateExecutionRequest {
     /// Format: projects/{project}/locations/{location}/workflows/{workflow}
     /// The latest revision of the workflow will be used.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Execution to be created.
     #[prost(message, optional, tag = "2")]
-    pub execution: ::std::option::Option<Execution>,
+    pub execution: ::core::option::Option<Execution>,
 }
 /// Request for the
 /// [GetExecution][google.cloud.workflows.executions.v1beta.Executions.GetExecution]
@@ -124,7 +125,7 @@ pub struct GetExecutionRequest {
     /// Format:
     /// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. A view defining which fields should be filled in the returned execution.
     /// The API will default to the FULL view.
     #[prost(enumeration = "ExecutionView", tag = "2")]
@@ -139,7 +140,7 @@ pub struct CancelExecutionRequest {
     /// Format:
     /// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Defines possible views for execution resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

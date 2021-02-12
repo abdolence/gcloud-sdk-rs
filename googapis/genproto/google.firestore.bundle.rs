@@ -3,13 +3,14 @@
 pub struct BundledQuery {
     /// The parent resource name.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     #[prost(enumeration = "bundled_query::LimitType", tag = "3")]
     pub limit_type: i32,
     /// The query to run.
     #[prost(oneof = "bundled_query::QueryType", tags = "2")]
-    pub query_type: ::std::option::Option<bundled_query::QueryType>,
+    pub query_type: ::core::option::Option<bundled_query::QueryType>,
 }
+/// Nested message and enum types in `BundledQuery`.
 pub mod bundled_query {
     /// If the query is a limit query, should the limit be applied to the beginning or
     /// the end of results.
@@ -35,40 +36,40 @@ pub struct NamedQuery {
     /// from bundle, and resume from when the query results are materialized
     /// into this bundle.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The query saved in the bundle.
     #[prost(message, optional, tag = "2")]
-    pub bundled_query: ::std::option::Option<BundledQuery>,
+    pub bundled_query: ::core::option::Option<BundledQuery>,
     /// The read time of the query, when it is used to build the bundle. This is useful to
     /// resume the query from the bundle, once it is loaded by client SDKs.
     #[prost(message, optional, tag = "3")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata describing a Firestore document saved in the bundle.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BundledDocumentMetadata {
     /// The document key of a bundled document.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The snapshot version of the document data bundled.
     #[prost(message, optional, tag = "2")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Whether the document exists.
     #[prost(bool, tag = "3")]
     pub exists: bool,
     /// The names of the queries in this bundle that this document matches to.
     #[prost(string, repeated, tag = "4")]
-    pub queries: ::std::vec::Vec<std::string::String>,
+    pub queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Metadata describing the bundle file/stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BundleMetadata {
     /// The ID of the bundle.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Time at which the documents snapshot is taken for this bundle.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The schema version of the bundle.
     #[prost(uint32, tag = "3")]
     pub version: u32,
@@ -87,8 +88,9 @@ pub struct BundleMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BundleElement {
     #[prost(oneof = "bundle_element::ElementType", tags = "1, 2, 3, 4")]
-    pub element_type: ::std::option::Option<bundle_element::ElementType>,
+    pub element_type: ::core::option::Option<bundle_element::ElementType>,
 }
+/// Nested message and enum types in `BundleElement`.
 pub mod bundle_element {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ElementType {

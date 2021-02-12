@@ -13,7 +13,7 @@ pub struct PgpSignedAttestation {
     /// expected in this field in `signature.gpg` for the `payload.json`
     /// attestation payload.
     #[prost(string, tag = "1")]
-    pub signature: std::string::String,
+    pub signature: ::prost::alloc::string::String,
     /// Type (for example schema) of the attestation payload that was signed.
     /// The verifier must ensure that the provided type is one that the verifier
     /// supports, and that the attestation payload is a valid instantiation of that
@@ -29,8 +29,9 @@ pub struct PgpSignedAttestation {
     /// be present in the signature content above, but that is not expected to be
     /// used by the verifier.
     #[prost(oneof = "pgp_signed_attestation::KeyId", tags = "2")]
-    pub key_id: ::std::option::Option<pgp_signed_attestation::KeyId>,
+    pub key_id: ::core::option::Option<pgp_signed_attestation::KeyId>,
 }
+/// Nested message and enum types in `PgpSignedAttestation`.
 pub mod pgp_signed_attestation {
     /// Type (for example schema) of the attestation payload that was signed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -71,7 +72,7 @@ pub mod pgp_signed_attestation {
         /// ```
         /// Above, the fingerprint is `24FF6481B76AC91E66A00AC657A93A81EF3AE6FB`.
         #[prost(string, tag = "2")]
-        PgpKeyId(std::string::String),
+        PgpKeyId(::prost::alloc::string::String),
     }
 }
 /// An attestation wrapper that uses the Grafeas `Signature` message.
@@ -89,15 +90,16 @@ pub struct GenericSignedAttestation {
     /// The serialized payload that is verified by one or more `signatures`.
     /// The encoding and semantic meaning of this payload must match what is set in
     /// `content_type`.
-    #[prost(bytes, tag = "2")]
-    pub serialized_payload: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub serialized_payload: ::prost::alloc::vec::Vec<u8>,
     /// One or more signatures over `serialized_payload`.  Verifier implementations
     /// should consider this attestation message verified if at least one
     /// `signature` verifies `serialized_payload`.  See `Signature` in common.proto
     /// for more details on signature structure and verification.
     #[prost(message, repeated, tag = "3")]
-    pub signatures: ::std::vec::Vec<super::Signature>,
+    pub signatures: ::prost::alloc::vec::Vec<super::Signature>,
 }
+/// Nested message and enum types in `GenericSignedAttestation`.
 pub mod generic_signed_attestation {
     /// Type of the attestation plaintext that was signed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -124,8 +126,9 @@ pub mod generic_signed_attestation {
 pub struct Authority {
     /// Hint hints at the purpose of the attestation authority.
     #[prost(message, optional, tag = "1")]
-    pub hint: ::std::option::Option<authority::Hint>,
+    pub hint: ::core::option::Option<authority::Hint>,
 }
+/// Nested message and enum types in `Authority`.
 pub mod authority {
     /// This submessage provides human-readable hints about the purpose of the
     /// authority. Because the name of a note acts as its resource reference, it is
@@ -139,7 +142,7 @@ pub mod authority {
         /// Required. The human readable name of this attestation authority, for
         /// example "qa".
         #[prost(string, tag = "1")]
-        pub human_readable_name: std::string::String,
+        pub human_readable_name: ::prost::alloc::string::String,
     }
 }
 /// Details of an attestation occurrence.
@@ -147,7 +150,7 @@ pub mod authority {
 pub struct Details {
     /// Required. Attestation for the resource.
     #[prost(message, optional, tag = "1")]
-    pub attestation: ::std::option::Option<Attestation>,
+    pub attestation: ::core::option::Option<Attestation>,
 }
 /// Occurrence that represents a single "attestation". The authenticity of an
 /// attestation can be verified using the attached signature. If the verifier
@@ -163,8 +166,9 @@ pub struct Attestation {
     /// this attestation. The semantics of the signature veracity are ultimately
     /// determined by the verification engine.
     #[prost(oneof = "attestation::Signature", tags = "1, 2")]
-    pub signature: ::std::option::Option<attestation::Signature>,
+    pub signature: ::core::option::Option<attestation::Signature>,
 }
+/// Nested message and enum types in `Attestation`.
 pub mod attestation {
     /// Required. The signature, generally over the `resource_url`, that verifies
     /// this attestation. The semantics of the signature veracity are ultimately

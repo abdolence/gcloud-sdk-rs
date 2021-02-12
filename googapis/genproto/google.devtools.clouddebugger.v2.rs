@@ -11,10 +11,10 @@ pub struct FormatMessage {
     ///     is loaded.  Again, $0 is very important.`
     /// *   `Please pay $$10 to use $0 instead of $1.`
     #[prost(string, tag = "1")]
-    pub format: std::string::String,
+    pub format: ::prost::alloc::string::String,
     /// Optional parameters to be embedded into the message.
     #[prost(string, repeated, tag = "2")]
-    pub parameters: ::std::vec::Vec<std::string::String>,
+    pub parameters: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a contextual status message.
 /// The message can indicate an error or informational status, and refer to
@@ -31,8 +31,9 @@ pub struct StatusMessage {
     pub refers_to: i32,
     /// Status message text.
     #[prost(message, optional, tag = "3")]
-    pub description: ::std::option::Option<FormatMessage>,
+    pub description: ::core::option::Option<FormatMessage>,
 }
+/// Nested message and enum types in `StatusMessage`.
 pub mod status_message {
     /// Enumerates references to which the message applies.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -59,7 +60,7 @@ pub mod status_message {
 pub struct SourceLocation {
     /// Path to the source file within the source context of the target binary.
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Line inside the file. The first line in the file has the value `1`.
     #[prost(int32, tag = "2")]
     pub line: i32,
@@ -182,24 +183,24 @@ pub struct SourceLocation {
 pub struct Variable {
     /// Name of the variable, if any.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Simple value of the variable.
     #[prost(string, tag = "2")]
-    pub value: std::string::String,
+    pub value: ::prost::alloc::string::String,
     /// Variable type (e.g. `MyClass`). If the variable is split with
     /// `var_table_index`, `type` goes next to `value`. The interpretation of
     /// a type is agent specific. It is recommended to include the dynamic type
     /// rather than a static type of an object.
     #[prost(string, tag = "6")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// Members contained or pointed to by the variable.
     #[prost(message, repeated, tag = "3")]
-    pub members: ::std::vec::Vec<Variable>,
+    pub members: ::prost::alloc::vec::Vec<Variable>,
     /// Reference to a variable in the shared variable table. More than
     /// one variable can reference the same variable in the table. The
     /// `var_table_index` field is an index into `variable_table` in Breakpoint.
     #[prost(message, optional, tag = "4")]
-    pub var_table_index: ::std::option::Option<i32>,
+    pub var_table_index: ::core::option::Option<i32>,
     /// Status associated with the variable. This field will usually stay
     /// unset. A status of a single variable only applies to that variable or
     /// expression. The rest of breakpoint data still remains valid. Variables
@@ -220,50 +221,50 @@ pub struct Variable {
     /// *   `Field f not found in class C`
     /// *   `Null pointer dereference`
     #[prost(message, optional, tag = "5")]
-    pub status: ::std::option::Option<StatusMessage>,
+    pub status: ::core::option::Option<StatusMessage>,
 }
 /// Represents a stack frame context.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StackFrame {
     /// Demangled function name at the call site.
     #[prost(string, tag = "1")]
-    pub function: std::string::String,
+    pub function: ::prost::alloc::string::String,
     /// Source location of the call site.
     #[prost(message, optional, tag = "2")]
-    pub location: ::std::option::Option<SourceLocation>,
+    pub location: ::core::option::Option<SourceLocation>,
     /// Set of arguments passed to this function.
     /// Note that this might not be populated for all stack frames.
     #[prost(message, repeated, tag = "3")]
-    pub arguments: ::std::vec::Vec<Variable>,
+    pub arguments: ::prost::alloc::vec::Vec<Variable>,
     /// Set of local variables at the stack frame location.
     /// Note that this might not be populated for all stack frames.
     #[prost(message, repeated, tag = "4")]
-    pub locals: ::std::vec::Vec<Variable>,
+    pub locals: ::prost::alloc::vec::Vec<Variable>,
 }
 /// Represents the breakpoint specification, status and results.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Breakpoint {
     /// Breakpoint identifier, unique in the scope of the debuggee.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Action that the agent should perform when the code at the
     /// breakpoint location is hit.
     #[prost(enumeration = "breakpoint::Action", tag = "13")]
     pub action: i32,
     /// Breakpoint source location.
     #[prost(message, optional, tag = "2")]
-    pub location: ::std::option::Option<SourceLocation>,
+    pub location: ::core::option::Option<SourceLocation>,
     /// Condition that triggers the breakpoint.
     /// The condition is a compound boolean expression composed using expressions
     /// in a programming language at the source location.
     #[prost(string, tag = "3")]
-    pub condition: std::string::String,
+    pub condition: ::prost::alloc::string::String,
     /// List of read-only expressions to evaluate at the breakpoint location.
     /// The expressions are composed using expressions in the programming language
     /// at the source location. If the breakpoint action is `LOG`, the evaluated
     /// expressions are included in log statements.
     #[prost(string, repeated, tag = "4")]
-    pub expressions: ::std::vec::Vec<std::string::String>,
+    pub expressions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Only relevant when action is `LOG`. Defines the message to log when
     /// the breakpoint hits. The message may include parameter placeholders `$0`,
     /// `$1`, etc. These placeholders are replaced with the evaluated value
@@ -273,7 +274,7 @@ pub struct Breakpoint {
     /// Example: `Message received, id = $0, count = $1` with
     /// `expressions` = `[ message.id, message.count ]`.
     #[prost(string, tag = "14")]
-    pub log_message_format: std::string::String,
+    pub log_message_format: ::prost::alloc::string::String,
     /// Indicates the severity of the log. Only relevant when action is `LOG`.
     #[prost(enumeration = "breakpoint::LogLevel", tag = "15")]
     pub log_level: i32,
@@ -283,14 +284,14 @@ pub struct Breakpoint {
     pub is_final_state: bool,
     /// Time this breakpoint was created by the server in seconds resolution.
     #[prost(message, optional, tag = "11")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time this breakpoint was finalized as seen by the server in seconds
     /// resolution.
     #[prost(message, optional, tag = "12")]
-    pub final_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub final_time: ::core::option::Option<::prost_types::Timestamp>,
     /// E-mail address of the user that created this breakpoint
     #[prost(string, tag = "16")]
-    pub user_email: std::string::String,
+    pub user_email: ::prost::alloc::string::String,
     /// Breakpoint status.
     ///
     /// The status includes an error flag and a human readable message.
@@ -307,11 +308,11 @@ pub struct Breakpoint {
     /// *   `Invalid line number` referring to location
     /// *   `Field f not found in class C` referring to condition
     #[prost(message, optional, tag = "10")]
-    pub status: ::std::option::Option<StatusMessage>,
+    pub status: ::core::option::Option<StatusMessage>,
     /// The stack at breakpoint time, where stack_frames[0] represents the most
     /// recently entered function.
     #[prost(message, repeated, tag = "7")]
-    pub stack_frames: ::std::vec::Vec<StackFrame>,
+    pub stack_frames: ::prost::alloc::vec::Vec<StackFrame>,
     /// Values of evaluated expressions at breakpoint time.
     /// The evaluated expressions appear in exactly the same order they
     /// are listed in the `expressions` field.
@@ -320,7 +321,7 @@ pub struct Breakpoint {
     /// If the expression cannot be evaluated, the `status` inside the `Variable`
     /// will indicate an error and contain the error text.
     #[prost(message, repeated, tag = "8")]
-    pub evaluated_expressions: ::std::vec::Vec<Variable>,
+    pub evaluated_expressions: ::prost::alloc::vec::Vec<Variable>,
     /// The `variable_table` exists to aid with computation, memory and network
     /// traffic optimization.  It enables storing a variable once and reference
     /// it from multiple variables, including variables stored in the
@@ -334,12 +335,14 @@ pub struct Breakpoint {
     /// variable. The effective variable is a merge of the referencing variable
     /// and the referenced variable.
     #[prost(message, repeated, tag = "9")]
-    pub variable_table: ::std::vec::Vec<Variable>,
+    pub variable_table: ::prost::alloc::vec::Vec<Variable>,
     /// A set of custom breakpoint properties, populated by the agent, to be
     /// displayed to the user.
     #[prost(map = "string, string", tag = "17")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Breakpoint`.
 pub mod breakpoint {
     /// Actions that can be taken when a breakpoint hits.
     /// Agents should reject breakpoints with unsupported or unknown action values.
@@ -375,11 +378,11 @@ pub mod breakpoint {
 pub struct Debuggee {
     /// Unique identifier for the debuggee generated by the controller service.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Project the debuggee is associated with.
     /// Use project number or id when registering a Google Cloud Platform project.
     #[prost(string, tag = "2")]
-    pub project: std::string::String,
+    pub project: ::prost::alloc::string::String,
     /// Uniquifier to further distinguish the application.
     /// It is possible that different applications might have identical values in
     /// the debuggee message, thus, incorrectly identified as a single application
@@ -387,12 +390,12 @@ pub struct Debuggee {
     /// application. Agents should consider seeding this field with value that
     /// identifies the code, binary, configuration and environment.
     #[prost(string, tag = "3")]
-    pub uniquifier: std::string::String,
+    pub uniquifier: ::prost::alloc::string::String,
     /// Human readable description of the debuggee.
     /// Including a human-readable project name, environment name and version
     /// information is recommended.
     #[prost(string, tag = "4")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// If set to `true`, indicates that Controller service does not detect any
     /// activity from the debuggee agents and the application is possibly stopped.
     #[prost(bool, tag = "5")]
@@ -401,7 +404,7 @@ pub struct Debuggee {
     /// Schema: `domain/language-platform/vmajor.minor` (for example
     /// `google.com/java-gcp/v1.1`).
     #[prost(string, tag = "6")]
-    pub agent_version: std::string::String,
+    pub agent_version: ::prost::alloc::string::String,
     /// If set to `true`, indicates that the agent should disable itself and
     /// detach from the debuggee.
     #[prost(bool, tag = "7")]
@@ -410,19 +413,22 @@ pub struct Debuggee {
     /// Absence of this field indicates no status. The message can be either
     /// informational or an error status.
     #[prost(message, optional, tag = "8")]
-    pub status: ::std::option::Option<StatusMessage>,
+    pub status: ::core::option::Option<StatusMessage>,
     /// References to the locations and revisions of the source code used in the
     /// deployed application.
     #[prost(message, repeated, tag = "9")]
-    pub source_contexts: ::std::vec::Vec<super::super::source::v1::SourceContext>,
+    pub source_contexts: ::prost::alloc::vec::Vec<super::super::source::v1::SourceContext>,
     /// References to the locations and revisions of the source code used in the
     /// deployed application.
+    #[deprecated]
     #[prost(message, repeated, tag = "13")]
-    pub ext_source_contexts: ::std::vec::Vec<super::super::source::v1::ExtendedSourceContext>,
+    pub ext_source_contexts:
+        ::prost::alloc::vec::Vec<super::super::source::v1::ExtendedSourceContext>,
     /// A set of custom debuggee properties, populated by the agent, to be
     /// displayed to the user.
     #[prost(map = "string, string", tag = "11")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Request to register a debuggee.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -431,7 +437,7 @@ pub struct RegisterDebuggeeRequest {
     /// The fields `project`, `uniquifier`, `description` and `agent_version`
     /// of the debuggee must be set.
     #[prost(message, optional, tag = "1")]
-    pub debuggee: ::std::option::Option<Debuggee>,
+    pub debuggee: ::core::option::Option<Debuggee>,
 }
 /// Response for registering a debuggee.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -442,20 +448,20 @@ pub struct RegisterDebuggeeResponse {
     /// itself by removing all breakpoints and detaching from the application.
     /// It should however continue to poll `RegisterDebuggee` until reenabled.
     #[prost(message, optional, tag = "1")]
-    pub debuggee: ::std::option::Option<Debuggee>,
+    pub debuggee: ::core::option::Option<Debuggee>,
 }
 /// Request to list active breakpoints.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListActiveBreakpointsRequest {
     /// Required. Identifies the debuggee.
     #[prost(string, tag = "1")]
-    pub debuggee_id: std::string::String,
+    pub debuggee_id: ::prost::alloc::string::String,
     /// A token that, if specified, blocks the method call until the list
     /// of active breakpoints has changed, or a server-selected timeout has
     /// expired. The value should be set from the `next_wait_token` field in
     /// the last response. The initial value should be set to `"init"`.
     #[prost(string, tag = "2")]
-    pub wait_token: std::string::String,
+    pub wait_token: ::prost::alloc::string::String,
     /// If set to `true` (recommended), returns `google.rpc.Code.OK` status and
     /// sets the `wait_expired` response field to `true` when the server-selected
     /// timeout has expired.
@@ -471,11 +477,11 @@ pub struct ListActiveBreakpointsResponse {
     /// List of all active breakpoints.
     /// The fields `id` and `location` are guaranteed to be set on each breakpoint.
     #[prost(message, repeated, tag = "1")]
-    pub breakpoints: ::std::vec::Vec<Breakpoint>,
+    pub breakpoints: ::prost::alloc::vec::Vec<Breakpoint>,
     /// A token that can be used in the next method call to block until
     /// the list of breakpoints changes.
     #[prost(string, tag = "2")]
-    pub next_wait_token: std::string::String,
+    pub next_wait_token: ::prost::alloc::string::String,
     /// If set to `true`, indicates that there is no change to the
     /// list of active breakpoints and the server-selected timeout has expired.
     /// The `breakpoints` field would be empty and should be ignored.
@@ -487,12 +493,12 @@ pub struct ListActiveBreakpointsResponse {
 pub struct UpdateActiveBreakpointRequest {
     /// Required. Identifies the debuggee being debugged.
     #[prost(string, tag = "1")]
-    pub debuggee_id: std::string::String,
+    pub debuggee_id: ::prost::alloc::string::String,
     /// Required. Updated breakpoint information.
     /// The field `id` must be set.
     /// The agent must echo all Breakpoint specification fields in the update.
     #[prost(message, optional, tag = "2")]
-    pub breakpoint: ::std::option::Option<Breakpoint>,
+    pub breakpoint: ::core::option::Option<Breakpoint>,
 }
 /// Response for updating an active breakpoint.
 /// The message is defined to allow future extensions.
@@ -638,15 +644,15 @@ pub mod controller2_client {
 pub struct SetBreakpointRequest {
     /// Required. ID of the debuggee where the breakpoint is to be set.
     #[prost(string, tag = "1")]
-    pub debuggee_id: std::string::String,
+    pub debuggee_id: ::prost::alloc::string::String,
     /// Required. Breakpoint specification to set.
     /// The field `location` of the breakpoint must be set.
     #[prost(message, optional, tag = "2")]
-    pub breakpoint: ::std::option::Option<Breakpoint>,
+    pub breakpoint: ::core::option::Option<Breakpoint>,
     /// Required. The client version making the call.
     /// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
     #[prost(string, tag = "4")]
-    pub client_version: std::string::String,
+    pub client_version: ::prost::alloc::string::String,
 }
 /// Response for setting a breakpoint.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -654,21 +660,21 @@ pub struct SetBreakpointResponse {
     /// Breakpoint resource.
     /// The field `id` is guaranteed to be set (in addition to the echoed fileds).
     #[prost(message, optional, tag = "1")]
-    pub breakpoint: ::std::option::Option<Breakpoint>,
+    pub breakpoint: ::core::option::Option<Breakpoint>,
 }
 /// Request to get breakpoint information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBreakpointRequest {
     /// Required. ID of the debuggee whose breakpoint to get.
     #[prost(string, tag = "1")]
-    pub debuggee_id: std::string::String,
+    pub debuggee_id: ::prost::alloc::string::String,
     /// Required. ID of the breakpoint to get.
     #[prost(string, tag = "2")]
-    pub breakpoint_id: std::string::String,
+    pub breakpoint_id: ::prost::alloc::string::String,
     /// Required. The client version making the call.
     /// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
     #[prost(string, tag = "4")]
-    pub client_version: std::string::String,
+    pub client_version: ::prost::alloc::string::String,
 }
 /// Response for getting breakpoint information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -676,28 +682,28 @@ pub struct GetBreakpointResponse {
     /// Complete breakpoint state.
     /// The fields `id` and `location` are guaranteed to be set.
     #[prost(message, optional, tag = "1")]
-    pub breakpoint: ::std::option::Option<Breakpoint>,
+    pub breakpoint: ::core::option::Option<Breakpoint>,
 }
 /// Request to delete a breakpoint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBreakpointRequest {
     /// Required. ID of the debuggee whose breakpoint to delete.
     #[prost(string, tag = "1")]
-    pub debuggee_id: std::string::String,
+    pub debuggee_id: ::prost::alloc::string::String,
     /// Required. ID of the breakpoint to delete.
     #[prost(string, tag = "2")]
-    pub breakpoint_id: std::string::String,
+    pub breakpoint_id: ::prost::alloc::string::String,
     /// Required. The client version making the call.
     /// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
     #[prost(string, tag = "3")]
-    pub client_version: std::string::String,
+    pub client_version: ::prost::alloc::string::String,
 }
 /// Request to list breakpoints.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBreakpointsRequest {
     /// Required. ID of the debuggee whose breakpoints to list.
     #[prost(string, tag = "1")]
-    pub debuggee_id: std::string::String,
+    pub debuggee_id: ::prost::alloc::string::String,
     /// When set to `true`, the response includes the list of breakpoints set by
     /// any user. Otherwise, it includes only breakpoints set by the caller.
     #[prost(bool, tag = "2")]
@@ -708,9 +714,10 @@ pub struct ListBreakpointsRequest {
     pub include_inactive: bool,
     /// When set, the response includes only breakpoints with the specified action.
     #[prost(message, optional, tag = "4")]
-    pub action: ::std::option::Option<list_breakpoints_request::BreakpointActionValue>,
+    pub action: ::core::option::Option<list_breakpoints_request::BreakpointActionValue>,
     /// This field is deprecated. The following fields are always stripped out of
     /// the result: `stack_frames`, `evaluated_expressions` and `variable_table`.
+    #[deprecated]
     #[prost(bool, tag = "5")]
     pub strip_results: bool,
     /// A wait token that, if specified, blocks the call until the breakpoints
@@ -719,12 +726,13 @@ pub struct ListBreakpointsRequest {
     /// `google.rpc.Code.ABORTED` (RPC) is returned on wait timeout, which
     /// should be called again with the same `wait_token`.
     #[prost(string, tag = "6")]
-    pub wait_token: std::string::String,
+    pub wait_token: ::prost::alloc::string::String,
     /// Required. The client version making the call.
     /// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
     #[prost(string, tag = "8")]
-    pub client_version: std::string::String,
+    pub client_version: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ListBreakpointsRequest`.
 pub mod list_breakpoints_request {
     /// Wrapper message for `Breakpoint.Action`. Defines a filter on the action
     /// field of breakpoints.
@@ -743,18 +751,18 @@ pub struct ListBreakpointsResponse {
     /// The fields: `stack_frames`, `evaluated_expressions` and `variable_table`
     /// are cleared on each breakpoint regardless of its status.
     #[prost(message, repeated, tag = "1")]
-    pub breakpoints: ::std::vec::Vec<Breakpoint>,
+    pub breakpoints: ::prost::alloc::vec::Vec<Breakpoint>,
     /// A wait token that can be used in the next call to `list` (REST) or
     /// `ListBreakpoints` (RPC) to block until the list of breakpoints has changes.
     #[prost(string, tag = "2")]
-    pub next_wait_token: std::string::String,
+    pub next_wait_token: ::prost::alloc::string::String,
 }
 /// Request to list debuggees.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDebuggeesRequest {
     /// Required. Project number of a Google Cloud project whose debuggees to list.
     #[prost(string, tag = "2")]
-    pub project: std::string::String,
+    pub project: ::prost::alloc::string::String,
     /// When set to `true`, the result includes all debuggees. Otherwise, the
     /// result includes only debuggees that are active.
     #[prost(bool, tag = "3")]
@@ -762,7 +770,7 @@ pub struct ListDebuggeesRequest {
     /// Required. The client version making the call.
     /// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
     #[prost(string, tag = "4")]
-    pub client_version: std::string::String,
+    pub client_version: ::prost::alloc::string::String,
 }
 /// Response for listing debuggees.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -772,7 +780,7 @@ pub struct ListDebuggeesResponse {
     /// The `description` field is a human readable field provided by agents and
     /// can be displayed to users.
     #[prost(message, repeated, tag = "1")]
-    pub debuggees: ::std::vec::Vec<Debuggee>,
+    pub debuggees: ::prost::alloc::vec::Vec<Debuggee>,
 }
 #[doc = r" Generated client implementations."]
 pub mod debugger2_client {

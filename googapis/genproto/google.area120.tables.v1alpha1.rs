@@ -4,7 +4,7 @@ pub struct GetTableRequest {
     /// Required. The name of the table to retrieve.
     /// Format: tables/{table}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.ListTables.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -22,18 +22,18 @@ pub struct ListTablesRequest {
     /// When paginating, all other parameters provided to `ListTables` must match
     /// the call that provided the page token.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for TablesService.ListTables.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesResponse {
     /// The list of tables.
     #[prost(message, repeated, tag = "1")]
-    pub tables: ::std::vec::Vec<Table>,
+    pub tables: ::prost::alloc::vec::Vec<Table>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is empty, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.GetRow.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -41,7 +41,7 @@ pub struct GetRowRequest {
     /// Required. The name of the row to retrieve.
     /// Format: tables/{table}/rows/{row}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. Column key to use for values in the row.
     /// Defaults to user entered name.
     #[prost(enumeration = "View", tag = "2")]
@@ -53,7 +53,7 @@ pub struct ListRowsRequest {
     /// Required. The parent table.
     /// Format: tables/{table}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of rows to return. The service may return fewer than
     /// this value.
     ///
@@ -67,7 +67,7 @@ pub struct ListRowsRequest {
     /// When paginating, all other parameters provided to `ListRows` must match
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Column key to use for values in the row.
     /// Defaults to user entered name.
     #[prost(enumeration = "View", tag = "4")]
@@ -78,11 +78,11 @@ pub struct ListRowsRequest {
 pub struct ListRowsResponse {
     /// The rows from the specified table.
     #[prost(message, repeated, tag = "1")]
-    pub rows: ::std::vec::Vec<Row>,
+    pub rows: ::prost::alloc::vec::Vec<Row>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is empty, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.CreateRow.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -90,10 +90,10 @@ pub struct CreateRowRequest {
     /// Required. The parent table where this row will be created.
     /// Format: tables/{table}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The row to create.
     #[prost(message, optional, tag = "2")]
-    pub row: ::std::option::Option<Row>,
+    pub row: ::core::option::Option<Row>,
     /// Optional. Column key to use for values in the row.
     /// Defaults to user entered name.
     #[prost(enumeration = "View", tag = "3")]
@@ -105,29 +105,29 @@ pub struct BatchCreateRowsRequest {
     /// Required. The parent table where the rows will be created.
     /// Format: tables/{table}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The request message specifying the rows to create.
     ///
     /// A maximum of 500 rows can be created in a single batch.
     #[prost(message, repeated, tag = "2")]
-    pub requests: ::std::vec::Vec<CreateRowRequest>,
+    pub requests: ::prost::alloc::vec::Vec<CreateRowRequest>,
 }
 /// Response message for TablesService.BatchCreateRows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRowsResponse {
     /// The created rows.
     #[prost(message, repeated, tag = "1")]
-    pub rows: ::std::vec::Vec<Row>,
+    pub rows: ::prost::alloc::vec::Vec<Row>,
 }
 /// Request message for TablesService.UpdateRow.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRowRequest {
     /// Required. The row to update.
     #[prost(message, optional, tag = "1")]
-    pub row: ::std::option::Option<Row>,
+    pub row: ::core::option::Option<Row>,
     /// The list of fields to update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. Column key to use for values in the row.
     /// Defaults to user entered name.
     #[prost(enumeration = "View", tag = "3")]
@@ -139,19 +139,19 @@ pub struct BatchUpdateRowsRequest {
     /// Required. The parent table shared by all rows being updated.
     /// Format: tables/{table}
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The request messages specifying the rows to update.
     ///
     /// A maximum of 500 rows can be modified in a single batch.
     #[prost(message, repeated, tag = "2")]
-    pub requests: ::std::vec::Vec<UpdateRowRequest>,
+    pub requests: ::prost::alloc::vec::Vec<UpdateRowRequest>,
 }
 /// Response message for TablesService.BatchUpdateRows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateRowsResponse {
     /// The updated rows.
     #[prost(message, repeated, tag = "1")]
-    pub rows: ::std::vec::Vec<Row>,
+    pub rows: ::prost::alloc::vec::Vec<Row>,
 }
 /// Request message for TablesService.DeleteRow
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -159,7 +159,7 @@ pub struct DeleteRowRequest {
     /// Required. The name of the row to delete.
     /// Format: tables/{table}/rows/{row}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A single table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -167,29 +167,29 @@ pub struct Table {
     /// The resource name of the table.
     /// Table names have the form `tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The human readable title of the table.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// List of columns in this table.
     /// Order of columns matches the display order.
     #[prost(message, repeated, tag = "3")]
-    pub columns: ::std::vec::Vec<ColumnDescription>,
+    pub columns: ::prost::alloc::vec::Vec<ColumnDescription>,
 }
 /// Details on a column in the table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColumnDescription {
     /// column name
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Data type of the column
     /// Supported types are number, text, boolean, number_list, text_list,
     /// boolean_list.
     #[prost(string, tag = "2")]
-    pub data_type: std::string::String,
+    pub data_type: ::prost::alloc::string::String,
     /// Internal id for a column.
     #[prost(string, tag = "3")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
 }
 /// A single row in a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -198,12 +198,12 @@ pub struct Row {
     /// Row names have the form `tables/{table}/rows/{row}`.
     /// The name is ignored when creating a row.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The values of the row. This is a map of column key to value.
     /// Key is user entered name(default) or the internal column id based on
     /// the view in the request.
     #[prost(map = "string, message", tag = "2")]
-    pub values: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
+    pub values: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
 }
 /// Column identifier used for the values in the row.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

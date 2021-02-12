@@ -5,21 +5,21 @@ pub struct PublisherAccount {
     /// Resource name of this account.
     /// Format is accounts/{publisher_id}.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The unique ID by which this publisher account can be identified
     /// in the API requests (for example, pub-1234567890).
     #[prost(string, tag = "2")]
-    pub publisher_id: std::string::String,
+    pub publisher_id: ::prost::alloc::string::String,
     /// The time zone that is used in reports that are generated for this account.
     /// The value is a time-zone ID as specified by the CLDR project,
     /// for example, "America/Los_Angeles".
     #[prost(string, tag = "3")]
-    pub reporting_time_zone: std::string::String,
+    pub reporting_time_zone: ::prost::alloc::string::String,
     /// Currency code of the earning-related metrics, which is the 3-letter code
     /// defined in ISO 4217. The daily average rate is used for the currency
     /// conversion.
     #[prost(string, tag = "4")]
-    pub currency_code: std::string::String,
+    pub currency_code: ::prost::alloc::string::String,
 }
 /// The specification for generating an AdMob Network report.
 /// For example, the specification to get clicks and estimated earnings for only
@@ -61,27 +61,27 @@ pub struct PublisherAccount {
 pub struct NetworkReportSpec {
     /// The date range for which the report is generated.
     #[prost(message, optional, tag = "1")]
-    pub date_range: ::std::option::Option<DateRange>,
+    pub date_range: ::core::option::Option<DateRange>,
     /// List of dimensions of the report. The value combination of these dimensions
     /// determines the row of the report. If no dimensions are specified, the
     /// report returns a single row of requested metrics for the entire account.
     #[prost(enumeration = "network_report_spec::Dimension", repeated, tag = "2")]
-    pub dimensions: ::std::vec::Vec<i32>,
+    pub dimensions: ::prost::alloc::vec::Vec<i32>,
     /// List of metrics of the report. A report must specify at least one metric.
     #[prost(enumeration = "network_report_spec::Metric", repeated, tag = "3")]
-    pub metrics: ::std::vec::Vec<i32>,
+    pub metrics: ::prost::alloc::vec::Vec<i32>,
     /// Describes which report rows to match based on their dimension values.
     #[prost(message, repeated, tag = "4")]
-    pub dimension_filters: ::std::vec::Vec<network_report_spec::DimensionFilter>,
+    pub dimension_filters: ::prost::alloc::vec::Vec<network_report_spec::DimensionFilter>,
     /// Describes the sorting of report rows. The order of the condition in the
     /// list defines its precedence; the earlier the condition, the higher its
     /// precedence. If no sort conditions are specified, the row ordering is
     /// undefined.
     #[prost(message, repeated, tag = "5")]
-    pub sort_conditions: ::std::vec::Vec<network_report_spec::SortCondition>,
+    pub sort_conditions: ::prost::alloc::vec::Vec<network_report_spec::SortCondition>,
     /// Localization settings of the report.
     #[prost(message, optional, tag = "6")]
-    pub localization_settings: ::std::option::Option<LocalizationSettings>,
+    pub localization_settings: ::core::option::Option<LocalizationSettings>,
     /// Maximum number of report data rows to return. If the value is not set, the
     /// API returns as many rows as possible, up to 100000. Acceptable values are
     /// 1-100000, inclusive. Any other values are treated as 100000.
@@ -94,8 +94,9 @@ pub struct NetworkReportSpec {
     /// **Warning:** The "America/Los_Angeles" is the only supported value at
     /// the moment.
     #[prost(string, tag = "8")]
-    pub time_zone: std::string::String,
+    pub time_zone: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `NetworkReportSpec`.
 pub mod network_report_spec {
     /// Describes which report rows to match based on their dimension values.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -105,8 +106,9 @@ pub mod network_report_spec {
         pub dimension: i32,
         /// Filter operator to be applied.
         #[prost(oneof = "dimension_filter::Operator", tags = "2")]
-        pub operator: ::std::option::Option<dimension_filter::Operator>,
+        pub operator: ::core::option::Option<dimension_filter::Operator>,
     }
+    /// Nested message and enum types in `DimensionFilter`.
     pub mod dimension_filter {
         /// Filter operator to be applied.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -125,8 +127,9 @@ pub mod network_report_spec {
         pub order: i32,
         /// Identifies which values to sort on.
         #[prost(oneof = "sort_condition::SortOn", tags = "1, 2")]
-        pub sort_on: ::std::option::Option<sort_condition::SortOn>,
+        pub sort_on: ::core::option::Option<sort_condition::SortOn>,
     }
+    /// Nested message and enum types in `SortCondition`.
     pub mod sort_condition {
         /// Identifies which values to sort on.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -266,27 +269,27 @@ pub mod network_report_spec {
 pub struct MediationReportSpec {
     /// The date range for which the report is generated.
     #[prost(message, optional, tag = "1")]
-    pub date_range: ::std::option::Option<DateRange>,
+    pub date_range: ::core::option::Option<DateRange>,
     /// List of dimensions of the report. The value combination of these dimensions
     /// determines the row of the report. If no dimensions are specified, the
     /// report returns a single row of requested metrics for the entire account.
     #[prost(enumeration = "mediation_report_spec::Dimension", repeated, tag = "2")]
-    pub dimensions: ::std::vec::Vec<i32>,
+    pub dimensions: ::prost::alloc::vec::Vec<i32>,
     /// List of metrics of the report. A report must specify at least one metric.
     #[prost(enumeration = "mediation_report_spec::Metric", repeated, tag = "3")]
-    pub metrics: ::std::vec::Vec<i32>,
+    pub metrics: ::prost::alloc::vec::Vec<i32>,
     /// Describes which report rows to match based on their dimension values.
     #[prost(message, repeated, tag = "4")]
-    pub dimension_filters: ::std::vec::Vec<mediation_report_spec::DimensionFilter>,
+    pub dimension_filters: ::prost::alloc::vec::Vec<mediation_report_spec::DimensionFilter>,
     /// Describes the sorting of report rows. The order of the condition in the
     /// list defines its precedence; the earlier the condition, the higher its
     /// precedence. If no sort conditions are specified, the row ordering is
     /// undefined.
     #[prost(message, repeated, tag = "5")]
-    pub sort_conditions: ::std::vec::Vec<mediation_report_spec::SortCondition>,
+    pub sort_conditions: ::prost::alloc::vec::Vec<mediation_report_spec::SortCondition>,
     /// Localization settings of the report.
     #[prost(message, optional, tag = "6")]
-    pub localization_settings: ::std::option::Option<LocalizationSettings>,
+    pub localization_settings: ::core::option::Option<LocalizationSettings>,
     /// Maximum number of report data rows to return. If the value is not set, the
     /// API returns as many rows as possible, up to 100000. Acceptable values are
     /// 1-100000, inclusive. Any other values are treated as 100000.
@@ -299,8 +302,9 @@ pub struct MediationReportSpec {
     /// **Warning:** The "America/Los_Angeles" is the only supported value at
     /// the moment.
     #[prost(string, tag = "8")]
-    pub time_zone: std::string::String,
+    pub time_zone: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `MediationReportSpec`.
 pub mod mediation_report_spec {
     /// Describes which report rows to match based on their dimension values.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -310,8 +314,9 @@ pub mod mediation_report_spec {
         pub dimension: i32,
         /// Filter operator to be applied.
         #[prost(oneof = "dimension_filter::Operator", tags = "2")]
-        pub operator: ::std::option::Option<dimension_filter::Operator>,
+        pub operator: ::core::option::Option<dimension_filter::Operator>,
     }
+    /// Nested message and enum types in `DimensionFilter`.
     pub mod dimension_filter {
         /// Filter operator to be applied.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -330,8 +335,9 @@ pub mod mediation_report_spec {
         pub order: i32,
         /// Identifies which values to sort on.
         #[prost(oneof = "sort_condition::SortOn", tags = "1, 2")]
-        pub sort_on: ::std::option::Option<sort_condition::SortOn>,
+        pub sort_on: ::core::option::Option<sort_condition::SortOn>,
     }
+    /// Nested message and enum types in `SortCondition`.
     pub mod sort_condition {
         /// Identifies which values to sort on.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -436,13 +442,15 @@ pub struct ReportRow {
     /// Map of dimension values in a row, with keys as enum name of the dimensions.
     #[prost(map = "string, message", tag = "1")]
     pub dimension_values:
-        ::std::collections::HashMap<std::string::String, report_row::DimensionValue>,
+        ::std::collections::HashMap<::prost::alloc::string::String, report_row::DimensionValue>,
     /// Map of metric values in a row, with keys as enum name of the metrics. If
     /// a metric being requested has no value returned, the map will not include
     /// it.
     #[prost(map = "string, message", tag = "2")]
-    pub metric_values: ::std::collections::HashMap<std::string::String, report_row::MetricValue>,
+    pub metric_values:
+        ::std::collections::HashMap<::prost::alloc::string::String, report_row::MetricValue>,
 }
+/// Nested message and enum types in `ReportRow`.
 pub mod report_row {
     /// Representation of a dimension value.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -450,11 +458,11 @@ pub mod report_row {
         /// Dimension value in the format specified in the report's spec Dimension
         /// enum.
         #[prost(string, tag = "1")]
-        pub value: std::string::String,
+        pub value: ::prost::alloc::string::String,
         /// The localized string representation of the value. If unspecified, the
         /// display label should be derived from the value.
         #[prost(string, tag = "2")]
-        pub display_label: std::string::String,
+        pub display_label: ::prost::alloc::string::String,
     }
     /// Representation of a metric value.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -462,8 +470,9 @@ pub mod report_row {
         /// Metric value in the format specified in the report's spec Metric enum
         /// name.
         #[prost(oneof = "metric_value::Value", tags = "1, 2, 3")]
-        pub value: ::std::option::Option<metric_value::Value>,
+        pub value: ::core::option::Option<metric_value::Value>,
     }
+    /// Nested message and enum types in `MetricValue`.
     pub mod metric_value {
         /// Metric value in the format specified in the report's spec Metric enum
         /// name.
@@ -491,8 +500,9 @@ pub struct ReportWarning {
     pub r#type: i32,
     /// Describes the details of the warning message, in English.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ReportWarning`.
 pub mod report_warning {
     /// Warning type.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -528,15 +538,15 @@ pub struct ReportHeader {
     /// The date range for which the report is generated. This is identical to the
     /// range specified in the report request.
     #[prost(message, optional, tag = "1")]
-    pub date_range: ::std::option::Option<DateRange>,
+    pub date_range: ::core::option::Option<DateRange>,
     /// Localization settings of the report. This is identical to the settings
     /// in the report request.
     #[prost(message, optional, tag = "2")]
-    pub localization_settings: ::std::option::Option<LocalizationSettings>,
+    pub localization_settings: ::core::option::Option<LocalizationSettings>,
     /// The report time zone. The value is a time-zone ID as specified by the CLDR
     /// project, for example, "America/Los_Angeles".
     #[prost(string, tag = "3")]
-    pub reporting_time_zone: std::string::String,
+    pub reporting_time_zone: ::prost::alloc::string::String,
 }
 /// Groups data available after report generation, for example, warnings and row
 /// counts. Always sent as the last message in the stream response.
@@ -544,7 +554,7 @@ pub struct ReportHeader {
 pub struct ReportFooter {
     /// Warnings associated with generation of the report.
     #[prost(message, repeated, tag = "1")]
-    pub warnings: ::std::vec::Vec<ReportWarning>,
+    pub warnings: ::prost::alloc::vec::Vec<ReportWarning>,
     /// Total number of rows that matched the request.
     ///
     /// Warning: This count does NOT always match the number of rows in the
@@ -558,11 +568,11 @@ pub struct DateRange {
     /// Start date of the date range, inclusive. Must be less than or equal to the
     /// end date.
     #[prost(message, optional, tag = "1")]
-    pub start_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub start_date: ::core::option::Option<super::super::super::r#type::Date>,
     /// End date of the date range, inclusive. Must be greater than or equal to the
     /// start date.
     #[prost(message, optional, tag = "2")]
-    pub end_date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub end_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// Localization settings for reports, such as currency and language. It affects
 /// how metrics are calculated.
@@ -572,19 +582,19 @@ pub struct LocalizationSettings {
     /// defined in ISO 4217. The daily average rate is used for the currency
     /// conversion. Defaults to the account currency code if unspecified.
     #[prost(string, tag = "1")]
-    pub currency_code: std::string::String,
+    pub currency_code: ::prost::alloc::string::String,
     /// Language used for any localized text, such as some dimension value display
     /// labels. The language tag defined in the IETF BCP47. Defaults to 'en-US' if
     /// unspecified.
     #[prost(string, tag = "2")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
 }
 /// List of string values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringList {
     /// The string values.
     #[prost(string, repeated, tag = "1")]
-    pub values: ::std::vec::Vec<std::string::String>,
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The sorting order.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -603,7 +613,7 @@ pub struct GetPublisherAccountRequest {
     /// Resource name of the publisher account to retrieve.
     /// Example: accounts/pub-9876543210987654
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to retrieve the AdMob publisher account accessible with the client
 /// credential. Currently all credentials have access to at most 1 account.
@@ -616,18 +626,18 @@ pub struct ListPublisherAccountsRequest {
     /// that this is a continuation of a prior `ListPublisherAccounts` call, and
     /// that the system should return the next page of data.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for the publisher account list request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPublisherAccountsResponse {
     /// Publisher that the client credentials can access.
     #[prost(message, repeated, tag = "1")]
-    pub account: ::std::vec::Vec<PublisherAccount>,
+    pub account: ::prost::alloc::vec::Vec<PublisherAccount>,
     /// If not empty, indicates that there might be more accounts for the request;
     /// you must pass this value in a new `ListPublisherAccountsRequest`.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to generate an AdMob Mediation report.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -635,10 +645,10 @@ pub struct GenerateMediationReportRequest {
     /// Resource name of the account to generate the report for.
     /// Example: accounts/pub-9876543210987654
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Network report specification.
     #[prost(message, optional, tag = "2")]
-    pub report_spec: ::std::option::Option<MediationReportSpec>,
+    pub report_spec: ::core::option::Option<MediationReportSpec>,
 }
 /// The streaming response for the AdMob Mediation report where the first
 /// response contains the report header, then a stream of row responses, and
@@ -682,8 +692,9 @@ pub struct GenerateMediationReportResponse {
         oneof = "generate_mediation_report_response::Payload",
         tags = "1, 2, 3"
     )]
-    pub payload: ::std::option::Option<generate_mediation_report_response::Payload>,
+    pub payload: ::core::option::Option<generate_mediation_report_response::Payload>,
 }
+/// Nested message and enum types in `GenerateMediationReportResponse`.
 pub mod generate_mediation_report_response {
     /// Each stream response message contains one type of payload.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -707,10 +718,10 @@ pub struct GenerateNetworkReportRequest {
     /// Resource name of the account to generate the report for.
     /// Example: accounts/pub-9876543210987654
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Network report specification.
     #[prost(message, optional, tag = "2")]
-    pub report_spec: ::std::option::Option<NetworkReportSpec>,
+    pub report_spec: ::core::option::Option<NetworkReportSpec>,
 }
 /// The streaming response for the AdMob Network report where the first response
 /// contains the report header, then a stream of row responses, and finally a
@@ -751,8 +762,9 @@ pub struct GenerateNetworkReportRequest {
 pub struct GenerateNetworkReportResponse {
     /// Each stream response message contains one type of payload.
     #[prost(oneof = "generate_network_report_response::Payload", tags = "1, 2, 3")]
-    pub payload: ::std::option::Option<generate_network_report_response::Payload>,
+    pub payload: ::core::option::Option<generate_network_report_response::Payload>,
 }
+/// Nested message and enum types in `GenerateNetworkReportResponse`.
 pub mod generate_network_report_response {
     /// Each stream response message contains one type of payload.
     #[derive(Clone, PartialEq, ::prost::Oneof)]

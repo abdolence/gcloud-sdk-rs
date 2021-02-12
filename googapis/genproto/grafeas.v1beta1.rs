@@ -3,10 +3,10 @@
 pub struct RelatedUrl {
     /// Specific URL associated with the resource.
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
     /// Label to describe usage of the URL.
     #[prost(string, tag = "2")]
-    pub label: std::string::String,
+    pub label: ::prost::alloc::string::String,
 }
 /// Verifiers (e.g. Kritis implementations) MUST verify signatures
 /// with respect to the trust anchors defined in policy (e.g. a Kritis policy).
@@ -38,8 +38,8 @@ pub struct Signature {
     /// the payload explicitly. Alternatively, a message might have a canonical
     /// serialization that can always be unambiguously computed to derive the
     /// payload.
-    #[prost(bytes, tag = "1")]
-    pub signature: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub signature: ::prost::alloc::vec::Vec<u8>,
     /// The identifier for the public key that verifies this signature.
     ///   * The `public_key_id` is required.
     ///   * The `public_key_id` MUST be an RFC3986 conformant URI.
@@ -58,7 +58,7 @@ pub struct Signature {
     ///   * "ni:///sha-256;cD9o9Cq6LG3jD0iKXqEi_vdjJGecm_iXkbqVoScViaU"
     ///   * "nih:///sha-256;703f68f42aba2c6de30f488a5ea122fef76324679c9bf89791ba95a1271589a5"
     #[prost(string, tag = "2")]
-    pub public_key_id: std::string::String,
+    pub public_key_id: ::prost::alloc::string::String,
 }
 /// Kind represents the kinds of notes supported.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -87,33 +87,34 @@ pub struct Occurrence {
     /// Output only. The name of the occurrence in the form of
     /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The resource for which the occurrence applies.
     #[prost(message, optional, tag = "2")]
-    pub resource: ::std::option::Option<Resource>,
+    pub resource: ::core::option::Option<Resource>,
     /// Required. Immutable. The analysis note associated with this occurrence, in
     /// the form of `projects/[PROVIDER_ID]/notes/[NOTE_ID]`. This field can be
     /// used as a filter in list requests.
     #[prost(string, tag = "3")]
-    pub note_name: std::string::String,
+    pub note_name: ::prost::alloc::string::String,
     /// Output only. This explicitly denotes which of the occurrence details are
     /// specified. This field can be used as a filter in list requests.
     #[prost(enumeration = "NoteKind", tag = "4")]
     pub kind: i32,
     /// A description of actions that can be taken to remedy the note.
     #[prost(string, tag = "5")]
-    pub remediation: std::string::String,
+    pub remediation: ::prost::alloc::string::String,
     /// Output only. The time this occurrence was created.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this occurrence was last updated.
     #[prost(message, optional, tag = "7")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Immutable. Describes the details of the note kind found on this
     /// resource.
     #[prost(oneof = "occurrence::Details", tags = "8, 9, 10, 11, 12, 13, 14")]
-    pub details: ::std::option::Option<occurrence::Details>,
+    pub details: ::core::option::Option<occurrence::Details>,
 }
+/// Nested message and enum types in `Occurrence`.
 pub mod occurrence {
     /// Required. Immutable. Describes the details of the note kind found on this
     /// resource.
@@ -149,14 +150,14 @@ pub struct Resource {
     /// The name of the resource. For example, the name of a Docker image -
     /// "Debian".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The unique URI of the resource. For example,
     /// `https://gcr.io/project/image@sha256:foo` for a Docker image.
     #[prost(string, tag = "2")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
     /// The hash of the resource content. For example, the Docker digest.
     #[prost(message, optional, tag = "3")]
-    pub content_hash: ::std::option::Option<provenance::Hash>,
+    pub content_hash: ::core::option::Option<provenance::Hash>,
 }
 /// A type of analysis that can be done for a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -164,38 +165,39 @@ pub struct Note {
     /// Output only. The name of the note in the form of
     /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A one sentence description of this note.
     #[prost(string, tag = "2")]
-    pub short_description: std::string::String,
+    pub short_description: ::prost::alloc::string::String,
     /// A detailed description of this note.
     #[prost(string, tag = "3")]
-    pub long_description: std::string::String,
+    pub long_description: ::prost::alloc::string::String,
     /// Output only. The type of analysis. This field can be used as a filter in
     /// list requests.
     #[prost(enumeration = "NoteKind", tag = "4")]
     pub kind: i32,
     /// URLs associated with this note.
     #[prost(message, repeated, tag = "5")]
-    pub related_url: ::std::vec::Vec<RelatedUrl>,
+    pub related_url: ::prost::alloc::vec::Vec<RelatedUrl>,
     /// Time of expiration for this note. Empty if note does not expire.
     #[prost(message, optional, tag = "6")]
-    pub expiration_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this note was created. This field can be used as a
     /// filter in list requests.
     #[prost(message, optional, tag = "7")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this note was last updated. This field can be used as
     /// a filter in list requests.
     #[prost(message, optional, tag = "8")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Other notes related to this note.
     #[prost(string, repeated, tag = "9")]
-    pub related_note_names: ::std::vec::Vec<std::string::String>,
+    pub related_note_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Immutable. The type of analysis this note represents.
     #[prost(oneof = "note::Type", tags = "10, 11, 12, 13, 14, 15, 16")]
-    pub r#type: ::std::option::Option<note::Type>,
+    pub r#type: ::core::option::Option<note::Type>,
 }
+/// Nested message and enum types in `Note`.
 pub mod note {
     /// Required. Immutable. The type of analysis this note represents.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -229,7 +231,7 @@ pub struct GetOccurrenceRequest {
     /// The name of the occurrence in the form of
     /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to list occurrences.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -237,28 +239,28 @@ pub struct ListOccurrencesRequest {
     /// The name of the project to list occurrences for in the form of
     /// `projects/[PROJECT_ID]`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The filter expression.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Number of occurrences to return in the list.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing occurrences.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOccurrencesResponse {
     /// The occurrences requested.
     #[prost(message, repeated, tag = "1")]
-    pub occurrences: ::std::vec::Vec<Occurrence>,
+    pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
     /// The next pagination token in the list response. It should be used as
     /// `page_token` for the following request. An empty value means no more
     /// results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete a occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -266,7 +268,7 @@ pub struct DeleteOccurrenceRequest {
     /// The name of the occurrence in the form of
     /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -274,10 +276,10 @@ pub struct CreateOccurrenceRequest {
     /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
     /// the occurrence is to be created.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The occurrence to create.
     #[prost(message, optional, tag = "2")]
-    pub occurrence: ::std::option::Option<Occurrence>,
+    pub occurrence: ::core::option::Option<Occurrence>,
 }
 /// Request to update an occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -285,13 +287,13 @@ pub struct UpdateOccurrenceRequest {
     /// The name of the occurrence in the form of
     /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The updated occurrence.
     #[prost(message, optional, tag = "2")]
-    pub occurrence: ::std::option::Option<Occurrence>,
+    pub occurrence: ::core::option::Option<Occurrence>,
     /// The fields to update.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to get a note.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -299,7 +301,7 @@ pub struct GetNoteRequest {
     /// The name of the note in the form of
     /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to get the note to which the specified occurrence is attached.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -307,7 +309,7 @@ pub struct GetOccurrenceNoteRequest {
     /// The name of the occurrence in the form of
     /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to list notes.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -315,28 +317,28 @@ pub struct ListNotesRequest {
     /// The name of the project to list notes for in the form of
     /// `projects/[PROJECT_ID]`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The filter expression.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Number of notes to return in the list.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing notes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotesResponse {
     /// The notes requested.
     #[prost(message, repeated, tag = "1")]
-    pub notes: ::std::vec::Vec<Note>,
+    pub notes: ::prost::alloc::vec::Vec<Note>,
     /// The next pagination token in the list response. It should be used as
     /// `page_token` for the following request. An empty value means no more
     /// results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete a note.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -344,7 +346,7 @@ pub struct DeleteNoteRequest {
     /// The name of the note in the form of
     /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new note.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -352,13 +354,13 @@ pub struct CreateNoteRequest {
     /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
     /// the note is to be created.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The ID to use for this note.
     #[prost(string, tag = "2")]
-    pub note_id: std::string::String,
+    pub note_id: ::prost::alloc::string::String,
     /// The note to create.
     #[prost(message, optional, tag = "3")]
-    pub note: ::std::option::Option<Note>,
+    pub note: ::core::option::Option<Note>,
 }
 /// Request to update a note.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -366,13 +368,13 @@ pub struct UpdateNoteRequest {
     /// The name of the note in the form of
     /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The updated note.
     #[prost(message, optional, tag = "2")]
-    pub note: ::std::option::Option<Note>,
+    pub note: ::core::option::Option<Note>,
     /// The fields to update.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to list occurrences for a note.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -380,26 +382,26 @@ pub struct ListNoteOccurrencesRequest {
     /// The name of the note to list occurrences for in the form of
     /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The filter expression.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Number of occurrences to return in the list.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing occurrences for a note.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNoteOccurrencesResponse {
     /// The occurrences attached to the specified note.
     #[prost(message, repeated, tag = "1")]
-    pub occurrences: ::std::vec::Vec<Occurrence>,
+    pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
     /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to create notes in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -407,17 +409,17 @@ pub struct BatchCreateNotesRequest {
     /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
     /// the notes are to be created.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The notes to create.
     #[prost(map = "string, message", tag = "2")]
-    pub notes: ::std::collections::HashMap<std::string::String, Note>,
+    pub notes: ::std::collections::HashMap<::prost::alloc::string::String, Note>,
 }
 /// Response for creating notes in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateNotesResponse {
     /// The notes that were created.
     #[prost(message, repeated, tag = "1")]
-    pub notes: ::std::vec::Vec<Note>,
+    pub notes: ::prost::alloc::vec::Vec<Note>,
 }
 /// Request to create occurrences in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -425,17 +427,17 @@ pub struct BatchCreateOccurrencesRequest {
     /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
     /// the occurrences are to be created.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The occurrences to create.
     #[prost(message, repeated, tag = "2")]
-    pub occurrences: ::std::vec::Vec<Occurrence>,
+    pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
 }
 /// Response for creating occurrences in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateOccurrencesResponse {
     /// The occurrences that were created.
     #[prost(message, repeated, tag = "1")]
-    pub occurrences: ::std::vec::Vec<Occurrence>,
+    pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
 }
 /// Request to get a vulnerability summary for some set of occurrences.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -443,10 +445,10 @@ pub struct GetVulnerabilityOccurrencesSummaryRequest {
     /// The name of the project to get a vulnerability summary for in the form of
     /// `projects/[PROJECT_ID]`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The filter expression.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// A summary of how many vulnerability occurrences there are per resource and
 /// severity type.
@@ -454,15 +456,16 @@ pub struct GetVulnerabilityOccurrencesSummaryRequest {
 pub struct VulnerabilityOccurrencesSummary {
     /// A listing by resource of the number of fixable and total vulnerabilities.
     #[prost(message, repeated, tag = "1")]
-    pub counts: ::std::vec::Vec<vulnerability_occurrences_summary::FixableTotalByDigest>,
+    pub counts: ::prost::alloc::vec::Vec<vulnerability_occurrences_summary::FixableTotalByDigest>,
 }
+/// Nested message and enum types in `VulnerabilityOccurrencesSummary`.
 pub mod vulnerability_occurrences_summary {
     /// Per resource and severity counts of fixable and total vulnerabilities.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FixableTotalByDigest {
         /// The affected resource.
         #[prost(message, optional, tag = "1")]
-        pub resource: ::std::option::Option<super::Resource>,
+        pub resource: ::core::option::Option<super::Resource>,
         /// The severity for this count. SEVERITY_UNSPECIFIED indicates total across
         /// all severities.
         #[prost(enumeration = "super::vulnerability::Severity", tag = "2")]

@@ -4,10 +4,10 @@ pub struct GetVulnerabilityOccurrencesSummaryRequest {
     /// The name of the project to get a vulnerability summary for in the form of
     /// `projects/[PROJECT_ID]`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The filter expression.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// A summary of how many vulnerability occurrences there are per resource and
 /// severity type.
@@ -15,15 +15,16 @@ pub struct GetVulnerabilityOccurrencesSummaryRequest {
 pub struct VulnerabilityOccurrencesSummary {
     /// A listing by resource of the number of fixable and total vulnerabilities.
     #[prost(message, repeated, tag = "1")]
-    pub counts: ::std::vec::Vec<vulnerability_occurrences_summary::FixableTotalByDigest>,
+    pub counts: ::prost::alloc::vec::Vec<vulnerability_occurrences_summary::FixableTotalByDigest>,
 }
+/// Nested message and enum types in `VulnerabilityOccurrencesSummary`.
 pub mod vulnerability_occurrences_summary {
     /// Per resource and severity counts of fixable and total vulnerabilities.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FixableTotalByDigest {
         /// The affected resource.
         #[prost(string, tag = "1")]
-        pub resource_uri: std::string::String,
+        pub resource_uri: ::prost::alloc::string::String,
         /// The severity for this count. SEVERITY_UNSPECIFIED indicates total across
         /// all severities.
         #[prost(
@@ -165,7 +166,7 @@ pub mod container_analysis_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.devtools.containeranalysis.v1.ContainerAnalysis/GetVulnerabilityOccurrencesSummary" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.devtools.containeranalysis.v1.ContainerAnalysis/GetVulnerabilityOccurrencesSummary") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

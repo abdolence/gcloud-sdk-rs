@@ -4,14 +4,14 @@ pub struct Device {
     /// The user-defined device identifier. The device ID must be unique
     /// within a device registry.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// The resource path name. For example,
     /// `projects/p1/locations/us-central1/registries/registry0/devices/dev0` or
     /// `projects/p1/locations/us-central1/registries/registry0/devices/{num_id}`.
     /// When `name` is populated as a response from the service, it always ends
     /// in the device numeric ID.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// [Output only] A server-defined unique numeric ID for the device. This is a
     /// more compact way to identify devices, and it is globally unique.
     #[prost(uint64, tag = "3")]
@@ -23,33 +23,33 @@ pub struct Device {
     /// against the registry credentials. For details, see the description of the
     /// `DeviceRegistry.credentials` field.
     #[prost(message, repeated, tag = "12")]
-    pub credentials: ::std::vec::Vec<DeviceCredential>,
+    pub credentials: ::prost::alloc::vec::Vec<DeviceCredential>,
     /// [Output only] The last time an MQTT `PINGREQ` was received. This field
     /// applies only to devices connecting through MQTT. MQTT clients usually only
     /// send `PINGREQ` messages if the connection is idle, and no other messages
     /// have been sent. Timestamps are periodically collected and written to
     /// storage; they may be stale by a few minutes.
     #[prost(message, optional, tag = "7")]
-    pub last_heartbeat_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_heartbeat_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Output only] The last time a telemetry event was received. Timestamps are
     /// periodically collected and written to storage; they may be stale by a few
     /// minutes.
     #[prost(message, optional, tag = "8")]
-    pub last_event_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Output only] The last time a state event was received. Timestamps are
     /// periodically collected and written to storage; they may be stale by a few
     /// minutes.
     #[prost(message, optional, tag = "20")]
-    pub last_state_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_state_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Output only] The last time a cloud-to-device config version acknowledgment
     /// was received from the device. This field is only for configurations
     /// sent through MQTT.
     #[prost(message, optional, tag = "14")]
-    pub last_config_ack_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_config_ack_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Output only] The last time a cloud-to-device config version was sent to
     /// the device.
     #[prost(message, optional, tag = "18")]
-    pub last_config_send_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_config_send_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If a device is blocked, connections or requests from this device will fail.
     /// Can be used to temporarily prevent the device from connecting if, for
     /// example, the sensor is generating bad data and needs maintenance.
@@ -59,25 +59,25 @@ pub struct Device {
     /// publish to Cloud Pub/Sub. This field is the timestamp of
     /// 'last_error_status'.
     #[prost(message, optional, tag = "10")]
-    pub last_error_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_error_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Output only] The error message of the most recent error, such as a failure
     /// to publish to Cloud Pub/Sub. 'last_error_time' is the timestamp of this
     /// field. If no errors have occurred, this field has an empty message
     /// and the status code 0 == OK. Otherwise, this field is expected to have a
     /// status code other than OK.
     #[prost(message, optional, tag = "11")]
-    pub last_error_status: ::std::option::Option<super::super::super::rpc::Status>,
+    pub last_error_status: ::core::option::Option<super::super::super::rpc::Status>,
     /// The most recent device configuration, which is eventually sent from
     /// Cloud IoT Core to the device. If not present on creation, the
     /// configuration will be initialized with an empty payload and version value
     /// of `1`. To update this field after creation, use the
     /// `DeviceManager.ModifyCloudToDeviceConfig` method.
     #[prost(message, optional, tag = "13")]
-    pub config: ::std::option::Option<DeviceConfig>,
+    pub config: ::core::option::Option<DeviceConfig>,
     /// [Output only] The state most recently received from the device. If no state
     /// has been reported, this field is not present.
     #[prost(message, optional, tag = "16")]
-    pub state: ::std::option::Option<DeviceState>,
+    pub state: ::core::option::Option<DeviceState>,
     /// **Beta Feature**
     ///
     /// The logging verbosity for device activity. If unspecified,
@@ -97,10 +97,11 @@ pub struct Device {
     /// The total size of all keys and values must be less than 256 KB, and the
     /// maximum number of key-value pairs is 500.
     #[prost(map = "string, string", tag = "17")]
-    pub metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Gateway-related configuration and state.
     #[prost(message, optional, tag = "24")]
-    pub gateway_config: ::std::option::Option<GatewayConfig>,
+    pub gateway_config: ::core::option::Option<GatewayConfig>,
 }
 /// Gateway-related configuration and state.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -114,22 +115,22 @@ pub struct GatewayConfig {
     pub gateway_auth_method: i32,
     /// [Output only] The ID of the gateway the device accessed most recently.
     #[prost(string, tag = "3")]
-    pub last_accessed_gateway_id: std::string::String,
+    pub last_accessed_gateway_id: ::prost::alloc::string::String,
     /// [Output only] The most recent time at which the device accessed the gateway
     /// specified in `last_accessed_gateway`.
     #[prost(message, optional, tag = "4")]
-    pub last_accessed_gateway_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_accessed_gateway_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A container for a group of devices.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceRegistry {
     /// The identifier of this device registry. For example, `myRegistry`.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// The resource path name. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The configuration for notification of telemetry events received from the
     /// device. All telemetry events that were successfully published by the
     /// device and acknowledged by Cloud IoT Core are guaranteed to be
@@ -140,7 +141,7 @@ pub struct DeviceRegistry {
     /// to do so using an HTTP connection, an error is returned. Up to 10
     /// configurations may be provided.
     #[prost(message, repeated, tag = "10")]
-    pub event_notification_configs: ::std::vec::Vec<EventNotificationConfig>,
+    pub event_notification_configs: ::prost::alloc::vec::Vec<EventNotificationConfig>,
     /// The configuration for notification of new states received from the device.
     /// State updates are guaranteed to be stored in the state history, but
     /// notifications to Cloud Pub/Sub are not guaranteed. For example, if
@@ -148,13 +149,13 @@ pub struct DeviceRegistry {
     /// notification will be published but the state will still be stored in Cloud
     /// IoT Core.
     #[prost(message, optional, tag = "7")]
-    pub state_notification_config: ::std::option::Option<StateNotificationConfig>,
+    pub state_notification_config: ::core::option::Option<StateNotificationConfig>,
     /// The MQTT configuration for this device registry.
     #[prost(message, optional, tag = "4")]
-    pub mqtt_config: ::std::option::Option<MqttConfig>,
+    pub mqtt_config: ::core::option::Option<MqttConfig>,
     /// The DeviceService (HTTP) configuration for this device registry.
     #[prost(message, optional, tag = "9")]
-    pub http_config: ::std::option::Option<HttpConfig>,
+    pub http_config: ::core::option::Option<HttpConfig>,
     /// **Beta Feature**
     ///
     /// The default logging verbosity for activity from devices in this registry.
@@ -173,7 +174,7 @@ pub struct DeviceRegistry {
     /// successfully created in a registry, it should be able to connect even if
     /// its registry credentials are revoked, deleted, or modified.
     #[prost(message, repeated, tag = "8")]
-    pub credentials: ::std::vec::Vec<RegistryCredential>,
+    pub credentials: ::prost::alloc::vec::Vec<RegistryCredential>,
 }
 /// The configuration of MQTT for a device registry.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -199,11 +200,11 @@ pub struct EventNotificationConfig {
     /// all strings are matched. This field is used only for telemetry events;
     /// subfolders are not supported for state changes.
     #[prost(string, tag = "2")]
-    pub subfolder_matches: std::string::String,
+    pub subfolder_matches: ::prost::alloc::string::String,
     /// A Cloud Pub/Sub topic name. For example,
     /// `projects/myProject/topics/deviceEvents`.
     #[prost(string, tag = "1")]
-    pub pubsub_topic_name: std::string::String,
+    pub pubsub_topic_name: ::prost::alloc::string::String,
 }
 /// The configuration for notification of new states received from the device.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -211,15 +212,16 @@ pub struct StateNotificationConfig {
     /// A Cloud Pub/Sub topic name. For example,
     /// `projects/myProject/topics/deviceEvents`.
     #[prost(string, tag = "1")]
-    pub pubsub_topic_name: std::string::String,
+    pub pubsub_topic_name: ::prost::alloc::string::String,
 }
 /// A server-stored registry credential used to validate device credentials.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegistryCredential {
     /// The credential data. Reserved for expansion in the future.
     #[prost(oneof = "registry_credential::Credential", tags = "1")]
-    pub credential: ::std::option::Option<registry_credential::Credential>,
+    pub credential: ::core::option::Option<registry_credential::Credential>,
 }
+/// Nested message and enum types in `RegistryCredential`.
 pub mod registry_credential {
     /// The credential data. Reserved for expansion in the future.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -234,22 +236,22 @@ pub mod registry_credential {
 pub struct X509CertificateDetails {
     /// The entity that signed the certificate.
     #[prost(string, tag = "1")]
-    pub issuer: std::string::String,
+    pub issuer: ::prost::alloc::string::String,
     /// The entity the certificate and public key belong to.
     #[prost(string, tag = "2")]
-    pub subject: std::string::String,
+    pub subject: ::prost::alloc::string::String,
     /// The time the certificate becomes valid.
     #[prost(message, optional, tag = "3")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time the certificate becomes invalid.
     #[prost(message, optional, tag = "4")]
-    pub expiry_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expiry_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The algorithm used to sign the certificate.
     #[prost(string, tag = "5")]
-    pub signature_algorithm: std::string::String,
+    pub signature_algorithm: ::prost::alloc::string::String,
     /// The type of public key in the certificate.
     #[prost(string, tag = "6")]
-    pub public_key_type: std::string::String,
+    pub public_key_type: ::prost::alloc::string::String,
 }
 /// A public key certificate format and data.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -259,10 +261,10 @@ pub struct PublicKeyCertificate {
     pub format: i32,
     /// The certificate data.
     #[prost(string, tag = "2")]
-    pub certificate: std::string::String,
+    pub certificate: ::prost::alloc::string::String,
     /// [Output only] The certificate details. Used only for X.509 certificates.
     #[prost(message, optional, tag = "3")]
-    pub x509_details: ::std::option::Option<X509CertificateDetails>,
+    pub x509_details: ::core::option::Option<X509CertificateDetails>,
 }
 /// A server-stored device credential used for authentication.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -271,11 +273,12 @@ pub struct DeviceCredential {
     /// credential will be ignored for new client authentication requests after
     /// this timestamp; however, it will not be automatically deleted.
     #[prost(message, optional, tag = "6")]
-    pub expiration_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The credential data. Reserved for expansion in the future.
     #[prost(oneof = "device_credential::Credential", tags = "2")]
-    pub credential: ::std::option::Option<device_credential::Credential>,
+    pub credential: ::core::option::Option<device_credential::Credential>,
 }
+/// Nested message and enum types in `DeviceCredential`.
 pub mod device_credential {
     /// The credential data. Reserved for expansion in the future.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -303,7 +306,7 @@ pub struct PublicKeyCredential {
     pub format: i32,
     /// The key data.
     #[prost(string, tag = "2")]
-    pub key: std::string::String,
+    pub key: ::prost::alloc::string::String,
 }
 /// The device configuration. Eventually delivered to devices.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -317,7 +320,7 @@ pub struct DeviceConfig {
     /// [Output only] The time at which this configuration version was updated in
     /// Cloud IoT Core. This timestamp is set by the server.
     #[prost(message, optional, tag = "2")]
-    pub cloud_update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub cloud_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// [Output only] The time at which Cloud IoT Core received the
     /// acknowledgment from the device, indicating that the device has received
     /// this configuration version. If this field is not present, the device has
@@ -328,10 +331,10 @@ pub struct DeviceConfig {
     /// versions may never be sent to the device, and therefore are never
     /// acknowledged. This timestamp is set by Cloud IoT Core.
     #[prost(message, optional, tag = "3")]
-    pub device_ack_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub device_ack_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The device configuration data.
-    #[prost(bytes, tag = "4")]
-    pub binary_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "4")]
+    pub binary_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The device state, as reported by the device.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -339,10 +342,10 @@ pub struct DeviceState {
     /// [Output only] The time at which this state version was updated in Cloud
     /// IoT Core.
     #[prost(message, optional, tag = "1")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The device state data.
-    #[prost(bytes, tag = "2")]
-    pub binary_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub binary_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Indicates whether an MQTT connection is enabled or disabled. See the field
 /// description for details.
@@ -465,12 +468,12 @@ pub struct CreateDeviceRegistryRequest {
     /// Required. The project and cloud region where this device registry must be created.
     /// For example, `projects/example-project/locations/us-central1`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The device registry. The field `name` must be empty. The server will
     /// generate that field from the device registry `id` provided and the
     /// `parent` field.
     #[prost(message, optional, tag = "2")]
-    pub device_registry: ::std::option::Option<DeviceRegistry>,
+    pub device_registry: ::core::option::Option<DeviceRegistry>,
 }
 /// Request for `GetDeviceRegistry`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -478,7 +481,7 @@ pub struct GetDeviceRegistryRequest {
     /// Required. The name of the device registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for `DeleteDeviceRegistry`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -486,7 +489,7 @@ pub struct DeleteDeviceRegistryRequest {
     /// Required. The name of the device registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for `UpdateDeviceRegistry`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -495,14 +498,14 @@ pub struct UpdateDeviceRegistryRequest {
     /// the `name` field must indicate the path of the resource. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
     #[prost(message, optional, tag = "1")]
-    pub device_registry: ::std::option::Option<DeviceRegistry>,
+    pub device_registry: ::core::option::Option<DeviceRegistry>,
     /// Required. Only updates the `device_registry` fields indicated by this mask.
     /// The field mask must not be empty, and it must not contain fields that
     /// are immutable or only set by the server.
     /// Mutable top-level fields: `event_notification_config`, `http_config`,
     /// `mqtt_config`, and `state_notification_config`.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `ListDeviceRegistries`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -510,7 +513,7 @@ pub struct ListDeviceRegistriesRequest {
     /// Required. The project and cloud region path. For example,
     /// `projects/example-project/locations/us-central1`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of registries to return in the response. If this value
     /// is zero, the service will select a default size. A call may return fewer
     /// objects than requested. A non-empty `next_page_token` in the response
@@ -521,19 +524,19 @@ pub struct ListDeviceRegistriesRequest {
     /// that this is a continuation of a prior `ListDeviceRegistries` call and
     /// the system should return the next page of data.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for `ListDeviceRegistries`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeviceRegistriesResponse {
     /// The registries that matched the query.
     #[prost(message, repeated, tag = "1")]
-    pub device_registries: ::std::vec::Vec<DeviceRegistry>,
+    pub device_registries: ::prost::alloc::vec::Vec<DeviceRegistry>,
     /// If not empty, indicates that there may be more registries that match the
     /// request; this value should be passed in a new
     /// `ListDeviceRegistriesRequest`.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for `CreateDevice`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -542,12 +545,12 @@ pub struct CreateDeviceRequest {
     /// For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The device registration details. The field `name` must be empty. The server
     /// generates `name` from the device registry `id` and the
     /// `parent` field.
     #[prost(message, optional, tag = "2")]
-    pub device: ::std::option::Option<Device>,
+    pub device: ::core::option::Option<Device>,
 }
 /// Request for `GetDevice`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -556,11 +559,12 @@ pub struct GetDeviceRequest {
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
     /// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The fields of the `Device` resource to be returned in the response. If the
-    /// field mask is unset or empty, all fields are returned.
+    /// field mask is unset or empty, all fields are returned. Fields have to be
+    /// provided in snake_case format, for example: `last_heartbeat_time`.
     #[prost(message, optional, tag = "2")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `UpdateDevice`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -570,13 +574,13 @@ pub struct UpdateDeviceRequest {
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0`or
     /// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
     #[prost(message, optional, tag = "2")]
-    pub device: ::std::option::Option<Device>,
+    pub device: ::core::option::Option<Device>,
     /// Required. Only updates the `device` fields indicated by this mask.
     /// The field mask must not be empty, and it must not contain fields that
     /// are immutable or only set by the server.
     /// Mutable top-level fields: `credentials`, `blocked`, and `metadata`
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `DeleteDevice`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -585,7 +589,7 @@ pub struct DeleteDeviceRequest {
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
     /// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for `ListDevices`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -593,23 +597,24 @@ pub struct ListDevicesRequest {
     /// Required. The device registry path. Required. For example,
     /// `projects/my-project/locations/us-central1/registries/my-registry`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// A list of device numeric IDs. If empty, this field is ignored. Maximum
     /// IDs: 10,000.
     #[prost(uint64, repeated, tag = "2")]
-    pub device_num_ids: ::std::vec::Vec<u64>,
+    pub device_num_ids: ::prost::alloc::vec::Vec<u64>,
     /// A list of device string IDs. For example, `['device0', 'device12']`.
     /// If empty, this field is ignored. Maximum IDs: 10,000
     #[prost(string, repeated, tag = "3")]
-    pub device_ids: ::std::vec::Vec<std::string::String>,
+    pub device_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The fields of the `Device` resource to be returned in the response. The
     /// fields `id` and `num_id` are always returned, along with any
-    /// other fields specified.
+    /// other fields specified in snake_case format, for example:
+    /// `last_heartbeat_time`.
     #[prost(message, optional, tag = "4")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Options related to gateways.
     #[prost(message, optional, tag = "6")]
-    pub gateway_list_options: ::std::option::Option<GatewayListOptions>,
+    pub gateway_list_options: ::core::option::Option<GatewayListOptions>,
     /// The maximum number of devices to return in the response. If this value
     /// is zero, the service will select a default size. A call may return fewer
     /// objects than requested. A non-empty `next_page_token` in the response
@@ -620,7 +625,7 @@ pub struct ListDevicesRequest {
     /// that this is a continuation of a prior `ListDevices` call and
     /// the system should return the next page of data.
     #[prost(string, tag = "101")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Options for limiting the list based on gateway type and associations.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -628,8 +633,9 @@ pub struct GatewayListOptions {
     /// If not set, all devices and gateways are returned. If set, the list is
     /// filtered based on gateway type and associations.
     #[prost(oneof = "gateway_list_options::Filter", tags = "1, 2, 3")]
-    pub filter: ::std::option::Option<gateway_list_options::Filter>,
+    pub filter: ::core::option::Option<gateway_list_options::Filter>,
 }
+/// Nested message and enum types in `GatewayListOptions`.
 pub mod gateway_list_options {
     /// If not set, all devices and gateways are returned. If set, the list is
     /// filtered based on gateway type and associations.
@@ -645,13 +651,13 @@ pub mod gateway_list_options {
         /// (`id`). For example, if `123` is specified, only devices bound to the
         /// gateway with `num_id` 123 are returned.
         #[prost(string, tag = "2")]
-        AssociationsGatewayId(std::string::String),
+        AssociationsGatewayId(::prost::alloc::string::String),
         /// If set, returns only the gateways with which the specified device is
         /// associated. The device ID can be numeric (`num_id`) or the user-defined
         /// string (`id`). For example, if `456` is specified, returns only the
         /// gateways to which the device with `num_id` 456 is bound.
         #[prost(string, tag = "3")]
-        AssociationsDeviceId(std::string::String),
+        AssociationsDeviceId(::prost::alloc::string::String),
     }
 }
 /// Response for `ListDevices`.
@@ -659,11 +665,11 @@ pub mod gateway_list_options {
 pub struct ListDevicesResponse {
     /// The devices that match the request.
     #[prost(message, repeated, tag = "1")]
-    pub devices: ::std::vec::Vec<Device>,
+    pub devices: ::prost::alloc::vec::Vec<Device>,
     /// If not empty, indicates that there may be more devices that match the
     /// request; this value should be passed in a new `ListDevicesRequest`.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for `ModifyCloudToDeviceConfig`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -672,7 +678,7 @@ pub struct ModifyCloudToDeviceConfigRequest {
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
     /// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The version number to update. If this value is zero, it will not check the
     /// version number of the server and will always update the current version;
     /// otherwise, this update will fail if the version number found on the server
@@ -681,8 +687,8 @@ pub struct ModifyCloudToDeviceConfigRequest {
     #[prost(int64, tag = "2")]
     pub version_to_update: i64,
     /// Required. The configuration data for the device.
-    #[prost(bytes, tag = "3")]
-    pub binary_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub binary_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request for `ListDeviceConfigVersions`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -691,7 +697,7 @@ pub struct ListDeviceConfigVersionsRequest {
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
     /// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The number of versions to list. Versions are listed in decreasing order of
     /// the version number. The maximum number of versions retained is 10. If this
     /// value is zero, it will return all the versions available.
@@ -704,7 +710,7 @@ pub struct ListDeviceConfigVersionsResponse {
     /// The device configuration for the last few versions. Versions are listed
     /// in decreasing order, starting from the most recent one.
     #[prost(message, repeated, tag = "1")]
-    pub device_configs: ::std::vec::Vec<DeviceConfig>,
+    pub device_configs: ::prost::alloc::vec::Vec<DeviceConfig>,
 }
 /// Request for `ListDeviceStates`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -713,7 +719,7 @@ pub struct ListDeviceStatesRequest {
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
     /// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The number of states to list. States are listed in descending order of
     /// update time. The maximum number of states retained is 10. If this
     /// value is zero, it will return all the states available.
@@ -726,7 +732,7 @@ pub struct ListDeviceStatesResponse {
     /// The last few device states. States are listed in descending order of server
     /// update time, starting from the most recent one.
     #[prost(message, repeated, tag = "1")]
-    pub device_states: ::std::vec::Vec<DeviceState>,
+    pub device_states: ::prost::alloc::vec::Vec<DeviceState>,
 }
 /// Request for `SendCommandToDevice`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -735,17 +741,17 @@ pub struct SendCommandToDeviceRequest {
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
     /// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The command data to send to the device.
-    #[prost(bytes, tag = "2")]
-    pub binary_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub binary_data: ::prost::alloc::vec::Vec<u8>,
     /// Optional subfolder for the command. If empty, the command will be delivered
     /// to the /devices/{device-id}/commands topic, otherwise it will be delivered
     /// to the /devices/{device-id}/commands/{subfolder} topic. Multi-level
     /// subfolders are allowed. This field must not have more than 256 characters,
     /// and must not contain any MQTT wildcards ("+" or "#") or null characters.
     #[prost(string, tag = "3")]
-    pub subfolder: std::string::String,
+    pub subfolder: ::prost::alloc::string::String,
 }
 /// Response for `SendCommandToDevice`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -756,16 +762,16 @@ pub struct BindDeviceToGatewayRequest {
     /// Required. The name of the registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The value of `gateway_id` can be either the device numeric ID or the
     /// user-defined device identifier.
     #[prost(string, tag = "2")]
-    pub gateway_id: std::string::String,
+    pub gateway_id: ::prost::alloc::string::String,
     /// Required. The device to associate with the specified gateway. The value of
     /// `device_id` can be either the device numeric ID or the user-defined device
     /// identifier.
     #[prost(string, tag = "3")]
-    pub device_id: std::string::String,
+    pub device_id: ::prost::alloc::string::String,
 }
 /// Response for `BindDeviceToGateway`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -776,16 +782,16 @@ pub struct UnbindDeviceFromGatewayRequest {
     /// Required. The name of the registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The value of `gateway_id` can be either the device numeric ID or the
     /// user-defined device identifier.
     #[prost(string, tag = "2")]
-    pub gateway_id: std::string::String,
+    pub gateway_id: ::prost::alloc::string::String,
     /// Required. The device to disassociate from the specified gateway. The value of
     /// `device_id` can be either the device numeric ID or the user-defined device
     /// identifier.
     #[prost(string, tag = "3")]
-    pub device_id: std::string::String,
+    pub device_id: ::prost::alloc::string::String,
 }
 /// Response for `UnbindDeviceFromGateway`.
 #[derive(Clone, PartialEq, ::prost::Message)]

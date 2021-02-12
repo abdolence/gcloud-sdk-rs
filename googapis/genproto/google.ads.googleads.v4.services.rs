@@ -4,7 +4,7 @@
 pub struct GetAccountBudgetProposalRequest {
     /// Required. The resource name of the account-level budget proposal to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [AccountBudgetProposalService.MutateAccountBudgetProposal][google.ads.googleads.v4.services.AccountBudgetProposalService.MutateAccountBudgetProposal].
@@ -12,10 +12,10 @@ pub struct GetAccountBudgetProposalRequest {
 pub struct MutateAccountBudgetProposalRequest {
     /// Required. The ID of the customer.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The operation to perform on an individual account-level budget proposal.
     #[prost(message, optional, tag = "2")]
-    pub operation: ::std::option::Option<AccountBudgetProposalOperation>,
+    pub operation: ::core::option::Option<AccountBudgetProposalOperation>,
     /// If true, the request is validated but not executed. Only errors are
     /// returned, not results.
     #[prost(bool, tag = "3")]
@@ -32,11 +32,12 @@ pub struct AccountBudgetProposalOperation {
     /// Proposals that modify budgets have the 'update' proposal type.  Specifying
     /// a mask for any other proposal type is considered an error.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "account_budget_proposal_operation::Operation", tags = "2, 1")]
-    pub operation: ::std::option::Option<account_budget_proposal_operation::Operation>,
+    pub operation: ::core::option::Option<account_budget_proposal_operation::Operation>,
 }
+/// Nested message and enum types in `AccountBudgetProposalOperation`.
 pub mod account_budget_proposal_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -53,7 +54,7 @@ pub mod account_budget_proposal_operation {
         /// `customers/{customer_id}/accountBudgetProposals/{account_budget_proposal_id}`
         /// A request may be cancelled iff it is pending.
         #[prost(string, tag = "1")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for account-level budget mutate operations.
@@ -61,14 +62,14 @@ pub mod account_budget_proposal_operation {
 pub struct MutateAccountBudgetProposalResponse {
     /// The result of the mutate.
     #[prost(message, optional, tag = "2")]
-    pub result: ::std::option::Option<MutateAccountBudgetProposalResult>,
+    pub result: ::core::option::Option<MutateAccountBudgetProposalResult>,
 }
 /// The result for the account budget proposal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountBudgetProposalResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod account_budget_proposal_service_client {
@@ -119,7 +120,7 @@ pub mod account_budget_proposal_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AccountBudgetProposalService/GetAccountBudgetProposal" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AccountBudgetProposalService/GetAccountBudgetProposal") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes account budget proposals.  Operation statuses"]
@@ -136,7 +137,7 @@ pub mod account_budget_proposal_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AccountBudgetProposalService/MutateAccountBudgetProposal" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AccountBudgetProposalService/MutateAccountBudgetProposal") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -159,7 +160,7 @@ pub mod account_budget_proposal_service_client {
 pub struct GetAccountBudgetRequest {
     /// Required. The resource name of the account-level budget to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod account_budget_service_client {
@@ -223,17 +224,17 @@ pub mod account_budget_service_client {
 pub struct GetAccountLinkRequest {
     /// Required. Resource name of the account link.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AccountLinkService.MutateAccountLink][google.ads.googleads.v4.services.AccountLinkService.MutateAccountLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountLinkRequest {
     /// Required. The ID of the customer being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The operation to perform on the link.
     #[prost(message, optional, tag = "2")]
-    pub operation: ::std::option::Option<AccountLinkOperation>,
+    pub operation: ::core::option::Option<AccountLinkOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -250,8 +251,9 @@ pub struct MutateAccountLinkRequest {
 pub struct AccountLinkOperation {
     /// The operation to perform.
     #[prost(oneof = "account_link_operation::Operation", tags = "1, 3")]
-    pub operation: ::std::option::Option<account_link_operation::Operation>,
+    pub operation: ::core::option::Option<account_link_operation::Operation>,
 }
+/// Nested message and enum types in `AccountLinkOperation`.
 pub mod account_link_operation {
     /// The operation to perform.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -264,7 +266,7 @@ pub mod account_link_operation {
         ///
         /// `customers/{customer_id}/accountLinks/{account_link_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for account link mutate.
@@ -272,14 +274,14 @@ pub mod account_link_operation {
 pub struct MutateAccountLinkResponse {
     /// Result for the mutate.
     #[prost(message, optional, tag = "1")]
-    pub result: ::std::option::Option<MutateAccountLinkResult>,
+    pub result: ::core::option::Option<MutateAccountLinkResult>,
 }
 /// The result for the account link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountLinkResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod account_link_service_client {
@@ -361,7 +363,7 @@ pub mod account_link_service_client {
 pub struct GetAdGroupAdAssetViewRequest {
     /// Required. The resource name of the ad group ad asset view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_ad_asset_view_service_client {
@@ -423,17 +425,17 @@ pub mod ad_group_ad_asset_view_service_client {
 pub struct GetAdGroupAdLabelRequest {
     /// Required. The resource name of the ad group ad label to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdGroupAdLabelService.MutateAdGroupAdLabels][google.ads.googleads.v4.services.AdGroupAdLabelService.MutateAdGroupAdLabels].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdLabelsRequest {
     /// Required. ID of the customer whose ad group ad labels are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on ad group ad labels.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupAdLabelOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupAdLabelOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -450,8 +452,9 @@ pub struct MutateAdGroupAdLabelsRequest {
 pub struct AdGroupAdLabelOperation {
     /// The mutate operation.
     #[prost(oneof = "ad_group_ad_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<ad_group_ad_label_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_ad_label_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupAdLabelOperation`.
 pub mod ad_group_ad_label_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -466,7 +469,7 @@ pub mod ad_group_ad_label_operation {
         /// `customers/{customer_id}/adGroupAdLabels/{ad_group_id}~{ad_id}
         /// _{label_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group ad labels mutate.
@@ -477,17 +480,17 @@ pub struct MutateAdGroupAdLabelsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupAdLabelResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupAdLabelResult>,
 }
 /// The result for an ad group ad label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdLabelResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_ad_label_service_client {
@@ -567,17 +570,17 @@ pub mod ad_group_ad_label_service_client {
 pub struct GetAdGroupAdRequest {
     /// Required. The resource name of the ad to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdGroupAdService.MutateAdGroupAds][google.ads.googleads.v4.services.AdGroupAdService.MutateAdGroupAds].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdsRequest {
     /// Required. The ID of the customer whose ads are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual ads.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupAdOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupAdOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -594,15 +597,16 @@ pub struct MutateAdGroupAdsRequest {
 pub struct AdGroupAdOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Configuration for how policies are validated.
     #[prost(message, optional, tag = "5")]
     pub policy_validation_parameter:
-        ::std::option::Option<super::common::PolicyValidationParameter>,
+        ::core::option::Option<super::common::PolicyValidationParameter>,
     /// The mutate operation.
     #[prost(oneof = "ad_group_ad_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_ad_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_ad_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupAdOperation`.
 pub mod ad_group_ad_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -618,7 +622,7 @@ pub mod ad_group_ad_operation {
         ///
         /// `customers/{customer_id}/adGroupAds/{ad_group_id}~{ad_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group ad mutate.
@@ -629,17 +633,17 @@ pub struct MutateAdGroupAdsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupAdResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupAdResult>,
 }
 /// The result for the ad mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdResult {
     /// The resource name returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_ad_service_client {
@@ -717,7 +721,7 @@ pub mod ad_group_ad_service_client {
 pub struct GetAdGroupAudienceViewRequest {
     /// Required. The resource name of the ad group audience view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_audience_view_service_client {
@@ -755,7 +759,7 @@ pub mod ad_group_audience_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AdGroupAudienceViewService/GetAdGroupAudienceView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AdGroupAudienceViewService/GetAdGroupAudienceView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -777,17 +781,17 @@ pub mod ad_group_audience_view_service_client {
 pub struct GetAdGroupBidModifierRequest {
     /// Required. The resource name of the ad group bid modifier to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdGroupBidModifierService.MutateAdGroupBidModifiers][google.ads.googleads.v4.services.AdGroupBidModifierService.MutateAdGroupBidModifiers].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupBidModifiersRequest {
     /// Required. ID of the customer whose ad group bid modifiers are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual ad group bid modifiers.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupBidModifierOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupBidModifierOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -804,11 +808,12 @@ pub struct MutateAdGroupBidModifiersRequest {
 pub struct AdGroupBidModifierOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "ad_group_bid_modifier_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_bid_modifier_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_bid_modifier_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupBidModifierOperation`.
 pub mod ad_group_bid_modifier_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -826,7 +831,7 @@ pub mod ad_group_bid_modifier_operation {
         ///
         /// `customers/{customer_id}/adGroupBidModifiers/{ad_group_id}~{criterion_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for ad group bid modifiers mutate.
@@ -837,17 +842,17 @@ pub struct MutateAdGroupBidModifiersResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupBidModifierResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupBidModifierResult>,
 }
 /// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupBidModifierResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_bid_modifier_service_client {
@@ -904,7 +909,7 @@ pub mod ad_group_bid_modifier_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AdGroupBidModifierService/MutateAdGroupBidModifiers" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AdGroupBidModifierService/MutateAdGroupBidModifiers") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -927,7 +932,7 @@ pub mod ad_group_bid_modifier_service_client {
 pub struct GetAdGroupCriterionLabelRequest {
     /// Required. The resource name of the ad group criterion label to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [AdGroupCriterionLabelService.MutateAdGroupCriterionLabels][google.ads.googleads.v4.services.AdGroupCriterionLabelService.MutateAdGroupCriterionLabels].
@@ -935,10 +940,10 @@ pub struct GetAdGroupCriterionLabelRequest {
 pub struct MutateAdGroupCriterionLabelsRequest {
     /// Required. ID of the customer whose ad group criterion labels are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on ad group criterion labels.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupCriterionLabelOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupCriterionLabelOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -955,8 +960,9 @@ pub struct MutateAdGroupCriterionLabelsRequest {
 pub struct AdGroupCriterionLabelOperation {
     /// The mutate operation.
     #[prost(oneof = "ad_group_criterion_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<ad_group_criterion_label_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_criterion_label_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupCriterionLabelOperation`.
 pub mod ad_group_criterion_label_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -970,7 +976,7 @@ pub mod ad_group_criterion_label_operation {
         ///
         /// `customers/{customer_id}/adGroupCriterionLabels/{ad_group_id}~{criterion_id}~{label_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group criterion labels mutate.
@@ -981,17 +987,17 @@ pub struct MutateAdGroupCriterionLabelsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupCriterionLabelResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupCriterionLabelResult>,
 }
 /// The result for an ad group criterion label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionLabelResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_criterion_label_service_client {
@@ -1029,7 +1035,7 @@ pub mod ad_group_criterion_label_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AdGroupCriterionLabelService/GetAdGroupCriterionLabel" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AdGroupCriterionLabelService/GetAdGroupCriterionLabel") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates and removes ad group criterion labels."]
@@ -1046,7 +1052,7 @@ pub mod ad_group_criterion_label_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AdGroupCriterionLabelService/MutateAdGroupCriterionLabels" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AdGroupCriterionLabelService/MutateAdGroupCriterionLabels") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -1068,17 +1074,17 @@ pub mod ad_group_criterion_label_service_client {
 pub struct GetAdGroupCriterionRequest {
     /// Required. The resource name of the criterion to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdGroupCriterionService.MutateAdGroupCriteria][google.ads.googleads.v4.services.AdGroupCriterionService.MutateAdGroupCriteria].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriteriaRequest {
     /// Required. ID of the customer whose criteria are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual criteria.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupCriterionOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupCriterionOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -1095,7 +1101,7 @@ pub struct MutateAdGroupCriteriaRequest {
 pub struct AdGroupCriterionOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The list of policy violation keys that should not cause a
     /// PolicyViolationError to be reported. Not all policy violations are
     /// exemptable, please refer to the is_exemptible field in the returned
@@ -1106,11 +1112,12 @@ pub struct AdGroupCriterionOperation {
     /// policies, re-review of the resource, or a change in advertiser
     /// certificates.
     #[prost(message, repeated, tag = "5")]
-    pub exempt_policy_violation_keys: ::std::vec::Vec<super::common::PolicyViolationKey>,
+    pub exempt_policy_violation_keys: ::prost::alloc::vec::Vec<super::common::PolicyViolationKey>,
     /// The mutate operation.
     #[prost(oneof = "ad_group_criterion_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_criterion_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_criterion_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupCriterionOperation`.
 pub mod ad_group_criterion_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1127,7 +1134,7 @@ pub mod ad_group_criterion_operation {
         ///
         /// `customers/{customer_id}/adGroupCriteria/{ad_group_id}~{criterion_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group criterion mutate.
@@ -1138,17 +1145,17 @@ pub struct MutateAdGroupCriteriaResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupCriterionResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupCriterionResult>,
 }
 /// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_criterion_service_client {
@@ -1228,7 +1235,7 @@ pub mod ad_group_criterion_service_client {
 pub struct GetAdGroupCriterionSimulationRequest {
     /// Required. The resource name of the ad group criterion simulation to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_criterion_simulation_service_client {
@@ -1268,7 +1275,7 @@ pub mod ad_group_criterion_simulation_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AdGroupCriterionSimulationService/GetAdGroupCriterionSimulation" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AdGroupCriterionSimulationService/GetAdGroupCriterionSimulation") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -1291,7 +1298,7 @@ pub mod ad_group_criterion_simulation_service_client {
 pub struct GetAdGroupExtensionSettingRequest {
     /// Required. The resource name of the ad group extension setting to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [AdGroupExtensionSettingService.MutateAdGroupExtensionSettings][google.ads.googleads.v4.services.AdGroupExtensionSettingService.MutateAdGroupExtensionSettings].
@@ -1300,11 +1307,11 @@ pub struct MutateAdGroupExtensionSettingsRequest {
     /// Required. The ID of the customer whose ad group extension settings are being
     /// modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual ad group extension
     /// settings.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupExtensionSettingOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupExtensionSettingOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -1321,14 +1328,15 @@ pub struct MutateAdGroupExtensionSettingsRequest {
 pub struct AdGroupExtensionSettingOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(
         oneof = "ad_group_extension_setting_operation::Operation",
         tags = "1, 2, 3"
     )]
-    pub operation: ::std::option::Option<ad_group_extension_setting_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_extension_setting_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupExtensionSettingOperation`.
 pub mod ad_group_extension_setting_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1346,7 +1354,7 @@ pub mod ad_group_extension_setting_operation {
         ///
         /// `customers/{customer_id}/adGroupExtensionSettings/{ad_group_id}~{extension_type}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group extension setting mutate.
@@ -1357,17 +1365,17 @@ pub struct MutateAdGroupExtensionSettingsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupExtensionSettingResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupExtensionSettingResult>,
 }
 /// The result for the ad group extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupExtensionSettingResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_extension_setting_service_client {
@@ -1405,7 +1413,7 @@ pub mod ad_group_extension_setting_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AdGroupExtensionSettingService/GetAdGroupExtensionSetting" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AdGroupExtensionSettingService/GetAdGroupExtensionSetting") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes ad group extension settings. Operation"]
@@ -1422,7 +1430,7 @@ pub mod ad_group_extension_setting_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.AdGroupExtensionSettingService/MutateAdGroupExtensionSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.AdGroupExtensionSettingService/MutateAdGroupExtensionSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -1444,17 +1452,17 @@ pub mod ad_group_extension_setting_service_client {
 pub struct GetAdGroupFeedRequest {
     /// Required. The resource name of the ad group feed to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdGroupFeedService.MutateAdGroupFeeds][google.ads.googleads.v4.services.AdGroupFeedService.MutateAdGroupFeeds].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupFeedsRequest {
     /// Required. The ID of the customer whose ad group feeds are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual ad group feeds.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupFeedOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupFeedOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -1471,11 +1479,12 @@ pub struct MutateAdGroupFeedsRequest {
 pub struct AdGroupFeedOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "ad_group_feed_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_feed_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_feed_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupFeedOperation`.
 pub mod ad_group_feed_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1492,7 +1501,7 @@ pub mod ad_group_feed_operation {
         ///
         /// `customers/{customer_id}/adGroupFeeds/{ad_group_id}~{feed_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group feed mutate.
@@ -1503,17 +1512,17 @@ pub struct MutateAdGroupFeedsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupFeedResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupFeedResult>,
 }
 /// The result for the ad group feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupFeedResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_feed_service_client {
@@ -1592,17 +1601,17 @@ pub mod ad_group_feed_service_client {
 pub struct GetAdGroupLabelRequest {
     /// Required. The resource name of the ad group label to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdGroupLabelService.MutateAdGroupLabels][google.ads.googleads.v4.services.AdGroupLabelService.MutateAdGroupLabels].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupLabelsRequest {
     /// Required. ID of the customer whose ad group labels are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on ad group labels.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupLabelOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupLabelOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -1619,8 +1628,9 @@ pub struct MutateAdGroupLabelsRequest {
 pub struct AdGroupLabelOperation {
     /// The mutate operation.
     #[prost(oneof = "ad_group_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<ad_group_label_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_label_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupLabelOperation`.
 pub mod ad_group_label_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1634,7 +1644,7 @@ pub mod ad_group_label_operation {
         ///
         /// `customers/{customer_id}/adGroupLabels/{ad_group_id}~{label_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group labels mutate.
@@ -1645,17 +1655,17 @@ pub struct MutateAdGroupLabelsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupLabelResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupLabelResult>,
 }
 /// The result for an ad group label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupLabelResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_label_service_client {
@@ -1734,17 +1744,17 @@ pub mod ad_group_label_service_client {
 pub struct GetAdGroupRequest {
     /// Required. The resource name of the ad group to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdGroupService.MutateAdGroups][google.ads.googleads.v4.services.AdGroupService.MutateAdGroups].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupsRequest {
     /// Required. The ID of the customer whose ad groups are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual ad groups.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdGroupOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdGroupOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -1761,11 +1771,12 @@ pub struct MutateAdGroupsRequest {
 pub struct AdGroupOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "ad_group_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_group_operation::Operation>,
+    pub operation: ::core::option::Option<ad_group_operation::Operation>,
 }
+/// Nested message and enum types in `AdGroupOperation`.
 pub mod ad_group_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1781,7 +1792,7 @@ pub mod ad_group_operation {
         ///
         /// `customers/{customer_id}/adGroups/{ad_group_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad group mutate.
@@ -1792,17 +1803,17 @@ pub struct MutateAdGroupsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdGroupResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdGroupResult>,
 }
 /// The result for the ad group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_service_client {
@@ -1880,7 +1891,7 @@ pub mod ad_group_service_client {
 pub struct GetAdGroupSimulationRequest {
     /// Required. The resource name of the ad group simulation to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_group_simulation_service_client {
@@ -1942,17 +1953,17 @@ pub mod ad_group_simulation_service_client {
 pub struct GetAdParameterRequest {
     /// Required. The resource name of the ad parameter to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdParameterService.MutateAdParameters][google.ads.googleads.v4.services.AdParameterService.MutateAdParameters]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdParametersRequest {
     /// Required. The ID of the customer whose ad parameters are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual ad parameters.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdParameterOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdParameterOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -1969,11 +1980,12 @@ pub struct MutateAdParametersRequest {
 pub struct AdParameterOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "ad_parameter_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<ad_parameter_operation::Operation>,
+    pub operation: ::core::option::Option<ad_parameter_operation::Operation>,
 }
+/// Nested message and enum types in `AdParameterOperation`.
 pub mod ad_parameter_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1990,7 +2002,7 @@ pub mod ad_parameter_operation {
         ///
         /// `customers/{customer_id}/adParameters/{ad_group_id}~{criterion_id}~{parameter_index}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an ad parameter mutate.
@@ -2001,17 +2013,17 @@ pub struct MutateAdParametersResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdParameterResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdParameterResult>,
 }
 /// The result for the ad parameter mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdParameterResult {
     /// The resource name returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_parameter_service_client {
@@ -2090,7 +2102,7 @@ pub mod ad_parameter_service_client {
 pub struct GetAdScheduleViewRequest {
     /// Required. The resource name of the ad schedule view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_schedule_view_service_client {
@@ -2152,28 +2164,29 @@ pub mod ad_schedule_view_service_client {
 pub struct GetAdRequest {
     /// Required. The resource name of the ad to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AdService.MutateAds][google.ads.googleads.v4.services.AdService.MutateAds].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdsRequest {
     /// Required. The ID of the customer whose ads are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual ads.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AdOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AdOperation>,
 }
 /// A single update operation on an ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "ad_operation::Operation", tags = "1")]
-    pub operation: ::std::option::Option<ad_operation::Operation>,
+    pub operation: ::core::option::Option<ad_operation::Operation>,
 }
+/// Nested message and enum types in `AdOperation`.
 pub mod ad_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2191,14 +2204,14 @@ pub mod ad_operation {
 pub struct MutateAdsResponse {
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAdResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAdResult>,
 }
 /// The result for the ad mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdResult {
     /// The resource name returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod ad_service_client {
@@ -2277,7 +2290,7 @@ pub mod ad_service_client {
 pub struct GetAgeRangeViewRequest {
     /// Required. The resource name of the age range view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod age_range_view_service_client {
@@ -2338,17 +2351,17 @@ pub mod age_range_view_service_client {
 pub struct GetAssetRequest {
     /// Required. The resource name of the asset to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [AssetService.MutateAssets][google.ads.googleads.v4.services.AssetService.MutateAssets]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetsRequest {
     /// Required. The ID of the customer whose assets are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual assets.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<AssetOperation>,
+    pub operations: ::prost::alloc::vec::Vec<AssetOperation>,
 }
 /// A single operation to create an asset. Supported asset types are
 /// YoutubeVideoAsset, MediaBundleAsset, ImageAsset, and LeadFormAsset. TextAsset
@@ -2357,8 +2370,9 @@ pub struct MutateAssetsRequest {
 pub struct AssetOperation {
     /// The mutate operation.
     #[prost(oneof = "asset_operation::Operation", tags = "1")]
-    pub operation: ::std::option::Option<asset_operation::Operation>,
+    pub operation: ::core::option::Option<asset_operation::Operation>,
 }
+/// Nested message and enum types in `AssetOperation`.
 pub mod asset_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2373,14 +2387,14 @@ pub mod asset_operation {
 pub struct MutateAssetsResponse {
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateAssetResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateAssetResult>,
 }
 /// The result for the asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetResult {
     /// The resource name returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod asset_service_client {
@@ -2460,17 +2474,17 @@ pub mod asset_service_client {
 pub struct GetBiddingStrategyRequest {
     /// Required. The resource name of the bidding strategy to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [BiddingStrategyService.MutateBiddingStrategies][google.ads.googleads.v4.services.BiddingStrategyService.MutateBiddingStrategies].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingStrategiesRequest {
     /// Required. The ID of the customer whose bidding strategies are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual bidding strategies.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<BiddingStrategyOperation>,
+    pub operations: ::prost::alloc::vec::Vec<BiddingStrategyOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -2487,11 +2501,12 @@ pub struct MutateBiddingStrategiesRequest {
 pub struct BiddingStrategyOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "bidding_strategy_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<bidding_strategy_operation::Operation>,
+    pub operation: ::core::option::Option<bidding_strategy_operation::Operation>,
 }
+/// Nested message and enum types in `BiddingStrategyOperation`.
 pub mod bidding_strategy_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2509,7 +2524,7 @@ pub mod bidding_strategy_operation {
         ///
         /// `customers/{customer_id}/biddingStrategies/{bidding_strategy_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for bidding strategy mutate.
@@ -2520,17 +2535,17 @@ pub struct MutateBiddingStrategiesResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateBiddingStrategyResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateBiddingStrategyResult>,
 }
 /// The result for the bidding strategy mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingStrategyResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod bidding_strategy_service_client {
@@ -2611,7 +2626,7 @@ pub mod bidding_strategy_service_client {
 pub struct GetCampaignBidModifierRequest {
     /// Required. The resource name of the campaign bid modifier to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CampaignBidModifierService.MutateCampaignBidModifiers][google.ads.googleads.v4.services.CampaignBidModifierService.MutateCampaignBidModifiers].
@@ -2619,10 +2634,10 @@ pub struct GetCampaignBidModifierRequest {
 pub struct MutateCampaignBidModifiersRequest {
     /// Required. ID of the customer whose campaign bid modifiers are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaign bid modifiers.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignBidModifierOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignBidModifierOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -2639,11 +2654,12 @@ pub struct MutateCampaignBidModifiersRequest {
 pub struct CampaignBidModifierOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "campaign_bid_modifier_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<campaign_bid_modifier_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_bid_modifier_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignBidModifierOperation`.
 pub mod campaign_bid_modifier_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2661,7 +2677,7 @@ pub mod campaign_bid_modifier_operation {
         ///
         /// `customers/{customer_id}/CampaignBidModifiers/{campaign_id}~{criterion_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for campaign bid modifiers mutate.
@@ -2672,17 +2688,17 @@ pub struct MutateCampaignBidModifiersResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignBidModifierResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignBidModifierResult>,
 }
 /// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBidModifierResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_bid_modifier_service_client {
@@ -2720,7 +2736,7 @@ pub mod campaign_bid_modifier_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignBidModifierService/GetCampaignBidModifier" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignBidModifierService/GetCampaignBidModifier") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes campaign bid modifiers."]
@@ -2737,7 +2753,7 @@ pub mod campaign_bid_modifier_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignBidModifierService/MutateCampaignBidModifiers" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignBidModifierService/MutateCampaignBidModifiers") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -2759,17 +2775,17 @@ pub mod campaign_bid_modifier_service_client {
 pub struct GetCampaignBudgetRequest {
     /// Required. The resource name of the campaign budget to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignBudgetService.MutateCampaignBudgets][google.ads.googleads.v4.services.CampaignBudgetService.MutateCampaignBudgets].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBudgetsRequest {
     /// Required. The ID of the customer whose campaign budgets are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaign budgets.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignBudgetOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignBudgetOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -2786,11 +2802,12 @@ pub struct MutateCampaignBudgetsRequest {
 pub struct CampaignBudgetOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "campaign_budget_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<campaign_budget_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_budget_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignBudgetOperation`.
 pub mod campaign_budget_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2807,7 +2824,7 @@ pub mod campaign_budget_operation {
         ///
         /// `customers/{customer_id}/campaignBudgets/{budget_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for campaign budget mutate.
@@ -2818,17 +2835,17 @@ pub struct MutateCampaignBudgetsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignBudgetResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignBudgetResult>,
 }
 /// The result for the campaign budget mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBudgetResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_budget_service_client {
@@ -2908,17 +2925,17 @@ pub mod campaign_budget_service_client {
 pub struct GetCampaignCriterionRequest {
     /// Required. The resource name of the criterion to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignCriterionService.MutateCampaignCriteria][google.ads.googleads.v4.services.CampaignCriterionService.MutateCampaignCriteria].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCriteriaRequest {
     /// Required. The ID of the customer whose criteria are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual criteria.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignCriterionOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignCriterionOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -2935,11 +2952,12 @@ pub struct MutateCampaignCriteriaRequest {
 pub struct CampaignCriterionOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "campaign_criterion_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<campaign_criterion_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_criterion_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignCriterionOperation`.
 pub mod campaign_criterion_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2956,7 +2974,7 @@ pub mod campaign_criterion_operation {
         ///
         /// `customers/{customer_id}/campaignCriteria/{campaign_id}~{criterion_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for campaign criterion mutate.
@@ -2967,17 +2985,17 @@ pub struct MutateCampaignCriteriaResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignCriterionResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignCriterionResult>,
 }
 /// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCriterionResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_criterion_service_client {
@@ -3056,17 +3074,17 @@ pub mod campaign_criterion_service_client {
 pub struct GetCampaignDraftRequest {
     /// Required. The resource name of the campaign draft to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignDraftService.MutateCampaignDrafts][google.ads.googleads.v4.services.CampaignDraftService.MutateCampaignDrafts].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignDraftsRequest {
     /// Required. The ID of the customer whose campaign drafts are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaign drafts.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignDraftOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignDraftOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -3083,18 +3101,19 @@ pub struct MutateCampaignDraftsRequest {
 pub struct PromoteCampaignDraftRequest {
     /// Required. The resource name of the campaign draft to promote.
     #[prost(string, tag = "1")]
-    pub campaign_draft: std::string::String,
+    pub campaign_draft: ::prost::alloc::string::String,
 }
 /// A single operation (create, update, remove) on a campaign draft.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignDraftOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "campaign_draft_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<campaign_draft_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_draft_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignDraftOperation`.
 pub mod campaign_draft_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3112,7 +3131,7 @@ pub mod campaign_draft_operation {
         ///
         /// `customers/{customer_id}/campaignDrafts/{base_campaign_id}~{draft_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for campaign draft mutate.
@@ -3123,30 +3142,30 @@ pub struct MutateCampaignDraftsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignDraftResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignDraftResult>,
 }
 /// The result for the campaign draft mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignDraftResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v4.services.CampaignDraftService.ListCampaignDraftAsyncErrors].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignDraftAsyncErrorsRequest {
     /// Required. The name of the campaign draft from which to retrieve the async errors.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// Token of the page to retrieve. If not specified, the first
     /// page of results will be returned. Use the value obtained from
     /// `next_page_token` in the previous response in order to request
     /// the next page of results.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Number of elements to retrieve in a single page.
     /// When a page request is too large, the server may decide to
     /// further limit the number of returned resources.
@@ -3158,13 +3177,13 @@ pub struct ListCampaignDraftAsyncErrorsRequest {
 pub struct ListCampaignDraftAsyncErrorsResponse {
     /// Details of the errors when performing the asynchronous operation.
     #[prost(message, repeated, tag = "1")]
-    pub errors: ::std::vec::Vec<super::super::super::super::rpc::Status>,
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::super::rpc::Status>,
     /// Pagination token used to retrieve the next page of results.
     /// Pass the content of this string as the `page_token` attribute of
     /// the next request. `next_page_token` is not returned for the last
     /// page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_draft_service_client {
@@ -3268,7 +3287,7 @@ pub mod campaign_draft_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignDraftService/ListCampaignDraftAsyncErrors" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignDraftService/ListCampaignDraftAsyncErrors") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -3290,17 +3309,17 @@ pub mod campaign_draft_service_client {
 pub struct GetCampaignExperimentRequest {
     /// Required. The resource name of the campaign experiment to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignExperimentService.MutateCampaignExperiments][google.ads.googleads.v4.services.CampaignExperimentService.MutateCampaignExperiments].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExperimentsRequest {
     /// Required. The ID of the customer whose campaign experiments are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaign experiments.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignExperimentOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignExperimentOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -3317,11 +3336,12 @@ pub struct MutateCampaignExperimentsRequest {
 pub struct CampaignExperimentOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "campaign_experiment_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<campaign_experiment_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_experiment_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignExperimentOperation`.
 pub mod campaign_experiment_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3335,7 +3355,7 @@ pub mod campaign_experiment_operation {
         ///
         /// `customers/{customer_id}/campaignExperiments/{campaign_experiment_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for campaign experiment mutate.
@@ -3346,27 +3366,27 @@ pub struct MutateCampaignExperimentsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignExperimentResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignExperimentResult>,
 }
 /// The result for the campaign experiment mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExperimentResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignExperimentService.CreateCampaignExperiment][google.ads.googleads.v4.services.CampaignExperimentService.CreateCampaignExperiment].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCampaignExperimentRequest {
     /// Required. The ID of the customer whose campaign experiment is being created.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The campaign experiment to be created.
     #[prost(message, optional, tag = "2")]
-    pub campaign_experiment: ::std::option::Option<super::resources::CampaignExperiment>,
+    pub campaign_experiment: ::core::option::Option<super::resources::CampaignExperiment>,
     /// If true, the request is validated but not executed. Only errors are
     /// returned, not results.
     #[prost(bool, tag = "3")]
@@ -3378,18 +3398,18 @@ pub struct CreateCampaignExperimentRequest {
 pub struct CreateCampaignExperimentMetadata {
     /// Resource name of campaign experiment created.
     #[prost(string, tag = "1")]
-    pub campaign_experiment: std::string::String,
+    pub campaign_experiment: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignExperimentService.GraduateCampaignExperiment][google.ads.googleads.v4.services.CampaignExperimentService.GraduateCampaignExperiment].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GraduateCampaignExperimentRequest {
     /// Required. The resource name of the campaign experiment to graduate.
     #[prost(string, tag = "1")]
-    pub campaign_experiment: std::string::String,
+    pub campaign_experiment: ::prost::alloc::string::String,
     /// Required. Resource name of the budget to attach to the campaign graduated from the
     /// experiment.
     #[prost(string, tag = "2")]
-    pub campaign_budget: std::string::String,
+    pub campaign_budget: ::prost::alloc::string::String,
 }
 /// Response message for campaign experiment graduate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3397,21 +3417,21 @@ pub struct GraduateCampaignExperimentResponse {
     /// The resource name of the campaign from the graduated experiment.
     /// This campaign is the same one as CampaignExperiment.experiment_campaign.
     #[prost(string, tag = "1")]
-    pub graduated_campaign: std::string::String,
+    pub graduated_campaign: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignExperimentService.PromoteCampaignExperiment][google.ads.googleads.v4.services.CampaignExperimentService.PromoteCampaignExperiment].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromoteCampaignExperimentRequest {
     /// Required. The resource name of the campaign experiment to promote.
     #[prost(string, tag = "1")]
-    pub campaign_experiment: std::string::String,
+    pub campaign_experiment: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignExperimentService.EndCampaignExperiment][google.ads.googleads.v4.services.CampaignExperimentService.EndCampaignExperiment].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndCampaignExperimentRequest {
     /// Required. The resource name of the campaign experiment to end.
     #[prost(string, tag = "1")]
-    pub campaign_experiment: std::string::String,
+    pub campaign_experiment: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v4.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors].
@@ -3420,13 +3440,13 @@ pub struct ListCampaignExperimentAsyncErrorsRequest {
     /// Required. The name of the campaign experiment from which to retrieve the async
     /// errors.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// Token of the page to retrieve. If not specified, the first
     /// page of results will be returned. Use the value obtained from
     /// `next_page_token` in the previous response in order to request
     /// the next page of results.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Number of elements to retrieve in a single page.
     /// When a page request is too large, the server may decide to
     /// further limit the number of returned resources.
@@ -3439,13 +3459,13 @@ pub struct ListCampaignExperimentAsyncErrorsRequest {
 pub struct ListCampaignExperimentAsyncErrorsResponse {
     /// Details of the errors when performing the asynchronous operation.
     #[prost(message, repeated, tag = "1")]
-    pub errors: ::std::vec::Vec<super::super::super::super::rpc::Status>,
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::super::rpc::Status>,
     /// Pagination token used to retrieve the next page of results.
     /// Pass the content of this string as the `page_token` attribute of
     /// the next request. `next_page_token` is not returned for the last
     /// page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_experiment_service_client {
@@ -3521,7 +3541,7 @@ pub mod campaign_experiment_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignExperimentService/CreateCampaignExperiment" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignExperimentService/CreateCampaignExperiment") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates campaign experiments. Operation statuses are returned."]
@@ -3537,7 +3557,7 @@ pub mod campaign_experiment_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignExperimentService/MutateCampaignExperiments" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignExperimentService/MutateCampaignExperiments") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Graduates a campaign experiment to a full campaign. The base and experiment"]
@@ -3554,7 +3574,7 @@ pub mod campaign_experiment_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignExperimentService/GraduateCampaignExperiment" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignExperimentService/GraduateCampaignExperiment") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Promotes the changes in a experiment campaign back to the base campaign."]
@@ -3577,7 +3597,7 @@ pub mod campaign_experiment_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignExperimentService/PromoteCampaignExperiment" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignExperimentService/PromoteCampaignExperiment") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Immediately ends a campaign experiment, changing the experiment's scheduled"]
@@ -3614,7 +3634,7 @@ pub mod campaign_experiment_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignExperimentService/ListCampaignExperimentAsyncErrors" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignExperimentService/ListCampaignExperimentAsyncErrors") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -3637,7 +3657,7 @@ pub mod campaign_experiment_service_client {
 pub struct GetCampaignExtensionSettingRequest {
     /// Required. The resource name of the campaign extension setting to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CampaignExtensionSettingService.MutateCampaignExtensionSettings][google.ads.googleads.v4.services.CampaignExtensionSettingService.MutateCampaignExtensionSettings].
@@ -3646,11 +3666,11 @@ pub struct MutateCampaignExtensionSettingsRequest {
     /// Required. The ID of the customer whose campaign extension settings are being
     /// modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaign extension
     /// settings.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignExtensionSettingOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignExtensionSettingOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -3667,14 +3687,15 @@ pub struct MutateCampaignExtensionSettingsRequest {
 pub struct CampaignExtensionSettingOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(
         oneof = "campaign_extension_setting_operation::Operation",
         tags = "1, 2, 3"
     )]
-    pub operation: ::std::option::Option<campaign_extension_setting_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_extension_setting_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignExtensionSettingOperation`.
 pub mod campaign_extension_setting_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3692,7 +3713,7 @@ pub mod campaign_extension_setting_operation {
         ///
         /// `customers/{customer_id}/campaignExtensionSettings/{campaign_id}~{extension_type}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a campaign extension setting mutate.
@@ -3703,17 +3724,17 @@ pub struct MutateCampaignExtensionSettingsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignExtensionSettingResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignExtensionSettingResult>,
 }
 /// The result for the campaign extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExtensionSettingResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_extension_setting_service_client {
@@ -3751,7 +3772,7 @@ pub mod campaign_extension_setting_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignExtensionSettingService/GetCampaignExtensionSetting" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignExtensionSettingService/GetCampaignExtensionSetting") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes campaign extension settings. Operation"]
@@ -3768,7 +3789,7 @@ pub mod campaign_extension_setting_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignExtensionSettingService/MutateCampaignExtensionSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignExtensionSettingService/MutateCampaignExtensionSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -3790,17 +3811,17 @@ pub mod campaign_extension_setting_service_client {
 pub struct GetCampaignFeedRequest {
     /// Required. The resource name of the campaign feed to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignFeedService.MutateCampaignFeeds][google.ads.googleads.v4.services.CampaignFeedService.MutateCampaignFeeds].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignFeedsRequest {
     /// Required. The ID of the customer whose campaign feeds are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaign feeds.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignFeedOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignFeedOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -3817,11 +3838,12 @@ pub struct MutateCampaignFeedsRequest {
 pub struct CampaignFeedOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "campaign_feed_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<campaign_feed_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_feed_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignFeedOperation`.
 pub mod campaign_feed_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3838,7 +3860,7 @@ pub mod campaign_feed_operation {
         ///
         /// `customers/{customer_id}/campaignFeeds/{campaign_id}~{feed_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a campaign feed mutate.
@@ -3849,17 +3871,17 @@ pub struct MutateCampaignFeedsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignFeedResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignFeedResult>,
 }
 /// The result for the campaign feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignFeedResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_feed_service_client {
@@ -3938,17 +3960,17 @@ pub mod campaign_feed_service_client {
 pub struct GetCampaignLabelRequest {
     /// Required. The resource name of the campaign-label relationship to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignLabelService.MutateCampaignLabels][google.ads.googleads.v4.services.CampaignLabelService.MutateCampaignLabels].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignLabelsRequest {
     /// Required. ID of the customer whose campaign-label relationships are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on campaign-label relationships.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignLabelOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignLabelOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -3965,8 +3987,9 @@ pub struct MutateCampaignLabelsRequest {
 pub struct CampaignLabelOperation {
     /// The mutate operation.
     #[prost(oneof = "campaign_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<campaign_label_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_label_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignLabelOperation`.
 pub mod campaign_label_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3980,7 +4003,7 @@ pub mod campaign_label_operation {
         ///
         /// `customers/{customer_id}/campaignLabels/{campaign_id}~{label_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a campaign labels mutate.
@@ -3991,17 +4014,17 @@ pub struct MutateCampaignLabelsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignLabelResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignLabelResult>,
 }
 /// The result for a campaign label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignLabelResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_label_service_client {
@@ -4081,17 +4104,17 @@ pub mod campaign_label_service_client {
 pub struct GetCampaignRequest {
     /// Required. The resource name of the campaign to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignService.MutateCampaigns][google.ads.googleads.v4.services.CampaignService.MutateCampaigns].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignsRequest {
     /// Required. The ID of the customer whose campaigns are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaigns.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -4108,11 +4131,12 @@ pub struct MutateCampaignsRequest {
 pub struct CampaignOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "campaign_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<campaign_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignOperation`.
 pub mod campaign_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4129,7 +4153,7 @@ pub mod campaign_operation {
         ///
         /// `customers/{customer_id}/campaigns/{campaign_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for campaign mutate.
@@ -4140,17 +4164,17 @@ pub struct MutateCampaignsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignResult>,
 }
 /// The result for the campaign mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_service_client {
@@ -4228,17 +4252,17 @@ pub mod campaign_service_client {
 pub struct GetCampaignSharedSetRequest {
     /// Required. The resource name of the campaign shared set to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CampaignSharedSetService.MutateCampaignSharedSets][google.ads.googleads.v4.services.CampaignSharedSetService.MutateCampaignSharedSets].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignSharedSetsRequest {
     /// Required. The ID of the customer whose campaign shared sets are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual campaign shared sets.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CampaignSharedSetOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CampaignSharedSetOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -4255,8 +4279,9 @@ pub struct MutateCampaignSharedSetsRequest {
 pub struct CampaignSharedSetOperation {
     /// The mutate operation.
     #[prost(oneof = "campaign_shared_set_operation::Operation", tags = "1, 3")]
-    pub operation: ::std::option::Option<campaign_shared_set_operation::Operation>,
+    pub operation: ::core::option::Option<campaign_shared_set_operation::Operation>,
 }
+/// Nested message and enum types in `CampaignSharedSetOperation`.
 pub mod campaign_shared_set_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4270,7 +4295,7 @@ pub mod campaign_shared_set_operation {
         ///
         /// `customers/{customer_id}/campaignSharedSets/{campaign_id}~{shared_set_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a campaign shared set mutate.
@@ -4281,17 +4306,17 @@ pub struct MutateCampaignSharedSetsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCampaignSharedSetResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCampaignSharedSetResult>,
 }
 /// The result for the campaign shared set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignSharedSetResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_shared_set_service_client {
@@ -4347,7 +4372,7 @@ pub mod campaign_shared_set_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignSharedSetService/MutateCampaignSharedSets" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignSharedSetService/MutateCampaignSharedSets") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -4369,17 +4394,17 @@ pub mod campaign_shared_set_service_client {
 pub struct GetConversionActionRequest {
     /// Required. The resource name of the conversion action to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [ConversionActionService.MutateConversionActions][google.ads.googleads.v4.services.ConversionActionService.MutateConversionActions].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionActionsRequest {
     /// Required. The ID of the customer whose conversion actions are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual conversion actions.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<ConversionActionOperation>,
+    pub operations: ::prost::alloc::vec::Vec<ConversionActionOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -4396,11 +4421,12 @@ pub struct MutateConversionActionsRequest {
 pub struct ConversionActionOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "conversion_action_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<conversion_action_operation::Operation>,
+    pub operation: ::core::option::Option<conversion_action_operation::Operation>,
 }
+/// Nested message and enum types in `ConversionActionOperation`.
 pub mod conversion_action_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4418,7 +4444,7 @@ pub mod conversion_action_operation {
         ///
         /// `customers/{customer_id}/conversionActions/{conversion_action_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for [ConversionActionService.MutateConversionActions][google.ads.googleads.v4.services.ConversionActionService.MutateConversionActions].
@@ -4429,17 +4455,17 @@ pub struct MutateConversionActionsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateConversionActionResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateConversionActionResult>,
 }
 /// The result for the conversion action mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionActionResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod conversion_action_service_client {
@@ -4521,7 +4547,7 @@ pub mod conversion_action_service_client {
 pub struct GetCustomerExtensionSettingRequest {
     /// Required. The resource name of the customer extension setting to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CustomerExtensionSettingService.MutateCustomerExtensionSettings][google.ads.googleads.v4.services.CustomerExtensionSettingService.MutateCustomerExtensionSettings].
@@ -4530,11 +4556,11 @@ pub struct MutateCustomerExtensionSettingsRequest {
     /// Required. The ID of the customer whose customer extension settings are being
     /// modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual customer extension
     /// settings.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CustomerExtensionSettingOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CustomerExtensionSettingOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -4551,14 +4577,15 @@ pub struct MutateCustomerExtensionSettingsRequest {
 pub struct CustomerExtensionSettingOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(
         oneof = "customer_extension_setting_operation::Operation",
         tags = "1, 2, 3"
     )]
-    pub operation: ::std::option::Option<customer_extension_setting_operation::Operation>,
+    pub operation: ::core::option::Option<customer_extension_setting_operation::Operation>,
 }
+/// Nested message and enum types in `CustomerExtensionSettingOperation`.
 pub mod customer_extension_setting_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4576,7 +4603,7 @@ pub mod customer_extension_setting_operation {
         ///
         /// `customers/{customer_id}/customerExtensionSettings/{extension_type}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a customer extension setting mutate.
@@ -4587,17 +4614,17 @@ pub struct MutateCustomerExtensionSettingsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCustomerExtensionSettingResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCustomerExtensionSettingResult>,
 }
 /// The result for the customer extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerExtensionSettingResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_extension_setting_service_client {
@@ -4635,7 +4662,7 @@ pub mod customer_extension_setting_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CustomerExtensionSettingService/GetCustomerExtensionSetting" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CustomerExtensionSettingService/GetCustomerExtensionSetting") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes customer extension settings. Operation"]
@@ -4652,7 +4679,7 @@ pub mod customer_extension_setting_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CustomerExtensionSettingService/MutateCustomerExtensionSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CustomerExtensionSettingService/MutateCustomerExtensionSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -4674,17 +4701,17 @@ pub mod customer_extension_setting_service_client {
 pub struct GetCustomerFeedRequest {
     /// Required. The resource name of the customer feed to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CustomerFeedService.MutateCustomerFeeds][google.ads.googleads.v4.services.CustomerFeedService.MutateCustomerFeeds].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerFeedsRequest {
     /// Required. The ID of the customer whose customer feeds are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual customer feeds.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CustomerFeedOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CustomerFeedOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -4701,11 +4728,12 @@ pub struct MutateCustomerFeedsRequest {
 pub struct CustomerFeedOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "customer_feed_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<customer_feed_operation::Operation>,
+    pub operation: ::core::option::Option<customer_feed_operation::Operation>,
 }
+/// Nested message and enum types in `CustomerFeedOperation`.
 pub mod customer_feed_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4722,7 +4750,7 @@ pub mod customer_feed_operation {
         ///
         /// `customers/{customer_id}/customerFeeds/{feed_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a customer feed mutate.
@@ -4733,17 +4761,17 @@ pub struct MutateCustomerFeedsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCustomerFeedResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCustomerFeedResult>,
 }
 /// The result for the customer feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerFeedResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_feed_service_client {
@@ -4822,17 +4850,17 @@ pub mod customer_feed_service_client {
 pub struct GetCustomerLabelRequest {
     /// Required. The resource name of the customer-label relationship to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CustomerLabelService.MutateCustomerLabels][google.ads.googleads.v4.services.CustomerLabelService.MutateCustomerLabels].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerLabelsRequest {
     /// Required. ID of the customer whose customer-label relationships are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on customer-label relationships.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CustomerLabelOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CustomerLabelOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -4849,8 +4877,9 @@ pub struct MutateCustomerLabelsRequest {
 pub struct CustomerLabelOperation {
     /// The mutate operation.
     #[prost(oneof = "customer_label_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<customer_label_operation::Operation>,
+    pub operation: ::core::option::Option<customer_label_operation::Operation>,
 }
+/// Nested message and enum types in `CustomerLabelOperation`.
 pub mod customer_label_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4864,7 +4893,7 @@ pub mod customer_label_operation {
         ///
         /// `customers/{customer_id}/customerLabels/{label_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a customer labels mutate.
@@ -4875,17 +4904,17 @@ pub struct MutateCustomerLabelsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCustomerLabelResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCustomerLabelResult>,
 }
 /// The result for a customer label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerLabelResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_label_service_client {
@@ -4966,7 +4995,7 @@ pub mod customer_label_service_client {
 pub struct GetCustomerNegativeCriterionRequest {
     /// Required. The resource name of the criterion to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [CustomerNegativeCriterionService.MutateCustomerNegativeCriteria][google.ads.googleads.v4.services.CustomerNegativeCriterionService.MutateCustomerNegativeCriteria].
@@ -4974,10 +5003,10 @@ pub struct GetCustomerNegativeCriterionRequest {
 pub struct MutateCustomerNegativeCriteriaRequest {
     /// Required. The ID of the customer whose criteria are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual criteria.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CustomerNegativeCriterionOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CustomerNegativeCriterionOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -4997,8 +5026,9 @@ pub struct CustomerNegativeCriterionOperation {
         oneof = "customer_negative_criterion_operation::Operation",
         tags = "1, 2"
     )]
-    pub operation: ::std::option::Option<customer_negative_criterion_operation::Operation>,
+    pub operation: ::core::option::Option<customer_negative_criterion_operation::Operation>,
 }
+/// Nested message and enum types in `CustomerNegativeCriterionOperation`.
 pub mod customer_negative_criterion_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5011,7 +5041,7 @@ pub mod customer_negative_criterion_operation {
         ///
         /// `customers/{customer_id}/customerNegativeCriteria/{criterion_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for customer negative criterion mutate.
@@ -5022,17 +5052,17 @@ pub struct MutateCustomerNegativeCriteriaResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCustomerNegativeCriteriaResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCustomerNegativeCriteriaResult>,
 }
 /// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerNegativeCriteriaResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_negative_criterion_service_client {
@@ -5072,7 +5102,7 @@ pub mod customer_negative_criterion_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CustomerNegativeCriterionService/GetCustomerNegativeCriterion" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CustomerNegativeCriterionService/GetCustomerNegativeCriterion") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates or removes criteria. Operation statuses are returned."]
@@ -5088,7 +5118,7 @@ pub mod customer_negative_criterion_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CustomerNegativeCriterionService/MutateCustomerNegativeCriteria" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CustomerNegativeCriterionService/MutateCustomerNegativeCriteria") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -5110,17 +5140,17 @@ pub mod customer_negative_criterion_service_client {
 pub struct GetCustomerRequest {
     /// Required. The resource name of the customer to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CustomerService.MutateCustomer][google.ads.googleads.v4.services.CustomerService.MutateCustomer].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerRequest {
     /// Required. The ID of the customer being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The operation to perform on the customer
     #[prost(message, optional, tag = "4")]
-    pub operation: ::std::option::Option<CustomerOperation>,
+    pub operation: ::core::option::Option<CustomerOperation>,
     /// If true, the request is validated but not executed. Only errors are
     /// returned, not results.
     #[prost(bool, tag = "5")]
@@ -5131,15 +5161,15 @@ pub struct MutateCustomerRequest {
 pub struct CreateCustomerClientRequest {
     /// Required. The ID of the Manager under whom client customer is being created.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The new client customer to create. The resource name on this customer
     /// will be ignored.
     #[prost(message, optional, tag = "2")]
-    pub customer_client: ::std::option::Option<super::resources::Customer>,
+    pub customer_client: ::core::option::Option<super::resources::Customer>,
     /// Email address of the user who should be invited on the created client
     /// customer. Accessible only to customers on the allow-list.
     #[prost(message, optional, tag = "3")]
-    pub email_address: ::std::option::Option<::std::string::String>,
+    pub email_address: ::core::option::Option<::prost::alloc::string::String>,
     /// The proposed role of user on the created client customer.
     /// Accessible only to customers on the allow-list.
     #[prost(enumeration = "super::enums::access_role_enum::AccessRole", tag = "4")]
@@ -5150,35 +5180,35 @@ pub struct CreateCustomerClientRequest {
 pub struct CustomerOperation {
     /// Mutate operation. Only updates are supported for customer.
     #[prost(message, optional, tag = "1")]
-    pub update: ::std::option::Option<super::resources::Customer>,
+    pub update: ::core::option::Option<super::resources::Customer>,
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for CreateCustomerClient mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomerClientResponse {
     /// The resource name of the newly created customer client.
     #[prost(string, tag = "2")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// Link for inviting user to access the created customer. Accessible to
     /// allowlisted customers only.
     #[prost(string, tag = "3")]
-    pub invitation_link: std::string::String,
+    pub invitation_link: ::prost::alloc::string::String,
 }
 /// Response message for customer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerResponse {
     /// Result for the mutate.
     #[prost(message, optional, tag = "2")]
-    pub result: ::std::option::Option<MutateCustomerResult>,
+    pub result: ::core::option::Option<MutateCustomerResult>,
 }
 /// The result for the customer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CustomerService.ListAccessibleCustomers][google.ads.googleads.v4.services.CustomerService.ListAccessibleCustomers].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5189,7 +5219,7 @@ pub struct ListAccessibleCustomersResponse {
     /// Resource name of customers directly accessible by the
     /// user authenticating the call.
     #[prost(string, repeated, tag = "1")]
-    pub resource_names: ::std::vec::Vec<std::string::String>,
+    pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_service_client {
@@ -5303,7 +5333,7 @@ pub mod customer_service_client {
 pub struct GetExtensionFeedItemRequest {
     /// Required. The resource name of the extension feed item to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [ExtensionFeedItemService.MutateExtensionFeedItems][google.ads.googleads.v4.services.ExtensionFeedItemService.MutateExtensionFeedItems].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5311,10 +5341,10 @@ pub struct MutateExtensionFeedItemsRequest {
     /// Required. The ID of the customer whose extension feed items are being
     /// modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual extension feed items.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<ExtensionFeedItemOperation>,
+    pub operations: ::prost::alloc::vec::Vec<ExtensionFeedItemOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -5331,11 +5361,12 @@ pub struct MutateExtensionFeedItemsRequest {
 pub struct ExtensionFeedItemOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "extension_feed_item_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<extension_feed_item_operation::Operation>,
+    pub operation: ::core::option::Option<extension_feed_item_operation::Operation>,
 }
+/// Nested message and enum types in `ExtensionFeedItemOperation`.
 pub mod extension_feed_item_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5353,7 +5384,7 @@ pub mod extension_feed_item_operation {
         ///
         /// `customers/{customer_id}/extensionFeedItems/{feed_item_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an extension feed item mutate.
@@ -5364,17 +5395,17 @@ pub struct MutateExtensionFeedItemsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateExtensionFeedItemResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateExtensionFeedItemResult>,
 }
 /// The result for the extension feed item mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateExtensionFeedItemResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod extension_feed_item_service_client {
@@ -5431,7 +5462,7 @@ pub mod extension_feed_item_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.ExtensionFeedItemService/MutateExtensionFeedItems" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.ExtensionFeedItemService/MutateExtensionFeedItems") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -5453,17 +5484,17 @@ pub mod extension_feed_item_service_client {
 pub struct GetFeedItemRequest {
     /// Required. The resource name of the feed item to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [FeedItemService.MutateFeedItems][google.ads.googleads.v4.services.FeedItemService.MutateFeedItems].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemsRequest {
     /// Required. The ID of the customer whose feed items are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual feed items.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<FeedItemOperation>,
+    pub operations: ::prost::alloc::vec::Vec<FeedItemOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -5480,11 +5511,12 @@ pub struct MutateFeedItemsRequest {
 pub struct FeedItemOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "feed_item_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<feed_item_operation::Operation>,
+    pub operation: ::core::option::Option<feed_item_operation::Operation>,
 }
+/// Nested message and enum types in `FeedItemOperation`.
 pub mod feed_item_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5501,7 +5533,7 @@ pub mod feed_item_operation {
         ///
         /// `customers/{customer_id}/feedItems/{feed_id}~{feed_item_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an feed item mutate.
@@ -5512,17 +5544,17 @@ pub struct MutateFeedItemsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateFeedItemResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateFeedItemResult>,
 }
 /// The result for the feed item mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod feed_item_service_client {
@@ -5601,25 +5633,26 @@ pub mod feed_item_service_client {
 pub struct GetFeedItemTargetRequest {
     /// Required. The resource name of the feed item targets to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [FeedItemTargetService.MutateFeedItemTargets][google.ads.googleads.v4.services.FeedItemTargetService.MutateFeedItemTargets].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemTargetsRequest {
     /// Required. The ID of the customer whose feed item targets are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual feed item targets.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<FeedItemTargetOperation>,
+    pub operations: ::prost::alloc::vec::Vec<FeedItemTargetOperation>,
 }
 /// A single operation (create, remove) on an feed item target.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemTargetOperation {
     /// The mutate operation.
     #[prost(oneof = "feed_item_target_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<feed_item_target_operation::Operation>,
+    pub operation: ::core::option::Option<feed_item_target_operation::Operation>,
 }
+/// Nested message and enum types in `FeedItemTargetOperation`.
 pub mod feed_item_target_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5633,7 +5666,7 @@ pub mod feed_item_target_operation {
         ///
         /// `customers/{customer_id}/feedItemTargets/{feed_id}~{feed_item_id}~{feed_item_target_type}~{feed_item_target_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an feed item target mutate.
@@ -5641,14 +5674,14 @@ pub mod feed_item_target_operation {
 pub struct MutateFeedItemTargetsResponse {
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateFeedItemTargetResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateFeedItemTargetResult>,
 }
 /// The result for the feed item target mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemTargetResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod feed_item_target_service_client {
@@ -5727,17 +5760,17 @@ pub mod feed_item_target_service_client {
 pub struct GetFeedMappingRequest {
     /// Required. The resource name of the feed mapping to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [FeedMappingService.MutateFeedMappings][google.ads.googleads.v4.services.FeedMappingService.MutateFeedMappings].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedMappingsRequest {
     /// Required. The ID of the customer whose feed mappings are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual feed mappings.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<FeedMappingOperation>,
+    pub operations: ::prost::alloc::vec::Vec<FeedMappingOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -5754,8 +5787,9 @@ pub struct MutateFeedMappingsRequest {
 pub struct FeedMappingOperation {
     /// The mutate operation.
     #[prost(oneof = "feed_mapping_operation::Operation", tags = "1, 3")]
-    pub operation: ::std::option::Option<feed_mapping_operation::Operation>,
+    pub operation: ::core::option::Option<feed_mapping_operation::Operation>,
 }
+/// Nested message and enum types in `FeedMappingOperation`.
 pub mod feed_mapping_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5768,7 +5802,7 @@ pub mod feed_mapping_operation {
         ///
         /// `customers/{customer_id}/feedMappings/{feed_id}~{feed_mapping_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a feed mapping mutate.
@@ -5779,17 +5813,17 @@ pub struct MutateFeedMappingsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateFeedMappingResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateFeedMappingResult>,
 }
 /// The result for the feed mapping mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedMappingResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod feed_mapping_service_client {
@@ -5868,17 +5902,17 @@ pub mod feed_mapping_service_client {
 pub struct GetFeedRequest {
     /// Required. The resource name of the feed to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [FeedService.MutateFeeds][google.ads.googleads.v4.services.FeedService.MutateFeeds].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedsRequest {
     /// Required. The ID of the customer whose feeds are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual feeds.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<FeedOperation>,
+    pub operations: ::prost::alloc::vec::Vec<FeedOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -5895,11 +5929,12 @@ pub struct MutateFeedsRequest {
 pub struct FeedOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "feed_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<feed_operation::Operation>,
+    pub operation: ::core::option::Option<feed_operation::Operation>,
 }
+/// Nested message and enum types in `FeedOperation`.
 pub mod feed_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5916,7 +5951,7 @@ pub mod feed_operation {
         ///
         /// `customers/{customer_id}/feeds/{feed_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for an feed mutate.
@@ -5927,17 +5962,17 @@ pub struct MutateFeedsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateFeedResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateFeedResult>,
 }
 /// The result for the feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod feed_service_client {
@@ -6017,7 +6052,7 @@ pub mod feed_service_client {
 pub struct GetKeywordPlanAdGroupKeywordRequest {
     /// Required. The resource name of the ad group keyword to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords][google.ads.googleads.v4.services.KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords].
@@ -6026,11 +6061,11 @@ pub struct MutateKeywordPlanAdGroupKeywordsRequest {
     /// Required. The ID of the customer whose Keyword Plan ad group keywords are being
     /// modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual Keyword Plan ad group
     /// keywords.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<KeywordPlanAdGroupKeywordOperation>,
+    pub operations: ::prost::alloc::vec::Vec<KeywordPlanAdGroupKeywordOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -6049,14 +6084,15 @@ pub struct KeywordPlanAdGroupKeywordOperation {
     /// The FieldMask that determines which resource fields are modified in an
     /// update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(
         oneof = "keyword_plan_ad_group_keyword_operation::Operation",
         tags = "1, 2, 3"
     )]
-    pub operation: ::std::option::Option<keyword_plan_ad_group_keyword_operation::Operation>,
+    pub operation: ::core::option::Option<keyword_plan_ad_group_keyword_operation::Operation>,
 }
+/// Nested message and enum types in `KeywordPlanAdGroupKeywordOperation`.
 pub mod keyword_plan_ad_group_keyword_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -6074,7 +6110,7 @@ pub mod keyword_plan_ad_group_keyword_operation {
         ///
         /// `customers/{customer_id}/keywordPlanAdGroupKeywords/{kp_ad_group_keyword_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a Keyword Plan ad group keyword mutate.
@@ -6085,17 +6121,17 @@ pub struct MutateKeywordPlanAdGroupKeywordsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateKeywordPlanAdGroupKeywordResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanAdGroupKeywordResult>,
 }
 /// The result for the Keyword Plan ad group keyword mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupKeywordResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod keyword_plan_ad_group_keyword_service_client {
@@ -6139,7 +6175,7 @@ pub mod keyword_plan_ad_group_keyword_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.KeywordPlanAdGroupKeywordService/GetKeywordPlanAdGroupKeyword" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.KeywordPlanAdGroupKeywordService/GetKeywordPlanAdGroupKeyword") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes Keyword Plan ad group keywords. Operation"]
@@ -6156,7 +6192,7 @@ pub mod keyword_plan_ad_group_keyword_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.KeywordPlanAdGroupKeywordService/MutateKeywordPlanAdGroupKeywords" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.KeywordPlanAdGroupKeywordService/MutateKeywordPlanAdGroupKeywords") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -6178,17 +6214,17 @@ pub mod keyword_plan_ad_group_keyword_service_client {
 pub struct GetKeywordPlanAdGroupRequest {
     /// Required. The resource name of the Keyword Plan ad group to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [KeywordPlanAdGroupService.MutateKeywordPlanAdGroups][google.ads.googleads.v4.services.KeywordPlanAdGroupService.MutateKeywordPlanAdGroups].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupsRequest {
     /// Required. The ID of the customer whose Keyword Plan ad groups are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual Keyword Plan ad groups.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<KeywordPlanAdGroupOperation>,
+    pub operations: ::prost::alloc::vec::Vec<KeywordPlanAdGroupOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -6206,11 +6242,12 @@ pub struct KeywordPlanAdGroupOperation {
     /// The FieldMask that determines which resource fields are modified in an
     /// update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "keyword_plan_ad_group_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<keyword_plan_ad_group_operation::Operation>,
+    pub operation: ::core::option::Option<keyword_plan_ad_group_operation::Operation>,
 }
+/// Nested message and enum types in `KeywordPlanAdGroupOperation`.
 pub mod keyword_plan_ad_group_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -6228,7 +6265,7 @@ pub mod keyword_plan_ad_group_operation {
         ///
         /// `customers/{customer_id}/keywordPlanAdGroups/{kp_ad_group_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a Keyword Plan ad group mutate.
@@ -6239,18 +6276,18 @@ pub struct MutateKeywordPlanAdGroupsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate. The order of the results is determined by the
     /// order of the keywords in the original request.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateKeywordPlanAdGroupResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanAdGroupResult>,
 }
 /// The result for the Keyword Plan ad group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod keyword_plan_ad_group_service_client {
@@ -6307,7 +6344,7 @@ pub mod keyword_plan_ad_group_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.KeywordPlanAdGroupService/MutateKeywordPlanAdGroups" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.KeywordPlanAdGroupService/MutateKeywordPlanAdGroups") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -6330,7 +6367,7 @@ pub mod keyword_plan_ad_group_service_client {
 pub struct GetKeywordPlanCampaignKeywordRequest {
     /// Required. The resource name of the plan to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords][google.ads.googleads.v4.services.KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords].
@@ -6338,11 +6375,11 @@ pub struct GetKeywordPlanCampaignKeywordRequest {
 pub struct MutateKeywordPlanCampaignKeywordsRequest {
     /// Required. The ID of the customer whose campaign keywords are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual Keyword Plan campaign
     /// keywords.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<KeywordPlanCampaignKeywordOperation>,
+    pub operations: ::prost::alloc::vec::Vec<KeywordPlanCampaignKeywordOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -6361,14 +6398,15 @@ pub struct KeywordPlanCampaignKeywordOperation {
     /// The FieldMask that determines which resource fields are modified in an
     /// update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(
         oneof = "keyword_plan_campaign_keyword_operation::Operation",
         tags = "1, 2, 3"
     )]
-    pub operation: ::std::option::Option<keyword_plan_campaign_keyword_operation::Operation>,
+    pub operation: ::core::option::Option<keyword_plan_campaign_keyword_operation::Operation>,
 }
+/// Nested message and enum types in `KeywordPlanCampaignKeywordOperation`.
 pub mod keyword_plan_campaign_keyword_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -6386,7 +6424,7 @@ pub mod keyword_plan_campaign_keyword_operation {
         ///
         /// `customers/{customer_id}/keywordPlanCampaignKeywords/{kp_campaign_keyword_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a Keyword Plan campaign keyword mutate.
@@ -6397,17 +6435,17 @@ pub struct MutateKeywordPlanCampaignKeywordsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateKeywordPlanCampaignKeywordResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanCampaignKeywordResult>,
 }
 /// The result for the Keyword Plan campaign keyword mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignKeywordResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod keyword_plan_campaign_keyword_service_client {
@@ -6450,7 +6488,7 @@ pub mod keyword_plan_campaign_keyword_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.KeywordPlanCampaignKeywordService/GetKeywordPlanCampaignKeyword" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.KeywordPlanCampaignKeywordService/GetKeywordPlanCampaignKeyword") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes Keyword Plan campaign keywords. Operation"]
@@ -6467,7 +6505,7 @@ pub mod keyword_plan_campaign_keyword_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.KeywordPlanCampaignKeywordService/MutateKeywordPlanCampaignKeywords" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.KeywordPlanCampaignKeywordService/MutateKeywordPlanCampaignKeywords") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -6489,7 +6527,7 @@ pub mod keyword_plan_campaign_keyword_service_client {
 pub struct GetKeywordPlanCampaignRequest {
     /// Required. The resource name of the Keyword Plan campaign to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [KeywordPlanCampaignService.MutateKeywordPlanCampaigns][google.ads.googleads.v4.services.KeywordPlanCampaignService.MutateKeywordPlanCampaigns].
@@ -6497,10 +6535,10 @@ pub struct GetKeywordPlanCampaignRequest {
 pub struct MutateKeywordPlanCampaignsRequest {
     /// Required. The ID of the customer whose Keyword Plan campaigns are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual Keyword Plan campaigns.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<KeywordPlanCampaignOperation>,
+    pub operations: ::prost::alloc::vec::Vec<KeywordPlanCampaignOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -6518,11 +6556,12 @@ pub struct KeywordPlanCampaignOperation {
     /// The FieldMask that determines which resource fields are modified in an
     /// update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "keyword_plan_campaign_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<keyword_plan_campaign_operation::Operation>,
+    pub operation: ::core::option::Option<keyword_plan_campaign_operation::Operation>,
 }
+/// Nested message and enum types in `KeywordPlanCampaignOperation`.
 pub mod keyword_plan_campaign_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -6540,7 +6579,7 @@ pub mod keyword_plan_campaign_operation {
         ///
         /// `customers/{customer_id}/keywordPlanCampaigns/{keywordPlan_campaign_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a Keyword Plan campaign mutate.
@@ -6551,17 +6590,17 @@ pub struct MutateKeywordPlanCampaignsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateKeywordPlanCampaignResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanCampaignResult>,
 }
 /// The result for the Keyword Plan campaign mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod keyword_plan_campaign_service_client {
@@ -6599,7 +6638,7 @@ pub mod keyword_plan_campaign_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.KeywordPlanCampaignService/GetKeywordPlanCampaign" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.KeywordPlanCampaignService/GetKeywordPlanCampaign") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates, updates, or removes Keyword Plan campaigns. Operation statuses are"]
@@ -6616,7 +6655,7 @@ pub mod keyword_plan_campaign_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.KeywordPlanCampaignService/MutateKeywordPlanCampaigns" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.KeywordPlanCampaignService/MutateKeywordPlanCampaigns") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -6638,17 +6677,17 @@ pub mod keyword_plan_campaign_service_client {
 pub struct GetKeywordPlanRequest {
     /// Required. The resource name of the plan to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [KeywordPlanService.MutateKeywordPlans][google.ads.googleads.v4.services.KeywordPlanService.MutateKeywordPlans].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlansRequest {
     /// Required. The ID of the customer whose keyword plans are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual keyword plans.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<KeywordPlanOperation>,
+    pub operations: ::prost::alloc::vec::Vec<KeywordPlanOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -6666,11 +6705,12 @@ pub struct KeywordPlanOperation {
     /// The FieldMask that determines which resource fields are modified in an
     /// update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "keyword_plan_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<keyword_plan_operation::Operation>,
+    pub operation: ::core::option::Option<keyword_plan_operation::Operation>,
 }
+/// Nested message and enum types in `KeywordPlanOperation`.
 pub mod keyword_plan_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -6687,7 +6727,7 @@ pub mod keyword_plan_operation {
         ///
         /// `customers/{customer_id}/keywordPlans/{keyword_plan_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a keyword plan mutate.
@@ -6698,24 +6738,24 @@ pub struct MutateKeywordPlansResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateKeywordPlansResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateKeywordPlansResult>,
 }
 /// The result for the keyword plan mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlansResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v4.services.KeywordPlanService.GenerateForecastCurve].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastCurveRequest {
     /// Required. The resource name of the keyword plan to be forecasted.
     #[prost(string, tag = "1")]
-    pub keyword_plan: std::string::String,
+    pub keyword_plan: ::prost::alloc::string::String,
 }
 /// Response message for [KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v4.services.KeywordPlanService.GenerateForecastCurve].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6723,14 +6763,14 @@ pub struct GenerateForecastCurveResponse {
     /// List of forecast curves for the keyword plan campaign.
     /// One maximum.
     #[prost(message, repeated, tag = "1")]
-    pub campaign_forecast_curves: ::std::vec::Vec<KeywordPlanCampaignForecastCurve>,
+    pub campaign_forecast_curves: ::prost::alloc::vec::Vec<KeywordPlanCampaignForecastCurve>,
 }
 /// Request message for [KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v4.services.KeywordPlanService.GenerateForecastMetrics].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastMetricsRequest {
     /// Required. The resource name of the keyword plan to be forecasted.
     #[prost(string, tag = "1")]
-    pub keyword_plan: std::string::String,
+    pub keyword_plan: ::prost::alloc::string::String,
 }
 /// Response message for [KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v4.services.KeywordPlanService.GenerateForecastMetrics].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6738,13 +6778,13 @@ pub struct GenerateForecastMetricsResponse {
     /// List of campaign forecasts.
     /// One maximum.
     #[prost(message, repeated, tag = "1")]
-    pub campaign_forecasts: ::std::vec::Vec<KeywordPlanCampaignForecast>,
+    pub campaign_forecasts: ::prost::alloc::vec::Vec<KeywordPlanCampaignForecast>,
     /// List of ad group forecasts.
     #[prost(message, repeated, tag = "2")]
-    pub ad_group_forecasts: ::std::vec::Vec<KeywordPlanAdGroupForecast>,
+    pub ad_group_forecasts: ::prost::alloc::vec::Vec<KeywordPlanAdGroupForecast>,
     /// List of keyword forecasts.
     #[prost(message, repeated, tag = "3")]
-    pub keyword_forecasts: ::std::vec::Vec<KeywordPlanKeywordForecast>,
+    pub keyword_forecasts: ::prost::alloc::vec::Vec<KeywordPlanKeywordForecast>,
 }
 /// A campaign forecast.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6753,10 +6793,10 @@ pub struct KeywordPlanCampaignForecast {
     ///
     /// `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
     #[prost(message, optional, tag = "1")]
-    pub keyword_plan_campaign: ::std::option::Option<::std::string::String>,
+    pub keyword_plan_campaign: ::core::option::Option<::prost::alloc::string::String>,
     /// The forecast for the Keyword Plan campaign.
     #[prost(message, optional, tag = "2")]
-    pub campaign_forecast: ::std::option::Option<ForecastMetrics>,
+    pub campaign_forecast: ::core::option::Option<ForecastMetrics>,
 }
 /// An ad group forecast.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6765,10 +6805,10 @@ pub struct KeywordPlanAdGroupForecast {
     ///
     /// `customers/{customer_id}/keywordPlanAdGroups/{keyword_plan_ad_group_id}`
     #[prost(message, optional, tag = "1")]
-    pub keyword_plan_ad_group: ::std::option::Option<::std::string::String>,
+    pub keyword_plan_ad_group: ::core::option::Option<::prost::alloc::string::String>,
     /// The forecast for the Keyword Plan ad group.
     #[prost(message, optional, tag = "2")]
-    pub ad_group_forecast: ::std::option::Option<ForecastMetrics>,
+    pub ad_group_forecast: ::core::option::Option<ForecastMetrics>,
 }
 /// A keyword forecast.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6777,10 +6817,10 @@ pub struct KeywordPlanKeywordForecast {
     ///
     /// `customers/{customer_id}/keywordPlanAdGroupKeywords/{keyword_plan_ad_group_keyword_id}`
     #[prost(message, optional, tag = "1")]
-    pub keyword_plan_ad_group_keyword: ::std::option::Option<::std::string::String>,
+    pub keyword_plan_ad_group_keyword: ::core::option::Option<::prost::alloc::string::String>,
     /// The forecast for the Keyword Plan keyword.
     #[prost(message, optional, tag = "2")]
-    pub keyword_forecast: ::std::option::Option<ForecastMetrics>,
+    pub keyword_forecast: ::core::option::Option<ForecastMetrics>,
 }
 /// The forecast curve for the campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6789,46 +6829,46 @@ pub struct KeywordPlanCampaignForecastCurve {
     ///
     /// `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
     #[prost(message, optional, tag = "1")]
-    pub keyword_plan_campaign: ::std::option::Option<::std::string::String>,
+    pub keyword_plan_campaign: ::core::option::Option<::prost::alloc::string::String>,
     /// The max cpc bid forecast curve for the campaign.
     #[prost(message, optional, tag = "2")]
-    pub max_cpc_bid_forecast_curve: ::std::option::Option<KeywordPlanMaxCpcBidForecastCurve>,
+    pub max_cpc_bid_forecast_curve: ::core::option::Option<KeywordPlanMaxCpcBidForecastCurve>,
 }
 /// The max cpc bid forecast curve.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanMaxCpcBidForecastCurve {
     /// The forecasts for the Keyword Plan campaign at different max CPC bids.
     #[prost(message, repeated, tag = "1")]
-    pub max_cpc_bid_forecasts: ::std::vec::Vec<KeywordPlanMaxCpcBidForecast>,
+    pub max_cpc_bid_forecasts: ::prost::alloc::vec::Vec<KeywordPlanMaxCpcBidForecast>,
 }
 /// The forecast of the campaign at a specific bid.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanMaxCpcBidForecast {
     /// The max cpc bid in micros.
     #[prost(message, optional, tag = "1")]
-    pub max_cpc_bid_micros: ::std::option::Option<i64>,
+    pub max_cpc_bid_micros: ::core::option::Option<i64>,
     /// The forecast for the Keyword Plan campaign at the specific bid.
     #[prost(message, optional, tag = "2")]
-    pub max_cpc_bid_forecast: ::std::option::Option<ForecastMetrics>,
+    pub max_cpc_bid_forecast: ::core::option::Option<ForecastMetrics>,
 }
 /// Forecast metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForecastMetrics {
     /// Impressions
     #[prost(message, optional, tag = "1")]
-    pub impressions: ::std::option::Option<f64>,
+    pub impressions: ::core::option::Option<f64>,
     /// Ctr
     #[prost(message, optional, tag = "2")]
-    pub ctr: ::std::option::Option<f64>,
+    pub ctr: ::core::option::Option<f64>,
     /// AVG cpc
     #[prost(message, optional, tag = "3")]
-    pub average_cpc: ::std::option::Option<i64>,
+    pub average_cpc: ::core::option::Option<i64>,
     /// Clicks
     #[prost(message, optional, tag = "5")]
-    pub clicks: ::std::option::Option<f64>,
+    pub clicks: ::core::option::Option<f64>,
     /// Cost
     #[prost(message, optional, tag = "6")]
-    pub cost_micros: ::std::option::Option<i64>,
+    pub cost_micros: ::core::option::Option<i64>,
 }
 /// Request message for [KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v4.services.KeywordPlanService.GenerateHistoricalMetrics].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6836,14 +6876,14 @@ pub struct GenerateHistoricalMetricsRequest {
     /// Required. The resource name of the keyword plan of which historical metrics are
     /// requested.
     #[prost(string, tag = "1")]
-    pub keyword_plan: std::string::String,
+    pub keyword_plan: ::prost::alloc::string::String,
 }
 /// Response message for [KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v4.services.KeywordPlanService.GenerateHistoricalMetrics].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateHistoricalMetricsResponse {
     /// List of keyword historical metrics.
     #[prost(message, repeated, tag = "1")]
-    pub metrics: ::std::vec::Vec<KeywordPlanKeywordHistoricalMetrics>,
+    pub metrics: ::prost::alloc::vec::Vec<KeywordPlanKeywordHistoricalMetrics>,
 }
 /// A keyword historical metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6858,11 +6898,11 @@ pub struct KeywordPlanKeywordHistoricalMetrics {
     /// Starting V5, the list of de-duped queries will be included in
     /// close_variants field.
     #[prost(message, optional, tag = "1")]
-    pub search_query: ::std::option::Option<::std::string::String>,
+    pub search_query: ::core::option::Option<::prost::alloc::string::String>,
     /// The historical metrics for the query associated with one or more
     /// ad_group_keywords in the plan.
     #[prost(message, optional, tag = "2")]
-    pub keyword_metrics: ::std::option::Option<super::common::KeywordPlanHistoricalMetrics>,
+    pub keyword_metrics: ::core::option::Option<super::common::KeywordPlanHistoricalMetrics>,
 }
 #[doc = r" Generated client implementations."]
 pub mod keyword_plan_service_client {
@@ -6999,17 +7039,17 @@ pub mod keyword_plan_service_client {
 pub struct GetLabelRequest {
     /// Required. The resource name of the label to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [LabelService.MutateLabels][google.ads.googleads.v4.services.LabelService.MutateLabels].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateLabelsRequest {
     /// Required. ID of the customer whose labels are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on labels.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<LabelOperation>,
+    pub operations: ::prost::alloc::vec::Vec<LabelOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -7026,11 +7066,12 @@ pub struct MutateLabelsRequest {
 pub struct LabelOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "label_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<label_operation::Operation>,
+    pub operation: ::core::option::Option<label_operation::Operation>,
 }
+/// Nested message and enum types in `LabelOperation`.
 pub mod label_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7046,7 +7087,7 @@ pub mod label_operation {
         ///
         /// `customers/{customer_id}/labels/{label_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a labels mutate.
@@ -7057,17 +7098,17 @@ pub struct MutateLabelsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateLabelResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateLabelResult>,
 }
 /// The result for a label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateLabelResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod label_service_client {
@@ -7145,17 +7186,17 @@ pub mod label_service_client {
 pub struct GetMediaFileRequest {
     /// Required. The resource name of the media file to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [MediaFileService.MutateMediaFiles][google.ads.googleads.v4.services.MediaFileService.MutateMediaFiles]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMediaFilesRequest {
     /// Required. The ID of the customer whose media files are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual media file.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<MediaFileOperation>,
+    pub operations: ::prost::alloc::vec::Vec<MediaFileOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -7172,8 +7213,9 @@ pub struct MutateMediaFilesRequest {
 pub struct MediaFileOperation {
     /// The mutate operation.
     #[prost(oneof = "media_file_operation::Operation", tags = "1")]
-    pub operation: ::std::option::Option<media_file_operation::Operation>,
+    pub operation: ::core::option::Option<media_file_operation::Operation>,
 }
+/// Nested message and enum types in `MediaFileOperation`.
 pub mod media_file_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7191,17 +7233,17 @@ pub struct MutateMediaFilesResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateMediaFileResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateMediaFileResult>,
 }
 /// The result for the media file mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMediaFileResult {
     /// The resource name returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod media_file_service_client {
@@ -7279,17 +7321,17 @@ pub mod media_file_service_client {
 pub struct GetRemarketingActionRequest {
     /// Required. The resource name of the remarketing action to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [RemarketingActionService.MutateRemarketingActions][google.ads.googleads.v4.services.RemarketingActionService.MutateRemarketingActions].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRemarketingActionsRequest {
     /// Required. The ID of the customer whose remarketing actions are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual remarketing actions.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<RemarketingActionOperation>,
+    pub operations: ::prost::alloc::vec::Vec<RemarketingActionOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -7306,11 +7348,12 @@ pub struct MutateRemarketingActionsRequest {
 pub struct RemarketingActionOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "remarketing_action_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<remarketing_action_operation::Operation>,
+    pub operation: ::core::option::Option<remarketing_action_operation::Operation>,
 }
+/// Nested message and enum types in `RemarketingActionOperation`.
 pub mod remarketing_action_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7333,17 +7376,17 @@ pub struct MutateRemarketingActionsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateRemarketingActionResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateRemarketingActionResult>,
 }
 /// The result for the remarketing action mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRemarketingActionResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod remarketing_action_service_client {
@@ -7399,7 +7442,7 @@ pub mod remarketing_action_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.RemarketingActionService/MutateRemarketingActions" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.RemarketingActionService/MutateRemarketingActions") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -7421,17 +7464,17 @@ pub mod remarketing_action_service_client {
 pub struct GetSharedCriterionRequest {
     /// Required. The resource name of the shared criterion to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [SharedCriterionService.MutateSharedCriteria][google.ads.googleads.v4.services.SharedCriterionService.MutateSharedCriteria].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedCriteriaRequest {
     /// Required. The ID of the customer whose shared criteria are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual shared criteria.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<SharedCriterionOperation>,
+    pub operations: ::prost::alloc::vec::Vec<SharedCriterionOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -7448,8 +7491,9 @@ pub struct MutateSharedCriteriaRequest {
 pub struct SharedCriterionOperation {
     /// The mutate operation.
     #[prost(oneof = "shared_criterion_operation::Operation", tags = "1, 3")]
-    pub operation: ::std::option::Option<shared_criterion_operation::Operation>,
+    pub operation: ::core::option::Option<shared_criterion_operation::Operation>,
 }
+/// Nested message and enum types in `SharedCriterionOperation`.
 pub mod shared_criterion_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7463,7 +7507,7 @@ pub mod shared_criterion_operation {
         ///
         /// `customers/{customer_id}/sharedCriteria/{shared_set_id}~{criterion_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a shared criterion mutate.
@@ -7474,17 +7518,17 @@ pub struct MutateSharedCriteriaResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateSharedCriterionResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateSharedCriterionResult>,
 }
 /// The result for the shared criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedCriterionResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod shared_criterion_service_client {
@@ -7563,17 +7607,17 @@ pub mod shared_criterion_service_client {
 pub struct GetSharedSetRequest {
     /// Required. The resource name of the shared set to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [SharedSetService.MutateSharedSets][google.ads.googleads.v4.services.SharedSetService.MutateSharedSets].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedSetsRequest {
     /// Required. The ID of the customer whose shared sets are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual shared sets.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<SharedSetOperation>,
+    pub operations: ::prost::alloc::vec::Vec<SharedSetOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -7590,11 +7634,12 @@ pub struct MutateSharedSetsRequest {
 pub struct SharedSetOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "shared_set_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<shared_set_operation::Operation>,
+    pub operation: ::core::option::Option<shared_set_operation::Operation>,
 }
+/// Nested message and enum types in `SharedSetOperation`.
 pub mod shared_set_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7611,7 +7656,7 @@ pub mod shared_set_operation {
         ///
         /// `customers/{customer_id}/sharedSets/{shared_set_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a shared set mutate.
@@ -7622,17 +7667,17 @@ pub struct MutateSharedSetsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateSharedSetResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateSharedSetResult>,
 }
 /// The result for the shared set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedSetResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod shared_set_service_client {
@@ -7710,17 +7755,17 @@ pub mod shared_set_service_client {
 pub struct GetUserListRequest {
     /// Required. The resource name of the user list to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [UserListService.MutateUserLists][google.ads.googleads.v4.services.UserListService.MutateUserLists].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateUserListsRequest {
     /// Required. The ID of the customer whose user lists are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual user lists.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<UserListOperation>,
+    pub operations: ::prost::alloc::vec::Vec<UserListOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -7737,11 +7782,12 @@ pub struct MutateUserListsRequest {
 pub struct UserListOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "user_list_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<user_list_operation::Operation>,
+    pub operation: ::core::option::Option<user_list_operation::Operation>,
 }
+/// Nested message and enum types in `UserListOperation`.
 pub mod user_list_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7758,7 +7804,7 @@ pub mod user_list_operation {
         ///
         /// `customers/{customer_id}/userLists/{user_list_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for user list mutate.
@@ -7769,17 +7815,17 @@ pub struct MutateUserListsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateUserListResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateUserListResult>,
 }
 /// The result for the user list mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateUserListResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod user_list_service_client {
@@ -7857,16 +7903,16 @@ pub mod user_list_service_client {
 pub struct SearchGoogleAdsRequest {
     /// Required. The ID of the customer being queried.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The query string.
     #[prost(string, tag = "2")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// Token of the page to retrieve. If not specified, the first
     /// page of results will be returned. Use the value obtained from
     /// `next_page_token` in the previous response in order to request
     /// the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Number of elements to retrieve in a single page.
     /// When too large a page is requested, the server may decide to
     /// further limit the number of returned resources.
@@ -7894,35 +7940,35 @@ pub struct SearchGoogleAdsRequest {
 pub struct SearchGoogleAdsResponse {
     /// The list of rows that matched the query.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<GoogleAdsRow>,
+    pub results: ::prost::alloc::vec::Vec<GoogleAdsRow>,
     /// Pagination token used to retrieve the next page of results.
     /// Pass the content of this string as the `page_token` attribute of
     /// the next request. `next_page_token` is not returned for the last
     /// page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Total number of results that match the query ignoring the LIMIT
     /// clause.
     #[prost(int64, tag = "3")]
     pub total_results_count: i64,
     /// FieldMask that represents what fields were requested by the user.
     #[prost(message, optional, tag = "5")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Summary row that contains summary of metrics in results.
     /// Summary of metrics means aggregation of metrics across all results,
     /// here aggregation could be sum, average, rate, etc.
     #[prost(message, optional, tag = "6")]
-    pub summary_row: ::std::option::Option<GoogleAdsRow>,
+    pub summary_row: ::core::option::Option<GoogleAdsRow>,
 }
 /// Request message for [GoogleAdsService.SearchStream][google.ads.googleads.v4.services.GoogleAdsService.SearchStream].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsStreamRequest {
     /// Required. The ID of the customer being queried.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The query string.
     #[prost(string, tag = "2")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// Determines whether a summary row will be returned. By default, summary row
     /// is not returned. If requested, the summary row will be sent in a response
     /// by itself after all other query results are returned.
@@ -7937,353 +7983,354 @@ pub struct SearchGoogleAdsStreamRequest {
 pub struct SearchGoogleAdsStreamResponse {
     /// The list of rows that matched the query.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<GoogleAdsRow>,
+    pub results: ::prost::alloc::vec::Vec<GoogleAdsRow>,
     /// FieldMask that represents what fields were requested by the user.
     #[prost(message, optional, tag = "2")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Summary row that contains summary of metrics in results.
     /// Summary of metrics means aggregation of metrics across all results,
     /// here aggregation could be sum, average, rate, etc.
     #[prost(message, optional, tag = "3")]
-    pub summary_row: ::std::option::Option<GoogleAdsRow>,
+    pub summary_row: ::core::option::Option<GoogleAdsRow>,
 }
 /// A returned row from the query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsRow {
     /// The account budget in the query.
     #[prost(message, optional, tag = "42")]
-    pub account_budget: ::std::option::Option<super::resources::AccountBudget>,
+    pub account_budget: ::core::option::Option<super::resources::AccountBudget>,
     /// The account budget proposal referenced in the query.
     #[prost(message, optional, tag = "43")]
-    pub account_budget_proposal: ::std::option::Option<super::resources::AccountBudgetProposal>,
+    pub account_budget_proposal: ::core::option::Option<super::resources::AccountBudgetProposal>,
     /// The AccountLink referenced in the query.
     #[prost(message, optional, tag = "143")]
-    pub account_link: ::std::option::Option<super::resources::AccountLink>,
+    pub account_link: ::core::option::Option<super::resources::AccountLink>,
     /// The ad group referenced in the query.
     #[prost(message, optional, tag = "3")]
-    pub ad_group: ::std::option::Option<super::resources::AdGroup>,
+    pub ad_group: ::core::option::Option<super::resources::AdGroup>,
     /// The ad referenced in the query.
     #[prost(message, optional, tag = "16")]
-    pub ad_group_ad: ::std::option::Option<super::resources::AdGroupAd>,
+    pub ad_group_ad: ::core::option::Option<super::resources::AdGroupAd>,
     /// The ad group ad asset view in the query.
     #[prost(message, optional, tag = "131")]
-    pub ad_group_ad_asset_view: ::std::option::Option<super::resources::AdGroupAdAssetView>,
+    pub ad_group_ad_asset_view: ::core::option::Option<super::resources::AdGroupAdAssetView>,
     /// The ad group ad label referenced in the query.
     #[prost(message, optional, tag = "120")]
-    pub ad_group_ad_label: ::std::option::Option<super::resources::AdGroupAdLabel>,
+    pub ad_group_ad_label: ::core::option::Option<super::resources::AdGroupAdLabel>,
     /// The ad group audience view referenced in the query.
     #[prost(message, optional, tag = "57")]
-    pub ad_group_audience_view: ::std::option::Option<super::resources::AdGroupAudienceView>,
+    pub ad_group_audience_view: ::core::option::Option<super::resources::AdGroupAudienceView>,
     /// The bid modifier referenced in the query.
     #[prost(message, optional, tag = "24")]
-    pub ad_group_bid_modifier: ::std::option::Option<super::resources::AdGroupBidModifier>,
+    pub ad_group_bid_modifier: ::core::option::Option<super::resources::AdGroupBidModifier>,
     /// The criterion referenced in the query.
     #[prost(message, optional, tag = "17")]
-    pub ad_group_criterion: ::std::option::Option<super::resources::AdGroupCriterion>,
+    pub ad_group_criterion: ::core::option::Option<super::resources::AdGroupCriterion>,
     /// The ad group criterion label referenced in the query.
     #[prost(message, optional, tag = "121")]
-    pub ad_group_criterion_label: ::std::option::Option<super::resources::AdGroupCriterionLabel>,
+    pub ad_group_criterion_label: ::core::option::Option<super::resources::AdGroupCriterionLabel>,
     /// The ad group criterion simulation referenced in the query.
     #[prost(message, optional, tag = "110")]
     pub ad_group_criterion_simulation:
-        ::std::option::Option<super::resources::AdGroupCriterionSimulation>,
+        ::core::option::Option<super::resources::AdGroupCriterionSimulation>,
     /// The ad group extension setting referenced in the query.
     #[prost(message, optional, tag = "112")]
     pub ad_group_extension_setting:
-        ::std::option::Option<super::resources::AdGroupExtensionSetting>,
+        ::core::option::Option<super::resources::AdGroupExtensionSetting>,
     /// The ad group feed referenced in the query.
     #[prost(message, optional, tag = "67")]
-    pub ad_group_feed: ::std::option::Option<super::resources::AdGroupFeed>,
+    pub ad_group_feed: ::core::option::Option<super::resources::AdGroupFeed>,
     /// The ad group label referenced in the query.
     #[prost(message, optional, tag = "115")]
-    pub ad_group_label: ::std::option::Option<super::resources::AdGroupLabel>,
+    pub ad_group_label: ::core::option::Option<super::resources::AdGroupLabel>,
     /// The ad group simulation referenced in the query.
     #[prost(message, optional, tag = "107")]
-    pub ad_group_simulation: ::std::option::Option<super::resources::AdGroupSimulation>,
+    pub ad_group_simulation: ::core::option::Option<super::resources::AdGroupSimulation>,
     /// The ad parameter referenced in the query.
     #[prost(message, optional, tag = "130")]
-    pub ad_parameter: ::std::option::Option<super::resources::AdParameter>,
+    pub ad_parameter: ::core::option::Option<super::resources::AdParameter>,
     /// The age range view referenced in the query.
     #[prost(message, optional, tag = "48")]
-    pub age_range_view: ::std::option::Option<super::resources::AgeRangeView>,
+    pub age_range_view: ::core::option::Option<super::resources::AgeRangeView>,
     /// The ad schedule view referenced in the query.
     #[prost(message, optional, tag = "89")]
-    pub ad_schedule_view: ::std::option::Option<super::resources::AdScheduleView>,
+    pub ad_schedule_view: ::core::option::Option<super::resources::AdScheduleView>,
     /// The domain category referenced in the query.
     #[prost(message, optional, tag = "91")]
-    pub domain_category: ::std::option::Option<super::resources::DomainCategory>,
+    pub domain_category: ::core::option::Option<super::resources::DomainCategory>,
     /// The asset referenced in the query.
     #[prost(message, optional, tag = "105")]
-    pub asset: ::std::option::Option<super::resources::Asset>,
+    pub asset: ::core::option::Option<super::resources::Asset>,
     /// The batch job referenced in the query.
     #[prost(message, optional, tag = "139")]
-    pub batch_job: ::std::option::Option<super::resources::BatchJob>,
+    pub batch_job: ::core::option::Option<super::resources::BatchJob>,
     /// The bidding strategy referenced in the query.
     #[prost(message, optional, tag = "18")]
-    pub bidding_strategy: ::std::option::Option<super::resources::BiddingStrategy>,
+    pub bidding_strategy: ::core::option::Option<super::resources::BiddingStrategy>,
     /// The billing setup referenced in the query.
     #[prost(message, optional, tag = "41")]
-    pub billing_setup: ::std::option::Option<super::resources::BillingSetup>,
+    pub billing_setup: ::core::option::Option<super::resources::BillingSetup>,
     /// The campaign budget referenced in the query.
     #[prost(message, optional, tag = "19")]
-    pub campaign_budget: ::std::option::Option<super::resources::CampaignBudget>,
+    pub campaign_budget: ::core::option::Option<super::resources::CampaignBudget>,
     /// The campaign referenced in the query.
     #[prost(message, optional, tag = "2")]
-    pub campaign: ::std::option::Option<super::resources::Campaign>,
+    pub campaign: ::core::option::Option<super::resources::Campaign>,
     /// The campaign audience view referenced in the query.
     #[prost(message, optional, tag = "69")]
-    pub campaign_audience_view: ::std::option::Option<super::resources::CampaignAudienceView>,
+    pub campaign_audience_view: ::core::option::Option<super::resources::CampaignAudienceView>,
     /// The campaign bid modifier referenced in the query.
     #[prost(message, optional, tag = "26")]
-    pub campaign_bid_modifier: ::std::option::Option<super::resources::CampaignBidModifier>,
+    pub campaign_bid_modifier: ::core::option::Option<super::resources::CampaignBidModifier>,
     /// The campaign criterion referenced in the query.
     #[prost(message, optional, tag = "20")]
-    pub campaign_criterion: ::std::option::Option<super::resources::CampaignCriterion>,
+    pub campaign_criterion: ::core::option::Option<super::resources::CampaignCriterion>,
     /// The campaign criterion simulation referenced in the query.
     #[prost(message, optional, tag = "111")]
     pub campaign_criterion_simulation:
-        ::std::option::Option<super::resources::CampaignCriterionSimulation>,
+        ::core::option::Option<super::resources::CampaignCriterionSimulation>,
     /// The campaign draft referenced in the query.
     #[prost(message, optional, tag = "49")]
-    pub campaign_draft: ::std::option::Option<super::resources::CampaignDraft>,
+    pub campaign_draft: ::core::option::Option<super::resources::CampaignDraft>,
     /// The campaign experiment referenced in the query.
     #[prost(message, optional, tag = "84")]
-    pub campaign_experiment: ::std::option::Option<super::resources::CampaignExperiment>,
+    pub campaign_experiment: ::core::option::Option<super::resources::CampaignExperiment>,
     /// The campaign extension setting referenced in the query.
     #[prost(message, optional, tag = "113")]
     pub campaign_extension_setting:
-        ::std::option::Option<super::resources::CampaignExtensionSetting>,
+        ::core::option::Option<super::resources::CampaignExtensionSetting>,
     /// The campaign feed referenced in the query.
     #[prost(message, optional, tag = "63")]
-    pub campaign_feed: ::std::option::Option<super::resources::CampaignFeed>,
+    pub campaign_feed: ::core::option::Option<super::resources::CampaignFeed>,
     /// The campaign label referenced in the query.
     #[prost(message, optional, tag = "108")]
-    pub campaign_label: ::std::option::Option<super::resources::CampaignLabel>,
+    pub campaign_label: ::core::option::Option<super::resources::CampaignLabel>,
     /// Campaign Shared Set referenced in AWQL query.
     #[prost(message, optional, tag = "30")]
-    pub campaign_shared_set: ::std::option::Option<super::resources::CampaignSharedSet>,
+    pub campaign_shared_set: ::core::option::Option<super::resources::CampaignSharedSet>,
     /// The carrier constant referenced in the query.
     #[prost(message, optional, tag = "66")]
-    pub carrier_constant: ::std::option::Option<super::resources::CarrierConstant>,
+    pub carrier_constant: ::core::option::Option<super::resources::CarrierConstant>,
     /// The ChangeStatus referenced in the query.
     #[prost(message, optional, tag = "37")]
-    pub change_status: ::std::option::Option<super::resources::ChangeStatus>,
+    pub change_status: ::core::option::Option<super::resources::ChangeStatus>,
     /// The conversion action referenced in the query.
     #[prost(message, optional, tag = "103")]
-    pub conversion_action: ::std::option::Option<super::resources::ConversionAction>,
+    pub conversion_action: ::core::option::Option<super::resources::ConversionAction>,
     /// The ClickView referenced in the query.
     #[prost(message, optional, tag = "122")]
-    pub click_view: ::std::option::Option<super::resources::ClickView>,
+    pub click_view: ::core::option::Option<super::resources::ClickView>,
     /// The currency constant referenced in the query.
     #[prost(message, optional, tag = "134")]
-    pub currency_constant: ::std::option::Option<super::resources::CurrencyConstant>,
+    pub currency_constant: ::core::option::Option<super::resources::CurrencyConstant>,
     /// The CustomInterest referenced in the query.
     #[prost(message, optional, tag = "104")]
-    pub custom_interest: ::std::option::Option<super::resources::CustomInterest>,
+    pub custom_interest: ::core::option::Option<super::resources::CustomInterest>,
     /// The customer referenced in the query.
     #[prost(message, optional, tag = "1")]
-    pub customer: ::std::option::Option<super::resources::Customer>,
+    pub customer: ::core::option::Option<super::resources::Customer>,
     /// The CustomerManagerLink referenced in the query.
     #[prost(message, optional, tag = "61")]
-    pub customer_manager_link: ::std::option::Option<super::resources::CustomerManagerLink>,
+    pub customer_manager_link: ::core::option::Option<super::resources::CustomerManagerLink>,
     /// The CustomerClientLink referenced in the query.
     #[prost(message, optional, tag = "62")]
-    pub customer_client_link: ::std::option::Option<super::resources::CustomerClientLink>,
+    pub customer_client_link: ::core::option::Option<super::resources::CustomerClientLink>,
     /// The CustomerClient referenced in the query.
     #[prost(message, optional, tag = "70")]
-    pub customer_client: ::std::option::Option<super::resources::CustomerClient>,
+    pub customer_client: ::core::option::Option<super::resources::CustomerClient>,
     /// The customer extension setting referenced in the query.
     #[prost(message, optional, tag = "114")]
     pub customer_extension_setting:
-        ::std::option::Option<super::resources::CustomerExtensionSetting>,
+        ::core::option::Option<super::resources::CustomerExtensionSetting>,
     /// The customer feed referenced in the query.
     #[prost(message, optional, tag = "64")]
-    pub customer_feed: ::std::option::Option<super::resources::CustomerFeed>,
+    pub customer_feed: ::core::option::Option<super::resources::CustomerFeed>,
     /// The customer label referenced in the query.
     #[prost(message, optional, tag = "124")]
-    pub customer_label: ::std::option::Option<super::resources::CustomerLabel>,
+    pub customer_label: ::core::option::Option<super::resources::CustomerLabel>,
     /// The customer negative criterion referenced in the query.
     #[prost(message, optional, tag = "88")]
     pub customer_negative_criterion:
-        ::std::option::Option<super::resources::CustomerNegativeCriterion>,
+        ::core::option::Option<super::resources::CustomerNegativeCriterion>,
     /// The detail placement view referenced in the query.
     #[prost(message, optional, tag = "118")]
-    pub detail_placement_view: ::std::option::Option<super::resources::DetailPlacementView>,
+    pub detail_placement_view: ::core::option::Option<super::resources::DetailPlacementView>,
     /// The display keyword view referenced in the query.
     #[prost(message, optional, tag = "47")]
-    pub display_keyword_view: ::std::option::Option<super::resources::DisplayKeywordView>,
+    pub display_keyword_view: ::core::option::Option<super::resources::DisplayKeywordView>,
     /// The distance view referenced in the query.
     #[prost(message, optional, tag = "132")]
-    pub distance_view: ::std::option::Option<super::resources::DistanceView>,
+    pub distance_view: ::core::option::Option<super::resources::DistanceView>,
     /// The dynamic search ads search term view referenced in the query.
     #[prost(message, optional, tag = "106")]
     pub dynamic_search_ads_search_term_view:
-        ::std::option::Option<super::resources::DynamicSearchAdsSearchTermView>,
+        ::core::option::Option<super::resources::DynamicSearchAdsSearchTermView>,
     /// The expanded landing page view referenced in the query.
     #[prost(message, optional, tag = "128")]
     pub expanded_landing_page_view:
-        ::std::option::Option<super::resources::ExpandedLandingPageView>,
+        ::core::option::Option<super::resources::ExpandedLandingPageView>,
     /// The extension feed item referenced in the query.
     #[prost(message, optional, tag = "85")]
-    pub extension_feed_item: ::std::option::Option<super::resources::ExtensionFeedItem>,
+    pub extension_feed_item: ::core::option::Option<super::resources::ExtensionFeedItem>,
     /// The feed referenced in the query.
     #[prost(message, optional, tag = "46")]
-    pub feed: ::std::option::Option<super::resources::Feed>,
+    pub feed: ::core::option::Option<super::resources::Feed>,
     /// The feed item referenced in the query.
     #[prost(message, optional, tag = "50")]
-    pub feed_item: ::std::option::Option<super::resources::FeedItem>,
+    pub feed_item: ::core::option::Option<super::resources::FeedItem>,
     /// The feed item target referenced in the query.
     #[prost(message, optional, tag = "116")]
-    pub feed_item_target: ::std::option::Option<super::resources::FeedItemTarget>,
+    pub feed_item_target: ::core::option::Option<super::resources::FeedItemTarget>,
     /// The feed mapping referenced in the query.
     #[prost(message, optional, tag = "58")]
-    pub feed_mapping: ::std::option::Option<super::resources::FeedMapping>,
+    pub feed_mapping: ::core::option::Option<super::resources::FeedMapping>,
     /// The feed placeholder view referenced in the query.
     #[prost(message, optional, tag = "97")]
-    pub feed_placeholder_view: ::std::option::Option<super::resources::FeedPlaceholderView>,
+    pub feed_placeholder_view: ::core::option::Option<super::resources::FeedPlaceholderView>,
     /// The gender view referenced in the query.
     #[prost(message, optional, tag = "40")]
-    pub gender_view: ::std::option::Option<super::resources::GenderView>,
+    pub gender_view: ::core::option::Option<super::resources::GenderView>,
     /// The geo target constant referenced in the query.
     #[prost(message, optional, tag = "23")]
-    pub geo_target_constant: ::std::option::Option<super::resources::GeoTargetConstant>,
+    pub geo_target_constant: ::core::option::Option<super::resources::GeoTargetConstant>,
     /// The geographic view referenced in the query.
     #[prost(message, optional, tag = "125")]
-    pub geographic_view: ::std::option::Option<super::resources::GeographicView>,
+    pub geographic_view: ::core::option::Option<super::resources::GeographicView>,
     /// The group placement view referenced in the query.
     #[prost(message, optional, tag = "119")]
-    pub group_placement_view: ::std::option::Option<super::resources::GroupPlacementView>,
+    pub group_placement_view: ::core::option::Option<super::resources::GroupPlacementView>,
     /// The hotel group view referenced in the query.
     #[prost(message, optional, tag = "51")]
-    pub hotel_group_view: ::std::option::Option<super::resources::HotelGroupView>,
+    pub hotel_group_view: ::core::option::Option<super::resources::HotelGroupView>,
     /// The hotel performance view referenced in the query.
     #[prost(message, optional, tag = "71")]
-    pub hotel_performance_view: ::std::option::Option<super::resources::HotelPerformanceView>,
+    pub hotel_performance_view: ::core::option::Option<super::resources::HotelPerformanceView>,
     /// The income range view referenced in the query.
     #[prost(message, optional, tag = "138")]
-    pub income_range_view: ::std::option::Option<super::resources::IncomeRangeView>,
+    pub income_range_view: ::core::option::Option<super::resources::IncomeRangeView>,
     /// The keyword view referenced in the query.
     #[prost(message, optional, tag = "21")]
-    pub keyword_view: ::std::option::Option<super::resources::KeywordView>,
+    pub keyword_view: ::core::option::Option<super::resources::KeywordView>,
     /// The keyword plan referenced in the query.
     #[prost(message, optional, tag = "32")]
-    pub keyword_plan: ::std::option::Option<super::resources::KeywordPlan>,
+    pub keyword_plan: ::core::option::Option<super::resources::KeywordPlan>,
     /// The keyword plan campaign referenced in the query.
     #[prost(message, optional, tag = "33")]
-    pub keyword_plan_campaign: ::std::option::Option<super::resources::KeywordPlanCampaign>,
+    pub keyword_plan_campaign: ::core::option::Option<super::resources::KeywordPlanCampaign>,
     /// The keyword plan campaign keyword referenced in the query.
     #[prost(message, optional, tag = "140")]
     pub keyword_plan_campaign_keyword:
-        ::std::option::Option<super::resources::KeywordPlanCampaignKeyword>,
+        ::core::option::Option<super::resources::KeywordPlanCampaignKeyword>,
     /// The keyword plan ad group referenced in the query.
     #[prost(message, optional, tag = "35")]
-    pub keyword_plan_ad_group: ::std::option::Option<super::resources::KeywordPlanAdGroup>,
+    pub keyword_plan_ad_group: ::core::option::Option<super::resources::KeywordPlanAdGroup>,
     /// The keyword plan ad group referenced in the query.
     #[prost(message, optional, tag = "141")]
     pub keyword_plan_ad_group_keyword:
-        ::std::option::Option<super::resources::KeywordPlanAdGroupKeyword>,
+        ::core::option::Option<super::resources::KeywordPlanAdGroupKeyword>,
     /// The label referenced in the query.
     #[prost(message, optional, tag = "52")]
-    pub label: ::std::option::Option<super::resources::Label>,
+    pub label: ::core::option::Option<super::resources::Label>,
     /// The landing page view referenced in the query.
     #[prost(message, optional, tag = "126")]
-    pub landing_page_view: ::std::option::Option<super::resources::LandingPageView>,
+    pub landing_page_view: ::core::option::Option<super::resources::LandingPageView>,
     /// The language constant referenced in the query.
     #[prost(message, optional, tag = "55")]
-    pub language_constant: ::std::option::Option<super::resources::LanguageConstant>,
+    pub language_constant: ::core::option::Option<super::resources::LanguageConstant>,
     /// The location view referenced in the query.
     #[prost(message, optional, tag = "123")]
-    pub location_view: ::std::option::Option<super::resources::LocationView>,
+    pub location_view: ::core::option::Option<super::resources::LocationView>,
     /// The managed placement view referenced in the query.
     #[prost(message, optional, tag = "53")]
-    pub managed_placement_view: ::std::option::Option<super::resources::ManagedPlacementView>,
+    pub managed_placement_view: ::core::option::Option<super::resources::ManagedPlacementView>,
     /// The media file referenced in the query.
     #[prost(message, optional, tag = "90")]
-    pub media_file: ::std::option::Option<super::resources::MediaFile>,
+    pub media_file: ::core::option::Option<super::resources::MediaFile>,
     /// The mobile app category constant referenced in the query.
     #[prost(message, optional, tag = "87")]
     pub mobile_app_category_constant:
-        ::std::option::Option<super::resources::MobileAppCategoryConstant>,
+        ::core::option::Option<super::resources::MobileAppCategoryConstant>,
     /// The mobile device constant referenced in the query.
     #[prost(message, optional, tag = "98")]
-    pub mobile_device_constant: ::std::option::Option<super::resources::MobileDeviceConstant>,
+    pub mobile_device_constant: ::core::option::Option<super::resources::MobileDeviceConstant>,
     /// The offline user data job referenced in the query.
     #[prost(message, optional, tag = "137")]
-    pub offline_user_data_job: ::std::option::Option<super::resources::OfflineUserDataJob>,
+    pub offline_user_data_job: ::core::option::Option<super::resources::OfflineUserDataJob>,
     /// The operating system version constant referenced in the query.
     #[prost(message, optional, tag = "86")]
     pub operating_system_version_constant:
-        ::std::option::Option<super::resources::OperatingSystemVersionConstant>,
+        ::core::option::Option<super::resources::OperatingSystemVersionConstant>,
     /// The paid organic search term view referenced in the query.
     #[prost(message, optional, tag = "129")]
     pub paid_organic_search_term_view:
-        ::std::option::Option<super::resources::PaidOrganicSearchTermView>,
+        ::core::option::Option<super::resources::PaidOrganicSearchTermView>,
     /// The parental status view referenced in the query.
     #[prost(message, optional, tag = "45")]
-    pub parental_status_view: ::std::option::Option<super::resources::ParentalStatusView>,
+    pub parental_status_view: ::core::option::Option<super::resources::ParentalStatusView>,
     /// The Product Bidding Category referenced in the query.
     #[prost(message, optional, tag = "109")]
     pub product_bidding_category_constant:
-        ::std::option::Option<super::resources::ProductBiddingCategoryConstant>,
+        ::core::option::Option<super::resources::ProductBiddingCategoryConstant>,
     /// The product group view referenced in the query.
     #[prost(message, optional, tag = "54")]
-    pub product_group_view: ::std::option::Option<super::resources::ProductGroupView>,
+    pub product_group_view: ::core::option::Option<super::resources::ProductGroupView>,
     /// The recommendation referenced in the query.
     #[prost(message, optional, tag = "22")]
-    pub recommendation: ::std::option::Option<super::resources::Recommendation>,
+    pub recommendation: ::core::option::Option<super::resources::Recommendation>,
     /// The search term view referenced in the query.
     #[prost(message, optional, tag = "68")]
-    pub search_term_view: ::std::option::Option<super::resources::SearchTermView>,
+    pub search_term_view: ::core::option::Option<super::resources::SearchTermView>,
     /// The shared set referenced in the query.
     #[prost(message, optional, tag = "29")]
-    pub shared_criterion: ::std::option::Option<super::resources::SharedCriterion>,
+    pub shared_criterion: ::core::option::Option<super::resources::SharedCriterion>,
     /// The shared set referenced in the query.
     #[prost(message, optional, tag = "27")]
-    pub shared_set: ::std::option::Option<super::resources::SharedSet>,
+    pub shared_set: ::core::option::Option<super::resources::SharedSet>,
     /// The shopping performance view referenced in the query.
     #[prost(message, optional, tag = "117")]
-    pub shopping_performance_view: ::std::option::Option<super::resources::ShoppingPerformanceView>,
+    pub shopping_performance_view:
+        ::core::option::Option<super::resources::ShoppingPerformanceView>,
     /// The AccountLink referenced in the query.
     #[prost(message, optional, tag = "144")]
     pub third_party_app_analytics_link:
-        ::std::option::Option<super::resources::ThirdPartyAppAnalyticsLink>,
+        ::core::option::Option<super::resources::ThirdPartyAppAnalyticsLink>,
     /// The topic view referenced in the query.
     #[prost(message, optional, tag = "44")]
-    pub topic_view: ::std::option::Option<super::resources::TopicView>,
+    pub topic_view: ::core::option::Option<super::resources::TopicView>,
     /// The user interest referenced in the query.
     #[prost(message, optional, tag = "59")]
-    pub user_interest: ::std::option::Option<super::resources::UserInterest>,
+    pub user_interest: ::core::option::Option<super::resources::UserInterest>,
     /// The user list referenced in the query.
     #[prost(message, optional, tag = "38")]
-    pub user_list: ::std::option::Option<super::resources::UserList>,
+    pub user_list: ::core::option::Option<super::resources::UserList>,
     /// The user location view referenced in the query.
     #[prost(message, optional, tag = "135")]
-    pub user_location_view: ::std::option::Option<super::resources::UserLocationView>,
+    pub user_location_view: ::core::option::Option<super::resources::UserLocationView>,
     /// The remarketing action referenced in the query.
     #[prost(message, optional, tag = "60")]
-    pub remarketing_action: ::std::option::Option<super::resources::RemarketingAction>,
+    pub remarketing_action: ::core::option::Option<super::resources::RemarketingAction>,
     /// The topic constant referenced in the query.
     #[prost(message, optional, tag = "31")]
-    pub topic_constant: ::std::option::Option<super::resources::TopicConstant>,
+    pub topic_constant: ::core::option::Option<super::resources::TopicConstant>,
     /// The video referenced in the query.
     #[prost(message, optional, tag = "39")]
-    pub video: ::std::option::Option<super::resources::Video>,
+    pub video: ::core::option::Option<super::resources::Video>,
     /// The metrics.
     #[prost(message, optional, tag = "4")]
-    pub metrics: ::std::option::Option<super::common::Metrics>,
+    pub metrics: ::core::option::Option<super::common::Metrics>,
     /// The segments.
     #[prost(message, optional, tag = "102")]
-    pub segments: ::std::option::Option<super::common::Segments>,
+    pub segments: ::core::option::Option<super::common::Segments>,
 }
 /// Request message for [GoogleAdsService.Mutate][google.ads.googleads.v4.services.GoogleAdsService.Mutate].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateGoogleAdsRequest {
     /// Required. The ID of the customer whose resources are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual resources.
     #[prost(message, repeated, tag = "2")]
-    pub mutate_operations: ::std::vec::Vec<MutateOperation>,
+    pub mutate_operations: ::prost::alloc::vec::Vec<MutateOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -8303,10 +8350,10 @@ pub struct MutateGoogleAdsResponse {
     /// operations. If any errors occur outside the operations (e.g., auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "3")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// All responses for the mutate.
     #[prost(message, repeated, tag = "1")]
-    pub mutate_operation_responses: ::std::vec::Vec<MutateOperationResponse>,
+    pub mutate_operation_responses: ::prost::alloc::vec::Vec<MutateOperationResponse>,
 }
 /// A single operation (create, update, remove) on a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8316,8 +8363,9 @@ pub struct MutateOperation {
         oneof = "mutate_operation::Operation",
         tags = "17, 1, 2, 18, 3, 19, 20, 21, 5, 49, 22, 23, 6, 7, 8, 13, 24, 25, 26, 27, 28, 10, 11, 12, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 44, 50, 51, 45, 48, 41, 42, 43, 14, 15, 16"
     )]
-    pub operation: ::std::option::Option<mutate_operation::Operation>,
+    pub operation: ::core::option::Option<mutate_operation::Operation>,
 }
+/// Nested message and enum types in `MutateOperation`.
 pub mod mutate_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -8467,8 +8515,9 @@ pub struct MutateOperationResponse {
         oneof = "mutate_operation_response::Response",
         tags = "17, 1, 2, 18, 3, 19, 20, 21, 5, 22, 49, 23, 6, 7, 8, 13, 24, 25, 26, 27, 28, 10, 11, 12, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 44, 45, 50, 51, 48, 41, 42, 43, 14, 15, 16"
     )]
-    pub response: ::std::option::Option<mutate_operation_response::Response>,
+    pub response: ::core::option::Option<mutate_operation_response::Response>,
 }
+/// Nested message and enum types in `MutateOperationResponse`.
 pub mod mutate_operation_response {
     /// The mutate response.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -8758,18 +8807,19 @@ pub mod google_ads_service_client {
 pub struct MutateBatchJobRequest {
     /// Required. The ID of the customer for which to create a batch job.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The operation to perform on an individual batch job.
     #[prost(message, optional, tag = "2")]
-    pub operation: ::std::option::Option<BatchJobOperation>,
+    pub operation: ::core::option::Option<BatchJobOperation>,
 }
 /// A single operation on a batch job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchJobOperation {
     /// The mutate operation.
     #[prost(oneof = "batch_job_operation::Operation", tags = "1, 3")]
-    pub operation: ::std::option::Option<batch_job_operation::Operation>,
+    pub operation: ::core::option::Option<batch_job_operation::Operation>,
 }
+/// Nested message and enum types in `BatchJobOperation`.
 pub mod batch_job_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -8782,7 +8832,7 @@ pub mod batch_job_operation {
         ///
         /// `customers/{customer_id}/batchJobs/{batch_job_id}`
         #[prost(string, tag = "3")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for [BatchJobService.MutateBatchJob][google.ads.googleads.v4.services.BatchJobService.MutateBatchJob].
@@ -8790,35 +8840,35 @@ pub mod batch_job_operation {
 pub struct MutateBatchJobResponse {
     /// The result for the mutate.
     #[prost(message, optional, tag = "1")]
-    pub result: ::std::option::Option<MutateBatchJobResult>,
+    pub result: ::core::option::Option<MutateBatchJobResult>,
 }
 /// The result for the batch job mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobResult {
     /// The resource name of the batch job.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [BatchJobService.GetBatchJob][google.ads.googleads.v4.services.BatchJobService.GetBatchJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBatchJobRequest {
     /// Required. The resource name of the batch job to get.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [BatchJobService.RunBatchJob][google.ads.googleads.v4.services.BatchJobService.RunBatchJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunBatchJobRequest {
     /// Required. The resource name of the BatchJob to run.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v4.services.BatchJobService.AddBatchJobOperations].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddBatchJobOperationsRequest {
     /// Required. The resource name of the batch job.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// A token used to enforce sequencing.
     ///
     /// The first AddBatchJobOperations request for a batch job should not set
@@ -8826,7 +8876,7 @@ pub struct AddBatchJobOperationsRequest {
     /// next_sequence_token received in the previous AddBatchJobOperations
     /// response.
     #[prost(string, tag = "2")]
-    pub sequence_token: std::string::String,
+    pub sequence_token: ::prost::alloc::string::String,
     /// Required. The list of mutates being added.
     ///
     /// Operations can use negative integers as temp ids to signify dependencies
@@ -8837,7 +8887,7 @@ pub struct AddBatchJobOperationsRequest {
     /// in the second operation with the campaign field also set to
     /// "customers/1234/campaigns/-1".
     #[prost(message, repeated, tag = "3")]
-    pub mutate_operations: ::std::vec::Vec<MutateOperation>,
+    pub mutate_operations: ::prost::alloc::vec::Vec<MutateOperation>,
 }
 /// Response message for [BatchJobService.AddBatchJobOperations][google.ads.googleads.v4.services.BatchJobService.AddBatchJobOperations].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8849,20 +8899,20 @@ pub struct AddBatchJobOperationsResponse {
     /// more operations need to be added. The next AddBatchJobOperations request
     /// must set the sequence_token field to the value of this field.
     #[prost(string, tag = "2")]
-    pub next_sequence_token: std::string::String,
+    pub next_sequence_token: ::prost::alloc::string::String,
 }
 /// Request message for [BatchJobService.ListBatchJobResults][google.ads.googleads.v4.services.BatchJobService.ListBatchJobResults].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchJobResultsRequest {
     /// Required. The resource name of the batch job whose results are being listed.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// Token of the page to retrieve. If not specified, the first
     /// page of results will be returned. Use the value obtained from
     /// `next_page_token` in the previous response in order to request
     /// the next page of results.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Number of elements to retrieve in a single page.
     /// When a page request is too large, the server may decide to
     /// further limit the number of returned resources.
@@ -8874,13 +8924,13 @@ pub struct ListBatchJobResultsRequest {
 pub struct ListBatchJobResultsResponse {
     /// The list of rows that matched the query.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<BatchJobResult>,
+    pub results: ::prost::alloc::vec::Vec<BatchJobResult>,
     /// Pagination token used to retrieve the next page of results.
     /// Pass the content of this string as the `page_token` attribute of
     /// the next request. `next_page_token` is not returned for the last
     /// page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// An individual batch job result.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8891,10 +8941,10 @@ pub struct BatchJobResult {
     /// Response for the mutate.
     /// May be empty if errors occurred.
     #[prost(message, optional, tag = "2")]
-    pub mutate_operation_response: ::std::option::Option<MutateOperationResponse>,
+    pub mutate_operation_response: ::core::option::Option<MutateOperationResponse>,
     /// Details of the errors when processing the operation.
     #[prost(message, optional, tag = "3")]
-    pub status: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
 #[doc = r" Generated client implementations."]
 pub mod batch_job_service_client {
@@ -9032,17 +9082,17 @@ pub mod batch_job_service_client {
 pub struct GetBillingSetupRequest {
     /// Required. The resource name of the billing setup to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for billing setup mutate operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBillingSetupRequest {
     /// Required. Id of the customer to apply the billing setup mutate operation to.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The operation to perform.
     #[prost(message, optional, tag = "2")]
-    pub operation: ::std::option::Option<BillingSetupOperation>,
+    pub operation: ::core::option::Option<BillingSetupOperation>,
 }
 /// A single operation on a billing setup, which describes the cancellation of an
 /// existing billing setup.
@@ -9051,8 +9101,9 @@ pub struct BillingSetupOperation {
     /// Only one of these operations can be set. "Update" operations are not
     /// supported.
     #[prost(oneof = "billing_setup_operation::Operation", tags = "2, 1")]
-    pub operation: ::std::option::Option<billing_setup_operation::Operation>,
+    pub operation: ::core::option::Option<billing_setup_operation::Operation>,
 }
+/// Nested message and enum types in `BillingSetupOperation`.
 pub mod billing_setup_operation {
     /// Only one of these operations can be set. "Update" operations are not
     /// supported.
@@ -9067,7 +9118,7 @@ pub mod billing_setup_operation {
         /// the future. The resource name looks like
         /// `customers/{customer_id}/billingSetups/{billing_id}`.
         #[prost(string, tag = "1")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for a billing setup operation.
@@ -9075,14 +9126,14 @@ pub mod billing_setup_operation {
 pub struct MutateBillingSetupResponse {
     /// A result that identifies the resource affected by the mutate request.
     #[prost(message, optional, tag = "1")]
-    pub result: ::std::option::Option<MutateBillingSetupResult>,
+    pub result: ::core::option::Option<MutateBillingSetupResult>,
 }
 /// Result for a single billing setup mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBillingSetupResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod billing_setup_service_client {
@@ -9168,7 +9219,7 @@ pub mod billing_setup_service_client {
 pub struct GetCampaignAudienceViewRequest {
     /// Required. The resource name of the campaign audience view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_audience_view_service_client {
@@ -9206,7 +9257,7 @@ pub mod campaign_audience_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignAudienceViewService/GetCampaignAudienceView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignAudienceViewService/GetCampaignAudienceView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -9229,7 +9280,7 @@ pub mod campaign_audience_view_service_client {
 pub struct GetCampaignCriterionSimulationRequest {
     /// Required. The resource name of the campaign criterion simulation to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod campaign_criterion_simulation_service_client {
@@ -9269,7 +9320,7 @@ pub mod campaign_criterion_simulation_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CampaignCriterionSimulationService/GetCampaignCriterionSimulation" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CampaignCriterionSimulationService/GetCampaignCriterionSimulation") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -9291,7 +9342,7 @@ pub mod campaign_criterion_simulation_service_client {
 pub struct GetCarrierConstantRequest {
     /// Required. Resource name of the carrier constant to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod carrier_constant_service_client {
@@ -9353,7 +9404,7 @@ pub mod carrier_constant_service_client {
 pub struct GetChangeStatusRequest {
     /// Required. The resource name of the change status to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod change_status_service_client {
@@ -9414,7 +9465,7 @@ pub mod change_status_service_client {
 pub struct GetClickViewRequest {
     /// Required. The resource name of the click view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod click_view_service_client {
@@ -9476,10 +9527,10 @@ pub mod click_view_service_client {
 pub struct UploadConversionAdjustmentsRequest {
     /// Required. The ID of the customer performing the upload.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The conversion adjustments that are being uploaded.
     #[prost(message, repeated, tag = "2")]
-    pub conversion_adjustments: ::std::vec::Vec<ConversionAdjustment>,
+    pub conversion_adjustments: ::prost::alloc::vec::Vec<ConversionAdjustment>,
     /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried out
     /// in one transaction if and only if they are all valid. This should always be
@@ -9506,12 +9557,12 @@ pub struct UploadConversionAdjustmentsResponse {
     /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
     /// for more information about partial failure.
     #[prost(message, optional, tag = "1")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Returned for successfully processed conversion adjustments. Proto will be
     /// empty for rows that received an error. Results are not returned when
     /// validate_only is true.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<ConversionAdjustmentResult>,
+    pub results: ::prost::alloc::vec::Vec<ConversionAdjustmentResult>,
 }
 /// A conversion adjustment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9521,12 +9572,12 @@ pub struct ConversionAdjustment {
     /// a conversion action id, validation will ignore the customer id and use the
     /// conversion action id as the sole identifier of the conversion action.
     #[prost(message, optional, tag = "3")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
+    pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the adjustment occurred. Must be after the
     /// conversion_date_time. The timezone must be specified. The format is
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "4")]
-    pub adjustment_date_time: ::std::option::Option<::std::string::String>,
+    pub adjustment_date_time: ::core::option::Option<::prost::alloc::string::String>,
     /// The adjustment type.
     #[prost(
         enumeration = "super::enums::conversion_adjustment_type_enum::ConversionAdjustmentType",
@@ -9541,11 +9592,12 @@ pub struct ConversionAdjustment {
     /// Otherwise, it will be treated as a duplicate of the previous restatement
     /// and ignored.
     #[prost(message, optional, tag = "6")]
-    pub restatement_value: ::std::option::Option<RestatementValue>,
+    pub restatement_value: ::core::option::Option<RestatementValue>,
     /// Identifies the conversion to be adjusted.
     #[prost(oneof = "conversion_adjustment::ConversionIdentifier", tags = "1, 2")]
-    pub conversion_identifier: ::std::option::Option<conversion_adjustment::ConversionIdentifier>,
+    pub conversion_identifier: ::core::option::Option<conversion_adjustment::ConversionIdentifier>,
 }
+/// Nested message and enum types in `ConversionAdjustment`.
 pub mod conversion_adjustment {
     /// Identifies the conversion to be adjusted.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -9558,7 +9610,7 @@ pub mod conversion_adjustment {
         /// reported with an order ID specified, that order ID must be used as the
         /// identifier here.
         #[prost(message, tag = "2")]
-        OrderId(::std::string::String),
+        OrderId(::prost::alloc::string::String),
     }
 }
 /// Contains information needed to restate a conversion's value.
@@ -9572,13 +9624,13 @@ pub struct RestatementValue {
     /// Otherwise, it will be treated as a duplicate of the previous restatement
     /// and ignored.
     #[prost(message, optional, tag = "1")]
-    pub adjusted_value: ::std::option::Option<f64>,
+    pub adjusted_value: ::core::option::Option<f64>,
     /// The currency of the restated value. If not provided, then the default
     /// currency from the conversion action is used, and if that is not set then
     /// the account currency is used. This is the ISO 4217 3-character currency
     /// code e.g. USD or EUR.
     #[prost(message, optional, tag = "2")]
-    pub currency_code: ::std::option::Option<::std::string::String>,
+    pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Uniquely identifies a conversion that was reported without an order ID
 /// specified.
@@ -9587,12 +9639,12 @@ pub struct GclidDateTimePair {
     /// Google click ID (gclid) associated with the original conversion for this
     /// adjustment.
     #[prost(message, optional, tag = "1")]
-    pub gclid: ::std::option::Option<::std::string::String>,
+    pub gclid: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the original conversion for this adjustment
     /// occurred. The timezone must be specified. The format is "yyyy-mm-dd
     /// hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "2")]
-    pub conversion_date_time: ::std::option::Option<::std::string::String>,
+    pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Information identifying a successfully processed ConversionAdjustment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9600,11 +9652,11 @@ pub struct ConversionAdjustmentResult {
     /// Resource name of the conversion action associated with this conversion
     /// adjustment.
     #[prost(message, optional, tag = "3")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
+    pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the adjustment occurred. The format is
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "4")]
-    pub adjustment_date_time: ::std::option::Option<::std::string::String>,
+    pub adjustment_date_time: ::core::option::Option<::prost::alloc::string::String>,
     /// The adjustment type.
     #[prost(
         enumeration = "super::enums::conversion_adjustment_type_enum::ConversionAdjustmentType",
@@ -9617,8 +9669,9 @@ pub struct ConversionAdjustmentResult {
         tags = "1, 2"
     )]
     pub conversion_identifier:
-        ::std::option::Option<conversion_adjustment_result::ConversionIdentifier>,
+        ::core::option::Option<conversion_adjustment_result::ConversionIdentifier>,
 }
+/// Nested message and enum types in `ConversionAdjustmentResult`.
 pub mod conversion_adjustment_result {
     /// Identifies the conversion that was adjusted.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -9629,7 +9682,7 @@ pub mod conversion_adjustment_result {
         GclidDateTimePair(super::GclidDateTimePair),
         /// The order ID of the conversion that was adjusted.
         #[prost(message, tag = "2")]
-        OrderId(::std::string::String),
+        OrderId(::prost::alloc::string::String),
     }
 }
 #[doc = r" Generated client implementations."]
@@ -9668,7 +9721,7 @@ pub mod conversion_adjustment_upload_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.ConversionAdjustmentUploadService/UploadConversionAdjustments" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.ConversionAdjustmentUploadService/UploadConversionAdjustments") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -9690,10 +9743,10 @@ pub mod conversion_adjustment_upload_service_client {
 pub struct UploadClickConversionsRequest {
     /// Required. The ID of the customer performing the upload.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag = "2")]
-    pub conversions: ::std::vec::Vec<ClickConversion>,
+    pub conversions: ::prost::alloc::vec::Vec<ClickConversion>,
     /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -9718,22 +9771,22 @@ pub struct UploadClickConversionsResponse {
     /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
     /// for more information about partial failure.
     #[prost(message, optional, tag = "1")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Returned for successfully processed conversions. Proto will be empty for
     /// rows that received an error. Results are not returned when validate_only is
     /// true.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<ClickConversionResult>,
+    pub results: ::prost::alloc::vec::Vec<ClickConversionResult>,
 }
 /// Request message for [ConversionUploadService.UploadCallConversions][google.ads.googleads.v4.services.ConversionUploadService.UploadCallConversions].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadCallConversionsRequest {
     /// Required. The ID of the customer performing the upload.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag = "2")]
-    pub conversions: ::std::vec::Vec<CallConversion>,
+    pub conversions: ::prost::alloc::vec::Vec<CallConversion>,
     /// Required. If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, all operations will be carried
     /// out in one transaction if and only if they are all valid.
@@ -9758,46 +9811,46 @@ pub struct UploadCallConversionsResponse {
     /// https://developers.google.com/google-ads/api/docs/best-practices/partial-failures
     /// for more information about partial failure.
     #[prost(message, optional, tag = "1")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Returned for successfully processed conversions. Proto will be empty for
     /// rows that received an error. Results are not returned when validate_only is
     /// true.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<CallConversionResult>,
+    pub results: ::prost::alloc::vec::Vec<CallConversionResult>,
 }
 /// A click conversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClickConversion {
     /// The Google click ID (gclid) associated with this conversion.
     #[prost(message, optional, tag = "1")]
-    pub gclid: ::std::option::Option<::std::string::String>,
+    pub gclid: ::core::option::Option<::prost::alloc::string::String>,
     /// Resource name of the conversion action associated with this conversion.
     /// Note: Although this resource name consists of a customer id and a
     /// conversion action id, validation will ignore the customer id and use the
     /// conversion action id as the sole identifier of the conversion action.
     #[prost(message, optional, tag = "2")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
+    pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the conversion occurred. Must be after
     /// the click time. The timezone must be specified. The format is
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. “2019-01-01 12:32:45-08:00”.
     #[prost(message, optional, tag = "3")]
-    pub conversion_date_time: ::std::option::Option<::std::string::String>,
+    pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
     /// The value of the conversion for the advertiser.
     #[prost(message, optional, tag = "4")]
-    pub conversion_value: ::std::option::Option<f64>,
+    pub conversion_value: ::core::option::Option<f64>,
     /// Currency associated with the conversion value. This is the ISO 4217
     /// 3-character currency code. For example: USD, EUR.
     #[prost(message, optional, tag = "5")]
-    pub currency_code: ::std::option::Option<::std::string::String>,
+    pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
     /// The order ID associated with the conversion. An order id can only be used
     /// for one conversion per conversion action.
     #[prost(message, optional, tag = "6")]
-    pub order_id: ::std::option::Option<::std::string::String>,
+    pub order_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Additional data about externally attributed conversions. This field
     /// is required for conversions with an externally attributed conversion
     /// action, but should not be set otherwise.
     #[prost(message, optional, tag = "7")]
-    pub external_attribution_data: ::std::option::Option<ExternalAttributionData>,
+    pub external_attribution_data: ::core::option::Option<ExternalAttributionData>,
 }
 /// A call conversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9805,30 +9858,30 @@ pub struct CallConversion {
     /// The caller id from which this call was placed. Caller id is expected to be
     /// in E.164 format with preceding '+' sign. e.g. "+16502531234".
     #[prost(message, optional, tag = "1")]
-    pub caller_id: ::std::option::Option<::std::string::String>,
+    pub caller_id: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the call occurred. The timezone must be specified.
     /// The format is "yyyy-mm-dd hh:mm:ss+|-hh:mm",
     /// e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "2")]
-    pub call_start_date_time: ::std::option::Option<::std::string::String>,
+    pub call_start_date_time: ::core::option::Option<::prost::alloc::string::String>,
     /// Resource name of the conversion action associated with this conversion.
     /// Note: Although this resource name consists of a customer id and a
     /// conversion action id, validation will ignore the customer id and use the
     /// conversion action id as the sole identifier of the conversion action.
     #[prost(message, optional, tag = "3")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
+    pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the conversion occurred. Must be after the call
     /// time. The timezone must be specified. The format is
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "4")]
-    pub conversion_date_time: ::std::option::Option<::std::string::String>,
+    pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
     /// The value of the conversion for the advertiser.
     #[prost(message, optional, tag = "5")]
-    pub conversion_value: ::std::option::Option<f64>,
+    pub conversion_value: ::core::option::Option<f64>,
     /// Currency associated with the conversion value. This is the ISO 4217
     /// 3-character currency code. For example: USD, EUR.
     #[prost(message, optional, tag = "6")]
-    pub currency_code: ::std::option::Option<::std::string::String>,
+    pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains additional information about externally attributed conversions.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9836,24 +9889,24 @@ pub struct ExternalAttributionData {
     /// Represents the fraction of the conversion that is attributed to the
     /// Google Ads click.
     #[prost(message, optional, tag = "1")]
-    pub external_attribution_credit: ::std::option::Option<f64>,
+    pub external_attribution_credit: ::core::option::Option<f64>,
     /// Specifies the attribution model name.
     #[prost(message, optional, tag = "2")]
-    pub external_attribution_model: ::std::option::Option<::std::string::String>,
+    pub external_attribution_model: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Identifying information for a successfully processed ClickConversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClickConversionResult {
     /// The Google Click ID (gclid) associated with this conversion.
     #[prost(message, optional, tag = "1")]
-    pub gclid: ::std::option::Option<::std::string::String>,
+    pub gclid: ::core::option::Option<::prost::alloc::string::String>,
     /// Resource name of the conversion action associated with this conversion.
     #[prost(message, optional, tag = "2")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
+    pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the conversion occurred. The format is
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. “2019-01-01 12:32:45-08:00”.
     #[prost(message, optional, tag = "3")]
-    pub conversion_date_time: ::std::option::Option<::std::string::String>,
+    pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Identifying information for a successfully processed CallConversionUpload.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9861,18 +9914,18 @@ pub struct CallConversionResult {
     /// The caller id from which this call was placed. Caller id is expected to be
     /// in E.164 format with preceding '+' sign.
     #[prost(message, optional, tag = "1")]
-    pub caller_id: ::std::option::Option<::std::string::String>,
+    pub caller_id: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the call occurred. The format is
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "2")]
-    pub call_start_date_time: ::std::option::Option<::std::string::String>,
+    pub call_start_date_time: ::core::option::Option<::prost::alloc::string::String>,
     /// Resource name of the conversion action associated with this conversion.
     #[prost(message, optional, tag = "3")]
-    pub conversion_action: ::std::option::Option<::std::string::String>,
+    pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
     /// The date time at which the conversion occurred. The format is
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "4")]
-    pub conversion_date_time: ::std::option::Option<::std::string::String>,
+    pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[doc = r" Generated client implementations."]
 pub mod conversion_upload_service_client {
@@ -9950,7 +10003,7 @@ pub mod conversion_upload_service_client {
 pub struct GetCurrencyConstantRequest {
     /// Required. Resource name of the currency constant to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod currency_constant_service_client {
@@ -10012,17 +10065,17 @@ pub mod currency_constant_service_client {
 pub struct GetCustomInterestRequest {
     /// Required. The resource name of the custom interest to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CustomInterestService.MutateCustomInterests][google.ads.googleads.v4.services.CustomInterestService.MutateCustomInterests].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomInterestsRequest {
     /// Required. The ID of the customer whose custom interests are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual custom interests.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CustomInterestOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CustomInterestOperation>,
     /// If true, the request is validated but not executed. Only errors are
     /// returned, not results.
     #[prost(bool, tag = "4")]
@@ -10033,11 +10086,12 @@ pub struct MutateCustomInterestsRequest {
 pub struct CustomInterestOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "custom_interest_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<custom_interest_operation::Operation>,
+    pub operation: ::core::option::Option<custom_interest_operation::Operation>,
 }
+/// Nested message and enum types in `CustomInterestOperation`.
 pub mod custom_interest_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -10057,14 +10111,14 @@ pub mod custom_interest_operation {
 pub struct MutateCustomInterestsResponse {
     /// All results for the mutate.
     #[prost(message, repeated, tag = "2")]
-    pub results: ::std::vec::Vec<MutateCustomInterestResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCustomInterestResult>,
 }
 /// The result for the custom interest mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomInterestResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod custom_interest_service_client {
@@ -10143,28 +10197,29 @@ pub mod custom_interest_service_client {
 pub struct GetCustomerClientLinkRequest {
     /// Required. The resource name of the customer client link to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CustomerClientLinkService.MutateCustomerClientLink][google.ads.googleads.v4.services.CustomerClientLinkService.MutateCustomerClientLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerClientLinkRequest {
     /// Required. The ID of the customer whose customer link are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The operation to perform on the individual CustomerClientLink.
     #[prost(message, optional, tag = "2")]
-    pub operation: ::std::option::Option<CustomerClientLinkOperation>,
+    pub operation: ::core::option::Option<CustomerClientLinkOperation>,
 }
 /// A single operation (create, update) on a CustomerClientLink.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerClientLinkOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "customer_client_link_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<customer_client_link_operation::Operation>,
+    pub operation: ::core::option::Option<customer_client_link_operation::Operation>,
 }
+/// Nested message and enum types in `CustomerClientLinkOperation`.
 pub mod customer_client_link_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -10182,14 +10237,14 @@ pub mod customer_client_link_operation {
 pub struct MutateCustomerClientLinkResponse {
     /// A result that identifies the resource affected by the mutate request.
     #[prost(message, optional, tag = "1")]
-    pub result: ::std::option::Option<MutateCustomerClientLinkResult>,
+    pub result: ::core::option::Option<MutateCustomerClientLinkResult>,
 }
 /// The result for a single customer client link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerClientLinkResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_client_link_service_client {
@@ -10245,7 +10300,7 @@ pub mod customer_client_link_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CustomerClientLinkService/MutateCustomerClientLink" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CustomerClientLinkService/MutateCustomerClientLink") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -10267,7 +10322,7 @@ pub mod customer_client_link_service_client {
 pub struct GetCustomerClientRequest {
     /// Required. The resource name of the client to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_client_service_client {
@@ -10329,33 +10384,33 @@ pub mod customer_client_service_client {
 pub struct GetCustomerManagerLinkRequest {
     /// Required. The resource name of the CustomerManagerLink to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [CustomerManagerLinkService.MutateCustomerManagerLink][google.ads.googleads.v4.services.CustomerManagerLinkService.MutateCustomerManagerLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerManagerLinkRequest {
     /// Required. The ID of the customer whose customer manager links are being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to perform on individual customer manager links.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<CustomerManagerLinkOperation>,
+    pub operations: ::prost::alloc::vec::Vec<CustomerManagerLinkOperation>,
 }
 /// Request message for [CustomerManagerLinkService.MoveManagerLink][google.ads.googleads.v4.services.CustomerManagerLinkService.MoveManagerLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveManagerLinkRequest {
     /// Required. The ID of the client customer that is being moved.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The resource name of the previous CustomerManagerLink.
     /// The resource name has the form:
     /// `customers/{customer_id}/customerManagerLinks/{manager_customer_id}~{manager_link_id}`
     #[prost(string, tag = "2")]
-    pub previous_customer_manager_link: std::string::String,
+    pub previous_customer_manager_link: ::prost::alloc::string::String,
     /// Required. The resource name of the new manager customer that the client wants to move
     /// to. Customer resource names have the format: "customers/{customer_id}"
     #[prost(string, tag = "3")]
-    pub new_manager: std::string::String,
+    pub new_manager: ::prost::alloc::string::String,
 }
 /// Updates the status of a CustomerManagerLink.
 /// The following actions are possible:
@@ -10366,11 +10421,12 @@ pub struct MoveManagerLinkRequest {
 pub struct CustomerManagerLinkOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
     #[prost(oneof = "customer_manager_link_operation::Operation", tags = "2")]
-    pub operation: ::std::option::Option<customer_manager_link_operation::Operation>,
+    pub operation: ::core::option::Option<customer_manager_link_operation::Operation>,
 }
+/// Nested message and enum types in `CustomerManagerLinkOperation`.
 pub mod customer_manager_link_operation {
     /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -10385,7 +10441,7 @@ pub mod customer_manager_link_operation {
 pub struct MutateCustomerManagerLinkResponse {
     /// A result that identifies the resource affected by the mutate request.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<MutateCustomerManagerLinkResult>,
+    pub results: ::prost::alloc::vec::Vec<MutateCustomerManagerLinkResult>,
 }
 /// Response message for a CustomerManagerLink moveManagerLink.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10394,14 +10450,14 @@ pub struct MoveManagerLinkResponse {
     /// resource of the newly created link between client customer and new manager
     /// customer.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// The result for the customer manager link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerManagerLinkResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod customer_manager_link_service_client {
@@ -10439,7 +10495,7 @@ pub mod customer_manager_link_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CustomerManagerLinkService/GetCustomerManagerLink" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CustomerManagerLinkService/GetCustomerManagerLink") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates or updates customer manager links. Operation statuses are returned."]
@@ -10455,7 +10511,7 @@ pub mod customer_manager_link_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.CustomerManagerLinkService/MutateCustomerManagerLink" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.CustomerManagerLinkService/MutateCustomerManagerLink") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Moves a client customer to a new manager customer."]
@@ -10498,7 +10554,7 @@ pub mod customer_manager_link_service_client {
 pub struct GetDetailPlacementViewRequest {
     /// Required. The resource name of the Detail Placement view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod detail_placement_view_service_client {
@@ -10536,7 +10592,7 @@ pub mod detail_placement_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.DetailPlacementViewService/GetDetailPlacementView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.DetailPlacementViewService/GetDetailPlacementView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -10558,7 +10614,7 @@ pub mod detail_placement_view_service_client {
 pub struct GetDisplayKeywordViewRequest {
     /// Required. The resource name of the display keyword view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod display_keyword_view_service_client {
@@ -10620,7 +10676,7 @@ pub mod display_keyword_view_service_client {
 pub struct GetDistanceViewRequest {
     /// Required. The resource name of the distance view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod distance_view_service_client {
@@ -10682,7 +10738,7 @@ pub mod distance_view_service_client {
 pub struct GetDomainCategoryRequest {
     /// Required. Resource name of the domain category to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod domain_category_service_client {
@@ -10745,7 +10801,7 @@ pub mod domain_category_service_client {
 pub struct GetDynamicSearchAdsSearchTermViewRequest {
     /// Required. The resource name of the dynamic search ads search term view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod dynamic_search_ads_search_term_view_service_client {
@@ -10785,7 +10841,7 @@ pub mod dynamic_search_ads_search_term_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.DynamicSearchAdsSearchTermViewService/GetDynamicSearchAdsSearchTermView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.DynamicSearchAdsSearchTermViewService/GetDynamicSearchAdsSearchTermView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -10808,7 +10864,7 @@ pub mod dynamic_search_ads_search_term_view_service_client {
 pub struct GetExpandedLandingPageViewRequest {
     /// Required. The resource name of the expanded landing page view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod expanded_landing_page_view_service_client {
@@ -10846,7 +10902,7 @@ pub mod expanded_landing_page_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.ExpandedLandingPageViewService/GetExpandedLandingPageView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.ExpandedLandingPageViewService/GetExpandedLandingPageView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -10868,7 +10924,7 @@ pub mod expanded_landing_page_view_service_client {
 pub struct GetFeedPlaceholderViewRequest {
     /// Required. The resource name of the feed placeholder view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod feed_placeholder_view_service_client {
@@ -10906,7 +10962,7 @@ pub mod feed_placeholder_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.FeedPlaceholderViewService/GetFeedPlaceholderView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.FeedPlaceholderViewService/GetFeedPlaceholderView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -10928,7 +10984,7 @@ pub mod feed_placeholder_view_service_client {
 pub struct GetGenderViewRequest {
     /// Required. The resource name of the gender view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod gender_view_service_client {
@@ -10989,7 +11045,7 @@ pub mod gender_view_service_client {
 pub struct GetGeoTargetConstantRequest {
     /// Required. The resource name of the geo target constant to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v4.services.GeoTargetConstantService.SuggestGeoTargetConstants].
@@ -10999,28 +11055,29 @@ pub struct SuggestGeoTargetConstantsRequest {
     /// en is used by default. This is also used as a hint for returned geo
     /// targets.
     #[prost(message, optional, tag = "3")]
-    pub locale: ::std::option::Option<::std::string::String>,
+    pub locale: ::core::option::Option<::prost::alloc::string::String>,
     /// Returned geo targets are restricted to this country code.
     #[prost(message, optional, tag = "5")]
-    pub country_code: ::std::option::Option<::std::string::String>,
+    pub country_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. A selector of geo target constants.
     #[prost(oneof = "suggest_geo_target_constants_request::Query", tags = "1, 2")]
-    pub query: ::std::option::Option<suggest_geo_target_constants_request::Query>,
+    pub query: ::core::option::Option<suggest_geo_target_constants_request::Query>,
 }
+/// Nested message and enum types in `SuggestGeoTargetConstantsRequest`.
 pub mod suggest_geo_target_constants_request {
     /// A list of location names.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocationNames {
         /// A list of location names.
         #[prost(message, repeated, tag = "1")]
-        pub names: ::std::vec::Vec<::std::string::String>,
+        pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// A list of geo target constant resource names.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GeoTargets {
         /// A list of geo target constant resource names.
         #[prost(message, repeated, tag = "1")]
-        pub geo_target_constants: ::std::vec::Vec<::std::string::String>,
+        pub geo_target_constants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Required. A selector of geo target constants.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -11038,7 +11095,7 @@ pub mod suggest_geo_target_constants_request {
 pub struct SuggestGeoTargetConstantsResponse {
     /// Geo target constant suggestions.
     #[prost(message, repeated, tag = "1")]
-    pub geo_target_constant_suggestions: ::std::vec::Vec<GeoTargetConstantSuggestion>,
+    pub geo_target_constant_suggestions: ::prost::alloc::vec::Vec<GeoTargetConstantSuggestion>,
 }
 /// A geo target constant suggestion.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11048,21 +11105,21 @@ pub struct GeoTargetConstantSuggestion {
     /// name=Spain. If locale=es, then name=España. The default locale will be
     /// returned if no translation exists for the locale in the request.
     #[prost(message, optional, tag = "1")]
-    pub locale: ::std::option::Option<::std::string::String>,
+    pub locale: ::core::option::Option<::prost::alloc::string::String>,
     /// Approximate user population that will be targeted, rounded to the
     /// nearest 100.
     #[prost(message, optional, tag = "2")]
-    pub reach: ::std::option::Option<i64>,
+    pub reach: ::core::option::Option<i64>,
     /// If the request searched by location name, this is the location name that
     /// matched the geo target.
     #[prost(message, optional, tag = "3")]
-    pub search_term: ::std::option::Option<::std::string::String>,
+    pub search_term: ::core::option::Option<::prost::alloc::string::String>,
     /// The GeoTargetConstant result.
     #[prost(message, optional, tag = "4")]
-    pub geo_target_constant: ::std::option::Option<super::resources::GeoTargetConstant>,
+    pub geo_target_constant: ::core::option::Option<super::resources::GeoTargetConstant>,
     /// The list of parents of the geo target constant.
     #[prost(message, repeated, tag = "5")]
-    pub geo_target_constant_parents: ::std::vec::Vec<super::resources::GeoTargetConstant>,
+    pub geo_target_constant_parents: ::prost::alloc::vec::Vec<super::resources::GeoTargetConstant>,
 }
 #[doc = r" Generated client implementations."]
 pub mod geo_target_constant_service_client {
@@ -11118,7 +11175,7 @@ pub mod geo_target_constant_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.GeoTargetConstantService/SuggestGeoTargetConstants" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.GeoTargetConstantService/SuggestGeoTargetConstants") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -11140,7 +11197,7 @@ pub mod geo_target_constant_service_client {
 pub struct GetGeographicViewRequest {
     /// Required. The resource name of the geographic view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod geographic_view_service_client {
@@ -11202,19 +11259,19 @@ pub mod geographic_view_service_client {
 pub struct GetGoogleAdsFieldRequest {
     /// Required. The resource name of the field to get.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v4.services.GoogleAdsFieldService.SearchGoogleAdsFields].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsFieldsRequest {
     /// Required. The query string.
     #[prost(string, tag = "1")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
     /// Token of the page to retrieve. If not specified, the first page of
     /// results will be returned. Use the value obtained from `next_page_token`
     /// in the previous response in order to request the next page of results.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Number of elements to retrieve in a single page.
     /// When too large a page is requested, the server may decide to further
     /// limit the number of returned resources.
@@ -11226,12 +11283,12 @@ pub struct SearchGoogleAdsFieldsRequest {
 pub struct SearchGoogleAdsFieldsResponse {
     /// The list of fields that matched the query.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<super::resources::GoogleAdsField>,
+    pub results: ::prost::alloc::vec::Vec<super::resources::GoogleAdsField>,
     /// Pagination token used to retrieve the next page of results. Pass the
     /// content of this string as the `page_token` attribute of the next request.
     /// `next_page_token` is not returned for the last page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Total number of results that match the query ignoring the LIMIT clause.
     #[prost(int64, tag = "3")]
     pub total_results_count: i64,
@@ -11313,7 +11370,7 @@ pub mod google_ads_field_service_client {
 pub struct GetGroupPlacementViewRequest {
     /// Required. The resource name of the Group Placement view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod group_placement_view_service_client {
@@ -11375,7 +11432,7 @@ pub mod group_placement_view_service_client {
 pub struct GetHotelGroupViewRequest {
     /// Required. Resource name of the Hotel Group View to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod hotel_group_view_service_client {
@@ -11437,7 +11494,7 @@ pub mod hotel_group_view_service_client {
 pub struct GetHotelPerformanceViewRequest {
     /// Required. Resource name of the Hotel Performance View to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod hotel_performance_view_service_client {
@@ -11475,7 +11532,7 @@ pub mod hotel_performance_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.HotelPerformanceViewService/GetHotelPerformanceView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.HotelPerformanceViewService/GetHotelPerformanceView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -11497,7 +11554,7 @@ pub mod hotel_performance_view_service_client {
 pub struct GetIncomeRangeViewRequest {
     /// Required. The resource name of the income range view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod income_range_view_service_client {
@@ -11560,16 +11617,16 @@ pub mod income_range_view_service_client {
 pub struct ListInvoicesRequest {
     /// Required. The ID of the customer to fetch invoices for.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The billing setup resource name of the requested invoices.
     ///
     /// `customers/{customer_id}/billingSetups/{billing_setup_id}`
     #[prost(string, tag = "2")]
-    pub billing_setup: std::string::String,
+    pub billing_setup: ::prost::alloc::string::String,
     /// Required. The issue year to retrieve invoices, in yyyy format. Only
     /// invoices issued in 2019 or later can be retrieved.
     #[prost(string, tag = "3")]
-    pub issue_year: std::string::String,
+    pub issue_year: ::prost::alloc::string::String,
     /// Required. The issue month to retrieve invoices.
     #[prost(
         enumeration = "super::enums::month_of_year_enum::MonthOfYear",
@@ -11582,7 +11639,7 @@ pub struct ListInvoicesRequest {
 pub struct ListInvoicesResponse {
     /// The list of invoices that match the billing setup and time period.
     #[prost(message, repeated, tag = "1")]
-    pub invoices: ::std::vec::Vec<super::resources::Invoice>,
+    pub invoices: ::prost::alloc::vec::Vec<super::resources::Invoice>,
 }
 #[doc = r" Generated client implementations."]
 pub mod invoice_service_client {
@@ -11643,15 +11700,15 @@ pub mod invoice_service_client {
 pub struct GenerateKeywordIdeasRequest {
     /// The ID of the customer with the recommendation.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The resource name of the language to target.
     /// Required
     #[prost(message, optional, tag = "7")]
-    pub language: ::std::option::Option<::std::string::String>,
+    pub language: ::core::option::Option<::prost::alloc::string::String>,
     /// The resource names of the location to target.
     /// Max 10
     #[prost(message, repeated, tag = "8")]
-    pub geo_target_constants: ::std::vec::Vec<::std::string::String>,
+    pub geo_target_constants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If true, adult keywords will be included in response.
     /// The default value is false.
     #[prost(bool, tag = "10")]
@@ -11661,7 +11718,7 @@ pub struct GenerateKeywordIdeasRequest {
     /// value obtained from `next_page_token` in the previous response.
     /// The request fields must match across pages.
     #[prost(string, tag = "12")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Number of results to retrieve in a single page.
     /// A maximum of 10,000 results may be returned, if the page_size
     /// exceeds this, it is ignored.
@@ -11679,8 +11736,9 @@ pub struct GenerateKeywordIdeasRequest {
     pub keyword_plan_network: i32,
     /// The type of seed to generate keyword ideas.
     #[prost(oneof = "generate_keyword_ideas_request::Seed", tags = "2, 3, 5, 11")]
-    pub seed: ::std::option::Option<generate_keyword_ideas_request::Seed>,
+    pub seed: ::core::option::Option<generate_keyword_ideas_request::Seed>,
 }
+/// Nested message and enum types in `GenerateKeywordIdeasRequest`.
 pub mod generate_keyword_ideas_request {
     /// The type of seed to generate keyword ideas.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -11705,17 +11763,17 @@ pub mod generate_keyword_ideas_request {
 pub struct KeywordAndUrlSeed {
     /// The URL to crawl in order to generate keyword ideas.
     #[prost(message, optional, tag = "1")]
-    pub url: ::std::option::Option<::std::string::String>,
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
     /// Requires at least one keyword.
     #[prost(message, repeated, tag = "2")]
-    pub keywords: ::std::vec::Vec<::std::string::String>,
+    pub keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Keyword Seed
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordSeed {
     /// Requires at least one keyword.
     #[prost(message, repeated, tag = "1")]
-    pub keywords: ::std::vec::Vec<::std::string::String>,
+    pub keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Site Seed
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11723,27 +11781,27 @@ pub struct SiteSeed {
     /// The domain name of the site. If the customer requesting the ideas doesn't
     /// own the site provided only public information is returned.
     #[prost(message, optional, tag = "1")]
-    pub site: ::std::option::Option<::std::string::String>,
+    pub site: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Url Seed
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlSeed {
     /// The URL to crawl in order to generate keyword ideas.
     #[prost(message, optional, tag = "1")]
-    pub url: ::std::option::Option<::std::string::String>,
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response message for [KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v4.services.KeywordPlanIdeaService.GenerateKeywordIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeaResponse {
     /// Results of generating keyword ideas.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<GenerateKeywordIdeaResult>,
+    pub results: ::prost::alloc::vec::Vec<GenerateKeywordIdeaResult>,
     /// Pagination token used to retrieve the next page of results.
     /// Pass the content of this string as the `page_token` attribute of
     /// the next request.
     /// `next_page_token` is not returned for the last page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Total number of results available.
     #[prost(int64, tag = "3")]
     pub total_size: i64,
@@ -11756,10 +11814,10 @@ pub struct GenerateKeywordIdeaResult {
     /// keyword, but the canonical form of multiple keywords.
     /// See KeywordPlanKeywordHistoricalMetrics message in KeywordPlanService.
     #[prost(message, optional, tag = "2")]
-    pub text: ::std::option::Option<::std::string::String>,
+    pub text: ::core::option::Option<::prost::alloc::string::String>,
     /// The historical metrics for the keyword
     #[prost(message, optional, tag = "3")]
-    pub keyword_idea_metrics: ::std::option::Option<super::common::KeywordPlanHistoricalMetrics>,
+    pub keyword_idea_metrics: ::core::option::Option<super::common::KeywordPlanHistoricalMetrics>,
 }
 #[doc = r" Generated client implementations."]
 pub mod keyword_plan_idea_service_client {
@@ -11820,7 +11878,7 @@ pub mod keyword_plan_idea_service_client {
 pub struct GetKeywordViewRequest {
     /// Required. The resource name of the keyword view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod keyword_view_service_client {
@@ -11881,7 +11939,7 @@ pub mod keyword_view_service_client {
 pub struct GetLandingPageViewRequest {
     /// Required. The resource name of the landing page view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod landing_page_view_service_client {
@@ -11943,7 +12001,7 @@ pub mod landing_page_view_service_client {
 pub struct GetLanguageConstantRequest {
     /// Required. Resource name of the language constant to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod language_constant_service_client {
@@ -12005,7 +12063,7 @@ pub mod language_constant_service_client {
 pub struct GetLocationViewRequest {
     /// Required. The resource name of the location view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod location_view_service_client {
@@ -12066,7 +12124,7 @@ pub mod location_view_service_client {
 pub struct GetManagedPlacementViewRequest {
     /// Required. The resource name of the Managed Placement View to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod managed_placement_view_service_client {
@@ -12104,7 +12162,7 @@ pub mod managed_placement_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.ManagedPlacementViewService/GetManagedPlacementView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.ManagedPlacementViewService/GetManagedPlacementView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -12127,42 +12185,43 @@ pub struct ListMerchantCenterLinksRequest {
     /// Required. The ID of the customer onto which to apply the Merchant Center link list
     /// operation.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
 }
 /// Response message for [MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v4.services.MerchantCenterLinkService.ListMerchantCenterLinks].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMerchantCenterLinksResponse {
     /// Merchant Center links available for the requested customer
     #[prost(message, repeated, tag = "1")]
-    pub merchant_center_links: ::std::vec::Vec<super::resources::MerchantCenterLink>,
+    pub merchant_center_links: ::prost::alloc::vec::Vec<super::resources::MerchantCenterLink>,
 }
 /// Request message for [MerchantCenterLinkService.GetMerchantCenterLink][google.ads.googleads.v4.services.MerchantCenterLinkService.GetMerchantCenterLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMerchantCenterLinkRequest {
     /// Required. Resource name of the Merchant Center link.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [MerchantCenterLinkService.MutateMerchantCenterLink][google.ads.googleads.v4.services.MerchantCenterLinkService.MutateMerchantCenterLink].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMerchantCenterLinkRequest {
     /// Required. The ID of the customer being modified.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The operation to perform on the link
     #[prost(message, optional, tag = "2")]
-    pub operation: ::std::option::Option<MerchantCenterLinkOperation>,
+    pub operation: ::core::option::Option<MerchantCenterLinkOperation>,
 }
 /// A single update on a Merchant Center link.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantCenterLinkOperation {
     /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The operation to perform
     #[prost(oneof = "merchant_center_link_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<merchant_center_link_operation::Operation>,
+    pub operation: ::core::option::Option<merchant_center_link_operation::Operation>,
 }
+/// Nested message and enum types in `MerchantCenterLinkOperation`.
 pub mod merchant_center_link_operation {
     /// The operation to perform
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -12176,7 +12235,7 @@ pub mod merchant_center_link_operation {
         ///
         /// `customers/{customer_id}/merchantCenterLinks/{merchant_center_id}`
         #[prost(string, tag = "2")]
-        Remove(std::string::String),
+        Remove(::prost::alloc::string::String),
     }
 }
 /// Response message for Merchant Center link mutate.
@@ -12184,14 +12243,14 @@ pub mod merchant_center_link_operation {
 pub struct MutateMerchantCenterLinkResponse {
     /// Result for the mutate.
     #[prost(message, optional, tag = "2")]
-    pub result: ::std::option::Option<MutateMerchantCenterLinkResult>,
+    pub result: ::core::option::Option<MutateMerchantCenterLinkResult>,
 }
 /// The result for the Merchant Center link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMerchantCenterLinkResult {
     /// Returned for successful operations.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod merchant_center_link_service_client {
@@ -12230,7 +12289,7 @@ pub mod merchant_center_link_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.MerchantCenterLinkService/ListMerchantCenterLinks" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.MerchantCenterLinkService/ListMerchantCenterLinks") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns the Merchant Center link in full detail."]
@@ -12264,7 +12323,7 @@ pub mod merchant_center_link_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.MerchantCenterLinkService/MutateMerchantCenterLink" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.MerchantCenterLinkService/MutateMerchantCenterLink") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -12287,7 +12346,7 @@ pub mod merchant_center_link_service_client {
 pub struct GetMobileAppCategoryConstantRequest {
     /// Required. Resource name of the mobile app category constant to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod mobile_app_category_constant_service_client {
@@ -12327,7 +12386,7 @@ pub mod mobile_app_category_constant_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.MobileAppCategoryConstantService/GetMobileAppCategoryConstant" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.MobileAppCategoryConstantService/GetMobileAppCategoryConstant") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -12349,7 +12408,7 @@ pub mod mobile_app_category_constant_service_client {
 pub struct GetMobileDeviceConstantRequest {
     /// Required. Resource name of the mobile device to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod mobile_device_constant_service_client {
@@ -12387,7 +12446,7 @@ pub mod mobile_device_constant_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.MobileDeviceConstantService/GetMobileDeviceConstant" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.MobileDeviceConstantService/GetMobileDeviceConstant") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -12410,10 +12469,10 @@ pub mod mobile_device_constant_service_client {
 pub struct CreateOfflineUserDataJobRequest {
     /// Required. The ID of the customer for which to create an offline user data job.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The offline user data job to be created.
     #[prost(message, optional, tag = "2")]
-    pub job: ::std::option::Option<super::resources::OfflineUserDataJob>,
+    pub job: ::core::option::Option<super::resources::OfflineUserDataJob>,
 }
 /// Response message for
 /// [OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.CreateOfflineUserDataJob].
@@ -12421,21 +12480,21 @@ pub struct CreateOfflineUserDataJobRequest {
 pub struct CreateOfflineUserDataJobResponse {
     /// The resource name of the OfflineUserDataJob.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [OfflineUserDataJobService.GetOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.GetOfflineUserDataJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOfflineUserDataJobRequest {
     /// Required. The resource name of the OfflineUserDataJob to get.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [OfflineUserDataJobService.RunOfflineUserDataJob][google.ads.googleads.v4.services.OfflineUserDataJobService.RunOfflineUserDataJob].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunOfflineUserDataJobRequest {
     /// Required. The resource name of the OfflineUserDataJob to run.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v4.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations].
@@ -12443,21 +12502,22 @@ pub struct RunOfflineUserDataJobRequest {
 pub struct AddOfflineUserDataJobOperationsRequest {
     /// Required. The resource name of the OfflineUserDataJob.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// True to enable partial failure for the offline user data job.
     #[prost(message, optional, tag = "2")]
-    pub enable_partial_failure: ::std::option::Option<bool>,
+    pub enable_partial_failure: ::core::option::Option<bool>,
     /// Required. The list of operations to be done.
     #[prost(message, repeated, tag = "3")]
-    pub operations: ::std::vec::Vec<OfflineUserDataJobOperation>,
+    pub operations: ::prost::alloc::vec::Vec<OfflineUserDataJobOperation>,
 }
 /// Operation to be made for the AddOfflineUserDataJobOperationsRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobOperation {
     /// Operation to be made for the AddOfflineUserDataJobOperationsRequest.
     #[prost(oneof = "offline_user_data_job_operation::Operation", tags = "1, 2, 3")]
-    pub operation: ::std::option::Option<offline_user_data_job_operation::Operation>,
+    pub operation: ::core::option::Option<offline_user_data_job_operation::Operation>,
 }
+/// Nested message and enum types in `OfflineUserDataJobOperation`.
 pub mod offline_user_data_job_operation {
     /// Operation to be made for the AddOfflineUserDataJobOperationsRequest.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -12485,7 +12545,7 @@ pub struct AddOfflineUserDataJobOperationsResponse {
     /// operations. If any errors occur outside the operations (e.g. auth errors),
     /// we return an RPC level error.
     #[prost(message, optional, tag = "1")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
 #[doc = r" Generated client implementations."]
 pub mod offline_user_data_job_service_client {
@@ -12523,7 +12583,7 @@ pub mod offline_user_data_job_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.OfflineUserDataJobService/CreateOfflineUserDataJob" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.OfflineUserDataJobService/CreateOfflineUserDataJob") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Returns the offline user data job."]
@@ -12557,7 +12617,7 @@ pub mod offline_user_data_job_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.OfflineUserDataJobService/AddOfflineUserDataJobOperations" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.OfflineUserDataJobService/AddOfflineUserDataJobOperations") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Runs the offline user data job."]
@@ -12603,7 +12663,7 @@ pub mod offline_user_data_job_service_client {
 pub struct GetOperatingSystemVersionConstantRequest {
     /// Required. Resource name of the OS version to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod operating_system_version_constant_service_client {
@@ -12643,7 +12703,7 @@ pub mod operating_system_version_constant_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.OperatingSystemVersionConstantService/GetOperatingSystemVersionConstant" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.OperatingSystemVersionConstantService/GetOperatingSystemVersionConstant") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -12666,7 +12726,7 @@ pub mod operating_system_version_constant_service_client {
 pub struct GetPaidOrganicSearchTermViewRequest {
     /// Required. The resource name of the paid organic search term view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod paid_organic_search_term_view_service_client {
@@ -12706,7 +12766,7 @@ pub mod paid_organic_search_term_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.PaidOrganicSearchTermViewService/GetPaidOrganicSearchTermView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.PaidOrganicSearchTermViewService/GetPaidOrganicSearchTermView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -12728,7 +12788,7 @@ pub mod paid_organic_search_term_view_service_client {
 pub struct GetParentalStatusViewRequest {
     /// Required. The resource name of the parental status view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod parental_status_view_service_client {
@@ -12790,14 +12850,14 @@ pub mod parental_status_view_service_client {
 pub struct ListPaymentsAccountsRequest {
     /// Required. The ID of the customer to apply the PaymentsAccount list operation to.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
 }
 /// Response message for [PaymentsAccountService.ListPaymentsAccounts][google.ads.googleads.v4.services.PaymentsAccountService.ListPaymentsAccounts].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPaymentsAccountsResponse {
     /// The list of accessible payments accounts.
     #[prost(message, repeated, tag = "1")]
-    pub payments_accounts: ::std::vec::Vec<super::resources::PaymentsAccount>,
+    pub payments_accounts: ::prost::alloc::vec::Vec<super::resources::PaymentsAccount>,
 }
 #[doc = r" Generated client implementations."]
 pub mod payments_account_service_client {
@@ -12862,7 +12922,7 @@ pub mod payments_account_service_client {
 pub struct GetProductBiddingCategoryConstantRequest {
     /// Required. Resource name of the Product Bidding Category to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod product_bidding_category_constant_service_client {
@@ -12902,7 +12962,7 @@ pub mod product_bidding_category_constant_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.ProductBiddingCategoryConstantService/GetProductBiddingCategoryConstant" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.ProductBiddingCategoryConstantService/GetProductBiddingCategoryConstant") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -12924,7 +12984,7 @@ pub mod product_bidding_category_constant_service_client {
 pub struct GetProductGroupViewRequest {
     /// Required. The resource name of the product group view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod product_group_view_service_client {
@@ -12993,7 +13053,7 @@ pub struct ListPlannableLocationsResponse {
     /// https://developers.google.com/adwords/api/docs/appendix/geotargeting for
     /// more information.
     #[prost(message, repeated, tag = "1")]
-    pub plannable_locations: ::std::vec::Vec<PlannableLocation>,
+    pub plannable_locations: ::prost::alloc::vec::Vec<PlannableLocation>,
 }
 /// A plannable location: a country, a DMA, a metro region, a tv region,
 /// a province.
@@ -13001,16 +13061,16 @@ pub struct ListPlannableLocationsResponse {
 pub struct PlannableLocation {
     /// The location identifier.
     #[prost(message, optional, tag = "1")]
-    pub id: ::std::option::Option<::std::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// The unique location name in english.
     #[prost(message, optional, tag = "2")]
-    pub name: ::std::option::Option<::std::string::String>,
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
     /// The parent country code, not present if location is a country.
     /// If present will always be a criterion id: additional information, such as
     /// country name are returned both via ListPlannableLocations or directly by
     /// accessing GeoTargetConstantService with the criterion id.
     #[prost(message, optional, tag = "3")]
-    pub parent_country_id: ::std::option::Option<i64>,
+    pub parent_country_id: ::core::option::Option<i64>,
 }
 /// Request to list available products in a given location.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13018,14 +13078,14 @@ pub struct ListPlannableProductsRequest {
     /// Required. The ID of the selected location for planning. To list the available
     /// plannable location ids use ListPlannableLocations.
     #[prost(message, optional, tag = "1")]
-    pub plannable_location_id: ::std::option::Option<::std::string::String>,
+    pub plannable_location_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A response with all available products.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableProductsResponse {
     /// The list of products available for planning and related targeting metadata.
     #[prost(message, repeated, tag = "1")]
-    pub product_metadata: ::std::vec::Vec<ProductMetadata>,
+    pub product_metadata: ::prost::alloc::vec::Vec<ProductMetadata>,
 }
 /// The metadata associated with an available plannable product.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13033,10 +13093,10 @@ pub struct ProductMetadata {
     /// The code associated with the ad product. E.g. BUMPER, TRUEVIEW_IN_STREAM
     /// To list the available plannable product codes use ListPlannableProducts.
     #[prost(message, optional, tag = "1")]
-    pub plannable_product_code: ::std::option::Option<::std::string::String>,
+    pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
     /// The allowed plannable targeting for this product.
     #[prost(message, optional, tag = "2")]
-    pub plannable_targeting: ::std::option::Option<PlannableTargeting>,
+    pub plannable_targeting: ::core::option::Option<PlannableTargeting>,
 }
 /// The targeting for which traffic metrics will be reported.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13049,44 +13109,44 @@ pub struct PlannableTargeting {
         repeated,
         tag = "1"
     )]
-    pub age_ranges: ::std::vec::Vec<i32>,
+    pub age_ranges: ::prost::alloc::vec::Vec<i32>,
     /// Targetable genders for the ad product.
     #[prost(message, repeated, tag = "2")]
-    pub genders: ::std::vec::Vec<super::common::GenderInfo>,
+    pub genders: ::prost::alloc::vec::Vec<super::common::GenderInfo>,
     /// Targetable devices for the ad product.
     #[prost(message, repeated, tag = "3")]
-    pub devices: ::std::vec::Vec<super::common::DeviceInfo>,
+    pub devices: ::prost::alloc::vec::Vec<super::common::DeviceInfo>,
     /// Targetable networks for the ad product.
     #[prost(
         enumeration = "super::enums::reach_plan_network_enum::ReachPlanNetwork",
         repeated,
         tag = "4"
     )]
-    pub networks: ::std::vec::Vec<i32>,
+    pub networks: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for [ReachPlanService.GenerateProductMixIdeas][google.ads.googleads.v4.services.ReachPlanService.GenerateProductMixIdeas].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateProductMixIdeasRequest {
     /// Required. The ID of the customer.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The ID of the location, this is one of the ids returned by
     /// ListPlannableLocations.
     #[prost(message, optional, tag = "2")]
-    pub plannable_location_id: ::std::option::Option<::std::string::String>,
+    pub plannable_location_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. Currency code.
     /// Three-character ISO 4217 currency code.
     #[prost(message, optional, tag = "3")]
-    pub currency_code: ::std::option::Option<::std::string::String>,
+    pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. Total budget.
     /// Amount in micros. One million is equivalent to one unit.
     #[prost(message, optional, tag = "4")]
-    pub budget_micros: ::std::option::Option<i64>,
+    pub budget_micros: ::core::option::Option<i64>,
     /// The preferences of the suggested product mix.
     /// An unset preference is interpreted as all possible values are allowed,
     /// unless explicitly specified.
     #[prost(message, optional, tag = "5")]
-    pub preferences: ::std::option::Option<Preferences>,
+    pub preferences: ::core::option::Option<Preferences>,
 }
 /// Set of preferences about the planned mix.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13094,11 +13154,11 @@ pub struct Preferences {
     /// True if ad skippable.
     /// If not set, default is any value.
     #[prost(message, optional, tag = "1")]
-    pub is_skippable: ::std::option::Option<bool>,
+    pub is_skippable: ::core::option::Option<bool>,
     /// True if ad start with sound.
     /// If not set, default is any value.
     #[prost(message, optional, tag = "2")]
-    pub starts_with_sound: ::std::option::Option<bool>,
+    pub starts_with_sound: ::core::option::Option<bool>,
     /// The length of the ad.
     /// If not set, default is any value.
     #[prost(
@@ -13109,19 +13169,19 @@ pub struct Preferences {
     /// True if ad will only show on the top content.
     /// If not set, default is false.
     #[prost(message, optional, tag = "4")]
-    pub top_content_only: ::std::option::Option<bool>,
+    pub top_content_only: ::core::option::Option<bool>,
     /// True if the price guaranteed. The cost of serving the ad is agreed upfront
     /// and not subject to an auction.
     /// If not set, default is any value.
     #[prost(message, optional, tag = "5")]
-    pub has_guaranteed_price: ::std::option::Option<bool>,
+    pub has_guaranteed_price: ::core::option::Option<bool>,
 }
 /// The suggested product mix.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateProductMixIdeasResponse {
     /// A list of products (ad formats) and the associated budget allocation idea.
     #[prost(message, repeated, tag = "1")]
-    pub product_allocation: ::std::vec::Vec<ProductAllocation>,
+    pub product_allocation: ::prost::alloc::vec::Vec<ProductAllocation>,
 }
 /// An allocation of a part of the budget on a given product.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13130,25 +13190,25 @@ pub struct ProductAllocation {
     /// set of the ones returned by ListPlannableProducts when using the same
     /// location id.
     #[prost(message, optional, tag = "1")]
-    pub plannable_product_code: ::std::option::Option<::std::string::String>,
+    pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
     /// The value to be allocated for the suggested product in requested currency.
     /// Amount in micros. One million is equivalent to one unit.
     #[prost(message, optional, tag = "2")]
-    pub budget_micros: ::std::option::Option<i64>,
+    pub budget_micros: ::core::option::Option<i64>,
 }
 /// Request message for [ReachPlanService.GenerateReachForecast][google.ads.googleads.v4.services.ReachPlanService.GenerateReachForecast].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateReachForecastRequest {
     /// Required. The ID of the customer.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// The currency code.
     /// Three-character ISO 4217 currency code.
     #[prost(message, optional, tag = "2")]
-    pub currency_code: ::std::option::Option<::std::string::String>,
+    pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. Campaign duration.
     #[prost(message, optional, tag = "3")]
-    pub campaign_duration: ::std::option::Option<CampaignDuration>,
+    pub campaign_duration: ::core::option::Option<CampaignDuration>,
     /// Desired cookie frequency cap that will be applied to each planned product.
     /// This is equivalent to the frequency cap exposed in Google Ads when creating
     /// a campaign, it represents the maximum number of times an ad can be shown to
@@ -13158,7 +13218,7 @@ pub struct GenerateReachForecastRequest {
     /// This field is deprecated in v4 and will eventually be removed.
     /// Please use cookie_frequency_cap_setting instead.
     #[prost(message, optional, tag = "4")]
-    pub cookie_frequency_cap: ::std::option::Option<i32>,
+    pub cookie_frequency_cap: ::core::option::Option<i32>,
     /// Desired cookie frequency cap that will be applied to each planned product.
     /// This is equivalent to the frequency cap exposed in Google Ads when creating
     /// a campaign, it represents the maximum number of times an ad can be shown to
@@ -13167,13 +13227,13 @@ pub struct GenerateReachForecastRequest {
     ///
     /// This field replaces the deprecated cookie_frequency_cap field.
     #[prost(message, optional, tag = "8")]
-    pub cookie_frequency_cap_setting: ::std::option::Option<FrequencyCap>,
+    pub cookie_frequency_cap_setting: ::core::option::Option<FrequencyCap>,
     /// Desired minimum effective frequency (the number of times a person was
     /// exposed to the ad) for the reported reach metrics [1-10].
     /// This won't affect the targeting, but just the reporting.
     /// If not specified, a default of 1 is applied.
     #[prost(message, optional, tag = "5")]
-    pub min_effective_frequency: ::std::option::Option<i32>,
+    pub min_effective_frequency: ::core::option::Option<i32>,
     /// The targeting to be applied to all products selected in the product mix.
     ///
     /// This is planned targeting: execution details might vary based on the
@@ -13184,11 +13244,11 @@ pub struct GenerateReachForecastRequest {
     /// In some cases, targeting may be overridden using the
     /// PlannedProduct.advanced_product_targeting field.
     #[prost(message, optional, tag = "6")]
-    pub targeting: ::std::option::Option<Targeting>,
+    pub targeting: ::core::option::Option<Targeting>,
     /// Required. The products to be forecast.
     /// The max number of allowed planned products is 15.
     #[prost(message, repeated, tag = "7")]
-    pub planned_products: ::std::vec::Vec<PlannedProduct>,
+    pub planned_products: ::prost::alloc::vec::Vec<PlannedProduct>,
 }
 /// A rule specifying the maximum number of times an ad can be shown to a user
 /// over a particular time period.
@@ -13196,7 +13256,7 @@ pub struct GenerateReachForecastRequest {
 pub struct FrequencyCap {
     /// Required. The number of impressions, inclusive.
     #[prost(message, optional, tag = "1")]
-    pub impressions: ::std::option::Option<i32>,
+    pub impressions: ::core::option::Option<i32>,
     /// Required. The type of time unit.
     #[prost(
         enumeration = "super::enums::frequency_cap_time_unit_enum::FrequencyCapTimeUnit",
@@ -13210,7 +13270,7 @@ pub struct Targeting {
     /// Required. The ID of the selected location.
     /// Plannable locations ID can be obtained from ListPlannableLocations.
     #[prost(message, optional, tag = "1")]
-    pub plannable_location_id: ::std::option::Option<::std::string::String>,
+    pub plannable_location_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Targeted age range.
     /// If not specified, targets all age ranges.
     #[prost(
@@ -13221,12 +13281,12 @@ pub struct Targeting {
     /// Targeted genders.
     /// If not specified, targets all genders.
     #[prost(message, repeated, tag = "3")]
-    pub genders: ::std::vec::Vec<super::common::GenderInfo>,
+    pub genders: ::prost::alloc::vec::Vec<super::common::GenderInfo>,
     /// Targeted devices.
     /// If not specified, targets all applicable devices. Applicable devices vary
     /// by product and region and can be obtained from ListPlannableProducts.
     #[prost(message, repeated, tag = "4")]
-    pub devices: ::std::vec::Vec<super::common::DeviceInfo>,
+    pub devices: ::prost::alloc::vec::Vec<super::common::DeviceInfo>,
     /// Targetable network for the ad product.
     /// If not specified, targets all applicable networks. Applicable networks vary
     /// by product and region and can be obtained from ListPlannableProducts.
@@ -13241,7 +13301,7 @@ pub struct Targeting {
 pub struct CampaignDuration {
     /// The duration value in days.
     #[prost(message, optional, tag = "1")]
-    pub duration_in_days: ::std::option::Option<i32>,
+    pub duration_in_days: ::core::option::Option<i32>,
 }
 /// A product being planned for reach.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13250,43 +13310,43 @@ pub struct PlannedProduct {
     /// The code associated with the ad product. E.g. Trueview, Bumper
     /// To list the available plannable product codes use ListPlannableProducts.
     #[prost(message, optional, tag = "1")]
-    pub plannable_product_code: ::std::option::Option<::std::string::String>,
+    pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. Maximum budget allocation in micros for the selected product.
     /// The value is specified in the selected planning currency_code.
     /// E.g. 1 000 000$ = 1 000 000 000 000 micros.
     #[prost(message, optional, tag = "2")]
-    pub budget_micros: ::std::option::Option<i64>,
+    pub budget_micros: ::core::option::Option<i64>,
 }
 /// Response message containing the generated reach curve.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateReachForecastResponse {
     /// Reference on target audiences for this curve.
     #[prost(message, optional, tag = "1")]
-    pub on_target_audience_metrics: ::std::option::Option<OnTargetAudienceMetrics>,
+    pub on_target_audience_metrics: ::core::option::Option<OnTargetAudienceMetrics>,
     /// The generated reach curve for the planned product mix.
     #[prost(message, optional, tag = "2")]
-    pub reach_curve: ::std::option::Option<ReachCurve>,
+    pub reach_curve: ::core::option::Option<ReachCurve>,
 }
 /// The reach curve for the planned products.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachCurve {
     /// All points on the reach curve.
     #[prost(message, repeated, tag = "1")]
-    pub reach_forecasts: ::std::vec::Vec<ReachForecast>,
+    pub reach_forecasts: ::prost::alloc::vec::Vec<ReachForecast>,
 }
 /// A point on reach curve.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachForecast {
     /// The cost in micros.
     #[prost(message, optional, tag = "1")]
-    pub cost_micros: ::std::option::Option<i64>,
+    pub cost_micros: ::core::option::Option<i64>,
     /// Forecasted traffic metrics for this point.
     #[prost(message, optional, tag = "2")]
-    pub forecast: ::std::option::Option<Forecast>,
+    pub forecast: ::core::option::Option<Forecast>,
     /// The forecasted allocation. This differs from the input allocation if one
     /// or more product cannot fulfill the budget because of limited inventory.
     #[prost(message, repeated, tag = "3")]
-    pub forecasted_product_allocations: ::std::vec::Vec<ProductAllocation>,
+    pub forecasted_product_allocations: ::prost::alloc::vec::Vec<ProductAllocation>,
 }
 /// Forecasted traffic metrics for the planned products and targeting.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13295,20 +13355,20 @@ pub struct Forecast {
     /// GenerateReachForecastRequest.min_effective_frequency times that exactly
     /// matches the Targeting.
     #[prost(message, optional, tag = "1")]
-    pub on_target_reach: ::std::option::Option<i64>,
+    pub on_target_reach: ::core::option::Option<i64>,
     /// Total number of unique people reached at least
     /// GenerateReachForecastRequest.min_effective_frequency times. This includes
     /// people that may fall outside the specified Targeting.
     #[prost(message, optional, tag = "2")]
-    pub total_reach: ::std::option::Option<i64>,
+    pub total_reach: ::core::option::Option<i64>,
     /// Number of ad impressions that exactly matches the Targeting.
     #[prost(message, optional, tag = "3")]
-    pub on_target_impressions: ::std::option::Option<i64>,
+    pub on_target_impressions: ::core::option::Option<i64>,
     /// Total number of ad impressions. This includes impressions that may fall
     /// outside the specified Targeting, due to insufficient information on
     /// signed-in users.
     #[prost(message, optional, tag = "4")]
-    pub total_impressions: ::std::option::Option<i64>,
+    pub total_impressions: ::core::option::Option<i64>,
 }
 /// Audience metrics for the planned products.
 /// These metrics consider the following targeting dimensions:
@@ -13320,10 +13380,10 @@ pub struct Forecast {
 pub struct OnTargetAudienceMetrics {
     /// Reference audience size matching the considered targeting for YouTube.
     #[prost(message, optional, tag = "1")]
-    pub youtube_audience_size: ::std::option::Option<i64>,
+    pub youtube_audience_size: ::core::option::Option<i64>,
     /// Reference audience size matching the considered targeting for Census.
     #[prost(message, optional, tag = "2")]
-    pub census_audience_size: ::std::option::Option<i64>,
+    pub census_audience_size: ::core::option::Option<i64>,
 }
 #[doc = r" Generated client implementations."]
 pub mod reach_plan_service_client {
@@ -13443,19 +13503,19 @@ pub mod reach_plan_service_client {
 pub struct GetRecommendationRequest {
     /// Required. The resource name of the recommendation to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [RecommendationService.ApplyRecommendation][google.ads.googleads.v4.services.RecommendationService.ApplyRecommendation].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationRequest {
     /// Required. The ID of the customer with the recommendation.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to apply recommendations.
     /// If partial_failure=false all recommendations should be of the same type
     /// There is a limit of 100 operations per request.
     #[prost(message, repeated, tag = "2")]
-    pub operations: ::std::vec::Vec<ApplyRecommendationOperation>,
+    pub operations: ::prost::alloc::vec::Vec<ApplyRecommendationOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, operations will be carried
     /// out as a transaction if and only if they are all valid.
@@ -13469,14 +13529,15 @@ pub struct ApplyRecommendationRequest {
 pub struct ApplyRecommendationOperation {
     /// The resource name of the recommendation to apply.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// Parameters to use when applying the recommendation.
     #[prost(
         oneof = "apply_recommendation_operation::ApplyParameters",
         tags = "2, 3, 4, 5, 6, 7, 8, 9"
     )]
-    pub apply_parameters: ::std::option::Option<apply_recommendation_operation::ApplyParameters>,
+    pub apply_parameters: ::core::option::Option<apply_recommendation_operation::ApplyParameters>,
 }
+/// Nested message and enum types in `ApplyRecommendationOperation`.
 pub mod apply_recommendation_operation {
     /// Parameters to use when applying a campaign budget recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13484,7 +13545,7 @@ pub mod apply_recommendation_operation {
         /// New budget amount to set for target budget resource. This is a required
         /// field.
         #[prost(message, optional, tag = "1")]
-        pub new_budget_amount_micros: ::std::option::Option<i64>,
+        pub new_budget_amount_micros: ::core::option::Option<i64>,
     }
     /// Parameters to use when applying a text ad recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13492,14 +13553,14 @@ pub mod apply_recommendation_operation {
         /// New ad to add to recommended ad group. All necessary fields need to be
         /// set in this message. This is a required field.
         #[prost(message, optional, tag = "1")]
-        pub ad: ::std::option::Option<super::super::resources::Ad>,
+        pub ad: ::core::option::Option<super::super::resources::Ad>,
     }
     /// Parameters to use when applying keyword recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeywordParameters {
         /// The ad group resource to add keyword to. This is a required field.
         #[prost(message, optional, tag = "1")]
-        pub ad_group: ::std::option::Option<::std::string::String>,
+        pub ad_group: ::core::option::Option<::prost::alloc::string::String>,
         /// The match type of the keyword. This is a required field.
         #[prost(
             enumeration = "super::super::enums::keyword_match_type_enum::KeywordMatchType",
@@ -13509,7 +13570,7 @@ pub mod apply_recommendation_operation {
         /// Optional, CPC bid to set for the keyword. If not set, keyword will use
         /// bid based on bidding strategy used by target ad group.
         #[prost(message, optional, tag = "3")]
-        pub cpc_bid_micros: ::std::option::Option<i64>,
+        pub cpc_bid_micros: ::core::option::Option<i64>,
     }
     /// Parameters to use when applying Target CPA recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13517,31 +13578,31 @@ pub mod apply_recommendation_operation {
         /// Average CPA to use for Target CPA bidding strategy. This is a required
         /// field.
         #[prost(message, optional, tag = "1")]
-        pub target_cpa_micros: ::std::option::Option<i64>,
+        pub target_cpa_micros: ::core::option::Option<i64>,
         /// Optional, budget amount to set for the campaign.
         #[prost(message, optional, tag = "2")]
-        pub new_campaign_budget_amount_micros: ::std::option::Option<i64>,
+        pub new_campaign_budget_amount_micros: ::core::option::Option<i64>,
     }
     /// Parameters to use when applying callout extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CalloutExtensionParameters {
         /// Callout extensions to be added. This is a required field.
         #[prost(message, repeated, tag = "1")]
-        pub callout_extensions: ::std::vec::Vec<super::super::common::CalloutFeedItem>,
+        pub callout_extensions: ::prost::alloc::vec::Vec<super::super::common::CalloutFeedItem>,
     }
     /// Parameters to use when applying call extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CallExtensionParameters {
         /// Call extensions to be added. This is a required field.
         #[prost(message, repeated, tag = "1")]
-        pub call_extensions: ::std::vec::Vec<super::super::common::CallFeedItem>,
+        pub call_extensions: ::prost::alloc::vec::Vec<super::super::common::CallFeedItem>,
     }
     /// Parameters to use when applying sitelink extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SitelinkExtensionParameters {
         /// Sitelink extensions to be added. This is a required field.
         #[prost(message, repeated, tag = "1")]
-        pub sitelink_extensions: ::std::vec::Vec<super::super::common::SitelinkFeedItem>,
+        pub sitelink_extensions: ::prost::alloc::vec::Vec<super::super::common::SitelinkFeedItem>,
     }
     /// Parameters to use when applying move unused budget recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -13549,7 +13610,7 @@ pub mod apply_recommendation_operation {
         /// Budget amount to move from excess budget to constrained budget. This is
         /// a required field.
         #[prost(message, optional, tag = "1")]
-        pub budget_micros_to_move: ::std::option::Option<i64>,
+        pub budget_micros_to_move: ::core::option::Option<i64>,
     }
     /// Parameters to use when applying the recommendation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -13587,32 +13648,33 @@ pub mod apply_recommendation_operation {
 pub struct ApplyRecommendationResponse {
     /// Results of operations to apply recommendations.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<ApplyRecommendationResult>,
+    pub results: ::prost::alloc::vec::Vec<ApplyRecommendationResult>,
     /// Errors that pertain to operation failures in the partial failure mode.
     /// Returned only when partial_failure = true and all errors occur inside the
     /// operations. If any errors occur outside the operations (e.g. auth errors)
     /// we return the RPC level error.
     #[prost(message, optional, tag = "2")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
 /// The result of applying a recommendation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationResult {
     /// Returned for successful applies.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for [RecommendationService.DismissRecommendation][google.ads.googleads.v4.services.RecommendationService.DismissRecommendation].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissRecommendationRequest {
     /// Required. The ID of the customer with the recommendation.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to dismiss recommendations.
     /// If partial_failure=false all recommendations should be of the same type
     /// There is a limit of 100 operations per request.
     #[prost(message, repeated, tag = "3")]
-    pub operations: ::std::vec::Vec<dismiss_recommendation_request::DismissRecommendationOperation>,
+    pub operations:
+        ::prost::alloc::vec::Vec<dismiss_recommendation_request::DismissRecommendationOperation>,
     /// If true, successful operations will be carried out and invalid
     /// operations will return errors. If false, operations will be carried in a
     /// single transaction if and only if they are all valid.
@@ -13620,13 +13682,14 @@ pub struct DismissRecommendationRequest {
     #[prost(bool, tag = "2")]
     pub partial_failure: bool,
 }
+/// Nested message and enum types in `DismissRecommendationRequest`.
 pub mod dismiss_recommendation_request {
     /// Operation to dismiss a single recommendation identified by resource_name.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DismissRecommendationOperation {
         /// The resource name of the recommendation to dismiss.
         #[prost(string, tag = "1")]
-        pub resource_name: std::string::String,
+        pub resource_name: ::prost::alloc::string::String,
     }
 }
 /// Response message for [RecommendationService.DismissRecommendation][google.ads.googleads.v4.services.RecommendationService.DismissRecommendation].
@@ -13634,21 +13697,23 @@ pub mod dismiss_recommendation_request {
 pub struct DismissRecommendationResponse {
     /// Results of operations to dismiss recommendations.
     #[prost(message, repeated, tag = "1")]
-    pub results: ::std::vec::Vec<dismiss_recommendation_response::DismissRecommendationResult>,
+    pub results:
+        ::prost::alloc::vec::Vec<dismiss_recommendation_response::DismissRecommendationResult>,
     /// Errors that pertain to operation failures in the partial failure mode.
     /// Returned only when partial_failure = true and all errors occur inside the
     /// operations. If any errors occur outside the operations (e.g. auth errors)
     /// we return the RPC level error.
     #[prost(message, optional, tag = "2")]
-    pub partial_failure_error: ::std::option::Option<super::super::super::super::rpc::Status>,
+    pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
+/// Nested message and enum types in `DismissRecommendationResponse`.
 pub mod dismiss_recommendation_response {
     /// The result of dismissing a recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DismissRecommendationResult {
         /// Returned for successful dismissals.
         #[prost(string, tag = "1")]
-        pub resource_name: std::string::String,
+        pub resource_name: ::prost::alloc::string::String,
     }
 }
 #[doc = r" Generated client implementations."]
@@ -13745,7 +13810,7 @@ pub mod recommendation_service_client {
 pub struct GetSearchTermViewRequest {
     /// Required. The resource name of the search term view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod search_term_view_service_client {
@@ -13808,7 +13873,7 @@ pub mod search_term_view_service_client {
 pub struct GetShoppingPerformanceViewRequest {
     /// Required. The resource name of the Shopping performance view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod shopping_performance_view_service_client {
@@ -13846,7 +13911,7 @@ pub mod shopping_performance_view_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.ShoppingPerformanceViewService/GetShoppingPerformanceView" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.ShoppingPerformanceViewService/GetShoppingPerformanceView") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -13869,7 +13934,7 @@ pub mod shopping_performance_view_service_client {
 pub struct GetThirdPartyAppAnalyticsLinkRequest {
     /// Resource name of the third party app analytics link.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod third_party_app_analytics_link_service_client {
@@ -13910,7 +13975,7 @@ pub mod third_party_app_analytics_link_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.ads.googleads.v4.services.ThirdPartyAppAnalyticsLinkService/GetThirdPartyAppAnalyticsLink" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.ads.googleads.v4.services.ThirdPartyAppAnalyticsLinkService/GetThirdPartyAppAnalyticsLink") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -13932,7 +13997,7 @@ pub mod third_party_app_analytics_link_service_client {
 pub struct GetTopicConstantRequest {
     /// Required. Resource name of the Topic to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod topic_constant_service_client {
@@ -13994,7 +14059,7 @@ pub mod topic_constant_service_client {
 pub struct GetTopicViewRequest {
     /// Required. The resource name of the topic view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod topic_view_service_client {
@@ -14055,14 +14120,15 @@ pub mod topic_view_service_client {
 pub struct UploadUserDataRequest {
     /// Required. The ID of the customer for which to update the user data.
     #[prost(string, tag = "1")]
-    pub customer_id: std::string::String,
+    pub customer_id: ::prost::alloc::string::String,
     /// Required. The list of operations to be done.
     #[prost(message, repeated, tag = "3")]
-    pub operations: ::std::vec::Vec<UserDataOperation>,
+    pub operations: ::prost::alloc::vec::Vec<UserDataOperation>,
     /// Metadata of the request.
     #[prost(oneof = "upload_user_data_request::Metadata", tags = "2")]
-    pub metadata: ::std::option::Option<upload_user_data_request::Metadata>,
+    pub metadata: ::core::option::Option<upload_user_data_request::Metadata>,
 }
+/// Nested message and enum types in `UploadUserDataRequest`.
 pub mod upload_user_data_request {
     /// Metadata of the request.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -14077,8 +14143,9 @@ pub mod upload_user_data_request {
 pub struct UserDataOperation {
     /// Operation to be made for the UploadUserDataRequest.
     #[prost(oneof = "user_data_operation::Operation", tags = "1, 2")]
-    pub operation: ::std::option::Option<user_data_operation::Operation>,
+    pub operation: ::core::option::Option<user_data_operation::Operation>,
 }
+/// Nested message and enum types in `UserDataOperation`.
 pub mod user_data_operation {
     /// Operation to be made for the UploadUserDataRequest.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -14097,10 +14164,10 @@ pub struct UploadUserDataResponse {
     /// The date time at which the request was received by API, formatted as
     /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(message, optional, tag = "1")]
-    pub upload_date_time: ::std::option::Option<::std::string::String>,
+    pub upload_date_time: ::core::option::Option<::prost::alloc::string::String>,
     /// Number of upload data operations received by API.
     #[prost(message, optional, tag = "2")]
-    pub received_operations_count: ::std::option::Option<i32>,
+    pub received_operations_count: ::core::option::Option<i32>,
 }
 #[doc = r" Generated client implementations."]
 pub mod user_data_service_client {
@@ -14162,7 +14229,7 @@ pub mod user_data_service_client {
 pub struct GetUserInterestRequest {
     /// Required. Resource name of the UserInterest to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod user_interest_service_client {
@@ -14223,7 +14290,7 @@ pub mod user_interest_service_client {
 pub struct GetUserLocationViewRequest {
     /// Required. The resource name of the user location view to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod user_location_view_service_client {
@@ -14285,7 +14352,7 @@ pub mod user_location_view_service_client {
 pub struct GetVideoRequest {
     /// Required. The resource name of the video to fetch.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod video_service_client {

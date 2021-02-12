@@ -7,7 +7,7 @@ pub struct AutoscalingPolicy {
     /// underscores (_), and hyphens (-). Cannot begin or end with underscore
     /// or hyphen. Must consist of between 3 and 50 characters.
     #[prost(string, tag = "1")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Output only. The "resource name" of the autoscaling policy, as described
     /// in https://cloud.google.com/apis/design/resource_names.
     ///
@@ -19,17 +19,18 @@ pub struct AutoscalingPolicy {
     ///   policy has the following format:
     ///   `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Describes how the autoscaler will operate for primary workers.
     #[prost(message, optional, tag = "4")]
-    pub worker_config: ::std::option::Option<InstanceGroupAutoscalingPolicyConfig>,
+    pub worker_config: ::core::option::Option<InstanceGroupAutoscalingPolicyConfig>,
     /// Optional. Describes how the autoscaler will operate for secondary workers.
     #[prost(message, optional, tag = "5")]
-    pub secondary_worker_config: ::std::option::Option<InstanceGroupAutoscalingPolicyConfig>,
+    pub secondary_worker_config: ::core::option::Option<InstanceGroupAutoscalingPolicyConfig>,
     /// Required. Autoscaling algorithm for policy.
     #[prost(oneof = "autoscaling_policy::Algorithm", tags = "3")]
-    pub algorithm: ::std::option::Option<autoscaling_policy::Algorithm>,
+    pub algorithm: ::core::option::Option<autoscaling_policy::Algorithm>,
 }
+/// Nested message and enum types in `AutoscalingPolicy`.
 pub mod autoscaling_policy {
     /// Required. Autoscaling algorithm for policy.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -43,13 +44,13 @@ pub mod autoscaling_policy {
 pub struct BasicAutoscalingAlgorithm {
     /// Required. YARN autoscaling configuration.
     #[prost(message, optional, tag = "1")]
-    pub yarn_config: ::std::option::Option<BasicYarnAutoscalingConfig>,
+    pub yarn_config: ::core::option::Option<BasicYarnAutoscalingConfig>,
     /// Optional. Duration between scaling events. A scaling period starts after
     /// the update operation from the previous event has completed.
     ///
     /// Bounds: [2m, 1d]. Default: 2m.
     #[prost(message, optional, tag = "2")]
-    pub cooldown_period: ::std::option::Option<::prost_types::Duration>,
+    pub cooldown_period: ::core::option::Option<::prost_types::Duration>,
 }
 /// Basic autoscaling configurations for YARN.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -61,21 +62,27 @@ pub struct BasicYarnAutoscalingConfig {
     ///
     /// Bounds: [0s, 1d].
     #[prost(message, optional, tag = "5")]
-    pub graceful_decommission_timeout: ::std::option::Option<::prost_types::Duration>,
-    /// Required. Fraction of average pending memory in the last cooldown period
-    /// for which to add workers. A scale-up factor of 1.0 will result in scaling
-    /// up so that there is no pending memory remaining after the update (more
-    /// aggressive scaling). A scale-up factor closer to 0 will result in a smaller
-    /// magnitude of scaling up (less aggressive scaling).
+    pub graceful_decommission_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Required. Fraction of average YARN pending memory in the last cooldown
+    /// period for which to add workers. A scale-up factor of 1.0 will result in
+    /// scaling up so that there is no pending memory remaining after the update
+    /// (more aggressive scaling). A scale-up factor closer to 0 will result in a
+    /// smaller magnitude of scaling up (less aggressive scaling). See [How
+    /// autoscaling
+    /// works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+    /// for more information.
     ///
     /// Bounds: [0.0, 1.0].
     #[prost(double, tag = "1")]
     pub scale_up_factor: f64,
-    /// Required. Fraction of average pending memory in the last cooldown period
-    /// for which to remove workers. A scale-down factor of 1 will result in
+    /// Required. Fraction of average YARN pending memory in the last cooldown
+    /// period for which to remove workers. A scale-down factor of 1 will result in
     /// scaling down so that there is no available memory remaining after the
     /// update (more aggressive scaling). A scale-down factor of 0 disables
     /// removing workers, which can be beneficial for autoscaling a single job.
+    /// See [How autoscaling
+    /// works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+    /// for more information.
     ///
     /// Bounds: [0.0, 1.0].
     #[prost(double, tag = "2")]
@@ -152,10 +159,10 @@ pub struct CreateAutoscalingPolicyRequest {
     ///   has the following format:
     ///   `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The autoscaling policy to create.
     #[prost(message, optional, tag = "2")]
-    pub policy: ::std::option::Option<AutoscalingPolicy>,
+    pub policy: ::core::option::Option<AutoscalingPolicy>,
 }
 /// A request to fetch an autoscaling policy.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -171,14 +178,14 @@ pub struct GetAutoscalingPolicyRequest {
     ///   of the policy has the following format:
     ///   `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A request to update an autoscaling policy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAutoscalingPolicyRequest {
     /// Required. The updated autoscaling policy.
     #[prost(message, optional, tag = "1")]
-    pub policy: ::std::option::Option<AutoscalingPolicy>,
+    pub policy: ::core::option::Option<AutoscalingPolicy>,
 }
 /// A request to delete an autoscaling policy.
 ///
@@ -196,7 +203,7 @@ pub struct DeleteAutoscalingPolicyRequest {
     ///   of the policy has the following format:
     ///   `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A request to list autoscaling policies in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -212,7 +219,7 @@ pub struct ListAutoscalingPoliciesRequest {
     ///   of the location has the following format:
     ///   `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return in each response.
     /// Must be less than or equal to 1000. Defaults to 100.
     #[prost(int32, tag = "2")]
@@ -220,18 +227,18 @@ pub struct ListAutoscalingPoliciesRequest {
     /// Optional. The page token, returned by a previous call, to request the
     /// next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// A response to a request to list autoscaling policies in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAutoscalingPoliciesResponse {
     /// Output only. Autoscaling policies list.
     #[prost(message, repeated, tag = "1")]
-    pub policies: ::std::vec::Vec<AutoscalingPolicy>,
+    pub policies: ::prost::alloc::vec::Vec<AutoscalingPolicy>,
     /// Output only. This token is included in the response if there are more
     /// results to fetch.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod autoscaling_policy_service_client {
@@ -365,16 +372,14 @@ pub mod autoscaling_policy_service_client {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Component {
-    /// Unspecified component.
+    /// Unspecified component. Specifying this will cause Cluster creation to fail.
     Unspecified = 0,
     /// The Anaconda python distribution.
     Anaconda = 5,
-    /// Docker
-    Docker = 13,
     /// The Druid query engine.
     Druid = 9,
-    /// Flink
-    Flink = 14,
+    /// HBase.
+    Hbase = 11,
     /// The Hive Web HCatalog (the REST service for accessing HCatalog).
     HiveWebhcat = 3,
     /// The Jupyter Notebook.
@@ -398,15 +403,15 @@ pub enum Component {
 pub struct Cluster {
     /// Required. The Google Cloud Platform project ID that the cluster belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The cluster name. Cluster names within a project must be
     /// unique. Names of deleted clusters can be reused.
     #[prost(string, tag = "2")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Required. The cluster config. Note that Dataproc may set
     /// default values, and values may change when clusters are updated.
     #[prost(message, optional, tag = "3")]
-    pub config: ::std::option::Option<ClusterConfig>,
+    pub config: ::core::option::Option<ClusterConfig>,
     /// Optional. The labels to associate with this cluster.
     /// Label **keys** must contain 1 to 63 characters, and must conform to
     /// [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
@@ -415,23 +420,24 @@ pub struct Cluster {
     /// 1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be
     /// associated with a cluster.
     #[prost(map = "string, string", tag = "8")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Cluster status.
     #[prost(message, optional, tag = "4")]
-    pub status: ::std::option::Option<ClusterStatus>,
+    pub status: ::core::option::Option<ClusterStatus>,
     /// Output only. The previous cluster status.
     #[prost(message, repeated, tag = "7")]
-    pub status_history: ::std::vec::Vec<ClusterStatus>,
+    pub status_history: ::prost::alloc::vec::Vec<ClusterStatus>,
     /// Output only. A cluster UUID (Unique Universal Identifier). Dataproc
     /// generates this value when it creates the cluster.
     #[prost(string, tag = "6")]
-    pub cluster_uuid: std::string::String,
+    pub cluster_uuid: ::prost::alloc::string::String,
     /// Output only. Contains cluster daemon metrics such as HDFS and YARN stats.
     ///
     /// **Beta Feature**: This report is available for testing purposes only. It
     /// may be changed before final release.
     #[prost(message, optional, tag = "9")]
-    pub metrics: ::std::option::Option<ClusterMetrics>,
+    pub metrics: ::core::option::Option<ClusterMetrics>,
 }
 /// The cluster config.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -446,29 +452,38 @@ pub struct ClusterConfig {
     /// [Dataproc staging
     /// bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)).
     #[prost(string, tag = "1")]
-    pub config_bucket: std::string::String,
+    pub config_bucket: ::prost::alloc::string::String,
+    /// Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs
+    /// data, such as Spark and MapReduce history files. If you do not specify a
+    /// temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or
+    /// EU) for your cluster's temp bucket according to the Compute Engine zone
+    /// where your cluster is deployed, and then create and manage this
+    /// project-level, per-location bucket. The default bucket has a TTL of 90
+    /// days, but you can use any TTL (or none) if you specify a bucket.
+    #[prost(string, tag = "2")]
+    pub temp_bucket: ::prost::alloc::string::String,
     /// Optional. The shared Compute Engine config settings for
     /// all instances in a cluster.
     #[prost(message, optional, tag = "8")]
-    pub gce_cluster_config: ::std::option::Option<GceClusterConfig>,
+    pub gce_cluster_config: ::core::option::Option<GceClusterConfig>,
     /// Optional. The Compute Engine config settings for
     /// the master instance in a cluster.
     #[prost(message, optional, tag = "9")]
-    pub master_config: ::std::option::Option<InstanceGroupConfig>,
+    pub master_config: ::core::option::Option<InstanceGroupConfig>,
     /// Optional. The Compute Engine config settings for
     /// worker instances in a cluster.
     #[prost(message, optional, tag = "10")]
-    pub worker_config: ::std::option::Option<InstanceGroupConfig>,
+    pub worker_config: ::core::option::Option<InstanceGroupConfig>,
     /// Optional. The Compute Engine config settings for
     /// additional worker instances in a cluster.
     #[prost(message, optional, tag = "12")]
-    pub secondary_worker_config: ::std::option::Option<InstanceGroupConfig>,
+    pub secondary_worker_config: ::core::option::Option<InstanceGroupConfig>,
     /// Optional. The config settings for software inside the cluster.
     #[prost(message, optional, tag = "13")]
-    pub software_config: ::std::option::Option<SoftwareConfig>,
+    pub software_config: ::core::option::Option<SoftwareConfig>,
     /// Optional. The config setting for auto delete cluster schedule.
     #[prost(message, optional, tag = "14")]
-    pub lifecycle_config: ::std::option::Option<LifecycleConfig>,
+    pub lifecycle_config: ::core::option::Option<LifecycleConfig>,
     /// Optional. Commands to execute on each node after config is
     /// completed. By default, executables are run on master and all worker nodes.
     /// You can test a node's <code>role</code> metadata to run an executable on
@@ -483,26 +498,26 @@ pub struct ClusterConfig {
     ///       ... worker specific actions ...
     ///     fi
     #[prost(message, repeated, tag = "11")]
-    pub initialization_actions: ::std::vec::Vec<NodeInitializationAction>,
+    pub initialization_actions: ::prost::alloc::vec::Vec<NodeInitializationAction>,
     /// Optional. Encryption settings for the cluster.
     #[prost(message, optional, tag = "15")]
-    pub encryption_config: ::std::option::Option<EncryptionConfig>,
+    pub encryption_config: ::core::option::Option<EncryptionConfig>,
     /// Optional. Autoscaling config for the policy associated with the cluster.
     /// Cluster does not autoscale if this field is unset.
     #[prost(message, optional, tag = "16")]
-    pub autoscaling_config: ::std::option::Option<AutoscalingConfig>,
+    pub autoscaling_config: ::core::option::Option<AutoscalingConfig>,
     /// Optional. Port/endpoint configuration for this cluster
     #[prost(message, optional, tag = "17")]
-    pub endpoint_config: ::std::option::Option<EndpointConfig>,
+    pub endpoint_config: ::core::option::Option<EndpointConfig>,
     /// Optional. Security related configuration.
     #[prost(message, optional, tag = "18")]
-    pub security_config: ::std::option::Option<SecurityConfig>,
-    /// Optional. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes.
-    /// Setting this is considered mutually exclusive with Compute Engine-based
-    /// options such as `gce_cluster_config`, `master_config`, `worker_config`,
-    /// `secondary_worker_config`, and `autoscaling_config`.
+    pub security_config: ::core::option::Option<SecurityConfig>,
+    /// Optional. The Kubernetes Engine config for Dataproc clusters deployed to
+    /// Kubernetes. Setting this is considered mutually exclusive with Compute
+    /// Engine-based options such as `gce_cluster_config`, `master_config`,
+    /// `worker_config`, `secondary_worker_config`, and `autoscaling_config`.
     #[prost(message, optional, tag = "19")]
-    pub gke_cluster_config: ::std::option::Option<GkeClusterConfig>,
+    pub gke_cluster_config: ::core::option::Option<GkeClusterConfig>,
 }
 /// The GKE config for this cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -510,8 +525,9 @@ pub struct GkeClusterConfig {
     /// Optional. A target for the deployment.
     #[prost(message, optional, tag = "1")]
     pub namespaced_gke_deployment_target:
-        ::std::option::Option<gke_cluster_config::NamespacedGkeDeploymentTarget>,
+        ::core::option::Option<gke_cluster_config::NamespacedGkeDeploymentTarget>,
 }
+/// Nested message and enum types in `GkeClusterConfig`.
 pub mod gke_cluster_config {
     /// A full, namespace-isolated deployment target for an existing GKE cluster.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -519,10 +535,10 @@ pub mod gke_cluster_config {
         /// Optional. The target GKE cluster to deploy to.
         /// Format: 'projects/{project}/locations/{location}/clusters/{cluster_id}'
         #[prost(string, tag = "1")]
-        pub target_gke_cluster: std::string::String,
+        pub target_gke_cluster: ::prost::alloc::string::String,
         /// Optional. A namespace within the GKE cluster to deploy into.
         #[prost(string, tag = "2")]
-        pub cluster_namespace: std::string::String,
+        pub cluster_namespace: ::prost::alloc::string::String,
     }
 }
 /// Endpoint config for this cluster
@@ -531,7 +547,8 @@ pub struct EndpointConfig {
     /// Output only. The map of port descriptions to URLs. Will only be populated
     /// if enable_http_port_access is true.
     #[prost(map = "string, string", tag = "1")]
-    pub http_ports: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub http_ports:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. If true, enable http access to specific ports on the cluster
     /// from external sources. Defaults to false.
     #[prost(bool, tag = "2")]
@@ -550,7 +567,7 @@ pub struct AutoscalingConfig {
     ///
     /// Note that the policy must be in the same project and Dataproc region.
     #[prost(string, tag = "1")]
-    pub policy_uri: std::string::String,
+    pub policy_uri: ::prost::alloc::string::String,
 }
 /// Encryption settings for the cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -558,7 +575,7 @@ pub struct EncryptionConfig {
     /// Optional. The Cloud KMS key name to use for PD disk encryption for all
     /// instances in the cluster.
     #[prost(string, tag = "1")]
-    pub gce_pd_kms_key_name: std::string::String,
+    pub gce_pd_kms_key_name: ::prost::alloc::string::String,
 }
 /// Common config settings for resources of Compute Engine cluster
 /// instances, applicable to all instances in the cluster.
@@ -576,7 +593,7 @@ pub struct GceClusterConfig {
     /// * `projects/[project_id]/zones/[zone]`
     /// * `us-central1-f`
     #[prost(string, tag = "1")]
-    pub zone_uri: std::string::String,
+    pub zone_uri: ::prost::alloc::string::String,
     /// Optional. The Compute Engine network to be used for machine
     /// communications. Cannot be specified with subnetwork_uri. If neither
     /// `network_uri` nor `subnetwork_uri` is specified, the "default" network of
@@ -590,7 +607,7 @@ pub struct GceClusterConfig {
     /// * `projects/[project_id]/regions/global/default`
     /// * `default`
     #[prost(string, tag = "2")]
-    pub network_uri: std::string::String,
+    pub network_uri: ::prost::alloc::string::String,
     /// Optional. The Compute Engine subnetwork to be used for machine
     /// communications. Cannot be specified with network_uri.
     ///
@@ -600,7 +617,7 @@ pub struct GceClusterConfig {
     /// * `projects/[project_id]/regions/us-east1/subnetworks/sub0`
     /// * `sub0`
     #[prost(string, tag = "6")]
-    pub subnetwork_uri: std::string::String,
+    pub subnetwork_uri: ::prost::alloc::string::String,
     /// Optional. If true, all instances in the cluster will only have internal IP
     /// addresses. By default, clusters are not restricted to internal IP
     /// addresses, and will have ephemeral external IP addresses assigned to each
@@ -610,7 +627,7 @@ pub struct GceClusterConfig {
     #[prost(bool, tag = "7")]
     pub internal_ip_only: bool,
     /// Optional. The [Dataproc service
-    /// account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_cloud_dataproc)
+    /// account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc)
     /// (also see [VM Data Plane
     /// identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity))
     /// used by Dataproc cluster VM instances to access Google Cloud Platform
@@ -621,7 +638,7 @@ pub struct GceClusterConfig {
     /// account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
     /// is used.
     #[prost(string, tag = "8")]
-    pub service_account: std::string::String,
+    pub service_account: ::prost::alloc::string::String,
     /// Optional. The URIs of service account scopes to be included in
     /// Compute Engine instances. The following base set of scopes is always
     /// included:
@@ -637,19 +654,20 @@ pub struct GceClusterConfig {
     /// * https://www.googleapis.com/auth/bigtable.data
     /// * https://www.googleapis.com/auth/devstorage.full_control
     #[prost(string, repeated, tag = "3")]
-    pub service_account_scopes: ::std::vec::Vec<std::string::String>,
+    pub service_account_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The Compute Engine tags to add to all instances (see [Tagging
     /// instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
     #[prost(string, repeated, tag = "4")]
-    pub tags: ::std::vec::Vec<std::string::String>,
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The Compute Engine metadata entries to add to all instances (see
     /// [Project and instance
     /// metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
     #[prost(map = "string, string", tag = "5")]
-    pub metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. Reservation Affinity for consuming Zonal reservation.
     #[prost(message, optional, tag = "11")]
-    pub reservation_affinity: ::std::option::Option<ReservationAffinity>,
+    pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
 }
 /// The config settings for Compute Engine resources in
 /// an instance group, such as a master or worker group.
@@ -662,7 +680,7 @@ pub struct InstanceGroupConfig {
     /// Output only. The list of instance names. Dataproc derives the names
     /// from `cluster_name`, `num_instances`, and the instance group.
     #[prost(string, repeated, tag = "2")]
-    pub instance_names: ::std::vec::Vec<std::string::String>,
+    pub instance_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The Compute Engine image resource used for cluster instances.
     ///
     /// The URI can represent an image or image family.
@@ -682,7 +700,7 @@ pub struct InstanceGroupConfig {
     /// If the URI is unspecified, it will be inferred from
     /// `SoftwareConfig.image_version` or the system default.
     #[prost(string, tag = "3")]
-    pub image_uri: std::string::String,
+    pub image_uri: ::prost::alloc::string::String,
     /// Optional. The Compute Engine machine type used for cluster instances.
     ///
     /// A full URL, partial URI, or short name are valid. Examples:
@@ -697,28 +715,60 @@ pub struct InstanceGroupConfig {
     /// feature, you must use the short name of the machine type
     /// resource, for example, `n1-standard-2`.
     #[prost(string, tag = "4")]
-    pub machine_type_uri: std::string::String,
+    pub machine_type_uri: ::prost::alloc::string::String,
     /// Optional. Disk option config settings.
     #[prost(message, optional, tag = "5")]
-    pub disk_config: ::std::option::Option<DiskConfig>,
+    pub disk_config: ::core::option::Option<DiskConfig>,
     /// Output only. Specifies that this instance group contains preemptible
     /// instances.
     #[prost(bool, tag = "6")]
     pub is_preemptible: bool,
+    /// Optional. Specifies the preemptibility of the instance group.
+    ///
+    /// The default value for master and worker groups is
+    /// `NON_PREEMPTIBLE`. This default cannot be changed.
+    ///
+    /// The default value for secondary instances is
+    /// `PREEMPTIBLE`.
+    #[prost(enumeration = "instance_group_config::Preemptibility", tag = "10")]
+    pub preemptibility: i32,
     /// Output only. The config for Compute Engine Instance Group
     /// Manager that manages this group.
     /// This is only used for preemptible instance groups.
     #[prost(message, optional, tag = "7")]
-    pub managed_group_config: ::std::option::Option<ManagedGroupConfig>,
+    pub managed_group_config: ::core::option::Option<ManagedGroupConfig>,
     /// Optional. The Compute Engine accelerator configuration for these
     /// instances.
     #[prost(message, repeated, tag = "8")]
-    pub accelerators: ::std::vec::Vec<AcceleratorConfig>,
+    pub accelerators: ::prost::alloc::vec::Vec<AcceleratorConfig>,
     /// Specifies the minimum cpu platform for the Instance Group.
     /// See [Dataproc -> Minimum CPU
     /// Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
     #[prost(string, tag = "9")]
-    pub min_cpu_platform: std::string::String,
+    pub min_cpu_platform: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `InstanceGroupConfig`.
+pub mod instance_group_config {
+    /// Controls the use of
+    /// [preemptible instances]
+    /// (https://cloud.google.com/compute/docs/instances/preemptible)
+    /// within the group.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Preemptibility {
+        /// Preemptibility is unspecified, the system will choose the
+        /// appropriate setting for each instance group.
+        Unspecified = 0,
+        /// Instances are non-preemptible.
+        ///
+        /// This option is allowed for all instance groups and is the only valid
+        /// value for Master and Worker instance groups.
+        NonPreemptible = 1,
+        /// Instances are preemptible.
+        ///
+        /// This option is allowed only for secondary worker groups.
+        Preemptible = 2,
+    }
 }
 /// Specifies the resources used to actively manage an instance group.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -726,10 +776,10 @@ pub struct ManagedGroupConfig {
     /// Output only. The name of the Instance Template used for the Managed
     /// Instance Group.
     #[prost(string, tag = "1")]
-    pub instance_template_name: std::string::String,
+    pub instance_template_name: ::prost::alloc::string::String,
     /// Output only. The name of the Instance Group Manager for this group.
     #[prost(string, tag = "2")]
-    pub instance_group_manager_name: std::string::String,
+    pub instance_group_manager_name: ::prost::alloc::string::String,
 }
 /// Specifies the type and number of accelerator cards attached to the instances
 /// of an instance group (see [GPUs on Compute
@@ -752,7 +802,7 @@ pub struct AcceleratorConfig {
     /// feature, you must use the short name of the accelerator type
     /// resource, for example, `nvidia-tesla-k80`.
     #[prost(string, tag = "1")]
-    pub accelerator_type_uri: std::string::String,
+    pub accelerator_type_uri: ::prost::alloc::string::String,
     /// The number of the accelerator cards of this type exposed to this instance.
     #[prost(int32, tag = "2")]
     pub accelerator_count: i32,
@@ -764,7 +814,7 @@ pub struct DiskConfig {
     /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
     /// "pd-standard" (Persistent Disk Hard Disk Drive).
     #[prost(string, tag = "3")]
-    pub boot_disk_type: std::string::String,
+    pub boot_disk_type: ::prost::alloc::string::String,
     /// Optional. Size in GB of the boot disk (default is 500GB).
     #[prost(int32, tag = "1")]
     pub boot_disk_size_gb: i32,
@@ -786,24 +836,26 @@ pub struct LifecycleConfig {
     /// representation of
     /// [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json).
     #[prost(message, optional, tag = "1")]
-    pub idle_delete_ttl: ::std::option::Option<::prost_types::Duration>,
+    pub idle_delete_ttl: ::core::option::Option<::prost_types::Duration>,
     /// Output only. The time when cluster became idle (most recent job finished)
     /// and became eligible for deletion due to idleness (see JSON representation
     /// of
     /// [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).
     #[prost(message, optional, tag = "4")]
-    pub idle_start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub idle_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Either the exact time the cluster should be deleted at or
     /// the cluster maximum age.
     #[prost(oneof = "lifecycle_config::Ttl", tags = "2, 3")]
-    pub ttl: ::std::option::Option<lifecycle_config::Ttl>,
+    pub ttl: ::core::option::Option<lifecycle_config::Ttl>,
 }
+/// Nested message and enum types in `LifecycleConfig`.
 pub mod lifecycle_config {
     /// Either the exact time the cluster should be deleted at or
     /// the cluster maximum age.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Ttl {
-        /// Optional. The time when cluster will be auto-deleted. (see JSON representation of
+        /// Optional. The time when cluster will be auto-deleted. (see JSON
+        /// representation of
         /// [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).
         #[prost(message, tag = "2")]
         AutoDeleteTime(::prost_types::Timestamp),
@@ -820,69 +872,69 @@ pub mod lifecycle_config {
 pub struct SecurityConfig {
     /// Kerberos related configuration.
     #[prost(message, optional, tag = "1")]
-    pub kerberos_config: ::std::option::Option<KerberosConfig>,
+    pub kerberos_config: ::core::option::Option<KerberosConfig>,
 }
 /// Specifies Kerberos related configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KerberosConfig {
-    /// Optional. Flag to indicate whether to Kerberize the cluster (default: false). Set
-    /// this field to true to enable Kerberos on a cluster.
+    /// Optional. Flag to indicate whether to Kerberize the cluster (default:
+    /// false). Set this field to true to enable Kerberos on a cluster.
     #[prost(bool, tag = "1")]
     pub enable_kerberos: bool,
     /// Required. The Cloud Storage URI of a KMS encrypted file containing the root
     /// principal password.
     #[prost(string, tag = "2")]
-    pub root_principal_password_uri: std::string::String,
+    pub root_principal_password_uri: ::prost::alloc::string::String,
     /// Required. The uri of the KMS key used to encrypt various sensitive
     /// files.
     #[prost(string, tag = "3")]
-    pub kms_key_uri: std::string::String,
+    pub kms_key_uri: ::prost::alloc::string::String,
     /// Optional. The Cloud Storage URI of the keystore file used for SSL
     /// encryption. If not provided, Dataproc will provide a self-signed
     /// certificate.
     #[prost(string, tag = "4")]
-    pub keystore_uri: std::string::String,
+    pub keystore_uri: ::prost::alloc::string::String,
     /// Optional. The Cloud Storage URI of the truststore file used for SSL
     /// encryption. If not provided, Dataproc will provide a self-signed
     /// certificate.
     #[prost(string, tag = "5")]
-    pub truststore_uri: std::string::String,
+    pub truststore_uri: ::prost::alloc::string::String,
     /// Optional. The Cloud Storage URI of a KMS encrypted file containing the
     /// password to the user provided keystore. For the self-signed certificate,
     /// this password is generated by Dataproc.
     #[prost(string, tag = "6")]
-    pub keystore_password_uri: std::string::String,
+    pub keystore_password_uri: ::prost::alloc::string::String,
     /// Optional. The Cloud Storage URI of a KMS encrypted file containing the
     /// password to the user provided key. For the self-signed certificate, this
     /// password is generated by Dataproc.
     #[prost(string, tag = "7")]
-    pub key_password_uri: std::string::String,
+    pub key_password_uri: ::prost::alloc::string::String,
     /// Optional. The Cloud Storage URI of a KMS encrypted file containing the
     /// password to the user provided truststore. For the self-signed certificate,
     /// this password is generated by Dataproc.
     #[prost(string, tag = "8")]
-    pub truststore_password_uri: std::string::String,
+    pub truststore_password_uri: ::prost::alloc::string::String,
     /// Optional. The remote realm the Dataproc on-cluster KDC will trust, should
     /// the user enable cross realm trust.
     #[prost(string, tag = "9")]
-    pub cross_realm_trust_realm: std::string::String,
+    pub cross_realm_trust_realm: ::prost::alloc::string::String,
     /// Optional. The KDC (IP or hostname) for the remote trusted realm in a cross
     /// realm trust relationship.
     #[prost(string, tag = "10")]
-    pub cross_realm_trust_kdc: std::string::String,
+    pub cross_realm_trust_kdc: ::prost::alloc::string::String,
     /// Optional. The admin server (IP or hostname) for the remote trusted realm in
     /// a cross realm trust relationship.
     #[prost(string, tag = "11")]
-    pub cross_realm_trust_admin_server: std::string::String,
+    pub cross_realm_trust_admin_server: ::prost::alloc::string::String,
     /// Optional. The Cloud Storage URI of a KMS encrypted file containing the
     /// shared password between the on-cluster Kerberos realm and the remote
     /// trusted realm, in a cross realm trust relationship.
     #[prost(string, tag = "12")]
-    pub cross_realm_trust_shared_password_uri: std::string::String,
+    pub cross_realm_trust_shared_password_uri: ::prost::alloc::string::String,
     /// Optional. The Cloud Storage URI of a KMS encrypted file containing the
     /// master key of the KDC database.
     #[prost(string, tag = "13")]
-    pub kdc_db_key_uri: std::string::String,
+    pub kdc_db_key_uri: ::prost::alloc::string::String,
     /// Optional. The lifetime of the ticket granting ticket, in hours.
     /// If not specified, or user specifies 0, then default value 10
     /// will be used.
@@ -891,7 +943,7 @@ pub struct KerberosConfig {
     /// Optional. The name of the on-cluster Kerberos realm.
     /// If not specified, the uppercased domain of hostnames will be the realm.
     #[prost(string, tag = "15")]
-    pub realm: std::string::String,
+    pub realm: ::prost::alloc::string::String,
 }
 /// Specifies an executable to run on a fully configured node and a
 /// timeout period for executable completion.
@@ -899,7 +951,7 @@ pub struct KerberosConfig {
 pub struct NodeInitializationAction {
     /// Required. Cloud Storage URI of executable file.
     #[prost(string, tag = "1")]
-    pub executable_file: std::string::String,
+    pub executable_file: ::prost::alloc::string::String,
     /// Optional. Amount of time executable has to complete. Default is
     /// 10 minutes (see JSON representation of
     /// [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
@@ -908,7 +960,7 @@ pub struct NodeInitializationAction {
     /// name of the executable that caused the error and the exceeded timeout
     /// period) if the executable is not completed at end of the timeout period.
     #[prost(message, optional, tag = "2")]
-    pub execution_timeout: ::std::option::Option<::prost_types::Duration>,
+    pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// The status of a cluster and its instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -918,16 +970,17 @@ pub struct ClusterStatus {
     pub state: i32,
     /// Output only. Optional details of cluster's state.
     #[prost(string, tag = "2")]
-    pub detail: std::string::String,
+    pub detail: ::prost::alloc::string::String,
     /// Output only. Time when this state was entered (see JSON representation of
     /// [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).
     #[prost(message, optional, tag = "3")]
-    pub state_start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub state_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Additional state information that includes
     /// status reported by the agent.
     #[prost(enumeration = "cluster_status::Substate", tag = "4")]
     pub substate: i32,
 }
+/// Nested message and enum types in `ClusterStatus`.
 pub mod cluster_status {
     /// The cluster state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -976,13 +1029,13 @@ pub mod cluster_status {
 pub struct SoftwareConfig {
     /// Optional. The version of software inside the cluster. It must be one of the
     /// supported [Dataproc
-    /// Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_cloud_dataproc_versions),
+    /// Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions),
     /// such as "1.2" (including a subminor version, such as "1.2.29"), or the
     /// ["preview"
     /// version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions).
     /// If unspecified, it defaults to the latest Debian version.
     #[prost(string, tag = "1")]
-    pub image_version: std::string::String,
+    pub image_version: ::prost::alloc::string::String,
     /// Optional. The properties to set on daemon config files.
     ///
     /// Property keys are specified in `prefix:property` format, for example
@@ -1002,10 +1055,11 @@ pub struct SoftwareConfig {
     /// For more information, see [Cluster
     /// properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties).
     #[prost(map = "string, string", tag = "2")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The set of optional components to activate on the cluster.
     #[prost(enumeration = "Component", repeated, tag = "3")]
-    pub optional_components: ::std::vec::Vec<i32>,
+    pub optional_components: ::prost::alloc::vec::Vec<i32>,
 }
 /// Contains cluster daemon metrics, such as HDFS and YARN stats.
 ///
@@ -1015,10 +1069,10 @@ pub struct SoftwareConfig {
 pub struct ClusterMetrics {
     /// The HDFS metrics.
     #[prost(map = "string, int64", tag = "1")]
-    pub hdfs_metrics: ::std::collections::HashMap<std::string::String, i64>,
+    pub hdfs_metrics: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
     /// The YARN metrics.
     #[prost(map = "string, int64", tag = "2")]
-    pub yarn_metrics: ::std::collections::HashMap<std::string::String, i64>,
+    pub yarn_metrics: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
 }
 /// A request to create a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1026,18 +1080,19 @@ pub struct CreateClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The cluster to create.
     #[prost(message, optional, tag = "2")]
-    pub cluster: ::std::option::Option<Cluster>,
+    pub cluster: ::core::option::Option<Cluster>,
     /// Optional. A unique id used to identify the request. If the server
-    /// receives two [CreateClusterRequest][google.cloud.dataproc.v1beta2.CreateClusterRequest] requests  with the same
-    /// id, then the second request will be ignored and the
-    /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the backend
-    /// is returned.
+    /// receives two
+    /// [CreateClusterRequest][google.cloud.dataproc.v1beta2.CreateClusterRequest]
+    /// requests  with the same id, then the second request will be ignored and the
+    /// first [google.longrunning.Operation][google.longrunning.Operation] created
+    /// and stored in the backend is returned.
     ///
     /// It is recommended to always set this value to a
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
@@ -1045,7 +1100,7 @@ pub struct CreateClusterRequest {
     /// The id must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// A request to update a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1053,16 +1108,16 @@ pub struct UpdateClusterRequest {
     /// Required. The ID of the Google Cloud Platform project the
     /// cluster belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "5")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The cluster name.
     #[prost(string, tag = "2")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Required. The changes to the cluster.
     #[prost(message, optional, tag = "3")]
-    pub cluster: ::std::option::Option<Cluster>,
+    pub cluster: ::core::option::Option<Cluster>,
     /// Optional. Timeout for graceful YARN decomissioning. Graceful
     /// decommissioning allows removing nodes from the cluster without
     /// interrupting jobs in progress. Timeout specifies how long to wait for jobs
@@ -1073,7 +1128,7 @@ pub struct UpdateClusterRequest {
     ///
     /// Only supported on Dataproc image versions 1.2 and higher.
     #[prost(message, optional, tag = "6")]
-    pub graceful_decommission_timeout: ::std::option::Option<::prost_types::Duration>,
+    pub graceful_decommission_timeout: ::core::option::Option<::prost_types::Duration>,
     /// Required. Specifies the path, relative to `Cluster`, of
     /// the field to update. For example, to change the number of workers
     /// in a cluster to 5, the `update_mask` parameter would be
@@ -1135,12 +1190,13 @@ pub struct UpdateClusterRequest {
     /// </tr>
     /// </table>
     #[prost(message, optional, tag = "4")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. A unique id used to identify the request. If the server
-    /// receives two [UpdateClusterRequest][google.cloud.dataproc.v1beta2.UpdateClusterRequest] requests  with the same
-    /// id, then the second request will be ignored and the
-    /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the
-    /// backend is returned.
+    /// receives two
+    /// [UpdateClusterRequest][google.cloud.dataproc.v1beta2.UpdateClusterRequest]
+    /// requests  with the same id, then the second request will be ignored and the
+    /// first [google.longrunning.Operation][google.longrunning.Operation] created
+    /// and stored in the backend is returned.
     ///
     /// It is recommended to always set this value to a
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
@@ -1148,7 +1204,7 @@ pub struct UpdateClusterRequest {
     /// The id must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "7")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1156,22 +1212,23 @@ pub struct DeleteClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The cluster name.
     #[prost(string, tag = "2")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Optional. Specifying the `cluster_uuid` means the RPC should fail
     /// (with error NOT_FOUND) if cluster with specified UUID does not exist.
     #[prost(string, tag = "4")]
-    pub cluster_uuid: std::string::String,
+    pub cluster_uuid: ::prost::alloc::string::String,
     /// Optional. A unique id used to identify the request. If the server
-    /// receives two [DeleteClusterRequest][google.cloud.dataproc.v1beta2.DeleteClusterRequest] requests  with the same
-    /// id, then the second request will be ignored and the
-    /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the
-    /// backend is returned.
+    /// receives two
+    /// [DeleteClusterRequest][google.cloud.dataproc.v1beta2.DeleteClusterRequest]
+    /// requests  with the same id, then the second request will be ignored and the
+    /// first [google.longrunning.Operation][google.longrunning.Operation] created
+    /// and stored in the backend is returned.
     ///
     /// It is recommended to always set this value to a
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
@@ -1179,7 +1236,7 @@ pub struct DeleteClusterRequest {
     /// The id must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "5")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request to get the resource representation for a cluster in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1187,13 +1244,13 @@ pub struct GetClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The cluster name.
     #[prost(string, tag = "2")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
 }
 /// A request to list the clusters in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1201,10 +1258,10 @@ pub struct ListClustersRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "4")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Optional.  A filter constraining the clusters to list. Filters are
     /// case-sensitive and have the following syntax:
     ///
@@ -1225,25 +1282,25 @@ pub struct ListClustersRequest {
     /// status.state = ACTIVE AND clusterName = mycluster
     /// AND labels.env = staging AND labels.starred = *
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. The standard List page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The standard List page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The list of all clusters in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// Output only. The clusters in the project.
     #[prost(message, repeated, tag = "1")]
-    pub clusters: ::std::vec::Vec<Cluster>,
+    pub clusters: ::prost::alloc::vec::Vec<Cluster>,
     /// Output only. This token is included in the response if there are more
     /// results to fetch. To fetch additional results, provide this value as the
     /// `page_token` in a subsequent <code>ListClustersRequest</code>.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to collect cluster diagnostic information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1251,13 +1308,13 @@ pub struct DiagnoseClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The cluster name.
     #[prost(string, tag = "2")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
 }
 /// The location of diagnostic output.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1266,7 +1323,7 @@ pub struct DiagnoseClusterResults {
     /// The output report is a plain text file with a summary of collected
     /// diagnostics.
     #[prost(string, tag = "1")]
-    pub output_uri: std::string::String,
+    pub output_uri: ::prost::alloc::string::String,
 }
 /// Reservation Affinity for consuming Zonal reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1276,11 +1333,12 @@ pub struct ReservationAffinity {
     pub consume_reservation_type: i32,
     /// Optional. Corresponds to the label key of reservation resource.
     #[prost(string, tag = "2")]
-    pub key: std::string::String,
+    pub key: ::prost::alloc::string::String,
     /// Optional. Corresponds to the label values of reservation resource.
     #[prost(string, repeated, tag = "3")]
-    pub values: ::std::vec::Vec<std::string::String>,
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `ReservationAffinity`.
 pub mod reservation_affinity {
     /// Indicates whether to consume capacity from an reservation or not.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1468,8 +1526,9 @@ pub struct LoggingConfig {
     /// Examples:
     ///   'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'
     #[prost(map = "string, enumeration(logging_config::Level)", tag = "2")]
-    pub driver_log_levels: ::std::collections::HashMap<std::string::String, i32>,
+    pub driver_log_levels: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
 }
+/// Nested message and enum types in `LoggingConfig`.
 pub mod logging_config {
     /// The Log4j level for job execution. When running an
     /// [Apache Hive](http://hive.apache.org/) job, Cloud
@@ -1509,37 +1568,39 @@ pub struct HadoopJob {
     /// job properties, since a collision may occur that causes an incorrect job
     /// submission.
     #[prost(string, repeated, tag = "3")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Jar file URIs to add to the CLASSPATHs of the
     /// Hadoop driver and tasks.
     #[prost(string, repeated, tag = "4")]
-    pub jar_file_uris: ::std::vec::Vec<std::string::String>,
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. HCFS (Hadoop Compatible Filesystem) URIs of files to be copied
     /// to the working directory of Hadoop drivers and distributed tasks. Useful
     /// for naively parallel tasks.
     #[prost(string, repeated, tag = "5")]
-    pub file_uris: ::std::vec::Vec<std::string::String>,
+    pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. HCFS URIs of archives to be extracted in the working directory of
     /// Hadoop drivers and tasks. Supported file types:
     /// .jar, .tar, .tar.gz, .tgz, or .zip.
     #[prost(string, repeated, tag = "6")]
-    pub archive_uris: ::std::vec::Vec<std::string::String>,
+    pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure Hadoop.
     /// Properties that conflict with values set by the Dataproc API may be
     /// overwritten. Can include properties set in /etc/hadoop/conf/*-site and
     /// classes in user code.
     #[prost(map = "string, string", tag = "7")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. The runtime log config for job execution.
     #[prost(message, optional, tag = "8")]
-    pub logging_config: ::std::option::Option<LoggingConfig>,
+    pub logging_config: ::core::option::Option<LoggingConfig>,
     /// Required. Indicates the location of the driver's main class. Specify
     /// either the jar file that contains the main class or the main class name.
     /// To specify both, add the jar file to `jar_file_uris`, and then specify
     /// the main class name in this property.
     #[prost(oneof = "hadoop_job::Driver", tags = "1, 2")]
-    pub driver: ::std::option::Option<hadoop_job::Driver>,
+    pub driver: ::core::option::Option<hadoop_job::Driver>,
 }
+/// Nested message and enum types in `HadoopJob`.
 pub mod hadoop_job {
     /// Required. Indicates the location of the driver's main class. Specify
     /// either the jar file that contains the main class or the main class name.
@@ -1553,11 +1614,11 @@ pub mod hadoop_job {
         ///     'hdfs:/tmp/test-samples/custom-wordcount.jar'
         ///     'file:///home/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'
         #[prost(string, tag = "1")]
-        MainJarFileUri(std::string::String),
+        MainJarFileUri(::prost::alloc::string::String),
         /// The name of the driver's main class. The jar file containing the class
         /// must be in the default CLASSPATH or specified in `jar_file_uris`.
         #[prost(string, tag = "2")]
-        MainClass(std::string::String),
+        MainClass(::prost::alloc::string::String),
     }
 }
 /// A Dataproc job for running [Apache Spark](http://spark.apache.org/)
@@ -1573,42 +1634,44 @@ pub struct SparkJob {
     /// such as `--conf`, that can be set as job properties, since a collision may
     /// occur that causes an incorrect job submission.
     #[prost(string, repeated, tag = "3")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
     /// Spark driver and tasks.
     #[prost(string, repeated, tag = "4")]
-    pub jar_file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of files to be copied to the working directory of
-    /// Spark drivers and distributed tasks. Useful for naively parallel tasks.
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of files to be placed in the working directory of
+    /// each executor. Useful for naively parallel tasks.
     #[prost(string, repeated, tag = "5")]
-    pub file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of archives to be extracted in the working directory
-    /// of Spark drivers and tasks. Supported file types:
+    pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of archives to be extracted into the working directory
+    /// of each executor. Supported file types:
     /// .jar, .tar, .tar.gz, .tgz, and .zip.
     #[prost(string, repeated, tag = "6")]
-    pub archive_uris: ::std::vec::Vec<std::string::String>,
+    pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure Spark.
     /// Properties that conflict with values set by the Dataproc API may be
     /// overwritten. Can include properties set in
     /// /etc/spark/conf/spark-defaults.conf and classes in user code.
     #[prost(map = "string, string", tag = "7")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. The runtime log config for job execution.
     #[prost(message, optional, tag = "8")]
-    pub logging_config: ::std::option::Option<LoggingConfig>,
+    pub logging_config: ::core::option::Option<LoggingConfig>,
     #[prost(oneof = "spark_job::Driver", tags = "1, 2")]
-    pub driver: ::std::option::Option<spark_job::Driver>,
+    pub driver: ::core::option::Option<spark_job::Driver>,
 }
+/// Nested message and enum types in `SparkJob`.
 pub mod spark_job {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Driver {
         /// The HCFS URI of the jar file that contains the main class.
         #[prost(string, tag = "1")]
-        MainJarFileUri(std::string::String),
+        MainJarFileUri(::prost::alloc::string::String),
         /// The name of the driver's main class. The jar file that contains the class
         /// must be in the default CLASSPATH or specified in `jar_file_uris`.
         #[prost(string, tag = "2")]
-        MainClass(std::string::String),
+        MainClass(::prost::alloc::string::String),
     }
 }
 /// A Dataproc job for running
@@ -1620,37 +1683,39 @@ pub struct PySparkJob {
     /// Required. The HCFS URI of the main Python file to use as the driver. Must
     /// be a .py file.
     #[prost(string, tag = "1")]
-    pub main_python_file_uri: std::string::String,
+    pub main_python_file_uri: ::prost::alloc::string::String,
     /// Optional. The arguments to pass to the driver.  Do not include arguments,
     /// such as `--conf`, that can be set as job properties, since a collision may
     /// occur that causes an incorrect job submission.
     #[prost(string, repeated, tag = "2")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. HCFS file URIs of Python files to pass to the PySpark
     /// framework. Supported file types: .py, .egg, and .zip.
     #[prost(string, repeated, tag = "3")]
-    pub python_file_uris: ::std::vec::Vec<std::string::String>,
+    pub python_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
     /// Python driver and tasks.
     #[prost(string, repeated, tag = "4")]
-    pub jar_file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of files to be copied to the working directory of
-    /// Python drivers and distributed tasks. Useful for naively parallel tasks.
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of files to be placed in the working directory of
+    /// each executor. Useful for naively parallel tasks.
     #[prost(string, repeated, tag = "5")]
-    pub file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of archives to be extracted in the working directory of
+    pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of archives to be extracted into the working directory
+    /// of each executor. Supported file types:
     /// .jar, .tar, .tar.gz, .tgz, and .zip.
     #[prost(string, repeated, tag = "6")]
-    pub archive_uris: ::std::vec::Vec<std::string::String>,
+    pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure PySpark.
     /// Properties that conflict with values set by the Dataproc API may be
     /// overwritten. Can include properties set in
     /// /etc/spark/conf/spark-defaults.conf and classes in user code.
     #[prost(map = "string, string", tag = "7")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. The runtime log config for job execution.
     #[prost(message, optional, tag = "8")]
-    pub logging_config: ::std::option::Option<LoggingConfig>,
+    pub logging_config: ::core::option::Option<LoggingConfig>,
 }
 /// A list of queries to run on a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1670,7 +1735,7 @@ pub struct QueryList {
     ///       }
     ///     }
     #[prost(string, repeated, tag = "1")]
-    pub queries: ::std::vec::Vec<std::string::String>,
+    pub queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Dataproc job for running [Apache Hive](https://hive.apache.org/)
 /// queries on YARN.
@@ -1684,23 +1749,26 @@ pub struct HiveJob {
     /// Optional. Mapping of query variable names to values (equivalent to the
     /// Hive command: `SET name="value";`).
     #[prost(map = "string, string", tag = "4")]
-    pub script_variables: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub script_variables:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. A mapping of property names and values, used to configure Hive.
     /// Properties that conflict with values set by the Dataproc API may be
     /// overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml,
     /// /etc/hive/conf/hive-site.xml, and classes in user code.
     #[prost(map = "string, string", tag = "5")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. HCFS URIs of jar files to add to the CLASSPATH of the
     /// Hive server and Hadoop MapReduce (MR) tasks. Can contain Hive SerDes
     /// and UDFs.
     #[prost(string, repeated, tag = "6")]
-    pub jar_file_uris: ::std::vec::Vec<std::string::String>,
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The sequence of Hive queries to execute, specified as either
     /// an HCFS file URI or a list of queries.
     #[prost(oneof = "hive_job::Queries", tags = "1, 2")]
-    pub queries: ::std::option::Option<hive_job::Queries>,
+    pub queries: ::core::option::Option<hive_job::Queries>,
 }
+/// Nested message and enum types in `HiveJob`.
 pub mod hive_job {
     /// Required. The sequence of Hive queries to execute, specified as either
     /// an HCFS file URI or a list of queries.
@@ -1708,7 +1776,7 @@ pub mod hive_job {
     pub enum Queries {
         /// The HCFS URI of the script that contains Hive queries.
         #[prost(string, tag = "1")]
-        QueryFileUri(std::string::String),
+        QueryFileUri(::prost::alloc::string::String),
         /// A list of queries.
         #[prost(message, tag = "2")]
         QueryList(super::QueryList),
@@ -1721,23 +1789,26 @@ pub struct SparkSqlJob {
     /// Optional. Mapping of query variable names to values (equivalent to the
     /// Spark SQL command: SET `name="value";`).
     #[prost(map = "string, string", tag = "3")]
-    pub script_variables: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub script_variables:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure
     /// Spark SQL's SparkConf. Properties that conflict with values set by the
     /// Dataproc API may be overwritten.
     #[prost(map = "string, string", tag = "4")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
     #[prost(string, repeated, tag = "56")]
-    pub jar_file_uris: ::std::vec::Vec<std::string::String>,
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The runtime log config for job execution.
     #[prost(message, optional, tag = "6")]
-    pub logging_config: ::std::option::Option<LoggingConfig>,
+    pub logging_config: ::core::option::Option<LoggingConfig>,
     /// Required. The sequence of Spark SQL queries to execute, specified as
     /// either an HCFS file URI or as a list of queries.
     #[prost(oneof = "spark_sql_job::Queries", tags = "1, 2")]
-    pub queries: ::std::option::Option<spark_sql_job::Queries>,
+    pub queries: ::core::option::Option<spark_sql_job::Queries>,
 }
+/// Nested message and enum types in `SparkSqlJob`.
 pub mod spark_sql_job {
     /// Required. The sequence of Spark SQL queries to execute, specified as
     /// either an HCFS file URI or as a list of queries.
@@ -1745,7 +1816,7 @@ pub mod spark_sql_job {
     pub enum Queries {
         /// The HCFS URI of the script that contains SQL queries.
         #[prost(string, tag = "1")]
-        QueryFileUri(std::string::String),
+        QueryFileUri(::prost::alloc::string::String),
         /// A list of queries.
         #[prost(message, tag = "2")]
         QueryList(super::QueryList),
@@ -1763,25 +1834,28 @@ pub struct PigJob {
     /// Optional. Mapping of query variable names to values (equivalent to the Pig
     /// command: `name=[value]`).
     #[prost(map = "string, string", tag = "4")]
-    pub script_variables: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub script_variables:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure Pig.
     /// Properties that conflict with values set by the Dataproc API may be
     /// overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml,
     /// /etc/pig/conf/pig.properties, and classes in user code.
     #[prost(map = "string, string", tag = "5")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. HCFS URIs of jar files to add to the CLASSPATH of
     /// the Pig Client and Hadoop MapReduce (MR) tasks. Can contain Pig UDFs.
     #[prost(string, repeated, tag = "6")]
-    pub jar_file_uris: ::std::vec::Vec<std::string::String>,
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The runtime log config for job execution.
     #[prost(message, optional, tag = "7")]
-    pub logging_config: ::std::option::Option<LoggingConfig>,
+    pub logging_config: ::core::option::Option<LoggingConfig>,
     /// Required. The sequence of Pig queries to execute, specified as an HCFS
     /// file URI or a list of queries.
     #[prost(oneof = "pig_job::Queries", tags = "1, 2")]
-    pub queries: ::std::option::Option<pig_job::Queries>,
+    pub queries: ::core::option::Option<pig_job::Queries>,
 }
+/// Nested message and enum types in `PigJob`.
 pub mod pig_job {
     /// Required. The sequence of Pig queries to execute, specified as an HCFS
     /// file URI or a list of queries.
@@ -1789,7 +1863,7 @@ pub mod pig_job {
     pub enum Queries {
         /// The HCFS URI of the script that contains the Pig queries.
         #[prost(string, tag = "1")]
-        QueryFileUri(std::string::String),
+        QueryFileUri(::prost::alloc::string::String),
         /// A list of queries.
         #[prost(message, tag = "2")]
         QueryList(super::QueryList),
@@ -1803,30 +1877,31 @@ pub struct SparkRJob {
     /// Required. The HCFS URI of the main R file to use as the driver.
     /// Must be a .R file.
     #[prost(string, tag = "1")]
-    pub main_r_file_uri: std::string::String,
+    pub main_r_file_uri: ::prost::alloc::string::String,
     /// Optional. The arguments to pass to the driver.  Do not include arguments,
     /// such as `--conf`, that can be set as job properties, since a collision may
     /// occur that causes an incorrect job submission.
     #[prost(string, repeated, tag = "2")]
-    pub args: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of files to be copied to the working directory of
-    /// R drivers and distributed tasks. Useful for naively parallel tasks.
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of files to be placed in the working directory of
+    /// each executor. Useful for naively parallel tasks.
     #[prost(string, repeated, tag = "3")]
-    pub file_uris: ::std::vec::Vec<std::string::String>,
-    /// Optional. HCFS URIs of archives to be extracted in the working directory of
-    /// Spark drivers and tasks. Supported file types:
+    pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of archives to be extracted into the working directory
+    /// of each executor. Supported file types:
     /// .jar, .tar, .tar.gz, .tgz, and .zip.
     #[prost(string, repeated, tag = "4")]
-    pub archive_uris: ::std::vec::Vec<std::string::String>,
+    pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure SparkR.
     /// Properties that conflict with values set by the Dataproc API may be
     /// overwritten. Can include properties set in
     /// /etc/spark/conf/spark-defaults.conf and classes in user code.
     #[prost(map = "string, string", tag = "5")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. The runtime log config for job execution.
     #[prost(message, optional, tag = "6")]
-    pub logging_config: ::std::option::Option<LoggingConfig>,
+    pub logging_config: ::core::option::Option<LoggingConfig>,
 }
 /// A Dataproc job for running [Presto](https://prestosql.io/) queries.
 /// **IMPORTANT**: The [Dataproc Presto Optional
@@ -1843,23 +1918,25 @@ pub struct PrestoJob {
     /// Optional. The format in which query output will be displayed. See the
     /// Presto documentation for supported output formats
     #[prost(string, tag = "4")]
-    pub output_format: std::string::String,
+    pub output_format: ::prost::alloc::string::String,
     /// Optional. Presto client tags to attach to this query
     #[prost(string, repeated, tag = "5")]
-    pub client_tags: ::std::vec::Vec<std::string::String>,
+    pub client_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values. Used to set Presto
     /// [session properties](https://prestodb.io/docs/current/sql/set-session.html)
     /// Equivalent to using the --session flag in the Presto CLI
     #[prost(map = "string, string", tag = "6")]
-    pub properties: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. The runtime log config for job execution.
     #[prost(message, optional, tag = "7")]
-    pub logging_config: ::std::option::Option<LoggingConfig>,
+    pub logging_config: ::core::option::Option<LoggingConfig>,
     /// Required. The sequence of Presto queries to execute, specified as
     /// either an HCFS file URI or as a list of queries.
     #[prost(oneof = "presto_job::Queries", tags = "1, 2")]
-    pub queries: ::std::option::Option<presto_job::Queries>,
+    pub queries: ::core::option::Option<presto_job::Queries>,
 }
+/// Nested message and enum types in `PrestoJob`.
 pub mod presto_job {
     /// Required. The sequence of Presto queries to execute, specified as
     /// either an HCFS file URI or as a list of queries.
@@ -1867,7 +1944,7 @@ pub mod presto_job {
     pub enum Queries {
         /// The HCFS URI of the script that contains SQL queries.
         #[prost(string, tag = "1")]
-        QueryFileUri(std::string::String),
+        QueryFileUri(::prost::alloc::string::String),
         /// A list of queries.
         #[prost(message, tag = "2")]
         QueryList(super::QueryList),
@@ -1878,11 +1955,11 @@ pub mod presto_job {
 pub struct JobPlacement {
     /// Required. The name of the cluster where the job will be submitted.
     #[prost(string, tag = "1")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Output only. A cluster UUID generated by the Dataproc service when
     /// the job is submitted.
     #[prost(string, tag = "2")]
-    pub cluster_uuid: std::string::String,
+    pub cluster_uuid: ::prost::alloc::string::String,
 }
 /// Dataproc job status.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1893,15 +1970,16 @@ pub struct JobStatus {
     /// Output only. Optional Job state details, such as an error
     /// description if the state is <code>ERROR</code>.
     #[prost(string, tag = "2")]
-    pub details: std::string::String,
+    pub details: ::prost::alloc::string::String,
     /// Output only. The time when this state was entered.
     #[prost(message, optional, tag = "6")]
-    pub state_start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub state_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Additional state information, which includes
     /// status reported by the agent.
     #[prost(enumeration = "job_status::Substate", tag = "7")]
     pub substate: i32,
 }
+/// Nested message and enum types in `JobStatus`.
 pub mod job_status {
     /// The job state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1960,17 +2038,17 @@ pub mod job_status {
 /// Encapsulates the full scoping used to reference a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobReference {
-    /// Required. The ID of the Google Cloud Platform project that the job
-    /// belongs to.
+    /// Optional. The ID of the Google Cloud Platform project that the job belongs to. If
+    /// specified, must match the request project ID.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Optional. The job ID, which must be unique within the project.
     /// The ID must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), or hyphens (-). The maximum length is 100 characters.
     ///
     /// If not specified by the caller, the job ID will be provided by the server.
     #[prost(string, tag = "2")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
 }
 /// A YARN application created by a job. Application information is a subset of
 /// <code>org.apache.hadoop.yarn.proto.YarnProtos.ApplicationReportProto</code>.
@@ -1981,7 +2059,7 @@ pub struct JobReference {
 pub struct YarnApplication {
     /// Output only. The application name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The application state.
     #[prost(enumeration = "yarn_application::State", tag = "2")]
     pub state: i32,
@@ -1993,8 +2071,9 @@ pub struct YarnApplication {
     /// the internal hostname, and requires a proxy server for resolution and,
     /// possibly, access.
     #[prost(string, tag = "4")]
-    pub tracking_url: std::string::String,
+    pub tracking_url: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `YarnApplication`.
 pub mod yarn_application {
     /// The application state, corresponding to
     /// <code>YarnProtos.YarnApplicationStateProto</code>.
@@ -2029,38 +2108,38 @@ pub struct Job {
     /// is not specified when a job is created, the server generates a
     /// <code>job_id</code>.
     #[prost(message, optional, tag = "1")]
-    pub reference: ::std::option::Option<JobReference>,
+    pub reference: ::core::option::Option<JobReference>,
     /// Required. Job information, including how, when, and where to
     /// run the job.
     #[prost(message, optional, tag = "2")]
-    pub placement: ::std::option::Option<JobPlacement>,
+    pub placement: ::core::option::Option<JobPlacement>,
     /// Output only. The job status. Additional application-specific
     /// status information may be contained in the <code>type_job</code>
     /// and <code>yarn_applications</code> fields.
     #[prost(message, optional, tag = "8")]
-    pub status: ::std::option::Option<JobStatus>,
+    pub status: ::core::option::Option<JobStatus>,
     /// Output only. The previous job status.
     #[prost(message, repeated, tag = "13")]
-    pub status_history: ::std::vec::Vec<JobStatus>,
+    pub status_history: ::prost::alloc::vec::Vec<JobStatus>,
     /// Output only. The collection of YARN applications spun up by this job.
     ///
     /// **Beta** Feature: This report is available for testing purposes only. It
     /// may be changed before final release.
     #[prost(message, repeated, tag = "9")]
-    pub yarn_applications: ::std::vec::Vec<YarnApplication>,
+    pub yarn_applications: ::prost::alloc::vec::Vec<YarnApplication>,
     /// Output only. The email address of the user submitting the job. For jobs
     /// submitted on the cluster, the address is <code>username@hostname</code>.
     #[prost(string, tag = "10")]
-    pub submitted_by: std::string::String,
+    pub submitted_by: ::prost::alloc::string::String,
     /// Output only. A URI pointing to the location of the stdout of the job's
     /// driver program.
     #[prost(string, tag = "17")]
-    pub driver_output_resource_uri: std::string::String,
+    pub driver_output_resource_uri: ::prost::alloc::string::String,
     /// Output only. If present, the location of miscellaneous control files
     /// which may be used as part of job setup and handling. If not present,
     /// control files may be placed in the same location as `driver_output_uri`.
     #[prost(string, tag = "15")]
-    pub driver_control_files_uri: std::string::String,
+    pub driver_control_files_uri: ::prost::alloc::string::String,
     /// Optional. The labels to associate with this job.
     /// Label **keys** must contain 1 to 63 characters, and must conform to
     /// [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
@@ -2069,15 +2148,16 @@ pub struct Job {
     /// 1035](https://www.ietf.org/rfc/rfc1035.txt). No more than 32 labels can be
     /// associated with a job.
     #[prost(map = "string, string", tag = "18")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. Job scheduling configuration.
     #[prost(message, optional, tag = "20")]
-    pub scheduling: ::std::option::Option<JobScheduling>,
+    pub scheduling: ::core::option::Option<JobScheduling>,
     /// Output only. A UUID that uniquely identifies a job within the project
     /// over time. This is in contrast to a user-settable reference.job_id that
     /// may be reused over time.
     #[prost(string, tag = "22")]
-    pub job_uuid: std::string::String,
+    pub job_uuid: ::prost::alloc::string::String,
     /// Output only. Indicates whether the job is completed. If the value is `false`,
     /// the job is still in progress. If `true`, the job is completed, and
     /// `status.state` field will indicate if it was successful, failed,
@@ -2086,8 +2166,9 @@ pub struct Job {
     pub done: bool,
     /// Required. The application/framework-specific portion of the job.
     #[prost(oneof = "job::TypeJob", tags = "3, 4, 5, 6, 7, 21, 12, 23")]
-    pub type_job: ::std::option::Option<job::TypeJob>,
+    pub type_job: ::core::option::Option<job::TypeJob>,
 }
+/// Nested message and enum types in `Job`.
 pub mod job {
     /// Required. The application/framework-specific portion of the job.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2137,16 +2218,16 @@ pub struct JobScheduling {
 pub struct JobMetadata {
     /// Output only. The job id.
     #[prost(string, tag = "1")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
     /// Output only. Most recent job status.
     #[prost(message, optional, tag = "2")]
-    pub status: ::std::option::Option<JobStatus>,
+    pub status: ::core::option::Option<JobStatus>,
     /// Output only. Operation type.
     #[prost(string, tag = "3")]
-    pub operation_type: std::string::String,
+    pub operation_type: ::prost::alloc::string::String,
     /// Output only. Job submission time.
     #[prost(message, optional, tag = "4")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A request to submit a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2154,13 +2235,13 @@ pub struct SubmitJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The job resource.
     #[prost(message, optional, tag = "2")]
-    pub job: ::std::option::Option<Job>,
+    pub job: ::core::option::Option<Job>,
     /// Optional. A unique id used to identify the request. If the server
     /// receives two [SubmitJobRequest][google.cloud.dataproc.v1beta2.SubmitJobRequest] requests  with the same
     /// id, then the second request will be ignored and the
@@ -2173,7 +2254,7 @@ pub struct SubmitJobRequest {
     /// The id must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// A request to get the resource representation for a job in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2181,13 +2262,13 @@ pub struct GetJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The job ID.
     #[prost(string, tag = "2")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
 }
 /// A request to list jobs in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2195,21 +2276,21 @@ pub struct ListJobsRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "6")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Optional. The number of results to return in each response.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The page token, returned by a previous call, to request the
     /// next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. If set, the returned jobs list includes only jobs that were
     /// submitted to the named cluster.
     #[prost(string, tag = "4")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Optional. Specifies enumerated categories of jobs to list.
     /// (default = match ALL jobs).
     ///
@@ -2231,8 +2312,9 @@ pub struct ListJobsRequest {
     ///
     /// status.state = ACTIVE AND labels.env = staging AND labels.starred = *
     #[prost(string, tag = "7")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ListJobsRequest`.
 pub mod list_jobs_request {
     /// A matcher that specifies categories of job states.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2253,16 +2335,16 @@ pub struct UpdateJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "2")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The job ID.
     #[prost(string, tag = "3")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
     /// Required. The changes to the job.
     #[prost(message, optional, tag = "4")]
-    pub job: ::std::option::Option<Job>,
+    pub job: ::core::option::Option<Job>,
     /// Required. Specifies the path, relative to <code>Job</code>, of
     /// the field to update. For example, to update the labels of a Job the
     /// <code>update_mask</code> parameter would be specified as
@@ -2270,19 +2352,19 @@ pub struct UpdateJobRequest {
     /// value. <strong>Note:</strong> Currently, <code>labels</code> is the only
     /// field that can be updated.
     #[prost(message, optional, tag = "5")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A list of jobs in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// Output only. Jobs list.
     #[prost(message, repeated, tag = "1")]
-    pub jobs: ::std::vec::Vec<Job>,
+    pub jobs: ::prost::alloc::vec::Vec<Job>,
     /// Optional. This token is included in the response if there are more results
     /// to fetch. To fetch additional results, provide this value as the
     /// `page_token` in a subsequent <code>ListJobsRequest</code>.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to cancel a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2290,13 +2372,13 @@ pub struct CancelJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The job ID.
     #[prost(string, tag = "2")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
 }
 /// A request to delete a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2304,13 +2386,13 @@ pub struct DeleteJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
     /// belongs to.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The Dataproc region in which to handle the request.
     #[prost(string, tag = "3")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Required. The job ID.
     #[prost(string, tag = "2")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod job_controller_client {
@@ -2484,14 +2566,15 @@ pub struct ClusterOperationStatus {
     pub state: i32,
     /// Output only. A message containing the detailed operation state.
     #[prost(string, tag = "2")]
-    pub inner_state: std::string::String,
+    pub inner_state: ::prost::alloc::string::String,
     /// Output only. A message containing any operation metadata details.
     #[prost(string, tag = "3")]
-    pub details: std::string::String,
+    pub details: ::prost::alloc::string::String,
     /// Output only. The time this state was entered.
     #[prost(message, optional, tag = "4")]
-    pub state_start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub state_start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `ClusterOperationStatus`.
 pub mod cluster_operation_status {
     /// The operation state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2512,28 +2595,29 @@ pub mod cluster_operation_status {
 pub struct ClusterOperationMetadata {
     /// Output only. Name of the cluster for the operation.
     #[prost(string, tag = "7")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Output only. Cluster UUID for the operation.
     #[prost(string, tag = "8")]
-    pub cluster_uuid: std::string::String,
+    pub cluster_uuid: ::prost::alloc::string::String,
     /// Output only. Current operation status.
     #[prost(message, optional, tag = "9")]
-    pub status: ::std::option::Option<ClusterOperationStatus>,
+    pub status: ::core::option::Option<ClusterOperationStatus>,
     /// Output only. The previous operation status.
     #[prost(message, repeated, tag = "10")]
-    pub status_history: ::std::vec::Vec<ClusterOperationStatus>,
+    pub status_history: ::prost::alloc::vec::Vec<ClusterOperationStatus>,
     /// Output only. The operation type.
     #[prost(string, tag = "11")]
-    pub operation_type: std::string::String,
+    pub operation_type: ::prost::alloc::string::String,
     /// Output only. Short description of operation.
     #[prost(string, tag = "12")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. Labels associated with the operation
     #[prost(map = "string, string", tag = "13")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Errors encountered during operation execution.
     #[prost(string, repeated, tag = "14")]
-    pub warnings: ::std::vec::Vec<std::string::String>,
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Dataproc workflow template resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2546,7 +2630,7 @@ pub struct WorkflowTemplate {
     ///
     /// .
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Output only. The resource name of the workflow template, as described
     /// in https://cloud.google.com/apis/design/resource_names.
     ///
@@ -2558,7 +2642,7 @@ pub struct WorkflowTemplate {
     ///   template has the following format:
     ///   `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. Used to perform a consistent read-modify-write.
     ///
     /// This field should be left blank for a `CreateWorkflowTemplate` request. It
@@ -2572,10 +2656,10 @@ pub struct WorkflowTemplate {
     pub version: i32,
     /// Output only. The time template was created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time template was last updated.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The labels to associate with this template. These labels
     /// will be propagated to all jobs and clusters created by the workflow
     /// instance.
@@ -2589,18 +2673,30 @@ pub struct WorkflowTemplate {
     ///
     /// No more than 32 labels can be associated with a template.
     #[prost(map = "string, string", tag = "6")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. WorkflowTemplate scheduling information.
     #[prost(message, optional, tag = "7")]
-    pub placement: ::std::option::Option<WorkflowTemplatePlacement>,
+    pub placement: ::core::option::Option<WorkflowTemplatePlacement>,
     /// Required. The Directed Acyclic Graph of Jobs to submit.
     #[prost(message, repeated, tag = "8")]
-    pub jobs: ::std::vec::Vec<OrderedJob>,
+    pub jobs: ::prost::alloc::vec::Vec<OrderedJob>,
     /// Optional. Template parameters whose values are substituted into the
     /// template. Values for parameters must be provided when the template is
     /// instantiated.
     #[prost(message, repeated, tag = "9")]
-    pub parameters: ::std::vec::Vec<TemplateParameter>,
+    pub parameters: ::prost::alloc::vec::Vec<TemplateParameter>,
+    /// Optional. Timeout duration for the DAG of jobs. You can use "s", "m", "h",
+    /// and "d" suffixes for second, minute, hour, and day duration values,
+    /// respectively. The timeout duration must be from 10 minutes ("10m") to 24
+    /// hours ("24h" or "1d"). The timer begins when the first job is submitted. If
+    /// the workflow is running at the end of the timeout period, any remaining
+    /// jobs are cancelled, the workflow is terminated, and if the workflow was
+    /// running on a [managed
+    /// cluster](https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster),
+    /// the cluster is deleted.
+    #[prost(message, optional, tag = "10")]
+    pub dag_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Specifies workflow execution target.
 ///
@@ -2610,8 +2706,9 @@ pub struct WorkflowTemplatePlacement {
     /// Required. Specifies where workflow executes; either on a managed
     /// cluster or an existing cluster chosen by labels.
     #[prost(oneof = "workflow_template_placement::Placement", tags = "1, 2")]
-    pub placement: ::std::option::Option<workflow_template_placement::Placement>,
+    pub placement: ::core::option::Option<workflow_template_placement::Placement>,
 }
+/// Nested message and enum types in `WorkflowTemplatePlacement`.
 pub mod workflow_template_placement {
     /// Required. Specifies where workflow executes; either on a managed
     /// cluster or an existing cluster chosen by labels.
@@ -2638,10 +2735,10 @@ pub struct ManagedCluster {
     /// and hyphens (-). Must begin with a letter. Cannot begin or end with
     /// hyphen. Must consist of between 2 and 35 characters.
     #[prost(string, tag = "2")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Required. The cluster configuration.
     #[prost(message, optional, tag = "3")]
-    pub config: ::std::option::Option<ClusterConfig>,
+    pub config: ::core::option::Option<ClusterConfig>,
     /// Optional. The labels to associate with this cluster.
     ///
     /// Label keys must be between 1 and 63 characters long, and must conform to
@@ -2653,7 +2750,8 @@ pub struct ManagedCluster {
     ///
     /// No more than 32 labels can be associated with a given cluster.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// A selector that chooses target cluster for jobs based on metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2664,11 +2762,12 @@ pub struct ClusterSelector {
     /// If unspecified, the zone of the first cluster matching the selector
     /// is used.
     #[prost(string, tag = "1")]
-    pub zone: std::string::String,
+    pub zone: ::prost::alloc::string::String,
     /// Required. The cluster labels. Cluster must have all labels
     /// to match.
     #[prost(map = "string, string", tag = "2")]
-    pub cluster_labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub cluster_labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// A job executed by the workflow.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2678,14 +2777,14 @@ pub struct OrderedJob {
     ///
     /// The step id is used as prefix for job id, as job
     /// `goog-dataproc-workflow-step-id` label, and in
-    /// [prerequisiteStepIds][google.cloud.dataproc.v1beta2.OrderedJob.prerequisite_step_ids] field from other
-    /// steps.
+    /// [prerequisiteStepIds][google.cloud.dataproc.v1beta2.OrderedJob.prerequisite_step_ids]
+    /// field from other steps.
     ///
     /// The id must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). Cannot begin or end with underscore
     /// or hyphen. Must consist of between 3 and 50 characters.
     #[prost(string, tag = "1")]
-    pub step_id: std::string::String,
+    pub step_id: ::prost::alloc::string::String,
     /// Optional. The labels to associate with this job.
     ///
     /// Label keys must be between 1 and 63 characters long, and must conform to
@@ -2697,38 +2796,46 @@ pub struct OrderedJob {
     ///
     /// No more than 32 labels can be associated with a given job.
     #[prost(map = "string, string", tag = "8")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. Job scheduling configuration.
     #[prost(message, optional, tag = "9")]
-    pub scheduling: ::std::option::Option<JobScheduling>,
+    pub scheduling: ::core::option::Option<JobScheduling>,
     /// Optional. The optional list of prerequisite job step_ids.
     /// If not specified, the job will start at the beginning of workflow.
     #[prost(string, repeated, tag = "10")]
-    pub prerequisite_step_ids: ::std::vec::Vec<std::string::String>,
+    pub prerequisite_step_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The job definition.
     #[prost(oneof = "ordered_job::JobType", tags = "2, 3, 4, 5, 6, 11, 7, 12")]
-    pub job_type: ::std::option::Option<ordered_job::JobType>,
+    pub job_type: ::core::option::Option<ordered_job::JobType>,
 }
+/// Nested message and enum types in `OrderedJob`.
 pub mod ordered_job {
     /// Required. The job definition.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum JobType {
+        /// Optional. Job is a Hadoop job.
         #[prost(message, tag = "2")]
         HadoopJob(super::HadoopJob),
+        /// Optional. Job is a Spark job.
         #[prost(message, tag = "3")]
         SparkJob(super::SparkJob),
+        /// Optional. Job is a PySpark job.
         #[prost(message, tag = "4")]
         PysparkJob(super::PySparkJob),
+        /// Optional. Job is a Hive job.
         #[prost(message, tag = "5")]
         HiveJob(super::HiveJob),
+        /// Optional. Job is a Pig job.
         #[prost(message, tag = "6")]
         PigJob(super::PigJob),
-        /// Spark R job
+        /// Optional. Job is a SparkR job.
         #[prost(message, tag = "11")]
         SparkRJob(super::SparkRJob),
+        /// Optional. Job is a SparkSql job.
         #[prost(message, tag = "7")]
         SparkSqlJob(super::SparkSqlJob),
-        /// Presto job
+        /// Optional. Job is a Presto job.
         #[prost(message, tag = "12")]
         PrestoJob(super::PrestoJob),
     }
@@ -2752,15 +2859,15 @@ pub struct TemplateParameter {
     /// underscores (_), and must not start with a number. The maximum length is
     /// 40 characters.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Paths to all fields that the parameter replaces.
     /// A field is allowed to appear in at most one parameter's list of field
     /// paths.
     ///
-    /// A field path is similar in syntax to a [google.protobuf.FieldMask][google.protobuf.FieldMask].
-    /// For example, a field path that references the zone field of a workflow
-    /// template's cluster selector would be specified as
-    /// `placement.clusterSelector.zone`.
+    /// A field path is similar in syntax to a
+    /// [google.protobuf.FieldMask][google.protobuf.FieldMask]. For example, a
+    /// field path that references the zone field of a workflow template's cluster
+    /// selector would be specified as `placement.clusterSelector.zone`.
     ///
     /// Also, field paths can reference fields using the following syntax:
     ///
@@ -2798,22 +2905,23 @@ pub struct TemplateParameter {
     /// - placement.clusterSelector.clusterLabels
     /// - jobs['step-id'].sparkJob.args
     #[prost(string, repeated, tag = "2")]
-    pub fields: ::std::vec::Vec<std::string::String>,
+    pub fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Brief description of the parameter.
     /// Must not exceed 1024 characters.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Optional. Validation rules to be applied to this parameter's value.
     #[prost(message, optional, tag = "4")]
-    pub validation: ::std::option::Option<ParameterValidation>,
+    pub validation: ::core::option::Option<ParameterValidation>,
 }
 /// Configuration for parameter validation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParameterValidation {
     /// Required. The type of validation to be performed.
     #[prost(oneof = "parameter_validation::ValidationType", tags = "1, 2")]
-    pub validation_type: ::std::option::Option<parameter_validation::ValidationType>,
+    pub validation_type: ::core::option::Option<parameter_validation::ValidationType>,
 }
+/// Nested message and enum types in `ParameterValidation`.
 pub mod parameter_validation {
     /// Required. The type of validation to be performed.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2833,14 +2941,14 @@ pub struct RegexValidation {
     /// The value must match the regex in its entirety (substring
     /// matches are not sufficient).
     #[prost(string, repeated, tag = "1")]
-    pub regexes: ::std::vec::Vec<std::string::String>,
+    pub regexes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Validation based on a list of allowed values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueValidation {
     /// Required. List of allowed values for the parameter.
     #[prost(string, repeated, tag = "1")]
-    pub values: ::std::vec::Vec<std::string::String>,
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Dataproc workflow template resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2856,39 +2964,58 @@ pub struct WorkflowMetadata {
     ///   template has the following format:
     ///   `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
     #[prost(string, tag = "1")]
-    pub template: std::string::String,
+    pub template: ::prost::alloc::string::String,
     /// Output only. The version of template at the time of
     /// workflow instantiation.
     #[prost(int32, tag = "2")]
     pub version: i32,
     /// Output only. The create cluster operation metadata.
     #[prost(message, optional, tag = "3")]
-    pub create_cluster: ::std::option::Option<ClusterOperation>,
+    pub create_cluster: ::core::option::Option<ClusterOperation>,
     /// Output only. The workflow graph.
     #[prost(message, optional, tag = "4")]
-    pub graph: ::std::option::Option<WorkflowGraph>,
+    pub graph: ::core::option::Option<WorkflowGraph>,
     /// Output only. The delete cluster operation metadata.
     #[prost(message, optional, tag = "5")]
-    pub delete_cluster: ::std::option::Option<ClusterOperation>,
+    pub delete_cluster: ::core::option::Option<ClusterOperation>,
     /// Output only. The workflow state.
     #[prost(enumeration = "workflow_metadata::State", tag = "6")]
     pub state: i32,
     /// Output only. The name of the target cluster.
     #[prost(string, tag = "7")]
-    pub cluster_name: std::string::String,
+    pub cluster_name: ::prost::alloc::string::String,
     /// Map from parameter names to values that were used for those parameters.
     #[prost(map = "string, string", tag = "8")]
-    pub parameters: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub parameters:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Workflow start time.
     #[prost(message, optional, tag = "9")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Workflow end time.
     #[prost(message, optional, tag = "10")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The UUID of target cluster.
     #[prost(string, tag = "11")]
-    pub cluster_uuid: std::string::String,
+    pub cluster_uuid: ::prost::alloc::string::String,
+    /// Output only. The timeout duration for the DAG of jobs.
+    /// Minimum timeout duration is 10 minutes and maximum is 24 hours, expressed
+    /// as a
+    /// [google.protobuf.Duration][https://developers.google.com/protocol-buffers/docs/proto3#json_mapping].
+    /// For example, "1800" = 1800 seconds/30 minutes duration.
+    #[prost(message, optional, tag = "12")]
+    pub dag_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. DAG start time, which is only set for workflows with
+    /// [dag_timeout][google.cloud.dataproc.v1beta2.WorkflowMetadata.dag_timeout]
+    /// when the DAG begins.
+    #[prost(message, optional, tag = "13")]
+    pub dag_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. DAG end time, which is only set for workflows with
+    /// [dag_timeout][google.cloud.dataproc.v1beta2.WorkflowMetadata.dag_timeout]
+    /// when the DAG ends.
+    #[prost(message, optional, tag = "14")]
+    pub dag_end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `WorkflowMetadata`.
 pub mod workflow_metadata {
     /// The operation state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2909,10 +3036,10 @@ pub mod workflow_metadata {
 pub struct ClusterOperation {
     /// Output only. The id of the cluster operation.
     #[prost(string, tag = "1")]
-    pub operation_id: std::string::String,
+    pub operation_id: ::prost::alloc::string::String,
     /// Output only. Error, if operation failed.
     #[prost(string, tag = "2")]
-    pub error: std::string::String,
+    pub error: ::prost::alloc::string::String,
     /// Output only. Indicates the operation is done.
     #[prost(bool, tag = "3")]
     pub done: bool,
@@ -2922,27 +3049,28 @@ pub struct ClusterOperation {
 pub struct WorkflowGraph {
     /// Output only. The workflow nodes.
     #[prost(message, repeated, tag = "1")]
-    pub nodes: ::std::vec::Vec<WorkflowNode>,
+    pub nodes: ::prost::alloc::vec::Vec<WorkflowNode>,
 }
 /// The workflow node.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowNode {
     /// Output only. The name of the node.
     #[prost(string, tag = "1")]
-    pub step_id: std::string::String,
+    pub step_id: ::prost::alloc::string::String,
     /// Output only. Node's prerequisite nodes.
     #[prost(string, repeated, tag = "2")]
-    pub prerequisite_step_ids: ::std::vec::Vec<std::string::String>,
+    pub prerequisite_step_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The job id; populated after the node enters RUNNING state.
     #[prost(string, tag = "3")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
     /// Output only. The node state.
     #[prost(enumeration = "workflow_node::NodeState", tag = "5")]
     pub state: i32,
     /// Output only. The error detail.
     #[prost(string, tag = "6")]
-    pub error: std::string::String,
+    pub error: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `WorkflowNode`.
 pub mod workflow_node {
     /// The workflow node state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2977,10 +3105,10 @@ pub struct CreateWorkflowTemplateRequest {
     ///   the location has the following format:
     ///   `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Dataproc workflow template to create.
     #[prost(message, optional, tag = "2")]
-    pub template: ::std::option::Option<WorkflowTemplate>,
+    pub template: ::core::option::Option<WorkflowTemplate>,
 }
 /// A request to fetch a workflow template.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2996,7 +3124,7 @@ pub struct GetWorkflowTemplateRequest {
     ///   template has the following format:
     ///   `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The version of workflow template to retrieve. Only previously
     /// instantiated versions can be retrieved.
     ///
@@ -3018,7 +3146,7 @@ pub struct InstantiateWorkflowTemplateRequest {
     ///   of the template has the following format:
     ///   `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The version of workflow template to instantiate. If specified,
     /// the workflow will be instantiated only if the current version of
     /// the workflow template has the supplied version.
@@ -3028,8 +3156,9 @@ pub struct InstantiateWorkflowTemplateRequest {
     #[prost(int32, tag = "2")]
     pub version: i32,
     /// Deprecated. Please use `request_id` field instead.
+    #[deprecated]
     #[prost(string, tag = "3")]
-    pub instance_id: std::string::String,
+    pub instance_id: ::prost::alloc::string::String,
     /// Optional. A tag that prevents multiple concurrent workflow
     /// instances with the same tag from running. This mitigates risk of
     /// concurrent instances started due to retries.
@@ -3040,11 +3169,12 @@ pub struct InstantiateWorkflowTemplateRequest {
     /// The tag must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "5")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
     /// Optional. Map from parameter names to values that should be used for those
     /// parameters. Values may not exceed 100 characters.
     #[prost(map = "string, string", tag = "4")]
-    pub parameters: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub parameters:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// A request to instantiate an inline workflow template.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3060,13 +3190,13 @@ pub struct InstantiateInlineWorkflowTemplateRequest {
     ///   resource name of the location has the following format:
     ///   `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The workflow template to instantiate.
     #[prost(message, optional, tag = "2")]
-    pub template: ::std::option::Option<WorkflowTemplate>,
+    pub template: ::core::option::Option<WorkflowTemplate>,
     /// Deprecated. Please use `request_id` field instead.
     #[prost(string, tag = "3")]
-    pub instance_id: std::string::String,
+    pub instance_id: ::prost::alloc::string::String,
     /// Optional. A tag that prevents multiple concurrent workflow
     /// instances with the same tag from running. This mitigates risk of
     /// concurrent instances started due to retries.
@@ -3077,7 +3207,7 @@ pub struct InstantiateInlineWorkflowTemplateRequest {
     /// The tag must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// A request to update a workflow template.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3086,7 +3216,7 @@ pub struct UpdateWorkflowTemplateRequest {
     ///
     /// The `template.version` field must match the current version.
     #[prost(message, optional, tag = "1")]
-    pub template: ::std::option::Option<WorkflowTemplate>,
+    pub template: ::core::option::Option<WorkflowTemplate>,
 }
 /// A request to list workflow templates in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3102,26 +3232,26 @@ pub struct ListWorkflowTemplatesRequest {
     ///   resource name of the location has the following format:
     ///   `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return in each response.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The page token, returned by a previous call, to request the
     /// next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// A response to a request to list workflow templates in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowTemplatesResponse {
     /// Output only. WorkflowTemplates list.
     #[prost(message, repeated, tag = "1")]
-    pub templates: ::std::vec::Vec<WorkflowTemplate>,
+    pub templates: ::prost::alloc::vec::Vec<WorkflowTemplate>,
     /// Output only. This token is included in the response if there are more
     /// results to fetch. To fetch additional results, provide this value as the
     /// page_token in a subsequent <code>ListWorkflowTemplatesRequest</code>.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to delete a workflow template.
 ///
@@ -3139,7 +3269,7 @@ pub struct DeleteWorkflowTemplateRequest {
     ///   of the template has the following format:
     ///   `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The version of workflow template to delete. If specified,
     /// will only delete the template if the current server version matches
     /// specified version.
@@ -3241,13 +3371,14 @@ pub mod workflow_template_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.dataproc.v1beta2.WorkflowTemplateService/InstantiateWorkflowTemplate" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.dataproc.v1beta2.WorkflowTemplateService/InstantiateWorkflowTemplate") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Instantiates a template and begins execution."]
         #[doc = ""]
         #[doc = " This method is equivalent to executing the sequence"]
-        #[doc = " [CreateWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.CreateWorkflowTemplate], [InstantiateWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.InstantiateWorkflowTemplate],"]
+        #[doc = " [CreateWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.CreateWorkflowTemplate],"]
+        #[doc = " [InstantiateWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.InstantiateWorkflowTemplate],"]
         #[doc = " [DeleteWorkflowTemplate][google.cloud.dataproc.v1beta2.WorkflowTemplateService.DeleteWorkflowTemplate]."]
         #[doc = ""]
         #[doc = " The returned Operation can be used to track execution of"]
@@ -3282,7 +3413,7 @@ pub mod workflow_template_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.dataproc.v1beta2.WorkflowTemplateService/InstantiateInlineWorkflowTemplate" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.dataproc.v1beta2.WorkflowTemplateService/InstantiateInlineWorkflowTemplate") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates (replaces) workflow template. The updated template"]

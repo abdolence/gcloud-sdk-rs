@@ -12,13 +12,13 @@ pub struct ApiConfigHandler {
     pub login: i32,
     /// Path to the script from the application root directory.
     #[prost(string, tag = "3")]
-    pub script: std::string::String,
+    pub script: ::prost::alloc::string::String,
     /// Security (HTTPS) enforcement for this URL.
     #[prost(enumeration = "SecurityLevel", tag = "4")]
     pub security_level: i32,
     /// URL to serve the endpoint at.
     #[prost(string, tag = "5")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
 }
 /// Custom static error page to be served when an error occurs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -28,11 +28,12 @@ pub struct ErrorHandler {
     pub error_code: i32,
     /// Static file content to be served for this error.
     #[prost(string, tag = "2")]
-    pub static_file: std::string::String,
+    pub static_file: ::prost::alloc::string::String,
     /// MIME type of file. Defaults to `text/html`.
     #[prost(string, tag = "3")]
-    pub mime_type: std::string::String,
+    pub mime_type: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ErrorHandler`.
 pub mod error_handler {
     /// Error codes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -59,7 +60,7 @@ pub struct UrlMap {
     /// All URLs that begin with this prefix are handled by this handler, using the
     /// portion of the URL after the prefix as part of the file path.
     #[prost(string, tag = "1")]
-    pub url_regex: std::string::String,
+    pub url_regex: ::prost::alloc::string::String,
     /// Security (HTTPS) enforcement for this URL.
     #[prost(enumeration = "SecurityLevel", tag = "5")]
     pub security_level: i32,
@@ -77,8 +78,9 @@ pub struct UrlMap {
     pub redirect_http_response_code: i32,
     /// Type of handler for this URL pattern.
     #[prost(oneof = "url_map::HandlerType", tags = "2, 3, 4")]
-    pub handler_type: ::std::option::Option<url_map::HandlerType>,
+    pub handler_type: ::core::option::Option<url_map::HandlerType>,
 }
+/// Nested message and enum types in `UrlMap`.
 pub mod url_map {
     /// Redirect codes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -121,24 +123,25 @@ pub struct StaticFilesHandler {
     /// application root directory. The path can refer to text matched in groupings
     /// in the URL pattern.
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Regular expression that matches the file paths for all files that should be
     /// referenced by this handler.
     #[prost(string, tag = "2")]
-    pub upload_path_regex: std::string::String,
+    pub upload_path_regex: ::prost::alloc::string::String,
     /// HTTP headers to use for all responses from these URLs.
     #[prost(map = "string, string", tag = "3")]
-    pub http_headers: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub http_headers:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// MIME type used to serve all files served by this handler.
     ///
     /// Defaults to file-specific MIME types, which are derived from each file's
     /// filename extension.
     #[prost(string, tag = "4")]
-    pub mime_type: std::string::String,
+    pub mime_type: ::prost::alloc::string::String,
     /// Time a static file served by this handler should be cached
     /// by web proxies and browsers.
     #[prost(message, optional, tag = "5")]
-    pub expiration: ::std::option::Option<::prost_types::Duration>,
+    pub expiration: ::core::option::Option<::prost_types::Duration>,
     /// Whether this handler should match the request if the file
     /// referenced by the handler does not exist.
     #[prost(bool, tag = "6")]
@@ -156,14 +159,14 @@ pub struct StaticFilesHandler {
 pub struct ScriptHandler {
     /// Path to the script from the application root directory.
     #[prost(string, tag = "1")]
-    pub script_path: std::string::String,
+    pub script_path: ::prost::alloc::string::String,
 }
 /// Uses Google Cloud Endpoints to handle requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiEndpointHandler {
     /// Path to the script from the application root directory.
     #[prost(string, tag = "1")]
-    pub script_path: std::string::String,
+    pub script_path: ::prost::alloc::string::String,
 }
 /// Health checking configuration for VM instances. Unhealthy instances
 /// are killed and replaced with new instances. Only applicable for
@@ -176,7 +179,7 @@ pub struct HealthCheck {
     /// Host header to send when performing an HTTP health check.
     /// Example: "myapp.appspot.com"
     #[prost(string, tag = "2")]
-    pub host: std::string::String,
+    pub host: ::prost::alloc::string::String,
     /// Number of consecutive successful health checks required before receiving
     /// traffic.
     #[prost(uint32, tag = "3")]
@@ -191,10 +194,10 @@ pub struct HealthCheck {
     pub restart_threshold: u32,
     /// Interval between health checks.
     #[prost(message, optional, tag = "6")]
-    pub check_interval: ::std::option::Option<::prost_types::Duration>,
+    pub check_interval: ::core::option::Option<::prost_types::Duration>,
     /// Time before the health check is considered failed.
     #[prost(message, optional, tag = "7")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Readiness checking configuration for VM instances. Unhealthy instances
 /// are removed from traffic rotation.
@@ -202,11 +205,11 @@ pub struct HealthCheck {
 pub struct ReadinessCheck {
     /// The request path.
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Host header to send when performing a HTTP Readiness check.
     /// Example: "myapp.appspot.com"
     #[prost(string, tag = "2")]
-    pub host: std::string::String,
+    pub host: ::prost::alloc::string::String,
     /// Number of consecutive failed checks required before removing
     /// traffic.
     #[prost(uint32, tag = "3")]
@@ -217,15 +220,15 @@ pub struct ReadinessCheck {
     pub success_threshold: u32,
     /// Interval between health checks.
     #[prost(message, optional, tag = "5")]
-    pub check_interval: ::std::option::Option<::prost_types::Duration>,
+    pub check_interval: ::core::option::Option<::prost_types::Duration>,
     /// Time before the check is considered failed.
     #[prost(message, optional, tag = "6")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// A maximum time limit on application initialization, measured from moment
     /// the application successfully replies to a healthcheck until it is ready to
     /// serve traffic.
     #[prost(message, optional, tag = "7")]
-    pub app_start_timeout: ::std::option::Option<::prost_types::Duration>,
+    pub app_start_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Health checking configuration for VM instances. Unhealthy instances
 /// are killed and replaced with new instances.
@@ -233,11 +236,11 @@ pub struct ReadinessCheck {
 pub struct LivenessCheck {
     /// The request path.
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Host header to send when performing a HTTP Liveness check.
     /// Example: "myapp.appspot.com"
     #[prost(string, tag = "2")]
-    pub host: std::string::String,
+    pub host: ::prost::alloc::string::String,
     /// Number of consecutive failed checks required before considering the
     /// VM unhealthy.
     #[prost(uint32, tag = "3")]
@@ -248,23 +251,23 @@ pub struct LivenessCheck {
     pub success_threshold: u32,
     /// Interval between health checks.
     #[prost(message, optional, tag = "5")]
-    pub check_interval: ::std::option::Option<::prost_types::Duration>,
+    pub check_interval: ::core::option::Option<::prost_types::Duration>,
     /// Time before the check is considered failed.
     #[prost(message, optional, tag = "6")]
-    pub timeout: ::std::option::Option<::prost_types::Duration>,
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// The initial delay before starting to execute the checks.
     #[prost(message, optional, tag = "7")]
-    pub initial_delay: ::std::option::Option<::prost_types::Duration>,
+    pub initial_delay: ::core::option::Option<::prost_types::Duration>,
 }
 /// Third-party Python runtime library that is required by the application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Library {
     /// Name of the library. Example: "django".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Version of the library to select, or "latest".
     #[prost(string, tag = "2")]
-    pub version: std::string::String,
+    pub version: ::prost::alloc::string::String,
 }
 /// Actions to take when the user is not logged in.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -324,24 +327,24 @@ pub struct Application {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Identifier of the Application resource. This identifier is equivalent
     /// to the project ID of the Google Cloud Platform project where you want to
     /// deploy your application.
     /// Example: `myapp`.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// HTTP path dispatch rules for requests to the application that do not
     /// explicitly target a service or version. Rules are order-dependent.
     /// Up to 20 dispatch rules can be supported.
     #[prost(message, repeated, tag = "3")]
-    pub dispatch_rules: ::std::vec::Vec<UrlDispatchRule>,
+    pub dispatch_rules: ::prost::alloc::vec::Vec<UrlDispatchRule>,
     /// Google Apps authentication domain that controls which users can access
     /// this application.
     ///
     /// Defaults to open access for any Google Account.
     #[prost(string, tag = "6")]
-    pub auth_domain: std::string::String,
+    pub auth_domain: ::prost::alloc::string::String,
     /// Location from which this application runs. Application instances
     /// run out of the data centers in the specified location, which is also where
     /// all of the application's end user content is stored.
@@ -351,17 +354,17 @@ pub struct Application {
     /// View the list of
     /// [supported locations](https://cloud.google.com/appengine/docs/locations).
     #[prost(string, tag = "7")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
     /// Google Cloud Storage bucket that can be used for storing files
     /// associated with this application. This bucket is associated with the
     /// application and can be used by the gcloud deployment commands.
     ///
     /// @OutputOnly
     #[prost(string, tag = "8")]
-    pub code_bucket: std::string::String,
+    pub code_bucket: ::prost::alloc::string::String,
     /// Cookie expiration policy for this application.
     #[prost(message, optional, tag = "9")]
-    pub default_cookie_expiration: ::std::option::Option<::prost_types::Duration>,
+    pub default_cookie_expiration: ::core::option::Option<::prost_types::Duration>,
     /// Serving status of this application.
     #[prost(enumeration = "application::ServingStatus", tag = "10")]
     pub serving_status: i32,
@@ -369,27 +372,28 @@ pub struct Application {
     ///
     /// @OutputOnly
     #[prost(string, tag = "11")]
-    pub default_hostname: std::string::String,
+    pub default_hostname: ::prost::alloc::string::String,
     /// Google Cloud Storage bucket that can be used by this application to store
     /// content.
     ///
     /// @OutputOnly
     #[prost(string, tag = "12")]
-    pub default_bucket: std::string::String,
+    pub default_bucket: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "14")]
-    pub iap: ::std::option::Option<application::IdentityAwareProxy>,
+    pub iap: ::core::option::Option<application::IdentityAwareProxy>,
     /// The Google Container Registry domain used for storing managed build docker
     /// images for this application.
     #[prost(string, tag = "16")]
-    pub gcr_domain: std::string::String,
+    pub gcr_domain: ::prost::alloc::string::String,
     /// The type of the Cloud Firestore or Cloud Datastore database associated with
     /// this application.
     #[prost(enumeration = "application::DatabaseType", tag = "17")]
     pub database_type: i32,
     /// The feature specific settings to be used in the application.
     #[prost(message, optional, tag = "18")]
-    pub feature_settings: ::std::option::Option<application::FeatureSettings>,
+    pub feature_settings: ::core::option::Option<application::FeatureSettings>,
 }
+/// Nested message and enum types in `Application`.
 pub mod application {
     /// Identity-Aware Proxy
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -403,7 +407,7 @@ pub mod application {
         pub enabled: bool,
         /// OAuth2 client ID to use for the authentication flow.
         #[prost(string, tag = "2")]
-        pub oauth2_client_id: std::string::String,
+        pub oauth2_client_id: ::prost::alloc::string::String,
         /// OAuth2 client secret to use for the authentication flow.
         ///
         /// For security reasons, this value cannot be retrieved via the API.
@@ -412,12 +416,12 @@ pub mod application {
         ///
         /// @InputOnly
         #[prost(string, tag = "3")]
-        pub oauth2_client_secret: std::string::String,
+        pub oauth2_client_secret: ::prost::alloc::string::String,
         /// Hex-encoded SHA-256 hash of the client secret.
         ///
         /// @OutputOnly
         #[prost(string, tag = "4")]
-        pub oauth2_client_secret_sha256: std::string::String,
+        pub oauth2_client_secret_sha256: ::prost::alloc::string::String,
     }
     /// The feature specific settings to be used in the application. These define
     /// behaviors that are user configurable.
@@ -469,19 +473,19 @@ pub struct UrlDispatchRule {
     ///
     /// Defaults to matching all domains: "`*`".
     #[prost(string, tag = "1")]
-    pub domain: std::string::String,
+    pub domain: ::prost::alloc::string::String,
     /// Pathname within the host. Must start with a "`/`". A
     /// single "`*`" can be included at the end of the path.
     ///
     /// The sum of the lengths of the domain and path may not
     /// exceed 100 characters.
     #[prost(string, tag = "2")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
     /// Resource ID of a service in this application that should
     /// serve the matched request. The service must already
     /// exist. Example: `default`.
     #[prost(string, tag = "3")]
-    pub service: std::string::String,
+    pub service: ::prost::alloc::string::String,
 }
 /// An SSL certificate that a user has been authorized to administer. A user
 /// is authorized to administer any certificate that applies to one of their
@@ -493,34 +497,34 @@ pub struct AuthorizedCertificate {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Relative name of the certificate. This is a unique value autogenerated
     /// on `AuthorizedCertificate` resource creation. Example: `12345`.
     ///
     /// @OutputOnly
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// The user-specified display name of the certificate. This is not
     /// guaranteed to be unique. Example: `My Certificate`.
     #[prost(string, tag = "3")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Topmost applicable domains of this certificate. This certificate
     /// applies to these domains and their subdomains. Example: `example.com`.
     ///
     /// @OutputOnly
     #[prost(string, repeated, tag = "4")]
-    pub domain_names: ::std::vec::Vec<std::string::String>,
+    pub domain_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The time when this certificate expires. To update the renewal time on this
     /// certificate, upload an SSL certificate with a different expiration time
     /// using [`AuthorizedCertificates.UpdateAuthorizedCertificate`]().
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "5")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The SSL certificate serving the `AuthorizedCertificate` resource. This
     /// must be obtained independently from a certificate authority.
     #[prost(message, optional, tag = "6")]
-    pub certificate_raw_data: ::std::option::Option<CertificateRawData>,
+    pub certificate_raw_data: ::core::option::Option<CertificateRawData>,
     /// Only applicable if this certificate is managed by App Engine. Managed
     /// certificates are tied to the lifecycle of a `DomainMapping` and cannot be
     /// updated or deleted via the `AuthorizedCertificates` API. If this
@@ -528,7 +532,7 @@ pub struct AuthorizedCertificate {
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "7")]
-    pub managed_certificate: ::std::option::Option<ManagedCertificate>,
+    pub managed_certificate: ::core::option::Option<ManagedCertificate>,
     /// The full paths to user visible Domain Mapping resources that have this
     /// certificate mapped. Example: `apps/myapp/domainMappings/example.com`.
     ///
@@ -541,7 +545,7 @@ pub struct AuthorizedCertificate {
     ///
     /// @OutputOnly
     #[prost(string, repeated, tag = "8")]
-    pub visible_domain_mappings: ::std::vec::Vec<std::string::String>,
+    pub visible_domain_mappings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Aggregate count of the domain mappings with this certificate mapped. This
     /// count includes domain mappings on applications for which the user does not
     /// have `VIEWER` permissions.
@@ -564,7 +568,7 @@ pub struct CertificateRawData {
     /// -----END CERTIFICATE-----
     /// </pre>
     #[prost(string, tag = "1")]
-    pub public_certificate: std::string::String,
+    pub public_certificate: ::prost::alloc::string::String,
     /// Unencrypted PEM encoded RSA private key. This field is set once on
     /// certificate creation and then encrypted. The key size must be 2048
     /// bits or fewer. Must include the header and footer. Example:
@@ -575,7 +579,7 @@ pub struct CertificateRawData {
     /// </pre>
     /// @InputOnly
     #[prost(string, tag = "2")]
-    pub private_key: std::string::String,
+    pub private_key: ::prost::alloc::string::String,
 }
 /// A certificate managed by App Engine.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -586,7 +590,7 @@ pub struct ManagedCertificate {
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "1")]
-    pub last_renewal_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_renewal_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Status of certificate management. Refers to the most recent certificate
     /// acquisition or renewal attempt.
     ///
@@ -636,11 +640,11 @@ pub struct AuthorizedDomain {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Fully qualified domain name of the domain authorized for use. Example:
     /// `example.com`.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
 }
 /// A domain serving an App Engine application.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -650,22 +654,22 @@ pub struct DomainMapping {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Relative name of the domain serving the application. Example:
     /// `example.com`.
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// SSL configuration for this domain. If unconfigured, this domain will not
     /// serve with SSL.
     #[prost(message, optional, tag = "3")]
-    pub ssl_settings: ::std::option::Option<SslSettings>,
+    pub ssl_settings: ::core::option::Option<SslSettings>,
     /// The resource records required to configure this domain mapping. These
     /// records must be added to the domain's DNS configuration in order to
     /// serve the application via this domain mapping.
     ///
     /// @OutputOnly
     #[prost(message, repeated, tag = "4")]
-    pub resource_records: ::std::vec::Vec<ResourceRecord>,
+    pub resource_records: ::prost::alloc::vec::Vec<ResourceRecord>,
 }
 /// SSL configuration for a `DomainMapping` resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -680,7 +684,7 @@ pub struct SslSettings {
     /// manually map it to a `DomainMapping` resource.
     /// Example: `12345`.
     #[prost(string, tag = "1")]
-    pub certificate_id: std::string::String,
+    pub certificate_id: ::prost::alloc::string::String,
     /// SSL management type for this domain. If `AUTOMATIC`, a managed certificate
     /// is automatically provisioned. If `MANUAL`, `certificate_id` must be
     /// manually specified in order to configure SSL for this domain.
@@ -696,8 +700,9 @@ pub struct SslSettings {
     ///
     /// @OutputOnly
     #[prost(string, tag = "4")]
-    pub pending_managed_certificate_id: std::string::String,
+    pub pending_managed_certificate_id: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `SslSettings`.
 pub mod ssl_settings {
     /// The SSL management type for this domain.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -718,15 +723,16 @@ pub struct ResourceRecord {
     /// Relative name of the object affected by this record. Only applicable for
     /// `CNAME` records. Example: 'www'.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Data for this record. Values vary by record type, as defined in RFC 1035
     /// (section 5) and RFC 1034 (section 3.6.1).
     #[prost(string, tag = "2")]
-    pub rrdata: std::string::String,
+    pub rrdata: ::prost::alloc::string::String,
     /// Resource record type. Example: `AAAA`.
     #[prost(enumeration = "resource_record::RecordType", tag = "3")]
     pub r#type: i32,
 }
+/// Nested message and enum types in `ResourceRecord`.
 pub mod resource_record {
     /// A resource record type.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -767,12 +773,13 @@ pub struct FirewallRule {
     /// address as `1.2.3.0/24`. Similarly, for IPv6, `2001:db8::1/32` is accepted
     /// as the same address as `2001:db8::/32`.
     #[prost(string, tag = "3")]
-    pub source_range: std::string::String,
+    pub source_range: ::prost::alloc::string::String,
     /// An optional string description of this rule.
     /// This field has a maximum length of 100 characters.
     #[prost(string, tag = "4")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `FirewallRule`.
 pub mod firewall_rule {
     /// Available actions to take on matching requests.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -794,18 +801,18 @@ pub struct Instance {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Relative name of the instance within the version.
     /// Example: `instance-1`.
     ///
     /// @OutputOnly
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// App Engine release this instance is running on.
     ///
     /// @OutputOnly
     #[prost(string, tag = "3")]
-    pub app_engine_release: std::string::String,
+    pub app_engine_release: ::prost::alloc::string::String,
     /// Availability of the instance.
     ///
     /// @OutputOnly
@@ -816,24 +823,24 @@ pub struct Instance {
     ///
     /// @OutputOnly
     #[prost(string, tag = "5")]
-    pub vm_name: std::string::String,
+    pub vm_name: ::prost::alloc::string::String,
     /// Zone where the virtual machine is located. Only applicable for instances
     /// in App Engine flexible environment.
     ///
     /// @OutputOnly
     #[prost(string, tag = "6")]
-    pub vm_zone_name: std::string::String,
+    pub vm_zone_name: ::prost::alloc::string::String,
     /// Virtual machine ID of this instance. Only applicable for instances in
     /// App Engine flexible environment.
     ///
     /// @OutputOnly
     #[prost(string, tag = "7")]
-    pub vm_id: std::string::String,
+    pub vm_id: ::prost::alloc::string::String,
     /// Time that this instance was started.
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "8")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Number of requests since this instance was started.
     ///
     /// @OutputOnly
@@ -864,7 +871,7 @@ pub struct Instance {
     ///
     /// @OutputOnly
     #[prost(string, tag = "14")]
-    pub vm_status: std::string::String,
+    pub vm_status: ::prost::alloc::string::String,
     /// Whether this instance is in debug mode. Only applicable for instances in
     /// App Engine flexible environment.
     ///
@@ -876,8 +883,9 @@ pub struct Instance {
     ///
     /// @OutputOnly
     #[prost(string, tag = "16")]
-    pub vm_ip: std::string::String,
+    pub vm_ip: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Availability of the instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -895,25 +903,25 @@ pub struct Deployment {
     /// as part of this version. All files must be readable using the
     /// credentials supplied with this call.
     #[prost(map = "string, message", tag = "1")]
-    pub files: ::std::collections::HashMap<std::string::String, FileInfo>,
+    pub files: ::std::collections::HashMap<::prost::alloc::string::String, FileInfo>,
     /// The Docker image for the container that runs the version.
     /// Only applicable for instances running in the App Engine flexible environment.
     #[prost(message, optional, tag = "2")]
-    pub container: ::std::option::Option<ContainerInfo>,
+    pub container: ::core::option::Option<ContainerInfo>,
     /// The zip file for this deployment, if this is a zip deployment.
     #[prost(message, optional, tag = "3")]
-    pub zip: ::std::option::Option<ZipInfo>,
+    pub zip: ::core::option::Option<ZipInfo>,
     /// Google Cloud Build build information. Only applicable for instances running
     /// in the App Engine flexible environment.
     #[prost(message, optional, tag = "5")]
-    pub build: ::std::option::Option<BuildInfo>,
+    pub build: ::core::option::Option<BuildInfo>,
     /// Options for any Google Cloud Build builds created as a part of this
     /// deployment.
     ///
     /// These options will only be used if a new build is created, such as when
     /// deploying to the App Engine flexible environment using files or zip.
     #[prost(message, optional, tag = "6")]
-    pub cloud_build_options: ::std::option::Option<CloudBuildOptions>,
+    pub cloud_build_options: ::core::option::Option<CloudBuildOptions>,
 }
 /// Single source file that is part of the version to be deployed. Each source
 /// file that is deployed must be specified separately.
@@ -923,15 +931,15 @@ pub struct FileInfo {
     /// Google Cloud Storage in the form
     /// 'http(s)://storage.googleapis.com/\<bucket\>/\<object\>'.
     #[prost(string, tag = "1")]
-    pub source_url: std::string::String,
+    pub source_url: ::prost::alloc::string::String,
     /// The SHA1 hash of the file, in hex.
     #[prost(string, tag = "2")]
-    pub sha1_sum: std::string::String,
+    pub sha1_sum: ::prost::alloc::string::String,
     /// The MIME type of the file.
     ///
     /// Defaults to the value from Google Cloud Storage.
     #[prost(string, tag = "3")]
-    pub mime_type: std::string::String,
+    pub mime_type: ::prost::alloc::string::String,
 }
 /// Docker image that is used to create a container and start a VM instance for
 /// the version that you deploy. Only applicable for instances running in the App
@@ -942,7 +950,7 @@ pub struct ContainerInfo {
     /// must be fully qualified and include a tag or digest.
     /// Examples: "gcr.io/my-project/image:tag" or "gcr.io/my-project/image@digest"
     #[prost(string, tag = "1")]
-    pub image: std::string::String,
+    pub image: ::prost::alloc::string::String,
 }
 /// Google Cloud Build information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -950,7 +958,7 @@ pub struct BuildInfo {
     /// The Google Cloud Build id.
     /// Example: "f966068f-08b2-42c8-bdfe-74137dff2bf9"
     #[prost(string, tag = "1")]
-    pub cloud_build_id: std::string::String,
+    pub cloud_build_id: ::prost::alloc::string::String,
 }
 /// Options for the build operations performed as a part of the version
 /// deployment. Only applicable for App Engine flexible environment when creating
@@ -965,11 +973,11 @@ pub struct CloudBuildOptions {
     /// See https://cloud.google.com/appengine/docs/standard/python/config/appref
     /// for more details.
     #[prost(string, tag = "1")]
-    pub app_yaml_path: std::string::String,
+    pub app_yaml_path: ::prost::alloc::string::String,
     /// The Cloud Build timeout used as part of any dependent builds performed by
     /// version creation. Defaults to 10 minutes.
     #[prost(message, optional, tag = "2")]
-    pub cloud_build_timeout: ::std::option::Option<::prost_types::Duration>,
+    pub cloud_build_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// The zip file information for a zip deployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -978,7 +986,7 @@ pub struct ZipInfo {
     /// Google Cloud Storage in the form
     /// 'http(s)://storage.googleapis.com/\<bucket\>/\<object\>'.
     #[prost(string, tag = "3")]
-    pub source_url: std::string::String,
+    pub source_url: ::prost::alloc::string::String,
     /// An estimate of the number of files in a zip for a zip deployment.
     /// If set, must be greater than or equal to the actual number of files.
     /// Used for optimizing performance; if not provided, deployment may be slow.
@@ -994,16 +1002,16 @@ pub struct Version {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Relative name of the version within the service.  Example: `v1`.
     /// Version names can contain only lowercase letters, numbers, or hyphens.
     /// Reserved names: "default", "latest", and any name with the prefix "ah-".
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Before an application can receive email or XMPP messages, the application
     /// must be configured to enable the service.
     #[prost(enumeration = "InboundServiceType", repeated, tag = "6")]
-    pub inbound_services: ::std::vec::Vec<i32>,
+    pub inbound_services: ::prost::alloc::vec::Vec<i32>,
     /// Instance class that is used to run this version. Valid values are:
     ///
     /// * AutomaticScaling: `F1`, `F2`, `F4`, `F4_1G`
@@ -1012,26 +1020,26 @@ pub struct Version {
     /// Defaults to `F1` for AutomaticScaling and `B1` for ManualScaling or
     /// BasicScaling.
     #[prost(string, tag = "7")]
-    pub instance_class: std::string::String,
+    pub instance_class: ::prost::alloc::string::String,
     /// Extra network settings.
     /// Only applicable in the App Engine flexible environment.
     #[prost(message, optional, tag = "8")]
-    pub network: ::std::option::Option<Network>,
+    pub network: ::core::option::Option<Network>,
     /// The Google Compute Engine zones that are supported by this version in the
     /// App Engine flexible environment. Deprecated.
     #[prost(string, repeated, tag = "118")]
-    pub zones: ::std::vec::Vec<std::string::String>,
+    pub zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Machine resources for this version.
     /// Only applicable in the App Engine flexible environment.
     #[prost(message, optional, tag = "9")]
-    pub resources: ::std::option::Option<Resources>,
+    pub resources: ::core::option::Option<Resources>,
     /// Desired runtime. Example: `python27`.
     #[prost(string, tag = "10")]
-    pub runtime: std::string::String,
+    pub runtime: ::prost::alloc::string::String,
     /// The channel of the runtime to use. Only available for some
     /// runtimes. Defaults to the `default` channel.
     #[prost(string, tag = "117")]
-    pub runtime_channel: std::string::String,
+    pub runtime_channel: ::prost::alloc::string::String,
     /// Whether multiple requests can be dispatched to this version at once.
     #[prost(bool, tag = "11")]
     pub threadsafe: bool,
@@ -1041,12 +1049,13 @@ pub struct Version {
     /// Metadata settings that are supplied to this version to enable
     /// beta runtime features.
     #[prost(map = "string, string", tag = "13")]
-    pub beta_settings: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub beta_settings:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// App Engine execution environment for this version.
     ///
     /// Defaults to `standard`.
     #[prost(string, tag = "14")]
-    pub env: std::string::String,
+    pub env: ::prost::alloc::string::String,
     /// Current serving status of this version. Only the versions with a
     /// `SERVING` status create instances and can be billed.
     ///
@@ -1057,12 +1066,12 @@ pub struct Version {
     ///
     /// @OutputOnly
     #[prost(string, tag = "16")]
-    pub created_by: std::string::String,
+    pub created_by: ::prost::alloc::string::String,
     /// Time that this version was created.
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "17")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Total size in bytes of all the files that are included in this version
     /// and currently hosted on the App Engine disk.
     ///
@@ -1073,39 +1082,40 @@ pub struct Version {
     /// app.yaml reference for valid values at
     /// https://cloud.google.com/appengine/docs/standard/<language>/config/appref
     #[prost(string, tag = "21")]
-    pub runtime_api_version: std::string::String,
+    pub runtime_api_version: ::prost::alloc::string::String,
     /// The path or name of the app's main executable.
     #[prost(string, tag = "22")]
-    pub runtime_main_executable_path: std::string::String,
+    pub runtime_main_executable_path: ::prost::alloc::string::String,
     /// An ordered list of URL-matching patterns that should be applied to incoming
     /// requests. The first matching URL handles the request and other request
     /// handlers are not attempted.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, repeated, tag = "100")]
-    pub handlers: ::std::vec::Vec<UrlMap>,
+    pub handlers: ::prost::alloc::vec::Vec<UrlMap>,
     /// Custom static error pages. Limited to 10KB per page.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, repeated, tag = "101")]
-    pub error_handlers: ::std::vec::Vec<ErrorHandler>,
+    pub error_handlers: ::prost::alloc::vec::Vec<ErrorHandler>,
     /// Configuration for third-party Python runtime libraries that are required
     /// by the application.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, repeated, tag = "102")]
-    pub libraries: ::std::vec::Vec<Library>,
+    pub libraries: ::prost::alloc::vec::Vec<Library>,
     /// Serving configuration for
     /// [Google Cloud Endpoints](https://cloud.google.com/appengine/docs/python/endpoints/).
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, optional, tag = "103")]
-    pub api_config: ::std::option::Option<ApiConfigHandler>,
+    pub api_config: ::core::option::Option<ApiConfigHandler>,
     /// Environment variables available to the application.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(map = "string, string", tag = "104")]
-    pub env_variables: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub env_variables:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Duration that static files should be cached by web proxies and browsers.
     /// Only applicable if the corresponding
     /// [StaticFilesHandler](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1beta/apps.services.versions#StaticFilesHandler)
@@ -1113,61 +1123,62 @@ pub struct Version {
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, optional, tag = "105")]
-    pub default_expiration: ::std::option::Option<::prost_types::Duration>,
+    pub default_expiration: ::core::option::Option<::prost_types::Duration>,
     /// Configures health checking for instances. Unhealthy instances are
     /// stopped and replaced with new instances.
     /// Only applicable in the App Engine flexible environment.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, optional, tag = "106")]
-    pub health_check: ::std::option::Option<HealthCheck>,
+    pub health_check: ::core::option::Option<HealthCheck>,
     /// Configures readiness health checking for instances.
     /// Unhealthy instances are not put into the backend traffic rotation.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, optional, tag = "112")]
-    pub readiness_check: ::std::option::Option<ReadinessCheck>,
+    pub readiness_check: ::core::option::Option<ReadinessCheck>,
     /// Configures liveness health checking for instances.
     /// Unhealthy instances are stopped and replaced with new instances
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, optional, tag = "113")]
-    pub liveness_check: ::std::option::Option<LivenessCheck>,
+    pub liveness_check: ::core::option::Option<LivenessCheck>,
     /// Files that match this pattern will not be built into this version.
     /// Only applicable for Go runtimes.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(string, tag = "107")]
-    pub nobuild_files_regex: std::string::String,
+    pub nobuild_files_regex: ::prost::alloc::string::String,
     /// Code and application artifacts that make up this version.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, optional, tag = "108")]
-    pub deployment: ::std::option::Option<Deployment>,
+    pub deployment: ::core::option::Option<Deployment>,
     /// Serving URL for this version. Example:
     /// "https://myversion-dot-myservice-dot-myapp.appspot.com"
     ///
     /// @OutputOnly
     #[prost(string, tag = "109")]
-    pub version_url: std::string::String,
+    pub version_url: ::prost::alloc::string::String,
     /// Cloud Endpoints configuration.
     ///
     /// If endpoints_api_service is set, the Cloud Endpoints Extensible Service
     /// Proxy will be provided to serve the API implemented by the app.
     #[prost(message, optional, tag = "110")]
-    pub endpoints_api_service: ::std::option::Option<EndpointsApiService>,
+    pub endpoints_api_service: ::core::option::Option<EndpointsApiService>,
     /// The entrypoint for the application.
     #[prost(message, optional, tag = "122")]
-    pub entrypoint: ::std::option::Option<Entrypoint>,
+    pub entrypoint: ::core::option::Option<Entrypoint>,
     /// Enables VPC connectivity for standard apps.
     #[prost(message, optional, tag = "121")]
-    pub vpc_access_connector: ::std::option::Option<VpcAccessConnector>,
+    pub vpc_access_connector: ::core::option::Option<VpcAccessConnector>,
     /// Controls how instances are created.
     ///
     /// Defaults to `AutomaticScaling`.
     #[prost(oneof = "version::Scaling", tags = "3, 4, 5")]
-    pub scaling: ::std::option::Option<version::Scaling>,
+    pub scaling: ::core::option::Option<version::Scaling>,
 }
+/// Nested message and enum types in `Version`.
 pub mod version {
     /// Controls how instances are created.
     ///
@@ -1202,7 +1213,7 @@ pub struct EndpointsApiService {
     /// Endpoints service name which is the name of the "service" resource in the
     /// Service Management API. For example "myapi.endpoints.myproject.cloud.goog"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Endpoints service configuration ID as specified by the Service Management
     /// API. For example "2016-09-19r1".
     ///
@@ -1216,7 +1227,7 @@ pub struct EndpointsApiService {
     /// When using this, Endpoints fetches the latest configuration and does not
     /// need the configuration ID. In this case, `config_id` must be omitted.
     #[prost(string, tag = "2")]
-    pub config_id: std::string::String,
+    pub config_id: ::prost::alloc::string::String,
     /// Endpoints rollout strategy. If `FIXED`, `config_id` must be specified. If
     /// `MANAGED`, `config_id` must be omitted.
     #[prost(enumeration = "endpoints_api_service::RolloutStrategy", tag = "3")]
@@ -1226,6 +1237,7 @@ pub struct EndpointsApiService {
     #[prost(bool, tag = "4")]
     pub disable_trace_sampling: bool,
 }
+/// Nested message and enum types in `EndpointsApiService`.
 pub mod endpoints_api_service {
     /// Available rollout strategies.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1251,10 +1263,10 @@ pub struct AutomaticScaling {
     /// is initializing, during which the collected usage would not be reliable.
     /// Only applicable in the App Engine flexible environment.
     #[prost(message, optional, tag = "1")]
-    pub cool_down_period: ::std::option::Option<::prost_types::Duration>,
+    pub cool_down_period: ::core::option::Option<::prost_types::Duration>,
     /// Target scaling by CPU usage.
     #[prost(message, optional, tag = "2")]
-    pub cpu_utilization: ::std::option::Option<CpuUtilization>,
+    pub cpu_utilization: ::core::option::Option<CpuUtilization>,
     /// Number of concurrent requests an automatic scaling instance can accept
     /// before the scheduler spawns a new instance.
     ///
@@ -1272,7 +1284,7 @@ pub struct AutomaticScaling {
     /// Maximum amount of time that a request should wait in the pending queue
     /// before starting a new instance to handle it.
     #[prost(message, optional, tag = "6")]
-    pub max_pending_latency: ::std::option::Option<::prost_types::Duration>,
+    pub max_pending_latency: ::core::option::Option<::prost_types::Duration>,
     /// Minimum number of idle instances that should be maintained for
     /// this version. Only applicable for the default version of a service.
     #[prost(int32, tag = "7")]
@@ -1284,23 +1296,23 @@ pub struct AutomaticScaling {
     /// Minimum amount of time a request should wait in the pending queue before
     /// starting a new instance to handle it.
     #[prost(message, optional, tag = "9")]
-    pub min_pending_latency: ::std::option::Option<::prost_types::Duration>,
+    pub min_pending_latency: ::core::option::Option<::prost_types::Duration>,
     /// Target scaling by request utilization.
     #[prost(message, optional, tag = "10")]
-    pub request_utilization: ::std::option::Option<RequestUtilization>,
+    pub request_utilization: ::core::option::Option<RequestUtilization>,
     /// Target scaling by disk usage.
     #[prost(message, optional, tag = "11")]
-    pub disk_utilization: ::std::option::Option<DiskUtilization>,
+    pub disk_utilization: ::core::option::Option<DiskUtilization>,
     /// Target scaling by network usage.
     #[prost(message, optional, tag = "12")]
-    pub network_utilization: ::std::option::Option<NetworkUtilization>,
+    pub network_utilization: ::core::option::Option<NetworkUtilization>,
     /// Target scaling by user-provided metrics.
     /// Only applicable in the App Engine flexible environment.
     #[prost(message, repeated, tag = "21")]
-    pub custom_metrics: ::std::vec::Vec<CustomMetric>,
+    pub custom_metrics: ::prost::alloc::vec::Vec<CustomMetric>,
     /// Scheduler settings for standard environment.
     #[prost(message, optional, tag = "20")]
-    pub standard_scheduler_settings: ::std::option::Option<StandardSchedulerSettings>,
+    pub standard_scheduler_settings: ::core::option::Option<StandardSchedulerSettings>,
 }
 /// A service with basic scaling will create an instance when the application
 /// receives a request. The instance will be turned down when the app becomes
@@ -1311,7 +1323,7 @@ pub struct BasicScaling {
     /// Duration of time after the last request that an instance must wait before
     /// the instance is shut down.
     #[prost(message, optional, tag = "1")]
-    pub idle_timeout: ::std::option::Option<::prost_types::Duration>,
+    pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
     /// Maximum number of instances to create for this version.
     #[prost(int32, tag = "2")]
     pub max_instances: i32,
@@ -1332,7 +1344,7 @@ pub struct ManualScaling {
 pub struct CpuUtilization {
     /// Period of time over which CPU utilization is calculated.
     #[prost(message, optional, tag = "1")]
-    pub aggregation_window_length: ::std::option::Option<::prost_types::Duration>,
+    pub aggregation_window_length: ::core::option::Option<::prost_types::Duration>,
     /// Target CPU utilization ratio to maintain when scaling. Must be between 0
     /// and 1.
     #[prost(double, tag = "2")]
@@ -1388,18 +1400,19 @@ pub struct NetworkUtilization {
 pub struct CustomMetric {
     /// The name of the metric.
     #[prost(string, tag = "1")]
-    pub metric_name: std::string::String,
+    pub metric_name: ::prost::alloc::string::String,
     /// The type of the metric. Must be a string representing a Stackdriver
     /// metric type e.g. GAGUE, DELTA_PER_SECOND, etc.
     #[prost(string, tag = "2")]
-    pub target_type: std::string::String,
+    pub target_type: ::prost::alloc::string::String,
     /// Allows filtering on the metric's fields.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The target spec.
     #[prost(oneof = "custom_metric::TargetSpec", tags = "3, 4")]
-    pub target_spec: ::std::option::Option<custom_metric::TargetSpec>,
+    pub target_spec: ::core::option::Option<custom_metric::TargetSpec>,
 }
+/// Nested message and enum types in `CustomMetric`.
 pub mod custom_metric {
     /// The target spec.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1442,17 +1455,17 @@ pub struct Network {
     /// application container.
     /// Only applicable in the App Engine flexible environment.
     #[prost(string, repeated, tag = "1")]
-    pub forwarded_ports: ::std::vec::Vec<std::string::String>,
+    pub forwarded_ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Tag to apply to the instance during creation.
     /// Only applicable in the App Engine flexible environment.
     #[prost(string, tag = "2")]
-    pub instance_tag: std::string::String,
+    pub instance_tag: ::prost::alloc::string::String,
     /// Google Compute Engine network where the virtual machines are created.
     /// Specify the short name, not the resource path.
     ///
     /// Defaults to `default`.
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Google Cloud Platform sub-network where the virtual machines are created.
     /// Specify the short name, not the resource path.
     ///
@@ -1472,7 +1485,7 @@ pub struct Network {
     /// If specified, the subnetwork must exist in the same region as the
     /// App Engine flexible environment application.
     #[prost(string, tag = "4")]
-    pub subnetwork_name: std::string::String,
+    pub subnetwork_name: ::prost::alloc::string::String,
     /// Enable session affinity.
     /// Only applicable in the App Engine flexible environment.
     #[prost(bool, tag = "5")]
@@ -1484,10 +1497,10 @@ pub struct Network {
 pub struct Volume {
     /// Unique name for the volume.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Underlying volume type, e.g. 'tmpfs'.
     #[prost(string, tag = "2")]
-    pub volume_type: std::string::String,
+    pub volume_type: ::prost::alloc::string::String,
     /// Volume size in gigabytes.
     #[prost(double, tag = "3")]
     pub size_gb: f64,
@@ -1506,7 +1519,7 @@ pub struct Resources {
     pub memory_gb: f64,
     /// User specified volumes.
     #[prost(message, repeated, tag = "4")]
-    pub volumes: ::std::vec::Vec<Volume>,
+    pub volumes: ::prost::alloc::vec::Vec<Volume>,
 }
 /// VPC access connector specification.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1514,22 +1527,23 @@ pub struct VpcAccessConnector {
     /// Full Serverless VPC Access Connector name e.g.
     /// /projects/my-project/locations/us-central1/connectors/c1.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The entrypoint for the application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entrypoint {
     /// The command to run.
     #[prost(oneof = "entrypoint::Command", tags = "1")]
-    pub command: ::std::option::Option<entrypoint::Command>,
+    pub command: ::core::option::Option<entrypoint::Command>,
 }
+/// Nested message and enum types in `Entrypoint`.
 pub mod entrypoint {
     /// The command to run.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Command {
         /// The format should be a shell command that can be fed to `bash -c`.
         #[prost(string, tag = "1")]
-        Shell(std::string::String),
+        Shell(::prost::alloc::string::String),
     }
 }
 /// Available inbound services.
@@ -1584,17 +1598,17 @@ pub struct Service {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Relative name of the service within the application.
     /// Example: `default`.
     ///
     /// @OutputOnly
     #[prost(string, tag = "2")]
-    pub id: std::string::String,
+    pub id: ::prost::alloc::string::String,
     /// Mapping that defines fractional HTTP traffic diversion to
     /// different versions within the service.
     #[prost(message, optional, tag = "3")]
-    pub split: ::std::option::Option<TrafficSplit>,
+    pub split: ::core::option::Option<TrafficSplit>,
 }
 /// Traffic routing configuration for versions within a single service. Traffic
 /// splits define how traffic directed to the service is assigned to versions.
@@ -1614,8 +1628,9 @@ pub struct TrafficSplit {
     /// Up to two decimal place precision is supported for IP-based splits and
     /// up to three decimal places is supported for cookie-based splits.
     #[prost(map = "string, double", tag = "2")]
-    pub allocations: ::std::collections::HashMap<std::string::String, f64>,
+    pub allocations: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
 }
+/// Nested message and enum types in `TrafficSplit`.
 pub mod traffic_split {
     /// Available sharding mechanisms.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1640,78 +1655,78 @@ pub mod traffic_split {
 pub struct GetApplicationRequest {
     /// Name of the Application resource to get. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Applications.CreateApplication`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApplicationRequest {
     /// Application configuration.
     #[prost(message, optional, tag = "2")]
-    pub application: ::std::option::Option<Application>,
+    pub application: ::core::option::Option<Application>,
 }
 /// Request message for `Applications.UpdateApplication`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApplicationRequest {
     /// Name of the Application resource to update. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// An Application containing the updated resource.
     #[prost(message, optional, tag = "2")]
-    pub application: ::std::option::Option<Application>,
+    pub application: ::core::option::Option<Application>,
     /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for 'Applications.RepairApplication'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RepairApplicationRequest {
     /// Name of the application to repair. Example: `apps/myapp`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Services.ListServices`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Name of the parent Application resource. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum results to return per page.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `Services.ListServices`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The services belonging to the requested application.
     #[prost(message, repeated, tag = "1")]
-    pub services: ::std::vec::Vec<Service>,
+    pub services: ::prost::alloc::vec::Vec<Service>,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `Services.GetService`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Name of the resource requested. Example: `apps/myapp/services/default`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Services.UpdateService`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Name of the resource to update. Example: `apps/myapp/services/default`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A Service resource containing the updated service. Only fields set in the
     /// field mask will be updated.
     #[prost(message, optional, tag = "2")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
     /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Set to `true` to gradually shift traffic to one or more versions that you
     /// specify. By default, traffic is shifted immediately.
     /// For gradual traffic migration, the target versions
@@ -1732,7 +1747,7 @@ pub struct UpdateServiceRequest {
 pub struct DeleteServiceRequest {
     /// Name of the resource requested. Example: `apps/myapp/services/default`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Versions.ListVersions`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1740,7 +1755,7 @@ pub struct ListVersionsRequest {
     /// Name of the parent Service resource. Example:
     /// `apps/myapp/services/default`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Controls the set of fields returned in the `List` response.
     #[prost(enumeration = "VersionView", tag = "2")]
     pub view: i32,
@@ -1749,17 +1764,17 @@ pub struct ListVersionsRequest {
     pub page_size: i32,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `Versions.ListVersions`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsResponse {
     /// The versions belonging to the requested service.
     #[prost(message, repeated, tag = "1")]
-    pub versions: ::std::vec::Vec<Version>,
+    pub versions: ::prost::alloc::vec::Vec<Version>,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `Versions.GetVersion`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1767,7 +1782,7 @@ pub struct GetVersionRequest {
     /// Name of the resource requested. Example:
     /// `apps/myapp/services/default/versions/v1`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Controls the set of fields returned in the `Get` response.
     #[prost(enumeration = "VersionView", tag = "2")]
     pub view: i32,
@@ -1778,10 +1793,10 @@ pub struct CreateVersionRequest {
     /// Name of the parent resource to create this version under. Example:
     /// `apps/myapp/services/default`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Application deployment configuration.
     #[prost(message, optional, tag = "2")]
-    pub version: ::std::option::Option<Version>,
+    pub version: ::core::option::Option<Version>,
 }
 /// Request message for `Versions.UpdateVersion`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1789,14 +1804,14 @@ pub struct UpdateVersionRequest {
     /// Name of the resource to update. Example:
     /// `apps/myapp/services/default/versions/1`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A Version containing the updated resource. Only fields set in the field
     /// mask will be updated.
     #[prost(message, optional, tag = "2")]
-    pub version: ::std::option::Option<Version>,
+    pub version: ::core::option::Option<Version>,
     /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `Versions.DeleteVersion`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1804,7 +1819,7 @@ pub struct DeleteVersionRequest {
     /// Name of the resource requested. Example:
     /// `apps/myapp/services/default/versions/v1`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Instances.ListInstances`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1812,23 +1827,23 @@ pub struct ListInstancesRequest {
     /// Name of the parent Version resource. Example:
     /// `apps/myapp/services/default/versions/v1`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum results to return per page.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `Instances.ListInstances`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// The instances belonging to the requested version.
     #[prost(message, repeated, tag = "1")]
-    pub instances: ::std::vec::Vec<Instance>,
+    pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `Instances.GetInstance`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1836,7 +1851,7 @@ pub struct GetInstanceRequest {
     /// Name of the resource requested. Example:
     /// `apps/myapp/services/default/versions/v1/instances/instance-1`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Instances.DeleteInstance`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1844,7 +1859,7 @@ pub struct DeleteInstanceRequest {
     /// Name of the resource requested. Example:
     /// `apps/myapp/services/default/versions/v1/instances/instance-1`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Instances.DebugInstance`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1852,7 +1867,7 @@ pub struct DebugInstanceRequest {
     /// Name of the resource requested. Example:
     /// `apps/myapp/services/default/versions/v1/instances/instance-1`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Public SSH key to add to the instance. Examples:
     ///
     /// * `[USERNAME]:ssh-rsa [KEY_VALUE] [USERNAME]`
@@ -1861,7 +1876,7 @@ pub struct DebugInstanceRequest {
     /// For more information, see
     /// [Adding and Removing SSH Keys](https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys).
     #[prost(string, tag = "2")]
-    pub ssh_key: std::string::String,
+    pub ssh_key: ::prost::alloc::string::String,
 }
 /// Request message for `Firewall.ListIngressRules`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1869,28 +1884,28 @@ pub struct ListIngressRulesRequest {
     /// Name of the Firewall collection to retrieve.
     /// Example: `apps/myapp/firewall/ingressRules`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum results to return per page.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// A valid IP Address. If set, only rules matching this address will be
     /// returned. The first returned rule will be the rule that fires on requests
     /// from this IP.
     #[prost(string, tag = "4")]
-    pub matching_address: std::string::String,
+    pub matching_address: ::prost::alloc::string::String,
 }
 /// Response message for `Firewall.ListIngressRules`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIngressRulesResponse {
     /// The ingress FirewallRules for this application.
     #[prost(message, repeated, tag = "1")]
-    pub ingress_rules: ::std::vec::Vec<FirewallRule>,
+    pub ingress_rules: ::prost::alloc::vec::Vec<FirewallRule>,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `Firewall.BatchUpdateIngressRules`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1898,17 +1913,17 @@ pub struct BatchUpdateIngressRulesRequest {
     /// Name of the Firewall collection to set.
     /// Example: `apps/myapp/firewall/ingressRules`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A list of FirewallRules to replace the existing set.
     #[prost(message, repeated, tag = "2")]
-    pub ingress_rules: ::std::vec::Vec<FirewallRule>,
+    pub ingress_rules: ::prost::alloc::vec::Vec<FirewallRule>,
 }
 /// Response message for `Firewall.UpdateAllIngressRules`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateIngressRulesResponse {
     /// The full list of ingress FirewallRules for this application.
     #[prost(message, repeated, tag = "1")]
-    pub ingress_rules: ::std::vec::Vec<FirewallRule>,
+    pub ingress_rules: ::prost::alloc::vec::Vec<FirewallRule>,
 }
 /// Request message for `Firewall.CreateIngressRule`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1916,7 +1931,7 @@ pub struct CreateIngressRuleRequest {
     /// Name of the parent Firewall collection in which to create a new rule.
     /// Example: `apps/myapp/firewall/ingressRules`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// A FirewallRule containing the new resource.
     ///
     /// The user may optionally provide a position at which the new rule will be
@@ -1928,7 +1943,7 @@ pub struct CreateIngressRuleRequest {
     /// last rule in the sequence before the required default allow-all or deny-all
     /// rule.
     #[prost(message, optional, tag = "2")]
-    pub rule: ::std::option::Option<FirewallRule>,
+    pub rule: ::core::option::Option<FirewallRule>,
 }
 /// Request message for `Firewall.GetIngressRule`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1936,7 +1951,7 @@ pub struct GetIngressRuleRequest {
     /// Name of the Firewall resource to retrieve.
     /// Example: `apps/myapp/firewall/ingressRules/100`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `Firewall.UpdateIngressRule`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1944,13 +1959,13 @@ pub struct UpdateIngressRuleRequest {
     /// Name of the Firewall resource to update.
     /// Example: `apps/myapp/firewall/ingressRules/100`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A FirewallRule containing the updated resource
     #[prost(message, optional, tag = "2")]
-    pub rule: ::std::option::Option<FirewallRule>,
+    pub rule: ::core::option::Option<FirewallRule>,
     /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `Firewall.DeleteIngressRule`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1958,37 +1973,37 @@ pub struct DeleteIngressRuleRequest {
     /// Name of the Firewall resource to delete.
     /// Example: `apps/myapp/firewall/ingressRules/100`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `AuthorizedDomains.ListAuthorizedDomains`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAuthorizedDomainsRequest {
     /// Name of the parent Application resource. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum results to return per page.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `AuthorizedDomains.ListAuthorizedDomains`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAuthorizedDomainsResponse {
     /// The authorized domains belonging to the user.
     #[prost(message, repeated, tag = "1")]
-    pub domains: ::std::vec::Vec<AuthorizedDomain>,
+    pub domains: ::prost::alloc::vec::Vec<AuthorizedDomain>,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `AuthorizedCertificates.ListAuthorizedCertificates`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAuthorizedCertificatesRequest {
     /// Name of the parent `Application` resource. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Controls the set of fields returned in the `LIST` response.
     #[prost(enumeration = "AuthorizedCertificateView", tag = "4")]
     pub view: i32,
@@ -1997,17 +2012,17 @@ pub struct ListAuthorizedCertificatesRequest {
     pub page_size: i32,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `AuthorizedCertificates.ListAuthorizedCertificates`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAuthorizedCertificatesResponse {
     /// The SSL certificates the user is authorized to administer.
     #[prost(message, repeated, tag = "1")]
-    pub certificates: ::std::vec::Vec<AuthorizedCertificate>,
+    pub certificates: ::prost::alloc::vec::Vec<AuthorizedCertificate>,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `AuthorizedCertificates.GetAuthorizedCertificate`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2015,7 +2030,7 @@ pub struct GetAuthorizedCertificateRequest {
     /// Name of the resource requested. Example:
     /// `apps/myapp/authorizedCertificates/12345`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Controls the set of fields returned in the `GET` response.
     #[prost(enumeration = "AuthorizedCertificateView", tag = "2")]
     pub view: i32,
@@ -2025,10 +2040,10 @@ pub struct GetAuthorizedCertificateRequest {
 pub struct CreateAuthorizedCertificateRequest {
     /// Name of the parent `Application` resource. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// SSL certificate data.
     #[prost(message, optional, tag = "2")]
-    pub certificate: ::std::option::Option<AuthorizedCertificate>,
+    pub certificate: ::core::option::Option<AuthorizedCertificate>,
 }
 /// Request message for `AuthorizedCertificates.UpdateAuthorizedCertificate`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2036,15 +2051,15 @@ pub struct UpdateAuthorizedCertificateRequest {
     /// Name of the resource to update. Example:
     /// `apps/myapp/authorizedCertificates/12345`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// An `AuthorizedCertificate` containing the updated resource. Only fields set
     /// in the field mask will be updated.
     #[prost(message, optional, tag = "2")]
-    pub certificate: ::std::option::Option<AuthorizedCertificate>,
+    pub certificate: ::core::option::Option<AuthorizedCertificate>,
     /// Standard field mask for the set of fields to be updated. Updates are only
     /// supported on the `certificate_raw_data` and `display_name` fields.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `AuthorizedCertificates.DeleteAuthorizedCertificate`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2052,30 +2067,30 @@ pub struct DeleteAuthorizedCertificateRequest {
     /// Name of the resource to delete. Example:
     /// `apps/myapp/authorizedCertificates/12345`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `DomainMappings.ListDomainMappings`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDomainMappingsRequest {
     /// Name of the parent Application resource. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum results to return per page.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `DomainMappings.ListDomainMappings`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDomainMappingsResponse {
     /// The domain mappings for the application.
     #[prost(message, repeated, tag = "1")]
-    pub domain_mappings: ::std::vec::Vec<DomainMapping>,
+    pub domain_mappings: ::prost::alloc::vec::Vec<DomainMapping>,
     /// Continuation token for fetching the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `DomainMappings.GetDomainMapping`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2083,17 +2098,17 @@ pub struct GetDomainMappingRequest {
     /// Name of the resource requested. Example:
     /// `apps/myapp/domainMappings/example.com`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for `DomainMappings.CreateDomainMapping`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDomainMappingRequest {
     /// Name of the parent Application resource. Example: `apps/myapp`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Domain mapping configuration.
     #[prost(message, optional, tag = "2")]
-    pub domain_mapping: ::std::option::Option<DomainMapping>,
+    pub domain_mapping: ::core::option::Option<DomainMapping>,
     /// Whether the domain creation should override any existing mappings for this
     /// domain. By default, overrides are rejected.
     #[prost(enumeration = "DomainOverrideStrategy", tag = "4")]
@@ -2105,14 +2120,14 @@ pub struct UpdateDomainMappingRequest {
     /// Name of the resource to update. Example:
     /// `apps/myapp/domainMappings/example.com`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A domain mapping containing the updated resource. Only fields set
     /// in the field mask will be updated.
     #[prost(message, optional, tag = "2")]
-    pub domain_mapping: ::std::option::Option<DomainMapping>,
+    pub domain_mapping: ::core::option::Option<DomainMapping>,
     /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `DomainMappings.DeleteDomainMapping`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2120,7 +2135,7 @@ pub struct DeleteDomainMappingRequest {
     /// Name of the resource to delete. Example:
     /// `apps/myapp/domainMappings/example.com`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Fields that should be returned when [Version][google.appengine.v1beta.Version] resources
 /// are retrieved.
@@ -3164,8 +3179,9 @@ pub struct AuditData {
     /// (resource name, number of returned elements for List operations) is already
     /// included in parent audit log message.
     #[prost(oneof = "audit_data::Method", tags = "1, 2")]
-    pub method: ::std::option::Option<audit_data::Method>,
+    pub method: ::core::option::Option<audit_data::Method>,
 }
+/// Nested message and enum types in `AuditData`.
 pub mod audit_data {
     /// Detailed information about methods that require it. Does not include
     /// simple Get, List or Delete methods because all significant information
@@ -3186,14 +3202,14 @@ pub mod audit_data {
 pub struct UpdateServiceMethod {
     /// Update service request.
     #[prost(message, optional, tag = "1")]
-    pub request: ::std::option::Option<UpdateServiceRequest>,
+    pub request: ::core::option::Option<UpdateServiceRequest>,
 }
 /// Detailed information about CreateVersion call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVersionMethod {
     /// Create version request.
     #[prost(message, optional, tag = "1")]
-    pub request: ::std::option::Option<CreateVersionRequest>,
+    pub request: ::core::option::Option<CreateVersionRequest>,
 }
 /// Metadata for the given [google.longrunning.Operation][google.longrunning.Operation].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3203,41 +3219,42 @@ pub struct OperationMetadataV1Beta {
     ///
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub method: std::string::String,
+    pub method: ::prost::alloc::string::String,
     /// Time that this operation was created.
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "2")]
-    pub insert_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub insert_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time that this operation completed.
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// User who requested this operation.
     ///
     /// @OutputOnly
     #[prost(string, tag = "4")]
-    pub user: std::string::String,
+    pub user: ::prost::alloc::string::String,
     /// Name of the resource that this operation is acting on. Example:
     /// `apps/myapp/services/default`.
     ///
     /// @OutputOnly
     #[prost(string, tag = "5")]
-    pub target: std::string::String,
+    pub target: ::prost::alloc::string::String,
     /// Ephemeral message that may change every time the operation is polled.
     /// @OutputOnly
     #[prost(string, tag = "6")]
-    pub ephemeral_message: std::string::String,
+    pub ephemeral_message: ::prost::alloc::string::String,
     /// Durable messages that persist on every operation poll.
     /// @OutputOnly
     #[prost(string, repeated, tag = "7")]
-    pub warning: ::std::vec::Vec<std::string::String>,
+    pub warning: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Metadata specific to the type of operation in progress.
     /// @OutputOnly
     #[prost(oneof = "operation_metadata_v1_beta::MethodMetadata", tags = "8")]
-    pub method_metadata: ::std::option::Option<operation_metadata_v1_beta::MethodMetadata>,
+    pub method_metadata: ::core::option::Option<operation_metadata_v1_beta::MethodMetadata>,
 }
+/// Nested message and enum types in `OperationMetadataV1Beta`.
 pub mod operation_metadata_v1_beta {
     /// Metadata specific to the type of operation in progress.
     /// @OutputOnly
@@ -3254,5 +3271,5 @@ pub struct CreateVersionMetadataV1Beta {
     /// The Cloud Build ID if one was created as part of the version create.
     /// @OutputOnly
     #[prost(string, tag = "1")]
-    pub cloud_build_id: std::string::String,
+    pub cloud_build_id: ::prost::alloc::string::String,
 }

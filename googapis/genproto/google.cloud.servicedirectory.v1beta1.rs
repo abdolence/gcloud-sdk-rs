@@ -6,7 +6,7 @@ pub struct Endpoint {
     /// Immutable. The resource name for the endpoint in the format
     /// 'projects/*/locations/*/namespaces/*/services/*/endpoints/*'.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. An IPv4 or IPv6 address. Service Directory will reject bad
     /// addresses like:
     ///   "8.8.8"
@@ -16,7 +16,7 @@ pub struct Endpoint {
     ///   "[::1]:8080"
     /// Limited to 45 characters.
     #[prost(string, tag = "2")]
-    pub address: std::string::String,
+    pub address: ::prost::alloc::string::String,
     /// Optional. Service Directory will reject values outside of [0, 65535].
     #[prost(int32, tag = "3")]
     pub port: i32,
@@ -25,7 +25,8 @@ pub struct Endpoint {
     /// spread accoss all key-value pairs. Metadata that goes beyond any these
     /// limits will be rejected.
     #[prost(map = "string, string", tag = "4")]
-    pub metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// An individual service. A service contains a name and optional metadata.
 /// A service must exist before
@@ -36,17 +37,18 @@ pub struct Service {
     /// Immutable. The resource name for the service in the format
     /// 'projects/*/locations/*/namespaces/*/services/*'.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. Metadata for the service. This data can be consumed by service
     /// clients.  The entire metadata dictionary may contain up to 2000 characters,
     /// spread across all key-value pairs. Metadata that goes beyond any these
     /// limits will be rejected.
     #[prost(map = "string, string", tag = "2")]
-    pub metadata: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub metadata:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Endpoints associated with this service. Returned on LookupService.Resolve.
     /// Control plane clients should use RegistrationService.ListEndpoints.
     #[prost(message, repeated, tag = "3")]
-    pub endpoints: ::std::vec::Vec<Endpoint>,
+    pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
 }
 /// The request message for [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
 /// Looks up a service by its name, returns the service and its endpoints.
@@ -54,7 +56,7 @@ pub struct Service {
 pub struct ResolveServiceRequest {
     /// Required. The name of the service to resolve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The maximum number of endpoints to return. Defaults to 25. Maximum is 100.
     /// If a value less than one is specified, the Default is used.
     /// If a value greater than the Maximum is specified, the Maximum is used.
@@ -79,13 +81,13 @@ pub struct ResolveServiceRequest {
     ///   Endpoints that have "owner" field in metadata with a value that is not
     ///   "sd" AND have the key/value foo=bar.
     #[prost(string, tag = "3")]
-    pub endpoint_filter: std::string::String,
+    pub endpoint_filter: ::prost::alloc::string::String,
 }
 /// The response message for [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceResponse {
     #[prost(message, optional, tag = "1")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
 }
 #[doc = r" Generated client implementations."]
 pub mod lookup_service_client {
@@ -151,12 +153,13 @@ pub struct Namespace {
     /// Immutable. The resource name for the namespace in the format
     /// 'projects/*/locations/*/namespaces/*'.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. Resource labels associated with this Namespace.
     /// No more than 64 user labels can be associated with a given resource.  Label
     /// keys and values can be no longer than 63 characters.
     #[prost(map = "string, string", tag = "2")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// The request message for [RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -164,7 +167,7 @@ pub struct CreateNamespaceRequest {
     /// Required. The resource name of the project and location the namespace
     /// will be created in.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC1035</a>.
     /// Specifically, the name must be 1-63 characters long and match the regular
@@ -173,10 +176,10 @@ pub struct CreateNamespaceRequest {
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
     #[prost(string, tag = "2")]
-    pub namespace_id: std::string::String,
+    pub namespace_id: ::prost::alloc::string::String,
     /// Required. A namespace with initial fields set.
     #[prost(message, optional, tag = "3")]
-    pub namespace: ::std::option::Option<Namespace>,
+    pub namespace: ::core::option::Option<Namespace>,
 }
 /// The request message for [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -184,13 +187,13 @@ pub struct ListNamespacesRequest {
     /// Required. The resource name of the project and location whose namespaces we'd like to
     /// list.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list result by.
     ///
     /// General filter string syntax:
@@ -215,7 +218,7 @@ pub struct ListNamespacesRequest {
     ///   have a field called "doesnotexist". Since the filter does not match any
     ///   Namespaces, it returns no results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list result by.
     ///
     /// General order by string syntax:
@@ -226,49 +229,49 @@ pub struct ListNamespacesRequest {
     /// Note that an empty order_by string result in default order, which is order
     /// by name in ascending order.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesResponse {
     /// The list of namespaces.
     #[prost(message, repeated, tag = "1")]
-    pub namespaces: ::std::vec::Vec<Namespace>,
+    pub namespaces: ::prost::alloc::vec::Vec<Namespace>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.GetNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.GetNamespace].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNamespaceRequest {
     /// Required. The name of the namespace to retrieve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNamespaceRequest {
     /// Required. The updated namespace.
     #[prost(message, optional, tag = "1")]
-    pub namespace: ::std::option::Option<Namespace>,
+    pub namespace: ::core::option::Option<Namespace>,
     /// Required. List of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [RegistrationService.DeleteNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteNamespace].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNamespaceRequest {
     /// Required. The name of the namespace to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.CreateService][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The resource name of the namespace this service will belong to.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC1035</a>.
     /// Specifically, the name must be 1-63 characters long and match the regular
@@ -277,10 +280,10 @@ pub struct CreateServiceRequest {
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
     #[prost(string, tag = "2")]
-    pub service_id: std::string::String,
+    pub service_id: ::prost::alloc::string::String,
     /// Required. A service  with initial fields set.
     #[prost(message, optional, tag = "3")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
 }
 /// The request message for [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -288,14 +291,14 @@ pub struct ListServicesRequest {
     /// Required. The resource name of the namespace whose services we'd
     /// like to list.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list result by.
     ///
     /// General filter string syntax:
@@ -320,21 +323,21 @@ pub struct ListServicesRequest {
     ///   have a field called "doesnotexist". Since the filter does not match any
     ///   Services, it returns no results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list result by.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The list of services.
     #[prost(message, repeated, tag = "1")]
-    pub services: ::std::vec::Vec<Service>,
+    pub services: ::prost::alloc::vec::Vec<Service>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService].
 /// This should not be used for looking up a service. Insead, use the `resolve`
@@ -343,31 +346,31 @@ pub struct ListServicesResponse {
 pub struct GetServiceRequest {
     /// Required. The name of the service to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The updated service.
     #[prost(message, optional, tag = "1")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
     /// Required. List of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [RegistrationService.DeleteService][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The name of the service to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.CreateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateEndpoint].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointRequest {
     /// Required. The resource name of the service that this endpoint provides.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC1035</a>.
     /// Specifically, the name must be 1-63 characters long and match the regular
@@ -376,10 +379,10 @@ pub struct CreateEndpointRequest {
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
     #[prost(string, tag = "2")]
-    pub endpoint_id: std::string::String,
+    pub endpoint_id: ::prost::alloc::string::String,
     /// Required. A endpoint with initial fields set.
     #[prost(message, optional, tag = "3")]
-    pub endpoint: ::std::option::Option<Endpoint>,
+    pub endpoint: ::core::option::Option<Endpoint>,
 }
 /// The request message for [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -387,14 +390,14 @@ pub struct ListEndpointsRequest {
     /// Required. The resource name of the service whose endpoints we'd like to
     /// list.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list result by.
     ///
     /// General filter string syntax:
@@ -421,21 +424,21 @@ pub struct ListEndpointsRequest {
     ///   have a field called "doesnotexist". Since the filter does not match any
     ///   Endpoints, it returns no results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list result by.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsResponse {
     /// The list of endpoints.
     #[prost(message, repeated, tag = "1")]
-    pub endpoints: ::std::vec::Vec<Endpoint>,
+    pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint].
 /// This should not be used to lookup endpoints at runtime. Instead, use
@@ -444,24 +447,24 @@ pub struct ListEndpointsResponse {
 pub struct GetEndpointRequest {
     /// Required. The name of the endpoint to get.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for [RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointRequest {
     /// Required. The updated endpoint.
     #[prost(message, optional, tag = "1")]
-    pub endpoint: ::std::option::Option<Endpoint>,
+    pub endpoint: ::core::option::Option<Endpoint>,
     /// Required. List of fields to be updated in this request.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for [RegistrationService.DeleteEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteEndpoint].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointRequest {
     /// Required. The name of the endpoint to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod registration_service_client {

@@ -3,30 +3,30 @@
 pub struct Intent {
     /// Required. The name of the last matched intent.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Represents parameters identified as part of intent matching.
     /// This is a map of the name of the identified parameter to the value of the
     /// parameter identified from user input. All parameters defined in
     /// the matched intent that are identified will be surfaced here.
     #[prost(map = "string, message", tag = "2")]
-    pub params: ::std::collections::HashMap<std::string::String, IntentParameterValue>,
+    pub params: ::std::collections::HashMap<::prost::alloc::string::String, IntentParameterValue>,
     /// Optional. Typed or spoken input from the end user that matched this intent.
     /// This will be populated when an intent is matched, based on the user input.
     #[prost(string, tag = "3")]
-    pub query: std::string::String,
+    pub query: ::prost::alloc::string::String,
 }
 /// Represents a value for intent parameter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentParameterValue {
     /// Required. Original text value extracted from user utterance.
     #[prost(string, tag = "1")]
-    pub original: std::string::String,
+    pub original: ::prost::alloc::string::String,
     /// Required. Structured value for parameter extracted from user input.
     /// This will only be populated if the parameter is defined in the matched
     /// intent and the value of the parameter could be identified during intent
     /// matching.
     #[prost(message, optional, tag = "2")]
-    pub resolved: ::std::option::Option<::prost_types::Value>,
+    pub resolved: ::core::option::Option<::prost_types::Value>,
 }
 /// Represents an Interactive Canvas response to be sent to the user.
 /// This can be used in conjunction with the "first_simple" field in the
@@ -37,14 +37,14 @@ pub struct Canvas {
     /// URL of the interactive canvas web app to load. If not set, the url from
     /// current active canvas will be reused.
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
     /// Optional. JSON data to be passed through to the immersive experience
     /// web page as an event.
     /// If the "override" field in the containing prompt is "false" data values
     /// defined in this Canvas prompt will be added after data values defined in
     /// previous Canvas prompts.
     #[prost(message, repeated, tag = "4")]
-    pub data: ::std::vec::Vec<::prost_types::Value>,
+    pub data: ::prost::alloc::vec::Vec<::prost_types::Value>,
     /// Optional. Default value: false.
     #[prost(bool, tag = "3")]
     pub suppress_mic: bool,
@@ -55,12 +55,12 @@ pub struct Image {
     /// The source url of the image. Images can be JPG, PNG and GIF (animated and
     /// non-animated). For example,`https://www.agentx.com/logo.png`. Required.
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
     /// A text description of the image to be used for accessibility, e.g. screen
     /// readers.
     /// Required.
     #[prost(string, tag = "2")]
-    pub alt: std::string::String,
+    pub alt: ::prost::alloc::string::String,
     /// The height of the image in pixels.
     /// Optional.
     #[prost(int32, tag = "3")]
@@ -70,6 +70,7 @@ pub struct Image {
     #[prost(int32, tag = "4")]
     pub width: i32,
 }
+/// Nested message and enum types in `Image`.
 pub mod image {
     /// Possible image display options for affecting the presentation of the image.
     /// This should be used for when the image's aspect ratio does not match the
@@ -97,10 +98,10 @@ pub mod image {
 pub struct Link {
     /// Name of the link
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// What happens when a user opens the link
     #[prost(message, optional, tag = "2")]
-    pub open: ::std::option::Option<OpenUrl>,
+    pub open: ::core::option::Option<OpenUrl>,
 }
 /// Action taken when a user opens a link.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -108,7 +109,7 @@ pub struct OpenUrl {
     /// The url field which could be any of:
     /// - http/https urls for opening an App-linked App or a webpage
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
     /// Indicates a hint for the url type.
     #[prost(enumeration = "UrlHint", tag = "2")]
     pub hint: i32,
@@ -129,43 +130,44 @@ pub struct Card {
     /// Overall title of the card.
     /// Optional.
     #[prost(string, tag = "1")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Optional.
     #[prost(string, tag = "2")]
-    pub subtitle: std::string::String,
+    pub subtitle: ::prost::alloc::string::String,
     /// Body text of the card.
     /// Supports a limited set of markdown syntax for formatting.
     /// Required, unless image is present.
     #[prost(string, tag = "3")]
-    pub text: std::string::String,
+    pub text: ::prost::alloc::string::String,
     /// A hero image for the card. The height is fixed to 192dp.
     /// Optional.
     #[prost(message, optional, tag = "4")]
-    pub image: ::std::option::Option<Image>,
+    pub image: ::core::option::Option<Image>,
     /// How the image background will be filled. Optional.
     #[prost(enumeration = "image::ImageFill", tag = "5")]
     pub image_fill: i32,
     /// Button.
     /// Optional.
     #[prost(message, optional, tag = "6")]
-    pub button: ::std::option::Option<Link>,
+    pub button: ::core::option::Option<Link>,
 }
 /// A card for presenting a collection of options to select from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Collection {
     /// Title of the collection. Optional.
     #[prost(string, tag = "1")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Subtitle of the collection. Optional.
     #[prost(string, tag = "2")]
-    pub subtitle: std::string::String,
+    pub subtitle: ::prost::alloc::string::String,
     /// min: 2 max: 10
     #[prost(message, repeated, tag = "3")]
-    pub items: ::std::vec::Vec<collection::CollectionItem>,
+    pub items: ::prost::alloc::vec::Vec<collection::CollectionItem>,
     /// How the image backgrounds of collection items will be filled. Optional.
     #[prost(enumeration = "image::ImageFill", tag = "4")]
     pub image_fill: i32,
 }
+/// Nested message and enum types in `Collection`.
 pub mod collection {
     /// An item in the collection
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -173,7 +175,7 @@ pub mod collection {
         /// Required. The NLU key that matches the entry key name in the associated
         /// Type.
         #[prost(string, tag = "1")]
-        pub key: std::string::String,
+        pub key: ::prost::alloc::string::String,
     }
 }
 /// A card for presenting a list of options to select from.
@@ -181,14 +183,15 @@ pub mod collection {
 pub struct List {
     /// Title of the list. Optional.
     #[prost(string, tag = "1")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Subtitle of the list. Optional.
     #[prost(string, tag = "2")]
-    pub subtitle: std::string::String,
+    pub subtitle: ::prost::alloc::string::String,
     /// min: 2 max: 30
     #[prost(message, repeated, tag = "3")]
-    pub items: ::std::vec::Vec<list::ListItem>,
+    pub items: ::prost::alloc::vec::Vec<list::ListItem>,
 }
+/// Nested message and enum types in `List`.
 pub mod list {
     /// An item in the list
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -196,7 +199,7 @@ pub mod list {
         /// Required. The NLU key that matches the entry key name in the associated
         /// Type.
         #[prost(string, tag = "1")]
-        pub key: std::string::String,
+        pub key: ::prost::alloc::string::String,
     }
 }
 /// Represents one media object.
@@ -208,17 +211,18 @@ pub struct Media {
     pub media_type: i32,
     /// Start offset of the first media object.
     #[prost(message, optional, tag = "5")]
-    pub start_offset: ::std::option::Option<::prost_types::Duration>,
+    pub start_offset: ::core::option::Option<::prost_types::Duration>,
     /// Optional media control types this media response session can support.
     /// If set, request will be made to 3p when a certain media event happens.
     /// If not set, 3p must still handle two default control type, FINISHED and
     /// FAILED.
     #[prost(enumeration = "media::OptionalMediaControls", repeated, tag = "6")]
-    pub optional_media_controls: ::std::vec::Vec<i32>,
+    pub optional_media_controls: ::prost::alloc::vec::Vec<i32>,
     /// List of Media Objects
     #[prost(message, repeated, tag = "7")]
-    pub media_objects: ::std::vec::Vec<MediaObject>,
+    pub media_objects: ::prost::alloc::vec::Vec<MediaObject>,
 }
+/// Nested message and enum types in `Media`.
 pub mod media {
     /// Media type of this response.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -249,24 +253,25 @@ pub mod media {
 pub struct MediaObject {
     /// Name of this media object.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Description of this media object.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// The url pointing to the media content.
     #[prost(string, tag = "3")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
     /// Image to show with the media card.
     #[prost(message, optional, tag = "4")]
-    pub image: ::std::option::Option<MediaImage>,
+    pub image: ::core::option::Option<MediaImage>,
 }
 /// Image to show with the media card.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaImage {
     /// Image.
     #[prost(oneof = "media_image::Image", tags = "1, 2")]
-    pub image: ::std::option::Option<media_image::Image>,
+    pub image: ::core::option::Option<media_image::Image>,
 }
+/// Nested message and enum types in `MediaImage`.
 pub mod media_image {
     /// Image.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -285,38 +290,39 @@ pub mod media_image {
 pub struct Table {
     /// Overall title of the table. Optional but must be set if subtitle is set.
     #[prost(string, tag = "1")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Subtitle for the table. Optional.
     #[prost(string, tag = "2")]
-    pub subtitle: std::string::String,
+    pub subtitle: ::prost::alloc::string::String,
     /// Image associated with the table. Optional.
     #[prost(message, optional, tag = "4")]
-    pub image: ::std::option::Option<Image>,
+    pub image: ::core::option::Option<Image>,
     /// Headers and alignment of columns.
     #[prost(message, repeated, tag = "5")]
-    pub columns: ::std::vec::Vec<TableColumn>,
+    pub columns: ::prost::alloc::vec::Vec<TableColumn>,
     /// Row data of the table. The first 3 rows are guaranteed to be shown but
     /// others might be cut on certain surfaces. Please test with the simulator to
     /// see which rows will be shown for a given surface. On surfaces that support
     /// the WEB_BROWSER capability, you can point the user to
     /// a web page with more data.
     #[prost(message, repeated, tag = "6")]
-    pub rows: ::std::vec::Vec<TableRow>,
+    pub rows: ::prost::alloc::vec::Vec<TableRow>,
     /// Button.
     #[prost(message, optional, tag = "7")]
-    pub button: ::std::option::Option<Link>,
+    pub button: ::core::option::Option<Link>,
 }
 /// Describes a column in a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableColumn {
     /// Header text for the column.
     #[prost(string, tag = "1")]
-    pub header: std::string::String,
+    pub header: ::prost::alloc::string::String,
     /// Horizontal alignment of content w.r.t column. If unspecified, content
     /// will be aligned to the leading edge.
     #[prost(enumeration = "table_column::HorizontalAlignment", tag = "2")]
     pub align: i32,
 }
+/// Nested message and enum types in `TableColumn`.
 pub mod table_column {
     /// The alignment of the content within the cell.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -337,7 +343,7 @@ pub mod table_column {
 pub struct TableCell {
     /// Text content of the cell.
     #[prost(string, tag = "1")]
-    pub text: std::string::String,
+    pub text: ::prost::alloc::string::String,
 }
 /// Describes a row in the table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -346,7 +352,7 @@ pub struct TableRow {
     /// others might be cut on certain surfaces. Please test with the simulator
     /// to see which cells will be shown for a given surface.
     #[prost(message, repeated, tag = "1")]
-    pub cells: ::std::vec::Vec<TableCell>,
+    pub cells: ::prost::alloc::vec::Vec<TableCell>,
     /// Indicates whether there should be a divider after each row.
     #[prost(bool, tag = "2")]
     pub divider: bool,
@@ -356,8 +362,9 @@ pub struct TableRow {
 pub struct Content {
     /// Content.
     #[prost(oneof = "content::Content", tags = "1, 2, 3, 4, 5, 6, 7")]
-    pub content: ::std::option::Option<content::Content>,
+    pub content: ::core::option::Option<content::Content>,
 }
+/// Nested message and enum types in `Content`.
 pub mod content {
     /// Content.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -393,14 +400,14 @@ pub struct Simple {
     /// If the "override" field in the containing prompt is "true", the speech
     /// defined in this field replaces the previous Simple prompt's speech.
     #[prost(string, tag = "1")]
-    pub speech: std::string::String,
+    pub speech: ::prost::alloc::string::String,
     /// Optional text to display in the chat bubble. If not given, a display
     /// rendering of the speech field above will be used. Limited to 640
     /// chars.
     /// If the "override" field in the containing prompt is "true", the text
     /// defined in this field replaces to the previous Simple prompt's text.
     #[prost(string, tag = "2")]
-    pub text: std::string::String,
+    pub text: ::prost::alloc::string::String,
 }
 /// Input suggestion to be presented to the user.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -410,7 +417,7 @@ pub struct Suggestion {
     /// Each title must be unique among the set of suggestion chips.
     /// Max 25 chars
     #[prost(string, tag = "1")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
 }
 /// Represent a response to a user.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -426,6 +433,7 @@ pub struct Prompt {
     /// prompt (part of the Content prompt). The Content and Link messages will
     /// always be overwritten if defined in the prompt.
     /// Default value is "false".
+    #[deprecated]
     #[prost(bool, tag = "1")]
     pub append: bool,
     /// Optional. Mode for how this messages should be merged with previously
@@ -443,28 +451,28 @@ pub struct Prompt {
     pub r#override: bool,
     /// Optional. The first voice and text-only response.
     #[prost(message, optional, tag = "2")]
-    pub first_simple: ::std::option::Option<Simple>,
+    pub first_simple: ::core::option::Option<Simple>,
     /// Optional. A content like a card, list or media to display to the user.
     #[prost(message, optional, tag = "3")]
-    pub content: ::std::option::Option<Content>,
+    pub content: ::core::option::Option<Content>,
     /// Optional. The last voice and text-only response.
     #[prost(message, optional, tag = "4")]
-    pub last_simple: ::std::option::Option<Simple>,
+    pub last_simple: ::core::option::Option<Simple>,
     /// Optional. Suggestions to be displayed to the user which will always appear
     /// at the end of the response.
     /// If the "override" field in the containing prompt is "false", the titles
     /// defined in this field will be added to titles defined in any previously
     /// defined suggestions prompts and duplicate values will be removed.
     #[prost(message, repeated, tag = "5")]
-    pub suggestions: ::std::vec::Vec<Suggestion>,
+    pub suggestions: ::prost::alloc::vec::Vec<Suggestion>,
     /// Optional. An additional suggestion chip that can link out to the associated app
     /// or site.
     /// The chip will be rendered with the title "Open <name>". Max 20 chars.
     #[prost(message, optional, tag = "6")]
-    pub link: ::std::option::Option<Link>,
+    pub link: ::core::option::Option<Link>,
     /// Optional. Represents a Interactive Canvas response to be sent to the user.
     #[prost(message, optional, tag = "9")]
-    pub canvas: ::std::option::Option<Canvas>,
+    pub canvas: ::core::option::Option<Canvas>,
 }
 /// Represents a slot.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -478,7 +486,7 @@ pub struct Slot {
     /// The value of the slot. Changing this value in the response, will
     /// modify the value in slot filling.
     #[prost(message, optional, tag = "3")]
-    pub value: ::std::option::Option<::prost_types::Value>,
+    pub value: ::core::option::Option<::prost_types::Value>,
     /// Indicates if the slot value was collected on the last turn.
     /// This field is read-only.
     #[prost(bool, tag = "4")]
@@ -487,8 +495,9 @@ pub struct Slot {
     /// slot. This prompt overrides the existing prompt defined in the console.
     /// This field is not included in the webhook request.
     #[prost(message, optional, tag = "5")]
-    pub prompt: ::std::option::Option<Prompt>,
+    pub prompt: ::core::option::Option<Prompt>,
 }
+/// Nested message and enum types in `Slot`.
 pub mod slot {
     /// Represents the mode of a slot, that is, if it is required or not.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

@@ -4,10 +4,10 @@ pub struct CreateAssessmentRequest {
     /// Required. The name of the project in which the assessment will be created,
     /// in the format "projects/{project}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The assessment details.
     #[prost(message, optional, tag = "2")]
-    pub assessment: ::std::option::Option<Assessment>,
+    pub assessment: ::core::option::Option<Assessment>,
 }
 /// The request message to annotate an Assessment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -15,11 +15,12 @@ pub struct AnnotateAssessmentRequest {
     /// Required. The resource name of the Assessment, in the format
     /// "projects/{project}/assessments/{assessment}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The annotation that will be assigned to the Event.
     #[prost(enumeration = "annotate_assessment_request::Annotation", tag = "2")]
     pub annotation: i32,
 }
+/// Nested message and enum types in `AnnotateAssessmentRequest`.
 pub mod annotate_assessment_request {
     /// Enum that reprensents the types of annotations.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -48,39 +49,39 @@ pub struct Assessment {
     /// Output only. The resource name for the Assessment in the format
     /// "projects/{project}/assessments/{assessment}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The event being assessed.
     #[prost(message, optional, tag = "2")]
-    pub event: ::std::option::Option<Event>,
+    pub event: ::core::option::Option<Event>,
     /// Output only. The risk analysis result for the event being assessed.
     #[prost(message, optional, tag = "3")]
-    pub risk_analysis: ::std::option::Option<RiskAnalysis>,
+    pub risk_analysis: ::core::option::Option<RiskAnalysis>,
     /// Output only. Properties of the provided event token.
     #[prost(message, optional, tag = "4")]
-    pub token_properties: ::std::option::Option<TokenProperties>,
+    pub token_properties: ::core::option::Option<TokenProperties>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Optional. The user response token provided by the reCAPTCHA client-side integration
     /// on your site.
     #[prost(string, tag = "1")]
-    pub token: std::string::String,
+    pub token: ::prost::alloc::string::String,
     /// Optional. The site key that was used to invoke reCAPTCHA on your site and generate
     /// the token.
     #[prost(string, tag = "2")]
-    pub site_key: std::string::String,
+    pub site_key: ::prost::alloc::string::String,
     /// Optional. The user agent present in the request from the user's device related to
     /// this event.
     #[prost(string, tag = "3")]
-    pub user_agent: std::string::String,
+    pub user_agent: ::prost::alloc::string::String,
     /// Optional. The IP address in the request from the user's device related to this event.
     #[prost(string, tag = "4")]
-    pub user_ip_address: std::string::String,
+    pub user_ip_address: ::prost::alloc::string::String,
     /// Optional. The expected action for this type of event. This should be the same action
     /// provided at token generation time on client-side platforms already
     /// integrated with recaptcha enterprise.
     #[prost(string, tag = "5")]
-    pub expected_action: std::string::String,
+    pub expected_action: ::prost::alloc::string::String,
 }
 /// Risk analysis result for an event.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -96,8 +97,9 @@ pub struct RiskAnalysis {
         repeated,
         tag = "2"
     )]
-    pub reasons: ::std::vec::Vec<i32>,
+    pub reasons: ::prost::alloc::vec::Vec<i32>,
 }
+/// Nested message and enum types in `RiskAnalysis`.
 pub mod risk_analysis {
     /// LINT.IfChange(classification_reason)
     /// Reasons contributing to the risk analysis verdict.
@@ -134,14 +136,15 @@ pub struct TokenProperties {
     pub invalid_reason: i32,
     /// The timestamp corresponding to the generation of the token.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The hostname of the page on which the token was generated.
     #[prost(string, tag = "4")]
-    pub hostname: std::string::String,
+    pub hostname: ::prost::alloc::string::String,
     /// Action name provided at token generation.
     #[prost(string, tag = "5")]
-    pub action: std::string::String,
+    pub action: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `TokenProperties`.
 pub mod token_properties {
     /// LINT.IfChange
     /// Enum that represents the types of invalid token reasons.
@@ -168,10 +171,10 @@ pub struct CreateKeyRequest {
     /// Required. The name of the project in which the key will be created, in the
     /// format "projects/{project}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Information to create a reCAPTCHA Enterprise key.
     #[prost(message, optional, tag = "2")]
-    pub key: ::std::option::Option<Key>,
+    pub key: ::core::option::Option<Key>,
 }
 /// The list keys request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -179,7 +182,7 @@ pub struct ListKeysRequest {
     /// Required. The name of the project that contains the keys that will be
     /// listed, in the format "projects/{project}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of keys to return. Default is 10. Max limit is
     /// 1000.
     #[prost(int32, tag = "2")]
@@ -187,18 +190,18 @@ pub struct ListKeysRequest {
     /// Optional. The next_page_token value returned from a previous.
     /// ListKeysRequest, if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response to request to list keys in a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeysResponse {
     /// Key details.
     #[prost(message, repeated, tag = "1")]
-    pub keys: ::std::vec::Vec<Key>,
+    pub keys: ::prost::alloc::vec::Vec<Key>,
     /// Token to retrieve the next page of results. It is set to empty if no keys
     /// remain in results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The get key request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -206,18 +209,18 @@ pub struct GetKeyRequest {
     /// Required. The name of the requested key, in the format
     /// "projects/{project}/keys/{key}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The update key request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateKeyRequest {
     /// Required. The key to update.
     #[prost(message, optional, tag = "1")]
-    pub key: ::std::option::Option<Key>,
+    pub key: ::core::option::Option<Key>,
     /// Optional. The mask to control which field of the key get updated. If the mask is not
     /// present, all fields will be updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The delete key request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -225,7 +228,7 @@ pub struct DeleteKeyRequest {
     /// Required. The name of the key to be deleted, in the format
     /// "projects/{project}/keys/{key}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A key used to identify and configure applications (web and/or mobile) that
 /// use reCAPTCHA Enterprise.
@@ -234,22 +237,24 @@ pub struct Key {
     /// The resource name for the Key in the format
     /// "projects/{project}/keys/{key}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Human-readable display name of this key. Modifiable by user.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. See <a href="https://cloud.google.com/recaptcha-enterprise/docs/labels">
     /// Creating and managing labels</a>.
     #[prost(map = "string, string", tag = "6")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The timestamp corresponding to the creation of this Key.
     #[prost(message, optional, tag = "7")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Platform specific settings for this key. The key can only be used on one
     /// platform, the one it has settings for.
     #[prost(oneof = "key::PlatformSettings", tags = "3, 4, 5")]
-    pub platform_settings: ::std::option::Option<key::PlatformSettings>,
+    pub platform_settings: ::core::option::Option<key::PlatformSettings>,
 }
+/// Nested message and enum types in `Key`.
 pub mod key {
     /// Platform specific settings for this key. The key can only be used on one
     /// platform, the one it has settings for.
@@ -277,7 +282,7 @@ pub struct WebKeySettings {
     /// host and must not include any path, port, query or fragment.
     /// Examples: 'example.com' or 'subdomain.example.com'
     #[prost(string, repeated, tag = "1")]
-    pub allowed_domains: ::std::vec::Vec<std::string::String>,
+    pub allowed_domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Whether this key can be used on AMP (Accelerated Mobile Pages) websites.
     #[prost(bool, tag = "2")]
     pub allow_amp_traffic: bool,
@@ -293,6 +298,7 @@ pub struct WebKeySettings {
     )]
     pub challenge_security_preference: i32,
 }
+/// Nested message and enum types in `WebKeySettings`.
 pub mod web_key_settings {
     /// Enum that represents the integration types for web keys.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -333,7 +339,7 @@ pub struct AndroidKeySettings {
     /// Android package names of apps allowed to use the key.
     /// Example: 'com.companyname.appname'
     #[prost(string, repeated, tag = "1")]
-    pub allowed_package_names: ::std::vec::Vec<std::string::String>,
+    pub allowed_package_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Settings specific to keys that can be used by iOS apps.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -341,7 +347,7 @@ pub struct IosKeySettings {
     /// iOS bundle ids of apps allowed to use the key.
     /// Example: 'com.companyname.productname.appname'
     #[prost(string, repeated, tag = "1")]
-    pub allowed_bundle_ids: ::std::vec::Vec<std::string::String>,
+    pub allowed_bundle_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[doc = r" Generated client implementations."]
 pub mod recaptcha_enterprise_service_client {
@@ -396,7 +402,7 @@ pub mod recaptcha_enterprise_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/AnnotateAssessment" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/AnnotateAssessment") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a new reCAPTCHA Enterprise key."]

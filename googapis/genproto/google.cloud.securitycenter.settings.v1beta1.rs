@@ -13,13 +13,13 @@ pub struct BillingSettings {
     /// Output only. The absolute point in time when the subscription became effective.
     /// Can be compared to expire_time value to determine full contract duration
     #[prost(message, optional, tag = "3")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The absolute point in time when the subscription expires.
     ///
     /// If this field is populated and billing_tier is STANDARD, this is
     /// indication of a point in the _past_ when a PREMIUM access ended.
     #[prost(message, optional, tag = "4")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Billing tier options
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -57,7 +57,7 @@ pub struct ComponentSettings {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/components/{component}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// ENABLE to enable component, DISABLE to disable and INHERIT to inherit
     /// setting from ancestors.
     #[prost(enumeration = "ComponentEnablementState", tag = "2")]
@@ -65,28 +65,31 @@ pub struct ComponentSettings {
     /// Output only. The service account to be used for security center component.
     /// The component must have permission to "act as" the service account.
     #[prost(string, tag = "3")]
-    pub project_service_account: std::string::String,
+    pub project_service_account: ::prost::alloc::string::String,
     /// Settings for detectors.  Not all detectors must have settings present at
     /// each and every level in the hierarchy.  If it is not present the setting
     /// will be inherited from its ancestors folders, organizations or the
     /// defaults.
     #[prost(map = "string, message", tag = "4")]
-    pub detector_settings:
-        ::std::collections::HashMap<std::string::String, component_settings::DetectorSettings>,
+    pub detector_settings: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        component_settings::DetectorSettings,
+    >,
     /// Output only. An fingerprint used for optimistic concurrency. If none is provided
     /// on updates then the existing metadata will be blindly overwritten.
     #[prost(string, tag = "5")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Output only. The time these settings were last updated.
     #[prost(message, optional, tag = "6")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Component specific settings.  This must match the component value.
     #[prost(
         oneof = "component_settings::SpecificSettings",
         tags = "41, 42, 44, 40"
     )]
-    pub specific_settings: ::std::option::Option<component_settings::SpecificSettings>,
+    pub specific_settings: ::core::option::Option<component_settings::SpecificSettings>,
 }
+/// Nested message and enum types in `ComponentSettings`.
 pub mod component_settings {
     /// Settings for each detector.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -132,12 +135,13 @@ pub struct SecurityHealthAnalyticsSettings {
     /// Settings for "NON_ORG_IAM_MEMBER" scanner.
     #[prost(message, optional, tag = "1")]
     pub non_org_iam_member_settings:
-        ::std::option::Option<security_health_analytics_settings::NonOrgIamMemberSettings>,
+        ::core::option::Option<security_health_analytics_settings::NonOrgIamMemberSettings>,
     /// Settings for "ADMIN_SERVICE_ACCOUNT" scanner.
     #[prost(message, optional, tag = "2")]
     pub admin_service_account_settings:
-        ::std::option::Option<security_health_analytics_settings::AdminServiceAccountSettings>,
+        ::core::option::Option<security_health_analytics_settings::AdminServiceAccountSettings>,
 }
+/// Nested message and enum types in `SecurityHealthAnalyticsSettings`.
 pub mod security_health_analytics_settings {
     /// Settings for "NON_ORG_IAM_MEMBER" scanner.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -154,7 +158,7 @@ pub mod security_health_analytics_settings {
         /// added to the list.
         /// If not specified, only Gmail accounts will be considered as non-approved.
         #[prost(string, repeated, tag = "1")]
-        pub approved_identities: ::std::vec::Vec<std::string::String>,
+        pub approved_identities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Settings for "ADMIN_SERVICE_ACCOUNT" scanner.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -170,7 +174,7 @@ pub mod security_health_analytics_settings {
         ///   "myadmin@myproject.iam.gserviceaccount.com".
         /// Google-created service accounts are all approved.
         #[prost(string, repeated, tag = "1")]
-        pub approved_identities: ::std::vec::Vec<std::string::String>,
+        pub approved_identities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// Valid states for a component
@@ -198,11 +202,11 @@ pub enum ComponentEnablementState {
 pub struct Detector {
     /// Output only. Detector Identifier
     #[prost(string, tag = "1")]
-    pub detector: std::string::String,
+    pub detector: ::prost::alloc::string::String,
     /// Output only. Component that supports detector type.  Multiple components may support the
     /// same detector.
     #[prost(string, tag = "2")]
-    pub component: std::string::String,
+    pub component: ::prost::alloc::string::String,
     /// Output only. The billing tier may be different for a detector of the same name in
     /// another component.
     #[prost(enumeration = "BillingTier", tag = "3")]
@@ -212,7 +216,7 @@ pub struct Detector {
     /// in the future. An example might be tagging all detectors “PCI” that help
     /// with PCI compliance.
     #[prost(string, repeated, tag = "4")]
-    pub detector_labels: ::std::vec::Vec<std::string::String>,
+    pub detector_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Sink Settings for Security Command Center
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -223,7 +227,7 @@ pub struct SinkSettings {
     /// not output logs. If a project ID is provided it will be normalized to a
     /// project number.
     #[prost(string, tag = "1")]
-    pub logging_sink_project: std::string::String,
+    pub logging_sink_project: ::prost::alloc::string::String,
 }
 /// Common configuration settings for all of Security Center.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -237,10 +241,10 @@ pub struct Settings {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Billing settings
     #[prost(message, optional, tag = "2")]
-    pub billing_settings: ::std::option::Option<BillingSettings>,
+    pub billing_settings: ::core::option::Option<BillingSettings>,
     /// An enum representing the current on boarding state of SCC.
     #[prost(enumeration = "settings::OnboardingState", tag = "3")]
     pub state: i32,
@@ -248,27 +252,31 @@ pub struct Settings {
     /// components. The component must have permission to "act as" the service
     /// account.
     #[prost(string, tag = "5")]
-    pub org_service_account: std::string::String,
+    pub org_service_account: ::prost::alloc::string::String,
     /// Sink settings.
     #[prost(message, optional, tag = "6")]
-    pub sink_settings: ::std::option::Option<SinkSettings>,
+    pub sink_settings: ::core::option::Option<SinkSettings>,
     /// The settings for detectors and/or scanners.
     #[prost(map = "string, message", tag = "7")]
-    pub component_settings: ::std::collections::HashMap<std::string::String, ComponentSettings>,
+    pub component_settings:
+        ::std::collections::HashMap<::prost::alloc::string::String, ComponentSettings>,
     /// Detector group settings for all Security Center components.
     /// The key is the name of the detector group and the value is the settings for
     /// that group.
     #[prost(map = "string, message", tag = "8")]
-    pub detector_group_settings:
-        ::std::collections::HashMap<std::string::String, settings::DetectorGroupSettings>,
+    pub detector_group_settings: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        settings::DetectorGroupSettings,
+    >,
     /// A fingerprint used for optimistic concurrency. If none is provided
     /// on updates then the existing metadata will be blindly overwritten.
     #[prost(string, tag = "9")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Output only. The time these settings were last updated.
     #[prost(message, optional, tag = "10")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `Settings`.
 pub mod settings {
     /// The DetectorGroupSettings define the configuration for a detector group.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -309,7 +317,7 @@ pub struct GetServiceAccountRequest {
     /// Format:
     ///  * `organizations/{organization}/serviceAccount`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// An organization-level service account to be used by threat detection
 /// components.
@@ -319,13 +327,13 @@ pub struct ServiceAccount {
     /// Format:
     ///  * `organizations/{organization}/serviceAccount`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Security Center managed service account for the organization
     /// example service-org-1234@scc.iam.gserviceaccount.com
     /// This service_account will be stored in the ComponentSettings field for the
     /// SCC, SHA, and Infra Automation components.
     #[prost(string, tag = "2")]
-    pub service_account: std::string::String,
+    pub service_account: ::prost::alloc::string::String,
 }
 /// Request message for GetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -339,7 +347,7 @@ pub struct GetSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -355,10 +363,10 @@ pub struct UpdateSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(message, optional, tag = "1")]
-    pub settings: ::std::option::Option<Settings>,
+    pub settings: ::core::option::Option<Settings>,
     /// The list of fields to be updated on the settings.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ResetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -372,11 +380,11 @@ pub struct ResetSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A fingerprint used for optimistic concurrency. If none is provided,
     /// then the existing settings will be blindly overwritten.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request message for BatchGetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -386,7 +394,7 @@ pub struct BatchGetSettingsRequest {
     /// Format:
     ///  * `organizations/{organization}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The names of the settings to retrieve.
     /// A maximum of 1000 settings can be retrieved in a batch.
     /// Formats:
@@ -397,14 +405,14 @@ pub struct BatchGetSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(string, repeated, tag = "2")]
-    pub names: ::std::vec::Vec<std::string::String>,
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for BatchGetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetSettingsResponse {
     /// Settings requested.
     #[prost(message, repeated, tag = "1")]
-    pub settings: ::std::vec::Vec<Settings>,
+    pub settings: ::prost::alloc::vec::Vec<Settings>,
 }
 /// Request message for CalculateEffectiveSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -418,7 +426,7 @@ pub struct CalculateEffectiveSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/effectiveSettings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/effectiveSettings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BatchGetEffectiveSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -428,18 +436,18 @@ pub struct BatchCalculateEffectiveSettingsRequest {
     /// Format:
     ///  * `organizations/{organization}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The requests specifying the effective settings to retrieve.
     /// A maximum of 1000 effective settings can be retrieved in a batch.
     #[prost(message, repeated, tag = "2")]
-    pub requests: ::std::vec::Vec<CalculateEffectiveSettingsRequest>,
+    pub requests: ::prost::alloc::vec::Vec<CalculateEffectiveSettingsRequest>,
 }
 /// Response message for BatchGetEffectiveSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCalculateEffectiveSettingsResponse {
     /// Settings requested.
     #[prost(message, repeated, tag = "1")]
-    pub settings: ::std::vec::Vec<Settings>,
+    pub settings: ::prost::alloc::vec::Vec<Settings>,
 }
 /// Request message for GetComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -454,7 +462,7 @@ pub struct GetComponentSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/components/{component}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -470,10 +478,10 @@ pub struct UpdateComponentSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/components/{component}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(message, optional, tag = "1")]
-    pub component_settings: ::std::option::Option<ComponentSettings>,
+    pub component_settings: ::core::option::Option<ComponentSettings>,
     /// The list of fields to be updated on the component settings resource.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ResetComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -488,11 +496,11 @@ pub struct ResetComponentSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/components/{component}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// An fingerprint used for optimistic concurrency. If none is provided,
     /// then the existing settings will be blindly overwritten.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request message for CalculateEffectiveComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -507,7 +515,7 @@ pub struct CalculateEffectiveComponentSettingsRequest {
     ///  * `projects/{project}/regions/{region}/clusters/{cluster}/components/{component}/settings`
     ///  * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDetectors.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -516,7 +524,7 @@ pub struct ListDetectorsRequest {
     /// Format:
     ///  * `organizations/{organization}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Filters to apply on the response. Filters can be applied on:
     ///  * components
     ///  * labels
@@ -529,7 +537,7 @@ pub struct ListDetectorsRequest {
     ///
     /// The filters
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The maximum number of detectors to return. The service may return fewer
     /// than this value. If unspecified, at most 100 detectors will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
@@ -541,18 +549,18 @@ pub struct ListDetectorsRequest {
     /// When paginating, all other parameters provided to `ListDetectors` must
     /// match the call that provided the page token.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListDetectors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDetectorsResponse {
     /// The detectors from the specified organization.
     #[prost(message, repeated, tag = "1")]
-    pub detectors: ::std::vec::Vec<Detector>,
+    pub detectors: ::prost::alloc::vec::Vec<Detector>,
     /// A token that can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ListComponents.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -561,7 +569,7 @@ pub struct ListComponentsRequest {
     /// Format:
     ///  * `organizations/{organization}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of components to return. The service may return fewer
     /// than this value. If unspecified, at most 100 components will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
@@ -573,18 +581,18 @@ pub struct ListComponentsRequest {
     /// When paginating, all other parameters provided to `ListComponents` must
     /// match the call that provided the page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListComponents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComponentsResponse {
     /// The components from the specified organization.
     #[prost(string, repeated, tag = "1")]
-    pub components: ::std::vec::Vec<std::string::String>,
+    pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A token that can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod security_center_settings_service_client {
@@ -635,7 +643,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetServiceAccount" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetServiceAccount") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Gets the Settings."]
@@ -650,7 +658,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the Settings."]
@@ -665,7 +673,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/UpdateSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/UpdateSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Reset the organization, folder or project's settings and return"]
@@ -689,7 +697,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ResetSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ResetSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Gets a list of settings."]
@@ -704,7 +712,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/BatchGetSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/BatchGetSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " CalculateEffectiveSettings looks up all of the Security Center"]
@@ -729,7 +737,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/CalculateEffectiveSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/CalculateEffectiveSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Gets a list of effective settings."]
@@ -745,7 +753,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/BatchCalculateEffectiveSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/BatchCalculateEffectiveSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Gets the Component Settings."]
@@ -760,7 +768,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetComponentSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/GetComponentSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the Component Settings."]
@@ -775,7 +783,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/UpdateComponentSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/UpdateComponentSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Reset the organization, folder or project's component settings and return"]
@@ -794,7 +802,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ResetComponentSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ResetComponentSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Gets the Effective Component Settings."]
@@ -809,7 +817,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/CalculateEffectiveComponentSettings" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/CalculateEffectiveComponentSettings") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Retrieves an unordered list of available detectors."]
@@ -824,7 +832,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ListDetectors" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ListDetectors") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Retrieves an unordered list of available SCC components."]
@@ -839,7 +847,7 @@ pub mod security_center_settings_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ListComponents" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.securitycenter.settings.v1beta1.SecurityCenterSettingsService/ListComponents") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

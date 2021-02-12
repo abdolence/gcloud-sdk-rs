@@ -3,7 +3,7 @@
 pub struct Workspace {
     /// The Workspace name in the format of "projects/*/locations/*/workspaces/*".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing Workspaces.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11,57 +11,57 @@ pub struct ListWorkspacesRequest {
     /// The parent used for listing. It should have the format of
     /// `projects/{number}/locations/{location}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The page size for list pagination.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The page token for list pagination.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// A list of workspaces.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesResponse {
     /// The list of workspaces.
     #[prost(message, repeated, tag = "1")]
-    pub items: ::std::vec::Vec<Workspace>,
+    pub items: ::prost::alloc::vec::Vec<Workspace>,
     /// The next page token for list pagination.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a Workspace.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkspaceRequest {
     /// The name of the Workspace to retrieve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for creating a Workspace.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkspaceRequest {
     /// The namespace in which the Workspace should be created.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The Workspace instance to create.
     #[prost(message, optional, tag = "2")]
-    pub workspace: ::std::option::Option<Workspace>,
+    pub workspace: ::core::option::Option<Workspace>,
 }
 /// Request message for replacing a Workspace.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkspaceRequest {
     /// The name of the Workspace being replaced.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The Workspace object being replaced.
     #[prost(message, optional, tag = "2")]
-    pub workspace: ::std::option::Option<Workspace>,
+    pub workspace: ::core::option::Option<Workspace>,
 }
 /// Request message for deleting a Workspace.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkspaceRequest {
     /// The name of the Workspace to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod workspaces_client {

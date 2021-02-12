@@ -4,11 +4,11 @@
 pub struct Build {
     /// Required. Immutable. Version of the builder which produced this build.
     #[prost(string, tag = "1")]
-    pub builder_version: std::string::String,
+    pub builder_version: ::prost::alloc::string::String,
     /// Signature of the build in occurrences pointing to this build note
     /// containing build details.
     #[prost(message, optional, tag = "2")]
-    pub signature: ::std::option::Option<BuildSignature>,
+    pub signature: ::core::option::Option<BuildSignature>,
 }
 /// Message encapsulating the signature of the verified build.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -27,22 +27,23 @@ pub struct BuildSignature {
     /// signed.bin. OpenSSL can then verify the signature:
     /// `openssl sha256 -verify public.pem -signature signature.bin signed.bin`
     #[prost(string, tag = "1")]
-    pub public_key: std::string::String,
+    pub public_key: ::prost::alloc::string::String,
     /// Required. Signature of the related `BuildProvenance`. In JSON, this is
     /// base-64 encoded.
-    #[prost(bytes, tag = "2")]
-    pub signature: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub signature: ::prost::alloc::vec::Vec<u8>,
     /// An ID for the key used to sign. This could be either an ID for the key
     /// stored in `public_key` (such as the ID or fingerprint for a PGP key, or the
     /// CN for a cert), or a reference to an external key (such as a reference to a
     /// key in Cloud Key Management Service).
     #[prost(string, tag = "3")]
-    pub key_id: std::string::String,
+    pub key_id: ::prost::alloc::string::String,
     /// The type of the key, either stored in `public_key` or referenced in
     /// `key_id`.
     #[prost(enumeration = "build_signature::KeyType", tag = "4")]
     pub key_type: i32,
 }
+/// Nested message and enum types in `BuildSignature`.
 pub mod build_signature {
     /// Public key formats.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -61,7 +62,7 @@ pub mod build_signature {
 pub struct Details {
     /// Required. The actual provenance for the build.
     #[prost(message, optional, tag = "1")]
-    pub provenance: ::std::option::Option<super::provenance::BuildProvenance>,
+    pub provenance: ::core::option::Option<super::provenance::BuildProvenance>,
     /// Serialized JSON representation of the provenance, used in generating the
     /// build signature in the corresponding build note. After verifying the
     /// signature, `provenance_bytes` can be unmarshalled and compared to the
@@ -74,5 +75,5 @@ pub struct Details {
     /// provenance is marshalled to json as well to prevent incompatibilities with
     /// future changes.
     #[prost(string, tag = "2")]
-    pub provenance_bytes: std::string::String,
+    pub provenance_bytes: ::prost::alloc::string::String,
 }

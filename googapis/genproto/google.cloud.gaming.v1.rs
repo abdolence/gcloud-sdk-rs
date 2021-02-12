@@ -3,19 +3,19 @@
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag = "3")]
-    pub target: std::string::String,
+    pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag = "4")]
-    pub verb: std::string::String,
+    pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag = "5")]
-    pub status_message: std::string::String,
+    pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
@@ -24,16 +24,17 @@ pub struct OperationMetadata {
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
-    pub api_version: std::string::String,
+    pub api_version: ::prost::alloc::string::String,
     /// Output only. List of Locations that could not be reached.
     #[prost(string, repeated, tag = "8")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Operation status for Game Services API operations. Operation status is in
     /// the form of key-value pairs where keys are resource IDs and the values show
     /// the status of the operation. In case of failures, the value includes an
     /// error code and error message.
     #[prost(map = "string, message", tag = "9")]
-    pub operation_status: ::std::collections::HashMap<std::string::String, OperationStatus>,
+    pub operation_status:
+        ::std::collections::HashMap<::prost::alloc::string::String, OperationStatus>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationStatus {
@@ -45,8 +46,9 @@ pub struct OperationStatus {
     pub error_code: i32,
     /// The human-readable error message.
     #[prost(string, tag = "3")]
-    pub error_message: std::string::String,
+    pub error_message: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `OperationStatus`.
 pub mod operation_status {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -62,14 +64,15 @@ pub mod operation_status {
 pub struct LabelSelector {
     /// Resource labels for this selector.
     #[prost(map = "string, string", tag = "1")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// The realm selector, used to match realm resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealmSelector {
     /// List of realms to match.
     #[prost(string, repeated, tag = "1")]
-    pub realms: ::std::vec::Vec<std::string::String>,
+    pub realms: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The schedule of a recurring or one time event. The event's time span is
 /// specified by start_time and end_time. If the scheduled event's timespan is
@@ -83,19 +86,19 @@ pub struct RealmSelector {
 pub struct Schedule {
     /// The start time of the event.
     #[prost(message, optional, tag = "1")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end time of the event.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The duration for the cron job event. The duration of the event is effective
     /// after the cron job's start time.
     #[prost(message, optional, tag = "3")]
-    pub cron_job_duration: ::std::option::Option<::prost_types::Duration>,
+    pub cron_job_duration: ::core::option::Option<::prost_types::Duration>,
     /// The cron definition of the scheduled event. See
     /// https://en.wikipedia.org/wiki/Cron. Cron spec specifies the local time as
     /// defined by the realm.
     #[prost(string, tag = "4")]
-    pub cron_spec: std::string::String,
+    pub cron_spec: ::prost::alloc::string::String,
 }
 /// Encapsulates Agones fleet spec and Agones autoscaler spec sources.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -104,11 +107,11 @@ pub struct SpecSource {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment_id}/configs/{config_id}`.
     #[prost(string, tag = "1")]
-    pub game_server_config_name: std::string::String,
+    pub game_server_config_name: ::prost::alloc::string::String,
     /// The name of the Agones leet config or Agones scaling config used to derive
     /// the Agones fleet or Agones autoscaler spec.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Details about the Agones resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -117,49 +120,51 @@ pub struct TargetDetails {
     ///
     /// `projects/{project}/locations/{location}/realms/{realm}/gameServerClusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub game_server_cluster_name: std::string::String,
+    pub game_server_cluster_name: ::prost::alloc::string::String,
     /// The game server deployment name. Uses the form:
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment_id}`.
     #[prost(string, tag = "2")]
-    pub game_server_deployment_name: std::string::String,
+    pub game_server_deployment_name: ::prost::alloc::string::String,
     /// Agones fleet details for game server clusters and game server deployments.
     #[prost(message, repeated, tag = "3")]
-    pub fleet_details: ::std::vec::Vec<target_details::TargetFleetDetails>,
+    pub fleet_details: ::prost::alloc::vec::Vec<target_details::TargetFleetDetails>,
 }
+/// Nested message and enum types in `TargetDetails`.
 pub mod target_details {
     /// Details of the target Agones fleet.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TargetFleetDetails {
         /// Reference to target Agones fleet.
         #[prost(message, optional, tag = "1")]
-        pub fleet: ::std::option::Option<target_fleet_details::TargetFleet>,
+        pub fleet: ::core::option::Option<target_fleet_details::TargetFleet>,
         /// Reference to target Agones fleet autoscaling policy.
         #[prost(message, optional, tag = "2")]
-        pub autoscaler: ::std::option::Option<target_fleet_details::TargetFleetAutoscaler>,
+        pub autoscaler: ::core::option::Option<target_fleet_details::TargetFleetAutoscaler>,
     }
+    /// Nested message and enum types in `TargetFleetDetails`.
     pub mod target_fleet_details {
         /// Target Agones fleet specification.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TargetFleet {
             /// The name of the Agones fleet.
             #[prost(string, tag = "1")]
-            pub name: std::string::String,
+            pub name: ::prost::alloc::string::String,
             /// Encapsulates the source of the Agones fleet spec.
             /// The Agones fleet spec source.
             #[prost(message, optional, tag = "2")]
-            pub spec_source: ::std::option::Option<super::super::SpecSource>,
+            pub spec_source: ::core::option::Option<super::super::SpecSource>,
         }
         /// Target Agones autoscaler policy reference.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TargetFleetAutoscaler {
             /// The name of the Agones autoscaler.
             #[prost(string, tag = "1")]
-            pub name: std::string::String,
+            pub name: ::prost::alloc::string::String,
             /// Encapsulates the source of the Agones fleet spec.
             /// Details about the Agones autoscaler spec.
             #[prost(message, optional, tag = "2")]
-            pub spec_source: ::std::option::Option<super::super::SpecSource>,
+            pub spec_source: ::core::option::Option<super::super::SpecSource>,
         }
     }
 }
@@ -168,37 +173,40 @@ pub mod target_details {
 pub struct TargetState {
     /// Details about Agones fleets.
     #[prost(message, repeated, tag = "1")]
-    pub details: ::std::vec::Vec<TargetDetails>,
+    pub details: ::prost::alloc::vec::Vec<TargetDetails>,
 }
 /// Details of the deployed Agones fleet.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedFleetDetails {
     /// Information about the Agones fleet.
     #[prost(message, optional, tag = "1")]
-    pub deployed_fleet: ::std::option::Option<deployed_fleet_details::DeployedFleet>,
+    pub deployed_fleet: ::core::option::Option<deployed_fleet_details::DeployedFleet>,
     /// Information about the Agones autoscaler for that fleet.
     #[prost(message, optional, tag = "2")]
-    pub deployed_autoscaler: ::std::option::Option<deployed_fleet_details::DeployedFleetAutoscaler>,
+    pub deployed_autoscaler:
+        ::core::option::Option<deployed_fleet_details::DeployedFleetAutoscaler>,
 }
+/// Nested message and enum types in `DeployedFleetDetails`.
 pub mod deployed_fleet_details {
     /// Agones fleet specification and details.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeployedFleet {
         /// The name of the Agones fleet.
         #[prost(string, tag = "1")]
-        pub fleet: std::string::String,
+        pub fleet: ::prost::alloc::string::String,
         /// The fleet spec retrieved from the Agones fleet.
         #[prost(string, tag = "2")]
-        pub fleet_spec: std::string::String,
+        pub fleet_spec: ::prost::alloc::string::String,
         /// The source spec that is used to create the Agones fleet.
         /// The GameServerConfig resource may no longer exist in the system.
         #[prost(message, optional, tag = "3")]
-        pub spec_source: ::std::option::Option<super::SpecSource>,
+        pub spec_source: ::core::option::Option<super::SpecSource>,
         /// The current status of the Agones fleet.
         /// Includes count of game servers in various states.
         #[prost(message, optional, tag = "5")]
-        pub status: ::std::option::Option<deployed_fleet::DeployedFleetStatus>,
+        pub status: ::core::option::Option<deployed_fleet::DeployedFleetStatus>,
     }
+    /// Nested message and enum types in `DeployedFleet`.
     pub mod deployed_fleet {
         /// DeployedFleetStatus has details about the Agones fleets such as how many
         /// are running, how many allocated, and so on.
@@ -225,14 +233,14 @@ pub mod deployed_fleet_details {
     pub struct DeployedFleetAutoscaler {
         /// The name of the Agones autoscaler.
         #[prost(string, tag = "1")]
-        pub autoscaler: std::string::String,
+        pub autoscaler: ::prost::alloc::string::String,
         /// The source spec that is used to create the autoscaler.
         /// The GameServerConfig resource may no longer exist in the system.
         #[prost(message, optional, tag = "4")]
-        pub spec_source: ::std::option::Option<super::SpecSource>,
+        pub spec_source: ::core::option::Option<super::SpecSource>,
         /// The autoscaler spec retrieved from Agones.
         #[prost(string, tag = "3")]
-        pub fleet_autoscaler_spec: std::string::String,
+        pub fleet_autoscaler_spec: ::prost::alloc::string::String,
     }
 }
 /// Request message for GameServerClustersService.ListGameServerClusters.
@@ -241,7 +249,7 @@ pub struct ListGameServerClustersRequest {
     /// Required. The parent resource name. Uses the form:
     /// "projects/{project}/locations/{location}/realms/{realm}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.  If unspecified, the server
     /// will pick an appropriate default. The server may return fewer items than
     /// requested. A caller should only rely on response's
@@ -251,28 +259,28 @@ pub struct ListGameServerClustersRequest {
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
     /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for GameServerClustersService.ListGameServerClusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGameServerClustersResponse {
     /// The list of game server clusters.
     #[prost(message, repeated, tag = "1")]
-    pub game_server_clusters: ::std::vec::Vec<GameServerCluster>,
+    pub game_server_clusters: ::prost::alloc::vec::Vec<GameServerCluster>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// List of locations that could not be reached.
     #[prost(string, repeated, tag = "4")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for GameServerClustersService.GetGameServerCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -281,7 +289,7 @@ pub struct GetGameServerClusterRequest {
     ///
     /// `projects/{project}/locations/{location}/realms/{realm-id}/gameServerClusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for GameServerClustersService.CreateGameServerCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -289,13 +297,13 @@ pub struct CreateGameServerClusterRequest {
     /// Required. The parent resource name. Uses the form:
     /// `projects/{project}/locations/{location}/realms/{realm-id}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the game server cluster resource to be created.
     #[prost(string, tag = "2")]
-    pub game_server_cluster_id: std::string::String,
+    pub game_server_cluster_id: ::prost::alloc::string::String,
     /// Required. The game server cluster resource to be created.
     #[prost(message, optional, tag = "3")]
-    pub game_server_cluster: ::std::option::Option<GameServerCluster>,
+    pub game_server_cluster: ::core::option::Option<GameServerCluster>,
 }
 /// Request message for GameServerClustersService.PreviewCreateGameServerCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -303,16 +311,16 @@ pub struct PreviewCreateGameServerClusterRequest {
     /// Required. The parent resource name. Uses the form:
     /// `projects/{project}/locations/{location}/realms/{realm}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the game server cluster resource to be created.
     #[prost(string, tag = "2")]
-    pub game_server_cluster_id: std::string::String,
+    pub game_server_cluster_id: ::prost::alloc::string::String,
     /// Required. The game server cluster resource to be created.
     #[prost(message, optional, tag = "3")]
-    pub game_server_cluster: ::std::option::Option<GameServerCluster>,
+    pub game_server_cluster: ::core::option::Option<GameServerCluster>,
     /// Optional. The target timestamp to compute the preview.
     #[prost(message, optional, tag = "4")]
-    pub preview_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub preview_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for
 /// GameServerClustersService.PreviewCreateGameServerCluster.
@@ -320,10 +328,10 @@ pub struct PreviewCreateGameServerClusterRequest {
 pub struct PreviewCreateGameServerClusterResponse {
     /// The ETag of the game server cluster.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The target state.
     #[prost(message, optional, tag = "3")]
-    pub target_state: ::std::option::Option<TargetState>,
+    pub target_state: ::core::option::Option<TargetState>,
 }
 /// Request message for GameServerClustersService.DeleteGameServerCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -331,7 +339,7 @@ pub struct DeleteGameServerClusterRequest {
     /// Required. The name of the game server cluster to delete. Uses the form:
     /// `projects/{project}/locations/{location}/gameServerClusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for GameServerClustersService.PreviewDeleteGameServerCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -339,10 +347,10 @@ pub struct PreviewDeleteGameServerClusterRequest {
     /// Required. The name of the game server cluster to delete. Uses the form:
     /// `projects/{project}/locations/{location}/gameServerClusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The target timestamp to compute the preview.
     #[prost(message, optional, tag = "2")]
-    pub preview_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub preview_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for
 /// GameServerClustersService.PreviewDeleteGameServerCluster.
@@ -350,10 +358,10 @@ pub struct PreviewDeleteGameServerClusterRequest {
 pub struct PreviewDeleteGameServerClusterResponse {
     /// The ETag of the game server cluster.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The target state.
     #[prost(message, optional, tag = "3")]
-    pub target_state: ::std::option::Option<TargetState>,
+    pub target_state: ::core::option::Option<TargetState>,
 }
 /// Request message for GameServerClustersService.UpdateGameServerCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -361,7 +369,7 @@ pub struct UpdateGameServerClusterRequest {
     /// Required. The game server cluster to be updated.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "1")]
-    pub game_server_cluster: ::std::option::Option<GameServerCluster>,
+    pub game_server_cluster: ::core::option::Option<GameServerCluster>,
     /// Required. Mask of fields to update. At least one path must be supplied in
     /// this field. For the `FieldMask` definition, see
     ///
@@ -369,7 +377,7 @@ pub struct UpdateGameServerClusterRequest {
     /// //developers.google.com/protocol-buffers
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GameServerClustersService.UpdateGameServerCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -377,7 +385,7 @@ pub struct PreviewUpdateGameServerClusterRequest {
     /// Required. The game server cluster to be updated.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "1")]
-    pub game_server_cluster: ::std::option::Option<GameServerCluster>,
+    pub game_server_cluster: ::core::option::Option<GameServerCluster>,
     /// Required. Mask of fields to update. At least one path must be supplied in
     /// this field. For the `FieldMask` definition, see
     ///
@@ -385,20 +393,20 @@ pub struct PreviewUpdateGameServerClusterRequest {
     /// //developers.google.com/protocol-buffers
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. The target timestamp to compute the preview.
     #[prost(message, optional, tag = "3")]
-    pub preview_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub preview_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for GameServerClustersService.PreviewUpdateGameServerCluster
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreviewUpdateGameServerClusterResponse {
     /// The ETag of the game server cluster.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The target state.
     #[prost(message, optional, tag = "3")]
-    pub target_state: ::std::option::Option<TargetState>,
+    pub target_state: ::core::option::Option<TargetState>,
 }
 /// The game server cluster connection information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -407,15 +415,16 @@ pub struct GameServerClusterConnectionInfo {
     /// server instances will be created. Existence of the namespace will be
     /// validated during creation.
     #[prost(string, tag = "5")]
-    pub namespace: std::string::String,
+    pub namespace: ::prost::alloc::string::String,
     /// The location of the Kubernetes cluster.
     #[prost(
         oneof = "game_server_cluster_connection_info::ClusterReference",
         tags = "7"
     )]
     pub cluster_reference:
-        ::std::option::Option<game_server_cluster_connection_info::ClusterReference>,
+        ::core::option::Option<game_server_cluster_connection_info::ClusterReference>,
 }
+/// Nested message and enum types in `GameServerClusterConnectionInfo`.
 pub mod game_server_cluster_connection_info {
     /// The location of the Kubernetes cluster.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -437,7 +446,7 @@ pub struct GkeClusterReference {
     /// GameServerCluster resource are used to generate the full name of the
     /// GKE cluster.
     #[prost(string, tag = "1")]
-    pub cluster: std::string::String,
+    pub cluster: ::prost::alloc::string::String,
 }
 /// A game server cluster resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -449,27 +458,28 @@ pub struct GameServerCluster {
     ///
     /// `projects/my-project/locations/{location}/realms/zanzibar/gameServerClusters/my-onprem-cluster`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The creation time.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels associated with this game server cluster. Each label is a
     /// key-value pair.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The game server cluster connection information. This information is used to
     /// manage game server clusters.
     #[prost(message, optional, tag = "5")]
-    pub connection_info: ::std::option::Option<GameServerClusterConnectionInfo>,
+    pub connection_info: ::core::option::Option<GameServerClusterConnectionInfo>,
     /// ETag of the resource.
     #[prost(string, tag = "6")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Human readable description of the cluster.
     #[prost(string, tag = "7")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod game_server_clusters_service_client {
@@ -665,7 +675,7 @@ pub struct ListGameServerConfigsRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/configs/*`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
@@ -675,28 +685,28 @@ pub struct ListGameServerConfigsRequest {
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request, if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
     /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for GameServerConfigsService.ListGameServerConfigs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGameServerConfigsResponse {
     /// The list of game server configs.
     #[prost(message, repeated, tag = "1")]
-    pub game_server_configs: ::std::vec::Vec<GameServerConfig>,
+    pub game_server_configs: ::prost::alloc::vec::Vec<GameServerConfig>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// List of locations that could not be reached.
     #[prost(string, repeated, tag = "4")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for GameServerConfigsService.GetGameServerConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -705,7 +715,7 @@ pub struct GetGameServerConfigRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/configs/{config}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for GameServerConfigsService.CreateGameServerConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -714,13 +724,13 @@ pub struct CreateGameServerConfigRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the game server config resource to be created.
     #[prost(string, tag = "2")]
-    pub config_id: std::string::String,
+    pub config_id: ::prost::alloc::string::String,
     /// Required. The game server config resource to be created.
     #[prost(message, optional, tag = "3")]
-    pub game_server_config: ::std::option::Option<GameServerConfig>,
+    pub game_server_config: ::core::option::Option<GameServerConfig>,
 }
 /// Request message for GameServerConfigsService.DeleteGameServerConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -729,26 +739,26 @@ pub struct DeleteGameServerConfigRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/configs/{config}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Autoscaling config for an Agones fleet.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScalingConfig {
     /// Required. The name of the Scaling Config
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Agones fleet autoscaler spec. Example spec:
     /// https://agones.dev/site/docs/reference/fleetautoscaler/
     #[prost(string, tag = "2")]
-    pub fleet_autoscaler_spec: std::string::String,
+    pub fleet_autoscaler_spec: ::prost::alloc::string::String,
     /// Labels used to identify the game server clusters to which this Agones
     /// scaling config applies. A game server cluster is subject to this Agones
     /// scaling config if its labels match any of the selector entries.
     #[prost(message, repeated, tag = "4")]
-    pub selectors: ::std::vec::Vec<LabelSelector>,
+    pub selectors: ::prost::alloc::vec::Vec<LabelSelector>,
     /// The schedules to which this Scaling Config applies.
     #[prost(message, repeated, tag = "5")]
-    pub schedules: ::std::vec::Vec<Schedule>,
+    pub schedules: ::prost::alloc::vec::Vec<Schedule>,
 }
 /// Fleet configs for Agones.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -756,10 +766,10 @@ pub struct FleetConfig {
     /// Agones fleet spec. Example spec:
     /// `https://agones.dev/site/docs/reference/fleet/`.
     #[prost(string, tag = "1")]
-    pub fleet_spec: std::string::String,
+    pub fleet_spec: ::prost::alloc::string::String,
     /// The name of the FleetConfig.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A game server config resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -771,27 +781,28 @@ pub struct GameServerConfig {
     ///
     /// `projects/my-project/locations/global/gameServerDeployments/my-game/configs/my-config`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The creation time.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels associated with this game server config. Each label is a
     /// key-value pair.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// FleetConfig contains a list of Agones fleet specs. Only one FleetConfig
     /// is allowed.
     #[prost(message, repeated, tag = "5")]
-    pub fleet_configs: ::std::vec::Vec<FleetConfig>,
+    pub fleet_configs: ::prost::alloc::vec::Vec<FleetConfig>,
     /// The autoscaling settings.
     #[prost(message, repeated, tag = "6")]
-    pub scaling_configs: ::std::vec::Vec<ScalingConfig>,
+    pub scaling_configs: ::prost::alloc::vec::Vec<ScalingConfig>,
     /// The description of the game server config.
     #[prost(string, tag = "7")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod game_server_configs_service_client {
@@ -914,7 +925,7 @@ pub struct ListGameServerDeploymentsRequest {
     /// Required. The parent resource name. Uses the form:
     /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.  If unspecified, the server
     /// will pick an appropriate default. The server may return fewer items than
     /// requested. A caller should only rely on response's
@@ -925,28 +936,28 @@ pub struct ListGameServerDeploymentsRequest {
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
     /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for GameServerDeploymentsService.ListGameServerDeployments.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGameServerDeploymentsResponse {
     /// The list of game server deployments.
     #[prost(message, repeated, tag = "1")]
-    pub game_server_deployments: ::std::vec::Vec<GameServerDeployment>,
+    pub game_server_deployments: ::prost::alloc::vec::Vec<GameServerDeployment>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// List of locations that could not be reached.
     #[prost(string, repeated, tag = "4")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for GameServerDeploymentsService.GetGameServerDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -955,7 +966,7 @@ pub struct GetGameServerDeploymentRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// GameServerDeploymentsService.GetGameServerDeploymentRollout.
@@ -965,7 +976,7 @@ pub struct GetGameServerDeploymentRolloutRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/rollout`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for GameServerDeploymentsService.CreateGameServerDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -973,13 +984,13 @@ pub struct CreateGameServerDeploymentRequest {
     /// Required. The parent resource name. Uses the form:
     /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the game server delpoyment resource to be created.
     #[prost(string, tag = "2")]
-    pub deployment_id: std::string::String,
+    pub deployment_id: ::prost::alloc::string::String,
     /// Required. The game server delpoyment resource to be created.
     #[prost(message, optional, tag = "3")]
-    pub game_server_deployment: ::std::option::Option<GameServerDeployment>,
+    pub game_server_deployment: ::core::option::Option<GameServerDeployment>,
 }
 /// Request message for GameServerDeploymentsService.DeleteGameServerDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -988,7 +999,7 @@ pub struct DeleteGameServerDeploymentRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for GameServerDeploymentsService.UpdateGameServerDeployment.
 /// Only allows updates for labels.
@@ -997,7 +1008,7 @@ pub struct UpdateGameServerDeploymentRequest {
     /// Required. The game server delpoyment to be updated.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "1")]
-    pub game_server_deployment: ::std::option::Option<GameServerDeployment>,
+    pub game_server_deployment: ::core::option::Option<GameServerDeployment>,
     /// Required. Mask of fields to update. At least one path must be supplied in
     /// this field. For the `FieldMask` definition, see
     ///
@@ -1005,7 +1016,7 @@ pub struct UpdateGameServerDeploymentRequest {
     /// //developers.google.com/protocol-buffers
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// GameServerDeploymentsService.UpdateGameServerRolloutDeployment.
@@ -1014,7 +1025,7 @@ pub struct UpdateGameServerDeploymentRolloutRequest {
     /// Required. The game server delpoyment rollout to be updated.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "1")]
-    pub rollout: ::std::option::Option<GameServerDeploymentRollout>,
+    pub rollout: ::core::option::Option<GameServerDeploymentRollout>,
     /// Required. Mask of fields to update. At least one path must be supplied in
     /// this field. For the `FieldMask` definition, see
     ///
@@ -1022,7 +1033,7 @@ pub struct UpdateGameServerDeploymentRolloutRequest {
     /// //developers.google.com/protocol-buffers
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GameServerDeploymentsService.FetchDeploymentState.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1031,29 +1042,31 @@ pub struct FetchDeploymentStateRequest {
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for GameServerDeploymentsService.FetchDeploymentState.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchDeploymentStateResponse {
     /// The state of the game server deployment in each game server cluster.
     #[prost(message, repeated, tag = "1")]
-    pub cluster_state: ::std::vec::Vec<fetch_deployment_state_response::DeployedClusterState>,
+    pub cluster_state:
+        ::prost::alloc::vec::Vec<fetch_deployment_state_response::DeployedClusterState>,
     /// List of locations that could not be reached.
     #[prost(string, repeated, tag = "2")]
-    pub unavailable: ::std::vec::Vec<std::string::String>,
+    pub unavailable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `FetchDeploymentStateResponse`.
 pub mod fetch_deployment_state_response {
     /// The game server cluster changes made by the game server deployment.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeployedClusterState {
         /// The name of the cluster.
         #[prost(string, tag = "1")]
-        pub cluster: std::string::String,
+        pub cluster: ::prost::alloc::string::String,
         /// The details about the Agones fleets and autoscalers created in the
         /// game server cluster.
         #[prost(message, repeated, tag = "2")]
-        pub fleet_details: ::std::vec::Vec<super::DeployedFleetDetails>,
+        pub fleet_details: ::prost::alloc::vec::Vec<super::DeployedFleetDetails>,
     }
 }
 /// A game server deployment resource.
@@ -1065,34 +1078,36 @@ pub struct GameServerDeployment {
     /// For example,
     /// `projects/my-project/locations/global/gameServerDeployments/my-deployment`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The creation time.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels associated with this game server deployment. Each label is a
     /// key-value pair.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// ETag of the resource.
     #[prost(string, tag = "7")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Human readable description of the game server delpoyment.
     #[prost(string, tag = "8")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 /// A game server config override.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameServerConfigOverride {
     /// Selector chooses the game server config targets.
     #[prost(oneof = "game_server_config_override::Selector", tags = "1")]
-    pub selector: ::std::option::Option<game_server_config_override::Selector>,
+    pub selector: ::core::option::Option<game_server_config_override::Selector>,
     /// Selects the game server config and how it should be applied.
     #[prost(oneof = "game_server_config_override::Change", tags = "100")]
-    pub change: ::std::option::Option<game_server_config_override::Change>,
+    pub change: ::core::option::Option<game_server_config_override::Change>,
 }
+/// Nested message and enum types in `GameServerConfigOverride`.
 pub mod game_server_config_override {
     /// Selector chooses the game server config targets.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1106,7 +1121,7 @@ pub mod game_server_config_override {
     pub enum Change {
         /// The game server config for this override.
         #[prost(string, tag = "100")]
-        ConfigVersion(std::string::String),
+        ConfigVersion(::prost::alloc::string::String),
     }
 }
 /// The game server deployment rollout which represents the desired rollout
@@ -1120,27 +1135,27 @@ pub struct GameServerDeploymentRollout {
     ///
     /// `projects/my-project/locations/global/gameServerDeployments/my-deployment/rollout`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The creation time.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The default game server config is applied to all realms unless overridden
     /// in the rollout. For example,
     ///
     /// `projects/my-project/locations/global/gameServerDeployments/my-game/configs/my-config`.
     #[prost(string, tag = "4")]
-    pub default_game_server_config: std::string::String,
+    pub default_game_server_config: ::prost::alloc::string::String,
     /// Contains the game server config rollout overrides. Overrides are processed
     /// in the order they are listed. Once a match is found for a realm, the rest
     /// of the list is not processed.
     #[prost(message, repeated, tag = "5")]
-    pub game_server_config_overrides: ::std::vec::Vec<GameServerConfigOverride>,
+    pub game_server_config_overrides: ::prost::alloc::vec::Vec<GameServerConfigOverride>,
     /// ETag of the resource.
     #[prost(string, tag = "6")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request message for PreviewGameServerDeploymentRollout.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1148,7 +1163,7 @@ pub struct PreviewGameServerDeploymentRolloutRequest {
     /// Required. The game server deployment rollout to be updated.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "1")]
-    pub rollout: ::std::option::Option<GameServerDeploymentRollout>,
+    pub rollout: ::core::option::Option<GameServerDeploymentRollout>,
     /// Optional. Mask of fields to update. At least one path must be supplied in
     /// this field. For the `FieldMask` definition, see
     ///
@@ -1156,11 +1171,11 @@ pub struct PreviewGameServerDeploymentRolloutRequest {
     /// //developers.google.com/protocol-buffers
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. The target timestamp to compute the preview. Defaults to the immediately
     /// after the proposed rollout completes.
     #[prost(message, optional, tag = "3")]
-    pub preview_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub preview_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for PreviewGameServerDeploymentRollout.
 /// This has details about the Agones fleet and autoscaler to be actuated.
@@ -1168,13 +1183,13 @@ pub struct PreviewGameServerDeploymentRolloutRequest {
 pub struct PreviewGameServerDeploymentRolloutResponse {
     /// Locations that could not be reached on this request.
     #[prost(string, repeated, tag = "2")]
-    pub unavailable: ::std::vec::Vec<std::string::String>,
+    pub unavailable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// ETag of the game server deployment.
     #[prost(string, tag = "3")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The target state.
     #[prost(message, optional, tag = "4")]
-    pub target_state: ::std::option::Option<TargetState>,
+    pub target_state: ::core::option::Option<TargetState>,
 }
 #[doc = r" Generated client implementations."]
 pub mod game_server_deployments_service_client {
@@ -1307,7 +1322,7 @@ pub mod game_server_deployments_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.gaming.v1.GameServerDeploymentsService/GetGameServerDeploymentRollout" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.gaming.v1.GameServerDeploymentsService/GetGameServerDeploymentRollout") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Patches a single game server deployment rollout."]
@@ -1330,7 +1345,7 @@ pub mod game_server_deployments_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.gaming.v1.GameServerDeploymentsService/UpdateGameServerDeploymentRollout" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.gaming.v1.GameServerDeploymentsService/UpdateGameServerDeploymentRollout") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Previews the game server deployment rollout. This API does not mutate the"]
@@ -1347,7 +1362,7 @@ pub mod game_server_deployments_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.gaming.v1.GameServerDeploymentsService/PreviewGameServerDeploymentRollout" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.gaming.v1.GameServerDeploymentsService/PreviewGameServerDeploymentRollout") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Retrieves information about the current state of the game server"]
@@ -1389,7 +1404,7 @@ pub struct ListRealmsRequest {
     /// Required. The parent resource name. Uses the form:
     /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
@@ -1400,28 +1415,28 @@ pub struct ListRealmsRequest {
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
     /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for RealmsService.ListRealms.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRealmsResponse {
     /// The list of realms.
     #[prost(message, repeated, tag = "1")]
-    pub realms: ::std::vec::Vec<Realm>,
+    pub realms: ::prost::alloc::vec::Vec<Realm>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// List of locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for RealmsService.GetRealm.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1429,7 +1444,7 @@ pub struct GetRealmRequest {
     /// Required. The name of the realm to retrieve. Uses the form:
     /// `projects/{project}/locations/{location}/realms/{realm}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for RealmsService.CreateRealm.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1437,13 +1452,13 @@ pub struct CreateRealmRequest {
     /// Required. The parent resource name. Uses the form:
     /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the realm resource to be created.
     #[prost(string, tag = "2")]
-    pub realm_id: std::string::String,
+    pub realm_id: ::prost::alloc::string::String,
     /// Required. The realm resource to be created.
     #[prost(message, optional, tag = "3")]
-    pub realm: ::std::option::Option<Realm>,
+    pub realm: ::core::option::Option<Realm>,
 }
 /// Request message for RealmsService.DeleteRealm.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1451,7 +1466,7 @@ pub struct DeleteRealmRequest {
     /// Required. The name of the realm to delete. Uses the form:
     /// `projects/{project}/locations/{location}/realms/{realm}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for RealmsService.UpdateRealm.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1459,7 +1474,7 @@ pub struct UpdateRealmRequest {
     /// Required. The realm to be updated.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "1")]
-    pub realm: ::std::option::Option<Realm>,
+    pub realm: ::core::option::Option<Realm>,
     /// Required. The update mask applies to the resource. For the `FieldMask`
     /// definition, see
     ///
@@ -1467,7 +1482,7 @@ pub struct UpdateRealmRequest {
     /// //developers.google.com/protocol-buffers
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for RealmsService.PreviewRealmUpdate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1475,7 +1490,7 @@ pub struct PreviewRealmUpdateRequest {
     /// Required. The realm to be updated.
     /// Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "1")]
-    pub realm: ::std::option::Option<Realm>,
+    pub realm: ::core::option::Option<Realm>,
     /// Required. The update mask applies to the resource. For the `FieldMask`
     /// definition, see
     ///
@@ -1483,20 +1498,20 @@ pub struct PreviewRealmUpdateRequest {
     /// //developers.google.com/protocol-buffers
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. The target timestamp to compute the preview.
     #[prost(message, optional, tag = "3")]
-    pub preview_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub preview_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for RealmsService.PreviewRealmUpdate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreviewRealmUpdateResponse {
     /// ETag of the realm.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// The target state.
     #[prost(message, optional, tag = "3")]
-    pub target_state: ::std::option::Option<TargetState>,
+    pub target_state: ::core::option::Option<TargetState>,
 }
 /// A realm resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1505,27 +1520,28 @@ pub struct Realm {
     /// `projects/{project}/locations/{location}/realms/{realm}`. For
     /// example, `projects/my-project/locations/{location}/realms/my-realm`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The creation time.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels associated with this realm. Each label is a key-value pair.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Time zone where all policies targeting this realm are evaluated. The value
     /// of this field must be from the IANA time zone database:
     /// https://www.iana.org/time-zones.
     #[prost(string, tag = "6")]
-    pub time_zone: std::string::String,
+    pub time_zone: ::prost::alloc::string::String,
     /// ETag of the resource.
     #[prost(string, tag = "7")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Human readable description of the realm.
     #[prost(string, tag = "8")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod realms_service_client {

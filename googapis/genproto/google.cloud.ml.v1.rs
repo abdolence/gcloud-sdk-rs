@@ -55,7 +55,7 @@ pub struct TrainingInput {
     ///
     /// You must set this value when `scaleTier` is set to `CUSTOM`.
     #[prost(string, tag = "2")]
-    pub master_type: std::string::String,
+    pub master_type: ::prost::alloc::string::String,
     /// Optional. Specifies the type of virtual machine to use for your training
     /// job's worker nodes.
     ///
@@ -65,7 +65,7 @@ pub struct TrainingInput {
     /// This value must be present when `scaleTier` is set to `CUSTOM` and
     /// `workerCount` is greater than zero.
     #[prost(string, tag = "3")]
-    pub worker_type: std::string::String,
+    pub worker_type: ::prost::alloc::string::String,
     /// Optional. Specifies the type of virtual machine to use for your training
     /// job's parameter server.
     ///
@@ -75,7 +75,7 @@ pub struct TrainingInput {
     /// This value must be present when `scaleTier` is set to `CUSTOM` and
     /// `parameter_server_count` is greater than zero.
     #[prost(string, tag = "4")]
-    pub parameter_server_type: std::string::String,
+    pub parameter_server_type: ::prost::alloc::string::String,
     /// Optional. The number of worker replicas to use for the training job. Each
     /// replica in the cluster will be of the type specified in `worker_type`.
     ///
@@ -94,30 +94,31 @@ pub struct TrainingInput {
     /// Required. The Google Cloud Storage location of the packages with
     /// the training program and any additional dependencies.
     #[prost(string, repeated, tag = "7")]
-    pub package_uris: ::std::vec::Vec<std::string::String>,
+    pub package_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The Python module name to run after installing the packages.
     #[prost(string, tag = "8")]
-    pub python_module: std::string::String,
+    pub python_module: ::prost::alloc::string::String,
     /// Optional. Command line arguments to pass to the program.
     #[prost(string, repeated, tag = "10")]
-    pub args: ::std::vec::Vec<std::string::String>,
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The set of Hyperparameters to tune.
     #[prost(message, optional, tag = "12")]
-    pub hyperparameters: ::std::option::Option<HyperparameterSpec>,
+    pub hyperparameters: ::core::option::Option<HyperparameterSpec>,
     /// Required. The Google Compute Engine region to run the training job in.
     #[prost(string, tag = "14")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Optional. A Google Cloud Storage path in which to store training outputs
     /// and other data needed for training. This path is passed to your TensorFlow
     /// program as the 'job_dir' command-line argument. The benefit of specifying
     /// this field is that Cloud ML validates the path for use in training.
     #[prost(string, tag = "16")]
-    pub job_dir: std::string::String,
+    pub job_dir: ::prost::alloc::string::String,
     /// Optional. The Google Cloud ML runtime version to use for training.  If not
     /// set, Google Cloud ML will choose the latest stable version.
     #[prost(string, tag = "15")]
-    pub runtime_version: std::string::String,
+    pub runtime_version: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `TrainingInput`.
 pub mod training_input {
     /// A scale tier is an abstract representation of the resources Cloud ML
     /// will allocate to a training job. When selecting a scale tier for your
@@ -179,7 +180,7 @@ pub struct HyperparameterSpec {
     pub goal: i32,
     /// Required. The set of parameters to tune.
     #[prost(message, repeated, tag = "2")]
-    pub params: ::std::vec::Vec<ParameterSpec>,
+    pub params: ::prost::alloc::vec::Vec<ParameterSpec>,
     /// Optional. How many training trials should be attempted to optimize
     /// the specified hyperparameters.
     ///
@@ -204,8 +205,9 @@ pub struct HyperparameterSpec {
     /// prior to 0.12, this should be only the tag passed to tf.Summary.
     /// By default, "training/hptuning/metric" will be used.
     #[prost(string, tag = "5")]
-    pub hyperparameter_metric_tag: std::string::String,
+    pub hyperparameter_metric_tag: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `HyperparameterSpec`.
 pub mod hyperparameter_spec {
     /// The available types of optimization goals.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -225,7 +227,7 @@ pub struct ParameterSpec {
     /// Required. The parameter name must be unique amongst all ParameterConfigs in
     /// a HyperparameterSpec message. E.g., "learning_rate".
     #[prost(string, tag = "1")]
-    pub parameter_name: std::string::String,
+    pub parameter_name: ::prost::alloc::string::String,
     /// Required. The type of the parameter.
     #[prost(enumeration = "parameter_spec::ParameterType", tag = "4")]
     pub r#type: i32,
@@ -241,14 +243,14 @@ pub struct ParameterSpec {
     pub max_value: f64,
     /// Required if type is `CATEGORICAL`. The list of possible categories.
     #[prost(string, repeated, tag = "5")]
-    pub categorical_values: ::std::vec::Vec<std::string::String>,
+    pub categorical_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required if type is `DISCRETE`.
     /// A list of feasible points.
     /// The list should be in strictly increasing order. For instance, this
     /// parameter might have possible settings of 1.5, 2.5, and 4.0. This list
     /// should not contain more than 1,000 values.
     #[prost(double, repeated, tag = "6")]
-    pub discrete_values: ::std::vec::Vec<f64>,
+    pub discrete_values: ::prost::alloc::vec::Vec<f64>,
     /// Optional. How the parameter should be scaled to the hypercube.
     /// Leave unset for categorical parameters.
     /// Some kind of scaling is strongly recommended for real or integral
@@ -256,6 +258,7 @@ pub struct ParameterSpec {
     #[prost(enumeration = "parameter_spec::ScaleType", tag = "7")]
     pub scale_type: i32,
 }
+/// Nested message and enum types in `ParameterSpec`.
 pub mod parameter_spec {
     /// The type of the parameter.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -302,17 +305,19 @@ pub mod parameter_spec {
 pub struct HyperparameterOutput {
     /// The trial id for these results.
     #[prost(string, tag = "1")]
-    pub trial_id: std::string::String,
+    pub trial_id: ::prost::alloc::string::String,
     /// The hyperparameters given to this trial.
     #[prost(map = "string, string", tag = "2")]
-    pub hyperparameters: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub hyperparameters:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The final objective metric seen for this trial.
     #[prost(message, optional, tag = "3")]
-    pub final_metric: ::std::option::Option<hyperparameter_output::HyperparameterMetric>,
+    pub final_metric: ::core::option::Option<hyperparameter_output::HyperparameterMetric>,
     /// All recorded object metrics for this trial.
     #[prost(message, repeated, tag = "4")]
-    pub all_metrics: ::std::vec::Vec<hyperparameter_output::HyperparameterMetric>,
+    pub all_metrics: ::prost::alloc::vec::Vec<hyperparameter_output::HyperparameterMetric>,
 }
+/// Nested message and enum types in `HyperparameterOutput`.
 pub mod hyperparameter_output {
     /// An observed value of a metric.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -335,7 +340,7 @@ pub struct TrainingOutput {
     /// Results for individual Hyperparameter trials.
     /// Only set for hyperparameter tuning jobs.
     #[prost(message, repeated, tag = "2")]
-    pub trials: ::std::vec::Vec<HyperparameterOutput>,
+    pub trials: ::prost::alloc::vec::Vec<HyperparameterOutput>,
     /// The amount of ML units consumed by the job.
     #[prost(double, tag = "3")]
     pub consumed_ml_units: f64,
@@ -352,28 +357,29 @@ pub struct PredictionInput {
     /// Required. The Google Cloud Storage location of the input data files.
     /// May contain wildcards.
     #[prost(string, repeated, tag = "4")]
-    pub input_paths: ::std::vec::Vec<std::string::String>,
+    pub input_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The output Google Cloud Storage location.
     #[prost(string, tag = "5")]
-    pub output_path: std::string::String,
+    pub output_path: ::prost::alloc::string::String,
     /// Optional. The maximum number of workers to be used for parallel processing.
     /// Defaults to 10 if not specified.
     #[prost(int64, tag = "6")]
     pub max_worker_count: i64,
     /// Required. The Google Compute Engine region to run the prediction job in.
     #[prost(string, tag = "7")]
-    pub region: std::string::String,
+    pub region: ::prost::alloc::string::String,
     /// Optional. The Google Cloud ML runtime version to use for this batch
     /// prediction. If not set, Google Cloud ML will pick the runtime version used
     /// during the CreateVersion request for this model version, or choose the
     /// latest stable version when model version information is not available
     /// such as when the model is specified by uri.
     #[prost(string, tag = "8")]
-    pub runtime_version: std::string::String,
+    pub runtime_version: ::prost::alloc::string::String,
     /// Required. The model or the version to use for prediction.
     #[prost(oneof = "prediction_input::ModelVersion", tags = "1, 2, 9")]
-    pub model_version: ::std::option::Option<prediction_input::ModelVersion>,
+    pub model_version: ::core::option::Option<prediction_input::ModelVersion>,
 }
+/// Nested message and enum types in `PredictionInput`.
 pub mod prediction_input {
     /// The format used to separate data instances in the source files.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -397,18 +403,18 @@ pub mod prediction_input {
         ///
         /// `"projects/<var>[YOUR_PROJECT]</var>/models/<var>[YOUR_MODEL]</var>"`
         #[prost(string, tag = "1")]
-        ModelName(std::string::String),
+        ModelName(::prost::alloc::string::String),
         /// Use this field if you want to specify a version of the model to use. The
         /// string is formatted the same way as `model_version`, with the addition
         /// of the version information:
         ///
         /// `"projects/<var>[YOUR_PROJECT]</var>/models/<var>YOUR_MODEL/versions/<var>[YOUR_VERSION]</var>"`
         #[prost(string, tag = "2")]
-        VersionName(std::string::String),
+        VersionName(::prost::alloc::string::String),
         /// Use this field if you want to specify a Google Cloud Storage path for
         /// the model to use.
         #[prost(string, tag = "9")]
-        Uri(std::string::String),
+        Uri(::prost::alloc::string::String),
     }
 }
 /// Represents results of a prediction job.
@@ -416,7 +422,7 @@ pub mod prediction_input {
 pub struct PredictionOutput {
     /// The output Google Cloud Storage location provided at the job creation time.
     #[prost(string, tag = "1")]
-    pub output_path: std::string::String,
+    pub output_path: ::prost::alloc::string::String,
     /// The number of generated predictions.
     #[prost(int64, tag = "2")]
     pub prediction_count: i64,
@@ -432,29 +438,30 @@ pub struct PredictionOutput {
 pub struct Job {
     /// Required. The user-specified id of the job.
     #[prost(string, tag = "1")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
     /// Output only. When the job was created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. When the job processing was started.
     #[prost(message, optional, tag = "5")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. When the job processing was completed.
     #[prost(message, optional, tag = "6")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The detailed state of a job.
     #[prost(enumeration = "job::State", tag = "7")]
     pub state: i32,
     /// Output only. The details of a failure or a cancellation.
     #[prost(string, tag = "8")]
-    pub error_message: std::string::String,
+    pub error_message: ::prost::alloc::string::String,
     /// Required. Parameters to create a job.
     #[prost(oneof = "job::Input", tags = "2, 3")]
-    pub input: ::std::option::Option<job::Input>,
+    pub input: ::core::option::Option<job::Input>,
     /// Output only. The current result of the job.
     #[prost(oneof = "job::Output", tags = "9, 10")]
-    pub output: ::std::option::Option<job::Output>,
+    pub output: ::core::option::Option<job::Output>,
 }
+/// Nested message and enum types in `Job`.
 pub mod job {
     /// Describes the job state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -508,10 +515,10 @@ pub struct CreateJobRequest {
     ///
     /// Authorization: requires `Editor` role on the specified project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The job to create.
     #[prost(message, optional, tag = "2")]
-    pub job: ::std::option::Option<Job>,
+    pub job: ::core::option::Option<Job>,
 }
 /// Request message for the ListJobs method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -520,16 +527,16 @@ pub struct ListJobsRequest {
     ///
     /// Authorization: requires `Viewer` role on the specified project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Specifies the subset of jobs to retrieve.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. A page token to request the next page of results.
     ///
     /// You get the token from the `next_page_token` field of the response from
     /// the previous call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The number of jobs to retrieve per "page" of results. If there
     /// are more remaining results than this number, the response message will
     /// contain a valid value in the `next_page_token` field.
@@ -543,11 +550,11 @@ pub struct ListJobsRequest {
 pub struct ListJobsResponse {
     /// The list of jobs.
     #[prost(message, repeated, tag = "1")]
-    pub jobs: ::std::vec::Vec<Job>,
+    pub jobs: ::prost::alloc::vec::Vec<Job>,
     /// Optional. Pass this token as the `page_token` field of the request for a
     /// subsequent call.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the GetJob method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -556,7 +563,7 @@ pub struct GetJobRequest {
     ///
     /// Authorization: requires `Viewer` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for the CancelJob method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -565,7 +572,7 @@ pub struct CancelJobRequest {
     ///
     /// Authorization: requires `Editor` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod job_service_client {
@@ -679,22 +686,22 @@ pub struct Model {
     ///
     /// The model name must be unique within the project it is created in.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The description specified for the model when it was created.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The default version of the model. This version will be used to
     /// handle prediction requests that do not specify a version.
     ///
     /// You can change the default version by calling
     /// [projects.methods.versions.setDefault](/ml/reference/rest/v1/projects.models.versions/setDefault).
     #[prost(message, optional, tag = "3")]
-    pub default_version: ::std::option::Option<Version>,
+    pub default_version: ::core::option::Option<Version>,
     /// Optional. The list of regions where the model is going to be deployed.
     /// Currently only one region per model is supported.
     /// Defaults to 'us-central1' if nothing is set.
     #[prost(string, repeated, tag = "4")]
-    pub regions: ::std::vec::Vec<std::string::String>,
+    pub regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If true, enables StackDriver Logging for online prediction.
     /// Default is false.
     #[prost(bool, tag = "5")]
@@ -712,10 +719,10 @@ pub struct Version {
     ///
     /// The version name must be unique within the model it is created in.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The description specified for the version when it was created.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. If true, this version will be used to handle prediction
     /// requests that do not specify a version.
     ///
@@ -734,17 +741,17 @@ pub struct Version {
     /// Once deployed, the model version is hosted by the prediction service, so
     /// this location is useful only as a historical record.
     #[prost(string, tag = "4")]
-    pub deployment_uri: std::string::String,
+    pub deployment_uri: ::prost::alloc::string::String,
     /// Output only. The time the version was created.
     #[prost(message, optional, tag = "5")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the version was last used for prediction.
     #[prost(message, optional, tag = "6")]
-    pub last_use_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_use_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The Google Cloud ML runtime version to use for this deployment.
     /// If not set, Google Cloud ML will choose a version.
     #[prost(string, tag = "8")]
-    pub runtime_version: std::string::String,
+    pub runtime_version: ::prost::alloc::string::String,
     /// Optional. Manually select the number of nodes to use for serving the
     /// model. If unset (i.e., by default), the number of nodes used to serve
     /// the model automatically scales with traffic. However, care should be
@@ -752,7 +759,7 @@ pub struct Version {
     /// your model needs to handle bursts of traffic beyond it's ability to
     /// scale, it is recommended you set this field appropriately.
     #[prost(message, optional, tag = "9")]
-    pub manual_scaling: ::std::option::Option<ManualScaling>,
+    pub manual_scaling: ::core::option::Option<ManualScaling>,
 }
 /// Options for manually scaling a model.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -771,10 +778,10 @@ pub struct CreateModelRequest {
     ///
     /// Authorization: requires `Editor` role on the specified project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The model to create.
     #[prost(message, optional, tag = "2")]
-    pub model: ::std::option::Option<Model>,
+    pub model: ::core::option::Option<Model>,
 }
 /// Request message for the ListModels method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -783,13 +790,13 @@ pub struct ListModelsRequest {
     ///
     /// Authorization: requires `Viewer` role on the specified project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. A page token to request the next page of results.
     ///
     /// You get the token from the `next_page_token` field of the response from
     /// the previous call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The number of models to retrieve per "page" of results. If there
     /// are more remaining results than this number, the response message will
     /// contain a valid value in the `next_page_token` field.
@@ -803,11 +810,11 @@ pub struct ListModelsRequest {
 pub struct ListModelsResponse {
     /// The list of models.
     #[prost(message, repeated, tag = "1")]
-    pub models: ::std::vec::Vec<Model>,
+    pub models: ::prost::alloc::vec::Vec<Model>,
     /// Optional. Pass this token as the `page_token` field of the request for a
     /// subsequent call.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the GetModel method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -816,7 +823,7 @@ pub struct GetModelRequest {
     ///
     /// Authorization: requires `Viewer` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteModel method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -825,7 +832,7 @@ pub struct DeleteModelRequest {
     ///
     /// Authorization: requires `Editor` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Uploads the provided trained model version to Cloud Machine Learning.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -834,10 +841,10 @@ pub struct CreateVersionRequest {
     ///
     /// Authorization: requires `Editor` role on the parent project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The version details.
     #[prost(message, optional, tag = "2")]
-    pub version: ::std::option::Option<Version>,
+    pub version: ::core::option::Option<Version>,
 }
 /// Request message for the ListVersions method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -846,13 +853,13 @@ pub struct ListVersionsRequest {
     ///
     /// Authorization: requires `Viewer` role on the parent project.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. A page token to request the next page of results.
     ///
     /// You get the token from the `next_page_token` field of the response from
     /// the previous call.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The number of versions to retrieve per "page" of results. If
     /// there are more remaining results than this number, the response message
     /// will contain a valid value in the `next_page_token` field.
@@ -866,11 +873,11 @@ pub struct ListVersionsRequest {
 pub struct ListVersionsResponse {
     /// The list of versions.
     #[prost(message, repeated, tag = "1")]
-    pub versions: ::std::vec::Vec<Version>,
+    pub versions: ::prost::alloc::vec::Vec<Version>,
     /// Optional. Pass this token as the `page_token` field of the request for a
     /// subsequent call.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the GetVersion method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -879,7 +886,7 @@ pub struct GetVersionRequest {
     ///
     /// Authorization: requires `Viewer` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteVerionRequest method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -890,7 +897,7 @@ pub struct DeleteVersionRequest {
     ///
     /// Authorization: requires `Editor` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for the SetDefaultVersion request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -901,7 +908,7 @@ pub struct SetDefaultVersionRequest {
     ///
     /// Authorization: requires `Editor` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod model_service_client {
@@ -1175,13 +1182,13 @@ pub mod model_service_client {
 pub struct OperationMetadata {
     /// The time the operation was submitted.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time operation processing started.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time operation processing completed.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Indicates whether a request to cancel this operation has been made.
     #[prost(bool, tag = "4")]
     pub is_cancellation_requested: bool,
@@ -1190,11 +1197,12 @@ pub struct OperationMetadata {
     pub operation_type: i32,
     /// Contains the name of the model associated with the operation.
     #[prost(string, tag = "6")]
-    pub model_name: std::string::String,
+    pub model_name: ::prost::alloc::string::String,
     /// Contains the version associated with the operation.
     #[prost(message, optional, tag = "7")]
-    pub version: ::std::option::Option<Version>,
+    pub version: ::core::option::Option<Version>,
 }
+/// Nested message and enum types in `OperationMetadata`.
 pub mod operation_metadata {
     /// The operation type.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1402,11 +1410,11 @@ pub struct PredictRequest {
     ///
     /// Authorization: requires `Viewer` role on the parent project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     ///
     /// Required. The prediction request body.
     #[prost(message, optional, tag = "2")]
-    pub http_body: ::std::option::Option<super::super::super::api::HttpBody>,
+    pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
 }
 #[doc = r" Generated client implementations."]
 pub mod online_prediction_service_client {
@@ -1473,14 +1481,14 @@ pub struct GetConfigRequest {
     ///
     /// Authorization: requires `Viewer` role on the specified project.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Returns service account information associated with a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConfigResponse {
     /// The service account Cloud ML uses to access resources in the project.
     #[prost(string, tag = "1")]
-    pub service_account: std::string::String,
+    pub service_account: ::prost::alloc::string::String,
     /// The project number for `service_account`.
     #[prost(int64, tag = "2")]
     pub service_account_project: i64,

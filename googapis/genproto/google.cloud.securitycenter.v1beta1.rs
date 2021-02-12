@@ -10,7 +10,7 @@ pub struct SecurityMarks {
     /// "organizations/{organization_id}/assets/{asset_id}/securityMarks"
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Mutable user specified security marks belonging to the parent resource.
     /// Constraints are as follows:
     ///
@@ -20,7 +20,8 @@ pub struct SecurityMarks {
     ///   * Values have leading and trailing whitespace trimmed, remaining
     ///     characters must be between 1 - 4096 characters (inclusive)
     #[prost(map = "string, string", tag = "2")]
-    pub marks: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub marks:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Security Command Center representation of a Google Cloud
 /// resource.
@@ -36,27 +37,29 @@ pub struct Asset {
     /// Example:
     /// "organizations/{organization_id}/assets/{asset_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Security Command Center managed properties. These properties are managed by
     /// Security Command Center and cannot be modified by the user.
     #[prost(message, optional, tag = "2")]
-    pub security_center_properties: ::std::option::Option<asset::SecurityCenterProperties>,
+    pub security_center_properties: ::core::option::Option<asset::SecurityCenterProperties>,
     /// Resource managed properties. These properties are managed and defined by
     /// the Google Cloud resource and cannot be modified by the user.
     #[prost(map = "string, message", tag = "7")]
-    pub resource_properties: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
+    pub resource_properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     /// User specified security marks. These marks are entirely managed by the user
     /// and come from the SecurityMarks resource that belongs to the asset.
     #[prost(message, optional, tag = "8")]
-    pub security_marks: ::std::option::Option<SecurityMarks>,
+    pub security_marks: ::core::option::Option<SecurityMarks>,
     /// The time at which the asset was created in Security Command Center.
     #[prost(message, optional, tag = "9")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the asset was last updated, added, or deleted in Security
     /// Command Center.
     #[prost(message, optional, tag = "10")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `Asset`.
 pub mod asset {
     /// Security Command Center managed properties. These properties are managed by
     /// Security Command Center and cannot be modified by the user.
@@ -66,24 +69,24 @@ pub mod asset {
         /// represents. This field is immutable after create time. See:
         /// https://cloud.google.com/apis/design/resource_names#full_resource_name
         #[prost(string, tag = "1")]
-        pub resource_name: std::string::String,
+        pub resource_name: ::prost::alloc::string::String,
         /// The type of the Google Cloud resource. Examples include: APPLICATION,
         /// PROJECT, and ORGANIZATION. This is a case insensitive field defined by
         /// Security Command Center and/or the producer of the resource and is
         /// immutable after create time.
         #[prost(string, tag = "2")]
-        pub resource_type: std::string::String,
+        pub resource_type: ::prost::alloc::string::String,
         /// The full resource name of the immediate parent of the resource. See:
         /// https://cloud.google.com/apis/design/resource_names#full_resource_name
         #[prost(string, tag = "3")]
-        pub resource_parent: std::string::String,
+        pub resource_parent: ::prost::alloc::string::String,
         /// The full resource name of the project the resource belongs to. See:
         /// https://cloud.google.com/apis/design/resource_names#full_resource_name
         #[prost(string, tag = "4")]
-        pub resource_project: std::string::String,
+        pub resource_project: ::prost::alloc::string::String,
         /// Owners of the Google Cloud resource.
         #[prost(string, repeated, tag = "5")]
-        pub resource_owners: ::std::vec::Vec<std::string::String>,
+        pub resource_owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// Security Command Center finding.
@@ -99,7 +102,7 @@ pub struct Finding {
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Immutable. The relative resource name of the source the finding belongs to.
     /// See:
     /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
@@ -107,7 +110,7 @@ pub struct Finding {
     /// For example:
     /// "organizations/{organization_id}/sources/{source_id}"
     #[prost(string, tag = "2")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// For findings on Google Cloud resources, the full resource
     /// name of the Google Cloud resource this finding is for. See:
     /// https://cloud.google.com/apis/design/resource_names#full_resource_name
@@ -115,7 +118,7 @@ pub struct Finding {
     /// be a customer or partner defined string. This field is immutable after
     /// creation time.
     #[prost(string, tag = "3")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// The state of the finding.
     #[prost(enumeration = "finding::State", tag = "4")]
     pub state: i32,
@@ -123,34 +126,36 @@ pub struct Finding {
     /// This field is immutable after creation time.
     /// Example: "XSS_FLASH_INJECTION"
     #[prost(string, tag = "5")]
-    pub category: std::string::String,
+    pub category: ::prost::alloc::string::String,
     /// The URI that, if available, points to a web page outside of Security
     /// Command Center where additional information about the finding can be found.
     /// This field is guaranteed to be either empty or a well formed URL.
     #[prost(string, tag = "6")]
-    pub external_uri: std::string::String,
+    pub external_uri: ::prost::alloc::string::String,
     /// Source specific properties. These properties are managed by the source
     /// that writes the finding. The key names in the source_properties map must be
     /// between 1 and 255 characters, and must start with a letter and contain
     /// alphanumeric characters or underscores only.
     #[prost(map = "string, message", tag = "7")]
-    pub source_properties: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
+    pub source_properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     /// Output only. User specified security marks. These marks are entirely
     /// managed by the user and come from the SecurityMarks resource that belongs
     /// to the finding.
     #[prost(message, optional, tag = "8")]
-    pub security_marks: ::std::option::Option<SecurityMarks>,
+    pub security_marks: ::core::option::Option<SecurityMarks>,
     /// The time at which the event took place, or when an update to the finding
     /// occurred. For example, if the finding represents an open firewall it would
     /// capture the time the detector believes the firewall became open. The
     /// accuracy is determined by the detector. If the finding were to be resolved
     /// afterward, this time would reflect when the finding was resolved.
     #[prost(message, optional, tag = "9")]
-    pub event_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the finding was created in Security Command Center.
     #[prost(message, optional, tag = "10")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `Finding`.
 pub mod finding {
     /// The state of the finding.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -174,7 +179,7 @@ pub struct OrganizationSettings {
     /// Example:
     /// "organizations/{organization_id}/organizationSettings".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A flag that indicates if Asset Discovery should be enabled. If the flag is
     /// set to `true`, then discovery of assets will occur. If it is set to `false,
     /// all historical assets will remain, but discovery of future assets will not
@@ -183,19 +188,21 @@ pub struct OrganizationSettings {
     pub enable_asset_discovery: bool,
     /// The configuration used for Asset Discovery runs.
     #[prost(message, optional, tag = "3")]
-    pub asset_discovery_config: ::std::option::Option<organization_settings::AssetDiscoveryConfig>,
+    pub asset_discovery_config: ::core::option::Option<organization_settings::AssetDiscoveryConfig>,
 }
+/// Nested message and enum types in `OrganizationSettings`.
 pub mod organization_settings {
     /// The configuration used for Asset Discovery runs.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AssetDiscoveryConfig {
         /// The project ids to use for filtering asset discovery.
         #[prost(string, repeated, tag = "1")]
-        pub project_ids: ::std::vec::Vec<std::string::String>,
+        pub project_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The mode to use for filtering asset discovery.
         #[prost(enumeration = "asset_discovery_config::InclusionMode", tag = "2")]
         pub inclusion_mode: i32,
     }
+    /// Nested message and enum types in `AssetDiscoveryConfig`.
     pub mod asset_discovery_config {
         /// The mode of inclusion when running Asset Discovery.
         /// Asset discovery can be limited by explicitly identifying projects to be
@@ -205,7 +212,9 @@ pub mod organization_settings {
         /// projects are discovered during asset discovery. If neither are set, then
         /// all projects within the organization are discovered during asset
         /// discovery.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum InclusionMode {
             /// Unspecified. Setting the mode with this value will disable
@@ -228,8 +237,9 @@ pub struct RunAssetDiscoveryResponse {
     pub state: i32,
     /// The duration between asset discovery run start and end
     #[prost(message, optional, tag = "2")]
-    pub duration: ::std::option::Option<::prost_types::Duration>,
+    pub duration: ::core::option::Option<::prost_types::Duration>,
 }
+/// Nested message and enum types in `RunAssetDiscoveryResponse`.
 pub mod run_asset_discovery_response {
     /// The state of an asset discovery run.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -256,14 +266,14 @@ pub struct Source {
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}"
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The source's display name.
     /// A source's display name must be unique amongst its siblings, for example,
     /// two sources with the same parent can't share the same display name.
     /// The display name must have a length between 1 and 64 characters
     /// (inclusive).
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The description of the source (max of 1024 characters).
     /// Example:
     /// "Web Security Scanner is a web security scanner for common
@@ -272,7 +282,7 @@ pub struct Source {
     /// (XSS), Flash injection, mixed content (HTTP in HTTPS), and
     /// outdated/insecure libraries."
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 /// Request message for creating a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -280,16 +290,16 @@ pub struct CreateFindingRequest {
     /// Required. Resource name of the new finding's parent. Its format should be
     /// "organizations/[organization_id]/sources/[source_id]".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
     /// It must be alphanumeric and less than or equal to 32 characters and
     /// greater than 0 characters in length.
     #[prost(string, tag = "2")]
-    pub finding_id: std::string::String,
+    pub finding_id: ::prost::alloc::string::String,
     /// Required. The Finding being created. The name and security_marks will be ignored as
     /// they are both output only fields on this resource.
     #[prost(message, optional, tag = "3")]
-    pub finding: ::std::option::Option<Finding>,
+    pub finding: ::core::option::Option<Finding>,
 }
 /// Request message for creating a source.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -297,11 +307,11 @@ pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
     /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The Source being created, only the display_name and description will be
     /// used. All other fields will be ignored.
     #[prost(message, optional, tag = "2")]
-    pub source: ::std::option::Option<Source>,
+    pub source: ::core::option::Option<Source>,
 }
 /// Request message for getting organization settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -309,7 +319,7 @@ pub struct GetOrganizationSettingsRequest {
     /// Required. Name of the organization to get organization settings for. Its format is
     /// "organizations/[organization_id]/organizationSettings".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a source.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -317,7 +327,7 @@ pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
     /// "organizations/[organization_id]/source/[source_id]".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for grouping by assets.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -325,7 +335,7 @@ pub struct GroupAssetsRequest {
     /// Required. Name of the organization to groupBy. Its format is
     /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
     /// The expression is a list of zero or more restrictions combined via logical
     /// operators `AND` and `OR`.
@@ -354,7 +364,7 @@ pub struct GroupAssetsRequest {
     ///
     /// For example, `resource_properties.size = 100` is a valid filter string.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Required. Expression that defines what assets fields to use for grouping. The string
     /// value should follow SQL syntax: comma separated list of fields. For
     /// example:
@@ -370,7 +380,7 @@ pub struct GroupAssetsRequest {
     ///
     /// * security_center_properties.resource_type
     #[prost(string, tag = "3")]
-    pub group_by: std::string::String,
+    pub group_by: ::prost::alloc::string::String,
     /// When compare_duration is set, the Asset's "state" property is updated to
     /// indicate whether the asset was added, removed, or remained present during
     /// the compare_duration period of time that precedes the read_time. This is
@@ -393,18 +403,18 @@ pub struct GroupAssetsRequest {
     ///
     /// This field is ignored if `state` is not a field in `group_by`.
     #[prost(message, optional, tag = "4")]
-    pub compare_duration: ::std::option::Option<::prost_types::Duration>,
+    pub compare_duration: ::core::option::Option<::prost_types::Duration>,
     /// Time used as a reference point when filtering assets. The filter is limited
     /// to assets existing at the supplied time and their values are those at that
     /// specific time. Absence of this field will default to the API's version of
     /// NOW.
     #[prost(message, optional, tag = "5")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value returned by the last `GroupAssetsResponse`; indicates
     /// that this is a continuation of a prior `GroupAssets` call, and that the
     /// system should return the next page of data.
     #[prost(string, tag = "7")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "8")]
@@ -417,14 +427,14 @@ pub struct GroupAssetsResponse {
     /// combination of property/values. The element contains a count for the number
     /// of times those specific property/values appear.
     #[prost(message, repeated, tag = "1")]
-    pub group_by_results: ::std::vec::Vec<GroupResult>,
+    pub group_by_results: ::prost::alloc::vec::Vec<GroupResult>,
     /// Time used for executing the groupBy request.
     #[prost(message, optional, tag = "2")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for grouping by findings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -434,7 +444,7 @@ pub struct GroupFindingsRequest {
     /// all sources provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
     /// The expression is a list of one or more restrictions combined via logical
     /// operators `AND` and `OR`.
@@ -461,7 +471,7 @@ pub struct GroupFindingsRequest {
     ///
     /// For example, `source_properties.size = 100` is a valid filter string.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Required. Expression that defines what assets fields to use for grouping (including
     /// `state`). The string value should follow SQL syntax: comma separated list
     /// of fields. For example:
@@ -474,18 +484,18 @@ pub struct GroupFindingsRequest {
     /// * state
     /// * parent
     #[prost(string, tag = "3")]
-    pub group_by: std::string::String,
+    pub group_by: ::prost::alloc::string::String,
     /// Time used as a reference point when filtering findings. The filter is
     /// limited to findings existing at the supplied time and their values are
     /// those at that specific time. Absence of this field will default to the
     /// API's version of NOW.
     #[prost(message, optional, tag = "4")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value returned by the last `GroupFindingsResponse`; indicates
     /// that this is a continuation of a prior `GroupFindings` call, and
     /// that the system should return the next page of data.
     #[prost(string, tag = "5")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "6")]
@@ -498,21 +508,22 @@ pub struct GroupFindingsResponse {
     /// combination of property/values. The element contains a count for the number
     /// of times those specific property/values appear.
     #[prost(message, repeated, tag = "1")]
-    pub group_by_results: ::std::vec::Vec<GroupResult>,
+    pub group_by_results: ::prost::alloc::vec::Vec<GroupResult>,
     /// Time used for executing the groupBy request.
     #[prost(message, optional, tag = "2")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Result containing the properties and count of a groupBy request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupResult {
     /// Properties matching the groupBy fields in the request.
     #[prost(map = "string, message", tag = "1")]
-    pub properties: ::std::collections::HashMap<std::string::String, ::prost_types::Value>,
+    pub properties:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     /// Total count of resources for the given properties.
     #[prost(int64, tag = "2")]
     pub count: i64,
@@ -523,12 +534,12 @@ pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should be
     /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListSourcesResponse`; indicates
     /// that this is a continuation of a prior `ListSources` call, and
     /// that the system should return the next page of data.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "7")]
@@ -539,11 +550,11 @@ pub struct ListSourcesRequest {
 pub struct ListSourcesResponse {
     /// Sources belonging to the requested parent.
     #[prost(message, repeated, tag = "1")]
-    pub sources: ::std::vec::Vec<Source>,
+    pub sources: ::prost::alloc::vec::Vec<Source>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing assets.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -551,7 +562,7 @@ pub struct ListAssetsRequest {
     /// Required. Name of the organization assets should belong to. Its format is
     /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
     /// The expression is a list of zero or more restrictions combined via logical
     /// operators `AND` and `OR`.
@@ -580,7 +591,7 @@ pub struct ListAssetsRequest {
     ///
     /// For example, `resource_properties.size = 100` is a valid filter string.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Expression that defines what fields and order to use for sorting. The
     /// string value should follow SQL syntax: comma separated list of fields. For
     /// example: "name,resource_properties.a_property". The default sorting order
@@ -590,13 +601,13 @@ pub struct ListAssetsRequest {
     /// syntax are insignificant. "name desc,resource_properties.a_property" and "
     /// name     desc  ,   resource_properties.a_property  " are equivalent.
     #[prost(string, tag = "3")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Time used as a reference point when filtering assets. The filter is limited
     /// to assets existing at the supplied time and their values are those at that
     /// specific time. Absence of this field will default to the API's version of
     /// NOW.
     #[prost(message, optional, tag = "4")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// When compare_duration is set, the ListAssetResult's "state" attribute is
     /// updated to indicate whether the asset was added, removed, or remained
     /// present during the compare_duration period of time that precedes the
@@ -621,17 +632,17 @@ pub struct ListAssetsRequest {
     /// If compare_duration is not specified, then the only possible state is
     /// "UNUSED", which indicates that the asset is present at read_time.
     #[prost(message, optional, tag = "5")]
-    pub compare_duration: ::std::option::Option<::prost_types::Duration>,
+    pub compare_duration: ::core::option::Option<::prost_types::Duration>,
     /// Optional. A field mask to specify the ListAssetsResult fields to be listed in the
     /// response.
     /// An empty field mask will list all fields.
     #[prost(message, optional, tag = "7")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The value returned by the last `ListAssetsResponse`; indicates
     /// that this is a continuation of a prior `ListAssets` call, and
     /// that the system should return the next page of data.
     #[prost(string, tag = "8")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "9")]
@@ -642,29 +653,31 @@ pub struct ListAssetsRequest {
 pub struct ListAssetsResponse {
     /// Assets matching the list request.
     #[prost(message, repeated, tag = "1")]
-    pub list_assets_results: ::std::vec::Vec<list_assets_response::ListAssetsResult>,
+    pub list_assets_results: ::prost::alloc::vec::Vec<list_assets_response::ListAssetsResult>,
     /// Time used for executing the list request.
     #[prost(message, optional, tag = "2")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of assets matching the query.
     #[prost(int32, tag = "4")]
     pub total_size: i32,
 }
+/// Nested message and enum types in `ListAssetsResponse`.
 pub mod list_assets_response {
     /// Result containing the Asset and its State.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListAssetsResult {
         /// Asset matching the search request.
         #[prost(message, optional, tag = "1")]
-        pub asset: ::std::option::Option<super::Asset>,
+        pub asset: ::core::option::Option<super::Asset>,
         /// State of the asset.
         #[prost(enumeration = "list_assets_result::State", tag = "2")]
         pub state: i32,
     }
+    /// Nested message and enum types in `ListAssetsResult`.
     pub mod list_assets_result {
         /// State of the asset.
         ///
@@ -672,7 +685,9 @@ pub mod list_assets_response {
         /// the change between the two points: ADDED, REMOVED, or ACTIVE.
         /// If there was no compare_duration supplied in the request the state should
         /// be: UNUSED
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum State {
             /// Unspecified state.
@@ -696,7 +711,7 @@ pub struct ListFindingsRequest {
     /// sources provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
     /// The expression is a list of one or more restrictions combined via logical
     /// operators `AND` and `OR`.
@@ -723,7 +738,7 @@ pub struct ListFindingsRequest {
     ///
     /// For example, `source_properties.size = 100` is a valid filter string.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Expression that defines what fields and order to use for sorting. The
     /// string value should follow SQL syntax: comma separated list of fields. For
     /// example: "name,resource_properties.a_property". The default sorting order
@@ -733,22 +748,22 @@ pub struct ListFindingsRequest {
     /// syntax are insignificant. "name desc,source_properties.a_property" and "
     /// name     desc  ,   source_properties.a_property  " are equivalent.
     #[prost(string, tag = "3")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Time used as a reference point when filtering findings. The filter is
     /// limited to findings existing at the supplied time and their values are
     /// those at that specific time. Absence of this field will default to the
     /// API's version of NOW.
     #[prost(message, optional, tag = "4")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. A field mask to specify the Finding fields to be listed in the response.
     /// An empty field mask will list all fields.
     #[prost(message, optional, tag = "5")]
-    pub field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The value returned by the last `ListFindingsResponse`; indicates
     /// that this is a continuation of a prior `ListFindings` call, and
     /// that the system should return the next page of data.
     #[prost(string, tag = "6")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "7")]
@@ -759,14 +774,14 @@ pub struct ListFindingsRequest {
 pub struct ListFindingsResponse {
     /// Findings matching the list request.
     #[prost(message, repeated, tag = "1")]
-    pub findings: ::std::vec::Vec<Finding>,
+    pub findings: ::prost::alloc::vec::Vec<Finding>,
     /// Time used for executing the list request.
     #[prost(message, optional, tag = "2")]
-    pub read_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// The total number of findings matching the query.
     #[prost(int32, tag = "4")]
     pub total_size: i32,
@@ -779,13 +794,13 @@ pub struct SetFindingStateRequest {
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The desired State of the finding.
     #[prost(enumeration = "finding::State", tag = "2")]
     pub state: i32,
     /// Required. The time at which the updated state takes effect.
     #[prost(message, optional, tag = "3")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for running asset discovery for an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -793,7 +808,7 @@ pub struct RunAssetDiscoveryRequest {
     /// Required. Name of the organization to run asset discovery for. Its format is
     /// "organizations/[organization_id]".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
 }
 /// Request message for updating or creating a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -805,44 +820,44 @@ pub struct UpdateFindingRequest {
     /// alphanumeric and less than or equal to 32 characters and greater than 0
     /// characters in length.
     #[prost(message, optional, tag = "1")]
-    pub finding: ::std::option::Option<Finding>,
+    pub finding: ::core::option::Option<Finding>,
     /// The FieldMask to use when updating the finding resource. This field should
     /// not be specified when creating a finding.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating an organization's settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOrganizationSettingsRequest {
     /// Required. The organization settings resource to update.
     #[prost(message, optional, tag = "1")]
-    pub organization_settings: ::std::option::Option<OrganizationSettings>,
+    pub organization_settings: ::core::option::Option<OrganizationSettings>,
     /// The FieldMask to use when updating the settings resource.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSourceRequest {
     /// Required. The source resource to update.
     #[prost(message, optional, tag = "1")]
-    pub source: ::std::option::Option<Source>,
+    pub source: ::core::option::Option<Source>,
     /// The FieldMask to use when updating the source resource.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a SecurityMarks resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityMarksRequest {
     /// Required. The security marks resource to update.
     #[prost(message, optional, tag = "1")]
-    pub security_marks: ::std::option::Option<SecurityMarks>,
+    pub security_marks: ::core::option::Option<SecurityMarks>,
     /// The FieldMask to use when updating the security marks resource.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The time at which the updated SecurityMarks take effect.
     #[prost(message, optional, tag = "3")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[doc = r" Generated client implementations."]
 pub mod security_center_client {

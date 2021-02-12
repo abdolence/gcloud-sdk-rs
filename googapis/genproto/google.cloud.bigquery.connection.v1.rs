@@ -4,13 +4,13 @@ pub struct CreateConnectionRequest {
     /// Required. Parent resource name.
     /// Must be in the format `projects/{project_id}/locations/{location_id}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Connection id that should be assigned to the created connection.
     #[prost(string, tag = "2")]
-    pub connection_id: std::string::String,
+    pub connection_id: ::prost::alloc::string::String,
     /// Required. Connection to create.
     #[prost(message, optional, tag = "3")]
-    pub connection: ::std::option::Option<Connection>,
+    pub connection: ::core::option::Option<Connection>,
 }
 /// The request for [ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -18,7 +18,7 @@ pub struct GetConnectionRequest {
     /// Required. Name of the requested connection, for example:
     /// `projects/{project_id}/locations/{location_id}/connections/{connection_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -26,23 +26,23 @@ pub struct ListConnectionsRequest {
     /// Required. Parent resource name.
     /// Must be in the form: `projects/{project_id}/locations/{location_id}`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Page size.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// Page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
     /// Next page token.
     #[prost(string, tag = "1")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// List of connections.
     #[prost(message, repeated, tag = "2")]
-    pub connections: ::std::vec::Vec<Connection>,
+    pub connections: ::prost::alloc::vec::Vec<Connection>,
 }
 /// The request for [ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -50,13 +50,13 @@ pub struct UpdateConnectionRequest {
     /// Required. Name of the connection to update, for example:
     /// `projects/{project_id}/locations/{location_id}/connections/{connection_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Connection containing the updated fields.
     #[prost(message, optional, tag = "2")]
-    pub connection: ::std::option::Option<Connection>,
+    pub connection: ::core::option::Option<Connection>,
     /// Required. Update mask for the connection fields to be updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for [ConnectionService.DeleteConnectionRequest][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -64,7 +64,7 @@ pub struct DeleteConnectionRequest {
     /// Required. Name of the deleted connection, for example:
     /// `projects/{project_id}/locations/{location_id}/connections/{connection_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Configuration parameters to establish connection with an external data
 /// source, except the credential attributes.
@@ -73,13 +73,13 @@ pub struct Connection {
     /// The resource name of the connection in the form of:
     /// `projects/{project_id}/locations/{location_id}/connections/{connection_id}`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// User provided display name for the connection.
     #[prost(string, tag = "2")]
-    pub friendly_name: std::string::String,
+    pub friendly_name: ::prost::alloc::string::String,
     /// User provided description.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The creation timestamp of the connection.
     #[prost(int64, tag = "5")]
     pub creation_time: i64,
@@ -91,8 +91,9 @@ pub struct Connection {
     pub has_credential: bool,
     /// Properties specific to the underlying data source.
     #[prost(oneof = "connection::Properties", tags = "4, 8")]
-    pub properties: ::std::option::Option<connection::Properties>,
+    pub properties: ::core::option::Option<connection::Properties>,
 }
+/// Nested message and enum types in `Connection`.
 pub mod connection {
     /// Properties specific to the underlying data source.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -110,17 +111,18 @@ pub mod connection {
 pub struct CloudSqlProperties {
     /// Cloud SQL instance ID in the form `project:location:instance`.
     #[prost(string, tag = "1")]
-    pub instance_id: std::string::String,
+    pub instance_id: ::prost::alloc::string::String,
     /// Database name.
     #[prost(string, tag = "2")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
     /// Type of the Cloud SQL database.
     #[prost(enumeration = "cloud_sql_properties::DatabaseType", tag = "3")]
     pub r#type: i32,
     /// Input only. Cloud SQL credential.
     #[prost(message, optional, tag = "4")]
-    pub credential: ::std::option::Option<CloudSqlCredential>,
+    pub credential: ::core::option::Option<CloudSqlCredential>,
 }
+/// Nested message and enum types in `CloudSqlProperties`.
 pub mod cloud_sql_properties {
     /// Supported Cloud SQL database types.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -139,18 +141,19 @@ pub mod cloud_sql_properties {
 pub struct CloudSqlCredential {
     /// The username for the credential.
     #[prost(string, tag = "1")]
-    pub username: std::string::String,
+    pub username: ::prost::alloc::string::String,
     /// The password for the credential.
     #[prost(string, tag = "2")]
-    pub password: std::string::String,
+    pub password: ::prost::alloc::string::String,
 }
 /// Connection properties specific to Amazon Web Services (AWS).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsProperties {
     /// Authentication method chosen at connection creation.
     #[prost(oneof = "aws_properties::AuthenticationMethod", tags = "2")]
-    pub authentication_method: ::std::option::Option<aws_properties::AuthenticationMethod>,
+    pub authentication_method: ::core::option::Option<aws_properties::AuthenticationMethod>,
 }
+/// Nested message and enum types in `AwsProperties`.
 pub mod aws_properties {
     /// Authentication method chosen at connection creation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -168,15 +171,15 @@ pub struct AwsCrossAccountRole {
     /// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
     /// Connection.
     #[prost(string, tag = "1")]
-    pub iam_role_id: std::string::String,
+    pub iam_role_id: ::prost::alloc::string::String,
     /// Output only. Google-owned AWS IAM User for a Connection.
     #[prost(string, tag = "2")]
-    pub iam_user_id: std::string::String,
+    pub iam_user_id: ::prost::alloc::string::String,
     /// Output only. A Google-generated id for representing Connection’s identity in AWS.
     /// External Id is also used for preventing the Confused Deputy Problem. See
     /// https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html
     #[prost(string, tag = "3")]
-    pub external_id: std::string::String,
+    pub external_id: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod connection_service_client {

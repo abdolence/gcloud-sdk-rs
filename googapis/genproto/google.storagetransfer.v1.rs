@@ -3,7 +3,7 @@
 pub struct GoogleServiceAccount {
     /// Required.
     #[prost(string, tag = "1")]
-    pub account_email: std::string::String,
+    pub account_email: ::prost::alloc::string::String,
 }
 /// AWS access key (see
 /// [AWS Security
@@ -13,11 +13,11 @@ pub struct AwsAccessKey {
     /// AWS access key ID.
     /// Required.
     #[prost(string, tag = "1")]
-    pub access_key_id: std::string::String,
+    pub access_key_id: ::prost::alloc::string::String,
     /// AWS secret access key. This field is not returned in RPC responses.
     /// Required.
     #[prost(string, tag = "2")]
-    pub secret_access_key: std::string::String,
+    pub secret_access_key: ::prost::alloc::string::String,
 }
 /// Conditions that determine which objects will be transferred.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -30,11 +30,11 @@ pub struct ObjectConditions {
     /// `NOW` - `minTimeElapsedSinceLastModification`, or not have a
     /// `lastModificationTime`.
     #[prost(message, optional, tag = "1")]
-    pub min_time_elapsed_since_last_modification: ::std::option::Option<::prost_types::Duration>,
+    pub min_time_elapsed_since_last_modification: ::core::option::Option<::prost_types::Duration>,
     /// `maxTimeElapsedSinceLastModification` is the complement to
     /// `minTimeElapsedSinceLastModification`.
     #[prost(message, optional, tag = "2")]
-    pub max_time_elapsed_since_last_modification: ::std::option::Option<::prost_types::Duration>,
+    pub max_time_elapsed_since_last_modification: ::core::option::Option<::prost_types::Duration>,
     /// If `includePrefixes` is specified, objects that satisfy the object
     /// conditions must have names that start with one of the `includePrefixes`
     /// and that do not start with any of the `excludePrefixes`. If
@@ -70,13 +70,13 @@ pub struct ObjectConditions {
     ///
     /// The max size of `includePrefixes` is 1000.
     #[prost(string, repeated, tag = "3")]
-    pub include_prefixes: ::std::vec::Vec<std::string::String>,
+    pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// `excludePrefixes` must follow the requirements described for
     /// `includePrefixes`.
     ///
     /// The max size of `excludePrefixes` is 1000.
     #[prost(string, repeated, tag = "4")]
-    pub exclude_prefixes: ::std::vec::Vec<std::string::String>,
+    pub exclude_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// In a GcsData, an object's name is the Google Cloud Storage object's name and
 /// its `lastModificationTime` refers to the object's updated time, which changes
@@ -88,7 +88,7 @@ pub struct GcsData {
     /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
     /// Required.
     #[prost(string, tag = "1")]
-    pub bucket_name: std::string::String,
+    pub bucket_name: ::prost::alloc::string::String,
 }
 /// An AwsS3Data can be a data source, but not a data sink.
 /// In an AwsS3Data, an object's name is the S3 object's key name.
@@ -99,13 +99,13 @@ pub struct AwsS3Data {
     /// bucket](http://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html)).
     /// Required.
     #[prost(string, tag = "1")]
-    pub bucket_name: std::string::String,
+    pub bucket_name: ::prost::alloc::string::String,
     /// AWS access key used to sign the API requests to the AWS S3 bucket.
     /// Permissions on the bucket must be granted to the access ID of the
     /// AWS access key.
     /// Required.
     #[prost(message, optional, tag = "2")]
-    pub aws_access_key: ::std::option::Option<AwsAccessKey>,
+    pub aws_access_key: ::core::option::Option<AwsAccessKey>,
 }
 /// An HttpData specifies a list of objects on the web to be transferred over
 /// HTTP.  The information of the objects to be transferred is contained in a
@@ -156,7 +156,7 @@ pub struct HttpData {
     /// HTTPS schemes are supported.
     /// Required.
     #[prost(string, tag = "1")]
-    pub list_url: std::string::String,
+    pub list_url: ::prost::alloc::string::String,
 }
 /// TransferOptions uses three boolean parameters to define the actions
 /// to be performed on objects in a transfer.
@@ -183,19 +183,20 @@ pub struct TransferSpec {
     /// of data source and data sink objects.  Object conditions based on
     /// objects' `lastModificationTime` do not exclude objects in a data sink.
     #[prost(message, optional, tag = "5")]
-    pub object_conditions: ::std::option::Option<ObjectConditions>,
+    pub object_conditions: ::core::option::Option<ObjectConditions>,
     /// If the option `deleteObjectsUniqueInSink` is `true`, object conditions
     /// based on objects' `lastModificationTime` are ignored and do not exclude
     /// objects in a data source or a data sink.
     #[prost(message, optional, tag = "6")]
-    pub transfer_options: ::std::option::Option<TransferOptions>,
+    pub transfer_options: ::core::option::Option<TransferOptions>,
     /// The read source of the data.
     #[prost(oneof = "transfer_spec::DataSource", tags = "1, 2, 3")]
-    pub data_source: ::std::option::Option<transfer_spec::DataSource>,
+    pub data_source: ::core::option::Option<transfer_spec::DataSource>,
     /// The write sink for the data.
     #[prost(oneof = "transfer_spec::DataSink", tags = "4")]
-    pub data_sink: ::std::option::Option<transfer_spec::DataSink>,
+    pub data_sink: ::core::option::Option<transfer_spec::DataSink>,
 }
+/// Nested message and enum types in `TransferSpec`.
 pub mod transfer_spec {
     /// The read source of the data.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -226,12 +227,12 @@ pub struct Schedule {
     /// time on the following day.
     /// Required.
     #[prost(message, optional, tag = "1")]
-    pub schedule_start_date: ::std::option::Option<super::super::r#type::Date>,
+    pub schedule_start_date: ::core::option::Option<super::super::r#type::Date>,
     /// The last day the recurring transfer will be run. If `scheduleEndDate`
     /// is the same as `scheduleStartDate`, the transfer will be executed only
     /// once.
     #[prost(message, optional, tag = "2")]
-    pub schedule_end_date: ::std::option::Option<super::super::r#type::Date>,
+    pub schedule_end_date: ::core::option::Option<super::super::r#type::Date>,
     /// The time in UTC at which the transfer will be scheduled to start in a day.
     /// Transfers may start later than this time. If not specified, recurring and
     /// one-time transfers that are scheduled to run today will run immediately;
@@ -240,7 +241,7 @@ pub struct Schedule {
     /// transfer with the Cloud Platform Console, the transfer's start time in a
     /// day is specified in your local timezone.
     #[prost(message, optional, tag = "3")]
-    pub start_time_of_day: ::std::option::Option<super::super::r#type::TimeOfDay>,
+    pub start_time_of_day: ::core::option::Option<super::super::r#type::TimeOfDay>,
 }
 /// This resource represents the configuration of a transfer job that runs
 /// periodically.
@@ -251,20 +252,20 @@ pub struct TransferJob {
     /// transfer job; otherwise, the requests result in an `INVALID_ARGUMENT`
     /// error.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A description provided by the user for the job. Its max length is 1024
     /// bytes when Unicode-encoded.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// The ID of the Google Cloud Platform Console project that owns the job.
     #[prost(string, tag = "3")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Transfer specification.
     #[prost(message, optional, tag = "4")]
-    pub transfer_spec: ::std::option::Option<TransferSpec>,
+    pub transfer_spec: ::core::option::Option<TransferSpec>,
     /// Schedule specification.
     #[prost(message, optional, tag = "5")]
-    pub schedule: ::std::option::Option<Schedule>,
+    pub schedule: ::core::option::Option<Schedule>,
     /// Status of the job. This value MUST be specified for
     /// `CreateTransferJobRequests`.
     ///
@@ -276,14 +277,15 @@ pub struct TransferJob {
     pub status: i32,
     /// This field cannot be changed by user requests.
     #[prost(message, optional, tag = "7")]
-    pub creation_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub creation_time: ::core::option::Option<::prost_types::Timestamp>,
     /// This field cannot be changed by user requests.
     #[prost(message, optional, tag = "8")]
-    pub last_modification_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_modification_time: ::core::option::Option<::prost_types::Timestamp>,
     /// This field cannot be changed by user requests.
     #[prost(message, optional, tag = "9")]
-    pub deletion_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub deletion_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `TransferJob`.
 pub mod transfer_job {
     /// The status of the transfer job.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -308,10 +310,10 @@ pub struct ErrorLogEntry {
     /// or an object) with which the error is associated.
     /// Required.
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
     /// A list of messages that carry the error details.
     #[prost(string, repeated, tag = "3")]
-    pub error_details: ::std::vec::Vec<std::string::String>,
+    pub error_details: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A summary of errors by error code, plus a count and sample error log
 /// entries.
@@ -326,7 +328,7 @@ pub struct ErrorSummary {
     pub error_count: i64,
     /// Error samples.
     #[prost(message, repeated, tag = "3")]
-    pub error_log_entries: ::std::vec::Vec<ErrorLogEntry>,
+    pub error_log_entries: ::prost::alloc::vec::Vec<ErrorLogEntry>,
 }
 /// A collection of counters that report the progress of a transfer operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -391,34 +393,35 @@ pub struct TransferCounters {
 pub struct TransferOperation {
     /// A globally unique ID assigned by the system.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The ID of the Google Cloud Platform Console project that owns the
     /// operation. Required.
     #[prost(string, tag = "2")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Transfer specification.
     /// Required.
     #[prost(message, optional, tag = "3")]
-    pub transfer_spec: ::std::option::Option<TransferSpec>,
+    pub transfer_spec: ::core::option::Option<TransferSpec>,
     /// Start time of this transfer execution.
     #[prost(message, optional, tag = "4")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of this transfer execution.
     #[prost(message, optional, tag = "5")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Status of the transfer operation.
     #[prost(enumeration = "transfer_operation::Status", tag = "6")]
     pub status: i32,
     /// Information about the progress of the transfer operation.
     #[prost(message, optional, tag = "7")]
-    pub counters: ::std::option::Option<TransferCounters>,
+    pub counters: ::core::option::Option<TransferCounters>,
     /// Summarizes errors encountered with sample error log entries.
     #[prost(message, repeated, tag = "8")]
-    pub error_breakdowns: ::std::vec::Vec<ErrorSummary>,
+    pub error_breakdowns: ::prost::alloc::vec::Vec<ErrorSummary>,
     /// The name of the transfer job that triggers this transfer operation.
     #[prost(string, tag = "9")]
-    pub transfer_job_name: std::string::String,
+    pub transfer_job_name: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `TransferOperation`.
 pub mod transfer_operation {
     /// The status of a TransferOperation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -445,7 +448,7 @@ pub struct GetGoogleServiceAccountRequest {
     /// account is associated with.
     /// Required.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
 }
 /// Request passed to CreateTransferJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -453,7 +456,7 @@ pub struct CreateTransferJobRequest {
     /// The job to create.
     /// Required.
     #[prost(message, optional, tag = "1")]
-    pub transfer_job: ::std::option::Option<TransferJob>,
+    pub transfer_job: ::core::option::Option<TransferJob>,
 }
 /// Request passed to UpdateTransferJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -461,18 +464,18 @@ pub struct UpdateTransferJobRequest {
     /// The name of job to update.
     /// Required.
     #[prost(string, tag = "1")]
-    pub job_name: std::string::String,
+    pub job_name: ::prost::alloc::string::String,
     /// The ID of the Google Cloud Platform Console project that owns the job.
     /// Required.
     #[prost(string, tag = "2")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// The job to update. `transferJob` is expected to specify only three fields:
     /// `description`, `transferSpec`, and `status`.  An UpdateTransferJobRequest
     /// that specifies other fields will be rejected with an error
     /// `INVALID_ARGUMENT`.
     /// Required.
     #[prost(message, optional, tag = "3")]
-    pub transfer_job: ::std::option::Option<TransferJob>,
+    pub transfer_job: ::core::option::Option<TransferJob>,
     /// The field mask of the fields in `transferJob` that are to be updated in
     /// this request.  Fields in `transferJob` that can be updated are:
     /// `description`, `transferSpec`, and `status`.  To update the `transferSpec`
@@ -480,7 +483,7 @@ pub struct UpdateTransferJobRequest {
     /// incomplete specification which misses any required fields will be rejected
     /// with the error `INVALID_ARGUMENT`.
     #[prost(message, optional, tag = "4")]
-    pub update_transfer_job_field_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_transfer_job_field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request passed to GetTransferJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -488,11 +491,11 @@ pub struct GetTransferJobRequest {
     /// The job to get.
     /// Required.
     #[prost(string, tag = "1")]
-    pub job_name: std::string::String,
+    pub job_name: ::prost::alloc::string::String,
     /// The ID of the Google Cloud Platform Console project that owns the job.
     /// Required.
     #[prost(string, tag = "2")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
 }
 /// `project_id`, `job_names`, and `job_statuses` are query parameters that can
 /// be specified when listing transfer jobs.
@@ -507,23 +510,23 @@ pub struct ListTransferJobsRequest {
     /// `job_names` and `job_statuses` are optional.  The valid values for
     /// `job_statuses` are case-insensitive: `ENABLED`, `DISABLED`, and `DELETED`.
     #[prost(string, tag = "1")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The list page size. The max allowed value is 256.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// The list page token.
     #[prost(string, tag = "5")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response from ListTransferJobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferJobsResponse {
     /// A list of transfer jobs.
     #[prost(message, repeated, tag = "1")]
-    pub transfer_jobs: ::std::vec::Vec<TransferJob>,
+    pub transfer_jobs: ::prost::alloc::vec::Vec<TransferJob>,
     /// The list next page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed to PauseTransferOperation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -531,7 +534,7 @@ pub struct PauseTransferOperationRequest {
     /// The name of the transfer operation.
     /// Required.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request passed to ResumeTransferOperation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -539,7 +542,7 @@ pub struct ResumeTransferOperationRequest {
     /// The name of the transfer operation.
     /// Required.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod storage_transfer_service_client {

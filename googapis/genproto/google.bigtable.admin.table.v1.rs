@@ -5,22 +5,23 @@ pub struct Table {
     /// A unique identifier of the form
     /// <cluster_name>/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// If this Table is in the process of being created, the Operation used to
     /// track its progress. As long as this operation is present, the Table will
     /// not accept any Table Admin or Read/Write requests.
     #[prost(message, optional, tag = "2")]
     pub current_operation:
-        ::std::option::Option<super::super::super::super::longrunning::Operation>,
+        ::core::option::Option<super::super::super::super::longrunning::Operation>,
     /// The column families configured for this table, mapped by column family id.
     #[prost(map = "string, message", tag = "3")]
-    pub column_families: ::std::collections::HashMap<std::string::String, ColumnFamily>,
+    pub column_families: ::std::collections::HashMap<::prost::alloc::string::String, ColumnFamily>,
     /// The granularity (e.g. MILLIS, MICROS) at which timestamps are stored in
     /// this table. Timestamps not matching the granularity will be rejected.
     /// Cannot be changed once the table is created.
     #[prost(enumeration = "table::TimestampGranularity", tag = "4")]
     pub granularity: i32,
 }
+/// Nested message and enum types in `Table`.
 pub mod table {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -35,7 +36,7 @@ pub struct ColumnFamily {
     /// The last segment is the same as the "name" field in
     /// google.bigtable.v1.Family.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Garbage collection expression specified by the following grammar:
     ///   GC = EXPR
     ///      | "" ;
@@ -62,7 +63,7 @@ pub struct ColumnFamily {
     /// it's possible for reads to return a cell even if it matches the active GC
     /// expression for its family.
     #[prost(string, tag = "2")]
-    pub gc_expression: std::string::String,
+    pub gc_expression: ::prost::alloc::string::String,
     /// Garbage collection rule specified as a protobuf.
     /// Supersedes `gc_expression`.
     /// Must serialize to at most 500 bytes.
@@ -71,28 +72,29 @@ pub struct ColumnFamily {
     /// so it's possible for reads to return a cell even if it matches the active
     /// GC expression for its family.
     #[prost(message, optional, tag = "3")]
-    pub gc_rule: ::std::option::Option<GcRule>,
+    pub gc_rule: ::core::option::Option<GcRule>,
 }
 /// Rule for determining which cells to delete during garbage collection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcRule {
     #[prost(oneof = "gc_rule::Rule", tags = "1, 2, 3, 4")]
-    pub rule: ::std::option::Option<gc_rule::Rule>,
+    pub rule: ::core::option::Option<gc_rule::Rule>,
 }
+/// Nested message and enum types in `GcRule`.
 pub mod gc_rule {
     /// A GcRule which deletes cells matching all of the given rules.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Intersection {
         /// Only delete cells which would be deleted by every element of `rules`.
         #[prost(message, repeated, tag = "1")]
-        pub rules: ::std::vec::Vec<super::GcRule>,
+        pub rules: ::prost::alloc::vec::Vec<super::GcRule>,
     }
     /// A GcRule which deletes cells matching any of the given rules.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Union {
         /// Delete cells which would be deleted by any element of `rules`.
         #[prost(message, repeated, tag = "1")]
-        pub rules: ::std::vec::Vec<super::GcRule>,
+        pub rules: ::prost::alloc::vec::Vec<super::GcRule>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rule {
@@ -116,15 +118,15 @@ pub mod gc_rule {
 pub struct CreateTableRequest {
     /// The unique name of the cluster in which to create the new table.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The name by which the new table should be referred to within the cluster,
     /// e.g. "foobar" rather than "<cluster_name>/tables/foobar".
     #[prost(string, tag = "2")]
-    pub table_id: std::string::String,
+    pub table_id: ::prost::alloc::string::String,
     /// The Table to create. The `name` field of the Table and all of its
     /// ColumnFamilies must be left blank, and will be populated in the response.
     #[prost(message, optional, tag = "3")]
-    pub table: ::std::option::Option<Table>,
+    pub table: ::core::option::Option<Table>,
     /// The optional list of row keys that will be used to initially split the
     /// table into several tablets (Tablets are similar to HBase regions).
     /// Given two split keys, "s1" and "s2", three tablets will be created,
@@ -141,77 +143,78 @@ pub struct CreateTableRequest {
     ///    - Tablet 4 [customer_2, other)      => {"customer_2"}.
     ///    - Tablet 5 [other, )                => {"other", "zz"}.
     #[prost(string, repeated, tag = "4")]
-    pub initial_split_keys: ::std::vec::Vec<std::string::String>,
+    pub initial_split_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesRequest {
     /// The unique name of the cluster for which tables should be listed.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesResponse {
     /// The tables present in the requested cluster.
     /// At present, only the names of the tables are populated.
     #[prost(message, repeated, tag = "1")]
-    pub tables: ::std::vec::Vec<Table>,
+    pub tables: ::prost::alloc::vec::Vec<Table>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTableRequest {
     /// The unique name of the requested table.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTableRequest {
     /// The unique name of the table to be deleted.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTableRequest {
     /// The current unique name of the table.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The new name by which the table should be referred to within its containing
     /// cluster, e.g. "foobar" rather than "<cluster_name>/tables/foobar".
     #[prost(string, tag = "2")]
-    pub new_id: std::string::String,
+    pub new_id: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateColumnFamilyRequest {
     /// The unique name of the table in which to create the new column family.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The name by which the new column family should be referred to within the
     /// table, e.g. "foobar" rather than "<table_name>/columnFamilies/foobar".
     #[prost(string, tag = "2")]
-    pub column_family_id: std::string::String,
+    pub column_family_id: ::prost::alloc::string::String,
     /// The column family to create. The `name` field must be left blank.
     #[prost(message, optional, tag = "3")]
-    pub column_family: ::std::option::Option<ColumnFamily>,
+    pub column_family: ::core::option::Option<ColumnFamily>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteColumnFamilyRequest {
     /// The unique name of the column family to be deleted.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkDeleteRowsRequest {
     /// The unique name of the table on which to perform the bulk delete
     #[prost(string, tag = "1")]
-    pub table_name: std::string::String,
+    pub table_name: ::prost::alloc::string::String,
     #[prost(oneof = "bulk_delete_rows_request::Target", tags = "2, 3")]
-    pub target: ::std::option::Option<bulk_delete_rows_request::Target>,
+    pub target: ::core::option::Option<bulk_delete_rows_request::Target>,
 }
+/// Nested message and enum types in `BulkDeleteRowsRequest`.
 pub mod bulk_delete_rows_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Delete all rows that start with this row key prefix. Prefix cannot be
         /// zero length.
         #[prost(bytes, tag = "2")]
-        RowKeyPrefix(std::vec::Vec<u8>),
+        RowKeyPrefix(::prost::alloc::vec::Vec<u8>),
         /// Delete all rows in the table. Setting this to false is a no-op.
         #[prost(bool, tag = "3")]
         DeleteAllDataFromTable(bool),

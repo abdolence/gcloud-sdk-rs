@@ -9,14 +9,14 @@ pub struct AccessTuple {
     /// The member must be a Google Account or a service account. Other types of
     /// members are not supported.
     #[prost(string, tag = "1")]
-    pub principal: std::string::String,
+    pub principal: ::prost::alloc::string::String,
     /// Required. The full resource name that identifies the resource. For example,
     /// `//compute.googleapis.com/projects/my-project/zones/us-central1-a/instances/my-instance`.
     ///
     /// For examples of full resource names for Google Cloud services, see
     /// https://cloud.google.com/iam/help/troubleshooter/full-resource-names.
     #[prost(string, tag = "2")]
-    pub full_resource_name: std::string::String,
+    pub full_resource_name: ::prost::alloc::string::String,
     /// Required. The IAM permission to check for the specified member and resource.
     ///
     /// For a complete list of IAM permissions, see
@@ -25,7 +25,7 @@ pub struct AccessTuple {
     /// For a complete list of predefined IAM roles and the permissions in each
     /// role, see https://cloud.google.com/iam/help/roles/reference.
     #[prost(string, tag = "3")]
-    pub permission: std::string::String,
+    pub permission: ::prost::alloc::string::String,
 }
 /// Details about how a specific IAM [Policy][google.iam.v1.Policy] contributed
 /// to the access check.
@@ -50,20 +50,20 @@ pub struct ExplainedPolicy {
     /// For examples of full resource names for Google Cloud services, see
     /// https://cloud.google.com/iam/help/troubleshooter/full-resource-names.
     #[prost(string, tag = "2")]
-    pub full_resource_name: std::string::String,
+    pub full_resource_name: ::prost::alloc::string::String,
     /// The IAM policy attached to the resource.
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is empty.
     #[prost(message, optional, tag = "3")]
-    pub policy: ::std::option::Option<super::super::super::iam::v1::Policy>,
+    pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// Details about how each binding in the policy affects the member's ability,
     /// or inability, to use the permission for the resource.
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is omitted.
     #[prost(message, repeated, tag = "4")]
-    pub binding_explanations: ::std::vec::Vec<BindingExplanation>,
+    pub binding_explanations: ::prost::alloc::vec::Vec<BindingExplanation>,
     /// The relevance of this policy to the overall determination in the
     /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
     ///
@@ -92,7 +92,7 @@ pub struct BindingExplanation {
     /// For a complete list of predefined IAM roles, as well as the permissions in
     /// each role, see https://cloud.google.com/iam/help/roles/reference.
     #[prost(string, tag = "2")]
-    pub role: std::string::String,
+    pub role: ::prost::alloc::string::String,
     /// Indicates whether the role granted by this binding contains the specified
     /// permission.
     #[prost(enumeration = "binding_explanation::RolePermission", tag = "3")]
@@ -122,8 +122,10 @@ pub struct BindingExplanation {
     /// `group:product-eng@example.com`, and the `membership` field in the value is
     /// set to `MEMBERSHIP_INCLUDED`.
     #[prost(map = "string, message", tag = "5")]
-    pub memberships:
-        ::std::collections::HashMap<std::string::String, binding_explanation::AnnotatedMembership>,
+    pub memberships: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        binding_explanation::AnnotatedMembership,
+    >,
     /// The relevance of this binding to the overall determination for the entire
     /// policy.
     #[prost(enumeration = "HeuristicRelevance", tag = "6")]
@@ -134,8 +136,9 @@ pub struct BindingExplanation {
     /// To learn about IAM Conditions, see
     /// http://cloud.google.com/iam/help/conditions/overview.
     #[prost(message, optional, tag = "7")]
-    pub condition: ::std::option::Option<super::super::super::r#type::Expr>,
+    pub condition: ::core::option::Option<super::super::super::r#type::Expr>,
 }
+/// Nested message and enum types in `BindingExplanation`.
 pub mod binding_explanation {
     /// Details about whether the binding includes the member.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -220,7 +223,7 @@ pub struct TroubleshootIamPolicyRequest {
     /// The information to use for checking whether a member has a permission for a
     /// resource.
     #[prost(message, optional, tag = "1")]
-    pub access_tuple: ::std::option::Option<AccessTuple>,
+    pub access_tuple: ::core::option::Option<AccessTuple>,
 }
 /// Response for [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -240,7 +243,7 @@ pub struct TroubleshootIamPolicyResponse {
     /// To learn more about the resource hierarchy, see
     /// https://cloud.google.com/iam/help/resource-hierarchy.
     #[prost(message, repeated, tag = "2")]
-    pub explained_policies: ::std::vec::Vec<ExplainedPolicy>,
+    pub explained_policies: ::prost::alloc::vec::Vec<ExplainedPolicy>,
 }
 #[doc = r" Generated client implementations."]
 pub mod iam_checker_client {

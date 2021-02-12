@@ -37,8 +37,8 @@
 pub struct Viewport {
     /// Required. The low point of the viewport.
     #[prost(message, optional, tag = "1")]
-    pub low: ::std::option::Option<super::super::r#type::LatLng>,
+    pub low: ::core::option::Option<super::super::r#type::LatLng>,
     /// Required. The high point of the viewport.
     #[prost(message, optional, tag = "2")]
-    pub high: ::std::option::Option<super::super::r#type::LatLng>,
+    pub high: ::core::option::Option<super::super::r#type::LatLng>,
 }

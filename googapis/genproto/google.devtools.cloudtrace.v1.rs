@@ -5,22 +5,22 @@
 pub struct Trace {
     /// Project ID of the Cloud project where the trace data is stored.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Globally unique identifier for the trace. This identifier is a 128-bit
     /// numeric value formatted as a 32-byte hex string. For example,
     /// `382d4f4c6b7bb2f4a972559d9085001d`.
     #[prost(string, tag = "2")]
-    pub trace_id: std::string::String,
+    pub trace_id: ::prost::alloc::string::String,
     /// Collection of spans in the trace.
     #[prost(message, repeated, tag = "3")]
-    pub spans: ::std::vec::Vec<TraceSpan>,
+    pub spans: ::prost::alloc::vec::Vec<TraceSpan>,
 }
 /// List of new or updated traces.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Traces {
     /// List of traces.
     #[prost(message, repeated, tag = "1")]
-    pub traces: ::std::vec::Vec<Trace>,
+    pub traces: ::prost::alloc::vec::Vec<Trace>,
 }
 /// A span represents a single timed event within a trace. Spans can be nested
 /// and form a trace tree. Often, a trace contains a root span that describes the
@@ -46,13 +46,13 @@ pub struct TraceSpan {
     /// to use a consistent name, which makes it easier to correlate
     /// cross-trace spans.
     #[prost(string, tag = "3")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Start time of the span in nanoseconds from the UNIX epoch.
     #[prost(message, optional, tag = "4")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of the span in nanoseconds from the UNIX epoch.
     #[prost(message, optional, tag = "5")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. ID of the parent span, if any.
     #[prost(fixed64, tag = "6")]
     pub parent_span_id: u64,
@@ -92,8 +92,10 @@ pub struct TraceSpan {
     /// *   `/stacktrace`
     /// *   `/tid`
     #[prost(map = "string, string", tag = "7")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `TraceSpan`.
 pub mod trace_span {
     /// Type of span. Can be used to specify additional relationships between spans
     /// in addition to a parent/child relationship.
@@ -116,7 +118,7 @@ pub mod trace_span {
 pub struct ListTracesRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Optional. Type of data returned for traces in the list. Default is
     /// `MINIMAL`.
     #[prost(enumeration = "list_traces_request::ViewType", tag = "2")]
@@ -129,15 +131,15 @@ pub struct ListTracesRequest {
     /// Token identifying the page of results to return. If provided, use the
     /// value of the `next_page_token` field from a previous request.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Start of the time interval (inclusive) during which the trace data was
     /// collected from the application.
     #[prost(message, optional, tag = "5")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End of the time interval (inclusive) during which the trace data was
     /// collected from the application.
     #[prost(message, optional, tag = "6")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. A filter against labels for the request.
     ///
     /// By default, searches use prefix matching. To specify exact match, prepend
@@ -169,7 +171,7 @@ pub struct ListTracesRequest {
     /// *   `method:VALUE`: Equivalent to `/http/method:VALUE`.
     /// *   `url:VALUE`: Equivalent to `/http/url:VALUE`.
     #[prost(string, tag = "7")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Field used to sort the returned traces.
     /// Can be one of the following:
     ///
@@ -184,8 +186,9 @@ pub struct ListTracesRequest {
     ///
     /// Only one sort field is permitted.
     #[prost(string, tag = "8")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ListTracesRequest`.
 pub mod list_traces_request {
     /// Type of data returned for traces in the list.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -210,32 +213,32 @@ pub mod list_traces_request {
 pub struct ListTracesResponse {
     /// List of trace records as specified by the view parameter.
     #[prost(message, repeated, tag = "1")]
-    pub traces: ::std::vec::Vec<Trace>,
+    pub traces: ::prost::alloc::vec::Vec<Trace>,
     /// If defined, indicates that there are more traces that match the request
     /// and that this value should be passed to the next request to continue
     /// retrieving additional traces.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the `GetTrace` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTraceRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. ID of the trace to return.
     #[prost(string, tag = "2")]
-    pub trace_id: std::string::String,
+    pub trace_id: ::prost::alloc::string::String,
 }
 /// The request message for the `PatchTraces` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchTracesRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Required. The body of the message.
     #[prost(message, optional, tag = "2")]
-    pub traces: ::std::option::Option<Traces>,
+    pub traces: ::core::option::Option<Traces>,
 }
 #[doc = r" Generated client implementations."]
 pub mod trace_service_client {

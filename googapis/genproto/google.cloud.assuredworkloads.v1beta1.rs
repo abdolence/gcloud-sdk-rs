@@ -4,16 +4,16 @@ pub struct CreateWorkloadRequest {
     /// Required. The resource name of the new Workload's parent.
     /// Must be of the form `organizations/{org_id}/locations/{location_id}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Assured Workload to create
     #[prost(message, optional, tag = "2")]
-    pub workload: ::std::option::Option<Workload>,
+    pub workload: ::core::option::Option<Workload>,
     /// Optional. A identifier associated with the workload and underlying projects which
     /// allows for the break down of billing costs for a workload. The value
     /// provided for the identifier will add a label to the workload and contained
     /// projects with the identifier as the value.
     #[prost(string, tag = "3")]
-    pub external_id: std::string::String,
+    pub external_id: ::prost::alloc::string::String,
 }
 /// Request for Updating a workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -23,10 +23,10 @@ pub struct UpdateWorkloadRequest {
     /// Format:
     /// organizations/{org_id}/locations/{location_id}/workloads/{workload_id}
     #[prost(message, optional, tag = "1")]
-    pub workload: ::std::option::Option<Workload>,
+    pub workload: ::core::option::Option<Workload>,
     /// Required. The list of fields to be updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for deleting a Workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -35,11 +35,11 @@ pub struct DeleteWorkloadRequest {
     /// Format:
     /// organizations/{org_id}/locations/{location_id}/workloads/{workload_id}
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. The etag of the workload.
     /// If this is provided, it must match the server's etag.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request for fetching a workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -50,7 +50,7 @@ pub struct GetWorkloadRequest {
     /// For example,
     /// "organizations/123/locations/us-east1/workloads/assured-workload-1".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for fetching workloads in an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -58,7 +58,7 @@ pub struct ListWorkloadsRequest {
     /// Required. Parent Resource to list workloads from.
     /// Must be of the form `organizations/{org_id}/locations/{location}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -66,21 +66,21 @@ pub struct ListWorkloadsRequest {
     /// previous request. Page token needs to be passed in the second and following
     /// requests.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// A custom filter for filtering by properties of a workload. At this time,
     /// only filtering by labels is supported.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response of ListWorkloads endpoint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadsResponse {
     /// List of Workloads under a given parent.
     #[prost(message, repeated, tag = "1")]
-    pub workloads: ::std::vec::Vec<Workload>,
+    pub workloads: ::prost::alloc::vec::Vec<Workload>,
     /// The next page token. Return empty if reached the last page.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// An Workload object for managing highly regulated workloads of cloud
 /// customers.
@@ -92,27 +92,27 @@ pub struct Workload {
     ///
     /// Read-only.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The user-assigned display name of the Workload.
     /// When present it must be between 4 to 30 characters.
     /// Allowed characters are: lowercase and uppercase letters, numbers,
-    /// hyphen, single-quote, double-quote, space, and exclamation point.
+    /// hyphen, and spaces.
     ///
     /// Example: My Workload
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Output only. The resources associated with this workload.
     /// These resources will be created when creating the workload.
     /// If any of the projects already exist, the workload creation will fail.
     /// Always read only.
     #[prost(message, repeated, tag = "3")]
-    pub resources: ::std::vec::Vec<workload::ResourceInfo>,
+    pub resources: ::prost::alloc::vec::Vec<workload::ResourceInfo>,
     /// Required. Immutable. Compliance Regime associated with this workload.
     #[prost(enumeration = "workload::ComplianceRegime", tag = "4")]
     pub compliance_regime: i32,
     /// Output only. Immutable. The Workload creation timestamp.
     #[prost(message, optional, tag = "5")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Input only. The billing account used for the resources which are
     /// direct children of workload. This billing account is initially associated
     /// with the resources created as part of Workload creation.
@@ -122,18 +122,34 @@ pub struct Workload {
     /// `billingAccounts/{billing_account_id}`. For example,
     /// `billingAccounts/012345-567890-ABCDEF`.
     #[prost(string, tag = "6")]
-    pub billing_account: std::string::String,
+    pub billing_account: ::prost::alloc::string::String,
     /// Optional. ETag of the workload, it is calculated on the basis
     /// of the Workload contents. It will be used in Update & Delete operations.
     #[prost(string, tag = "9")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Optional. Labels applied to the workload.
     #[prost(map = "string, string", tag = "10")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Input only. The parent resource for the resources managed by this Assured Workload. May
+    /// be either an organization or a folder. Must be the same or a child of the
+    /// Workload parent. If not specified all resources are created under the
+    /// Workload parent.
+    /// Formats:
+    /// folders/{folder_id}
+    /// organizations/{organization_id}
+    #[prost(string, tag = "13")]
+    pub provisioned_resources_parent: ::prost::alloc::string::String,
+    /// Input only. Settings used to create a CMEK crypto key. When set a project with a KMS
+    /// CMEK key is provisioned. This field is mandatory for a subset of Compliance
+    /// Regimes.
+    #[prost(message, optional, tag = "14")]
+    pub kms_settings: ::core::option::Option<workload::KmsSettings>,
     /// Settings specific to the selected [compliance_regime]
     #[prost(oneof = "workload::ComplianceRegimeSettings", tags = "7, 8, 11, 12")]
-    pub compliance_regime_settings: ::std::option::Option<workload::ComplianceRegimeSettings>,
+    pub compliance_regime_settings: ::core::option::Option<workload::ComplianceRegimeSettings>,
 }
+/// Nested message and enum types in `Workload`.
 pub mod workload {
     /// Represent the resources that are children of this Workload.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -146,9 +162,12 @@ pub mod workload {
         #[prost(enumeration = "resource_info::ResourceType", tag = "2")]
         pub resource_type: i32,
     }
+    /// Nested message and enum types in `ResourceInfo`.
     pub mod resource_info {
         /// The type of resource.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ResourceType {
             /// Unknown resource type.
@@ -165,40 +184,40 @@ pub mod workload {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
         /// new version of the crypto key and mark it as the primary.
         #[prost(message, optional, tag = "1")]
-        pub next_rotation_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Required. Input only. Immutable. [next_rotation_time] will be advanced by this period when the Key
         /// Management Service automatically rotates a key. Must be at least 24 hours
         /// and at most 876,000 hours.
         #[prost(message, optional, tag = "2")]
-        pub rotation_period: ::std::option::Option<::prost_types::Duration>,
+        pub rotation_period: ::core::option::Option<::prost_types::Duration>,
     }
     /// Settings specific to resources needed for IL4.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Il4Settings {
         /// Required. Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
-        pub kms_settings: ::std::option::Option<KmsSettings>,
+        pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for CJIS.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CjisSettings {
         /// Required. Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
-        pub kms_settings: ::std::option::Option<KmsSettings>,
+        pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP High.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FedrampHighSettings {
         /// Required. Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
-        pub kms_settings: ::std::option::Option<KmsSettings>,
+        pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP Moderate.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FedrampModerateSettings {
         /// Required. Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
-        pub kms_settings: ::std::option::Option<KmsSettings>,
+        pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Supported Compliance Regimes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -214,6 +233,8 @@ pub mod workload {
         FedrampHigh = 3,
         /// FedRAMP Moderate data protection controls
         FedrampModerate = 4,
+        /// Assured Workloads For US Regions data protection controls
+        UsRegionalAccess = 5,
     }
     /// Settings specific to the selected [compliance_regime]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -237,13 +258,13 @@ pub mod workload {
 pub struct CreateWorkloadOperationMetadata {
     /// Optional. Time when the operation was created.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The display name of the workload.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. The parent of the workload.
     #[prost(string, tag = "3")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Compliance controls that should be applied to the resources managed by
     /// the workload.
     #[prost(enumeration = "workload::ComplianceRegime", tag = "4")]

@@ -5,26 +5,27 @@ pub struct Service {
     ///
     /// "projects/{project_id}/locations/{location_id}/services/{service_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The time when the metastore service was created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the metastore service was last updated.
     #[prost(message, optional, tag = "3")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// User-defined labels for the metastore service.
     #[prost(map = "string, string", tag = "4")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Immutable. The relative resource name of the VPC network on which the instance can be
     /// accessed. The network must belong to the same project as the metastore
     /// instance. It is specified in the following form:
     ///
     /// "projects/{project_id}/global/networks/{network_id}".
     #[prost(string, tag = "7")]
-    pub network: std::string::String,
+    pub network: ::prost::alloc::string::String,
     /// Output only. The URI of the endpoint used to access the metastore service.
     #[prost(string, tag = "8")]
-    pub endpoint_uri: std::string::String,
+    pub endpoint_uri: ::prost::alloc::string::String,
     /// The TCP port at which the metastore service is reached. Default: 9083.
     #[prost(int32, tag = "9")]
     pub port: i32,
@@ -34,19 +35,20 @@ pub struct Service {
     /// Output only. Additional information about the current state of the metastore service, if
     /// available.
     #[prost(string, tag = "11")]
-    pub state_message: std::string::String,
+    pub state_message: ::prost::alloc::string::String,
     /// Output only. A Cloud Storage URI (starting with `gs://`) that specifies where artifacts
     /// related to the metastore service are stored.
     #[prost(string, tag = "12")]
-    pub artifact_gcs_uri: std::string::String,
+    pub artifact_gcs_uri: ::prost::alloc::string::String,
     /// The tier of the service.
     #[prost(enumeration = "service::Tier", tag = "13")]
     pub tier: i32,
     /// Configuration properties specific to the underlying metastore service
     /// technology (the software that serves metastore queries).
     #[prost(oneof = "service::MetastoreConfig", tags = "5")]
-    pub metastore_config: ::std::option::Option<service::MetastoreConfig>,
+    pub metastore_config: ::core::option::Option<service::MetastoreConfig>,
 }
+/// Nested message and enum types in `Service`.
 pub mod service {
     /// The current state of the metastore service.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -98,16 +100,17 @@ pub mod service {
 pub struct HiveMetastoreConfig {
     /// Immutable. The Hive metastore schema version.
     #[prost(string, tag = "1")]
-    pub version: std::string::String,
+    pub version: ::prost::alloc::string::String,
     /// A mapping of Hive metastore configuration key-value pairs to apply to the
     /// Hive metastore (configured in `hive-site.xml`). The mappings
     /// override system defaults (some keys cannot be overridden).
     #[prost(map = "string, string", tag = "2")]
-    pub config_overrides: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub config_overrides:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Information used to configure the Hive metastore service as a service
     /// principal in a Kerberos realm.
     #[prost(message, optional, tag = "3")]
-    pub kerberos_config: ::std::option::Option<KerberosConfig>,
+    pub kerberos_config: ::core::option::Option<KerberosConfig>,
 }
 /// Configuration information for a Kerberos principal.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -115,24 +118,25 @@ pub struct KerberosConfig {
     /// A Kerberos keytab file that can be used to authenticate a service principal
     /// with a Kerberos Key Distribution Center (KDC).
     #[prost(message, optional, tag = "1")]
-    pub keytab: ::std::option::Option<Secret>,
+    pub keytab: ::core::option::Option<Secret>,
     /// A Kerberos principal that exists in the both the keytab the KDC
     /// to authenticate as. A typical principal is of the form
     /// "primary/instance@REALM", but there is no exact format.
     #[prost(string, tag = "2")]
-    pub principal: std::string::String,
+    pub principal: ::prost::alloc::string::String,
     /// A Cloud Storage URI that specifies the path to a
     /// krb5.conf file. It is of the form gs://{bucket_name}/path/to/krb5.conf,
     /// although the file does not need to be named krb5.conf explicitly.
     #[prost(string, tag = "3")]
-    pub krb5_config_gcs_uri: std::string::String,
+    pub krb5_config_gcs_uri: ::prost::alloc::string::String,
 }
 /// A securely stored value.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
     #[prost(oneof = "secret::Value", tags = "2")]
-    pub value: ::std::option::Option<secret::Value>,
+    pub value: ::core::option::Option<secret::Value>,
 }
+/// Nested message and enum types in `Secret`.
 pub mod secret {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
@@ -141,7 +145,7 @@ pub mod secret {
         ///
         /// "projects/{project_id}/secrets/{secret_id}/versions/{version_id}".
         #[prost(string, tag = "2")]
-        CloudSecret(std::string::String),
+        CloudSecret(::prost::alloc::string::String),
     }
 }
 /// A metastore resource that imports metadata.
@@ -151,23 +155,24 @@ pub struct MetadataImport {
     ///
     /// "projects/{project_id}/locations/{location_id}/services/{service_id}/metadataImports/{metadata_import_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The description of the metadata import.
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The time when the metadata import was created.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the metadata import was last updated.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the metadata import.
     #[prost(enumeration = "metadata_import::State", tag = "5")]
     pub state: i32,
     /// The metadata to be imported.
     #[prost(oneof = "metadata_import::Metadata", tags = "6")]
-    pub metadata: ::std::option::Option<metadata_import::Metadata>,
+    pub metadata: ::core::option::Option<metadata_import::Metadata>,
 }
+/// Nested message and enum types in `MetadataImport`.
 pub mod metadata_import {
     /// A specification of the location of and metadata about a database dump from
     /// a relational database management system.
@@ -179,14 +184,17 @@ pub mod metadata_import {
         /// A Cloud Storage object URI that specifies the source from which to
         /// import metadata. It must begin with `gs://`.
         #[prost(string, tag = "2")]
-        pub gcs_uri: std::string::String,
+        pub gcs_uri: ::prost::alloc::string::String,
         /// The name of the source database.
         #[prost(string, tag = "3")]
-        pub source_database: std::string::String,
+        pub source_database: ::prost::alloc::string::String,
     }
+    /// Nested message and enum types in `DatabaseDump`.
     pub mod database_dump {
         /// The type of the database.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum DatabaseType {
             /// The type of the source database is unknown.
@@ -227,7 +235,7 @@ pub struct ListServicesRequest {
     ///
     /// "projects/{project_id}/locations/{location_id}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of services to return. The response may contain less
     /// than the maximum number. If unspecified, no more than 500 services are
     /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
@@ -242,29 +250,29 @@ pub struct ListServicesRequest {
     /// [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices] must match the call that provided the
     /// page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify the ordering of results as described in
-    /// [Sorting Order](/apis/design/design_patterns#sorting_order). If not
+    /// [Sorting Order](https://cloud.google.com/apis/design/design_patterns#sorting_order). If not
     /// specified, the results will be sorted in the default order.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The services in the specified location.
     #[prost(message, repeated, tag = "1")]
-    pub services: ::std::vec::Vec<Service>,
+    pub services: ::prost::alloc::vec::Vec<Service>,
     /// A token that can be sent as `page_token` to retrieve the next page. If this
     /// field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for [DataprocMetastore.GetService][google.cloud.metastore.v1alpha.DataprocMetastore.GetService].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -274,7 +282,7 @@ pub struct GetServiceRequest {
     ///
     /// "projects/{project_id}/locations/{location_id}/services/{service_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [DataprocMetastore.CreateService][google.cloud.metastore.v1alpha.DataprocMetastore.CreateService].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -284,7 +292,7 @@ pub struct CreateServiceRequest {
     ///
     /// "projects/{project_id}/locations/{location_id}".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the metastore service, which is used as the final
     /// component of the metastore service's name.
     ///
@@ -292,12 +300,12 @@ pub struct CreateServiceRequest {
     /// letter, end with a letter or number, and consist of alpha-numeric
     /// ASCII characters or hyphens.
     #[prost(string, tag = "2")]
-    pub service_id: std::string::String,
+    pub service_id: ::prost::alloc::string::String,
     /// Required. The Metastore service to create. The `name` field is
     /// ignored. The ID of the created metastore service must be provided in
     /// the request's `service_id` field.
     #[prost(message, optional, tag = "3")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
     /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
     /// request if it has completed. The server will ignore subsequent requests
     /// that provide a duplicate request ID for at least 60 minutes after the first
@@ -311,7 +319,7 @@ pub struct CreateServiceRequest {
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for [DataprocMetastore.UpdateService][google.cloud.metastore.v1alpha.DataprocMetastore.UpdateService].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -321,14 +329,14 @@ pub struct UpdateServiceRequest {
     /// Fields specified in the `update_mask` are relative to the resource (not
     /// to the full request). A field is overwritten if it is in the mask.
     #[prost(message, optional, tag = "1")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The metastore service to update. The server only merges fields
     /// in the service if they are specified in `update_mask`.
     ///
     /// The metastore service's `name` field is used to identify the metastore
     /// service to be updated.
     #[prost(message, optional, tag = "2")]
-    pub service: ::std::option::Option<Service>,
+    pub service: ::core::option::Option<Service>,
     /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
     /// request if it has completed. The server will ignore subsequent requests
     /// that provide a duplicate request ID for at least 60 minutes after the first
@@ -342,7 +350,7 @@ pub struct UpdateServiceRequest {
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for [DataprocMetastore.DeleteService][google.cloud.metastore.v1alpha.DataprocMetastore.DeleteService].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -352,7 +360,7 @@ pub struct DeleteServiceRequest {
     ///
     /// "projects/{project_id}/locations/{location_id}/services/{service_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
     /// request if it has completed. The server will ignore subsequent requests
     /// that provide a duplicate request ID for at least 60 minutes after the first
@@ -366,7 +374,7 @@ pub struct DeleteServiceRequest {
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "2")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1alpha.DataprocMetastore.ListMetadataImports].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -376,7 +384,7 @@ pub struct ListMetadataImportsRequest {
     ///
     /// "projects/{project_id}/locations/{location_id}/services/{service_id}/metadataImports".
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of imports to return. The response may contain less
     /// than the maximum number. If unspecified, no more than 500 imports are
     /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
@@ -391,29 +399,29 @@ pub struct ListMetadataImportsRequest {
     /// [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices] must match the call that provided the
     /// page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Optional. Specify the ordering of results as described in
-    /// [Sorting Order](/apis/design/design_patterns#sorting_order). If not
+    /// [Sorting Order](https://cloud.google.com/apis/design/design_patterns#sorting_order). If not
     /// specified, the results will be sorted in the default order.
     #[prost(string, tag = "5")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1alpha.DataprocMetastore.ListMetadataImports].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataImportsResponse {
     /// The imports in the specified service.
     #[prost(message, repeated, tag = "1")]
-    pub metadata_imports: ::std::vec::Vec<MetadataImport>,
+    pub metadata_imports: ::prost::alloc::vec::Vec<MetadataImport>,
     /// A token that can be sent as `page_token` to retrieve the next page. If this
     /// field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
-    pub unreachable: ::std::vec::Vec<std::string::String>,
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for [DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1alpha.DataprocMetastore.GetMetadataImport].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -423,7 +431,7 @@ pub struct GetMetadataImportRequest {
     ///
     /// "projects/{project_id}/locations/{location_id}/services/{service_id}/metadataImports/{import_id}".
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1alpha.DataprocMetastore.CreateMetadataImport].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -433,7 +441,7 @@ pub struct CreateMetadataImportRequest {
     ///
     /// "projects/{project_id}/locations/{location_id}/services/{service_id}"
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the metadata import, which is used as the final component of the
     /// metadata import's name.
     ///
@@ -441,12 +449,12 @@ pub struct CreateMetadataImportRequest {
     /// end with a letter or number, and consist of alpha-numeric ASCII characters
     /// or hyphens.
     #[prost(string, tag = "2")]
-    pub metadata_import_id: std::string::String,
+    pub metadata_import_id: ::prost::alloc::string::String,
     /// Required. The metadata import to create. The `name` field is ignored. The ID of the
     /// created metadata import must be provided in the request's
     /// `metadata_import_id` field.
     #[prost(message, optional, tag = "3")]
-    pub metadata_import: ::std::option::Option<MetadataImport>,
+    pub metadata_import: ::core::option::Option<MetadataImport>,
     /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
     /// request if it has completed. The server will ignore subsequent requests
     /// that provide a duplicate request ID for at least 60 minutes after the first
@@ -460,7 +468,7 @@ pub struct CreateMetadataImportRequest {
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "4")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for [DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1alpha.DataprocMetastore.UpdateMetadataImport].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -470,14 +478,14 @@ pub struct UpdateMetadataImportRequest {
     /// Fields specified in the `update_mask` are relative to the resource (not
     /// to the full request). A field is overwritten if it is in the mask.
     #[prost(message, optional, tag = "1")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The metadata import to update. The server only merges fields
     /// in the import if they are specified in `update_mask`.
     ///
     /// The metadata import's `name` field is used to identify the metastore
     /// import to be updated.
     #[prost(message, optional, tag = "2")]
-    pub metadata_import: ::std::option::Option<MetadataImport>,
+    pub metadata_import: ::core::option::Option<MetadataImport>,
     /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
     /// request if it has completed. The server will ignore subsequent requests
     /// that provide a duplicate request ID for at least 60 minutes after the first
@@ -491,26 +499,26 @@ pub struct UpdateMetadataImportRequest {
     /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "3")]
-    pub request_id: std::string::String,
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
     #[prost(message, optional, tag = "2")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag = "3")]
-    pub target: std::string::String,
+    pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag = "4")]
-    pub verb: std::string::String,
+    pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag = "5")]
-    pub status_message: std::string::String,
+    pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the caller has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
@@ -519,7 +527,7 @@ pub struct OperationMetadata {
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
-    pub api_version: std::string::String,
+    pub api_version: ::prost::alloc::string::String,
 }
 /// Metadata about the service in a location.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -528,15 +536,17 @@ pub struct LocationMetadata {
     /// metastore service in this location. The server guarantees that exactly one
     /// `HiveMetastoreVersion` in the list will set `is_default`.
     #[prost(message, repeated, tag = "1")]
-    pub supported_hive_metastore_versions: ::std::vec::Vec<location_metadata::HiveMetastoreVersion>,
+    pub supported_hive_metastore_versions:
+        ::prost::alloc::vec::Vec<location_metadata::HiveMetastoreVersion>,
 }
+/// Nested message and enum types in `LocationMetadata`.
 pub mod location_metadata {
     /// A specification of a supported version of the Hive Metastore software.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HiveMetastoreVersion {
         /// The semantic version of the Hive Metastore software.
         #[prost(string, tag = "1")]
-        pub version: std::string::String,
+        pub version: ::prost::alloc::string::String,
         /// Whether `version` will be chosen by the server if a metastore service is
         /// created with a `HiveMetastoreConfig` that omits the `version`.
         #[prost(bool, tag = "2")]

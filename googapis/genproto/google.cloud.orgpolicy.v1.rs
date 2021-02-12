@@ -10,7 +10,7 @@ pub struct Policy {
     ///
     /// Immutable after creation.
     #[prost(string, tag = "2")]
-    pub constraint: std::string::String,
+    pub constraint: ::prost::alloc::string::String,
     /// An opaque tag indicating the current version of the `Policy`, used for
     /// concurrency control.
     ///
@@ -26,14 +26,14 @@ pub struct Policy {
     /// read-modify-write loop for concurrency control. Not setting the `etag`in a
     /// `SetOrgPolicy` request will result in an unconditional write of the
     /// `Policy`.
-    #[prost(bytes, tag = "3")]
-    pub etag: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub etag: ::prost::alloc::vec::Vec<u8>,
     /// The time stamp the `Policy` was previously updated. This is set by the
     /// server, not specified by the caller, and represents the last time a call to
     /// `SetOrgPolicy` was made for that `Policy`. Any value set by the client will
     /// be ignored.
     #[prost(message, optional, tag = "4")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The field to populate is based on the `constraint_type` value in the
     /// `Constraint`.
     ///   `list_constraint` => `list_policy`
@@ -47,8 +47,9 @@ pub struct Policy {
     /// Attempting to set a `Policy` with a `policy_type` not set will result in an
     /// `invalid_argument` error.
     #[prost(oneof = "policy::PolicyType", tags = "5, 6, 7")]
-    pub policy_type: ::std::option::Option<policy::PolicyType>,
+    pub policy_type: ::core::option::Option<policy::PolicyType>,
 }
+/// Nested message and enum types in `Policy`.
 pub mod policy {
     /// Used in `policy_type` to specify how `list_policy` behaves at this
     /// resource.
@@ -76,11 +77,11 @@ pub mod policy {
         /// List of values allowed  at this resource. Can only be set if `all_values`
         /// is set to `ALL_VALUES_UNSPECIFIED`.
         #[prost(string, repeated, tag = "1")]
-        pub allowed_values: ::std::vec::Vec<std::string::String>,
+        pub allowed_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// List of values denied at this resource. Can only be set if `all_values`
         /// is set to `ALL_VALUES_UNSPECIFIED`.
         #[prost(string, repeated, tag = "2")]
-        pub denied_values: ::std::vec::Vec<std::string::String>,
+        pub denied_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The policy all_values state.
         #[prost(enumeration = "list_policy::AllValues", tag = "3")]
         pub all_values: i32,
@@ -89,7 +90,7 @@ pub mod policy {
         /// is not set, it will inherit the value specified higher in the hierarchy,
         /// unless `inherit_from_parent` is `false`.
         #[prost(string, tag = "4")]
-        pub suggested_value: std::string::String,
+        pub suggested_value: ::prost::alloc::string::String,
         /// Determines the inheritance behavior for this `Policy`.
         ///
         /// By default, a `ListPolicy` set at a resource supercedes any `Policy` set
@@ -190,6 +191,7 @@ pub mod policy {
         #[prost(bool, tag = "5")]
         pub inherit_from_parent: bool,
     }
+    /// Nested message and enum types in `ListPolicy`.
     pub mod list_policy {
         /// This enum can be used to set `Policies` that apply to all possible
         /// configuration values rather than specific values in `allowed_values` or
@@ -200,7 +202,9 @@ pub mod policy {
         /// set to either `ALLOW` or `DENY,  `allowed_values` and `denied_values`
         /// must be unset. Setting this to `ALL_VALUES_UNSPECIFIED` allows for
         /// setting `allowed_values` and `denied_values`.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum AllValues {
             /// Indicates that allowed_values or denied_values must be set.

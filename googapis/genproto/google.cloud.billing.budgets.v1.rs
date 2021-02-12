@@ -9,47 +9,49 @@ pub struct Budget {
     /// The resource name implies the scope of a budget. Values are of the form
     /// `billingAccounts/{billingAccountId}/budgets/{budgetId}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// User data for display name in UI. The name must be less than or equal to 60
     /// characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. Filters that define which resources are used to compute
     /// the actual spend against the budget.
     #[prost(message, optional, tag = "3")]
-    pub budget_filter: ::std::option::Option<Filter>,
+    pub budget_filter: ::core::option::Option<Filter>,
     /// Required. Budgeted amount.
     #[prost(message, optional, tag = "4")]
-    pub amount: ::std::option::Option<BudgetAmount>,
+    pub amount: ::core::option::Option<BudgetAmount>,
     /// Optional. Rules that trigger alerts (notifications of thresholds
     /// being crossed) when spend exceeds the specified percentages of the budget.
     #[prost(message, repeated, tag = "5")]
-    pub threshold_rules: ::std::vec::Vec<ThresholdRule>,
+    pub threshold_rules: ::prost::alloc::vec::Vec<ThresholdRule>,
     /// Optional. Rules to apply to notifications sent based on budget spend and
     /// thresholds.
     #[prost(message, optional, tag = "6")]
-    pub notifications_rule: ::std::option::Option<NotificationsRule>,
+    pub notifications_rule: ::core::option::Option<NotificationsRule>,
     /// Optional. Etag to validate that the object is unchanged for a
     /// read-modify-write operation.
     /// An empty etag will cause an update to overwrite other changes.
     #[prost(string, tag = "7")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
 }
 /// The budgeted amount for each usage period.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetAmount {
     /// Specification for what amount to use as the budget.
     #[prost(oneof = "budget_amount::BudgetAmount", tags = "1, 2")]
-    pub budget_amount: ::std::option::Option<budget_amount::BudgetAmount>,
+    pub budget_amount: ::core::option::Option<budget_amount::BudgetAmount>,
 }
+/// Nested message and enum types in `BudgetAmount`.
 pub mod budget_amount {
     /// Specification for what amount to use as the budget.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BudgetAmount {
         /// A specified amount to use as the budget.
-        /// `currency_code` is optional. If specified, it must match the
-        /// currency of the billing account. The `currency_code` is provided on
-        /// output.
+        /// `currency_code` is optional. If specified when creating a budget, it must
+        /// match the currency of the billing account. If specified when updating a
+        /// budget, it must match the currency_code of the existing budget.
+        /// The `currency_code` is provided on output.
         #[prost(message, tag = "1")]
         SpecifiedAmount(super::super::super::super::super::r#type::Money),
         /// Use the last period's actual spend as the budget for the present period.
@@ -83,6 +85,7 @@ pub struct ThresholdRule {
     #[prost(enumeration = "threshold_rule::Basis", tag = "2")]
     pub spend_basis: i32,
 }
+/// Nested message and enum types in `ThresholdRule`.
 pub mod threshold_rule {
     /// The type of basis used to determine if spend has passed the threshold.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -113,12 +116,15 @@ pub struct NotificationsRule {
     /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
     /// for more details on Pub/Sub roles and permissions.
     #[prost(string, tag = "1")]
-    pub pubsub_topic: std::string::String,
-    /// Optional. The schema version of the notification sent to `pubsub_topic`.
+    pub pubsub_topic: ::prost::alloc::string::String,
+    /// Optional. Required when
+    /// [NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic]
+    /// is set. The schema version of the notification sent to
+    /// [NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic].
     /// Only "1.0" is accepted. It represents the JSON schema as defined in
-    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format
+    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.
     #[prost(string, tag = "2")]
-    pub schema_version: std::string::String,
+    pub schema_version: ::prost::alloc::string::String,
     /// Optional. Targets to send notifications to when a threshold is exceeded.
     /// This is in addition to default recipients who have billing account IAM
     /// roles. The value is the full REST resource name of a monitoring
@@ -128,7 +134,7 @@ pub struct NotificationsRule {
     /// https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients
     /// for more details.
     #[prost(string, repeated, tag = "3")]
-    pub monitoring_notification_channels: ::std::vec::Vec<std::string::String>,
+    pub monitoring_notification_channels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. When set to true, disables default notifications sent when a
     /// threshold is exceeded. Default notifications are sent to those with Billing
     /// Account Administrator and Billing Account User IAM roles for the target
@@ -145,7 +151,7 @@ pub struct Filter {
     /// the billing account, regardless of which project the usage occurred on.
     /// Only zero or one project can be specified currently.
     #[prost(string, repeated, tag = "1")]
-    pub projects: ::std::vec::Vec<std::string::String>,
+    pub projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If
     /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1.Filter.credit_types_treatment]
     /// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
@@ -158,7 +164,7 @@ pub struct Filter {
     /// of acceptable credit type
     /// values](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
     #[prost(string, repeated, tag = "7")]
-    pub credit_types: ::std::vec::Vec<std::string::String>,
+    pub credit_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If not set, default behavior is `INCLUDE_ALL_CREDITS`.
     #[prost(enumeration = "filter::CreditTypesTreatment", tag = "4")]
     pub credit_types_treatment: i32,
@@ -169,7 +175,7 @@ pub struct Filter {
     /// The service names are available through the Catalog API:
     /// https://cloud.google.com/billing/v1/how-tos/catalog-api.
     #[prost(string, repeated, tag = "3")]
-    pub services: ::std::vec::Vec<std::string::String>,
+    pub services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
     /// specifying that usage from only this set of subaccounts should be included
     /// in the budget. If a subaccount is set to the name of the parent account,
@@ -177,14 +183,16 @@ pub struct Filter {
     /// the report will include usage from the parent account and all subaccounts,
     /// if they exist.
     #[prost(string, repeated, tag = "5")]
-    pub subaccounts: ::std::vec::Vec<std::string::String>,
+    pub subaccounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A single label and value pair specifying that usage from only
     /// this set of labeled resources should be included in the budget. Currently,
     /// multiple entries or multiple values per entry are not allowed. If omitted,
     /// the report will include all labeled and unlabeled usage.
     #[prost(map = "string, message", tag = "6")]
-    pub labels: ::std::collections::HashMap<std::string::String, ::prost_types::ListValue>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::ListValue>,
 }
+/// Nested message and enum types in `Filter`.
 pub mod filter {
     /// Specifies how credits should be treated when determining spend for
     /// threshold calculations.
@@ -210,10 +218,10 @@ pub struct CreateBudgetRequest {
     /// Required. The name of the billing account to create the budget in. Values
     /// are of the form `billingAccounts/{billingAccountId}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Budget to create.
     #[prost(message, optional, tag = "2")]
-    pub budget: ::std::option::Option<Budget>,
+    pub budget: ::core::option::Option<Budget>,
 }
 /// Request for UpdateBudget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -221,7 +229,7 @@ pub struct UpdateBudgetRequest {
     /// Required. The updated budget object.
     /// The budget to update is specified by the budget name in the budget.
     #[prost(message, optional, tag = "1")]
-    pub budget: ::std::option::Option<Budget>,
+    pub budget: ::core::option::Option<Budget>,
     /// Optional. Indicates which fields in the provided budget to update.
     /// Read-only fields (such as `name`) cannot be changed. If this is not
     /// provided, then only fields with non-default values from the request are
@@ -229,7 +237,7 @@ pub struct UpdateBudgetRequest {
     /// https://developers.google.com/protocol-buffers/docs/proto3#default for more
     /// details about default values.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for GetBudget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -237,7 +245,7 @@ pub struct GetBudgetRequest {
     /// Required. Name of budget to get. Values are of the form
     /// `billingAccounts/{billingAccountId}/budgets/{budgetId}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request for ListBudgets
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -245,7 +253,7 @@ pub struct ListBudgetsRequest {
     /// Required. Name of billing account to list budgets under. Values
     /// are of the form `billingAccounts/{billingAccountId}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of budgets to return per page.
     /// The default and maximum value are 100.
     #[prost(int32, tag = "2")]
@@ -254,18 +262,18 @@ pub struct ListBudgetsRequest {
     /// indicates that this is a continuation of a prior `ListBudgets` call,
     /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response for ListBudgets
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBudgetsResponse {
     /// List of the budgets owned by the requested billing account.
     #[prost(message, repeated, tag = "1")]
-    pub budgets: ::std::vec::Vec<Budget>,
+    pub budgets: ::prost::alloc::vec::Vec<Budget>,
     /// If not empty, indicates that there may be more budgets that match the
     /// request; this value should be passed in a new `ListBudgetsRequest`.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for DeleteBudget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -273,7 +281,7 @@ pub struct DeleteBudgetRequest {
     /// Required. Name of the budget to delete. Values are of the form
     /// `billingAccounts/{billingAccountId}/budgets/{budgetId}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod budget_service_client {

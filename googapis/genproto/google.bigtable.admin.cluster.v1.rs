@@ -5,14 +5,15 @@ pub struct Zone {
     /// A permanent unique identifier for the zone.
     /// Values are of the form projects/<project>/zones/[a-z][-a-z0-9]*
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The name of this zone as it appears in UIs.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The current state of this zone.
     #[prost(enumeration = "zone::Status", tag = "3")]
     pub status: i32,
 }
+/// Nested message and enum types in `Zone`.
 pub mod zone {
     /// Possible states of a zone.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -36,18 +37,18 @@ pub struct Cluster {
     /// Values are of the form
     /// projects/<project>/zones/<zone>/clusters/[a-z][-a-z0-9]*
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The operation currently running on the cluster, if any.
     /// This cannot be set directly, only through CreateCluster, UpdateCluster,
     /// or UndeleteCluster. Calls to these methods will be rejected if
     /// "current_operation" is already set.
     #[prost(message, optional, tag = "3")]
     pub current_operation:
-        ::std::option::Option<super::super::super::super::longrunning::Operation>,
+        ::core::option::Option<super::super::super::super::longrunning::Operation>,
     /// The descriptive name for this cluster as it appears in UIs.
     /// Must be unique per zone.
     #[prost(string, tag = "4")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// The number of serve nodes allocated to this cluster.
     #[prost(int32, tag = "5")]
     pub serve_nodes: i32,
@@ -74,14 +75,14 @@ pub struct ListZonesRequest {
     /// requested.
     /// Values are of the form projects/<project>
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for BigtableClusterService.ListZones.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZonesResponse {
     /// The list of requested zones.
     #[prost(message, repeated, tag = "1")]
-    pub zones: ::std::vec::Vec<Zone>,
+    pub zones: ::prost::alloc::vec::Vec<Zone>,
 }
 /// Request message for BigtableClusterService.GetCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -89,7 +90,7 @@ pub struct GetClusterRequest {
     /// The unique name of the requested cluster.
     /// Values are of the form projects/<project>/zones/<zone>/clusters/<cluster>
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableClusterService.ListClusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -97,17 +98,17 @@ pub struct ListClustersRequest {
     /// The unique name of the project for which a list of clusters is requested.
     /// Values are of the form projects/<project>
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for BigtableClusterService.ListClusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// The list of requested Clusters.
     #[prost(message, repeated, tag = "1")]
-    pub clusters: ::std::vec::Vec<Cluster>,
+    pub clusters: ::prost::alloc::vec::Vec<Cluster>,
     /// The zones for which clusters could not be retrieved.
     #[prost(message, repeated, tag = "2")]
-    pub failed_zones: ::std::vec::Vec<Zone>,
+    pub failed_zones: ::prost::alloc::vec::Vec<Zone>,
 }
 /// Request message for BigtableClusterService.CreateCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -115,17 +116,17 @@ pub struct CreateClusterRequest {
     /// The unique name of the zone in which to create the cluster.
     /// Values are of the form projects/<project>/zones/<zone>
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The id to be used when referring to the new cluster within its zone,
     /// e.g. just the "test-cluster" section of the full name
     /// "projects/<project>/zones/<zone>/clusters/test-cluster".
     #[prost(string, tag = "2")]
-    pub cluster_id: std::string::String,
+    pub cluster_id: ::prost::alloc::string::String,
     /// The cluster to create.
     /// The "name", "delete_time", and "current_operation" fields must be left
     /// blank.
     #[prost(message, optional, tag = "3")]
-    pub cluster: ::std::option::Option<Cluster>,
+    pub cluster: ::core::option::Option<Cluster>,
 }
 /// Metadata type for the operation returned by
 /// BigtableClusterService.CreateCluster.
@@ -133,13 +134,13 @@ pub struct CreateClusterRequest {
 pub struct CreateClusterMetadata {
     /// The request which prompted the creation of this operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<CreateClusterRequest>,
+    pub original_request: ::core::option::Option<CreateClusterRequest>,
     /// The time at which original_request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata type for the operation returned by
 /// BigtableClusterService.UpdateCluster.
@@ -147,18 +148,18 @@ pub struct CreateClusterMetadata {
 pub struct UpdateClusterMetadata {
     /// The request which prompted the creation of this operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<Cluster>,
+    pub original_request: ::core::option::Option<Cluster>,
     /// The time at which original_request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation was cancelled. If set, this operation is
     /// in the process of undoing itself (which is guaranteed to succeed) and
     /// cannot be cancelled again.
     #[prost(message, optional, tag = "3")]
-    pub cancel_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation failed or was completed successfully.
     #[prost(message, optional, tag = "4")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for BigtableClusterService.DeleteCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -166,7 +167,7 @@ pub struct DeleteClusterRequest {
     /// The unique name of the cluster to be deleted.
     /// Values are of the form projects/<project>/zones/<zone>/clusters/<cluster>
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableClusterService.UndeleteCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -174,7 +175,7 @@ pub struct UndeleteClusterRequest {
     /// The unique name of the cluster to be un-deleted.
     /// Values are of the form projects/<project>/zones/<zone>/clusters/<cluster>
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Metadata type for the operation returned by
 /// BigtableClusterService.UndeleteCluster.
@@ -182,10 +183,10 @@ pub struct UndeleteClusterRequest {
 pub struct UndeleteClusterMetadata {
     /// The time at which the original request was received.
     #[prost(message, optional, tag = "1")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which this operation failed or was completed successfully.
     #[prost(message, optional, tag = "2")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata type for operations initiated by the V2 BigtableAdmin service.
 /// More complete information for such operations is available via the V2 API.

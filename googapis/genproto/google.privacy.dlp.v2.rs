@@ -7,7 +7,7 @@ pub struct InfoType {
     /// a built-in type.  When sending Cloud DLP results to Data Catalog, infoType
     /// names should conform to the pattern `[A-Za-z0-9$-_]{1,64}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// A reference to a StoredInfoType to use with scanning.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16,11 +16,11 @@ pub struct StoredType {
     /// `organizations/433245324/storedInfoTypes/432452342` or
     /// `projects/project-id/storedInfoTypes/432452342`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Timestamp indicating when the version of the `StoredInfoType` used for
     /// inspection was created. Output-only field, populated by the system.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Custom information type provided by the user. Used to find domain-specific
 /// sensitive information configurable to the data in question.
@@ -33,7 +33,7 @@ pub struct CustomInfoType {
     /// not specified in `InspectContent.info_types` list then the name is treated
     /// as a custom info type.
     #[prost(message, optional, tag = "1")]
-    pub info_type: ::std::option::Option<InfoType>,
+    pub info_type: ::core::option::Option<InfoType>,
     /// Likelihood to return for this CustomInfoType. This base value can be
     /// altered by a detection rule if the finding meets the criteria specified by
     /// the rule. Defaults to `VERY_LIKELY` if not specified.
@@ -43,14 +43,15 @@ pub struct CustomInfoType {
     /// Rules are applied in order that they are specified. Not supported for the
     /// `surrogate_type` CustomInfoType.
     #[prost(message, repeated, tag = "7")]
-    pub detection_rules: ::std::vec::Vec<custom_info_type::DetectionRule>,
+    pub detection_rules: ::prost::alloc::vec::Vec<custom_info_type::DetectionRule>,
     /// If set to EXCLUSION_TYPE_EXCLUDE this infoType will not cause a finding
     /// to be returned. It still can be used for rules matching.
     #[prost(enumeration = "custom_info_type::ExclusionType", tag = "8")]
     pub exclusion_type: i32,
     #[prost(oneof = "custom_info_type::Type", tags = "2, 3, 4, 5")]
-    pub r#type: ::std::option::Option<custom_info_type::Type>,
+    pub r#type: ::core::option::Option<custom_info_type::Type>,
 }
+/// Nested message and enum types in `CustomInfoType`.
 pub mod custom_info_type {
     /// Custom information type based on a dictionary of words or phrases. This can
     /// be used to match sensitive information specific to the data, such as a list
@@ -78,8 +79,9 @@ pub mod custom_info_type {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Dictionary {
         #[prost(oneof = "dictionary::Source", tags = "1, 3")]
-        pub source: ::std::option::Option<dictionary::Source>,
+        pub source: ::core::option::Option<dictionary::Source>,
     }
+    /// Nested message and enum types in `Dictionary`.
     pub mod dictionary {
         /// Message defining a list of words or phrases to search for in the data.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -88,7 +90,7 @@ pub mod custom_info_type {
             /// at least one phrase and every phrase must contain at least 2 characters
             /// that are letters or digits. [required]
             #[prost(string, repeated, tag = "1")]
-            pub words: ::std::vec::Vec<std::string::String>,
+            pub words: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
@@ -108,11 +110,11 @@ pub mod custom_info_type {
         /// (https://github.com/google/re2/wiki/Syntax) can be found under the
         /// google/re2 repository on GitHub.
         #[prost(string, tag = "1")]
-        pub pattern: std::string::String,
+        pub pattern: ::prost::alloc::string::String,
         /// The index of the submatch to extract as findings. When not
         /// specified, the entire match is returned. No more than 3 may be included.
         #[prost(int32, repeated, tag = "2")]
-        pub group_indexes: ::std::vec::Vec<i32>,
+        pub group_indexes: ::prost::alloc::vec::Vec<i32>,
     }
     /// Message for detecting output from deidentification transformations
     /// such as
@@ -131,8 +133,9 @@ pub mod custom_info_type {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectionRule {
         #[prost(oneof = "detection_rule::Type", tags = "1")]
-        pub r#type: ::std::option::Option<detection_rule::Type>,
+        pub r#type: ::core::option::Option<detection_rule::Type>,
     }
+    /// Nested message and enum types in `DetectionRule`.
     pub mod detection_rule {
         /// Message for specifying a window around a finding to apply a detection
         /// rule.
@@ -150,8 +153,9 @@ pub mod custom_info_type {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct LikelihoodAdjustment {
             #[prost(oneof = "likelihood_adjustment::Adjustment", tags = "1, 2")]
-            pub adjustment: ::std::option::Option<likelihood_adjustment::Adjustment>,
+            pub adjustment: ::core::option::Option<likelihood_adjustment::Adjustment>,
         }
+        /// Nested message and enum types in `LikelihoodAdjustment`.
         pub mod likelihood_adjustment {
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Adjustment {
@@ -176,7 +180,7 @@ pub mod custom_info_type {
         pub struct HotwordRule {
             /// Regular expression pattern defining what qualifies as a hotword.
             #[prost(message, optional, tag = "1")]
-            pub hotword_regex: ::std::option::Option<super::Regex>,
+            pub hotword_regex: ::core::option::Option<super::Regex>,
             /// Proximity of the finding within which the entire hotword must reside.
             /// The total length of the window cannot exceed 1000 characters. Note that
             /// the finding itself will be included in the window, so that hotwords may
@@ -186,10 +190,10 @@ pub mod custom_info_type {
             /// a company office using the hotword regex "\(xxx\)", where "xxx"
             /// is the area code in question.
             #[prost(message, optional, tag = "2")]
-            pub proximity: ::std::option::Option<Proximity>,
+            pub proximity: ::core::option::Option<Proximity>,
             /// Likelihood adjustment to apply to all matching findings.
             #[prost(message, optional, tag = "3")]
-            pub likelihood_adjustment: ::std::option::Option<LikelihoodAdjustment>,
+            pub likelihood_adjustment: ::core::option::Option<LikelihoodAdjustment>,
         }
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
@@ -230,7 +234,7 @@ pub mod custom_info_type {
 pub struct FieldId {
     /// Name describing the field.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Datastore partition ID.
 /// A partition ID identifies a grouping of entities. The grouping is always
@@ -242,17 +246,17 @@ pub struct FieldId {
 pub struct PartitionId {
     /// The ID of the project to which the entities belong.
     #[prost(string, tag = "2")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// If not empty, the ID of the namespace to which the entities belong.
     #[prost(string, tag = "4")]
-    pub namespace_id: std::string::String,
+    pub namespace_id: ::prost::alloc::string::String,
 }
 /// A representation of a Datastore kind.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KindExpression {
     /// The name of the kind.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Options defining a data set within Google Cloud Datastore.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -260,10 +264,10 @@ pub struct DatastoreOptions {
     /// A partition ID identifies a grouping of entities. The grouping is always
     /// by project and namespace, however the namespace ID may be empty.
     #[prost(message, optional, tag = "1")]
-    pub partition_id: ::std::option::Option<PartitionId>,
+    pub partition_id: ::core::option::Option<PartitionId>,
     /// The kind to process.
     #[prost(message, optional, tag = "2")]
-    pub kind: ::std::option::Option<KindExpression>,
+    pub kind: ::core::option::Option<KindExpression>,
 }
 /// Message representing a set of files in a Cloud Storage bucket. Regular
 /// expressions are used to allow fine-grained control over which files in the
@@ -301,7 +305,7 @@ pub struct DatastoreOptions {
 pub struct CloudStorageRegexFileSet {
     /// The name of a Cloud Storage bucket. Required.
     #[prost(string, tag = "1")]
-    pub bucket_name: std::string::String,
+    pub bucket_name: ::prost::alloc::string::String,
     /// A list of regular expressions matching file paths to include. All files in
     /// the bucket that match at least one of these regular expressions will be
     /// included in the set of files, except for those that also match an item in
@@ -312,7 +316,7 @@ pub struct CloudStorageRegexFileSet {
     /// [syntax](https://github.com/google/re2/wiki/Syntax); a guide can be found
     /// under the google/re2 repository on GitHub.
     #[prost(string, repeated, tag = "2")]
-    pub include_regex: ::std::vec::Vec<std::string::String>,
+    pub include_regex: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of regular expressions matching file paths to exclude. All files in
     /// the bucket that match at least one of these regular expressions will be
     /// excluded from the scan.
@@ -321,7 +325,7 @@ pub struct CloudStorageRegexFileSet {
     /// [syntax](https://github.com/google/re2/wiki/Syntax); a guide can be found
     /// under the google/re2 repository on GitHub.
     #[prost(string, repeated, tag = "3")]
-    pub exclude_regex: ::std::vec::Vec<std::string::String>,
+    pub exclude_regex: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Options defining a file or a set of files within a Google Cloud Storage
 /// bucket.
@@ -329,7 +333,7 @@ pub struct CloudStorageRegexFileSet {
 pub struct CloudStorageOptions {
     /// The set of one or more files to scan.
     #[prost(message, optional, tag = "1")]
-    pub file_set: ::std::option::Option<cloud_storage_options::FileSet>,
+    pub file_set: ::core::option::Option<cloud_storage_options::FileSet>,
     /// Max number of bytes to scan from a file. If a scanned file's size is bigger
     /// than this value then the rest of the bytes are omitted. Only one
     /// of bytes_limit_per_file and bytes_limit_per_file_percent can be specified.
@@ -349,7 +353,7 @@ pub struct CloudStorageOptions {
     /// does not support image inspection and no file_types were specified.
     /// Image inspection is restricted to 'global', 'us', 'asia', and 'europe'.
     #[prost(enumeration = "FileType", repeated, tag = "5")]
-    pub file_types: ::std::vec::Vec<i32>,
+    pub file_types: ::prost::alloc::vec::Vec<i32>,
     #[prost(enumeration = "cloud_storage_options::SampleMethod", tag = "6")]
     pub sample_method: i32,
     /// Limits the number of files to scan to this percentage of the input FileSet.
@@ -358,6 +362,7 @@ pub struct CloudStorageOptions {
     #[prost(int32, tag = "7")]
     pub files_limit_percent: i32,
 }
+/// Nested message and enum types in `CloudStorageOptions`.
 pub mod cloud_storage_options {
     /// Set of files to scan.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -373,11 +378,11 @@ pub mod cloud_storage_options {
         ///
         /// Exactly one of `url` or `regex_file_set` must be set.
         #[prost(string, tag = "1")]
-        pub url: std::string::String,
+        pub url: ::prost::alloc::string::String,
         /// The regex-filtered set of files to scan. Exactly one of `url` or
         /// `regex_file_set` must be set.
         #[prost(message, optional, tag = "2")]
-        pub regex_file_set: ::std::option::Option<super::CloudStorageRegexFileSet>,
+        pub regex_file_set: ::core::option::Option<super::CloudStorageRegexFileSet>,
     }
     /// How to sample bytes if not all bytes are scanned. Meaningful only when used
     /// in conjunction with bytes_limit_per_file. If not specified, scanning would
@@ -399,7 +404,7 @@ pub struct CloudStorageFileSet {
     /// The url, in the format `gs://<bucket>/<path>`. Trailing wildcard in the
     /// path is allowed.
     #[prost(string, tag = "1")]
-    pub url: std::string::String,
+    pub url: ::prost::alloc::string::String,
 }
 /// Message representing a single file or path in Cloud Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -407,21 +412,21 @@ pub struct CloudStoragePath {
     /// A url representing a file or path (no wildcards) in Cloud Storage.
     /// Example: gs://[BUCKET_NAME]/dictionary.txt
     #[prost(string, tag = "1")]
-    pub path: std::string::String,
+    pub path: ::prost::alloc::string::String,
 }
 /// Options defining BigQuery table and row identifiers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryOptions {
     /// Complete BigQuery table reference.
     #[prost(message, optional, tag = "1")]
-    pub table_reference: ::std::option::Option<BigQueryTable>,
+    pub table_reference: ::core::option::Option<BigQueryTable>,
     /// Table fields that may uniquely identify a row within the table. When
     /// `actions.saveFindings.outputConfig.table` is specified, the values of
     /// columns specified here are available in the output table under
     /// `location.content_locations.record_location.record_key.id_values`. Nested
     /// fields such as `person.birthdate.year` are allowed.
     #[prost(message, repeated, tag = "2")]
-    pub identifying_fields: ::std::vec::Vec<FieldId>,
+    pub identifying_fields: ::prost::alloc::vec::Vec<FieldId>,
     /// Max number of rows to scan. If the table has more rows than this value, the
     /// rest of the rows are omitted. If not set, or if set to 0, all rows will be
     /// scanned. Only one of rows_limit and rows_limit_percent can be specified.
@@ -440,8 +445,9 @@ pub struct BigQueryOptions {
     /// References to fields excluded from scanning. This allows you to skip
     /// inspection of entire columns which you know have no findings.
     #[prost(message, repeated, tag = "5")]
-    pub excluded_fields: ::std::vec::Vec<FieldId>,
+    pub excluded_fields: ::prost::alloc::vec::Vec<FieldId>,
 }
+/// Nested message and enum types in `BigQueryOptions`.
 pub mod big_query_options {
     /// How to sample rows if not all rows are scanned. Meaningful only when used
     /// in conjunction with either rows_limit or rows_limit_percent. If not
@@ -462,10 +468,11 @@ pub mod big_query_options {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageConfig {
     #[prost(message, optional, tag = "6")]
-    pub timespan_config: ::std::option::Option<storage_config::TimespanConfig>,
+    pub timespan_config: ::core::option::Option<storage_config::TimespanConfig>,
     #[prost(oneof = "storage_config::Type", tags = "2, 3, 4, 9")]
-    pub r#type: ::std::option::Option<storage_config::Type>,
+    pub r#type: ::core::option::Option<storage_config::Type>,
 }
+/// Nested message and enum types in `StorageConfig`.
 pub mod storage_config {
     /// Configuration of the timespan of the items to include in scanning.
     /// Currently only supported when inspecting Google Cloud Storage and BigQuery.
@@ -474,11 +481,11 @@ pub mod storage_config {
         /// Exclude files, tables, or rows older than this value.
         /// If not set, no lower time limit is applied.
         #[prost(message, optional, tag = "1")]
-        pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Exclude files, tables, or rows newer than this value.
         /// If not set, no upper time limit is applied.
         #[prost(message, optional, tag = "2")]
-        pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+        pub end_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Specification of the field containing the timestamp of scanned items.
         /// Used for data sources like Datastore and BigQuery.
         ///
@@ -497,7 +504,7 @@ pub mod storage_config {
         /// property or contains empty or invalid values, then it is included.
         /// Valid data types of the provided timestamp property are: `TIMESTAMP`.
         #[prost(message, optional, tag = "3")]
-        pub timestamp_field: ::std::option::Option<super::FieldId>,
+        pub timestamp_field: ::core::option::Option<super::FieldId>,
         /// When the job is started by a JobTrigger we will automatically figure out
         /// a valid start_time to avoid scanning files that have not been modified
         /// since the last time the JobTrigger executed. This will be based on the
@@ -531,7 +538,7 @@ pub struct HybridOptions {
     /// A short description of where the data is coming from. Will be stored once
     /// in the job. 256 max length.
     #[prost(string, tag = "1")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// These are labels that each inspection request must include within their
     /// 'finding_labels' map. Request may contain others, but any missing one of
     /// these will be rejected.
@@ -541,7 +548,7 @@ pub struct HybridOptions {
     ///
     /// No more than 10 keys can be required.
     #[prost(string, repeated, tag = "2")]
-    pub required_finding_label_keys: ::std::vec::Vec<std::string::String>,
+    pub required_finding_label_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// To organize findings, these labels will be added to each finding.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
@@ -556,18 +563,19 @@ pub struct HybridOptions {
     /// * `"environment" : "production"`
     /// * `"pipeline" : "etl"`
     #[prost(map = "string, string", tag = "3")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// If the container is a table, additional information to make findings
     /// meaningful such as the columns that are primary keys.
     #[prost(message, optional, tag = "4")]
-    pub table_options: ::std::option::Option<TableOptions>,
+    pub table_options: ::core::option::Option<TableOptions>,
 }
 /// Row key for identifying a record in BigQuery table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryKey {
     /// Complete BigQuery table reference.
     #[prost(message, optional, tag = "1")]
-    pub table_reference: ::std::option::Option<BigQueryTable>,
+    pub table_reference: ::core::option::Option<BigQueryTable>,
     /// Row number inferred at the time the table was scanned. This value is
     /// nondeterministic, cannot be queried, and may be null for inspection
     /// jobs. To locate findings within a table, specify
@@ -581,7 +589,7 @@ pub struct BigQueryKey {
 pub struct DatastoreKey {
     /// Datastore entity key.
     #[prost(message, optional, tag = "1")]
-    pub entity_key: ::std::option::Option<Key>,
+    pub entity_key: ::core::option::Option<Key>,
 }
 /// A unique identifier for a Datastore entity.
 /// If a key's partition ID or any of its path kinds or names are
@@ -593,7 +601,7 @@ pub struct Key {
     /// ID and namespace ID.
     /// Queries are scoped to a single partition.
     #[prost(message, optional, tag = "1")]
-    pub partition_id: ::std::option::Option<PartitionId>,
+    pub partition_id: ::core::option::Option<PartitionId>,
     /// The entity path.
     /// An entity path consists of one or more elements composed of a kind and a
     /// string or numerical identifier, which identify entities. The first
@@ -604,8 +612,9 @@ pub struct Key {
     ///
     /// A path can never be empty, and a path can have at most 100 elements.
     #[prost(message, repeated, tag = "2")]
-    pub path: ::std::vec::Vec<key::PathElement>,
+    pub path: ::prost::alloc::vec::Vec<key::PathElement>,
 }
+/// Nested message and enum types in `Key`.
 pub mod key {
     /// A (kind, ID/name) pair used to construct a key path.
     ///
@@ -618,11 +627,12 @@ pub mod key {
         /// A kind must not contain more than 1500 bytes when UTF-8 encoded.
         /// Cannot be `""`.
         #[prost(string, tag = "1")]
-        pub kind: std::string::String,
+        pub kind: ::prost::alloc::string::String,
         /// The type of ID.
         #[prost(oneof = "path_element::IdType", tags = "2, 3")]
-        pub id_type: ::std::option::Option<path_element::IdType>,
+        pub id_type: ::core::option::Option<path_element::IdType>,
     }
+    /// Nested message and enum types in `PathElement`.
     pub mod path_element {
         /// The type of ID.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -637,7 +647,7 @@ pub mod key {
             /// A name must not be more than 1500 bytes when UTF-8 encoded.
             /// Cannot be `""`.
             #[prost(string, tag = "3")]
-            Name(std::string::String),
+            Name(::prost::alloc::string::String),
         }
     }
 }
@@ -647,10 +657,11 @@ pub struct RecordKey {
     /// Values of identifying columns in the given row. Order of values matches
     /// the order of `identifying_fields` specified in the scanning request.
     #[prost(string, repeated, tag = "5")]
-    pub id_values: ::std::vec::Vec<std::string::String>,
+    pub id_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     #[prost(oneof = "record_key::Type", tags = "2, 3")]
-    pub r#type: ::std::option::Option<record_key::Type>,
+    pub r#type: ::core::option::Option<record_key::Type>,
 }
+/// Nested message and enum types in `RecordKey`.
 pub mod record_key {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
@@ -670,23 +681,23 @@ pub struct BigQueryTable {
     /// The Google Cloud Platform project ID of the project containing the table.
     /// If omitted, project ID is inferred from the API call.
     #[prost(string, tag = "1")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// Dataset ID of the table.
     #[prost(string, tag = "2")]
-    pub dataset_id: std::string::String,
+    pub dataset_id: ::prost::alloc::string::String,
     /// Name of the table.
     #[prost(string, tag = "3")]
-    pub table_id: std::string::String,
+    pub table_id: ::prost::alloc::string::String,
 }
 /// Message defining a field of a BigQuery table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryField {
     /// Source table of the field.
     #[prost(message, optional, tag = "1")]
-    pub table: ::std::option::Option<BigQueryTable>,
+    pub table: ::core::option::Option<BigQueryTable>,
     /// Designated field in the BigQuery table.
     #[prost(message, optional, tag = "2")]
-    pub field: ::std::option::Option<FieldId>,
+    pub field: ::core::option::Option<FieldId>,
 }
 /// An entity in a dataset is a field or set of fields that correspond to a
 /// single person. For example, in medical records the `EntityId` might be a
@@ -697,7 +708,7 @@ pub struct BigQueryField {
 pub struct EntityId {
     /// Composite key indicating which field contains the entity identifier.
     #[prost(message, optional, tag = "1")]
-    pub field: ::std::option::Option<FieldId>,
+    pub field: ::core::option::Option<FieldId>,
 }
 /// Instructions regarding the table content being inspected.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -707,7 +718,7 @@ pub struct TableOptions {
     /// each finding so that the finding can be traced to the specific row it came
     /// from. No more than 3 may be provided.
     #[prost(message, repeated, tag = "1")]
-    pub identifying_fields: ::std::vec::Vec<FieldId>,
+    pub identifying_fields: ::prost::alloc::vec::Vec<FieldId>,
 }
 /// Categorization of results based on how likely they are to represent a match,
 /// based on the number of elements they contain which imply a match.
@@ -780,7 +791,7 @@ pub struct ExcludeInfoTypes {
     /// That leads to "555-222-2222@example.org" to generate only a single
     /// finding, namely email address.
     #[prost(message, repeated, tag = "1")]
-    pub info_types: ::std::vec::Vec<InfoType>,
+    pub info_types: ::prost::alloc::vec::Vec<InfoType>,
 }
 /// The rule that specifies conditions when findings of infoTypes specified in
 /// `InspectionRuleSet` are removed from results.
@@ -791,8 +802,9 @@ pub struct ExclusionRule {
     pub matching_type: i32,
     /// Exclusion rule types.
     #[prost(oneof = "exclusion_rule::Type", tags = "1, 2, 3")]
-    pub r#type: ::std::option::Option<exclusion_rule::Type>,
+    pub r#type: ::core::option::Option<exclusion_rule::Type>,
 }
+/// Nested message and enum types in `ExclusionRule`.
 pub mod exclusion_rule {
     /// Exclusion rule types.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -814,8 +826,9 @@ pub mod exclusion_rule {
 pub struct InspectionRule {
     /// Inspection rule types.
     #[prost(oneof = "inspection_rule::Type", tags = "1, 2")]
-    pub r#type: ::std::option::Option<inspection_rule::Type>,
+    pub r#type: ::core::option::Option<inspection_rule::Type>,
 }
+/// Nested message and enum types in `InspectionRule`.
 pub mod inspection_rule {
     /// Inspection rule types.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -834,10 +847,10 @@ pub mod inspection_rule {
 pub struct InspectionRuleSet {
     /// List of infoTypes this rule set is applied to.
     #[prost(message, repeated, tag = "1")]
-    pub info_types: ::std::vec::Vec<InfoType>,
+    pub info_types: ::prost::alloc::vec::Vec<InfoType>,
     /// Set of rules to be applied to infoTypes. The rules are applied in order.
     #[prost(message, repeated, tag = "2")]
-    pub rules: ::std::vec::Vec<InspectionRule>,
+    pub rules: ::prost::alloc::vec::Vec<InspectionRule>,
 }
 /// Configuration description of the scanning process.
 /// When used with redactContent only info_types and min_likelihood are currently
@@ -856,7 +869,7 @@ pub struct InspectConfig {
     /// run you should specify specific InfoTypes listed in the reference,
     /// otherwise a default list will be used, which may change over time.
     #[prost(message, repeated, tag = "1")]
-    pub info_types: ::std::vec::Vec<InfoType>,
+    pub info_types: ::prost::alloc::vec::Vec<InfoType>,
     /// Only returns findings equal or above this threshold. The default is
     /// POSSIBLE.
     /// See https://cloud.google.com/dlp/docs/likelihood to learn more.
@@ -864,7 +877,7 @@ pub struct InspectConfig {
     pub min_likelihood: i32,
     /// Configuration to control the number of findings returned.
     #[prost(message, optional, tag = "3")]
-    pub limits: ::std::option::Option<inspect_config::FindingLimits>,
+    pub limits: ::core::option::Option<inspect_config::FindingLimits>,
     /// When true, a contextual quote from the data that triggered a finding is
     /// included in the response; see Finding.quote.
     #[prost(bool, tag = "4")]
@@ -875,17 +888,18 @@ pub struct InspectConfig {
     /// CustomInfoTypes provided by the user. See
     /// https://cloud.google.com/dlp/docs/creating-custom-infotypes to learn more.
     #[prost(message, repeated, tag = "6")]
-    pub custom_info_types: ::std::vec::Vec<CustomInfoType>,
+    pub custom_info_types: ::prost::alloc::vec::Vec<CustomInfoType>,
     /// List of options defining data content to scan.
     /// If empty, text, images, and other content will be included.
     #[prost(enumeration = "ContentOption", repeated, tag = "8")]
-    pub content_options: ::std::vec::Vec<i32>,
+    pub content_options: ::prost::alloc::vec::Vec<i32>,
     /// Set of rules to apply to the findings for this InspectConfig.
     /// Exclusion rules, contained in the set are executed in the end, other
     /// rules are executed in the order they are specified for each info type.
     #[prost(message, repeated, tag = "10")]
-    pub rule_set: ::std::vec::Vec<InspectionRuleSet>,
+    pub rule_set: ::prost::alloc::vec::Vec<InspectionRuleSet>,
 }
+/// Nested message and enum types in `InspectConfig`.
 pub mod inspect_config {
     /// Configuration to control the number of findings returned.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -903,8 +917,9 @@ pub mod inspect_config {
         pub max_findings_per_request: i32,
         /// Configuration of findings limit given for specified infoTypes.
         #[prost(message, repeated, tag = "3")]
-        pub max_findings_per_info_type: ::std::vec::Vec<finding_limits::InfoTypeLimit>,
+        pub max_findings_per_info_type: ::prost::alloc::vec::Vec<finding_limits::InfoTypeLimit>,
     }
+    /// Nested message and enum types in `FindingLimits`.
     pub mod finding_limits {
         /// Max findings configuration per infoType, per content item or long
         /// running DlpJob.
@@ -915,7 +930,7 @@ pub mod inspect_config {
             /// info_type, the DLP API applies the limit against all info_types that
             /// are found but not specified in another InfoTypeLimit.
             #[prost(message, optional, tag = "1")]
-            pub info_type: ::std::option::Option<super::super::InfoType>,
+            pub info_type: ::core::option::Option<super::super::InfoType>,
             /// Max findings limit for the given infoType.
             #[prost(int32, tag = "2")]
             pub max_findings: i32,
@@ -929,9 +944,10 @@ pub struct ByteContentItem {
     #[prost(enumeration = "byte_content_item::BytesType", tag = "1")]
     pub r#type: i32,
     /// Content data to inspect or redact.
-    #[prost(bytes, tag = "2")]
-    pub data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
 }
+/// Nested message and enum types in `ByteContentItem`.
 pub mod byte_content_item {
     /// The type of data being sent for inspection.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -968,15 +984,16 @@ pub mod byte_content_item {
 pub struct ContentItem {
     /// Data of the item either in the byte array or UTF-8 string form, or table.
     #[prost(oneof = "content_item::DataItem", tags = "3, 4, 5")]
-    pub data_item: ::std::option::Option<content_item::DataItem>,
+    pub data_item: ::core::option::Option<content_item::DataItem>,
 }
+/// Nested message and enum types in `ContentItem`.
 pub mod content_item {
     /// Data of the item either in the byte array or UTF-8 string form, or table.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataItem {
         /// String data to inspect or redact.
         #[prost(string, tag = "3")]
-        Value(std::string::String),
+        Value(::prost::alloc::string::String),
         /// Structured content for inspection. See
         /// https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table to
         /// learn more.
@@ -994,18 +1011,19 @@ pub mod content_item {
 pub struct Table {
     /// Headers of the table.
     #[prost(message, repeated, tag = "1")]
-    pub headers: ::std::vec::Vec<FieldId>,
+    pub headers: ::prost::alloc::vec::Vec<FieldId>,
     /// Rows of the table.
     #[prost(message, repeated, tag = "2")]
-    pub rows: ::std::vec::Vec<table::Row>,
+    pub rows: ::prost::alloc::vec::Vec<table::Row>,
 }
+/// Nested message and enum types in `Table`.
 pub mod table {
     /// Values of the row.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Row {
         /// Individual cells.
         #[prost(message, repeated, tag = "1")]
-        pub values: ::std::vec::Vec<super::Value>,
+        pub values: ::prost::alloc::vec::Vec<super::Value>,
     }
 }
 /// All the findings for a single scanned item.
@@ -1013,7 +1031,7 @@ pub mod table {
 pub struct InspectResult {
     /// List of findings for an item.
     #[prost(message, repeated, tag = "1")]
-    pub findings: ::std::vec::Vec<Finding>,
+    pub findings: ::prost::alloc::vec::Vec<Finding>,
     /// If true, then this item might have more findings than were returned,
     /// and the findings returned are an arbitrary subset of all findings.
     /// The findings list might be truncated because the input items were too
@@ -1030,38 +1048,38 @@ pub struct Finding {
     /// projects/{project}/locations/{location}/findings/{finding} Populated only
     /// when viewing persisted findings.
     #[prost(string, tag = "14")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The content that was found. Even if the content is not textual, it
     /// may be converted to a textual representation here.
     /// Provided if `include_quote` is true and the finding is
     /// less than or equal to 4096 bytes long. If the finding exceeds 4096 bytes
     /// in length, the quote may be omitted.
     #[prost(string, tag = "1")]
-    pub quote: std::string::String,
+    pub quote: ::prost::alloc::string::String,
     /// The type of content that might have been found.
     /// Provided if `excluded_types` is false.
     #[prost(message, optional, tag = "2")]
-    pub info_type: ::std::option::Option<InfoType>,
+    pub info_type: ::core::option::Option<InfoType>,
     /// Confidence of how likely it is that the `info_type` is correct.
     #[prost(enumeration = "Likelihood", tag = "3")]
     pub likelihood: i32,
     /// Where the content was found.
     #[prost(message, optional, tag = "4")]
-    pub location: ::std::option::Option<Location>,
+    pub location: ::core::option::Option<Location>,
     /// Timestamp when finding was detected.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Contains data parsed from quotes. Only populated if include_quote was set
     /// to true and a supported infoType was requested. Currently supported
     /// infoTypes: DATE, DATE_OF_BIRTH and TIME.
     #[prost(message, optional, tag = "7")]
-    pub quote_info: ::std::option::Option<QuoteInfo>,
+    pub quote_info: ::core::option::Option<QuoteInfo>,
     /// The job that stored the finding.
     #[prost(string, tag = "8")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// Job trigger name, if applicable, for this finding.
     #[prost(string, tag = "9")]
-    pub trigger_name: std::string::String,
+    pub trigger_name: ::prost::alloc::string::String,
     /// The labels associated with this `Finding`.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
@@ -1076,13 +1094,14 @@ pub struct Finding {
     /// * `"environment" : "production"`
     /// * `"pipeline" : "etl"`
     #[prost(map = "string, string", tag = "10")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Time the job started that produced this finding.
     #[prost(message, optional, tag = "11")]
-    pub job_create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub job_create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The job that stored the finding.
     #[prost(string, tag = "13")]
-    pub job_name: std::string::String,
+    pub job_name: ::prost::alloc::string::String,
 }
 /// Specifies the location of the finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1093,19 +1112,19 @@ pub struct Location {
     /// the UTF-8 encoded textual representation of the content.
     /// Omitted if content is an image.
     #[prost(message, optional, tag = "1")]
-    pub byte_range: ::std::option::Option<Range>,
+    pub byte_range: ::core::option::Option<Range>,
     /// Unicode character offsets delimiting the finding.
     /// These are relative to the finding's containing element.
     /// Provided when the content is text.
     #[prost(message, optional, tag = "2")]
-    pub codepoint_range: ::std::option::Option<Range>,
+    pub codepoint_range: ::core::option::Option<Range>,
     /// List of nested objects pointing to the precise location of the finding
     /// within the file or record.
     #[prost(message, repeated, tag = "7")]
-    pub content_locations: ::std::vec::Vec<ContentLocation>,
+    pub content_locations: ::prost::alloc::vec::Vec<ContentLocation>,
     /// Information about the container where this finding occurred, if available.
     #[prost(message, optional, tag = "8")]
-    pub container: ::std::option::Option<Container>,
+    pub container: ::core::option::Option<Container>,
 }
 /// Precise location of the finding within a document, record, image, or metadata
 /// container.
@@ -1122,21 +1141,22 @@ pub struct ContentLocation {
     /// Nested names could be absent if the embedded object has no string
     /// identifier (for an example an image contained within a document).
     #[prost(string, tag = "1")]
-    pub container_name: std::string::String,
+    pub container_name: ::prost::alloc::string::String,
     /// Findings container modification timestamp, if applicable.
     /// For Google Cloud Storage contains last file modification timestamp.
     /// For BigQuery table contains last_modified_time property.
     /// For Datastore - not populated.
     #[prost(message, optional, tag = "6")]
-    pub container_timestamp: ::std::option::Option<::prost_types::Timestamp>,
+    pub container_timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// Findings container version, if available
     /// ("generation" for Google Cloud Storage).
     #[prost(string, tag = "7")]
-    pub container_version: std::string::String,
+    pub container_version: ::prost::alloc::string::String,
     /// Type of the container within the file with location of the finding.
     #[prost(oneof = "content_location::Location", tags = "2, 3, 5, 8")]
-    pub location: ::std::option::Option<content_location::Location>,
+    pub location: ::core::option::Option<content_location::Location>,
 }
+/// Nested message and enum types in `ContentLocation`.
 pub mod content_location {
     /// Type of the container within the file with location of the finding.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1164,8 +1184,9 @@ pub struct MetadataLocation {
     /// Label of the piece of metadata containing the finding, for example -
     /// latitude, author, caption.
     #[prost(oneof = "metadata_location::Label", tags = "3")]
-    pub label: ::std::option::Option<metadata_location::Label>,
+    pub label: ::core::option::Option<metadata_location::Label>,
 }
+/// Nested message and enum types in `MetadataLocation`.
 pub mod metadata_location {
     /// Label of the piece of metadata containing the finding, for example -
     /// latitude, author, caption.
@@ -1180,7 +1201,7 @@ pub mod metadata_location {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageMetadataLabel {
     #[prost(string, tag = "1")]
-    pub key: std::string::String,
+    pub key: ::prost::alloc::string::String,
 }
 /// Location of a finding within a document.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1195,13 +1216,13 @@ pub struct DocumentLocation {
 pub struct RecordLocation {
     /// Key of the finding.
     #[prost(message, optional, tag = "1")]
-    pub record_key: ::std::option::Option<RecordKey>,
+    pub record_key: ::core::option::Option<RecordKey>,
     /// Field id of the field containing the finding.
     #[prost(message, optional, tag = "2")]
-    pub field_id: ::std::option::Option<FieldId>,
+    pub field_id: ::core::option::Option<FieldId>,
     /// Location within a `ContentItem.Table`.
     #[prost(message, optional, tag = "3")]
-    pub table_location: ::std::option::Option<TableLocation>,
+    pub table_location: ::core::option::Option<TableLocation>,
 }
 /// Location of a finding within a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1221,17 +1242,17 @@ pub struct TableLocation {
 pub struct Container {
     /// Container type, for example BigQuery or Google Cloud Storage.
     #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// Project where the finding was found.
     /// Can be different from the project that owns the finding.
     #[prost(string, tag = "2")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// A string representation of the full container name.
     /// Examples:
     /// - BigQuery: 'Project:DataSetId.TableId'
     /// - Google Cloud Storage: 'gs://Bucket/folders/filename.txt'
     #[prost(string, tag = "3")]
-    pub full_path: std::string::String,
+    pub full_path: ::prost::alloc::string::String,
     /// The root of the container.
     /// Examples:
     /// - For BigQuery table `project_id:dataset_id.table_id`, the root is
@@ -1239,7 +1260,7 @@ pub struct Container {
     /// - For Google Cloud Storage file `gs://bucket/folder/filename.txt`, the root
     ///  is `gs://bucket`
     #[prost(string, tag = "4")]
-    pub root_path: std::string::String,
+    pub root_path: ::prost::alloc::string::String,
     /// The rest of the path after the root.
     /// Examples:
     /// - For BigQuery table `project_id:dataset_id.table_id`, the relative path is
@@ -1247,17 +1268,17 @@ pub struct Container {
     /// - Google Cloud Storage file `gs://bucket/folder/filename.txt`, the relative
     ///  path is `folder/filename.txt`
     #[prost(string, tag = "5")]
-    pub relative_path: std::string::String,
+    pub relative_path: ::prost::alloc::string::String,
     /// Findings container modification timestamp, if applicable.
     /// For Google Cloud Storage contains last file modification timestamp.
     /// For BigQuery table contains last_modified_time property.
     /// For Datastore - not populated.
     #[prost(message, optional, tag = "6")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Findings container version, if available
     /// ("generation" for Google Cloud Storage).
     #[prost(string, tag = "7")]
-    pub version: std::string::String,
+    pub version: ::prost::alloc::string::String,
 }
 /// Generic half-open interval [start, end)
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1274,7 +1295,7 @@ pub struct Range {
 pub struct ImageLocation {
     /// Bounding boxes locating the pixels within the image containing the finding.
     #[prost(message, repeated, tag = "1")]
-    pub bounding_boxes: ::std::vec::Vec<BoundingBox>,
+    pub bounding_boxes: ::prost::alloc::vec::Vec<BoundingBox>,
 }
 /// Bounding box encompassing detected text within an image.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1313,24 +1334,26 @@ pub struct RedactImageRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "8")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
     /// Configuration for the inspector.
     #[prost(message, optional, tag = "2")]
-    pub inspect_config: ::std::option::Option<InspectConfig>,
+    pub inspect_config: ::core::option::Option<InspectConfig>,
     /// The configuration for specifying what content to redact from images.
     #[prost(message, repeated, tag = "5")]
-    pub image_redaction_configs: ::std::vec::Vec<redact_image_request::ImageRedactionConfig>,
+    pub image_redaction_configs:
+        ::prost::alloc::vec::Vec<redact_image_request::ImageRedactionConfig>,
     /// Whether the response should include findings along with the redacted
     /// image.
     #[prost(bool, tag = "6")]
     pub include_findings: bool,
     /// The content must be PNG, JPEG, SVG or BMP.
     #[prost(message, optional, tag = "7")]
-    pub byte_item: ::std::option::Option<ByteContentItem>,
+    pub byte_item: ::core::option::Option<ByteContentItem>,
 }
+/// Nested message and enum types in `RedactImageRequest`.
 pub mod redact_image_request {
     /// Configuration for determining how redaction of images should occur.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1338,11 +1361,12 @@ pub mod redact_image_request {
         /// The color to use when redacting content from an image. If not specified,
         /// the default is black.
         #[prost(message, optional, tag = "3")]
-        pub redaction_color: ::std::option::Option<super::Color>,
+        pub redaction_color: ::core::option::Option<super::Color>,
         /// Type of information to redact from images.
         #[prost(oneof = "image_redaction_config::Target", tags = "1, 2")]
-        pub target: ::std::option::Option<image_redaction_config::Target>,
+        pub target: ::core::option::Option<image_redaction_config::Target>,
     }
+    /// Nested message and enum types in `ImageRedactionConfig`.
     pub mod image_redaction_config {
         /// Type of information to redact from images.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1377,16 +1401,16 @@ pub struct Color {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactImageResponse {
     /// The redacted image. The type will be the same as the original image.
-    #[prost(bytes, tag = "1")]
-    pub redacted_image: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub redacted_image: ::prost::alloc::vec::Vec<u8>,
     /// If an image was being inspected and the InspectConfig's include_quote was
     /// set to true, then this field will include all text, if any, that was found
     /// in the image.
     #[prost(string, tag = "2")]
-    pub extracted_text: std::string::String,
+    pub extracted_text: ::prost::alloc::string::String,
     /// The findings. Populated when include_findings in the request is true.
     #[prost(message, optional, tag = "3")]
-    pub inspect_result: ::std::option::Option<InspectResult>,
+    pub inspect_result: ::core::option::Option<InspectResult>,
 }
 /// Request to de-identify a list of items.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1408,47 +1432,47 @@ pub struct DeidentifyContentRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Configuration for the de-identification of the content item.
     /// Items specified here will override the template referenced by the
     /// deidentify_template_name argument.
     #[prost(message, optional, tag = "2")]
-    pub deidentify_config: ::std::option::Option<DeidentifyConfig>,
+    pub deidentify_config: ::core::option::Option<DeidentifyConfig>,
     /// Configuration for the inspector.
     /// Items specified here will override the template referenced by the
     /// inspect_template_name argument.
     #[prost(message, optional, tag = "3")]
-    pub inspect_config: ::std::option::Option<InspectConfig>,
+    pub inspect_config: ::core::option::Option<InspectConfig>,
     /// The item to de-identify. Will be treated as text.
     #[prost(message, optional, tag = "4")]
-    pub item: ::std::option::Option<ContentItem>,
+    pub item: ::core::option::Option<ContentItem>,
     /// Template to use. Any configuration directly specified in
     /// inspect_config will override those set in the template. Singular fields
     /// that are set in this request will replace their corresponding fields in the
     /// template. Repeated fields are appended. Singular sub-messages and groups
     /// are recursively merged.
     #[prost(string, tag = "5")]
-    pub inspect_template_name: std::string::String,
+    pub inspect_template_name: ::prost::alloc::string::String,
     /// Template to use. Any configuration directly specified in
     /// deidentify_config will override those set in the template. Singular fields
     /// that are set in this request will replace their corresponding fields in the
     /// template. Repeated fields are appended. Singular sub-messages and groups
     /// are recursively merged.
     #[prost(string, tag = "6")]
-    pub deidentify_template_name: std::string::String,
+    pub deidentify_template_name: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Results of de-identifying a ContentItem.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyContentResponse {
     /// The de-identified item.
     #[prost(message, optional, tag = "1")]
-    pub item: ::std::option::Option<ContentItem>,
+    pub item: ::core::option::Option<ContentItem>,
     /// An overview of the changes that were made on the `item`.
     #[prost(message, optional, tag = "2")]
-    pub overview: ::std::option::Option<TransformationOverview>,
+    pub overview: ::core::option::Option<TransformationOverview>,
 }
 /// Request to re-identify an item.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1470,7 +1494,7 @@ pub struct ReidentifyContentRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Configuration for the re-identification of the content item.
     /// This field shares the same proto message type that is used for
     /// de-identification, however its usage here is for the reversal of the
@@ -1482,20 +1506,20 @@ pub struct ReidentifyContentRequest {
     ///  - `CryptoDeterministicConfig`
     ///  - `CryptoReplaceFfxFpeConfig`
     #[prost(message, optional, tag = "2")]
-    pub reidentify_config: ::std::option::Option<DeidentifyConfig>,
+    pub reidentify_config: ::core::option::Option<DeidentifyConfig>,
     /// Configuration for the inspector.
     #[prost(message, optional, tag = "3")]
-    pub inspect_config: ::std::option::Option<InspectConfig>,
+    pub inspect_config: ::core::option::Option<InspectConfig>,
     /// The item to re-identify. Will be treated as text.
     #[prost(message, optional, tag = "4")]
-    pub item: ::std::option::Option<ContentItem>,
+    pub item: ::core::option::Option<ContentItem>,
     /// Template to use. Any configuration directly specified in
     /// `inspect_config` will override those set in the template. Singular fields
     /// that are set in this request will replace their corresponding fields in the
     /// template. Repeated fields are appended. Singular sub-messages and groups
     /// are recursively merged.
     #[prost(string, tag = "5")]
-    pub inspect_template_name: std::string::String,
+    pub inspect_template_name: ::prost::alloc::string::String,
     /// Template to use. References an instance of `DeidentifyTemplate`.
     /// Any configuration directly specified in `reidentify_config` or
     /// `inspect_config` will override those set in the template. The
@@ -1504,20 +1528,20 @@ pub struct ReidentifyContentRequest {
     /// corresponding fields in the template. Repeated fields are appended.
     /// Singular sub-messages and groups are recursively merged.
     #[prost(string, tag = "6")]
-    pub reidentify_template_name: std::string::String,
+    pub reidentify_template_name: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Results of re-identifying a item.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReidentifyContentResponse {
     /// The re-identified item.
     #[prost(message, optional, tag = "1")]
-    pub item: ::std::option::Option<ContentItem>,
+    pub item: ::core::option::Option<ContentItem>,
     /// An overview of the changes that were made to the `item`.
     #[prost(message, optional, tag = "2")]
-    pub overview: ::std::option::Option<TransformationOverview>,
+    pub overview: ::core::option::Option<TransformationOverview>,
 }
 /// Request to search for potentially sensitive info in a ContentItem.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1539,31 +1563,31 @@ pub struct InspectContentRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Configuration for the inspector. What specified here will override
     /// the template referenced by the inspect_template_name argument.
     #[prost(message, optional, tag = "2")]
-    pub inspect_config: ::std::option::Option<InspectConfig>,
+    pub inspect_config: ::core::option::Option<InspectConfig>,
     /// The item to inspect.
     #[prost(message, optional, tag = "3")]
-    pub item: ::std::option::Option<ContentItem>,
+    pub item: ::core::option::Option<ContentItem>,
     /// Template to use. Any configuration directly specified in
     /// inspect_config will override those set in the template. Singular fields
     /// that are set in this request will replace their corresponding fields in the
     /// template. Repeated fields are appended. Singular sub-messages and groups
     /// are recursively merged.
     #[prost(string, tag = "4")]
-    pub inspect_template_name: std::string::String,
+    pub inspect_template_name: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Results of inspecting an item.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectContentResponse {
     /// The findings.
     #[prost(message, optional, tag = "1")]
-    pub result: ::std::option::Option<InspectResult>,
+    pub result: ::core::option::Option<InspectResult>,
 }
 /// Cloud repository for storing output.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1582,8 +1606,9 @@ pub struct OutputStorageConfig {
     pub output_schema: i32,
     /// Output storage types.
     #[prost(oneof = "output_storage_config::Type", tags = "1")]
-    pub r#type: ::std::option::Option<output_storage_config::Type>,
+    pub r#type: ::core::option::Option<output_storage_config::Type>,
 }
+/// Nested message and enum types in `OutputStorageConfig`.
 pub mod output_storage_config {
     /// Predefined schemas for storing findings.
     /// Only for use with external storage.
@@ -1630,7 +1655,7 @@ pub mod output_storage_config {
 pub struct InfoTypeStats {
     /// The type of finding this stat is for.
     #[prost(message, optional, tag = "1")]
-    pub info_type: ::std::option::Option<InfoType>,
+    pub info_type: ::core::option::Option<InfoType>,
     /// Number of findings for this infoType.
     #[prost(int64, tag = "2")]
     pub count: i64,
@@ -1640,11 +1665,12 @@ pub struct InfoTypeStats {
 pub struct InspectDataSourceDetails {
     /// The configuration used for this job.
     #[prost(message, optional, tag = "2")]
-    pub requested_options: ::std::option::Option<inspect_data_source_details::RequestedOptions>,
+    pub requested_options: ::core::option::Option<inspect_data_source_details::RequestedOptions>,
     /// A summary of the outcome of this inspect job.
     #[prost(message, optional, tag = "3")]
-    pub result: ::std::option::Option<inspect_data_source_details::Result>,
+    pub result: ::core::option::Option<inspect_data_source_details::Result>,
 }
+/// Nested message and enum types in `InspectDataSourceDetails`.
 pub mod inspect_data_source_details {
     /// Snapshot of the inspection configuration.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1652,10 +1678,10 @@ pub mod inspect_data_source_details {
         /// If run with an InspectTemplate, a snapshot of its state at the time of
         /// this run.
         #[prost(message, optional, tag = "1")]
-        pub snapshot_inspect_template: ::std::option::Option<super::InspectTemplate>,
+        pub snapshot_inspect_template: ::core::option::Option<super::InspectTemplate>,
         /// Inspect config.
         #[prost(message, optional, tag = "3")]
-        pub job_config: ::std::option::Option<super::InspectJobConfig>,
+        pub job_config: ::core::option::Option<super::InspectJobConfig>,
     }
     /// All result fields mentioned below are updated while the job is processing.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1669,13 +1695,13 @@ pub mod inspect_data_source_details {
         /// Statistics of how many instances of each info type were found during
         /// inspect job.
         #[prost(message, repeated, tag = "3")]
-        pub info_type_stats: ::std::vec::Vec<super::InfoTypeStats>,
+        pub info_type_stats: ::prost::alloc::vec::Vec<super::InfoTypeStats>,
         /// Statistics related to the processing of hybrid inspect.
         /// Early access feature is in a pre-release state and might change or have
         /// limited support. For more information, see
         /// https://cloud.google.com/products#product-launch-stages.
         #[prost(message, optional, tag = "7")]
-        pub hybrid_stats: ::std::option::Option<super::HybridInspectStatistics>,
+        pub hybrid_stats: ::core::option::Option<super::HybridInspectStatistics>,
     }
 }
 /// Statistics related to processing hybrid inspect requests.
@@ -1701,17 +1727,17 @@ pub struct HybridInspectStatistics {
 pub struct InfoTypeDescription {
     /// Internal name of the infoType.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Human readable form of the infoType name.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Which parts of the API supports this InfoType.
     #[prost(enumeration = "InfoTypeSupportedBy", repeated, tag = "3")]
-    pub supported_by: ::std::vec::Vec<i32>,
+    pub supported_by: ::prost::alloc::vec::Vec<i32>,
     /// Description of the infotype. Translated when language is provided in the
     /// request.
     #[prost(string, tag = "4")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 /// Request for the list of infoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1722,26 +1748,26 @@ pub struct ListInfoTypesRequest {
     ///
     ///     locations/<var>LOCATION_ID</var>
     #[prost(string, tag = "4")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// BCP-47 language code for localized infoType friendly
     /// names. If omitted, or if localized strings are not available,
     /// en-US strings will be returned.
     #[prost(string, tag = "1")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// filter to only return infoTypes supported by certain parts of the
     /// API. Defaults to supported_by=INSPECT.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "3")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Response to the ListInfoTypes request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInfoTypesResponse {
     /// Set of sensitive infoTypes.
     #[prost(message, repeated, tag = "1")]
-    pub info_types: ::std::vec::Vec<InfoTypeDescription>,
+    pub info_types: ::prost::alloc::vec::Vec<InfoTypeDescription>,
 }
 /// Configuration for a risk analysis job. See
 /// https://cloud.google.com/dlp/docs/concepts-risk-analysis to learn more.
@@ -1749,27 +1775,28 @@ pub struct ListInfoTypesResponse {
 pub struct RiskAnalysisJobConfig {
     /// Privacy metric to compute.
     #[prost(message, optional, tag = "1")]
-    pub privacy_metric: ::std::option::Option<PrivacyMetric>,
+    pub privacy_metric: ::core::option::Option<PrivacyMetric>,
     /// Input dataset to compute metrics over.
     #[prost(message, optional, tag = "2")]
-    pub source_table: ::std::option::Option<BigQueryTable>,
+    pub source_table: ::core::option::Option<BigQueryTable>,
     /// Actions to execute at the completion of the job. Are executed in the order
     /// provided.
     #[prost(message, repeated, tag = "3")]
-    pub actions: ::std::vec::Vec<Action>,
+    pub actions: ::prost::alloc::vec::Vec<Action>,
 }
 /// A column with a semantic tag attached.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuasiId {
     /// Required. Identifies the column.
     #[prost(message, optional, tag = "1")]
-    pub field: ::std::option::Option<FieldId>,
+    pub field: ::core::option::Option<FieldId>,
     /// Semantic tag that identifies what a column contains, to determine which
     /// statistical model to use to estimate the reidentifiability of each
     /// value. [required]
     #[prost(oneof = "quasi_id::Tag", tags = "2, 3, 4")]
-    pub tag: ::std::option::Option<quasi_id::Tag>,
+    pub tag: ::core::option::Option<quasi_id::Tag>,
 }
+/// Nested message and enum types in `QuasiId`.
 pub mod quasi_id {
     /// Semantic tag that identifies what a column contains, to determine which
     /// statistical model to use to estimate the reidentifiability of each
@@ -1787,7 +1814,7 @@ pub mod quasi_id {
         /// indicate an auxiliary table that contains statistical information on
         /// the possible values of this column (below).
         #[prost(string, tag = "3")]
-        CustomTag(std::string::String),
+        CustomTag(::prost::alloc::string::String),
         /// If no semantic tag is indicated, we infer the statistical model from
         /// the distribution of values in the input data
         #[prost(message, tag = "4")]
@@ -1805,15 +1832,16 @@ pub mod quasi_id {
 pub struct StatisticalTable {
     /// Required. Auxiliary table location.
     #[prost(message, optional, tag = "3")]
-    pub table: ::std::option::Option<BigQueryTable>,
+    pub table: ::core::option::Option<BigQueryTable>,
     /// Required. Quasi-identifier columns.
     #[prost(message, repeated, tag = "1")]
-    pub quasi_ids: ::std::vec::Vec<statistical_table::QuasiIdentifierField>,
+    pub quasi_ids: ::prost::alloc::vec::Vec<statistical_table::QuasiIdentifierField>,
     /// Required. The relative frequency column must contain a floating-point number
     /// between 0 and 1 (inclusive). Null values are assumed to be zero.
     #[prost(message, optional, tag = "2")]
-    pub relative_frequency: ::std::option::Option<FieldId>,
+    pub relative_frequency: ::core::option::Option<FieldId>,
 }
+/// Nested message and enum types in `StatisticalTable`.
 pub mod statistical_table {
     /// A quasi-identifier column has a custom_tag, used to know which column
     /// in the data corresponds to which column in the statistical model.
@@ -1821,12 +1849,12 @@ pub mod statistical_table {
     pub struct QuasiIdentifierField {
         /// Identifies the column.
         #[prost(message, optional, tag = "1")]
-        pub field: ::std::option::Option<super::FieldId>,
+        pub field: ::core::option::Option<super::FieldId>,
         /// A column can be tagged with a custom tag. In this case, the user must
         /// indicate an auxiliary table that contains statistical information on
         /// the possible values of this column (below).
         #[prost(string, tag = "2")]
-        pub custom_tag: std::string::String,
+        pub custom_tag: ::prost::alloc::string::String,
     }
 }
 /// Privacy metric to compute for reidentification risk analysis.
@@ -1834,8 +1862,9 @@ pub mod statistical_table {
 pub struct PrivacyMetric {
     /// Types of analysis.
     #[prost(oneof = "privacy_metric::Type", tags = "1, 2, 3, 4, 5, 6")]
-    pub r#type: ::std::option::Option<privacy_metric::Type>,
+    pub r#type: ::core::option::Option<privacy_metric::Type>,
 }
+/// Nested message and enum types in `PrivacyMetric`.
 pub mod privacy_metric {
     /// Compute numerical stats over an individual column, including
     /// min, max, and quantiles.
@@ -1844,7 +1873,7 @@ pub mod privacy_metric {
         /// Field to compute numerical stats on. Supported types are
         /// integer, float, date, datetime, timestamp, time.
         #[prost(message, optional, tag = "1")]
-        pub field: ::std::option::Option<super::FieldId>,
+        pub field: ::core::option::Option<super::FieldId>,
     }
     /// Compute numerical stats over an individual column, including
     /// number of distinct values and value count distribution.
@@ -1855,7 +1884,7 @@ pub mod privacy_metric {
         /// informative to use NumericalStats when the field type is supported,
         /// depending on the data.
         #[prost(message, optional, tag = "1")]
-        pub field: ::std::option::Option<super::FieldId>,
+        pub field: ::core::option::Option<super::FieldId>,
     }
     /// k-anonymity metric, used for analysis of reidentification risk.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1866,7 +1895,7 @@ pub mod privacy_metric {
         /// supported so long as they are not structs themselves or nested within
         /// a repeated field.
         #[prost(message, repeated, tag = "1")]
-        pub quasi_ids: ::std::vec::Vec<super::FieldId>,
+        pub quasi_ids: ::prost::alloc::vec::Vec<super::FieldId>,
         /// Message indicating that multiple rows might be associated to a
         /// single individual. If the same entity_id is associated to multiple
         /// quasi-identifier tuples over distinct rows, we consider the entire
@@ -1878,7 +1907,7 @@ pub mod privacy_metric {
         /// entity ID. If more rows are associated with the same entity ID, some
         /// might be ignored.
         #[prost(message, optional, tag = "2")]
-        pub entity_id: ::std::option::Option<super::EntityId>,
+        pub entity_id: ::core::option::Option<super::EntityId>,
     }
     /// l-diversity metric, used for analysis of reidentification risk.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1887,10 +1916,10 @@ pub mod privacy_metric {
         /// defined for the l-diversity computation. When multiple fields are
         /// specified, they are considered a single composite key.
         #[prost(message, repeated, tag = "1")]
-        pub quasi_ids: ::std::vec::Vec<super::FieldId>,
+        pub quasi_ids: ::prost::alloc::vec::Vec<super::FieldId>,
         /// Sensitive field for computing the l-value.
         #[prost(message, optional, tag = "2")]
-        pub sensitive_attribute: ::std::option::Option<super::FieldId>,
+        pub sensitive_attribute: ::core::option::Option<super::FieldId>,
     }
     /// Reidentifiability metric. This corresponds to a risk model similar to what
     /// is called "journalist risk" in the literature, except the attack dataset is
@@ -1903,31 +1932,33 @@ pub mod privacy_metric {
         /// Required. Fields considered to be quasi-identifiers. No two columns can have the
         /// same tag.
         #[prost(message, repeated, tag = "1")]
-        pub quasi_ids: ::std::vec::Vec<k_map_estimation_config::TaggedField>,
+        pub quasi_ids: ::prost::alloc::vec::Vec<k_map_estimation_config::TaggedField>,
         /// ISO 3166-1 alpha-2 region code to use in the statistical modeling.
         /// Set if no column is tagged with a region-specific InfoType (like
         /// US_ZIP_5) or a region code.
         #[prost(string, tag = "2")]
-        pub region_code: std::string::String,
+        pub region_code: ::prost::alloc::string::String,
         /// Several auxiliary tables can be used in the analysis. Each custom_tag
         /// used to tag a quasi-identifiers column must appear in exactly one column
         /// of one auxiliary table.
         #[prost(message, repeated, tag = "3")]
-        pub auxiliary_tables: ::std::vec::Vec<k_map_estimation_config::AuxiliaryTable>,
+        pub auxiliary_tables: ::prost::alloc::vec::Vec<k_map_estimation_config::AuxiliaryTable>,
     }
+    /// Nested message and enum types in `KMapEstimationConfig`.
     pub mod k_map_estimation_config {
         /// A column with a semantic tag attached.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TaggedField {
             /// Required. Identifies the column.
             #[prost(message, optional, tag = "1")]
-            pub field: ::std::option::Option<super::super::FieldId>,
+            pub field: ::core::option::Option<super::super::FieldId>,
             /// Semantic tag that identifies what a column contains, to determine which
             /// statistical model to use to estimate the reidentifiability of each
             /// value. [required]
             #[prost(oneof = "tagged_field::Tag", tags = "2, 3, 4")]
-            pub tag: ::std::option::Option<tagged_field::Tag>,
+            pub tag: ::core::option::Option<tagged_field::Tag>,
         }
+        /// Nested message and enum types in `TaggedField`.
         pub mod tagged_field {
             /// Semantic tag that identifies what a column contains, to determine which
             /// statistical model to use to estimate the reidentifiability of each
@@ -1945,7 +1976,7 @@ pub mod privacy_metric {
                 /// indicate an auxiliary table that contains statistical information on
                 /// the possible values of this column (below).
                 #[prost(string, tag = "3")]
-                CustomTag(std::string::String),
+                CustomTag(::prost::alloc::string::String),
                 /// If no semantic tag is indicated, we infer the statistical model from
                 /// the distribution of values in the input data
                 #[prost(message, tag = "4")]
@@ -1963,15 +1994,16 @@ pub mod privacy_metric {
         pub struct AuxiliaryTable {
             /// Required. Auxiliary table location.
             #[prost(message, optional, tag = "3")]
-            pub table: ::std::option::Option<super::super::BigQueryTable>,
+            pub table: ::core::option::Option<super::super::BigQueryTable>,
             /// Required. Quasi-identifier columns.
             #[prost(message, repeated, tag = "1")]
-            pub quasi_ids: ::std::vec::Vec<auxiliary_table::QuasiIdField>,
+            pub quasi_ids: ::prost::alloc::vec::Vec<auxiliary_table::QuasiIdField>,
             /// Required. The relative frequency column must contain a floating-point number
             /// between 0 and 1 (inclusive). Null values are assumed to be zero.
             #[prost(message, optional, tag = "2")]
-            pub relative_frequency: ::std::option::Option<super::super::FieldId>,
+            pub relative_frequency: ::core::option::Option<super::super::FieldId>,
         }
+        /// Nested message and enum types in `AuxiliaryTable`.
         pub mod auxiliary_table {
             /// A quasi-identifier column has a custom_tag, used to know which column
             /// in the data corresponds to which column in the statistical model.
@@ -1979,10 +2011,10 @@ pub mod privacy_metric {
             pub struct QuasiIdField {
                 /// Identifies the column.
                 #[prost(message, optional, tag = "1")]
-                pub field: ::std::option::Option<super::super::super::FieldId>,
+                pub field: ::core::option::Option<super::super::super::FieldId>,
                 /// A auxiliary field.
                 #[prost(string, tag = "2")]
-                pub custom_tag: std::string::String,
+                pub custom_tag: ::prost::alloc::string::String,
             }
         }
     }
@@ -1995,17 +2027,17 @@ pub mod privacy_metric {
         /// Required. Fields considered to be quasi-identifiers. No two fields can have the
         /// same tag.
         #[prost(message, repeated, tag = "1")]
-        pub quasi_ids: ::std::vec::Vec<super::QuasiId>,
+        pub quasi_ids: ::prost::alloc::vec::Vec<super::QuasiId>,
         /// ISO 3166-1 alpha-2 region code to use in the statistical modeling.
         /// Set if no column is tagged with a region-specific InfoType (like
         /// US_ZIP_5) or a region code.
         #[prost(string, tag = "2")]
-        pub region_code: std::string::String,
+        pub region_code: ::prost::alloc::string::String,
         /// Several auxiliary tables can be used in the analysis. Each custom_tag
         /// used to tag a quasi-identifiers field must appear in exactly one
         /// field of one auxiliary table.
         #[prost(message, repeated, tag = "3")]
-        pub auxiliary_tables: ::std::vec::Vec<super::StatisticalTable>,
+        pub auxiliary_tables: ::prost::alloc::vec::Vec<super::StatisticalTable>,
     }
     /// Types of analysis.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2035,35 +2067,36 @@ pub mod privacy_metric {
 pub struct AnalyzeDataSourceRiskDetails {
     /// Privacy metric to compute.
     #[prost(message, optional, tag = "1")]
-    pub requested_privacy_metric: ::std::option::Option<PrivacyMetric>,
+    pub requested_privacy_metric: ::core::option::Option<PrivacyMetric>,
     /// Input dataset to compute metrics over.
     #[prost(message, optional, tag = "2")]
-    pub requested_source_table: ::std::option::Option<BigQueryTable>,
+    pub requested_source_table: ::core::option::Option<BigQueryTable>,
     /// The configuration used for this job.
     #[prost(message, optional, tag = "10")]
     pub requested_options:
-        ::std::option::Option<analyze_data_source_risk_details::RequestedRiskAnalysisOptions>,
+        ::core::option::Option<analyze_data_source_risk_details::RequestedRiskAnalysisOptions>,
     /// Values associated with this metric.
     #[prost(
         oneof = "analyze_data_source_risk_details::Result",
         tags = "3, 4, 5, 6, 7, 9"
     )]
-    pub result: ::std::option::Option<analyze_data_source_risk_details::Result>,
+    pub result: ::core::option::Option<analyze_data_source_risk_details::Result>,
 }
+/// Nested message and enum types in `AnalyzeDataSourceRiskDetails`.
 pub mod analyze_data_source_risk_details {
     /// Result of the numerical stats computation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericalStatsResult {
         /// Minimum value appearing in the column.
         #[prost(message, optional, tag = "1")]
-        pub min_value: ::std::option::Option<super::Value>,
+        pub min_value: ::core::option::Option<super::Value>,
         /// Maximum value appearing in the column.
         #[prost(message, optional, tag = "2")]
-        pub max_value: ::std::option::Option<super::Value>,
+        pub max_value: ::core::option::Option<super::Value>,
         /// List of 99 values that partition the set of field values into 100 equal
         /// sized buckets.
         #[prost(message, repeated, tag = "4")]
-        pub quantile_values: ::std::vec::Vec<super::Value>,
+        pub quantile_values: ::prost::alloc::vec::Vec<super::Value>,
     }
     /// Result of the categorical stats computation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2071,8 +2104,9 @@ pub mod analyze_data_source_risk_details {
         /// Histogram of value frequencies in the column.
         #[prost(message, repeated, tag = "5")]
         pub value_frequency_histogram_buckets:
-            ::std::vec::Vec<categorical_stats_result::CategoricalStatsHistogramBucket>,
+            ::prost::alloc::vec::Vec<categorical_stats_result::CategoricalStatsHistogramBucket>,
     }
+    /// Nested message and enum types in `CategoricalStatsResult`.
     pub mod categorical_stats_result {
         /// Histogram of value frequencies in the column.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2089,7 +2123,7 @@ pub mod analyze_data_source_risk_details {
             /// Sample of value frequencies in this bucket. The total number of
             /// values returned per bucket is capped at 20.
             #[prost(message, repeated, tag = "4")]
-            pub bucket_values: ::std::vec::Vec<super::super::ValueFrequency>,
+            pub bucket_values: ::prost::alloc::vec::Vec<super::super::ValueFrequency>,
             /// Total number of distinct values in this bucket.
             #[prost(int64, tag = "5")]
             pub bucket_value_count: i64,
@@ -2101,8 +2135,9 @@ pub mod analyze_data_source_risk_details {
         /// Histogram of k-anonymity equivalence classes.
         #[prost(message, repeated, tag = "5")]
         pub equivalence_class_histogram_buckets:
-            ::std::vec::Vec<k_anonymity_result::KAnonymityHistogramBucket>,
+            ::prost::alloc::vec::Vec<k_anonymity_result::KAnonymityHistogramBucket>,
     }
+    /// Nested message and enum types in `KAnonymityResult`.
     pub mod k_anonymity_result {
         /// The set of columns' values that share the same ldiversity value
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2111,7 +2146,7 @@ pub mod analyze_data_source_risk_details {
             /// quasi-identifier column in the original KAnonymity metric message.
             /// The order is always the same as the original request.
             #[prost(message, repeated, tag = "1")]
-            pub quasi_ids_values: ::std::vec::Vec<super::super::Value>,
+            pub quasi_ids_values: ::prost::alloc::vec::Vec<super::super::Value>,
             /// Size of the equivalence class, for example number of rows with the
             /// above set of values.
             #[prost(int64, tag = "2")]
@@ -2132,7 +2167,7 @@ pub mod analyze_data_source_risk_details {
             /// Sample of equivalence classes in this bucket. The total number of
             /// classes returned per bucket is capped at 20.
             #[prost(message, repeated, tag = "4")]
-            pub bucket_values: ::std::vec::Vec<KAnonymityEquivalenceClass>,
+            pub bucket_values: ::prost::alloc::vec::Vec<KAnonymityEquivalenceClass>,
             /// Total number of distinct equivalence classes in this bucket.
             #[prost(int64, tag = "5")]
             pub bucket_value_count: i64,
@@ -2144,8 +2179,9 @@ pub mod analyze_data_source_risk_details {
         /// Histogram of l-diversity equivalence class sensitive value frequencies.
         #[prost(message, repeated, tag = "5")]
         pub sensitive_value_frequency_histogram_buckets:
-            ::std::vec::Vec<l_diversity_result::LDiversityHistogramBucket>,
+            ::prost::alloc::vec::Vec<l_diversity_result::LDiversityHistogramBucket>,
     }
+    /// Nested message and enum types in `LDiversityResult`.
     pub mod l_diversity_result {
         /// The set of columns' values that share the same ldiversity value.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2153,7 +2189,7 @@ pub mod analyze_data_source_risk_details {
             /// Quasi-identifier values defining the k-anonymity equivalence
             /// class. The order is always the same as the original request.
             #[prost(message, repeated, tag = "1")]
-            pub quasi_ids_values: ::std::vec::Vec<super::super::Value>,
+            pub quasi_ids_values: ::prost::alloc::vec::Vec<super::super::Value>,
             /// Size of the k-anonymity equivalence class.
             #[prost(int64, tag = "2")]
             pub equivalence_class_size: i64,
@@ -2162,7 +2198,7 @@ pub mod analyze_data_source_risk_details {
             pub num_distinct_sensitive_values: i64,
             /// Estimated frequencies of top sensitive values.
             #[prost(message, repeated, tag = "4")]
-            pub top_sensitive_values: ::std::vec::Vec<super::super::ValueFrequency>,
+            pub top_sensitive_values: ::prost::alloc::vec::Vec<super::super::ValueFrequency>,
         }
         /// Histogram of l-diversity equivalence class sensitive value frequencies.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2181,7 +2217,7 @@ pub mod analyze_data_source_risk_details {
             /// Sample of equivalence classes in this bucket. The total number of
             /// classes returned per bucket is capped at 20.
             #[prost(message, repeated, tag = "4")]
-            pub bucket_values: ::std::vec::Vec<LDiversityEquivalenceClass>,
+            pub bucket_values: ::prost::alloc::vec::Vec<LDiversityEquivalenceClass>,
             /// Total number of distinct equivalence classes in this bucket.
             #[prost(int64, tag = "5")]
             pub bucket_value_count: i64,
@@ -2201,15 +2237,16 @@ pub mod analyze_data_source_risk_details {
         /// larger than 10.
         #[prost(message, repeated, tag = "1")]
         pub k_map_estimation_histogram:
-            ::std::vec::Vec<k_map_estimation_result::KMapEstimationHistogramBucket>,
+            ::prost::alloc::vec::Vec<k_map_estimation_result::KMapEstimationHistogramBucket>,
     }
+    /// Nested message and enum types in `KMapEstimationResult`.
     pub mod k_map_estimation_result {
         /// A tuple of values for the quasi-identifier columns.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KMapEstimationQuasiIdValues {
             /// The quasi-identifier values.
             #[prost(message, repeated, tag = "1")]
-            pub quasi_ids_values: ::std::vec::Vec<super::super::Value>,
+            pub quasi_ids_values: ::prost::alloc::vec::Vec<super::super::Value>,
             /// The estimated anonymity for these quasi-identifier values.
             #[prost(int64, tag = "2")]
             pub estimated_anonymity: i64,
@@ -2236,7 +2273,7 @@ pub mod analyze_data_source_risk_details {
             /// Sample of quasi-identifier tuple values in this bucket. The total
             /// number of classes returned per bucket is capped at 20.
             #[prost(message, repeated, tag = "6")]
-            pub bucket_values: ::std::vec::Vec<KMapEstimationQuasiIdValues>,
+            pub bucket_values: ::prost::alloc::vec::Vec<KMapEstimationQuasiIdValues>,
             /// Total number of distinct quasi-identifier tuple values in this bucket.
             #[prost(int64, tag = "7")]
             pub bucket_value_count: i64,
@@ -2255,17 +2292,18 @@ pub mod analyze_data_source_risk_details {
         /// mean that there are no record with an estimated probability in [0.1, 0.2)
         /// nor larger or equal to 0.4.
         #[prost(message, repeated, tag = "1")]
-        pub delta_presence_estimation_histogram: ::std::vec::Vec<
+        pub delta_presence_estimation_histogram: ::prost::alloc::vec::Vec<
             delta_presence_estimation_result::DeltaPresenceEstimationHistogramBucket,
         >,
     }
+    /// Nested message and enum types in `DeltaPresenceEstimationResult`.
     pub mod delta_presence_estimation_result {
         /// A tuple of values for the quasi-identifier columns.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DeltaPresenceEstimationQuasiIdValues {
             /// The quasi-identifier values.
             #[prost(message, repeated, tag = "1")]
-            pub quasi_ids_values: ::std::vec::Vec<super::super::Value>,
+            pub quasi_ids_values: ::prost::alloc::vec::Vec<super::super::Value>,
             /// The estimated probability that a given individual sharing these
             /// quasi-identifier values is in the dataset. This value, typically called
             /// δ, is the ratio between the number of records in the dataset with these
@@ -2300,7 +2338,7 @@ pub mod analyze_data_source_risk_details {
             /// Sample of quasi-identifier tuple values in this bucket. The total
             /// number of classes returned per bucket is capped at 20.
             #[prost(message, repeated, tag = "6")]
-            pub bucket_values: ::std::vec::Vec<DeltaPresenceEstimationQuasiIdValues>,
+            pub bucket_values: ::prost::alloc::vec::Vec<DeltaPresenceEstimationQuasiIdValues>,
             /// Total number of distinct quasi-identifier tuple values in this bucket.
             #[prost(int64, tag = "7")]
             pub bucket_value_count: i64,
@@ -2311,7 +2349,7 @@ pub mod analyze_data_source_risk_details {
     pub struct RequestedRiskAnalysisOptions {
         /// The job config for the risk job.
         #[prost(message, optional, tag = "1")]
-        pub job_config: ::std::option::Option<super::RiskAnalysisJobConfig>,
+        pub job_config: ::core::option::Option<super::RiskAnalysisJobConfig>,
     }
     /// Values associated with this metric.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2341,7 +2379,7 @@ pub mod analyze_data_source_risk_details {
 pub struct ValueFrequency {
     /// A value contained in the field in question.
     #[prost(message, optional, tag = "1")]
-    pub value: ::std::option::Option<Value>,
+    pub value: ::core::option::Option<Value>,
     /// How many times the value is contained in the field.
     #[prost(int64, tag = "2")]
     pub count: i64,
@@ -2356,8 +2394,9 @@ pub struct ValueFrequency {
 pub struct Value {
     /// Value types
     #[prost(oneof = "value::Type", tags = "1, 2, 3, 4, 5, 6, 7, 8")]
-    pub r#type: ::std::option::Option<value::Type>,
+    pub r#type: ::core::option::Option<value::Type>,
 }
+/// Nested message and enum types in `Value`.
 pub mod value {
     /// Value types
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2370,7 +2409,7 @@ pub mod value {
         FloatValue(f64),
         /// string
         #[prost(string, tag = "3")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// boolean
         #[prost(bool, tag = "4")]
         BooleanValue(bool),
@@ -2396,8 +2435,9 @@ pub mod value {
 pub struct QuoteInfo {
     /// Object representation of the quote.
     #[prost(oneof = "quote_info::ParsedQuote", tags = "2")]
-    pub parsed_quote: ::std::option::Option<quote_info::ParsedQuote>,
+    pub parsed_quote: ::core::option::Option<quote_info::ParsedQuote>,
 }
+/// Nested message and enum types in `QuoteInfo`.
 pub mod quote_info {
     /// Object representation of the quote.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2414,17 +2454,18 @@ pub struct DateTime {
     /// One or more of the following must be set.
     /// Must be a valid date or time value.
     #[prost(message, optional, tag = "1")]
-    pub date: ::std::option::Option<super::super::super::r#type::Date>,
+    pub date: ::core::option::Option<super::super::super::r#type::Date>,
     /// Day of week
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "2")]
     pub day_of_week: i32,
     /// Time of day
     #[prost(message, optional, tag = "3")]
-    pub time: ::std::option::Option<super::super::super::r#type::TimeOfDay>,
+    pub time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
     /// Time zone
     #[prost(message, optional, tag = "4")]
-    pub time_zone: ::std::option::Option<date_time::TimeZone>,
+    pub time_zone: ::core::option::Option<date_time::TimeZone>,
 }
+/// Nested message and enum types in `DateTime`.
 pub mod date_time {
     /// Time zone of the date time object.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2441,10 +2482,11 @@ pub struct DeidentifyConfig {
     /// Mode for handling transformation errors. If left unspecified, the default
     /// mode is `TransformationErrorHandling.ThrowError`.
     #[prost(message, optional, tag = "3")]
-    pub transformation_error_handling: ::std::option::Option<TransformationErrorHandling>,
+    pub transformation_error_handling: ::core::option::Option<TransformationErrorHandling>,
     #[prost(oneof = "deidentify_config::Transformation", tags = "1, 2")]
-    pub transformation: ::std::option::Option<deidentify_config::Transformation>,
+    pub transformation: ::core::option::Option<deidentify_config::Transformation>,
 }
+/// Nested message and enum types in `DeidentifyConfig`.
 pub mod deidentify_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
@@ -2471,8 +2513,9 @@ pub mod deidentify_config {
 pub struct TransformationErrorHandling {
     /// How transformation errors should be handled.
     #[prost(oneof = "transformation_error_handling::Mode", tags = "1, 2")]
-    pub mode: ::std::option::Option<transformation_error_handling::Mode>,
+    pub mode: ::core::option::Option<transformation_error_handling::Mode>,
 }
+/// Nested message and enum types in `TransformationErrorHandling`.
 pub mod transformation_error_handling {
     /// Throw an error and fail the request when a transformation error occurs.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2501,8 +2544,9 @@ pub struct PrimitiveTransformation {
         oneof = "primitive_transformation::Transformation",
         tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12"
     )]
-    pub transformation: ::std::option::Option<primitive_transformation::Transformation>,
+    pub transformation: ::core::option::Option<primitive_transformation::Transformation>,
 }
+/// Nested message and enum types in `PrimitiveTransformation`.
 pub mod primitive_transformation {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
@@ -2549,6 +2593,7 @@ pub struct TimePartConfig {
     #[prost(enumeration = "time_part_config::TimePart", tag = "1")]
     pub part_to_extract: i32,
 }
+/// Nested message and enum types in `TimePartConfig`.
 pub mod time_part_config {
     /// Components that make up time.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2581,7 +2626,7 @@ pub mod time_part_config {
 pub struct CryptoHashConfig {
     /// The key used by the hash function.
     #[prost(message, optional, tag = "1")]
-    pub crypto_key: ::std::option::Option<CryptoKey>,
+    pub crypto_key: ::core::option::Option<CryptoKey>,
 }
 /// Pseudonymization method that generates deterministic encryption for the given
 /// input. Outputs a base64 encoded representation of the encrypted output.
@@ -2590,7 +2635,7 @@ pub struct CryptoHashConfig {
 pub struct CryptoDeterministicConfig {
     /// The key used by the encryption function.
     #[prost(message, optional, tag = "1")]
-    pub crypto_key: ::std::option::Option<CryptoKey>,
+    pub crypto_key: ::core::option::Option<CryptoKey>,
     /// The custom info type to annotate the surrogate with.
     /// This annotation will be applied to the surrogate by prefixing it with
     /// the name of the custom info type followed by the number of
@@ -2624,7 +2669,7 @@ pub struct CryptoDeterministicConfig {
     /// the symbol with the hex code point 29DD might be used like so:
     /// ⧝MY_TOKEN_TYPE.
     #[prost(message, optional, tag = "2")]
-    pub surrogate_info_type: ::std::option::Option<InfoType>,
+    pub surrogate_info_type: ::core::option::Option<InfoType>,
     /// A context may be used for higher security and maintaining
     /// referential integrity such that the same identifier in two different
     /// contexts will be given a distinct surrogate. The context is appended to
@@ -2644,14 +2689,14 @@ pub struct CryptoDeterministicConfig {
     /// Note that case (1) is expected when an `InfoTypeTransformation` is
     /// applied to both structured and non-structured `ContentItem`s.
     #[prost(message, optional, tag = "3")]
-    pub context: ::std::option::Option<FieldId>,
+    pub context: ::core::option::Option<FieldId>,
 }
 /// Replace each input value with a given `Value`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceValueConfig {
     /// Value to replace it with.
     #[prost(message, optional, tag = "1")]
-    pub new_value: ::std::option::Option<Value>,
+    pub new_value: ::core::option::Option<Value>,
 }
 /// Replace each matching finding with the name of the info_type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2666,8 +2711,9 @@ pub struct RedactConfig {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CharsToIgnore {
     #[prost(oneof = "chars_to_ignore::Characters", tags = "1, 2")]
-    pub characters: ::std::option::Option<chars_to_ignore::Characters>,
+    pub characters: ::core::option::Option<chars_to_ignore::Characters>,
 }
+/// Nested message and enum types in `CharsToIgnore`.
 pub mod chars_to_ignore {
     /// Convenience enum for indication common characters to not transform.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2690,7 +2736,7 @@ pub mod chars_to_ignore {
     pub enum Characters {
         /// Characters to not transform when masking.
         #[prost(string, tag = "1")]
-        CharactersToSkip(std::string::String),
+        CharactersToSkip(::prost::alloc::string::String),
         /// Common characters to not transform when masking. Useful to avoid removing
         /// punctuation.
         #[prost(enumeration = "CommonCharsToIgnore", tag = "2")]
@@ -2710,7 +2756,7 @@ pub struct CharacterMaskConfig {
     /// code or credit card number. This string must have a length of 1. If not
     /// supplied, this value defaults to `*` for strings, and `0` for digits.
     #[prost(string, tag = "1")]
-    pub masking_character: std::string::String,
+    pub masking_character: ::prost::alloc::string::String,
     /// Number of characters to mask. If not set, all matching chars will be
     /// masked. Skipped characters do not count towards this tally.
     #[prost(int32, tag = "2")]
@@ -2727,7 +2773,7 @@ pub struct CharacterMaskConfig {
     /// instruct Cloud DLP to skip `-` and mask 5 characters with `*`, Cloud DLP
     /// returns `***-**5-5555`.
     #[prost(message, repeated, tag = "4")]
-    pub characters_to_ignore: ::std::vec::Vec<CharsToIgnore>,
+    pub characters_to_ignore: ::prost::alloc::vec::Vec<CharsToIgnore>,
 }
 /// Buckets values based on fixed size ranges. The
 /// Bucketing transformation can provide all of this functionality,
@@ -2751,12 +2797,12 @@ pub struct FixedSizeBucketingConfig {
     /// grouped together into a single bucket; for example if `lower_bound` = 10,
     /// then all values less than 10 are replaced with the value "-10".
     #[prost(message, optional, tag = "1")]
-    pub lower_bound: ::std::option::Option<Value>,
+    pub lower_bound: ::core::option::Option<Value>,
     /// Required. Upper bound value of buckets. All values greater than upper_bound are
     /// grouped together into a single bucket; for example if `upper_bound` = 89,
     /// then all values greater than 89 are replaced with the value "89+".
     #[prost(message, optional, tag = "2")]
-    pub upper_bound: ::std::option::Option<Value>,
+    pub upper_bound: ::core::option::Option<Value>,
     /// Required. Size of each bucket (except for minimum and maximum buckets). So if
     /// `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the
     /// following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60,
@@ -2777,8 +2823,9 @@ pub struct FixedSizeBucketingConfig {
 pub struct BucketingConfig {
     /// Set of buckets. Ranges must be non-overlapping.
     #[prost(message, repeated, tag = "1")]
-    pub buckets: ::std::vec::Vec<bucketing_config::Bucket>,
+    pub buckets: ::prost::alloc::vec::Vec<bucketing_config::Bucket>,
 }
+/// Nested message and enum types in `BucketingConfig`.
 pub mod bucketing_config {
     /// Bucket is represented as a range, along with replacement values.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2786,13 +2833,13 @@ pub mod bucketing_config {
         /// Lower bound of the range, inclusive. Type should be the same as max if
         /// used.
         #[prost(message, optional, tag = "1")]
-        pub min: ::std::option::Option<super::Value>,
+        pub min: ::core::option::Option<super::Value>,
         /// Upper bound of the range, exclusive; type must match min.
         #[prost(message, optional, tag = "2")]
-        pub max: ::std::option::Option<super::Value>,
+        pub max: ::core::option::Option<super::Value>,
         /// Required. Replacement value for this bucket.
         #[prost(message, optional, tag = "3")]
-        pub replacement_value: ::std::option::Option<super::Value>,
+        pub replacement_value: ::core::option::Option<super::Value>,
     }
 }
 /// Replaces an identifier with a surrogate using Format Preserving Encryption
@@ -2812,7 +2859,7 @@ pub mod bucketing_config {
 pub struct CryptoReplaceFfxFpeConfig {
     /// Required. The key used by the encryption algorithm.
     #[prost(message, optional, tag = "1")]
-    pub crypto_key: ::std::option::Option<CryptoKey>,
+    pub crypto_key: ::core::option::Option<CryptoKey>,
     /// The 'tweak', a context may be used for higher security since the same
     /// identifier in two different contexts won't be given the same surrogate. If
     /// the context is not set, a default tweak will be used.
@@ -2834,7 +2881,7 @@ pub struct CryptoReplaceFfxFpeConfig {
     /// - a 64 bit integer is encoded followed by a single byte of value 1
     /// - a string is encoded in UTF-8 format followed by a single byte of value 2
     #[prost(message, optional, tag = "2")]
-    pub context: ::std::option::Option<FieldId>,
+    pub context: ::core::option::Option<FieldId>,
     /// The custom infoType to annotate the surrogate with.
     /// This annotation will be applied to the surrogate by prefixing it with
     /// the name of the custom infoType followed by the number of
@@ -2861,11 +2908,12 @@ pub struct CryptoReplaceFfxFpeConfig {
     /// the symbol with the hex code point 29DD might be used like so:
     /// ⧝MY_TOKEN_TYPE
     #[prost(message, optional, tag = "8")]
-    pub surrogate_info_type: ::std::option::Option<InfoType>,
+    pub surrogate_info_type: ::core::option::Option<InfoType>,
     /// Choose an alphabet which the data being transformed will be made up of.
     #[prost(oneof = "crypto_replace_ffx_fpe_config::Alphabet", tags = "4, 5, 6")]
-    pub alphabet: ::std::option::Option<crypto_replace_ffx_fpe_config::Alphabet>,
+    pub alphabet: ::core::option::Option<crypto_replace_ffx_fpe_config::Alphabet>,
 }
+/// Nested message and enum types in `CryptoReplaceFfxFpeConfig`.
 pub mod crypto_replace_ffx_fpe_config {
     /// These are commonly used subsets of the alphabet that the FFX mode
     /// natively supports. In the algorithm, the alphabet is selected using
@@ -2901,7 +2949,7 @@ pub mod crypto_replace_ffx_fpe_config {
         /// <code>0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
         /// ~`!@#$%^&*()_-+={[}]|\:;"'<,>.?/</code>
         #[prost(string, tag = "5")]
-        CustomAlphabet(std::string::String),
+        CustomAlphabet(::prost::alloc::string::String),
         /// The native way to select the alphabet. Must be in the range [2, 95].
         #[prost(int32, tag = "6")]
         Radix(i32),
@@ -2916,8 +2964,9 @@ pub mod crypto_replace_ffx_fpe_config {
 pub struct CryptoKey {
     /// Sources of crypto keys.
     #[prost(oneof = "crypto_key::Source", tags = "1, 2, 3")]
-    pub source: ::std::option::Option<crypto_key::Source>,
+    pub source: ::core::option::Option<crypto_key::Source>,
 }
+/// Nested message and enum types in `CryptoKey`.
 pub mod crypto_key {
     /// Sources of crypto keys.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2944,15 +2993,15 @@ pub struct TransientCryptoKey {
     /// When the data crypto key is generated, this name is not used in any way
     /// (repeating the api call will result in a different key being generated).
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Using raw keys is prone to security risks due to accidentally
 /// leaking the key. Choose another type of key if possible.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnwrappedCryptoKey {
     /// Required. A 128/192/256 bit key.
-    #[prost(bytes, tag = "1")]
-    pub key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub key: ::prost::alloc::vec::Vec<u8>,
 }
 /// Include to use an existing data crypto key wrapped by KMS.
 /// The wrapped key must be a 128/192/256 bit key.
@@ -2962,11 +3011,11 @@ pub struct UnwrappedCryptoKey {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KmsWrappedCryptoKey {
     /// Required. The wrapped data crypto key.
-    #[prost(bytes, tag = "1")]
-    pub wrapped_key: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub wrapped_key: ::prost::alloc::vec::Vec<u8>,
     /// Required. The resource name of the KMS CryptoKey to use for unwrapping.
     #[prost(string, tag = "2")]
-    pub crypto_key_name: std::string::String,
+    pub crypto_key_name: ::prost::alloc::string::String,
 }
 /// Shifts dates by random number of days, with option to be consistent for the
 /// same context. See https://cloud.google.com/dlp/docs/concepts-date-shifting
@@ -2987,12 +3036,13 @@ pub struct DateShiftConfig {
     /// If set, must also set cryptoKey. If set, shift will be consistent for the
     /// given context.
     #[prost(message, optional, tag = "3")]
-    pub context: ::std::option::Option<FieldId>,
+    pub context: ::core::option::Option<FieldId>,
     /// Method for calculating shift that takes context into consideration. If
     /// set, must also set context. Can only be applied to table items.
     #[prost(oneof = "date_shift_config::Method", tags = "4")]
-    pub method: ::std::option::Option<date_shift_config::Method>,
+    pub method: ::core::option::Option<date_shift_config::Method>,
 }
+/// Nested message and enum types in `DateShiftConfig`.
 pub mod date_shift_config {
     /// Method for calculating shift that takes context into consideration. If
     /// set, must also set context. Can only be applied to table items.
@@ -3014,8 +3064,10 @@ pub struct InfoTypeTransformations {
     /// Required. Transformation for each infoType. Cannot specify more than one
     /// for a given infoType.
     #[prost(message, repeated, tag = "1")]
-    pub transformations: ::std::vec::Vec<info_type_transformations::InfoTypeTransformation>,
+    pub transformations:
+        ::prost::alloc::vec::Vec<info_type_transformations::InfoTypeTransformation>,
 }
+/// Nested message and enum types in `InfoTypeTransformations`.
 pub mod info_type_transformations {
     /// A transformation to apply to text that is identified as a specific
     /// info_type.
@@ -3025,10 +3077,10 @@ pub mod info_type_transformations {
         /// this transformation to apply to all findings that correspond to
         /// infoTypes that were requested in `InspectConfig`.
         #[prost(message, repeated, tag = "1")]
-        pub info_types: ::std::vec::Vec<super::InfoType>,
+        pub info_types: ::prost::alloc::vec::Vec<super::InfoType>,
         /// Required. Primitive transformation to apply to the infoType.
         #[prost(message, optional, tag = "2")]
-        pub primitive_transformation: ::std::option::Option<super::PrimitiveTransformation>,
+        pub primitive_transformation: ::core::option::Option<super::PrimitiveTransformation>,
     }
 }
 /// The transformation to apply to the field.
@@ -3036,7 +3088,7 @@ pub mod info_type_transformations {
 pub struct FieldTransformation {
     /// Required. Input field(s) to apply the transformation to.
     #[prost(message, repeated, tag = "1")]
-    pub fields: ::std::vec::Vec<FieldId>,
+    pub fields: ::prost::alloc::vec::Vec<FieldId>,
     /// Only apply the transformation if the condition evaluates to true for the
     /// given `RecordCondition`. The conditions are allowed to reference fields
     /// that are not used in the actual transformation.
@@ -3047,11 +3099,12 @@ pub struct FieldTransformation {
     /// column for the same record is within a specific range.
     /// - Redact a field if the date of birth field is greater than 85.
     #[prost(message, optional, tag = "3")]
-    pub condition: ::std::option::Option<RecordCondition>,
+    pub condition: ::core::option::Option<RecordCondition>,
     /// Transformation to apply. [required]
     #[prost(oneof = "field_transformation::Transformation", tags = "4, 5")]
-    pub transformation: ::std::option::Option<field_transformation::Transformation>,
+    pub transformation: ::core::option::Option<field_transformation::Transformation>,
 }
+/// Nested message and enum types in `FieldTransformation`.
 pub mod field_transformation {
     /// Transformation to apply. [required]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3071,11 +3124,11 @@ pub mod field_transformation {
 pub struct RecordTransformations {
     /// Transform the record by applying various field transformations.
     #[prost(message, repeated, tag = "1")]
-    pub field_transformations: ::std::vec::Vec<FieldTransformation>,
+    pub field_transformations: ::prost::alloc::vec::Vec<FieldTransformation>,
     /// Configuration defining which records get suppressed entirely. Records that
     /// match any suppression rule are omitted from the output.
     #[prost(message, repeated, tag = "2")]
-    pub record_suppressions: ::std::vec::Vec<RecordSuppression>,
+    pub record_suppressions: ::prost::alloc::vec::Vec<RecordSuppression>,
 }
 /// Configuration to suppress records whose suppression conditions evaluate to
 /// true.
@@ -3084,7 +3137,7 @@ pub struct RecordSuppression {
     /// A condition that when it evaluates to true will result in the record being
     /// evaluated to be suppressed from the transformed content.
     #[prost(message, optional, tag = "1")]
-    pub condition: ::std::option::Option<RecordCondition>,
+    pub condition: ::core::option::Option<RecordCondition>,
 }
 /// A condition for determining whether a transformation should be applied to
 /// a field.
@@ -3092,8 +3145,9 @@ pub struct RecordSuppression {
 pub struct RecordCondition {
     /// An expression.
     #[prost(message, optional, tag = "3")]
-    pub expressions: ::std::option::Option<record_condition::Expressions>,
+    pub expressions: ::core::option::Option<record_condition::Expressions>,
 }
+/// Nested message and enum types in `RecordCondition`.
 pub mod record_condition {
     /// The field type of `value` and `field` do not need to match to be
     /// considered equal, but not all comparisons are possible.
@@ -3118,20 +3172,20 @@ pub mod record_condition {
     pub struct Condition {
         /// Required. Field within the record this condition is evaluated against.
         #[prost(message, optional, tag = "1")]
-        pub field: ::std::option::Option<super::FieldId>,
+        pub field: ::core::option::Option<super::FieldId>,
         /// Required. Operator used to compare the field or infoType to the value.
         #[prost(enumeration = "super::RelationalOperator", tag = "3")]
         pub operator: i32,
         /// Value to compare against. [Mandatory, except for `EXISTS` tests.]
         #[prost(message, optional, tag = "4")]
-        pub value: ::std::option::Option<super::Value>,
+        pub value: ::core::option::Option<super::Value>,
     }
     /// A collection of conditions.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Conditions {
         /// A collection of conditions.
         #[prost(message, repeated, tag = "1")]
-        pub conditions: ::std::vec::Vec<Condition>,
+        pub conditions: ::prost::alloc::vec::Vec<Condition>,
     }
     /// An expression, consisting or an operator and conditions.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3142,11 +3196,14 @@ pub mod record_condition {
         pub logical_operator: i32,
         /// Expression types.
         #[prost(oneof = "expressions::Type", tags = "3")]
-        pub r#type: ::std::option::Option<expressions::Type>,
+        pub r#type: ::core::option::Option<expressions::Type>,
     }
+    /// Nested message and enum types in `Expressions`.
     pub mod expressions {
         /// Logical operators for conditional checks.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum LogicalOperator {
             /// Unused
@@ -3171,7 +3228,7 @@ pub struct TransformationOverview {
     pub transformed_bytes: i64,
     /// Transformations applied to the dataset.
     #[prost(message, repeated, tag = "3")]
-    pub transformation_summaries: ::std::vec::Vec<TransformationSummary>,
+    pub transformation_summaries: ::prost::alloc::vec::Vec<TransformationSummary>,
 }
 /// Summary of a single transformation.
 /// Only one of 'transformation', 'field_transformation', or 'record_suppress'
@@ -3180,28 +3237,29 @@ pub struct TransformationOverview {
 pub struct TransformationSummary {
     /// Set if the transformation was limited to a specific InfoType.
     #[prost(message, optional, tag = "1")]
-    pub info_type: ::std::option::Option<InfoType>,
+    pub info_type: ::core::option::Option<InfoType>,
     /// Set if the transformation was limited to a specific FieldId.
     #[prost(message, optional, tag = "2")]
-    pub field: ::std::option::Option<FieldId>,
+    pub field: ::core::option::Option<FieldId>,
     /// The specific transformation these stats apply to.
     #[prost(message, optional, tag = "3")]
-    pub transformation: ::std::option::Option<PrimitiveTransformation>,
+    pub transformation: ::core::option::Option<PrimitiveTransformation>,
     /// The field transformation that was applied.
     /// If multiple field transformations are requested for a single field,
     /// this list will contain all of them; otherwise, only one is supplied.
     #[prost(message, repeated, tag = "5")]
-    pub field_transformations: ::std::vec::Vec<FieldTransformation>,
+    pub field_transformations: ::prost::alloc::vec::Vec<FieldTransformation>,
     /// The specific suppression option these stats apply to.
     #[prost(message, optional, tag = "6")]
-    pub record_suppress: ::std::option::Option<RecordSuppression>,
+    pub record_suppress: ::core::option::Option<RecordSuppression>,
     /// Collection of all transformations that took place or had an error.
     #[prost(message, repeated, tag = "4")]
-    pub results: ::std::vec::Vec<transformation_summary::SummaryResult>,
+    pub results: ::prost::alloc::vec::Vec<transformation_summary::SummaryResult>,
     /// Total size in bytes that were transformed in some way.
     #[prost(int64, tag = "7")]
     pub transformed_bytes: i64,
 }
+/// Nested message and enum types in `TransformationSummary`.
 pub mod transformation_summary {
     /// A collection that informs the user the number of times a particular
     /// `TransformationResultCode` and error details occurred.
@@ -3216,7 +3274,7 @@ pub mod transformation_summary {
         /// A place for warnings or errors to show up if a transformation didn't
         /// work as expected.
         #[prost(string, tag = "3")]
-        pub details: std::string::String,
+        pub details: ::prost::alloc::string::String,
     }
     /// Possible outcomes of transformations.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3234,8 +3292,9 @@ pub mod transformation_summary {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
     #[prost(oneof = "schedule::Option", tags = "1")]
-    pub option: ::std::option::Option<schedule::Option>,
+    pub option: ::core::option::Option<schedule::Option>,
 }
+/// Nested message and enum types in `Schedule`.
 pub mod schedule {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Option {
@@ -3267,22 +3326,22 @@ pub struct InspectTemplate {
     /// `projects/PROJECT_ID/inspectTemplates/TEMPLATE_ID` OR
     /// `organizations/ORGANIZATION_ID/inspectTemplates/TEMPLATE_ID`;
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Display name (max 256 chars).
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Short description (max 256 chars).
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The creation timestamp of an inspectTemplate.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last update timestamp of an inspectTemplate.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The core content of the template. Configuration of the scanning process.
     #[prost(message, optional, tag = "6")]
-    pub inspect_config: ::std::option::Option<InspectConfig>,
+    pub inspect_config: ::core::option::Option<InspectConfig>,
 }
 /// DeidentifyTemplates contains instructions on how to de-identify content.
 /// See https://cloud.google.com/dlp/docs/concepts-templates to learn more.
@@ -3294,22 +3353,22 @@ pub struct DeidentifyTemplate {
     /// `projects/PROJECT_ID/deidentifyTemplates/TEMPLATE_ID` OR
     /// `organizations/ORGANIZATION_ID/deidentifyTemplates/TEMPLATE_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Display name (max 256 chars).
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Short description (max 256 chars).
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The creation timestamp of an inspectTemplate.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last update timestamp of an inspectTemplate.
     #[prost(message, optional, tag = "5")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// ///////////// // The core content of the template  // ///////////////
     #[prost(message, optional, tag = "6")]
-    pub deidentify_config: ::std::option::Option<DeidentifyConfig>,
+    pub deidentify_config: ::core::option::Option<DeidentifyConfig>,
 }
 /// Details information about an error encountered during job execution or
 /// the results of an unsuccessful activation of the JobTrigger.
@@ -3317,10 +3376,10 @@ pub struct DeidentifyTemplate {
 pub struct Error {
     /// Detailed error codes and messages.
     #[prost(message, optional, tag = "1")]
-    pub details: ::std::option::Option<super::super::super::rpc::Status>,
+    pub details: ::core::option::Option<super::super::super::rpc::Status>,
     /// The times the error occurred.
     #[prost(message, repeated, tag = "2")]
-    pub timestamps: ::std::vec::Vec<::prost_types::Timestamp>,
+    pub timestamps: ::prost::alloc::vec::Vec<::prost_types::Timestamp>,
 }
 /// Contains a configuration to make dlp api calls on a repeating basis.
 /// See https://cloud.google.com/dlp/docs/concepts-job-triggers to learn more.
@@ -3330,47 +3389,49 @@ pub struct JobTrigger {
     /// triggeredJob is created, for example
     /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Display name (max 100 chars)
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// User provided description (max 256 chars)
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// A list of triggers which will be OR'ed together. Only one in the list
     /// needs to trigger for a job to be started. The list may contain only
     /// a single Schedule trigger and must have at least one object.
     #[prost(message, repeated, tag = "5")]
-    pub triggers: ::std::vec::Vec<job_trigger::Trigger>,
+    pub triggers: ::prost::alloc::vec::Vec<job_trigger::Trigger>,
     /// Output only. A stream of errors encountered when the trigger was activated. Repeated
     /// errors may result in the JobTrigger automatically being paused.
     /// Will return the last 100 errors. Whenever the JobTrigger is modified
     /// this list will be cleared.
     #[prost(message, repeated, tag = "6")]
-    pub errors: ::std::vec::Vec<Error>,
+    pub errors: ::prost::alloc::vec::Vec<Error>,
     /// Output only. The creation timestamp of a triggeredJob.
     #[prost(message, optional, tag = "7")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last update timestamp of a triggeredJob.
     #[prost(message, optional, tag = "8")]
-    pub update_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp of the last time this trigger executed.
     #[prost(message, optional, tag = "9")]
-    pub last_run_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub last_run_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. A status for this trigger.
     #[prost(enumeration = "job_trigger::Status", tag = "10")]
     pub status: i32,
     /// The configuration details for the specific type of job to run.
     #[prost(oneof = "job_trigger::Job", tags = "4")]
-    pub job: ::std::option::Option<job_trigger::Job>,
+    pub job: ::core::option::Option<job_trigger::Job>,
 }
+/// Nested message and enum types in `JobTrigger`.
 pub mod job_trigger {
     /// What event needs to occur for a new job to be started.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Trigger {
         #[prost(oneof = "trigger::Trigger", tags = "1, 2")]
-        pub trigger: ::std::option::Option<trigger::Trigger>,
+        pub trigger: ::core::option::Option<trigger::Trigger>,
     }
+    /// Nested message and enum types in `Trigger`.
     pub mod trigger {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
@@ -3414,8 +3475,9 @@ pub mod job_trigger {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     #[prost(oneof = "action::Action", tags = "1, 2, 3, 5, 8, 9")]
-    pub action: ::std::option::Option<action::Action>,
+    pub action: ::core::option::Option<action::Action>,
 }
+/// Nested message and enum types in `Action`.
 pub mod action {
     /// If set, the detailed findings will be persisted to the specified
     /// OutputStorageConfig. Only a single instance of this action can be
@@ -3425,7 +3487,7 @@ pub mod action {
     pub struct SaveFindings {
         /// Location to store findings outside of DLP.
         #[prost(message, optional, tag = "1")]
-        pub output_config: ::std::option::Option<super::OutputStorageConfig>,
+        pub output_config: ::core::option::Option<super::OutputStorageConfig>,
     }
     /// Publish a message into given Pub/Sub topic when DlpJob has completed. The
     /// message contains a single field, `DlpJobName`, which is equal to the
@@ -3439,7 +3501,7 @@ pub mod action {
         /// the long running DlpJob sending the notifications.
         /// Format is projects/{project}/topics/{topic}.
         #[prost(string, tag = "1")]
-        pub topic: std::string::String,
+        pub topic: ::prost::alloc::string::String,
     }
     /// Publish the result summary of a DlpJob to the Cloud Security
     /// Command Center (CSCC Alpha).
@@ -3522,19 +3584,19 @@ pub struct CreateInspectTemplateRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The InspectTemplate to create.
     #[prost(message, optional, tag = "2")]
-    pub inspect_template: ::std::option::Option<InspectTemplate>,
+    pub inspect_template: ::core::option::Option<InspectTemplate>,
     /// The template id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
     /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
-    pub template_id: std::string::String,
+    pub template_id: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3543,13 +3605,13 @@ pub struct UpdateInspectTemplateRequest {
     /// example `organizations/433245324/inspectTemplates/432452342` or
     /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// New InspectTemplate value.
     #[prost(message, optional, tag = "2")]
-    pub inspect_template: ::std::option::Option<InspectTemplate>,
+    pub inspect_template: ::core::option::Option<InspectTemplate>,
     /// Mask to control which fields get updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3558,7 +3620,7 @@ pub struct GetInspectTemplateRequest {
     /// example `organizations/433245324/inspectTemplates/432452342` or
     /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListInspectTemplates.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3584,11 +3646,11 @@ pub struct ListInspectTemplatesRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Page token to continue retrieval. Comes from previous call
     /// to `ListInspectTemplates`.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Size of the page, can be limited by server. If zero server returns
     /// a page of max size 100.
     #[prost(int32, tag = "3")]
@@ -3607,21 +3669,21 @@ pub struct ListInspectTemplatesRequest {
     /// - `name`: corresponds to template's name.
     /// - `display_name`: corresponds to template's display name.
     #[prost(string, tag = "4")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListInspectTemplates.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInspectTemplatesResponse {
     /// List of inspectTemplates, up to page_size in ListInspectTemplatesRequest.
     #[prost(message, repeated, tag = "1")]
-    pub inspect_templates: ::std::vec::Vec<InspectTemplate>,
+    pub inspect_templates: ::prost::alloc::vec::Vec<InspectTemplate>,
     /// If the next page is available then the next page token to be used
     /// in following ListInspectTemplates request.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteInspectTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3630,7 +3692,7 @@ pub struct DeleteInspectTemplateRequest {
     /// example `organizations/433245324/inspectTemplates/432452342` or
     /// projects/project-id/inspectTemplates/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateJobTrigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3652,19 +3714,19 @@ pub struct CreateJobTriggerRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The JobTrigger to create.
     #[prost(message, optional, tag = "2")]
-    pub job_trigger: ::std::option::Option<JobTrigger>,
+    pub job_trigger: ::core::option::Option<JobTrigger>,
     /// The trigger id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
     /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
-    pub trigger_id: std::string::String,
+    pub trigger_id: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for ActivateJobTrigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3672,7 +3734,7 @@ pub struct ActivateJobTriggerRequest {
     /// Required. Resource name of the trigger to activate, for example
     /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateJobTrigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3680,13 +3742,13 @@ pub struct UpdateJobTriggerRequest {
     /// Required. Resource name of the project and the triggeredJob, for example
     /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// New JobTrigger value.
     #[prost(message, optional, tag = "2")]
-    pub job_trigger: ::std::option::Option<JobTrigger>,
+    pub job_trigger: ::core::option::Option<JobTrigger>,
     /// Mask to control which fields get updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetJobTrigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3694,7 +3756,7 @@ pub struct GetJobTriggerRequest {
     /// Required. Resource name of the project and the triggeredJob, for example
     /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateDlpJobRequest. Used to initiate long running
 /// jobs such as calculating risk metrics or inspecting Google Cloud
@@ -3718,20 +3780,21 @@ pub struct CreateDlpJobRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The job id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
     /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "4")]
-    pub job_id: std::string::String,
+    pub job_id: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
     /// The configuration details for the specific type of job to run.
     #[prost(oneof = "create_dlp_job_request::Job", tags = "2, 3")]
-    pub job: ::std::option::Option<create_dlp_job_request::Job>,
+    pub job: ::core::option::Option<create_dlp_job_request::Job>,
 }
+/// Nested message and enum types in `CreateDlpJobRequest`.
 pub mod create_dlp_job_request {
     /// The configuration details for the specific type of job to run.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3764,12 +3827,12 @@ pub struct ListJobTriggersRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Page token to continue retrieval. Comes from previous call
     /// to ListJobTriggers. `order_by` field must not
     /// change for subsequent calls.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Size of the page, can be limited by a server.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
@@ -3789,7 +3852,7 @@ pub struct ListJobTriggersRequest {
     /// - `display_name`: corresponds to JobTrigger's display name.
     /// - `status`: corresponds to JobTrigger's status.
     #[prost(string, tag = "4")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Allows filtering.
     ///
     /// Supported syntax:
@@ -3815,21 +3878,21 @@ pub struct ListJobTriggersRequest {
     ///
     /// The length of this field should be no more than 500 characters.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListJobTriggers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTriggersResponse {
     /// List of triggeredJobs, up to page_size in ListJobTriggersRequest.
     #[prost(message, repeated, tag = "1")]
-    pub job_triggers: ::std::vec::Vec<JobTrigger>,
+    pub job_triggers: ::prost::alloc::vec::Vec<JobTrigger>,
     /// If the next page is available then the next page token to be used
     /// in following ListJobTriggers request.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteJobTrigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3837,32 +3900,32 @@ pub struct DeleteJobTriggerRequest {
     /// Required. Resource name of the project and the triggeredJob, for example
     /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Controls what and how to inspect for findings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectJobConfig {
     /// The data to scan.
     #[prost(message, optional, tag = "1")]
-    pub storage_config: ::std::option::Option<StorageConfig>,
+    pub storage_config: ::core::option::Option<StorageConfig>,
     /// How and what to scan for.
     #[prost(message, optional, tag = "2")]
-    pub inspect_config: ::std::option::Option<InspectConfig>,
+    pub inspect_config: ::core::option::Option<InspectConfig>,
     /// If provided, will be used as the default for all values in InspectConfig.
     /// `inspect_config` will be merged into the values persisted as part of the
     /// template.
     #[prost(string, tag = "3")]
-    pub inspect_template_name: std::string::String,
+    pub inspect_template_name: ::prost::alloc::string::String,
     /// Actions to execute at the completion of the job.
     #[prost(message, repeated, tag = "4")]
-    pub actions: ::std::vec::Vec<Action>,
+    pub actions: ::prost::alloc::vec::Vec<Action>,
 }
 /// Combines all of the information about a DLP job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DlpJob {
     /// The server-assigned name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The type of job.
     #[prost(enumeration = "DlpJobType", tag = "2")]
     pub r#type: i32,
@@ -3871,23 +3934,24 @@ pub struct DlpJob {
     pub state: i32,
     /// Time when the job was created.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time when the job started.
     #[prost(message, optional, tag = "7")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time when the job finished.
     #[prost(message, optional, tag = "8")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If created by a job trigger, the resource name of the trigger that
     /// instantiated the job.
     #[prost(string, tag = "10")]
-    pub job_trigger_name: std::string::String,
+    pub job_trigger_name: ::prost::alloc::string::String,
     /// A stream of errors encountered running the job.
     #[prost(message, repeated, tag = "11")]
-    pub errors: ::std::vec::Vec<Error>,
+    pub errors: ::prost::alloc::vec::Vec<Error>,
     #[prost(oneof = "dlp_job::Details", tags = "4, 5")]
-    pub details: ::std::option::Option<dlp_job::Details>,
+    pub details: ::core::option::Option<dlp_job::Details>,
 }
+/// Nested message and enum types in `DlpJob`.
 pub mod dlp_job {
     /// Possible states of a job. New items may be added.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3927,7 +3991,7 @@ pub mod dlp_job {
 pub struct GetDlpJobRequest {
     /// Required. The name of the DlpJob resource.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for listing DLP jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3949,7 +4013,7 @@ pub struct ListDlpJobsRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "4")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Allows filtering.
     ///
     /// Supported syntax:
@@ -3979,13 +4043,13 @@ pub struct ListDlpJobsRequest {
     ///
     /// The length of this field should be no more than 500 characters.
     #[prost(string, tag = "1")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The standard list page token.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// The type of job. Defaults to `DlpJobType.INSPECT`
     #[prost(enumeration = "DlpJobType", tag = "5")]
     pub r#type: i32,
@@ -4003,41 +4067,41 @@ pub struct ListDlpJobsRequest {
     /// - `name`: corresponds to job's name.
     /// - `state`: corresponds to `state`
     #[prost(string, tag = "6")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "7")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// The response message for listing DLP jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDlpJobsResponse {
     /// A list of DlpJobs that matches the specified filter in the request.
     #[prost(message, repeated, tag = "1")]
-    pub jobs: ::std::vec::Vec<DlpJob>,
+    pub jobs: ::prost::alloc::vec::Vec<DlpJob>,
     /// The standard List next-page token.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for canceling a DLP job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelDlpJobRequest {
     /// Required. The name of the DlpJob resource to be cancelled.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for finishing a DLP hybrid job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinishDlpJobRequest {
     /// Required. The name of the DlpJob resource to be cancelled.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request message for deleting a DLP job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDlpJobRequest {
     /// Required. The name of the DlpJob resource to be deleted.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4063,19 +4127,19 @@ pub struct CreateDeidentifyTemplateRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The DeidentifyTemplate to create.
     #[prost(message, optional, tag = "2")]
-    pub deidentify_template: ::std::option::Option<DeidentifyTemplate>,
+    pub deidentify_template: ::core::option::Option<DeidentifyTemplate>,
     /// The template id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
     /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
-    pub template_id: std::string::String,
+    pub template_id: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4084,13 +4148,13 @@ pub struct UpdateDeidentifyTemplateRequest {
     /// example `organizations/433245324/deidentifyTemplates/432452342` or
     /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// New DeidentifyTemplate value.
     #[prost(message, optional, tag = "2")]
-    pub deidentify_template: ::std::option::Option<DeidentifyTemplate>,
+    pub deidentify_template: ::core::option::Option<DeidentifyTemplate>,
     /// Mask to control which fields get updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4099,7 +4163,7 @@ pub struct GetDeidentifyTemplateRequest {
     /// example `organizations/433245324/deidentifyTemplates/432452342` or
     /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDeidentifyTemplates.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4125,11 +4189,11 @@ pub struct ListDeidentifyTemplatesRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Page token to continue retrieval. Comes from previous call
     /// to `ListDeidentifyTemplates`.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Size of the page, can be limited by server. If zero server returns
     /// a page of max size 100.
     #[prost(int32, tag = "3")]
@@ -4148,10 +4212,10 @@ pub struct ListDeidentifyTemplatesRequest {
     /// - `name`: corresponds to template's name.
     /// - `display_name`: corresponds to template's display name.
     #[prost(string, tag = "4")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListDeidentifyTemplates.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4159,11 +4223,11 @@ pub struct ListDeidentifyTemplatesResponse {
     /// List of deidentify templates, up to page_size in
     /// ListDeidentifyTemplatesRequest.
     #[prost(message, repeated, tag = "1")]
-    pub deidentify_templates: ::std::vec::Vec<DeidentifyTemplate>,
+    pub deidentify_templates: ::prost::alloc::vec::Vec<DeidentifyTemplate>,
     /// If the next page is available then the next page token to be used
     /// in following ListDeidentifyTemplates request.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteDeidentifyTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4172,7 +4236,7 @@ pub struct DeleteDeidentifyTemplateRequest {
     /// for example `organizations/433245324/deidentifyTemplates/432452342` or
     /// projects/project-id/deidentifyTemplates/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Configuration for a custom dictionary created from a data source of any size
 /// up to the maximum size defined in the
@@ -4187,10 +4251,11 @@ pub struct LargeCustomDictionaryConfig {
     /// artifacts are modified, the dictionary is considered invalid and can no
     /// longer be used.
     #[prost(message, optional, tag = "1")]
-    pub output_path: ::std::option::Option<CloudStoragePath>,
+    pub output_path: ::core::option::Option<CloudStoragePath>,
     #[prost(oneof = "large_custom_dictionary_config::Source", tags = "2, 3")]
-    pub source: ::std::option::Option<large_custom_dictionary_config::Source>,
+    pub source: ::core::option::Option<large_custom_dictionary_config::Source>,
 }
+/// Nested message and enum types in `LargeCustomDictionaryConfig`.
 pub mod large_custom_dictionary_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
@@ -4216,14 +4281,15 @@ pub struct LargeCustomDictionaryStats {
 pub struct StoredInfoTypeConfig {
     /// Display name of the StoredInfoType (max 256 characters).
     #[prost(string, tag = "1")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Description of the StoredInfoType (max 256 characters).
     #[prost(string, tag = "2")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Stored infotype types.
     #[prost(oneof = "stored_info_type_config::Type", tags = "3, 4, 5")]
-    pub r#type: ::std::option::Option<stored_info_type_config::Type>,
+    pub r#type: ::core::option::Option<stored_info_type_config::Type>,
 }
+/// Nested message and enum types in `StoredInfoTypeConfig`.
 pub mod stored_info_type_config {
     /// Stored infotype types.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4244,8 +4310,9 @@ pub mod stored_info_type_config {
 pub struct StoredInfoTypeStats {
     /// Stat types
     #[prost(oneof = "stored_info_type_stats::Type", tags = "1")]
-    pub r#type: ::std::option::Option<stored_info_type_stats::Type>,
+    pub r#type: ::core::option::Option<stored_info_type_stats::Type>,
 }
+/// Nested message and enum types in `StoredInfoTypeStats`.
 pub mod stored_info_type_stats {
     /// Stat types
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4261,11 +4328,11 @@ pub mod stored_info_type_stats {
 pub struct StoredInfoTypeVersion {
     /// StoredInfoType configuration.
     #[prost(message, optional, tag = "1")]
-    pub config: ::std::option::Option<StoredInfoTypeConfig>,
+    pub config: ::core::option::Option<StoredInfoTypeConfig>,
     /// Create timestamp of the version. Read-only, determined by the system
     /// when the version is created.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Stored info type version state. Read-only, updated by the system
     /// during dictionary creation.
     #[prost(enumeration = "StoredInfoTypeState", tag = "3")]
@@ -4284,10 +4351,10 @@ pub struct StoredInfoTypeVersion {
     /// storedInfoType to continue using it, reusing the same `config` if it was
     /// not the source of the error.
     #[prost(message, repeated, tag = "4")]
-    pub errors: ::std::vec::Vec<Error>,
+    pub errors: ::prost::alloc::vec::Vec<Error>,
     /// Statistics about this storedInfoType version.
     #[prost(message, optional, tag = "5")]
-    pub stats: ::std::option::Option<StoredInfoTypeStats>,
+    pub stats: ::core::option::Option<StoredInfoTypeStats>,
 }
 /// StoredInfoType resource message that contains information about the current
 /// version and any pending updates.
@@ -4295,14 +4362,14 @@ pub struct StoredInfoTypeVersion {
 pub struct StoredInfoType {
     /// Resource name.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Current version of the stored info type.
     #[prost(message, optional, tag = "2")]
-    pub current_version: ::std::option::Option<StoredInfoTypeVersion>,
+    pub current_version: ::core::option::Option<StoredInfoTypeVersion>,
     /// Pending versions of the stored info type. Empty if no versions are
     /// pending.
     #[prost(message, repeated, tag = "3")]
-    pub pending_versions: ::std::vec::Vec<StoredInfoTypeVersion>,
+    pub pending_versions: ::prost::alloc::vec::Vec<StoredInfoTypeVersion>,
 }
 /// Request message for CreateStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4328,19 +4395,19 @@ pub struct CreateStoredInfoTypeRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Configuration of the storedInfoType to create.
     #[prost(message, optional, tag = "2")]
-    pub config: ::std::option::Option<StoredInfoTypeConfig>,
+    pub config: ::core::option::Option<StoredInfoTypeConfig>,
     /// The storedInfoType ID can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
     /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
-    pub stored_info_type_id: std::string::String,
+    pub stored_info_type_id: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "4")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4349,15 +4416,15 @@ pub struct UpdateStoredInfoTypeRequest {
     /// example `organizations/433245324/storedInfoTypes/432452342` or
     /// projects/project-id/storedInfoTypes/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Updated configuration for the storedInfoType. If not provided, a new
     /// version of the storedInfoType will be created with the existing
     /// configuration.
     #[prost(message, optional, tag = "2")]
-    pub config: ::std::option::Option<StoredInfoTypeConfig>,
+    pub config: ::core::option::Option<StoredInfoTypeConfig>,
     /// Mask to control which fields get updated.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4366,7 +4433,7 @@ pub struct GetStoredInfoTypeRequest {
     /// example `organizations/433245324/storedInfoTypes/432452342` or
     /// projects/project-id/storedInfoTypes/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListStoredInfoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4392,11 +4459,11 @@ pub struct ListStoredInfoTypesRequest {
     ///
     ///     parent=projects/example-project/locations/europe-west3
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Page token to continue retrieval. Comes from previous call
     /// to `ListStoredInfoTypes`.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Size of the page, can be limited by server. If zero server returns
     /// a page of max size 100.
     #[prost(int32, tag = "3")]
@@ -4416,21 +4483,21 @@ pub struct ListStoredInfoTypesRequest {
     /// - `name`: corresponds to resource name.
     /// - `display_name`: corresponds to info type's display name.
     #[prost(string, tag = "4")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Deprecated. This field has no effect.
     #[prost(string, tag = "5")]
-    pub location_id: std::string::String,
+    pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListStoredInfoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStoredInfoTypesResponse {
     /// List of storedInfoTypes, up to page_size in ListStoredInfoTypesRequest.
     #[prost(message, repeated, tag = "1")]
-    pub stored_info_types: ::std::vec::Vec<StoredInfoType>,
+    pub stored_info_types: ::prost::alloc::vec::Vec<StoredInfoType>,
     /// If the next page is available then the next page token to be used
     /// in following ListStoredInfoTypes request.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteStoredInfoType.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4439,7 +4506,7 @@ pub struct DeleteStoredInfoTypeRequest {
     /// example `organizations/433245324/storedInfoTypes/432452342` or
     /// projects/project-id/storedInfoTypes/432452342.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request to search for potentially sensitive info in a custom location.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4447,10 +4514,10 @@ pub struct HybridInspectJobTriggerRequest {
     /// Required. Resource name of the trigger to execute a hybrid inspect on, for example
     /// `projects/dlp-test-project/jobTriggers/53234423`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The item to inspect.
     #[prost(message, optional, tag = "3")]
-    pub hybrid_item: ::std::option::Option<HybridContentItem>,
+    pub hybrid_item: ::core::option::Option<HybridContentItem>,
 }
 /// Request to search for potentially sensitive info in a custom location.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4458,10 +4525,10 @@ pub struct HybridInspectDlpJobRequest {
     /// Required. Resource name of the job to execute a hybrid inspect on, for example
     /// `projects/dlp-test-project/dlpJob/53234423`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The item to inspect.
     #[prost(message, optional, tag = "3")]
-    pub hybrid_item: ::std::option::Option<HybridContentItem>,
+    pub hybrid_item: ::core::option::Option<HybridContentItem>,
 }
 /// An individual hybrid item to inspect. Will be stored temporarily during
 /// processing.
@@ -4469,17 +4536,17 @@ pub struct HybridInspectDlpJobRequest {
 pub struct HybridContentItem {
     /// The item to inspect.
     #[prost(message, optional, tag = "1")]
-    pub item: ::std::option::Option<ContentItem>,
+    pub item: ::core::option::Option<ContentItem>,
     /// Supplementary information that will be added to each finding.
     #[prost(message, optional, tag = "2")]
-    pub finding_details: ::std::option::Option<HybridFindingDetails>,
+    pub finding_details: ::core::option::Option<HybridFindingDetails>,
 }
 /// Populate to associate additional data with each finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridFindingDetails {
     /// Details about the container where the content being inspected is from.
     #[prost(message, optional, tag = "1")]
-    pub container_details: ::std::option::Option<Container>,
+    pub container_details: ::core::option::Option<Container>,
     /// Offset in bytes of the line, from the beginning of the file, where the
     /// finding  is located. Populate if the item being scanned is only part of a
     /// bigger item, such as a shard of a file and you want to track the absolute
@@ -4497,7 +4564,7 @@ pub struct HybridFindingDetails {
     /// will be merged. Note that identifying_fields will only be stored to
     /// BigQuery, and only if the BigQuery action has been included.
     #[prost(message, optional, tag = "4")]
-    pub table_options: ::std::option::Option<TableOptions>,
+    pub table_options: ::core::option::Option<TableOptions>,
     /// Labels to represent user provided metadata about the data being inspected.
     /// If configured by the job, some key values may be required.
     /// The labels associated with `Finding`'s produced by hybrid
@@ -4515,7 +4582,8 @@ pub struct HybridFindingDetails {
     /// * `"environment" : "production"`
     /// * `"pipeline" : "etl"`
     #[prost(map = "string, string", tag = "5")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Quota exceeded errors will be thrown once quota has been met.
 #[derive(Clone, PartialEq, ::prost::Message)]

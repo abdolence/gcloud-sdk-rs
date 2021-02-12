@@ -7,14 +7,14 @@ pub struct SourceInfo {
     /// The location could be a file, UI element, or similar. For example,
     /// `acme/app/AnvilPolicy.cel`.
     #[prost(string, tag = "2")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// Monotonically increasing list of character offsets where newlines appear.
     ///
     /// The line number of a given position is the index `i` where for a given
     /// `id` the `line_offsets[i] < id_positions[id] < line_offsets[i+1]`. The
     /// column may be derivd from `id_positions[id] - line_offsets[i]`.
     #[prost(int32, repeated, tag = "3")]
-    pub line_offsets: ::std::vec::Vec<i32>,
+    pub line_offsets: ::prost::alloc::vec::Vec<i32>,
     /// A map from the parse node id (e.g. `Expr.id`) to the character offset
     /// within source.
     #[prost(map = "int32, int32", tag = "4")]
@@ -25,7 +25,7 @@ pub struct SourceInfo {
 pub struct SourcePosition {
     /// The soucre location name (e.g. file name).
     #[prost(string, tag = "1")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// The character offset.
     #[prost(int32, tag = "2")]
     pub offset: i32,
@@ -43,13 +43,13 @@ pub struct SourcePosition {
 pub struct ParsedExpr {
     /// The parsed expression.
     #[prost(message, optional, tag = "2")]
-    pub expr: ::std::option::Option<Expr>,
+    pub expr: ::core::option::Option<Expr>,
     /// The source info derived from input that generated the parsed `expr`.
     #[prost(message, optional, tag = "3")]
-    pub source_info: ::std::option::Option<SourceInfo>,
+    pub source_info: ::core::option::Option<SourceInfo>,
     /// The syntax version of the source, e.g. `cel1`.
     #[prost(string, tag = "4")]
-    pub syntax_version: std::string::String,
+    pub syntax_version: ::prost::alloc::string::String,
 }
 /// An abstract representation of a common expression.
 ///
@@ -75,8 +75,9 @@ pub struct Expr {
     pub id: i32,
     /// Required. Variants of expressions.
     #[prost(oneof = "expr::ExprKind", tags = "3, 4, 5, 6, 7, 8, 9")]
-    pub expr_kind: ::std::option::Option<expr::ExprKind>,
+    pub expr_kind: ::core::option::Option<expr::ExprKind>,
 }
+/// Nested message and enum types in `Expr`.
 pub mod expr {
     /// An identifier expression. e.g. `request`.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -86,7 +87,7 @@ pub mod expr {
         ///
         /// Qualified names are represented by the [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression.
         #[prost(string, tag = "1")]
-        pub name: std::string::String,
+        pub name: ::prost::alloc::string::String,
     }
     /// A field selection expression. e.g. `request.auth`.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -96,13 +97,13 @@ pub mod expr {
         /// For example, in the select expression `request.auth`, the `request`
         /// portion of the expression is the `operand`.
         #[prost(message, optional, boxed, tag = "1")]
-        pub operand: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub operand: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// Required. The name of the field to select.
         ///
         /// For example, in the select expression `request.auth`, the `auth` portion
         /// of the expression would be the `field`.
         #[prost(string, tag = "2")]
-        pub field: std::string::String,
+        pub field: ::prost::alloc::string::String,
         /// Whether the select is to be interpreted as a field presence test.
         ///
         /// This results from the macro `has(request.auth)`.
@@ -117,13 +118,13 @@ pub mod expr {
         /// The target of an method call-style expression. For example, `x` in
         /// `x.f()`.
         #[prost(message, optional, boxed, tag = "1")]
-        pub target: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub target: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// Required. The name of the function or method being called.
         #[prost(string, tag = "2")]
-        pub function: std::string::String,
+        pub function: ::prost::alloc::string::String,
         /// The arguments.
         #[prost(message, repeated, tag = "3")]
-        pub args: ::std::vec::Vec<super::Expr>,
+        pub args: ::prost::alloc::vec::Vec<super::Expr>,
     }
     /// A list creation expression.
     ///
@@ -133,7 +134,7 @@ pub mod expr {
     pub struct CreateList {
         /// The elements part of the list.
         #[prost(message, repeated, tag = "1")]
-        pub elements: ::std::vec::Vec<super::Expr>,
+        pub elements: ::prost::alloc::vec::Vec<super::Expr>,
     }
     /// A map or message creation expression.
     ///
@@ -145,11 +146,12 @@ pub mod expr {
         /// The type name of the message to be created, empty when creating map
         /// literals.
         #[prost(string, tag = "1")]
-        pub r#type: std::string::String,
+        pub r#type: ::prost::alloc::string::String,
         /// The entries in the creation expression.
         #[prost(message, repeated, tag = "2")]
-        pub entries: ::std::vec::Vec<create_struct::Entry>,
+        pub entries: ::prost::alloc::vec::Vec<create_struct::Entry>,
     }
+    /// Nested message and enum types in `CreateStruct`.
     pub mod create_struct {
         /// Represents an entry.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -161,18 +163,19 @@ pub mod expr {
             pub id: i32,
             /// Required. The value assigned to the key.
             #[prost(message, optional, tag = "4")]
-            pub value: ::std::option::Option<super::super::Expr>,
+            pub value: ::core::option::Option<super::super::Expr>,
             /// The `Entry` key kinds.
             #[prost(oneof = "entry::KeyKind", tags = "2, 3")]
-            pub key_kind: ::std::option::Option<entry::KeyKind>,
+            pub key_kind: ::core::option::Option<entry::KeyKind>,
         }
+        /// Nested message and enum types in `Entry`.
         pub mod entry {
             /// The `Entry` key kinds.
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum KeyKind {
                 /// The field key for a message creator statement.
                 #[prost(string, tag = "2")]
-                FieldKey(std::string::String),
+                FieldKey(::prost::alloc::string::String),
                 /// The key expression for a map creation statement.
                 #[prost(message, tag = "3")]
                 MapKey(super::super::super::Expr),
@@ -209,32 +212,32 @@ pub mod expr {
     pub struct Comprehension {
         /// The name of the iteration variable.
         #[prost(string, tag = "1")]
-        pub iter_var: std::string::String,
+        pub iter_var: ::prost::alloc::string::String,
         /// The range over which var iterates.
         #[prost(message, optional, boxed, tag = "2")]
-        pub iter_range: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub iter_range: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// The name of the variable used for accumulation of the result.
         #[prost(string, tag = "3")]
-        pub accu_var: std::string::String,
+        pub accu_var: ::prost::alloc::string::String,
         /// The initial value of the accumulator.
         #[prost(message, optional, boxed, tag = "4")]
-        pub accu_init: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub accu_init: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// An expression which can contain iter_var and accu_var.
         ///
         /// Returns false when the result has been computed and may be used as
         /// a hint to short-circuit the remainder of the comprehension.
         #[prost(message, optional, boxed, tag = "5")]
-        pub loop_condition: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub loop_condition: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// An expression which can contain iter_var and accu_var.
         ///
         /// Computes the next value of accu_var.
         #[prost(message, optional, boxed, tag = "6")]
-        pub loop_step: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub loop_step: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// An expression which can contain accu_var.
         ///
         /// Computes the result.
         #[prost(message, optional, boxed, tag = "7")]
-        pub result: ::std::option::Option<::std::boxed::Box<super::Expr>>,
+        pub result: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
     }
     /// Required. Variants of expressions.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -247,10 +250,10 @@ pub mod expr {
         IdentExpr(Ident),
         /// A field selection expression, e.g. `request.auth`.
         #[prost(message, tag = "5")]
-        SelectExpr(Box<Select>),
+        SelectExpr(::prost::alloc::boxed::Box<Select>),
         /// A call expression, including calls to predefined functions and operators.
         #[prost(message, tag = "6")]
-        CallExpr(Box<Call>),
+        CallExpr(::prost::alloc::boxed::Box<Call>),
         /// A list creation expression.
         #[prost(message, tag = "7")]
         ListExpr(CreateList),
@@ -259,7 +262,7 @@ pub mod expr {
         StructExpr(CreateStruct),
         /// A comprehension expression.
         #[prost(message, tag = "9")]
-        ComprehensionExpr(Box<Comprehension>),
+        ComprehensionExpr(::prost::alloc::boxed::Box<Comprehension>),
     }
 }
 /// Represents a primitive literal.
@@ -277,8 +280,9 @@ pub mod expr {
 pub struct Literal {
     /// Required. The valid constant kinds.
     #[prost(oneof = "literal::ConstantKind", tags = "1, 2, 3, 4, 5, 6, 7")]
-    pub constant_kind: ::std::option::Option<literal::ConstantKind>,
+    pub constant_kind: ::core::option::Option<literal::ConstantKind>,
 }
+/// Nested message and enum types in `Literal`.
 pub mod literal {
     /// Required. The valid constant kinds.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -300,10 +304,10 @@ pub mod literal {
         DoubleValue(f64),
         /// string value.
         #[prost(string, tag = "6")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// bytes value.
         #[prost(bytes, tag = "7")]
-        BytesValue(std::vec::Vec<u8>),
+        BytesValue(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// A declaration.
@@ -314,14 +318,15 @@ pub struct Decl {
     pub id: i32,
     /// The name of the declaration.
     #[prost(string, tag = "2")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The documentation string for the declaration.
     #[prost(string, tag = "3")]
-    pub doc: std::string::String,
+    pub doc: ::prost::alloc::string::String,
     /// The kind of declaration.
     #[prost(oneof = "decl::Kind", tags = "4, 5")]
-    pub kind: ::std::option::Option<decl::Kind>,
+    pub kind: ::core::option::Option<decl::Kind>,
 }
+/// Nested message and enum types in `Decl`.
 pub mod decl {
     /// The kind of declaration.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -345,31 +350,31 @@ pub struct DeclType {
     pub id: i32,
     /// The type name, e.g. 'int', 'my.type.Type' or 'T'
     #[prost(string, tag = "2")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// An ordered list of type parameters, e.g. `<string, int>`.
     /// Only applies to a subset of types, e.g. `map`, `list`.
     #[prost(message, repeated, tag = "4")]
-    pub type_params: ::std::vec::Vec<DeclType>,
+    pub type_params: ::prost::alloc::vec::Vec<DeclType>,
 }
 /// An identifier declaration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IdentDecl {
     /// Optional type of the identifier.
     #[prost(message, optional, tag = "3")]
-    pub r#type: ::std::option::Option<DeclType>,
+    pub r#type: ::core::option::Option<DeclType>,
     /// Optional value of the identifier.
     #[prost(message, optional, tag = "4")]
-    pub value: ::std::option::Option<Expr>,
+    pub value: ::core::option::Option<Expr>,
 }
 /// A function declaration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionDecl {
     /// The function arguments.
     #[prost(message, repeated, tag = "1")]
-    pub args: ::std::vec::Vec<IdentDecl>,
+    pub args: ::prost::alloc::vec::Vec<IdentDecl>,
     /// Optional declared return type.
     #[prost(message, optional, tag = "2")]
-    pub return_type: ::std::option::Option<DeclType>,
+    pub return_type: ::core::option::Option<DeclType>,
     /// If the first argument of the function is the receiver.
     #[prost(bool, tag = "3")]
     pub receiver_function: bool,
@@ -382,8 +387,9 @@ pub struct FunctionDecl {
 pub struct Value {
     /// Required. The valid kinds of values.
     #[prost(oneof = "value::Kind", tags = "1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 15")]
-    pub kind: ::std::option::Option<value::Kind>,
+    pub kind: ::core::option::Option<value::Kind>,
 }
+/// Nested message and enum types in `Value`.
 pub mod value {
     /// Required. The valid kinds of values.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -405,10 +411,10 @@ pub mod value {
         DoubleValue(f64),
         /// UTF-8 string value.
         #[prost(string, tag = "6")]
-        StringValue(std::string::String),
+        StringValue(::prost::alloc::string::String),
         /// Byte string value.
         #[prost(bytes, tag = "7")]
-        BytesValue(std::vec::Vec<u8>),
+        BytesValue(::prost::alloc::vec::Vec<u8>),
         /// An enum value.
         #[prost(message, tag = "9")]
         EnumValue(super::EnumValue),
@@ -423,7 +429,7 @@ pub mod value {
         ListValue(super::ListValue),
         /// A Type value represented by the fully qualified name of the type.
         #[prost(string, tag = "15")]
-        TypeValue(std::string::String),
+        TypeValue(::prost::alloc::string::String),
     }
 }
 /// An enum value.
@@ -431,7 +437,7 @@ pub mod value {
 pub struct EnumValue {
     /// The fully qualified name of the enum type.
     #[prost(string, tag = "1")]
-    pub r#type: std::string::String,
+    pub r#type: ::prost::alloc::string::String,
     /// The value of the enum.
     #[prost(int32, tag = "2")]
     pub value: i32,
@@ -444,7 +450,7 @@ pub struct EnumValue {
 pub struct ListValue {
     /// The ordered values in the list.
     #[prost(message, repeated, tag = "1")]
-    pub values: ::std::vec::Vec<Value>,
+    pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// A map.
 ///
@@ -457,8 +463,9 @@ pub struct MapValue {
     /// CEL has fewer restrictions on keys, so a protobuf map represenation
     /// cannot be used.
     #[prost(message, repeated, tag = "1")]
-    pub entries: ::std::vec::Vec<map_value::Entry>,
+    pub entries: ::prost::alloc::vec::Vec<map_value::Entry>,
 }
+/// Nested message and enum types in `MapValue`.
 pub mod map_value {
     /// An entry in the map.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -468,10 +475,10 @@ pub mod map_value {
         /// Must be unique with in the map.
         /// Currently only boolean, int, uint, and string values can be keys.
         #[prost(message, optional, tag = "1")]
-        pub key: ::std::option::Option<super::Value>,
+        pub key: ::core::option::Option<super::Value>,
         /// The value.
         #[prost(message, optional, tag = "2")]
-        pub value: ::std::option::Option<super::Value>,
+        pub value: ::core::option::Option<super::Value>,
     }
 }
 /// The state of an evaluation.
@@ -481,21 +488,22 @@ pub mod map_value {
 pub struct EvalState {
     /// The unique values referenced in this message.
     #[prost(message, repeated, tag = "1")]
-    pub values: ::std::vec::Vec<ExprValue>,
+    pub values: ::prost::alloc::vec::Vec<ExprValue>,
     /// An ordered list of results.
     ///
     /// Tracks the flow of evaluation through the expression.
     /// May be sparse.
     #[prost(message, repeated, tag = "3")]
-    pub results: ::std::vec::Vec<eval_state::Result>,
+    pub results: ::prost::alloc::vec::Vec<eval_state::Result>,
 }
+/// Nested message and enum types in `EvalState`.
 pub mod eval_state {
     /// A single evaluation result.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
         /// The expression this result is for.
         #[prost(message, optional, tag = "1")]
-        pub expr: ::std::option::Option<super::IdRef>,
+        pub expr: ::core::option::Option<super::IdRef>,
         /// The index in `values` of the resulting value.
         #[prost(int32, tag = "2")]
         pub value: i32,
@@ -506,8 +514,9 @@ pub mod eval_state {
 pub struct ExprValue {
     /// An expression can resolve to a value, error or unknown.
     #[prost(oneof = "expr_value::Kind", tags = "1, 2, 3")]
-    pub kind: ::std::option::Option<expr_value::Kind>,
+    pub kind: ::core::option::Option<expr_value::Kind>,
 }
+/// Nested message and enum types in `ExprValue`.
 pub mod expr_value {
     /// An expression can resolve to a value, error or unknown.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -568,7 +577,7 @@ pub mod expr_value {
 pub struct ErrorSet {
     /// The errors in the set.
     #[prost(message, repeated, tag = "1")]
-    pub errors: ::std::vec::Vec<super::super::super::rpc::Status>,
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// A set of expressions for which the value is unknown.
 ///
@@ -577,7 +586,7 @@ pub struct ErrorSet {
 pub struct UnknownSet {
     /// The ids of the expressions with unknown values.
     #[prost(message, repeated, tag = "1")]
-    pub exprs: ::std::vec::Vec<IdRef>,
+    pub exprs: ::prost::alloc::vec::Vec<IdRef>,
 }
 /// A reference to an expression id.
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -4,10 +4,10 @@ pub struct OnlinePredictionLogEntry {
     /// The resource name of the endpoint as referred to in the original request.
     /// For example, projects/12323/locations/us-central1/endpoints/123.
     #[prost(string, tag = "1")]
-    pub endpoint: std::string::String,
+    pub endpoint: ::prost::alloc::string::String,
     /// The ID of the deployed model used to serve this predict request.
     #[prost(string, tag = "2")]
-    pub deployed_model_id: std::string::String,
+    pub deployed_model_id: ::prost::alloc::string::String,
     /// The number of instances in the prediction request.
     #[prost(int64, tag = "3")]
     pub instance_count: i64,
@@ -18,5 +18,5 @@ pub struct OnlinePredictionLogEntry {
     /// The error code and message.
     /// Populated when prediction fails.
     #[prost(message, optional, tag = "5")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }

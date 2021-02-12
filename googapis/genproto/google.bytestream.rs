@@ -3,7 +3,7 @@
 pub struct ReadRequest {
     /// The name of the resource to read.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// The offset for the first byte to return in the read, relative to the start
     /// of the resource.
     ///
@@ -28,8 +28,8 @@ pub struct ReadResponse {
     /// empty for any given `ReadResponse`. This enables the service to inform the
     /// client that the request is still live while it is running an operation to
     /// generate more data.
-    #[prost(bytes, tag = "10")]
-    pub data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "10")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request object for ByteStream.Write.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -38,7 +38,7 @@ pub struct WriteRequest {
     /// `WriteRequest` of each `Write()` action. If it is set on subsequent calls,
     /// it **must** match the value of the first request.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
     /// The offset from the beginning of the resource at which the data should be
     /// written. It is required on all `WriteRequest`s.
     ///
@@ -62,8 +62,8 @@ pub struct WriteRequest {
     /// empty for any given `WriteRequest`. This enables the client to inform the
     /// service that the request is still live while it is running an operation to
     /// generate more data.
-    #[prost(bytes, tag = "10")]
-    pub data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "10")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Response object for ByteStream.Write.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -77,7 +77,7 @@ pub struct WriteResponse {
 pub struct QueryWriteStatusRequest {
     /// The name of the resource whose write status is being requested.
     #[prost(string, tag = "1")]
-    pub resource_name: std::string::String,
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// Response object for ByteStream.QueryWriteStatus.
 #[derive(Clone, PartialEq, ::prost::Message)]

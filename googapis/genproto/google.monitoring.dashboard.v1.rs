@@ -37,7 +37,7 @@ pub struct Aggregation {
     /// If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
     /// specified, then this field is ignored.
     #[prost(message, optional, tag = "1")]
-    pub alignment_period: ::std::option::Option<::prost_types::Duration>,
+    pub alignment_period: ::core::option::Option<::prost_types::Duration>,
     /// An `Aligner` describes how to bring the data points in a single
     /// time series into temporal alignment. Except for `ALIGN_NONE`, all
     /// alignments cause all the data points in an `alignment_period` to be
@@ -87,8 +87,9 @@ pub struct Aggregation {
     /// a single output time series. If `cross_series_reducer` is not
     /// defined, this field is ignored.
     #[prost(string, repeated, tag = "5")]
-    pub group_by_fields: ::std::vec::Vec<std::string::String>,
+    pub group_by_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Aggregation`.
 pub mod aggregation {
     /// The `Aligner` specifies the operation that will be applied to the data
     /// points in each alignment period in a time series. Except for
@@ -337,6 +338,7 @@ pub struct PickTimeSeriesFilter {
     #[prost(enumeration = "pick_time_series_filter::Direction", tag = "3")]
     pub direction: i32,
 }
+/// Nested message and enum types in `PickTimeSeriesFilter`.
 pub mod pick_time_series_filter {
     /// The value reducers that can be applied to a `PickTimeSeriesFilter`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -385,6 +387,7 @@ pub struct StatisticalTimeSeriesFilter {
     #[prost(int32, tag = "2")]
     pub num_time_series: i32,
 }
+/// Nested message and enum types in `StatisticalTimeSeriesFilter`.
 pub mod statistical_time_series_filter {
     /// The filter methods that can be applied to a stream.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -406,11 +409,12 @@ pub struct TimeSeriesQuery {
     /// [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
     /// field in `MetricDescriptor`.
     #[prost(string, tag = "5")]
-    pub unit_override: std::string::String,
+    pub unit_override: ::prost::alloc::string::String,
     /// Parameters needed to obtain data for the chart.
     #[prost(oneof = "time_series_query::Source", tags = "1, 2, 3")]
-    pub source: ::std::option::Option<time_series_query::Source>,
+    pub source: ::core::option::Option<time_series_query::Source>,
 }
+/// Nested message and enum types in `TimeSeriesQuery`.
 pub mod time_series_query {
     /// Parameters needed to obtain data for the chart.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -423,7 +427,7 @@ pub mod time_series_query {
         TimeSeriesFilterRatio(super::TimeSeriesFilterRatio),
         /// A query used to fetch time series.
         #[prost(string, tag = "3")]
-        TimeSeriesQueryLanguage(std::string::String),
+        TimeSeriesQueryLanguage(::prost::alloc::string::String),
     }
 }
 /// A filter that defines a subset of time series data that is displayed in a
@@ -435,19 +439,20 @@ pub struct TimeSeriesFilter {
     /// Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
     /// that identifies the metric types, resources, and projects to query.
     #[prost(string, tag = "1")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// By default, the raw time series data is returned.
     /// Use this field to combine multiple time series for different views of the
     /// data.
     #[prost(message, optional, tag = "2")]
-    pub aggregation: ::std::option::Option<Aggregation>,
+    pub aggregation: ::core::option::Option<Aggregation>,
     /// Apply a second aggregation after `aggregation` is applied.
     #[prost(message, optional, tag = "3")]
-    pub secondary_aggregation: ::std::option::Option<Aggregation>,
+    pub secondary_aggregation: ::core::option::Option<Aggregation>,
     /// Selects an optional time series filter.
     #[prost(oneof = "time_series_filter::OutputFilter", tags = "4, 5")]
-    pub output_filter: ::std::option::Option<time_series_filter::OutputFilter>,
+    pub output_filter: ::core::option::Option<time_series_filter::OutputFilter>,
 }
+/// Nested message and enum types in `TimeSeriesFilter`.
 pub mod time_series_filter {
     /// Selects an optional time series filter.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -468,18 +473,19 @@ pub mod time_series_filter {
 pub struct TimeSeriesFilterRatio {
     /// The numerator of the ratio.
     #[prost(message, optional, tag = "1")]
-    pub numerator: ::std::option::Option<time_series_filter_ratio::RatioPart>,
+    pub numerator: ::core::option::Option<time_series_filter_ratio::RatioPart>,
     /// The denominator of the ratio.
     #[prost(message, optional, tag = "2")]
-    pub denominator: ::std::option::Option<time_series_filter_ratio::RatioPart>,
+    pub denominator: ::core::option::Option<time_series_filter_ratio::RatioPart>,
     /// Apply a second aggregation after the ratio is computed.
     #[prost(message, optional, tag = "3")]
-    pub secondary_aggregation: ::std::option::Option<Aggregation>,
+    pub secondary_aggregation: ::core::option::Option<Aggregation>,
     /// Selects an optional filter that is applied to the time series after
     /// computing the ratio.
     #[prost(oneof = "time_series_filter_ratio::OutputFilter", tags = "4, 5")]
-    pub output_filter: ::std::option::Option<time_series_filter_ratio::OutputFilter>,
+    pub output_filter: ::core::option::Option<time_series_filter_ratio::OutputFilter>,
 }
+/// Nested message and enum types in `TimeSeriesFilterRatio`.
 pub mod time_series_filter_ratio {
     /// Describes a query to build the numerator or denominator of a
     /// TimeSeriesFilterRatio.
@@ -489,12 +495,12 @@ pub mod time_series_filter_ratio {
         /// filter](https://cloud.google.com/monitoring/api/v3/filters) that
         /// identifies the metric types, resources, and projects to query.
         #[prost(string, tag = "1")]
-        pub filter: std::string::String,
+        pub filter: ::prost::alloc::string::String,
         /// By default, the raw time series data is returned.
         /// Use this field to combine multiple time series for different views of the
         /// data.
         #[prost(message, optional, tag = "2")]
-        pub aggregation: ::std::option::Option<super::Aggregation>,
+        pub aggregation: ::core::option::Option<super::Aggregation>,
     }
     /// Selects an optional filter that is applied to the time series after
     /// computing the ratio.
@@ -514,7 +520,7 @@ pub mod time_series_filter_ratio {
 pub struct Threshold {
     /// A label for the threshold.
     #[prost(string, tag = "1")]
-    pub label: std::string::String,
+    pub label: ::prost::alloc::string::String,
     /// The value of the threshold. The value should be defined in the native scale
     /// of the metric.
     #[prost(double, tag = "2")]
@@ -527,6 +533,7 @@ pub struct Threshold {
     #[prost(enumeration = "threshold::Direction", tag = "4")]
     pub direction: i32,
 }
+/// Nested message and enum types in `Threshold`.
 pub mod threshold {
     /// The color suggests an interpretation to the viewer when actual values cross
     /// the threshold. Comments on each color provide UX guidance on how users can
@@ -574,7 +581,7 @@ pub struct Scorecard {
     /// Required. Fields for querying time series data from the
     /// Stackdriver metrics API.
     #[prost(message, optional, tag = "1")]
-    pub time_series_query: ::std::option::Option<TimeSeriesQuery>,
+    pub time_series_query: ::core::option::Option<TimeSeriesQuery>,
     /// The thresholds used to determine the state of the scorecard given the
     /// time series' current value. For an actual value x, the scorecard is in a
     /// danger state if x is less than or equal to a danger threshold that triggers
@@ -611,12 +618,13 @@ pub struct Scorecard {
     /// to 70 but less than 90 a WARNING state, and values greater than or equal to
     /// 90 a DANGER state.
     #[prost(message, repeated, tag = "6")]
-    pub thresholds: ::std::vec::Vec<Threshold>,
+    pub thresholds: ::prost::alloc::vec::Vec<Threshold>,
     /// Defines the optional additional chart shown on the scorecard. If
     /// neither is included - then a default scorecard is shown.
     #[prost(oneof = "scorecard::DataView", tags = "4, 5")]
-    pub data_view: ::std::option::Option<scorecard::DataView>,
+    pub data_view: ::core::option::Option<scorecard::DataView>,
 }
+/// Nested message and enum types in `Scorecard`.
 pub mod scorecard {
     /// A gauge chart shows where the current value sits within a pre-defined
     /// range. The upper and lower bounds should define the possible range of
@@ -647,7 +655,7 @@ pub mod scorecard {
         /// make sense to fetch and align data at one minute intervals. This field is
         /// optional and exists only as a hint.
         #[prost(message, optional, tag = "2")]
-        pub min_alignment_period: ::std::option::Option<::prost_types::Duration>,
+        pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
     }
     /// Defines the optional additional chart shown on the scorecard. If
     /// neither is included - then a default scorecard is shown.
@@ -666,11 +674,12 @@ pub mod scorecard {
 pub struct Text {
     /// The text content to be displayed.
     #[prost(string, tag = "1")]
-    pub content: std::string::String,
+    pub content: ::prost::alloc::string::String,
     /// How the text content is formatted.
     #[prost(enumeration = "text::Format", tag = "2")]
     pub format: i32,
 }
+/// Nested message and enum types in `Text`.
 pub mod text {
     /// The format type of the text content.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -689,27 +698,28 @@ pub mod text {
 pub struct XyChart {
     /// Required. The data displayed in this chart.
     #[prost(message, repeated, tag = "1")]
-    pub data_sets: ::std::vec::Vec<xy_chart::DataSet>,
+    pub data_sets: ::prost::alloc::vec::Vec<xy_chart::DataSet>,
     /// The duration used to display a comparison chart. A comparison chart
     /// simultaneously shows values from two similar-length time periods
     /// (e.g., week-over-week metrics).
     /// The duration must be positive, and it can only be applied to charts with
     /// data sets of LINE plot type.
     #[prost(message, optional, tag = "4")]
-    pub timeshift_duration: ::std::option::Option<::prost_types::Duration>,
+    pub timeshift_duration: ::core::option::Option<::prost_types::Duration>,
     /// Threshold lines drawn horizontally across the chart.
     #[prost(message, repeated, tag = "5")]
-    pub thresholds: ::std::vec::Vec<Threshold>,
+    pub thresholds: ::prost::alloc::vec::Vec<Threshold>,
     /// The properties applied to the X axis.
     #[prost(message, optional, tag = "6")]
-    pub x_axis: ::std::option::Option<xy_chart::Axis>,
+    pub x_axis: ::core::option::Option<xy_chart::Axis>,
     /// The properties applied to the Y axis.
     #[prost(message, optional, tag = "7")]
-    pub y_axis: ::std::option::Option<xy_chart::Axis>,
+    pub y_axis: ::core::option::Option<xy_chart::Axis>,
     /// Display options for the chart.
     #[prost(message, optional, tag = "8")]
-    pub chart_options: ::std::option::Option<ChartOptions>,
+    pub chart_options: ::core::option::Option<ChartOptions>,
 }
+/// Nested message and enum types in `XyChart`.
 pub mod xy_chart {
     /// Groups a time series query definition with charting options.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -717,7 +727,7 @@ pub mod xy_chart {
         /// Required. Fields for querying time series data from the
         /// Stackdriver metrics API.
         #[prost(message, optional, tag = "1")]
-        pub time_series_query: ::std::option::Option<super::TimeSeriesQuery>,
+        pub time_series_query: ::core::option::Option<super::TimeSeriesQuery>,
         /// How this data should be plotted on the chart.
         #[prost(enumeration = "data_set::PlotType", tag = "2")]
         pub plot_type: i32,
@@ -725,18 +735,21 @@ pub mod xy_chart {
         /// This should be a string with interpolations of the form `${label_name}`,
         /// which will resolve to the label's value.
         #[prost(string, tag = "3")]
-        pub legend_template: std::string::String,
+        pub legend_template: ::prost::alloc::string::String,
         /// Optional. The lower bound on data point frequency for this data set, implemented by
         /// specifying the minimum alignment period to use in a time series query
         /// For example, if the data is published once every 10 minutes, the
         /// `min_alignment_period` should be at least 10 minutes. It would not
         /// make sense to fetch and align data at one minute intervals.
         #[prost(message, optional, tag = "4")]
-        pub min_alignment_period: ::std::option::Option<::prost_types::Duration>,
+        pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
     }
+    /// Nested message and enum types in `DataSet`.
     pub mod data_set {
         /// The types of plotting strategies for data sets.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum PlotType {
             /// Plot type is unspecified. The view will default to `LINE`.
@@ -765,14 +778,17 @@ pub mod xy_chart {
     pub struct Axis {
         /// The label of the axis.
         #[prost(string, tag = "1")]
-        pub label: std::string::String,
+        pub label: ::prost::alloc::string::String,
         /// The axis scale. By default, a linear scale is used.
         #[prost(enumeration = "axis::Scale", tag = "2")]
         pub scale: i32,
     }
+    /// Nested message and enum types in `Axis`.
     pub mod axis {
         /// Types of scales used in axes.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum Scale {
             /// Scale is unspecified. The view will default to `LINEAR`.
@@ -791,6 +807,7 @@ pub struct ChartOptions {
     #[prost(enumeration = "chart_options::Mode", tag = "1")]
     pub mode: i32,
 }
+/// Nested message and enum types in `ChartOptions`.
 pub mod chart_options {
     /// Chart mode options.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -815,11 +832,12 @@ pub mod chart_options {
 pub struct Widget {
     /// Optional. The title of the widget.
     #[prost(string, tag = "1")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Content defines the component used to populate the widget.
     #[prost(oneof = "widget::Content", tags = "2, 3, 4, 5")]
-    pub content: ::std::option::Option<widget::Content>,
+    pub content: ::core::option::Option<widget::Content>,
 }
+/// Nested message and enum types in `Widget`.
 pub mod widget {
     /// Content defines the component used to populate the widget.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -848,7 +866,7 @@ pub struct GridLayout {
     pub columns: i64,
     /// The informational elements that are arranged into the columns row-first.
     #[prost(message, repeated, tag = "2")]
-    pub widgets: ::std::vec::Vec<Widget>,
+    pub widgets: ::prost::alloc::vec::Vec<Widget>,
 }
 /// A simplified layout that divides the available space into rows
 /// and arranges a set of widgets horizontally in each row.
@@ -856,8 +874,9 @@ pub struct GridLayout {
 pub struct RowLayout {
     /// The rows of content to display.
     #[prost(message, repeated, tag = "1")]
-    pub rows: ::std::vec::Vec<row_layout::Row>,
+    pub rows: ::prost::alloc::vec::Vec<row_layout::Row>,
 }
+/// Nested message and enum types in `RowLayout`.
 pub mod row_layout {
     /// Defines the layout properties and content for a row.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -870,7 +889,7 @@ pub mod row_layout {
         pub weight: i64,
         /// The display widgets arranged horizontally in this row.
         #[prost(message, repeated, tag = "2")]
-        pub widgets: ::std::vec::Vec<super::Widget>,
+        pub widgets: ::prost::alloc::vec::Vec<super::Widget>,
     }
 }
 /// A simplified layout that divides the available space into vertical columns
@@ -879,8 +898,9 @@ pub mod row_layout {
 pub struct ColumnLayout {
     /// The columns of content to display.
     #[prost(message, repeated, tag = "1")]
-    pub columns: ::std::vec::Vec<column_layout::Column>,
+    pub columns: ::prost::alloc::vec::Vec<column_layout::Column>,
 }
+/// Nested message and enum types in `ColumnLayout`.
 pub mod column_layout {
     /// Defines the layout properties and content for a column.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -893,7 +913,7 @@ pub mod column_layout {
         pub weight: i64,
         /// The display widgets arranged vertically in this column.
         #[prost(message, repeated, tag = "2")]
-        pub widgets: ::std::vec::Vec<super::Widget>,
+        pub widgets: ::prost::alloc::vec::Vec<super::Widget>,
     }
 }
 /// A Google Stackdriver dashboard. Dashboards define the content and layout
@@ -902,10 +922,10 @@ pub mod column_layout {
 pub struct Dashboard {
     /// Immutable. The resource name of the dashboard.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The mutable, human-readable name.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// `etag` is used for optimistic concurrency control as a way to help
     /// prevent simultaneous updates of a policy from overwriting each other.
     /// An `etag` is returned in the response to `GetDashboard`, and
@@ -914,11 +934,12 @@ pub struct Dashboard {
     /// Dashboard configuration. The field should not be passed during
     /// dashboard creation.
     #[prost(string, tag = "4")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// A dashboard's root container element that defines the layout style.
     #[prost(oneof = "dashboard::Layout", tags = "5, 8, 9")]
-    pub layout: ::std::option::Option<dashboard::Layout>,
+    pub layout: ::core::option::Option<dashboard::Layout>,
 }
+/// Nested message and enum types in `Dashboard`.
 pub mod dashboard {
     /// A dashboard's root container element that defines the layout style.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -946,10 +967,10 @@ pub struct CreateDashboardRequest {
     ///
     /// The `[PROJECT_ID_OR_NUMBER]` must match the dashboard resource name.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The initial dashboard specification.
     #[prost(message, optional, tag = "2")]
-    pub dashboard: ::std::option::Option<Dashboard>,
+    pub dashboard: ::core::option::Option<Dashboard>,
 }
 /// The `ListDashboards` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -958,7 +979,7 @@ pub struct ListDashboardsRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of results to return.
     /// If unspecified, a default of 1000 is used.
     #[prost(int32, tag = "2")]
@@ -967,19 +988,19 @@ pub struct ListDashboardsRequest {
     /// returned by a previous call to this method.  Using this field causes the
     /// method to return additional results from the previous method call.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListDashboards` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDashboardsResponse {
     /// The list of requested dashboards.
     #[prost(message, repeated, tag = "1")]
-    pub dashboards: ::std::vec::Vec<Dashboard>,
+    pub dashboards: ::prost::alloc::vec::Vec<Dashboard>,
     /// If there are more results than have been returned, then this field is set
     /// to a non-empty value.  To see the additional results,
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetDashboard` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -990,7 +1011,7 @@ pub struct GetDashboardRequest {
     ///  -  `projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]`
     ///       (for custom dashboards).
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `DeleteDashboard` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -999,14 +1020,14 @@ pub struct DeleteDashboardRequest {
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The `UpdateDashboard` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDashboardRequest {
     /// Required. The dashboard that will replace the existing dashboard.
     #[prost(message, optional, tag = "1")]
-    pub dashboard: ::std::option::Option<Dashboard>,
+    pub dashboard: ::core::option::Option<Dashboard>,
 }
 #[doc = r" Generated client implementations."]
 pub mod dashboards_service_client {

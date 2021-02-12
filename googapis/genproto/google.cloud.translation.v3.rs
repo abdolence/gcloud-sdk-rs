@@ -5,7 +5,7 @@ pub struct TranslateTextGlossaryConfig {
     /// Required. Specifies the glossary used for this translation. Use
     /// this format: projects/*/locations/*/glossaries/*
     #[prost(string, tag = "1")]
-    pub glossary: std::string::String,
+    pub glossary: ::prost::alloc::string::String,
     /// Optional. Indicates match is case-insensitive.
     /// Default value is false if missing.
     #[prost(bool, tag = "2")]
@@ -18,22 +18,22 @@ pub struct TranslateTextRequest {
     /// We recommend the total content be less than 30k codepoints.
     /// Use BatchTranslateText for larger text.
     #[prost(string, repeated, tag = "1")]
-    pub contents: ::std::vec::Vec<std::string::String>,
+    pub contents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The format of the source text, for example, "text/html",
     ///  "text/plain". If left blank, the MIME type defaults to "text/html".
     #[prost(string, tag = "3")]
-    pub mime_type: std::string::String,
+    pub mime_type: ::prost::alloc::string::String,
     /// Optional. The BCP-47 language code of the input text if
     /// known, for example, "en-US" or "sr-Latn". Supported language codes are
     /// listed in Language Support. If the source language isn't specified, the API
     /// attempts to identify the source language automatically and returns the
     /// source language within the response.
     #[prost(string, tag = "4")]
-    pub source_language_code: std::string::String,
+    pub source_language_code: ::prost::alloc::string::String,
     /// Required. The BCP-47 language code to use for translation of the input
     /// text, set to one of the language codes listed in Language Support.
     #[prost(string, tag = "5")]
-    pub target_language_code: std::string::String,
+    pub target_language_code: ::prost::alloc::string::String,
     /// Required. Project or location to make a call. Must refer to a caller's
     /// project.
     ///
@@ -49,7 +49,7 @@ pub struct TranslateTextRequest {
     /// Models and glossaries must be within the same region (have same
     /// location-id), otherwise an INVALID_ARGUMENT (400) error is returned.
     #[prost(string, tag = "8")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The `model` type requested for this translation.
     ///
     /// The format depends on model type:
@@ -68,12 +68,12 @@ pub struct TranslateTextRequest {
     ///
     /// If missing, the system decides which google base model to use.
     #[prost(string, tag = "6")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// Optional. Glossary to be applied. The glossary must be
     /// within the same region (have the same location-id) as the model, otherwise
     /// an INVALID_ARGUMENT (400) error is returned.
     #[prost(message, optional, tag = "7")]
-    pub glossary_config: ::std::option::Option<TranslateTextGlossaryConfig>,
+    pub glossary_config: ::core::option::Option<TranslateTextGlossaryConfig>,
     /// Optional. The labels with user-defined metadata for the request.
     ///
     /// Label keys and values can be no longer than 63 characters
@@ -83,7 +83,8 @@ pub struct TranslateTextRequest {
     ///
     /// See https://cloud.google.com/translate/docs/labels for more information.
     #[prost(map = "string, string", tag = "10")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextResponse {
@@ -91,21 +92,21 @@ pub struct TranslateTextResponse {
     /// This field has the same length as
     /// [`contents`][google.cloud.translation.v3.TranslateTextRequest.contents].
     #[prost(message, repeated, tag = "1")]
-    pub translations: ::std::vec::Vec<Translation>,
+    pub translations: ::prost::alloc::vec::Vec<Translation>,
     /// Text translation responses if a glossary is provided in the request.
     /// This can be the same as
     /// [`translations`][google.cloud.translation.v3.TranslateTextResponse.translations]
     /// if no terms apply. This field has the same length as
     /// [`contents`][google.cloud.translation.v3.TranslateTextRequest.contents].
     #[prost(message, repeated, tag = "3")]
-    pub glossary_translations: ::std::vec::Vec<Translation>,
+    pub glossary_translations: ::prost::alloc::vec::Vec<Translation>,
 }
 /// A single translation response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Translation {
     /// Text translated into the target language.
     #[prost(string, tag = "1")]
-    pub translated_text: std::string::String,
+    pub translated_text: ::prost::alloc::string::String,
     /// Only present when `model` is present in the request.
     /// `model` here is normalized to have project number.
     ///
@@ -115,16 +116,16 @@ pub struct Translation {
     /// `model` here would be normalized to
     /// `projects/{project-number}/locations/{location-id}/models/general/nmt`.
     #[prost(string, tag = "2")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// The BCP-47 language code of source text in the initial request, detected
     /// automatically, if no source language was passed within the initial
     /// request. If the source language was passed, auto-detection of the language
     /// does not occur and this field is empty.
     #[prost(string, tag = "4")]
-    pub detected_language_code: std::string::String,
+    pub detected_language_code: ::prost::alloc::string::String,
     /// The `glossary_config` used for this translation.
     #[prost(message, optional, tag = "3")]
-    pub glossary_config: ::std::option::Option<TranslateTextGlossaryConfig>,
+    pub glossary_config: ::core::option::Option<TranslateTextGlossaryConfig>,
 }
 /// The request message for language detection.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -141,7 +142,7 @@ pub struct DetectLanguageRequest {
     /// Only models within the same region (has same location-id) can be used.
     /// Otherwise an INVALID_ARGUMENT (400) error is returned.
     #[prost(string, tag = "5")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The language detection model to be used.
     ///
     /// Format:
@@ -152,11 +153,11 @@ pub struct DetectLanguageRequest {
     ///
     /// If not specified, the default model is used.
     #[prost(string, tag = "4")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
     /// Optional. The format of the source text, for example, "text/html",
     /// "text/plain". If left blank, the MIME type defaults to "text/html".
     #[prost(string, tag = "3")]
-    pub mime_type: std::string::String,
+    pub mime_type: ::prost::alloc::string::String,
     /// Optional. The labels with user-defined metadata for the request.
     ///
     /// Label keys and values can be no longer than 63 characters
@@ -166,18 +167,20 @@ pub struct DetectLanguageRequest {
     ///
     /// See https://cloud.google.com/translate/docs/labels for more information.
     #[prost(map = "string, string", tag = "6")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. The source of the document from which to detect the language.
     #[prost(oneof = "detect_language_request::Source", tags = "1")]
-    pub source: ::std::option::Option<detect_language_request::Source>,
+    pub source: ::core::option::Option<detect_language_request::Source>,
 }
+/// Nested message and enum types in `DetectLanguageRequest`.
 pub mod detect_language_request {
     /// Required. The source of the document from which to detect the language.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The content of the input stored as a string.
         #[prost(string, tag = "1")]
-        Content(std::string::String),
+        Content(::prost::alloc::string::String),
     }
 }
 /// The response message for language detection.
@@ -186,7 +189,7 @@ pub struct DetectedLanguage {
     /// The BCP-47 language code of source content in the request, detected
     /// automatically.
     #[prost(string, tag = "1")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// The confidence of the detection result for this language.
     #[prost(float, tag = "2")]
     pub confidence: f32,
@@ -197,7 +200,7 @@ pub struct DetectLanguageResponse {
     /// A list of detected languages sorted by detection confidence in descending
     /// order. The most probable language first.
     #[prost(message, repeated, tag = "1")]
-    pub languages: ::std::vec::Vec<DetectedLanguage>,
+    pub languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
 }
 /// The request message for discovering supported languages.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -216,12 +219,12 @@ pub struct GetSupportedLanguagesRequest {
     /// Only models within the same region (have same location-id) can be used,
     /// otherwise an INVALID_ARGUMENT (400) error is returned.
     #[prost(string, tag = "3")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. The language to use to return localized, human readable names
     /// of supported languages. If missing, then display names are not returned
     /// in a response.
     #[prost(string, tag = "1")]
-    pub display_language_code: std::string::String,
+    pub display_language_code: ::prost::alloc::string::String,
     /// Optional. Get supported languages of this model.
     ///
     /// The format depends on model type:
@@ -237,7 +240,7 @@ pub struct GetSupportedLanguagesRequest {
     /// Returns languages supported by the specified model.
     /// If missing, we get supported languages of Google general base (PBMT) model.
     #[prost(string, tag = "2")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
 }
 /// The response message for discovering supported languages.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -245,7 +248,7 @@ pub struct SupportedLanguages {
     /// A list of supported language responses. This list contains an entry
     /// for each language the Translation API supports.
     #[prost(message, repeated, tag = "1")]
-    pub languages: ::std::vec::Vec<SupportedLanguage>,
+    pub languages: ::prost::alloc::vec::Vec<SupportedLanguage>,
 }
 /// A single supported language response corresponds to information related
 /// to one supported language.
@@ -256,11 +259,11 @@ pub struct SupportedLanguage {
     /// including language and region identifiers are returned (for example,
     /// 'zh-TW' and 'zh-CN')
     #[prost(string, tag = "1")]
-    pub language_code: std::string::String,
+    pub language_code: ::prost::alloc::string::String,
     /// Human readable name of the language localized in the display language
     /// specified in the request.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Can be used as source language.
     #[prost(bool, tag = "3")]
     pub support_source: bool,
@@ -273,7 +276,7 @@ pub struct SupportedLanguage {
 pub struct GcsSource {
     /// Required. Source data URI. For example, `gs://my_bucket/my_object`.
     #[prost(string, tag = "1")]
-    pub input_uri: std::string::String,
+    pub input_uri: ::prost::alloc::string::String,
 }
 /// Input configuration for BatchTranslateText request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -283,11 +286,12 @@ pub struct InputConfig {
     /// For `.html`, this field must be "text/html" or empty.
     /// For `.txt`, this field must be "text/plain" or empty.
     #[prost(string, tag = "1")]
-    pub mime_type: std::string::String,
+    pub mime_type: ::prost::alloc::string::String,
     /// Required. Specify the input.
     #[prost(oneof = "input_config::Source", tags = "2")]
-    pub source: ::std::option::Option<input_config::Source>,
+    pub source: ::core::option::Option<input_config::Source>,
 }
+/// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// Required. Specify the input.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -321,15 +325,16 @@ pub struct GcsDestination {
     /// 'output_uri_prefix' must end with "/" and start with "gs://", otherwise an
     /// INVALID_ARGUMENT (400) error is returned.
     #[prost(string, tag = "1")]
-    pub output_uri_prefix: std::string::String,
+    pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Output configuration for BatchTranslateText request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Required. The destination of output.
     #[prost(oneof = "output_config::Destination", tags = "1")]
-    pub destination: ::std::option::Option<output_config::Destination>,
+    pub destination: ::core::option::Option<output_config::Destination>,
 }
+/// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Required. The destination of output.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -417,13 +422,13 @@ pub struct BatchTranslateTextRequest {
     /// the same location-id) can be used, otherwise an INVALID_ARGUMENT (400)
     /// error is returned.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. Source language code.
     #[prost(string, tag = "2")]
-    pub source_language_code: std::string::String,
+    pub source_language_code: ::prost::alloc::string::String,
     /// Required. Specify up to 10 language codes here.
     #[prost(string, repeated, tag = "3")]
-    pub target_language_codes: ::std::vec::Vec<std::string::String>,
+    pub target_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The models to use for translation. Map's key is target language
     /// code. Map's value is model name. Value can be a built-in general model,
     /// or an AutoML Translation model.
@@ -441,22 +446,24 @@ pub struct BatchTranslateTextRequest {
     /// If the map is empty or a specific model is
     /// not requested for a language pair, then default google model (nmt) is used.
     #[prost(map = "string, string", tag = "4")]
-    pub models: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub models:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Input configurations.
     /// The total number of files matched should be <= 1000.
     /// The total content size should be <= 100M Unicode codepoints.
     /// The files must use UTF-8 encoding.
     #[prost(message, repeated, tag = "5")]
-    pub input_configs: ::std::vec::Vec<InputConfig>,
+    pub input_configs: ::prost::alloc::vec::Vec<InputConfig>,
     /// Required. Output configuration.
     /// If 2 input configs match to the same file (that is, same input path),
     /// we don't generate output for duplicate inputs.
     #[prost(message, optional, tag = "6")]
-    pub output_config: ::std::option::Option<OutputConfig>,
+    pub output_config: ::core::option::Option<OutputConfig>,
     /// Optional. Glossaries to be applied for translation.
     /// It's keyed by target language code.
     #[prost(map = "string, message", tag = "7")]
-    pub glossaries: ::std::collections::HashMap<std::string::String, TranslateTextGlossaryConfig>,
+    pub glossaries:
+        ::std::collections::HashMap<::prost::alloc::string::String, TranslateTextGlossaryConfig>,
     /// Optional. The labels with user-defined metadata for the request.
     ///
     /// Label keys and values can be no longer than 63 characters
@@ -466,7 +473,8 @@ pub struct BatchTranslateTextRequest {
     ///
     /// See https://cloud.google.com/translate/docs/labels for more information.
     #[prost(map = "string, string", tag = "9")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// State metadata for the batch translation operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -488,8 +496,9 @@ pub struct BatchTranslateMetadata {
     pub total_characters: i64,
     /// Time when the operation was submitted.
     #[prost(message, optional, tag = "5")]
-    pub submit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `BatchTranslateMetadata`.
 pub mod batch_translate_metadata {
     /// State of the job.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -530,20 +539,21 @@ pub struct BatchTranslateResponse {
     pub failed_characters: i64,
     /// Time when the operation was submitted.
     #[prost(message, optional, tag = "4")]
-    pub submit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the operation is finished and
     /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
     /// set to true.
     #[prost(message, optional, tag = "5")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Input configuration for glossaries.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlossaryInputConfig {
     /// Required. Specify the input.
     #[prost(oneof = "glossary_input_config::Source", tags = "1")]
-    pub source: ::std::option::Option<glossary_input_config::Source>,
+    pub source: ::core::option::Option<glossary_input_config::Source>,
 }
+/// Nested message and enum types in `GlossaryInputConfig`.
 pub mod glossary_input_config {
     /// Required. Specify the input.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -580,24 +590,25 @@ pub struct Glossary {
     /// Required. The resource name of the glossary. Glossary names have the form
     /// `projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Provides examples to build the glossary from.
     /// Total glossary must not exceed 10M Unicode codepoints.
     #[prost(message, optional, tag = "5")]
-    pub input_config: ::std::option::Option<GlossaryInputConfig>,
+    pub input_config: ::core::option::Option<GlossaryInputConfig>,
     /// Output only. The number of entries defined in the glossary.
     #[prost(int32, tag = "6")]
     pub entry_count: i32,
     /// Output only. When CreateGlossary was called.
     #[prost(message, optional, tag = "7")]
-    pub submit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. When the glossary creation was finished.
     #[prost(message, optional, tag = "8")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Languages supported by the glossary.
     #[prost(oneof = "glossary::Languages", tags = "3, 4")]
-    pub languages: ::std::option::Option<glossary::Languages>,
+    pub languages: ::core::option::Option<glossary::Languages>,
 }
+/// Nested message and enum types in `Glossary`.
 pub mod glossary {
     /// Used with unidirectional glossaries.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -605,11 +616,11 @@ pub mod glossary {
         /// Required. The BCP-47 language code of the input text, for example,
         /// "en-US". Expected to be an exact match for GlossaryTerm.language_code.
         #[prost(string, tag = "1")]
-        pub source_language_code: std::string::String,
+        pub source_language_code: ::prost::alloc::string::String,
         /// Required. The BCP-47 language code for translation output, for example,
         /// "zh-CN". Expected to be an exact match for GlossaryTerm.language_code.
         #[prost(string, tag = "2")]
-        pub target_language_code: std::string::String,
+        pub target_language_code: ::prost::alloc::string::String,
     }
     /// Used with equivalent term set glossaries.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -618,7 +629,7 @@ pub mod glossary {
         /// All entries are unique. The list contains at least two entries.
         /// Expected to be an exact match for GlossaryTerm.language_code.
         #[prost(string, repeated, tag = "1")]
-        pub language_codes: ::std::vec::Vec<std::string::String>,
+        pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Languages supported by the glossary.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -636,31 +647,31 @@ pub mod glossary {
 pub struct CreateGlossaryRequest {
     /// Required. The project name.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The glossary to create.
     #[prost(message, optional, tag = "2")]
-    pub glossary: ::std::option::Option<Glossary>,
+    pub glossary: ::core::option::Option<Glossary>,
 }
 /// Request message for GetGlossary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlossaryRequest {
     /// Required. The name of the glossary to retrieve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteGlossary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlossaryRequest {
     /// Required. The name of the glossary to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListGlossaries.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlossariesRequest {
     /// Required. The name of the project from which to list all of the glossaries.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. The server may return fewer glossaries than
     /// requested. If unspecified, the server picks an appropriate default.
     #[prost(int32, tag = "2")]
@@ -670,24 +681,24 @@ pub struct ListGlossariesRequest {
     /// returned from the previous call to `ListGlossaries` method.
     /// The first page is returned if `page_token`is empty or missing.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Filter specifying constraints of a list operation.
     /// Filtering is not supported yet, and the parameter currently has no effect.
     /// If missing, no filtering is performed.
     #[prost(string, tag = "4")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListGlossaries.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlossariesResponse {
     /// The list of glossaries for a project.
     #[prost(message, repeated, tag = "1")]
-    pub glossaries: ::std::vec::Vec<Glossary>,
+    pub glossaries: ::prost::alloc::vec::Vec<Glossary>,
     /// A token to retrieve a page of results. Pass this value in the
     /// [ListGlossariesRequest.page_token] field in the subsequent call to
     /// `ListGlossaries` method to retrieve the next page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Stored in the
 /// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]
@@ -696,14 +707,15 @@ pub struct ListGlossariesResponse {
 pub struct CreateGlossaryMetadata {
     /// The name of the glossary that is being created.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The current state of the glossary creation operation.
     #[prost(enumeration = "create_glossary_metadata::State", tag = "2")]
     pub state: i32,
     /// The time when the operation was submitted to the server.
     #[prost(message, optional, tag = "3")]
-    pub submit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `CreateGlossaryMetadata`.
 pub mod create_glossary_metadata {
     /// Enumerates the possible states that the creation request can be in.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -731,14 +743,15 @@ pub mod create_glossary_metadata {
 pub struct DeleteGlossaryMetadata {
     /// The name of the glossary that is being deleted.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The current state of the glossary deletion operation.
     #[prost(enumeration = "delete_glossary_metadata::State", tag = "2")]
     pub state: i32,
     /// The time when the operation was submitted to the server.
     #[prost(message, optional, tag = "3")]
-    pub submit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `DeleteGlossaryMetadata`.
 pub mod delete_glossary_metadata {
     /// Enumerates the possible states that the creation request can be in.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -766,15 +779,15 @@ pub mod delete_glossary_metadata {
 pub struct DeleteGlossaryResponse {
     /// The name of the deleted glossary.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The time when the operation was submitted to the server.
     #[prost(message, optional, tag = "2")]
-    pub submit_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the glossary deletion is finished and
     /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
     /// set to true.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[doc = r" Generated client implementations."]
 pub mod translation_service_client {

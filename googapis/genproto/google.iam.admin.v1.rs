@@ -5,8 +5,9 @@
 pub struct AuditData {
     /// The permission_delta when when creating or updating a Role.
     #[prost(message, optional, tag = "1")]
-    pub permission_delta: ::std::option::Option<audit_data::PermissionDelta>,
+    pub permission_delta: ::core::option::Option<audit_data::PermissionDelta>,
 }
+/// Nested message and enum types in `AuditData`.
 pub mod audit_data {
     /// A PermissionDelta message to record the added_permissions and
     /// removed_permissions inside a role.
@@ -14,10 +15,10 @@ pub mod audit_data {
     pub struct PermissionDelta {
         /// Added permissions.
         #[prost(string, repeated, tag = "1")]
-        pub added_permissions: ::std::vec::Vec<std::string::String>,
+        pub added_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Removed permissions.
         #[prost(string, repeated, tag = "2")]
-        pub removed_permissions: ::std::vec::Vec<std::string::String>,
+        pub removed_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
 /// A service account in the Identity and Access Management API.
@@ -48,29 +49,29 @@ pub struct ServiceAccount {
     /// In responses the resource name will always be in the format
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// @OutputOnly The id of the project that owns the service account.
     #[prost(string, tag = "2")]
-    pub project_id: std::string::String,
+    pub project_id: ::prost::alloc::string::String,
     /// @OutputOnly The unique and stable id of the service account.
     #[prost(string, tag = "4")]
-    pub unique_id: std::string::String,
+    pub unique_id: ::prost::alloc::string::String,
     /// @OutputOnly The email address of the service account.
     #[prost(string, tag = "5")]
-    pub email: std::string::String,
+    pub email: ::prost::alloc::string::String,
     /// Optional. A user-specified name for the service account.
     /// Must be less than or equal to 100 UTF-8 bytes.
     #[prost(string, tag = "6")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. Note: `etag` is an inoperable legacy field that is only returned
     /// for backwards compatibility.
-    #[prost(bytes, tag = "7")]
-    pub etag: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "7")]
+    pub etag: ::prost::alloc::vec::Vec<u8>,
     /// @OutputOnly. The OAuth2 client id for the service account.
     /// This is used in conjunction with the OAuth2 clientconfig API to make
     /// three legged OAuth2 (3LO) flows to access the data of Google users.
     #[prost(string, tag = "9")]
-    pub oauth2_client_id: std::string::String,
+    pub oauth2_client_id: ::prost::alloc::string::String,
 }
 /// The service account create request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -78,18 +79,18 @@ pub struct CreateServiceAccountRequest {
     /// Required. The resource name of the project associated with the service
     /// accounts, such as `projects/my-project-123`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The account id that is used to generate the service account
     /// email address and a stable unique id. It is unique within a project,
     /// must be 6-30 characters long, and match the regular expression
     /// `[a-z]([-a-z0-9]*[a-z0-9])` to comply with RFC1035.
     #[prost(string, tag = "2")]
-    pub account_id: std::string::String,
+    pub account_id: ::prost::alloc::string::String,
     /// The [ServiceAccount][google.iam.admin.v1.ServiceAccount] resource to
     /// create. Currently, only the following values are user assignable:
     /// `display_name` and `description`.
     #[prost(message, optional, tag = "3")]
-    pub service_account: ::std::option::Option<ServiceAccount>,
+    pub service_account: ::core::option::Option<ServiceAccount>,
 }
 /// The service account list request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -97,7 +98,7 @@ pub struct ListServiceAccountsRequest {
     /// Required. The resource name of the project associated with the service
     /// accounts, such as `projects/my-project-123`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional limit on the number of service accounts to include in the
     /// response. Further accounts can subsequently be obtained by including the
     /// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token]
@@ -107,19 +108,19 @@ pub struct ListServiceAccountsRequest {
     /// Optional pagination token returned in an earlier
     /// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token].
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The service account list response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceAccountsResponse {
     /// The list of matching service accounts.
     #[prost(message, repeated, tag = "1")]
-    pub accounts: ::std::vec::Vec<ServiceAccount>,
+    pub accounts: ::prost::alloc::vec::Vec<ServiceAccount>,
     /// To retrieve the next page of results, set
     /// [ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token]
     /// to this value.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The service account get request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -130,7 +131,7 @@ pub struct GetServiceAccountRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The service account delete request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -141,7 +142,7 @@ pub struct DeleteServiceAccountRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The service account keys list request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -153,7 +154,7 @@ pub struct ListServiceAccountKeysRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Filters the types of keys the user wants to include in the list
     /// response. Duplicate key types are not allowed. If no key type
     /// is provided, all keys are returned.
@@ -162,8 +163,9 @@ pub struct ListServiceAccountKeysRequest {
         repeated,
         tag = "2"
     )]
-    pub key_types: ::std::vec::Vec<i32>,
+    pub key_types: ::prost::alloc::vec::Vec<i32>,
 }
+/// Nested message and enum types in `ListServiceAccountKeysRequest`.
 pub mod list_service_account_keys_request {
     /// `KeyType` filters to selectively retrieve certain varieties
     /// of keys.
@@ -184,7 +186,7 @@ pub mod list_service_account_keys_request {
 pub struct ListServiceAccountKeysResponse {
     /// The public keys for the service account.
     #[prost(message, repeated, tag = "1")]
-    pub keys: ::std::vec::Vec<ServiceAccountKey>,
+    pub keys: ::prost::alloc::vec::Vec<ServiceAccountKey>,
 }
 /// The service account key get by id request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -196,7 +198,7 @@ pub struct GetServiceAccountKeyRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The output format of the public key requested.
     /// X509_PEM is the default output format.
     #[prost(enumeration = "ServiceAccountPublicKeyType", tag = "2")]
@@ -225,7 +227,7 @@ pub struct ServiceAccountKey {
     /// The resource name of the service account key in the following format
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The output format for the private key.
     /// Only provided in `CreateServiceAccountKey` responses, not
     /// in `GetServiceAccountKey` or `ListServiceAccountKey` responses.
@@ -244,20 +246,20 @@ pub struct ServiceAccountKey {
     /// Google API client libraries and with
     /// <a href="/sdk/gcloud/reference/auth/activate-service-account">gcloud
     /// auth activate-service-account</a>.
-    #[prost(bytes, tag = "3")]
-    pub private_key_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub private_key_data: ::prost::alloc::vec::Vec<u8>,
     /// The public key data. Only provided in `GetServiceAccountKey` responses.
-    #[prost(bytes, tag = "7")]
-    pub public_key_data: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "7")]
+    pub public_key_data: ::prost::alloc::vec::Vec<u8>,
     /// The key can be used after this timestamp.
     #[prost(message, optional, tag = "4")]
-    pub valid_after_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub valid_after_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The key can be used before this timestamp.
     /// For system-managed key pairs, this timestamp is the end time for the
     /// private key signing operation. The public key could still be used
     /// for verification for a few hours after this time.
     #[prost(message, optional, tag = "5")]
-    pub valid_before_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub valid_before_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The service account key create request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -268,7 +270,7 @@ pub struct CreateServiceAccountKeyRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The output format of the private key. The default value is
     /// `TYPE_GOOGLE_CREDENTIALS_FILE`, which is the Google Credentials File
     /// format.
@@ -289,7 +291,7 @@ pub struct DeleteServiceAccountKeyRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The service account sign blob request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -300,20 +302,20 @@ pub struct SignBlobRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The bytes to sign.
-    #[prost(bytes, tag = "2")]
-    pub bytes_to_sign: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub bytes_to_sign: ::prost::alloc::vec::Vec<u8>,
 }
 /// The service account sign blob response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobResponse {
     /// The id of the key used to sign the blob.
     #[prost(string, tag = "1")]
-    pub key_id: std::string::String,
+    pub key_id: ::prost::alloc::string::String,
     /// The signed blob.
-    #[prost(bytes, tag = "2")]
-    pub signature: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub signature: ::prost::alloc::vec::Vec<u8>,
 }
 /// The service account sign JWT request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -324,20 +326,20 @@ pub struct SignJwtRequest {
     /// the account. The `ACCOUNT` value can be the `email` address or the
     /// `unique_id` of the service account.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The JWT payload to sign, a JSON JWT Claim set.
     #[prost(string, tag = "2")]
-    pub payload: std::string::String,
+    pub payload: ::prost::alloc::string::String,
 }
 /// The service account sign JWT response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtResponse {
     /// The id of the key used to sign the JWT.
     #[prost(string, tag = "1")]
-    pub key_id: std::string::String,
+    pub key_id: ::prost::alloc::string::String,
     /// The signed JWT.
     #[prost(string, tag = "2")]
-    pub signed_jwt: std::string::String,
+    pub signed_jwt: ::prost::alloc::string::String,
 }
 /// A role in the Identity and Access Management API.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -350,30 +352,31 @@ pub struct Role {
     /// name is the complete path, e.g., roles/logging.viewer for predefined roles
     /// and organizations/{ORGANIZATION_ID}/roles/logging.viewer for custom roles.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Optional. A human-readable title for the role.  Typically this
     /// is limited to 100 UTF-8 bytes.
     #[prost(string, tag = "2")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// Optional. A human-readable description for the role.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// The names of the permissions this role grants when bound in an IAM policy.
     #[prost(string, repeated, tag = "7")]
-    pub included_permissions: ::std::vec::Vec<std::string::String>,
+    pub included_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The current launch stage of the role. If the `ALPHA` launch stage has been
     /// selected for a role, the `stage` field will not be included in the
     /// returned definition for the role.
     #[prost(enumeration = "role::RoleLaunchStage", tag = "8")]
     pub stage: i32,
     /// Used to perform a consistent read-modify-write.
-    #[prost(bytes, tag = "9")]
-    pub etag: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "9")]
+    pub etag: ::prost::alloc::vec::Vec<u8>,
     /// The current deleted state of the role. This field is read only.
     /// It will be ignored in calls to CreateRole and UpdateRole.
     #[prost(bool, tag = "11")]
     pub deleted: bool,
 }
+/// Nested message and enum types in `Role`.
 pub mod role {
     /// A stage representing a role's lifecycle phase.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -405,7 +408,7 @@ pub struct QueryGrantableRolesRequest {
     /// For example, a Cloud Platform project with id `my-project` will be named
     /// `//cloudresourcemanager.googleapis.com/projects/my-project`.
     #[prost(string, tag = "1")]
-    pub full_resource_name: std::string::String,
+    pub full_resource_name: ::prost::alloc::string::String,
     #[prost(enumeration = "RoleView", tag = "2")]
     pub view: i32,
     /// Optional limit on the number of roles to include in the response.
@@ -414,18 +417,18 @@ pub struct QueryGrantableRolesRequest {
     /// Optional pagination token returned in an earlier
     /// QueryGrantableRolesResponse.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The grantable role query response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryGrantableRolesResponse {
     /// The list of matching roles.
     #[prost(message, repeated, tag = "1")]
-    pub roles: ::std::vec::Vec<Role>,
+    pub roles: ::prost::alloc::vec::Vec<Role>,
     /// To retrieve the next page of results, set
     /// `QueryGrantableRolesRequest.page_token` to this value.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get all roles defined under a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -458,13 +461,13 @@ pub struct ListRolesRequest {
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Optional limit on the number of roles to include in the response.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional pagination token returned in an earlier ListRolesResponse.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Optional view for the returned Role objects. When `FULL` is specified,
     /// the `includedPermissions` field is returned, which includes a list of all
     /// permissions in the role. The default value is `BASIC`, which does not
@@ -480,11 +483,11 @@ pub struct ListRolesRequest {
 pub struct ListRolesResponse {
     /// The Roles defined on this resource.
     #[prost(message, repeated, tag = "1")]
-    pub roles: ::std::vec::Vec<Role>,
+    pub roles: ::prost::alloc::vec::Vec<Role>,
     /// To retrieve the next page of results, set
     /// `ListRolesRequest.page_token` to this value.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get the definition of an existing role.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -517,7 +520,7 @@ pub struct GetRoleRequest {
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new role.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -543,13 +546,13 @@ pub struct CreateRoleRequest {
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The role ID to use for this role.
     #[prost(string, tag = "2")]
-    pub role_id: std::string::String,
+    pub role_id: ::prost::alloc::string::String,
     /// The Role resource to create.
     #[prost(message, optional, tag = "3")]
-    pub role: ::std::option::Option<Role>,
+    pub role: ::core::option::Option<Role>,
 }
 /// The request to update a role.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -575,13 +578,13 @@ pub struct UpdateRoleRequest {
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The updated role.
     #[prost(message, optional, tag = "2")]
-    pub role: ::std::option::Option<Role>,
+    pub role: ::core::option::Option<Role>,
     /// A mask describing which fields in the Role have changed.
     #[prost(message, optional, tag = "3")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete an existing role.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -607,10 +610,10 @@ pub struct DeleteRoleRequest {
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Used to perform a consistent read-modify-write.
-    #[prost(bytes, tag = "2")]
-    pub etag: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub etag: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request to undelete an existing role.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -636,24 +639,24 @@ pub struct UndeleteRoleRequest {
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Used to perform a consistent read-modify-write.
-    #[prost(bytes, tag = "2")]
-    pub etag: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "2")]
+    pub etag: ::prost::alloc::vec::Vec<u8>,
 }
 /// A permission which can be included by a role.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Permission {
     /// The name of this Permission.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The title of this Permission.
     #[prost(string, tag = "2")]
-    pub title: std::string::String,
+    pub title: ::prost::alloc::string::String,
     /// A brief description of what this Permission is used for.
     /// This permission can ONLY be used in predefined roles.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// This permission can ONLY be used in predefined roles.
     #[prost(bool, tag = "4")]
     pub only_in_predefined_roles: bool,
@@ -664,6 +667,7 @@ pub struct Permission {
     #[prost(enumeration = "permission::CustomRolesSupportLevel", tag = "6")]
     pub custom_roles_support_level: i32,
 }
+/// Nested message and enum types in `Permission`.
 pub mod permission {
     /// A stage representing a permission's lifecycle phase.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -700,25 +704,25 @@ pub struct QueryTestablePermissionsRequest {
     /// For example, a Cloud Platform project with id `my-project` will be named
     /// `//cloudresourcemanager.googleapis.com/projects/my-project`.
     #[prost(string, tag = "1")]
-    pub full_resource_name: std::string::String,
+    pub full_resource_name: ::prost::alloc::string::String,
     /// Optional limit on the number of permissions to include in the response.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional pagination token returned in an earlier
     /// QueryTestablePermissionsRequest.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response containing permissions which can be tested on a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryTestablePermissionsResponse {
     /// The Permissions testable on the requested resource.
     #[prost(message, repeated, tag = "1")]
-    pub permissions: ::std::vec::Vec<Permission>,
+    pub permissions: ::prost::alloc::vec::Vec<Permission>,
     /// To retrieve the next page of results, set
     /// `QueryTestableRolesRequest.page_token` to this value.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Supported key algorithms.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

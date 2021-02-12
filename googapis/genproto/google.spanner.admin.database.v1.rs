@@ -8,11 +8,11 @@ pub struct OperationProgress {
     pub progress_percent: i32,
     /// Time the request was received.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If set, the time at which this operation failed or was completed
     /// successfully.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A backup of a Cloud Spanner database.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -23,7 +23,13 @@ pub struct Backup {
     /// Values are of the form
     /// `projects/<project>/instances/<instance>/databases/<database>`.
     #[prost(string, tag = "2")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
+    /// The backup will contain an externally consistent copy of the database at
+    /// the timestamp specified by `version_time`. If `version_time` is not
+    /// specified, the system will set `version_time` to the `create_time` of the
+    /// backup.
+    #[prost(message, optional, tag = "9")]
+    pub version_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required for the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]
     /// operation. The expiration time of the backup, with microseconds
     /// granularity that must be at least 6 hours and at most 366 days
@@ -31,7 +37,7 @@ pub struct Backup {
     /// has passed, the backup is eligible to be automatically deleted by Cloud
     /// Spanner to free the resources used by the backup.
     #[prost(message, optional, tag = "3")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only for the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] operation.
     /// Required for the [UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup] operation.
     ///
@@ -46,13 +52,12 @@ pub struct Backup {
     /// by the prefix of the backup name of the form
     /// `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
-    /// Output only. The backup will contain an externally consistent
-    /// copy of the database at the timestamp specified by
-    /// `create_time`. `create_time` is approximately the time the
-    /// [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] request is received.
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]
+    /// request is received. If the request does not specify `version_time`, the
+    /// `version_time` of the backup will be equivalent to the `create_time`.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Size of the backup in bytes.
     #[prost(int64, tag = "5")]
     pub size_bytes: i64,
@@ -67,8 +72,9 @@ pub struct Backup {
     /// restored database from the backup enters the `READY` state, the reference
     /// to the backup is removed.
     #[prost(string, repeated, tag = "7")]
-    pub referencing_databases: ::std::vec::Vec<std::string::String>,
+    pub referencing_databases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Backup`.
 pub mod backup {
     /// Indicates the current state of the backup.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -93,15 +99,15 @@ pub struct CreateBackupRequest {
     /// instance. Values are of the form
     /// `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The id of the backup to be created. The `backup_id` appended to
     /// `parent` forms the full backup name of the form
     /// `projects/<project>/instances/<instance>/backups/<backup_id>`.
     #[prost(string, tag = "2")]
-    pub backup_id: std::string::String,
+    pub backup_id: ::prost::alloc::string::String,
     /// Required. The backup to create.
     #[prost(message, optional, tag = "3")]
-    pub backup: ::std::option::Option<Backup>,
+    pub backup: ::core::option::Option<Backup>,
 }
 /// Metadata type for the operation returned by
 /// [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup].
@@ -109,14 +115,14 @@ pub struct CreateBackupRequest {
 pub struct CreateBackupMetadata {
     /// The name of the backup being created.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The name of the database the backup is created from.
     #[prost(string, tag = "2")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
     /// The progress of the
     /// [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] operation.
     #[prost(message, optional, tag = "3")]
-    pub progress: ::std::option::Option<OperationProgress>,
+    pub progress: ::core::option::Option<OperationProgress>,
     /// The time at which cancellation of this operation was received.
     /// [Operations.CancelOperation][google.longrunning.Operations.CancelOperation]
     /// starts asynchronous cancellation on a long-running operation. The server
@@ -129,7 +135,7 @@ pub struct CreateBackupMetadata {
     /// an [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(message, optional, tag = "4")]
-    pub cancel_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for [UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -139,14 +145,14 @@ pub struct UpdateBackupRequest {
     /// Update is only supported for the following fields:
     ///  * `backup.expire_time`.
     #[prost(message, optional, tag = "1")]
-    pub backup: ::std::option::Option<Backup>,
+    pub backup: ::core::option::Option<Backup>,
     /// Required. A mask specifying which fields (e.g. `expire_time`) in the
     /// Backup resource should be updated. This mask is relative to the Backup
     /// resource, not to the request message. The field mask must always be
     /// specified; this prevents any future fields from being erased accidentally
     /// by clients that do not know about them.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for [GetBackup][google.spanner.admin.database.v1.DatabaseAdmin.GetBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -155,7 +161,7 @@ pub struct GetBackupRequest {
     /// Values are of the form
     /// `projects/<project>/instances/<instance>/backups/<backup>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [DeleteBackup][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -164,7 +170,7 @@ pub struct DeleteBackupRequest {
     /// Values are of the form
     /// `projects/<project>/instances/<instance>/backups/<backup>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -172,7 +178,7 @@ pub struct ListBackupsRequest {
     /// Required. The instance to list backups from.  Values are of the
     /// form `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// An expression that filters the list of returned backups.
     ///
     /// A filter expression consists of a field name, a comparison operator, and a
@@ -208,7 +214,7 @@ pub struct ListBackupsRequest {
     ///          - The backup `expire_time` is before 2018-03-28T14:50:00Z.
     ///   * `size_bytes > 10000000000` - The backup's size is greater than 10GB
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Number of backups to be returned in the response. If 0 or
     /// less, defaults to the server's maximum allowed page size.
     #[prost(int32, tag = "3")]
@@ -218,7 +224,7 @@ pub struct ListBackupsRequest {
     /// previous [ListBackupsResponse][google.spanner.admin.database.v1.ListBackupsResponse] to the same `parent` and with the same
     /// `filter`.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -226,12 +232,12 @@ pub struct ListBackupsResponse {
     /// The list of matching backups. Backups returned are ordered by `create_time`
     /// in descending order, starting from the most recent `create_time`.
     #[prost(message, repeated, tag = "1")]
-    pub backups: ::std::vec::Vec<Backup>,
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
     /// `next_page_token` can be sent in a subsequent
     /// [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups] call to fetch more
     /// of the matching backups.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
 /// [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
@@ -240,7 +246,7 @@ pub struct ListBackupOperationsRequest {
     /// Required. The instance of the backup operations. Values are of
     /// the form `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// An expression that filters the list of returned backup operations.
     ///
     /// A filter expression consists of a field name, a
@@ -271,16 +277,16 @@ pub struct ListBackupOperationsRequest {
     ///   * `done:true` - The operation is complete.
     ///   * `metadata.database:prod` - The database the backup was taken from has
     ///      a name containing the string "prod".
-    ///   * `(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND` <br/>
-    ///     `(metadata.name:howl) AND` <br/>
-    ///     `(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND` <br/>
+    ///   * `(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata) AND` \
+    ///     `(metadata.name:howl) AND` \
+    ///     `(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND` \
     ///     `(error:*)` - Returns operations where:
     ///     * The operation's metadata type is [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].
     ///     * The backup name contains the string "howl".
     ///     * The operation started before 2018-03-28T14:50:00Z.
     ///     * The operation resulted in an error.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Number of operations to be returned in the response. If 0 or
     /// less, defaults to the server's maximum allowed page size.
     #[prost(int32, tag = "3")]
@@ -290,7 +296,7 @@ pub struct ListBackupOperationsRequest {
     /// from a previous [ListBackupOperationsResponse][google.spanner.admin.database.v1.ListBackupOperationsResponse] to the
     /// same `parent` and with the same `filter`.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
 /// [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
@@ -306,26 +312,33 @@ pub struct ListBackupOperationsResponse {
     /// `operation.metadata.value.progress.start_time` in descending order starting
     /// from the most recently started operation.
     #[prost(message, repeated, tag = "1")]
-    pub operations: ::std::vec::Vec<super::super::super::super::longrunning::Operation>,
+    pub operations: ::prost::alloc::vec::Vec<super::super::super::super::longrunning::Operation>,
     /// `next_page_token` can be sent in a subsequent
     /// [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations]
     /// call to fetch more of the matching metadata.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Information about a backup.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupInfo {
     /// Name of the backup.
     #[prost(string, tag = "1")]
-    pub backup: std::string::String,
+    pub backup: ::prost::alloc::string::String,
     /// The backup contains an externally consistent copy of `source_database` at
-    /// the timestamp specified by `create_time`.
+    /// the timestamp specified by `version_time`. If the
+    /// [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] request did not specify
+    /// `version_time`, the `version_time` of the backup is equivalent to the
+    /// `create_time`.
+    #[prost(message, optional, tag = "4")]
+    pub version_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] request was
+    /// received.
     #[prost(message, optional, tag = "2")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Name of the database the backup was created from.
     #[prost(string, tag = "3")]
-    pub source_database: std::string::String,
+    pub source_database: ::prost::alloc::string::String,
 }
 /// Information about the database restore.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -335,8 +348,9 @@ pub struct RestoreInfo {
     pub source_type: i32,
     /// Information about the source used to restore the database.
     #[prost(oneof = "restore_info::SourceInfo", tags = "2")]
-    pub source_info: ::std::option::Option<restore_info::SourceInfo>,
+    pub source_info: ::core::option::Option<restore_info::SourceInfo>,
 }
+/// Nested message and enum types in `RestoreInfo`.
 pub mod restore_info {
     /// Information about the source used to restore the database.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -356,18 +370,30 @@ pub struct Database {
     /// statement. This name can be passed to other API methods to
     /// identify the database.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The current database state.
     #[prost(enumeration = "database::State", tag = "2")]
     pub state: i32,
     /// Output only. If exists, the time at which the database creation started.
     #[prost(message, optional, tag = "3")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Applicable only for restored databases. Contains information
     /// about the restore source.
     #[prost(message, optional, tag = "4")]
-    pub restore_info: ::std::option::Option<RestoreInfo>,
+    pub restore_info: ::core::option::Option<RestoreInfo>,
+    /// Output only. The period in which Cloud Spanner retains all versions of data
+    /// for the database. This is the same as the value of version_retention_period
+    /// database option set using
+    /// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl]. Defaults to 1 hour,
+    /// if not set.
+    #[prost(string, tag = "6")]
+    pub version_retention_period: ::prost::alloc::string::String,
+    /// Output only. Earliest timestamp at which older versions of the data can be
+    /// read.
+    #[prost(message, optional, tag = "7")]
+    pub earliest_version_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Nested message and enum types in `Database`.
 pub mod database {
     /// Indicates the current state of the database.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -397,7 +423,7 @@ pub struct ListDatabasesRequest {
     /// Required. The instance whose databases should be listed.
     /// Values are of the form `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Number of databases to be returned in the response. If 0 or less,
     /// defaults to the server's maximum allowed page size.
     #[prost(int32, tag = "3")]
@@ -406,19 +432,19 @@ pub struct ListDatabasesRequest {
     /// [next_page_token][google.spanner.admin.database.v1.ListDatabasesResponse.next_page_token] from a
     /// previous [ListDatabasesResponse][google.spanner.admin.database.v1.ListDatabasesResponse].
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesResponse {
     /// Databases that matched the request.
     #[prost(message, repeated, tag = "1")]
-    pub databases: ::std::vec::Vec<Database>,
+    pub databases: ::prost::alloc::vec::Vec<Database>,
     /// `next_page_token` can be sent in a subsequent
     /// [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases] call to fetch more
     /// of the matching databases.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -426,20 +452,20 @@ pub struct CreateDatabaseRequest {
     /// Required. The name of the instance that will serve the new database.
     /// Values are of the form `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. A `CREATE DATABASE` statement, which specifies the ID of the
     /// new database.  The database ID must conform to the regular expression
     /// `[a-z][a-z0-9_\-]*[a-z0-9]` and be between 2 and 30 characters in length.
     /// If the database ID is a reserved word or if it contains a hyphen, the
     /// database ID must be enclosed in backticks (`` ` ``).
     #[prost(string, tag = "2")]
-    pub create_statement: std::string::String,
+    pub create_statement: ::prost::alloc::string::String,
     /// Optional. A list of DDL statements to run inside the newly created
     /// database. Statements can create tables, indexes, etc. These
     /// statements execute atomically with the creation of the database:
     /// if there is an error in any statement, the database is not created.
     #[prost(string, repeated, tag = "3")]
-    pub extra_statements: ::std::vec::Vec<std::string::String>,
+    pub extra_statements: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Metadata type for the operation returned by
 /// [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
@@ -447,7 +473,7 @@ pub struct CreateDatabaseRequest {
 pub struct CreateDatabaseMetadata {
     /// The database being created.
     #[prost(string, tag = "1")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
 }
 /// The request for [GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -455,7 +481,7 @@ pub struct GetDatabaseRequest {
     /// Required. The name of the requested database. Values are of the form
     /// `projects/<project>/instances/<instance>/databases/<database>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Enqueues the given DDL statements to be applied, in order but not
 /// necessarily all at once, to the database schema at some point (or
@@ -477,10 +503,10 @@ pub struct GetDatabaseRequest {
 pub struct UpdateDatabaseDdlRequest {
     /// Required. The database to update.
     #[prost(string, tag = "1")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
     /// Required. DDL statements to be applied to the database.
     #[prost(string, repeated, tag = "2")]
-    pub statements: ::std::vec::Vec<std::string::String>,
+    pub statements: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If empty, the new update request is assigned an
     /// automatically-generated operation ID. Otherwise, `operation_id`
     /// is used to construct the name of the resulting
@@ -501,7 +527,7 @@ pub struct UpdateDatabaseDdlRequest {
     /// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl] returns
     /// `ALREADY_EXISTS`.
     #[prost(string, tag = "3")]
-    pub operation_id: std::string::String,
+    pub operation_id: ::prost::alloc::string::String,
 }
 /// Metadata type for the operation returned by
 /// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl].
@@ -509,30 +535,37 @@ pub struct UpdateDatabaseDdlRequest {
 pub struct UpdateDatabaseDdlMetadata {
     /// The database being modified.
     #[prost(string, tag = "1")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
     /// For an update this list contains all the statements. For an
     /// individual statement, this list contains only that statement.
     #[prost(string, repeated, tag = "2")]
-    pub statements: ::std::vec::Vec<std::string::String>,
+    pub statements: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Reports the commit timestamps of all statements that have
     /// succeeded so far, where `commit_timestamps[i]` is the commit
     /// timestamp for the statement `statements[i]`.
     #[prost(message, repeated, tag = "3")]
-    pub commit_timestamps: ::std::vec::Vec<::prost_types::Timestamp>,
+    pub commit_timestamps: ::prost::alloc::vec::Vec<::prost_types::Timestamp>,
+    /// Output only. When true, indicates that the operation is throttled e.g
+    /// due to resource constraints. When resources become available the operation
+    /// will resume and this field will be false again.
+    #[prost(bool, tag = "4")]
+    pub throttled: bool,
 }
 /// The request for [DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DropDatabaseRequest {
     /// Required. The database to be dropped.
     #[prost(string, tag = "1")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
 }
 /// The request for [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatabaseDdlRequest {
     /// Required. The database whose schema we wish to get.
+    /// Values are of the form
+    /// `projects/<project>/instances/<instance>/databases/<database>`
     #[prost(string, tag = "1")]
-    pub database: std::string::String,
+    pub database: ::prost::alloc::string::String,
 }
 /// The response for [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -540,7 +573,7 @@ pub struct GetDatabaseDdlResponse {
     /// A list of formatted DDL statements defining the schema of the database
     /// specified in the request.
     #[prost(string, repeated, tag = "1")]
-    pub statements: ::std::vec::Vec<std::string::String>,
+    pub statements: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for
 /// [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].
@@ -549,7 +582,7 @@ pub struct ListDatabaseOperationsRequest {
     /// Required. The instance of the database operations.
     /// Values are of the form `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// An expression that filters the list of returned operations.
     ///
     /// A filter expression consists of a field name, a
@@ -578,11 +611,11 @@ pub struct ListDatabaseOperationsRequest {
     /// Here are a few examples:
     ///
     ///   * `done:true` - The operation is complete.
-    ///   * `(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata) AND` <br/>
-    ///     `(metadata.source_type:BACKUP) AND` <br/>
-    ///     `(metadata.backup_info.backup:backup_howl) AND` <br/>
-    ///     `(metadata.name:restored_howl) AND` <br/>
-    ///     `(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND` <br/>
+    ///   * `(metadata.@type=type.googleapis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata) AND` \
+    ///     `(metadata.source_type:BACKUP) AND` \
+    ///     `(metadata.backup_info.backup:backup_howl) AND` \
+    ///     `(metadata.name:restored_howl) AND` \
+    ///     `(metadata.progress.start_time < \"2018-03-28T14:50:00Z\") AND` \
     ///     `(error:*)` - Return operations where:
     ///     * The operation's metadata type is [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata].
     ///     * The database is restored from a backup.
@@ -591,7 +624,7 @@ pub struct ListDatabaseOperationsRequest {
     ///     * The operation started before 2018-03-28T14:50:00Z.
     ///     * The operation resulted in an error.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Number of operations to be returned in the response. If 0 or
     /// less, defaults to the server's maximum allowed page size.
     #[prost(int32, tag = "3")]
@@ -601,7 +634,7 @@ pub struct ListDatabaseOperationsRequest {
     /// from a previous [ListDatabaseOperationsResponse][google.spanner.admin.database.v1.ListDatabaseOperationsResponse] to the
     /// same `parent` and with the same `filter`.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
 /// [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].
@@ -613,12 +646,12 @@ pub struct ListDatabaseOperationsResponse {
     /// [metadata][google.longrunning.Operation.metadata] field type
     /// `metadata.type_url` describes the type of the metadata.
     #[prost(message, repeated, tag = "1")]
-    pub operations: ::std::vec::Vec<super::super::super::super::longrunning::Operation>,
+    pub operations: ::prost::alloc::vec::Vec<super::super::super::super::longrunning::Operation>,
     /// `next_page_token` can be sent in a subsequent
     /// [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations]
     /// call to fetch more of the matching metadata.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
 /// [RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase].
@@ -630,17 +663,18 @@ pub struct RestoreDatabaseRequest {
     /// the source backup. Values are of the form
     /// `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The id of the database to create and restore to. This
     /// database must not already exist. The `database_id` appended to
     /// `parent` forms the full database name of the form
     /// `projects/<project>/instances/<instance>/databases/<database_id>`.
     #[prost(string, tag = "2")]
-    pub database_id: std::string::String,
+    pub database_id: ::prost::alloc::string::String,
     /// Required. The source from which to restore.
     #[prost(oneof = "restore_database_request::Source", tags = "3")]
-    pub source: ::std::option::Option<restore_database_request::Source>,
+    pub source: ::core::option::Option<restore_database_request::Source>,
 }
+/// Nested message and enum types in `RestoreDatabaseRequest`.
 pub mod restore_database_request {
     /// Required. The source from which to restore.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -648,7 +682,7 @@ pub mod restore_database_request {
         /// Name of the backup from which to restore.  Values are of the form
         /// `projects/<project>/instances/<instance>/backups/<backup>`.
         #[prost(string, tag = "3")]
-        Backup(std::string::String),
+        Backup(::prost::alloc::string::String),
     }
 }
 /// Metadata type for the long-running operation returned by
@@ -657,7 +691,7 @@ pub mod restore_database_request {
 pub struct RestoreDatabaseMetadata {
     /// Name of the database being created and restored to.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The type of the restore source.
     #[prost(enumeration = "RestoreSourceType", tag = "2")]
     pub source_type: i32,
@@ -665,7 +699,7 @@ pub struct RestoreDatabaseMetadata {
     /// [RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase]
     /// operation.
     #[prost(message, optional, tag = "4")]
-    pub progress: ::std::option::Option<OperationProgress>,
+    pub progress: ::core::option::Option<OperationProgress>,
     /// The time at which cancellation of this operation was received.
     /// [Operations.CancelOperation][google.longrunning.Operations.CancelOperation]
     /// starts asynchronous cancellation on a long-running operation. The server
@@ -678,7 +712,7 @@ pub struct RestoreDatabaseMetadata {
     /// an [Operation.error][google.longrunning.Operation.error] value with a
     /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to `Code.CANCELLED`.
     #[prost(message, optional, tag = "5")]
-    pub cancel_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If exists, the name of the long-running operation that will be used to
     /// track the post-restore optimization process to optimize the performance of
     /// the restored database, and remove the dependency on the restore source.
@@ -691,12 +725,13 @@ pub struct RestoreDatabaseMetadata {
     /// operation completes successfully. This operation will not be created if the
     /// restore was not successful.
     #[prost(string, tag = "6")]
-    pub optimize_database_operation_name: std::string::String,
+    pub optimize_database_operation_name: ::prost::alloc::string::String,
     /// Information about the source used to restore the database, as specified by
     /// `source` in [RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest].
     #[prost(oneof = "restore_database_metadata::SourceInfo", tags = "3")]
-    pub source_info: ::std::option::Option<restore_database_metadata::SourceInfo>,
+    pub source_info: ::core::option::Option<restore_database_metadata::SourceInfo>,
 }
+/// Nested message and enum types in `RestoreDatabaseMetadata`.
 pub mod restore_database_metadata {
     /// Information about the source used to restore the database, as specified by
     /// `source` in [RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest].
@@ -715,10 +750,10 @@ pub mod restore_database_metadata {
 pub struct OptimizeRestoredDatabaseMetadata {
     /// Name of the restored database being optimized.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The progress of the post-restore optimizations.
     #[prost(message, optional, tag = "2")]
-    pub progress: ::std::option::Option<OperationProgress>,
+    pub progress: ::core::option::Option<OperationProgress>,
 }
 /// Indicates the type of the restore source.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

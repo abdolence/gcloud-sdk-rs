@@ -4,13 +4,13 @@
 pub struct WorkloadIdentityPool {
     /// Output only. The resource name of the pool.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A display name for the pool. Cannot exceed 32 characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// A description of the pool. Cannot exceed 256 characters.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The state of the pool.
     #[prost(enumeration = "workload_identity_pool::State", tag = "4")]
     pub state: i32,
@@ -20,6 +20,7 @@ pub struct WorkloadIdentityPool {
     #[prost(bool, tag = "5")]
     pub disabled: bool,
 }
+/// Nested message and enum types in `WorkloadIdentityPool`.
 pub mod workload_identity_pool {
     /// The current state of the pool.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -47,13 +48,13 @@ pub mod workload_identity_pool {
 pub struct WorkloadIdentityPoolProvider {
     /// Output only. The resource name of the provider.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// A display name for the provider. Cannot exceed 32 characters.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// A description for the provider. Cannot exceed 256 characters.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// Output only. The state of the provider.
     #[prost(enumeration = "workload_identity_pool_provider::State", tag = "4")]
     pub state: i32,
@@ -141,7 +142,8 @@ pub struct WorkloadIdentityPoolProvider {
     ///   {"google.subject": "assertion.sub"}
     ///   ```
     #[prost(map = "string, string", tag = "6")]
-    pub attribute_mapping: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub attribute_mapping:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// [A Common Expression Language](https://opensource.google/projects/cel)
     /// expression, in plain text, to restrict what otherwise valid authentication
     /// credentials issued by the provider should not be accepted.
@@ -169,28 +171,29 @@ pub struct WorkloadIdentityPoolProvider {
     /// "'admins' in google.groups"
     /// ```
     #[prost(string, tag = "7")]
-    pub attribute_condition: std::string::String,
+    pub attribute_condition: ::prost::alloc::string::String,
     /// Identity provider configuration types.
     #[prost(
         oneof = "workload_identity_pool_provider::ProviderConfig",
         tags = "8, 9"
     )]
-    pub provider_config: ::std::option::Option<workload_identity_pool_provider::ProviderConfig>,
+    pub provider_config: ::core::option::Option<workload_identity_pool_provider::ProviderConfig>,
 }
+/// Nested message and enum types in `WorkloadIdentityPoolProvider`.
 pub mod workload_identity_pool_provider {
     /// Represents an Amazon Web Services identity provider.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aws {
         /// Required. The AWS account ID.
         #[prost(string, tag = "1")]
-        pub account_id: std::string::String,
+        pub account_id: ::prost::alloc::string::String,
     }
     /// Represents an OpenId Connect 1.0 identity provider.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Oidc {
         /// Required. The OIDC issuer URL.
         #[prost(string, tag = "1")]
-        pub issuer_uri: std::string::String,
+        pub issuer_uri: ::prost::alloc::string::String,
         /// Acceptable values for the `aud` field (audience) in the OIDC token. Token
         /// exchange requests are rejected if the token audience does not match one
         /// of the configured values. Each audience may be at most 256 characters. A
@@ -205,7 +208,7 @@ pub mod workload_identity_pool_provider {
         /// https://iam.googleapis.com/projects/<project-number>/locations/<location>/workloadIdentityPools/<pool-id>/providers/<provider-id>
         /// ```
         #[prost(string, repeated, tag = "2")]
-        pub allowed_audiences: ::std::vec::Vec<std::string::String>,
+        pub allowed_audiences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// The current state of the provider.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -241,7 +244,7 @@ pub mod workload_identity_pool_provider {
 pub struct ListWorkloadIdentityPoolsRequest {
     /// Required. The parent resource to list pools for.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of pools to return.
     /// If unspecified, at most 50 pools are returned.
     /// The maximum value is 1000; values above are 1000 truncated to 1000.
@@ -250,7 +253,7 @@ pub struct ListWorkloadIdentityPoolsRequest {
     /// A page token, received from a previous `ListWorkloadIdentityPools`
     /// call. Provide this to retrieve the subsequent page.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Whether to return soft-deleted pools.
     #[prost(bool, tag = "4")]
     pub show_deleted: bool,
@@ -260,18 +263,18 @@ pub struct ListWorkloadIdentityPoolsRequest {
 pub struct ListWorkloadIdentityPoolsResponse {
     /// A list of pools.
     #[prost(message, repeated, tag = "1")]
-    pub workload_identity_pools: ::std::vec::Vec<WorkloadIdentityPool>,
+    pub workload_identity_pools: ::prost::alloc::vec::Vec<WorkloadIdentityPool>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetWorkloadIdentityPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadIdentityPoolRequest {
     /// Required. The name of the pool to retrieve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateWorkloadIdentityPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -279,47 +282,47 @@ pub struct CreateWorkloadIdentityPoolRequest {
     /// Required. The parent resource to create the pool in. The only supported
     /// location is `global`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The pool to create.
     #[prost(message, optional, tag = "2")]
-    pub workload_identity_pool: ::std::option::Option<WorkloadIdentityPool>,
+    pub workload_identity_pool: ::core::option::Option<WorkloadIdentityPool>,
     /// Required. The ID to use for the pool, which becomes the
     /// final component of the resource name. This value should be 4-32 characters,
     /// and may contain the characters [a-z0-9-]. The prefix `gcp-` is
     /// reserved for use by Google, and may not be specified.
     #[prost(string, tag = "3")]
-    pub workload_identity_pool_id: std::string::String,
+    pub workload_identity_pool_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateWorkloadIdentityPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkloadIdentityPoolRequest {
     /// Required. The pool to update. The `name` field is used to identify the pool.
     #[prost(message, optional, tag = "1")]
-    pub workload_identity_pool: ::std::option::Option<WorkloadIdentityPool>,
+    pub workload_identity_pool: ::core::option::Option<WorkloadIdentityPool>,
     /// Required. The list of fields update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteWorkloadIdentityPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkloadIdentityPoolRequest {
     /// Required. The name of the pool to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UndeleteWorkloadIdentityPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteWorkloadIdentityPoolRequest {
     /// Required. The name of the pool to undelete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkloadIdentityPoolProviders.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadIdentityPoolProvidersRequest {
     /// Required. The pool to list providers for.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of providers to return.
     /// If unspecified, at most 50 providers are returned.
     /// The maximum value is 100; values above 100 are truncated to 100.
@@ -329,7 +332,7 @@ pub struct ListWorkloadIdentityPoolProvidersRequest {
     /// `ListWorkloadIdentityPoolProviders` call. Provide this to retrieve the
     /// subsequent page.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
     /// Whether to return soft-deleted providers.
     #[prost(bool, tag = "4")]
     pub show_deleted: bool,
@@ -339,58 +342,58 @@ pub struct ListWorkloadIdentityPoolProvidersRequest {
 pub struct ListWorkloadIdentityPoolProvidersResponse {
     /// A list of providers.
     #[prost(message, repeated, tag = "1")]
-    pub workload_identity_pool_providers: ::std::vec::Vec<WorkloadIdentityPoolProvider>,
+    pub workload_identity_pool_providers: ::prost::alloc::vec::Vec<WorkloadIdentityPoolProvider>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetWorkloadIdentityPoolProvider.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadIdentityPoolProviderRequest {
     /// Required. The name of the provider to retrieve.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateWorkloadIdentityPoolProvider.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadIdentityPoolProviderRequest {
     /// Required. The pool to create this provider in.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The provider to create.
     #[prost(message, optional, tag = "2")]
-    pub workload_identity_pool_provider: ::std::option::Option<WorkloadIdentityPoolProvider>,
+    pub workload_identity_pool_provider: ::core::option::Option<WorkloadIdentityPoolProvider>,
     /// Required. The ID for the provider, which becomes the
     /// final component of the resource name. This value must be 4-32 characters,
     /// and may contain the characters [a-z0-9-]. The prefix `gcp-` is
     /// reserved for use by Google, and may not be specified.
     #[prost(string, tag = "3")]
-    pub workload_identity_pool_provider_id: std::string::String,
+    pub workload_identity_pool_provider_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateWorkloadIdentityPoolProvider.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkloadIdentityPoolProviderRequest {
     /// Required. The provider to update.
     #[prost(message, optional, tag = "1")]
-    pub workload_identity_pool_provider: ::std::option::Option<WorkloadIdentityPoolProvider>,
+    pub workload_identity_pool_provider: ::core::option::Option<WorkloadIdentityPoolProvider>,
     /// Required. The list of fields to update.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteWorkloadIdentityPoolProvider.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkloadIdentityPoolProviderRequest {
     /// Required. The name of the provider to delete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for UndeleteWorkloadIdentityPoolProvider.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteWorkloadIdentityPoolProviderRequest {
     /// Required. The name of the provider to undelete.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Metadata for long-running WorkloadIdentityPool operations.
 #[derive(Clone, PartialEq, ::prost::Message)]

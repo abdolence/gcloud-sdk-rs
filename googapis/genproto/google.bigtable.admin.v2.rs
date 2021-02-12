@@ -8,11 +8,11 @@ pub struct OperationProgress {
     pub progress_percent: i32,
     /// Time the request was received.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If set, the time at which this operation failed or was completed
     /// successfully.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Storage media types for persisting Bigtable data.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -34,12 +34,12 @@ pub struct Instance {
     /// The unique name of the instance. Values are of the form
     /// `projects/{project}/instances/[a-z][a-z0-9\\-]+[a-z0-9]`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The descriptive name for this instance as it appears in UIs.
     /// Can be changed at any time, but should be kept globally unique
     /// to avoid confusion.
     #[prost(string, tag = "2")]
-    pub display_name: std::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// (`OutputOnly`)
     /// The current state of the instance.
     #[prost(enumeration = "instance::State", tag = "3")]
@@ -59,8 +59,10 @@ pub struct Instance {
     /// * No more than 64 labels can be associated with a given resource.
     /// * Keys and values must both be under 128 bytes.
     #[prost(map = "string, string", tag = "5")]
-    pub labels: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Possible states of an instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -104,14 +106,14 @@ pub struct Cluster {
     /// The unique name of the cluster. Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// (`CreationOnly`)
     /// The location where this cluster's nodes and storage reside. For best
     /// performance, clients should be located as close as possible to this
     /// cluster. Currently only zones are supported, so values should be of the
     /// form `projects/{project}/locations/{zone}`.
     #[prost(string, tag = "2")]
-    pub location: std::string::String,
+    pub location: ::prost::alloc::string::String,
     /// The current state of the cluster.
     #[prost(enumeration = "cluster::State", tag = "3")]
     pub state: i32,
@@ -125,6 +127,7 @@ pub struct Cluster {
     #[prost(enumeration = "StorageType", tag = "5")]
     pub default_storage_type: i32,
 }
+/// Nested message and enum types in `Cluster`.
 pub mod cluster {
     /// Possible states of a cluster.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -157,7 +160,7 @@ pub struct AppProfile {
     /// The unique name of the app profile. Values are of the form
     /// `projects/<project>/instances/<instance>/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Strongly validated etag for optimistic concurrency control. Preserve the
     /// value returned from `GetAppProfile` when calling `UpdateAppProfile` to
     /// fail the request if there has been a modification in the mean time. The
@@ -167,15 +170,16 @@ pub struct AppProfile {
     /// [RFC 7232](https://tools.ietf.org/html/rfc7232#section-2.3) for more
     /// details.
     #[prost(string, tag = "2")]
-    pub etag: std::string::String,
+    pub etag: ::prost::alloc::string::String,
     /// Optional long form description of the use case for this AppProfile.
     #[prost(string, tag = "3")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
     /// The routing policy for all read/write requests that use this app profile.
     /// A value must be explicitly set.
     #[prost(oneof = "app_profile::RoutingPolicy", tags = "5, 6")]
-    pub routing_policy: ::std::option::Option<app_profile::RoutingPolicy>,
+    pub routing_policy: ::core::option::Option<app_profile::RoutingPolicy>,
 }
+/// Nested message and enum types in `AppProfile`.
 pub mod app_profile {
     /// Read/write requests are routed to the nearest cluster in the instance, and
     /// will fail over to the nearest cluster that is available in the event of
@@ -191,7 +195,7 @@ pub mod app_profile {
     pub struct SingleClusterRouting {
         /// The cluster to which read/write requests should be routed.
         #[prost(string, tag = "1")]
-        pub cluster_id: std::string::String,
+        pub cluster_id: ::prost::alloc::string::String,
         /// Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are
         /// allowed by this app profile. It is unsafe to send these requests to
         /// the same table/row/column in multiple clusters.
@@ -216,23 +220,23 @@ pub struct CreateInstanceRequest {
     /// Required. The unique name of the project in which to create the new instance.
     /// Values are of the form `projects/{project}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID to be used when referring to the new instance within its project,
     /// e.g., just `myinstance` rather than
     /// `projects/myproject/instances/myinstance`.
     #[prost(string, tag = "2")]
-    pub instance_id: std::string::String,
+    pub instance_id: ::prost::alloc::string::String,
     /// Required. The instance to create.
     /// Fields marked `OutputOnly` must be left blank.
     #[prost(message, optional, tag = "3")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
     /// Required. The clusters to be created within the instance, mapped by desired
     /// cluster ID, e.g., just `mycluster` rather than
     /// `projects/myproject/instances/myinstance/clusters/mycluster`.
     /// Fields marked `OutputOnly` must be left blank.
     /// Currently, at most four clusters can be specified.
     #[prost(map = "string, message", tag = "4")]
-    pub clusters: ::std::collections::HashMap<std::string::String, Cluster>,
+    pub clusters: ::std::collections::HashMap<::prost::alloc::string::String, Cluster>,
 }
 /// Request message for BigtableInstanceAdmin.GetInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -240,7 +244,7 @@ pub struct GetInstanceRequest {
     /// Required. The unique name of the requested instance. Values are of the form
     /// `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.ListInstances.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -248,17 +252,17 @@ pub struct ListInstancesRequest {
     /// Required. The unique name of the project for which a list of instances is requested.
     /// Values are of the form `projects/{project}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// DEPRECATED: This field is unused and ignored.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BigtableInstanceAdmin.ListInstances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// The list of requested instances.
     #[prost(message, repeated, tag = "1")]
-    pub instances: ::std::vec::Vec<Instance>,
+    pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// Locations from which Instance information could not be retrieved,
     /// due to an outage or some other transient condition.
     /// Instances whose Clusters are all in one of the failed locations
@@ -266,21 +270,21 @@ pub struct ListInstancesResponse {
     /// Cluster in a failed location may only have partial information returned.
     /// Values are of the form `projects/<project>/locations/<zone_id>`
     #[prost(string, repeated, tag = "2")]
-    pub failed_locations: ::std::vec::Vec<std::string::String>,
+    pub failed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// DEPRECATED: This field is unused and ignored.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.PartialUpdateInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialUpdateInstanceRequest {
     /// Required. The Instance which will (partially) replace the current value.
     #[prost(message, optional, tag = "1")]
-    pub instance: ::std::option::Option<Instance>,
+    pub instance: ::core::option::Option<Instance>,
     /// Required. The subset of Instance fields which should be replaced.
     /// Must be explicitly set.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for BigtableInstanceAdmin.DeleteInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -288,7 +292,7 @@ pub struct DeleteInstanceRequest {
     /// Required. The unique name of the instance to be deleted.
     /// Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.CreateCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -297,16 +301,16 @@ pub struct CreateClusterRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID to be used when referring to the new cluster within its instance,
     /// e.g., just `mycluster` rather than
     /// `projects/myproject/instances/myinstance/clusters/mycluster`.
     #[prost(string, tag = "2")]
-    pub cluster_id: std::string::String,
+    pub cluster_id: ::prost::alloc::string::String,
     /// Required. The cluster to be created.
     /// Fields marked `OutputOnly` must be left blank.
     #[prost(message, optional, tag = "3")]
-    pub cluster: ::std::option::Option<Cluster>,
+    pub cluster: ::core::option::Option<Cluster>,
 }
 /// Request message for BigtableInstanceAdmin.GetCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -314,7 +318,7 @@ pub struct GetClusterRequest {
     /// Required. The unique name of the requested cluster. Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.ListClusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -324,27 +328,27 @@ pub struct ListClustersRequest {
     /// Use `{instance} = '-'` to list Clusters for all Instances in a project,
     /// e.g., `projects/myproject/instances/-`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// DEPRECATED: This field is unused and ignored.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BigtableInstanceAdmin.ListClusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// The list of requested clusters.
     #[prost(message, repeated, tag = "1")]
-    pub clusters: ::std::vec::Vec<Cluster>,
+    pub clusters: ::prost::alloc::vec::Vec<Cluster>,
     /// Locations from which Cluster information could not be retrieved,
     /// due to an outage or some other transient condition.
     /// Clusters from these locations may be missing from `clusters`,
     /// or may only have partial information returned.
     /// Values are of the form `projects/<project>/locations/<zone_id>`
     #[prost(string, repeated, tag = "2")]
-    pub failed_locations: ::std::vec::Vec<std::string::String>,
+    pub failed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// DEPRECATED: This field is unused and ignored.
     #[prost(string, tag = "3")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.DeleteCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -352,59 +356,59 @@ pub struct DeleteClusterRequest {
     /// Required. The unique name of the cluster to be deleted. Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The metadata for the Operation returned by CreateInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceMetadata {
     /// The request that prompted the initiation of this CreateInstance operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<CreateInstanceRequest>,
+    pub original_request: ::core::option::Option<CreateInstanceRequest>,
     /// The time at which the original request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The metadata for the Operation returned by UpdateInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceMetadata {
     /// The request that prompted the initiation of this UpdateInstance operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<PartialUpdateInstanceRequest>,
+    pub original_request: ::core::option::Option<PartialUpdateInstanceRequest>,
     /// The time at which the original request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The metadata for the Operation returned by CreateCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterMetadata {
     /// The request that prompted the initiation of this CreateCluster operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<CreateClusterRequest>,
+    pub original_request: ::core::option::Option<CreateClusterRequest>,
     /// The time at which the original request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The metadata for the Operation returned by UpdateCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterMetadata {
     /// The request that prompted the initiation of this UpdateCluster operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<Cluster>,
+    pub original_request: ::core::option::Option<Cluster>,
     /// The time at which the original request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for BigtableInstanceAdmin.CreateAppProfile.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -413,16 +417,16 @@ pub struct CreateAppProfileRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The ID to be used when referring to the new app profile within its
     /// instance, e.g., just `myprofile` rather than
     /// `projects/myproject/instances/myinstance/appProfiles/myprofile`.
     #[prost(string, tag = "2")]
-    pub app_profile_id: std::string::String,
+    pub app_profile_id: ::prost::alloc::string::String,
     /// Required. The app profile to be created.
     /// Fields marked `OutputOnly` will be ignored.
     #[prost(message, optional, tag = "3")]
-    pub app_profile: ::std::option::Option<AppProfile>,
+    pub app_profile: ::core::option::Option<AppProfile>,
     /// If true, ignore safety checks when creating the app profile.
     #[prost(bool, tag = "4")]
     pub ignore_warnings: bool,
@@ -433,7 +437,7 @@ pub struct GetAppProfileRequest {
     /// Required. The unique name of the requested app profile. Values are of the form
     /// `projects/{project}/instances/{instance}/appProfiles/{app_profile}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.ListAppProfiles.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -444,7 +448,7 @@ pub struct ListAppProfilesRequest {
     /// Use `{instance} = '-'` to list AppProfiles for all Instances in a project,
     /// e.g., `projects/myproject/instances/-`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Maximum number of results per page.
     ///
     /// A page_size of zero lets the server choose the number of items to return.
@@ -458,36 +462,36 @@ pub struct ListAppProfilesRequest {
     pub page_size: i32,
     /// The value of `next_page_token` returned by a previous call.
     #[prost(string, tag = "2")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BigtableInstanceAdmin.ListAppProfiles.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppProfilesResponse {
     /// The list of requested app profiles.
     #[prost(message, repeated, tag = "1")]
-    pub app_profiles: ::std::vec::Vec<AppProfile>,
+    pub app_profiles: ::prost::alloc::vec::Vec<AppProfile>,
     /// Set if not all app profiles could be returned in a single response.
     /// Pass this value to `page_token` in another request to get the next
     /// page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
     /// Locations from which AppProfile information could not be retrieved,
     /// due to an outage or some other transient condition.
     /// AppProfiles from these locations may be missing from `app_profiles`.
     /// Values are of the form `projects/<project>/locations/<zone_id>`
     #[prost(string, repeated, tag = "3")]
-    pub failed_locations: ::std::vec::Vec<std::string::String>,
+    pub failed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for BigtableInstanceAdmin.UpdateAppProfile.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAppProfileRequest {
     /// Required. The app profile which will (partially) replace the current value.
     #[prost(message, optional, tag = "1")]
-    pub app_profile: ::std::option::Option<AppProfile>,
+    pub app_profile: ::core::option::Option<AppProfile>,
     /// Required. The subset of app profile fields which should be replaced.
     /// If unset, all fields will be replaced.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If true, ignore safety checks when updating the app profile.
     #[prost(bool, tag = "3")]
     pub ignore_warnings: bool,
@@ -498,7 +502,7 @@ pub struct DeleteAppProfileRequest {
     /// Required. The unique name of the app profile to be deleted. Values are of the form
     /// `projects/{project}/instances/{instance}/appProfiles/{app_profile}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. If true, ignore safety checks when deleting the app profile.
     #[prost(bool, tag = "2")]
     pub ignore_warnings: bool,
@@ -903,8 +907,9 @@ pub struct RestoreInfo {
     pub source_type: i32,
     /// Information about the source used to restore the table.
     #[prost(oneof = "restore_info::SourceInfo", tags = "2")]
-    pub source_info: ::std::option::Option<restore_info::SourceInfo>,
+    pub source_info: ::core::option::Option<restore_info::SourceInfo>,
 }
+/// Nested message and enum types in `RestoreInfo`.
 pub mod restore_info {
     /// Information about the source used to restore the table.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -923,19 +928,20 @@ pub struct Table {
     /// `projects/<project>/instances/<instance>/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
     /// Views: `NAME_ONLY`, `SCHEMA_VIEW`, `REPLICATION_VIEW`, `FULL`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. Map from cluster ID to per-cluster table state.
     /// If it could not be determined whether or not the table has data in a
     /// particular cluster (for example, if its zone is unavailable), then
     /// there will be an entry for the cluster with UNKNOWN `replication_status`.
     /// Views: `REPLICATION_VIEW`, `FULL`
     #[prost(map = "string, message", tag = "2")]
-    pub cluster_states: ::std::collections::HashMap<std::string::String, table::ClusterState>,
+    pub cluster_states:
+        ::std::collections::HashMap<::prost::alloc::string::String, table::ClusterState>,
     /// (`CreationOnly`)
     /// The column families configured for this table, mapped by column family ID.
     /// Views: `SCHEMA_VIEW`, `FULL`
     #[prost(map = "string, message", tag = "3")]
-    pub column_families: ::std::collections::HashMap<std::string::String, ColumnFamily>,
+    pub column_families: ::std::collections::HashMap<::prost::alloc::string::String, ColumnFamily>,
     /// (`CreationOnly`)
     /// The granularity (i.e. `MILLIS`) at which timestamps are stored in
     /// this table. Timestamps not matching the granularity will be rejected.
@@ -946,8 +952,9 @@ pub struct Table {
     /// Output only. If this table was restored from another data source (e.g. a
     /// backup), this field will be populated with information about the restore.
     #[prost(message, optional, tag = "6")]
-    pub restore_info: ::std::option::Option<RestoreInfo>,
+    pub restore_info: ::core::option::Option<RestoreInfo>,
 }
+/// Nested message and enum types in `Table`.
 pub mod table {
     /// The state of a table's data in a particular cluster.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -956,9 +963,12 @@ pub mod table {
         #[prost(enumeration = "cluster_state::ReplicationState", tag = "1")]
         pub replication_state: i32,
     }
+    /// Nested message and enum types in `ClusterState`.
     pub mod cluster_state {
         /// Table replication states.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
         #[repr(i32)]
         pub enum ReplicationState {
             /// The replication state of the table is unknown in this cluster.
@@ -1021,29 +1031,30 @@ pub struct ColumnFamily {
     /// so it's possible for reads to return a cell even if it matches the active
     /// GC expression for its family.
     #[prost(message, optional, tag = "1")]
-    pub gc_rule: ::std::option::Option<GcRule>,
+    pub gc_rule: ::core::option::Option<GcRule>,
 }
 /// Rule for determining which cells to delete during garbage collection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcRule {
     /// Garbage collection rules.
     #[prost(oneof = "gc_rule::Rule", tags = "1, 2, 3, 4")]
-    pub rule: ::std::option::Option<gc_rule::Rule>,
+    pub rule: ::core::option::Option<gc_rule::Rule>,
 }
+/// Nested message and enum types in `GcRule`.
 pub mod gc_rule {
     /// A GcRule which deletes cells matching all of the given rules.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Intersection {
         /// Only delete cells which would be deleted by every element of `rules`.
         #[prost(message, repeated, tag = "1")]
-        pub rules: ::std::vec::Vec<super::GcRule>,
+        pub rules: ::prost::alloc::vec::Vec<super::GcRule>,
     }
     /// A GcRule which deletes cells matching any of the given rules.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Union {
         /// Delete cells which would be deleted by any element of `rules`.
         #[prost(message, repeated, tag = "1")]
-        pub rules: ::std::vec::Vec<super::GcRule>,
+        pub rules: ::prost::alloc::vec::Vec<super::GcRule>,
     }
     /// Garbage collection rules.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1077,10 +1088,10 @@ pub struct Snapshot {
     /// Values are of the form
     /// `projects/<project>/instances/<instance>/clusters/<cluster>/snapshots/<snapshot>`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Output only. The source table at the time the snapshot was taken.
     #[prost(message, optional, tag = "2")]
-    pub source_table: ::std::option::Option<Table>,
+    pub source_table: ::core::option::Option<Table>,
     /// Output only. The size of the data in the source table at the time the
     /// snapshot was taken. In some cases, this value may be computed
     /// asynchronously via a background process and a placeholder of 0 will be used
@@ -1089,19 +1100,20 @@ pub struct Snapshot {
     pub data_size_bytes: i64,
     /// Output only. The time when the snapshot is created.
     #[prost(message, optional, tag = "4")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the snapshot will be deleted. The maximum amount
     /// of time a snapshot can stay active is 365 days. If 'ttl' is not specified,
     /// the default maximum of 365 days will be used.
     #[prost(message, optional, tag = "5")]
-    pub delete_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the snapshot.
     #[prost(enumeration = "snapshot::State", tag = "6")]
     pub state: i32,
     /// Output only. Description of the snapshot.
     #[prost(string, tag = "7")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `Snapshot`.
 pub mod snapshot {
     /// Possible states of a snapshot.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1131,30 +1143,30 @@ pub struct Backup {
     /// name of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Immutable. Name of the table from which this backup was created.
     /// This needs to be in the same instance as the backup. Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{source_table}`.
     #[prost(string, tag = "2")]
-    pub source_table: std::string::String,
+    pub source_table: ::prost::alloc::string::String,
     /// Required. The expiration time of the backup, with microseconds
     /// granularity that must be at least 6 hours and at most 30 days
     /// from the time the request is received. Once the `expire_time`
     /// has passed, Cloud Bigtable will delete the backup and free the
     /// resources used by the backup.
     #[prost(message, optional, tag = "3")]
-    pub expire_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. `start_time` is the time that the backup was started
     /// (i.e. approximately the time the
     /// [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup]
     /// request is received).  The row data in this backup will be no older than
     /// this timestamp.
     #[prost(message, optional, tag = "4")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. `end_time` is the time that the backup was finished. The row
     /// data in the backup will be no newer than this timestamp.
     #[prost(message, optional, tag = "5")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Size of the backup in bytes.
     #[prost(int64, tag = "6")]
     pub size_bytes: i64,
@@ -1162,6 +1174,7 @@ pub struct Backup {
     #[prost(enumeration = "backup::State", tag = "7")]
     pub state: i32,
 }
+/// Nested message and enum types in `Backup`.
 pub mod backup {
     /// Indicates the current state of the backup.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1181,18 +1194,18 @@ pub mod backup {
 pub struct BackupInfo {
     /// Output only. Name of the backup.
     #[prost(string, tag = "1")]
-    pub backup: std::string::String,
+    pub backup: ::prost::alloc::string::String,
     /// Output only. The time that the backup was started. Row data in the backup
     /// will be no older than this timestamp.
     #[prost(message, optional, tag = "2")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. This time that the backup was finished. Row data in the
     /// backup will be no newer than this timestamp.
     #[prost(message, optional, tag = "3")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Name of the table the backup was created from.
     #[prost(string, tag = "4")]
-    pub source_table: std::string::String,
+    pub source_table: ::prost::alloc::string::String,
 }
 /// Indicates the type of the restore source.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1211,17 +1224,18 @@ pub struct RestoreTableRequest {
     /// table. This instance must be the parent of the source backup. Values are
     /// of the form `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The id of the table to create and restore to. This
     /// table must not already exist. The `table_id` appended to
     /// `parent` forms the full table name of the form
     /// `projects/<project>/instances/<instance>/tables/<table_id>`.
     #[prost(string, tag = "2")]
-    pub table_id: std::string::String,
+    pub table_id: ::prost::alloc::string::String,
     /// Required. The source from which to restore.
     #[prost(oneof = "restore_table_request::Source", tags = "3")]
-    pub source: ::std::option::Option<restore_table_request::Source>,
+    pub source: ::core::option::Option<restore_table_request::Source>,
 }
+/// Nested message and enum types in `RestoreTableRequest`.
 pub mod restore_table_request {
     /// Required. The source from which to restore.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1229,7 +1243,7 @@ pub mod restore_table_request {
         /// Name of the backup from which to restore.  Values are of the form
         /// `projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>`.
         #[prost(string, tag = "3")]
-        Backup(std::string::String),
+        Backup(::prost::alloc::string::String),
     }
 }
 /// Metadata type for the long-running operation returned by
@@ -1238,7 +1252,7 @@ pub mod restore_table_request {
 pub struct RestoreTableMetadata {
     /// Name of the table being created and restored to.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The type of the restore source.
     #[prost(enumeration = "RestoreSourceType", tag = "2")]
     pub source_type: i32,
@@ -1252,16 +1266,17 @@ pub struct RestoreTableMetadata {
     /// may not be created if the table is already optimized or the restore was
     /// not successful.
     #[prost(string, tag = "4")]
-    pub optimize_table_operation_name: std::string::String,
+    pub optimize_table_operation_name: ::prost::alloc::string::String,
     /// The progress of the [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable]
     /// operation.
     #[prost(message, optional, tag = "5")]
-    pub progress: ::std::option::Option<OperationProgress>,
+    pub progress: ::core::option::Option<OperationProgress>,
     /// Information about the source used to restore the table, as specified by
     /// `source` in [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
     #[prost(oneof = "restore_table_metadata::SourceInfo", tags = "3")]
-    pub source_info: ::std::option::Option<restore_table_metadata::SourceInfo>,
+    pub source_info: ::core::option::Option<restore_table_metadata::SourceInfo>,
 }
+/// Nested message and enum types in `RestoreTableMetadata`.
 pub mod restore_table_metadata {
     /// Information about the source used to restore the table, as specified by
     /// `source` in [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
@@ -1279,10 +1294,10 @@ pub mod restore_table_metadata {
 pub struct OptimizeRestoredTableMetadata {
     /// Name of the restored table being optimized.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The progress of the post-restore optimizations.
     #[prost(message, optional, tag = "2")]
-    pub progress: ::std::option::Option<OperationProgress>,
+    pub progress: ::core::option::Option<OperationProgress>,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.CreateTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable]
@@ -1291,15 +1306,15 @@ pub struct CreateTableRequest {
     /// Required. The unique name of the instance in which to create the table.
     /// Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The name by which the new table should be referred to within the parent
     /// instance, e.g., `foobar` rather than `{parent}/tables/foobar`.
     /// Maximum 50 characters.
     #[prost(string, tag = "2")]
-    pub table_id: std::string::String,
+    pub table_id: ::prost::alloc::string::String,
     /// Required. The Table to create.
     #[prost(message, optional, tag = "3")]
-    pub table: ::std::option::Option<Table>,
+    pub table: ::core::option::Option<Table>,
     /// The optional list of row keys that will be used to initially split the
     /// table into several tablets (tablets are similar to HBase regions).
     /// Given two split keys, `s1` and `s2`, three tablets will be created,
@@ -1317,15 +1332,16 @@ pub struct CreateTableRequest {
     ///     - Tablet 4 `[customer_2, other)      => {"customer_2"}.`
     ///     - Tablet 5 `[other, )                => {"other", "zz"}.`
     #[prost(message, repeated, tag = "4")]
-    pub initial_splits: ::std::vec::Vec<create_table_request::Split>,
+    pub initial_splits: ::prost::alloc::vec::Vec<create_table_request::Split>,
 }
+/// Nested message and enum types in `CreateTableRequest`.
 pub mod create_table_request {
     /// An initial split point for a newly created table.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Split {
         /// Row key to use as an initial tablet boundary.
-        #[prost(bytes, tag = "1")]
-        pub key: std::vec::Vec<u8>,
+        #[prost(bytes = "vec", tag = "1")]
+        pub key: ::prost::alloc::vec::Vec<u8>,
     }
 }
 /// Request message for
@@ -1340,17 +1356,17 @@ pub struct CreateTableFromSnapshotRequest {
     /// Required. The unique name of the instance in which to create the table.
     /// Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The name by which the new table should be referred to within the parent
     /// instance, e.g., `foobar` rather than `{parent}/tables/foobar`.
     #[prost(string, tag = "2")]
-    pub table_id: std::string::String,
+    pub table_id: ::prost::alloc::string::String,
     /// Required. The unique name of the snapshot from which to restore the table. The
     /// snapshot and the table must be in the same instance.
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}`.
     #[prost(string, tag = "3")]
-    pub source_snapshot: std::string::String,
+    pub source_snapshot: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange]
@@ -1360,11 +1376,12 @@ pub struct DropRowRangeRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Delete all rows or by prefix.
     #[prost(oneof = "drop_row_range_request::Target", tags = "2, 3")]
-    pub target: ::std::option::Option<drop_row_range_request::Target>,
+    pub target: ::core::option::Option<drop_row_range_request::Target>,
 }
+/// Nested message and enum types in `DropRowRangeRequest`.
 pub mod drop_row_range_request {
     /// Delete all rows or by prefix.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1372,7 +1389,7 @@ pub mod drop_row_range_request {
         /// Delete all rows that start with this row key prefix. Prefix cannot be
         /// zero length.
         #[prost(bytes, tag = "2")]
-        RowKeyPrefix(std::vec::Vec<u8>),
+        RowKeyPrefix(::prost::alloc::vec::Vec<u8>),
         /// Delete all rows in the table. Setting this to false is a no-op.
         #[prost(bool, tag = "3")]
         DeleteAllDataFromTable(bool),
@@ -1385,7 +1402,7 @@ pub struct ListTablesRequest {
     /// Required. The unique name of the instance for which tables should be listed.
     /// Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The view to be applied to the returned tables' fields.
     /// Only NAME_ONLY view (default) and REPLICATION_VIEW are supported.
     #[prost(enumeration = "table::View", tag = "2")]
@@ -1403,7 +1420,7 @@ pub struct ListTablesRequest {
     pub page_size: i32,
     /// The value of `next_page_token` returned by a previous call.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
@@ -1411,12 +1428,12 @@ pub struct ListTablesRequest {
 pub struct ListTablesResponse {
     /// The tables present in the requested instance.
     #[prost(message, repeated, tag = "1")]
-    pub tables: ::std::vec::Vec<Table>,
+    pub tables: ::prost::alloc::vec::Vec<Table>,
     /// Set if not all tables could be returned in a single response.
     /// Pass this value to `page_token` in another request to get the next
     /// page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.GetTable][google.bigtable.admin.v2.BigtableTableAdmin.GetTable]
@@ -1426,7 +1443,7 @@ pub struct GetTableRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The view to be applied to the returned table's fields.
     /// Defaults to `SCHEMA_VIEW` if unspecified.
     #[prost(enumeration = "table::View", tag = "2")]
@@ -1440,7 +1457,7 @@ pub struct DeleteTableRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies]
@@ -1450,25 +1467,27 @@ pub struct ModifyColumnFamiliesRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. Modifications to be atomically applied to the specified table's families.
     /// Entries are applied in order, meaning that earlier modifications can be
     /// masked by later ones (in the case of repeated updates to the same family,
     /// for example).
     #[prost(message, repeated, tag = "2")]
-    pub modifications: ::std::vec::Vec<modify_column_families_request::Modification>,
+    pub modifications: ::prost::alloc::vec::Vec<modify_column_families_request::Modification>,
 }
+/// Nested message and enum types in `ModifyColumnFamiliesRequest`.
 pub mod modify_column_families_request {
     /// A create, update, or delete of a particular column family.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Modification {
         /// The ID of the column family to be modified.
         #[prost(string, tag = "1")]
-        pub id: std::string::String,
+        pub id: ::prost::alloc::string::String,
         /// Column familiy modifications.
         #[prost(oneof = "modification::Mod", tags = "2, 3, 4")]
-        pub r#mod: ::std::option::Option<modification::Mod>,
+        pub r#mod: ::core::option::Option<modification::Mod>,
     }
+    /// Nested message and enum types in `Modification`.
     pub mod modification {
         /// Column familiy modifications.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1496,7 +1515,7 @@ pub struct GenerateConsistencyTokenRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
@@ -1504,7 +1523,7 @@ pub struct GenerateConsistencyTokenRequest {
 pub struct GenerateConsistencyTokenResponse {
     /// The generated consistency token.
     #[prost(string, tag = "1")]
-    pub consistency_token: std::string::String,
+    pub consistency_token: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
@@ -1514,10 +1533,10 @@ pub struct CheckConsistencyRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The token created using GenerateConsistencyToken for the Table.
     #[prost(string, tag = "2")]
-    pub consistency_token: std::string::String,
+    pub consistency_token: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
@@ -1541,27 +1560,27 @@ pub struct SnapshotTableRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{table}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The name of the cluster where the snapshot will be created in.
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "2")]
-    pub cluster: std::string::String,
+    pub cluster: ::prost::alloc::string::String,
     /// Required. The ID by which the new snapshot should be referred to within the parent
     /// cluster, e.g., `mysnapshot` of the form: `[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
     /// rather than
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/mysnapshot`.
     #[prost(string, tag = "3")]
-    pub snapshot_id: std::string::String,
+    pub snapshot_id: ::prost::alloc::string::String,
     /// The amount of time that the new snapshot can stay active after it is
     /// created. Once 'ttl' expires, the snapshot will get deleted. The maximum
     /// amount of time a snapshot can stay active is 7 days. If 'ttl' is not
     /// specified, the default value of 24 hours will be used.
     #[prost(message, optional, tag = "4")]
-    pub ttl: ::std::option::Option<::prost_types::Duration>,
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
     /// Description of the snapshot.
     #[prost(string, tag = "5")]
-    pub description: std::string::String,
+    pub description: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot]
@@ -1576,7 +1595,7 @@ pub struct GetSnapshotRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
@@ -1593,14 +1612,14 @@ pub struct ListSnapshotsRequest {
     /// Use `{cluster} = '-'` to list snapshots for all clusters in an instance,
     /// e.g., `projects/{project}/instances/{instance}/clusters/-`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of snapshots to return per page.
     /// CURRENTLY UNIMPLEMENTED AND IGNORED.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The value of `next_page_token` returned by a previous call.
     #[prost(string, tag = "3")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
@@ -1613,12 +1632,12 @@ pub struct ListSnapshotsRequest {
 pub struct ListSnapshotsResponse {
     /// The snapshots present in the requested cluster.
     #[prost(message, repeated, tag = "1")]
-    pub snapshots: ::std::vec::Vec<Snapshot>,
+    pub snapshots: ::prost::alloc::vec::Vec<Snapshot>,
     /// Set if not all snapshots could be returned in a single response.
     /// Pass this value to `page_token` in another request to get the next
     /// page of results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot]
@@ -1633,7 +1652,7 @@ pub struct DeleteSnapshotRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The metadata for the Operation returned by SnapshotTable.
 ///
@@ -1645,13 +1664,13 @@ pub struct DeleteSnapshotRequest {
 pub struct SnapshotTableMetadata {
     /// The request that prompted the initiation of this SnapshotTable operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<SnapshotTableRequest>,
+    pub original_request: ::core::option::Option<SnapshotTableRequest>,
     /// The time at which the original request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The metadata for the Operation returned by CreateTableFromSnapshot.
 ///
@@ -1664,13 +1683,13 @@ pub struct CreateTableFromSnapshotMetadata {
     /// The request that prompted the initiation of this CreateTableFromSnapshot
     /// operation.
     #[prost(message, optional, tag = "1")]
-    pub original_request: ::std::option::Option<CreateTableFromSnapshotRequest>,
+    pub original_request: ::core::option::Option<CreateTableFromSnapshotRequest>,
     /// The time at which the original request was received.
     #[prost(message, optional, tag = "2")]
-    pub request_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
-    pub finish_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1679,7 +1698,7 @@ pub struct CreateBackupRequest {
     /// table is located. The backup will be stored in this cluster. Values are
     /// of the form `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The id of the backup to be created. The `backup_id` along with
     /// the parent `parent` are combined as {parent}/backups/{backup_id} to create
     /// the full backup name, of the form:
@@ -1687,10 +1706,10 @@ pub struct CreateBackupRequest {
     /// This string must be between 1 and 50 characters in length and match the
     /// regex [_a-zA-Z0-9][-_.a-zA-Z0-9]*.
     #[prost(string, tag = "2")]
-    pub backup_id: std::string::String,
+    pub backup_id: ::prost::alloc::string::String,
     /// Required. The backup to create.
     #[prost(message, optional, tag = "3")]
-    pub backup: ::std::option::Option<Backup>,
+    pub backup: ::core::option::Option<Backup>,
 }
 /// Metadata type for the operation returned by
 /// [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
@@ -1698,16 +1717,16 @@ pub struct CreateBackupRequest {
 pub struct CreateBackupMetadata {
     /// The name of the backup being created.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The name of the table the backup is created from.
     #[prost(string, tag = "2")]
-    pub source_table: std::string::String,
+    pub source_table: ::prost::alloc::string::String,
     /// The time at which this operation started.
     #[prost(message, optional, tag = "3")]
-    pub start_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If set, the time at which this operation finished or was cancelled.
     #[prost(message, optional, tag = "4")]
-    pub end_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for [UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1717,14 +1736,14 @@ pub struct UpdateBackupRequest {
     /// Update is only supported for the following fields:
     ///  * `backup.expire_time`.
     #[prost(message, optional, tag = "1")]
-    pub backup: ::std::option::Option<Backup>,
+    pub backup: ::core::option::Option<Backup>,
     /// Required. A mask specifying which fields (e.g. `expire_time`) in the
     /// Backup resource should be updated. This mask is relative to the Backup
     /// resource, not to the request message. The field mask must always be
     /// specified; this prevents any future fields from being erased accidentally
     /// by clients that do not know about them.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for [GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1733,7 +1752,7 @@ pub struct GetBackupRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1742,7 +1761,7 @@ pub struct DeleteBackupRequest {
     /// Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}`.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// The request for [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1752,7 +1771,7 @@ pub struct ListBackupsRequest {
     /// Use `{cluster} = '-'` to list backups for all clusters in an instance,
     /// e.g., `projects/{project}/instances/{instance}/clusters/-`.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// A filter expression that filters backups listed in the response.
     /// The expression must specify the field name, a comparison operator,
     /// and the value that you want to use for filtering. The value must be a
@@ -1786,7 +1805,7 @@ pub struct ListBackupsRequest {
     ///              of the backup is before 2018-03-28T14:50:00Z.
     ///   * `size_bytes > 10000000000` --> The backup's size is greater than 10GB
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// An expression for specifying the sort order of the results of the request.
     /// The string value should specify one or more fields in [Backup][google.bigtable.admin.v2.Backup]. The full
     /// syntax is described at https://aip.dev/132#ordering.
@@ -1808,7 +1827,7 @@ pub struct ListBackupsRequest {
     /// If order_by is empty, results will be sorted by `start_time` in descending
     /// order starting from the most recently created backup.
     #[prost(string, tag = "3")]
-    pub order_by: std::string::String,
+    pub order_by: ::prost::alloc::string::String,
     /// Number of backups to be returned in the response. If 0 or
     /// less, defaults to the server's maximum allowed page size.
     #[prost(int32, tag = "4")]
@@ -1818,19 +1837,19 @@ pub struct ListBackupsRequest {
     /// previous [ListBackupsResponse][google.bigtable.admin.v2.ListBackupsResponse] to the same `parent` and with the same
     /// `filter`.
     #[prost(string, tag = "5")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// The response for [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The list of matching backups.
     #[prost(message, repeated, tag = "1")]
-    pub backups: ::std::vec::Vec<Backup>,
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
     /// `next_page_token` can be sent in a subsequent
     /// [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups] call to fetch more
     /// of the matching backups.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod bigtable_table_admin_client {

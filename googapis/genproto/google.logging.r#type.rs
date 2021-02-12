@@ -43,12 +43,12 @@ pub enum LogSeverity {
 pub struct HttpRequest {
     /// The request method. Examples: `"GET"`, `"HEAD"`, `"PUT"`, `"POST"`.
     #[prost(string, tag = "1")]
-    pub request_method: std::string::String,
+    pub request_method: ::prost::alloc::string::String,
     /// The scheme (http, https), the host name, the path and the query
     /// portion of the URL that was requested.
     /// Example: `"http://example.com/some/info?color=red"`.
     #[prost(string, tag = "2")]
-    pub request_url: std::string::String,
+    pub request_url: ::prost::alloc::string::String,
     /// The size of the HTTP request message in bytes, including the request
     /// headers and the request body.
     #[prost(int64, tag = "3")]
@@ -65,24 +65,26 @@ pub struct HttpRequest {
     /// `"Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; Q312461; .NET
     /// CLR 1.0.3705)"`.
     #[prost(string, tag = "6")]
-    pub user_agent: std::string::String,
+    pub user_agent: ::prost::alloc::string::String,
     /// The IP address (IPv4 or IPv6) of the client that issued the HTTP
-    /// request. Examples: `"192.168.1.1"`, `"FE80::0202:B3FF:FE1E:8329"`.
+    /// request. This field can include port information. Examples:
+    /// `"192.168.1.1"`, `"10.0.0.1:80"`, `"FE80::0202:B3FF:FE1E:8329"`.
     #[prost(string, tag = "7")]
-    pub remote_ip: std::string::String,
+    pub remote_ip: ::prost::alloc::string::String,
     /// The IP address (IPv4 or IPv6) of the origin server that the request was
-    /// sent to.
+    /// sent to. This field can include port information. Examples:
+    /// `"192.168.1.1"`, `"10.0.0.1:80"`, `"FE80::0202:B3FF:FE1E:8329"`.
     #[prost(string, tag = "13")]
-    pub server_ip: std::string::String,
+    pub server_ip: ::prost::alloc::string::String,
     /// The referer URL of the request, as defined in
     /// [HTTP/1.1 Header Field
     /// Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).
     #[prost(string, tag = "8")]
-    pub referer: std::string::String,
+    pub referer: ::prost::alloc::string::String,
     /// The request processing latency on the server, from the time the request was
     /// received until the response was sent.
     #[prost(message, optional, tag = "14")]
-    pub latency: ::std::option::Option<::prost_types::Duration>,
+    pub latency: ::core::option::Option<::prost_types::Duration>,
     /// Whether or not a cache lookup was attempted.
     #[prost(bool, tag = "11")]
     pub cache_lookup: bool,
@@ -101,5 +103,5 @@ pub struct HttpRequest {
     pub cache_fill_bytes: i64,
     /// Protocol used for the request. Examples: "HTTP/1.1", "HTTP/2", "websocket"
     #[prost(string, tag = "15")]
-    pub protocol: std::string::String,
+    pub protocol: ::prost::alloc::string::String,
 }

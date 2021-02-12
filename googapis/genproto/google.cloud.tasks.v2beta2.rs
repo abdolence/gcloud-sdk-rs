@@ -9,8 +9,8 @@ pub struct PullTarget {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullMessage {
     /// A data payload consumed by the worker to execute the task.
-    #[prost(bytes, tag = "1")]
-    pub payload: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "1")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
     /// The task's tag.
     ///
     /// Tags allow similar tasks to be processed in a batch. If you label
@@ -31,7 +31,7 @@ pub struct PullMessage {
     /// only UTF-8 encoded tags can be used in Cloud Tasks. If a tag isn't UTF-8
     /// encoded, the tag will be empty when the task is returned by Cloud Tasks.
     #[prost(string, tag = "2")]
-    pub tag: std::string::String,
+    pub tag: ::prost::alloc::string::String,
 }
 /// App Engine HTTP target.
 ///
@@ -55,7 +55,7 @@ pub struct AppEngineHttpTarget {
     /// the queue, no matter what the setting is for the
     /// [task-level app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
     #[prost(message, optional, tag = "1")]
-    pub app_engine_routing_override: ::std::option::Option<AppEngineRouting>,
+    pub app_engine_routing_override: ::core::option::Option<AppEngineRouting>,
 }
 /// App Engine HTTP request.
 ///
@@ -89,10 +89,10 @@ pub struct AppEngineHttpTarget {
 /// delivered to can be set at the queue-level or task-level:
 ///
 /// * If set,
-///    [app_engine_routing_override][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override]
-///    is used for all tasks in the queue, no matter what the setting
-///    is for the
-///    [task-level app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
+///   [app_engine_routing_override][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override]
+///   is used for all tasks in the queue, no matter what the setting
+///   is for the
+///   [task-level app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
 ///
 ///
 /// The `url` that the task will be sent to is:
@@ -126,14 +126,11 @@ pub struct AppEngineHttpRequest {
     /// The HTTP method to use for the request. The default is POST.
     ///
     /// The app's request handler for the task's target URL must be able to handle
-    /// HTTP requests with this http_method, otherwise the task attempt will fail
-    /// with error code 405 (Method Not Allowed). See
-    /// [Writing a push task request
+    /// HTTP requests with this http_method, otherwise the task attempt fails with
+    /// error code 405 (Method Not Allowed). See [Writing a push task request
     /// handler](https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler)
-    /// and the documentation for the request handlers in the language your app is
-    /// written in e.g.
-    /// [Python Request
-    /// Handler](https://cloud.google.com/appengine/docs/python/tools/webapp/requesthandlerclass).
+    /// and the App Engine documentation for your runtime on [How Requests are
+    /// Handled](https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled).
     #[prost(enumeration = "HttpMethod", tag = "1")]
     pub http_method: i32,
     /// Task-level setting for App Engine routing.
@@ -143,7 +140,7 @@ pub struct AppEngineHttpRequest {
     /// is used for all tasks in the queue, no matter what the setting is for the
     /// [task-level app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
     #[prost(message, optional, tag = "2")]
-    pub app_engine_routing: ::std::option::Option<AppEngineRouting>,
+    pub app_engine_routing: ::core::option::Option<AppEngineRouting>,
     /// The relative URL.
     ///
     /// The relative URL must begin with "/" and must be a valid HTTP relative URL.
@@ -151,7 +148,7 @@ pub struct AppEngineHttpRequest {
     /// If the relative URL is empty, then the root path "/" will be used.
     /// No spaces are allowed, and the maximum length allowed is 2083 characters.
     #[prost(string, tag = "3")]
-    pub relative_url: std::string::String,
+    pub relative_url: ::prost::alloc::string::String,
     /// HTTP request headers.
     ///
     /// This map contains the header field names and values.
@@ -195,15 +192,16 @@ pub struct AppEngineHttpRequest {
     /// the size, there is a limit on the maximum size of the [Task][google.cloud.tasks.v2beta2.Task]. For more
     /// information, see the [CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask] documentation.
     #[prost(map = "string, string", tag = "4")]
-    pub headers: ::std::collections::HashMap<std::string::String, std::string::String>,
+    pub headers:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Payload.
     ///
     /// The payload will be sent as the HTTP message body. A message
     /// body, and thus a payload, is allowed only if the HTTP method is
     /// POST or PUT. It is an error to set a data payload on a task with
     /// an incompatible [HttpMethod][google.cloud.tasks.v2beta2.HttpMethod].
-    #[prost(bytes, tag = "5")]
-    pub payload: std::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "5")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
 }
 /// App Engine Routing.
 ///
@@ -238,7 +236,7 @@ pub struct AppEngineRouting {
     /// [version][google.cloud.tasks.v2beta2.AppEngineRouting.version], and
     /// [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] are the empty string.
     #[prost(string, tag = "1")]
-    pub service: std::string::String,
+    pub service: ::prost::alloc::string::String,
     /// App version.
     ///
     /// By default, the task is sent to the version which is the default
@@ -256,7 +254,7 @@ pub struct AppEngineRouting {
     /// [version][google.cloud.tasks.v2beta2.AppEngineRouting.version], and
     /// [instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance] are the empty string.
     #[prost(string, tag = "2")]
-    pub version: std::string::String,
+    pub version: ::prost::alloc::string::String,
     /// App instance.
     ///
     /// By default, the task is sent to an instance which is available when
@@ -271,7 +269,7 @@ pub struct AppEngineRouting {
     /// and [App Engine Flex request
     /// routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
     #[prost(string, tag = "3")]
-    pub instance: std::string::String,
+    pub instance: ::prost::alloc::string::String,
     /// Output only. The host that the task is sent to.
     ///
     /// For more information, see
@@ -334,7 +332,7 @@ pub struct AppEngineRouting {
     /// will be sent to the default version of the default service when
     /// the task is attempted.
     #[prost(string, tag = "4")]
-    pub host: std::string::String,
+    pub host: ::prost::alloc::string::String,
 }
 /// The HTTP method used to execute the task.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -378,7 +376,7 @@ pub struct Queue {
     /// * `QUEUE_ID` can contain letters ([A-Za-z]), numbers ([0-9]), or
     ///   hyphens (-). The maximum length is 100 characters.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Rate limits for task dispatches.
     ///
     /// [rate_limits][google.cloud.tasks.v2beta2.Queue.rate_limits] and
@@ -395,7 +393,7 @@ pub struct Queue {
     ///   [retry_config][google.cloud.tasks.v2beta2.Queue.retry_config] controls task retries (the
     ///   second attempt, third attempt, etc).
     #[prost(message, optional, tag = "5")]
-    pub rate_limits: ::std::option::Option<RateLimits>,
+    pub rate_limits: ::core::option::Option<RateLimits>,
     /// Settings that determine the retry behavior.
     ///
     /// * For tasks created using Cloud Tasks: the queue-level retry settings
@@ -407,7 +405,7 @@ pub struct Queue {
     ///   [App Engine
     ///   documentation](https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks).
     #[prost(message, optional, tag = "6")]
-    pub retry_config: ::std::option::Option<RetryConfig>,
+    pub retry_config: ::core::option::Option<RetryConfig>,
     /// Output only. The state of the queue.
     ///
     /// `state` can only be changed by called
@@ -429,7 +427,38 @@ pub struct Queue {
     /// Purge time will be truncated to the nearest microsecond. Purge
     /// time will be unset if the queue has never been purged.
     #[prost(message, optional, tag = "8")]
-    pub purge_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub purge_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The maximum amount of time that a task will be retained in
+    /// this queue.
+    ///
+    /// Queues created by Cloud Tasks have a default `task_ttl` of 31 days.
+    /// After a task has lived for `task_ttl`, the task will be deleted
+    /// regardless of whether it was dispatched or not.
+    ///
+    /// The `task_ttl` for queues created via queue.yaml/xml is equal to the
+    /// maximum duration because there is a
+    /// [storage quota](https://cloud.google.com/appengine/quotas#Task_Queue) for
+    /// these queues. To view the maximum valid duration, see the documentation for
+    /// [Duration][google.protobuf.Duration].
+    #[prost(message, optional, tag = "9")]
+    pub task_ttl: ::core::option::Option<::prost_types::Duration>,
+    /// The task tombstone time to live (TTL).
+    ///
+    /// After a task is deleted or completed, the task's tombstone is
+    /// retained for the length of time specified by `tombstone_ttl`.
+    /// The tombstone is used by task de-duplication; another task with the same
+    /// name can't be created until the tombstone has expired. For more information
+    /// about task de-duplication, see the documentation for
+    /// [CreateTaskRequest][google.cloud.tasks.v2beta2.CreateTaskRequest.task].
+    ///
+    /// Queues created by Cloud Tasks have a default `tombstone_ttl` of 1 hour.
+    #[prost(message, optional, tag = "10")]
+    pub tombstone_ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The realtime, informational statistics for a queue. In order
+    /// to receive the statistics the caller should include this field in the
+    /// FieldMask.
+    #[prost(message, optional, tag = "16")]
+    pub stats: ::core::option::Option<QueueStats>,
     /// Caller-specified and required in [CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue][],
     /// after which the queue config type becomes output only, though fields within
     /// the config are mutable.
@@ -438,8 +467,9 @@ pub struct Queue {
     ///
     /// The target applies to all tasks in the queue.
     #[prost(oneof = "queue::TargetType", tags = "3, 4")]
-    pub target_type: ::std::option::Option<queue::TargetType>,
+    pub target_type: ::core::option::Option<queue::TargetType>,
 }
+/// Nested message and enum types in `Queue`.
 pub mod queue {
     /// State of the queue.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -527,7 +557,7 @@ pub struct RateLimits {
     /// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate).
     #[prost(double, tag = "1")]
     pub max_tasks_dispatched_per_second: f64,
-    /// Output only. The max burst size.
+    /// The max burst size.
     ///
     /// Max burst size limits how fast tasks in queue are processed when
     /// many tasks are in the queue and the rate is high. This field
@@ -542,23 +572,23 @@ pub struct RateLimits {
     /// token is removed from the bucket. Tasks will be dispatched until
     /// the queue's bucket runs out of tokens. The bucket will be
     /// continuously refilled with new tokens based on
-    /// [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second].
+    /// [max_dispatches_per_second][RateLimits.max_dispatches_per_second].
     ///
-    /// Cloud Tasks will pick the value of `max_burst_size` based on the
-    /// value of
-    /// [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second].
+    /// The default value of `max_burst_size` is picked by Cloud Tasks
+    /// based on the value of
+    /// [max_dispatches_per_second][RateLimits.max_dispatches_per_second].
+    ///
+    /// The maximum value of `max_burst_size` is 500.
     ///
     /// For App Engine queues that were created or updated using
     /// `queue.yaml/xml`, `max_burst_size` is equal to
     /// [bucket_size](https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size).
-    /// Since `max_burst_size` is output only, if
-    /// [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue] is called on a queue
-    /// created by `queue.yaml/xml`, `max_burst_size` will be reset based
-    /// on the value of
-    /// [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second],
-    /// regardless of whether
-    /// [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second]
-    /// is updated.
+    /// If
+    /// [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue] is called on a queue without
+    /// explicitly setting a value for `max_burst_size`,
+    /// `max_burst_size` value will get updated if
+    /// [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue] is updating
+    /// [max_dispatches_per_second][RateLimits.max_dispatches_per_second].
     ///
     #[prost(int32, tag = "2")]
     pub max_burst_size: i32,
@@ -610,7 +640,7 @@ pub struct RetryConfig {
     /// [task_age_limit in
     /// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).
     #[prost(message, optional, tag = "3")]
-    pub max_retry_duration: ::std::option::Option<::prost_types::Duration>,
+    pub max_retry_duration: ::core::option::Option<::prost_types::Duration>,
     /// A task will be [scheduled][google.cloud.tasks.v2beta2.Task.schedule_time] for retry between
     /// [min_backoff][google.cloud.tasks.v2beta2.RetryConfig.min_backoff] and
     /// [max_backoff][google.cloud.tasks.v2beta2.RetryConfig.max_backoff] duration after it fails,
@@ -629,7 +659,7 @@ pub struct RetryConfig {
     /// [min_backoff_seconds in
     /// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).
     #[prost(message, optional, tag = "4")]
-    pub min_backoff: ::std::option::Option<::prost_types::Duration>,
+    pub min_backoff: ::core::option::Option<::prost_types::Duration>,
     /// A task will be [scheduled][google.cloud.tasks.v2beta2.Task.schedule_time] for retry between
     /// [min_backoff][google.cloud.tasks.v2beta2.RetryConfig.min_backoff] and
     /// [max_backoff][google.cloud.tasks.v2beta2.RetryConfig.max_backoff] duration after it fails,
@@ -648,13 +678,13 @@ pub struct RetryConfig {
     /// [max_backoff_seconds in
     /// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).
     #[prost(message, optional, tag = "5")]
-    pub max_backoff: ::std::option::Option<::prost_types::Duration>,
+    pub max_backoff: ::core::option::Option<::prost_types::Duration>,
     /// The time between retries will double `max_doublings` times.
     ///
     /// A task's retry interval starts at
     /// [min_backoff][google.cloud.tasks.v2beta2.RetryConfig.min_backoff], then doubles
     /// `max_doublings` times, then increases linearly, and finally
-    /// retries retries at intervals of
+    /// retries at intervals of
     /// [max_backoff][google.cloud.tasks.v2beta2.RetryConfig.max_backoff] up to
     /// [max_attempts][google.cloud.tasks.v2beta2.RetryConfig.max_attempts] times.
     ///
@@ -690,8 +720,9 @@ pub struct RetryConfig {
     /// [task_retry_limit in
     /// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).
     #[prost(oneof = "retry_config::NumAttempts", tags = "1, 2")]
-    pub num_attempts: ::std::option::Option<retry_config::NumAttempts>,
+    pub num_attempts: ::core::option::Option<retry_config::NumAttempts>,
 }
+/// Nested message and enum types in `RetryConfig`.
 pub mod retry_config {
     /// Number of attempts per task.
     ///
@@ -717,6 +748,35 @@ pub mod retry_config {
         UnlimitedAttempts(bool),
     }
 }
+/// Statistics for a queue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueueStats {
+    /// Output only. An estimation of the number of tasks in the queue, that is, the tasks in
+    /// the queue that haven't been executed, the tasks in the queue which the
+    /// queue has dispatched but has not yet received a reply for, and the failed
+    /// tasks that the queue is retrying.
+    #[prost(int64, tag = "1")]
+    pub tasks_count: i64,
+    /// Output only. An estimation of the nearest time in the future where a task in the queue
+    /// is scheduled to be executed.
+    #[prost(message, optional, tag = "2")]
+    pub oldest_estimated_arrival_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The number of tasks that the queue has dispatched and received a reply for
+    /// during the last minute. This variable counts both successful and
+    /// non-successful executions.
+    #[prost(int64, tag = "3")]
+    pub executed_last_minute_count: i64,
+    /// Output only. The number of requests that the queue has dispatched but has not received
+    /// a reply for yet.
+    #[prost(int64, tag = "4")]
+    pub concurrent_dispatches_count: i64,
+    /// Output only. The current maximum number of tasks per second executed by the queue.
+    /// The maximum value of this variable is controlled by the RateLimits of the
+    /// Queue. However, this value could be less to avoid overloading the endpoints
+    /// tasks in the queue are targeting.
+    #[prost(double, tag = "5")]
+    pub effective_execution_rate: f64,
+}
 /// A unit of scheduled work.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
@@ -741,7 +801,7 @@ pub struct Task {
     /// * `TASK_ID` can contain only letters ([A-Za-z]), numbers ([0-9]),
     ///   hyphens (-), or underscores (_). The maximum length is 500 characters.
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The time when the task is scheduled to be attempted.
     ///
     /// For App Engine queues, this is when the task will be attempted or retried.
@@ -753,15 +813,15 @@ pub struct Task {
     ///
     /// `schedule_time` will be truncated to the nearest microsecond.
     #[prost(message, optional, tag = "5")]
-    pub schedule_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that the task was created.
     ///
     /// `create_time` will be truncated to the nearest second.
     #[prost(message, optional, tag = "6")]
-    pub create_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The task status.
     #[prost(message, optional, tag = "7")]
-    pub status: ::std::option::Option<TaskStatus>,
+    pub status: ::core::option::Option<TaskStatus>,
     /// Output only. The view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] has
     /// been returned.
     #[prost(enumeration = "task::View", tag = "8")]
@@ -771,8 +831,9 @@ pub struct Task {
     /// The task's payload is used by the task's target to process the task.
     /// A payload is valid only if it is compatible with the queue's target.
     #[prost(oneof = "task::PayloadType", tags = "3, 4")]
-    pub payload_type: ::std::option::Option<task::PayloadType>,
+    pub payload_type: ::core::option::Option<task::PayloadType>,
 }
+/// Nested message and enum types in `Task`.
 pub mod task {
     /// The view specifies a subset of [Task][google.cloud.tasks.v2beta2.Task] data.
     ///
@@ -846,12 +907,12 @@ pub struct TaskStatus {
     ///
     /// This field is not calculated for [pull tasks][google.cloud.tasks.v2beta2.PullMessage].
     #[prost(message, optional, tag = "3")]
-    pub first_attempt_status: ::std::option::Option<AttemptStatus>,
+    pub first_attempt_status: ::core::option::Option<AttemptStatus>,
     /// Output only. The status of the task's last attempt.
     ///
     /// This field is not calculated for [pull tasks][google.cloud.tasks.v2beta2.PullMessage].
     #[prost(message, optional, tag = "4")]
-    pub last_attempt_status: ::std::option::Option<AttemptStatus>,
+    pub last_attempt_status: ::core::option::Option<AttemptStatus>,
 }
 /// The status of a task attempt.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -860,23 +921,23 @@ pub struct AttemptStatus {
     ///
     /// `schedule_time` will be truncated to the nearest microsecond.
     #[prost(message, optional, tag = "1")]
-    pub schedule_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that this attempt was dispatched.
     ///
     /// `dispatch_time` will be truncated to the nearest microsecond.
     #[prost(message, optional, tag = "2")]
-    pub dispatch_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub dispatch_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that this attempt response was received.
     ///
     /// `response_time` will be truncated to the nearest microsecond.
     #[prost(message, optional, tag = "3")]
-    pub response_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub response_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The response from the target for this attempt.
     ///
     /// If the task has not been attempted or the task is currently running
     /// then the response status is unset.
     #[prost(message, optional, tag = "4")]
-    pub response_status: ::std::option::Option<super::super::super::rpc::Status>,
+    pub response_status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Request message for [ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -884,7 +945,7 @@ pub struct ListQueuesRequest {
     /// Required. The location name.
     /// For example: `projects/PROJECT_ID/locations/LOCATION_ID`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// `filter` can be used to specify a subset of queues. Any [Queue][google.cloud.tasks.v2beta2.Queue]
     /// field can be used as a filter and several operators as supported.
     /// For example: `<=, <, >=, >, !=, =, :`. The filter syntax is the same as
@@ -897,7 +958,7 @@ pub struct ListQueuesRequest {
     /// Note that using filters might cause fewer queues than the
     /// requested_page size to be returned.
     #[prost(string, tag = "2")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
     /// Requested page size.
     ///
     /// The maximum page size is 9800. If unspecified, the page size will
@@ -916,14 +977,20 @@ pub struct ListQueuesRequest {
     /// method. It is an error to switch the value of the
     /// [filter][google.cloud.tasks.v2beta2.ListQueuesRequest.filter] while iterating through pages.
     #[prost(string, tag = "4")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Read mask is used for a more granular control over what the API returns.
+    /// If the mask is not present all fields will be returned except
+    /// [Queue.stats]. [Queue.stats] will be returned only if it was  explicitly
+    /// specified in the mask.
+    #[prost(message, optional, tag = "5")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for [ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueuesResponse {
     /// The list of queues.
     #[prost(message, repeated, tag = "1")]
-    pub queues: ::std::vec::Vec<Queue>,
+    pub queues: ::prost::alloc::vec::Vec<Queue>,
     /// A token to retrieve next page of results.
     ///
     /// To return the next page of results, call
@@ -934,7 +1001,7 @@ pub struct ListQueuesResponse {
     ///
     /// The page token is valid for only 2 hours.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for [GetQueue][google.cloud.tasks.v2beta2.CloudTasks.GetQueue].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -942,7 +1009,13 @@ pub struct GetQueueRequest {
     /// Required. The resource name of the queue. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Read mask is used for a more granular control over what the API returns.
+    /// If the mask is not present all fields will be returned except
+    /// [Queue.stats]. [Queue.stats] will be returned only if it was  explicitly
+    /// specified in the mask.
+    #[prost(message, optional, tag = "2")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -954,12 +1027,12 @@ pub struct CreateQueueRequest {
     /// Tasks' implementation of
     /// [ListLocations][google.cloud.location.Locations.ListLocations].
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The queue to create.
     ///
     /// [Queue's name][google.cloud.tasks.v2beta2.Queue.name] cannot be the same as an existing queue.
     #[prost(message, optional, tag = "2")]
-    pub queue: ::std::option::Option<Queue>,
+    pub queue: ::core::option::Option<Queue>,
 }
 /// Request message for [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -972,12 +1045,12 @@ pub struct UpdateQueueRequest {
     /// Any value specified for an output only field will be ignored.
     /// The queue's [name][google.cloud.tasks.v2beta2.Queue.name] cannot be changed.
     #[prost(message, optional, tag = "1")]
-    pub queue: ::std::option::Option<Queue>,
+    pub queue: ::core::option::Option<Queue>,
     /// A mask used to specify which fields of the queue are being updated.
     ///
     /// If empty, then all fields will be updated.
     #[prost(message, optional, tag = "2")]
-    pub update_mask: ::std::option::Option<::prost_types::FieldMask>,
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [DeleteQueue][google.cloud.tasks.v2beta2.CloudTasks.DeleteQueue].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -985,7 +1058,7 @@ pub struct DeleteQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [PurgeQueue][google.cloud.tasks.v2beta2.CloudTasks.PurgeQueue].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -993,7 +1066,7 @@ pub struct PurgeQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [PauseQueue][google.cloud.tasks.v2beta2.CloudTasks.PauseQueue].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1001,7 +1074,7 @@ pub struct PauseQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for [ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1009,7 +1082,7 @@ pub struct ResumeQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing tasks using [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1017,7 +1090,7 @@ pub struct ListTasksRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The response_view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] will be
     /// returned.
     ///
@@ -1052,14 +1125,14 @@ pub struct ListTasksRequest {
     ///
     /// The page token is valid for only 2 hours.
     #[prost(string, tag = "5")]
-    pub page_token: std::string::String,
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing tasks using [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
     /// The list of tasks.
     #[prost(message, repeated, tag = "1")]
-    pub tasks: ::std::vec::Vec<Task>,
+    pub tasks: ::prost::alloc::vec::Vec<Task>,
     /// A token to retrieve next page of results.
     ///
     /// To return the next page of results, call
@@ -1068,7 +1141,7 @@ pub struct ListTasksResponse {
     ///
     /// If the next_page_token is empty, there are no more results.
     #[prost(string, tag = "2")]
-    pub next_page_token: std::string::String,
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for getting a task using [GetTask][google.cloud.tasks.v2beta2.CloudTasks.GetTask].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1076,7 +1149,7 @@ pub struct GetTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The response_view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] will be
     /// returned.
     ///
@@ -1100,7 +1173,7 @@ pub struct CreateTaskRequest {
     ///
     /// The queue must already exist.
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Required. The task to add.
     ///
     /// Task names have the following format:
@@ -1135,7 +1208,7 @@ pub struct CreateTaskRequest {
     /// uniform distribution of task ids to store and serve tasks
     /// efficiently.
     #[prost(message, optional, tag = "2")]
-    pub task: ::std::option::Option<Task>,
+    pub task: ::core::option::Option<Task>,
     /// The response_view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] will be
     /// returned.
     ///
@@ -1158,7 +1231,7 @@ pub struct DeleteTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for leasing tasks using [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1166,7 +1239,7 @@ pub struct LeaseTasksRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
     #[prost(string, tag = "1")]
-    pub parent: std::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The maximum number of tasks to lease.
     ///
     /// The system will make a best effort to return as close to as
@@ -1199,7 +1272,7 @@ pub struct LeaseTasksRequest {
     /// The maximum lease duration is 1 week.
     /// `lease_duration` will be truncated to the nearest second.
     #[prost(message, optional, tag = "3")]
-    pub lease_duration: ::std::option::Option<::prost_types::Duration>,
+    pub lease_duration: ::core::option::Option<::prost_types::Duration>,
     /// The response_view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] will be
     /// returned.
     ///
@@ -1244,14 +1317,14 @@ pub struct LeaseTasksRequest {
     /// [filter][google.cloud.tasks.v2beta2.LeaseTasksRequest.filter] and the task's
     /// [tag][google.cloud.tasks.v2beta2.PullMessage.tag] will be displayed as empty in Cloud Tasks.
     #[prost(string, tag = "5")]
-    pub filter: std::string::String,
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for leasing tasks using [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeaseTasksResponse {
     /// The leased tasks.
     #[prost(message, repeated, tag = "1")]
-    pub tasks: ::std::vec::Vec<Task>,
+    pub tasks: ::prost::alloc::vec::Vec<Task>,
 }
 /// Request message for acknowledging a task using
 /// [AcknowledgeTask][google.cloud.tasks.v2beta2.CloudTasks.AcknowledgeTask].
@@ -1260,14 +1333,14 @@ pub struct AcknowledgeTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The task's current schedule time, available in the
     /// [schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time] returned by
     /// [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] response or
     /// [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease] response. This restriction is
     /// to ensure that your worker currently holds the lease.
     #[prost(message, optional, tag = "2")]
-    pub schedule_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for renewing a lease using
 /// [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease].
@@ -1276,21 +1349,21 @@ pub struct RenewLeaseRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The task's current schedule time, available in the
     /// [schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time] returned by
     /// [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] response or
     /// [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease] response. This restriction is
     /// to ensure that your worker currently holds the lease.
     #[prost(message, optional, tag = "2")]
-    pub schedule_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. The desired new lease duration, starting from now.
     ///
     ///
     /// The maximum lease duration is 1 week.
     /// `lease_duration` will be truncated to the nearest second.
     #[prost(message, optional, tag = "3")]
-    pub lease_duration: ::std::option::Option<::prost_types::Duration>,
+    pub lease_duration: ::core::option::Option<::prost_types::Duration>,
     /// The response_view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] will be
     /// returned.
     ///
@@ -1313,14 +1386,14 @@ pub struct CancelLeaseRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Required. The task's current schedule time, available in the
     /// [schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time] returned by
     /// [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks] response or
     /// [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease] response. This restriction is
     /// to ensure that your worker currently holds the lease.
     #[prost(message, optional, tag = "2")]
-    pub schedule_time: ::std::option::Option<::prost_types::Timestamp>,
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The response_view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] will be
     /// returned.
     ///
@@ -1343,7 +1416,7 @@ pub struct RunTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// The response_view specifies which subset of the [Task][google.cloud.tasks.v2beta2.Task] will be
     /// returned.
     ///

@@ -11,10 +11,10 @@ pub struct TranslateSpeechConfig {
     ///
     ///
     #[prost(string, tag = "1")]
-    pub audio_encoding: std::string::String,
+    pub audio_encoding: ::prost::alloc::string::String,
     /// Required. Source language code (BCP-47) of the input audio.
     #[prost(string, tag = "2")]
-    pub source_language_code: std::string::String,
+    pub source_language_code: ::prost::alloc::string::String,
     /// Optional. A list of up to 3 additional language codes (BCP-47), listing possible
     /// alternative languages of the supplied audio. If alternative source
     /// languages are listed, speech translation result will translate in the most
@@ -22,10 +22,10 @@ pub struct TranslateSpeechConfig {
     /// translated result will include the language code of the language detected
     /// in the audio.
     #[prost(string, repeated, tag = "6")]
-    pub alternative_source_language_codes: ::std::vec::Vec<std::string::String>,
+    pub alternative_source_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Target language code (BCP-47) of the output.
     #[prost(string, tag = "3")]
-    pub target_language_code: std::string::String,
+    pub target_language_code: ::prost::alloc::string::String,
     /// Optional. Sample rate in Hertz of the audio data. Valid values are:
     /// 8000-48000. 16000 is optimal. For best results, set the sampling rate of
     /// the audio source to 16000 Hz. If that's not possible, use the native sample
@@ -35,14 +35,14 @@ pub struct TranslateSpeechConfig {
     pub sample_rate_hertz: i32,
     /// Optional.
     #[prost(string, tag = "5")]
-    pub model: std::string::String,
+    pub model: ::prost::alloc::string::String,
 }
 /// Config used for streaming translation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechConfig {
     /// Required. The common config for all the following audio contents.
     #[prost(message, optional, tag = "1")]
-    pub audio_config: ::std::option::Option<TranslateSpeechConfig>,
+    pub audio_config: ::core::option::Option<TranslateSpeechConfig>,
     /// Optional. If `false` or omitted, the system performs
     /// continuous translation (continuing to wait for and process audio even if
     /// the user pauses speaking) until the client closes the input stream (gRPC
@@ -73,8 +73,9 @@ pub struct StreamingTranslateSpeechRequest {
         tags = "1, 2"
     )]
     pub streaming_request:
-        ::std::option::Option<streaming_translate_speech_request::StreamingRequest>,
+        ::core::option::Option<streaming_translate_speech_request::StreamingRequest>,
 }
+/// Nested message and enum types in `StreamingTranslateSpeechRequest`.
 pub mod streaming_translate_speech_request {
     /// The streaming request, which is either a streaming config or content.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -93,7 +94,7 @@ pub mod streaming_translate_speech_request {
         /// all bytes fields, protobuffers use a pure binary representation (not
         /// base64).
         #[prost(bytes, tag = "2")]
-        AudioContent(std::vec::Vec<u8>),
+        AudioContent(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// A streaming speech translation result corresponding to a portion of the audio
@@ -106,20 +107,21 @@ pub struct StreamingTranslateSpeechResult {
     ///
     /// Still need to decide whether to expose this field by default.
     #[prost(string, tag = "3")]
-    pub recognition_result: std::string::String,
+    pub recognition_result: ::prost::alloc::string::String,
     /// Translation result.
     ///
     /// Use oneof field to reserve for future tts result.
     #[prost(oneof = "streaming_translate_speech_result::Result", tags = "1")]
-    pub result: ::std::option::Option<streaming_translate_speech_result::Result>,
+    pub result: ::core::option::Option<streaming_translate_speech_result::Result>,
 }
+/// Nested message and enum types in `StreamingTranslateSpeechResult`.
 pub mod streaming_translate_speech_result {
     /// Text translation result.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextTranslationResult {
         /// Output only. The translated sentence.
         #[prost(string, tag = "1")]
-        pub translation: std::string::String,
+        pub translation: ::prost::alloc::string::String,
         /// Output only. If `false`, this `StreamingTranslateSpeechResult` represents
         /// an interim result that may change. If `true`, this is the final time the
         /// translation service will return this particular
@@ -132,7 +134,7 @@ pub mod streaming_translate_speech_result {
         /// translation result will translate in the most likely language detected
         /// including the alternative source languages and main source_language_code.
         #[prost(string, tag = "3")]
-        pub detected_source_language_code: std::string::String,
+        pub detected_source_language_code: ::prost::alloc::string::String,
     }
     /// Translation result.
     ///
@@ -151,11 +153,11 @@ pub struct StreamingTranslateSpeechResponse {
     /// Output only. If set, returns a [google.rpc.Status][google.rpc.Status] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
-    pub error: ::std::option::Option<super::super::super::rpc::Status>,
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Output only. The translation result that is currently being processed (is_final could be
     /// true or false).
     #[prost(message, optional, tag = "2")]
-    pub result: ::std::option::Option<StreamingTranslateSpeechResult>,
+    pub result: ::core::option::Option<StreamingTranslateSpeechResult>,
     /// Output only. Indicates the type of speech event.
     #[prost(
         enumeration = "streaming_translate_speech_response::SpeechEventType",
@@ -163,6 +165,7 @@ pub struct StreamingTranslateSpeechResponse {
     )]
     pub speech_event_type: i32,
 }
+/// Nested message and enum types in `StreamingTranslateSpeechResponse`.
 pub mod streaming_translate_speech_response {
     /// Indicates the type of speech event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -222,7 +225,7 @@ pub mod speech_translation_service_client {
                 )
             })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ( "/google.cloud.mediatranslation.v1beta1.SpeechTranslationService/StreamingTranslateSpeech" ) ;
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.mediatranslation.v1beta1.SpeechTranslationService/StreamingTranslateSpeech") ;
             self.inner
                 .streaming(request.into_streaming_request(), path, codec)
                 .await
