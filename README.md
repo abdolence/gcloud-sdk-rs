@@ -48,7 +48,7 @@ pub mod google {
 
 In addition, multiple features can be specified.
 
-The list of available features can be found [here](./googapis/Cargo.toml#L22-L240).
+The list of available features can be found [here](./googapis/Cargo.toml#L22-L310).
 
 ## Version matrices
 | googapis | tonic | tonic-build |
