@@ -376,7 +376,7 @@ pub struct ValidateTrustRequest {
 pub mod managed_identities_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " ## API Overview"]
+    #[doc = " API Overview"]
     #[doc = ""]
     #[doc = " The `managedidentites.googleapis.com` service implements the Google Cloud"]
     #[doc = " Managed Identites API for identity services"]
@@ -386,7 +386,7 @@ pub mod managed_identities_service_client {
     #[doc = " (create/read/update/delete) domains, reset managed identities admin password,"]
     #[doc = " add/remove domain controllers in GCP regions and add/remove VPC peering."]
     #[doc = ""]
-    #[doc = " ## Data Model"]
+    #[doc = " Data Model"]
     #[doc = ""]
     #[doc = " The Managed Identities service exposes the following resources:"]
     #[doc = ""]

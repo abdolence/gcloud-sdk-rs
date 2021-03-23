@@ -800,97 +800,104 @@ pub mod firewall_rule {
 /// automatically scale an application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
-    /// Full path to the Instance resource in the API.
+    /// Output only. Full path to the Instance resource in the API.
     /// Example: `apps/myapp/services/default/versions/v1/instances/instance-1`.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Relative name of the instance within the version.
+    /// Output only. Relative name of the instance within the version.
     /// Example: `instance-1`.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
-    /// App Engine release this instance is running on.
-    ///
-    /// @OutputOnly
+    /// Output only. App Engine release this instance is running on.
     #[prost(string, tag = "3")]
     pub app_engine_release: ::prost::alloc::string::String,
-    /// Availability of the instance.
-    ///
-    /// @OutputOnly
+    /// Output only. Availability of the instance.
     #[prost(enumeration = "instance::Availability", tag = "4")]
     pub availability: i32,
-    /// Name of the virtual machine where this instance lives. Only applicable
+    /// Output only. Name of the virtual machine where this instance lives. Only applicable
     /// for instances in App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "5")]
     pub vm_name: ::prost::alloc::string::String,
-    /// Zone where the virtual machine is located. Only applicable for instances
+    /// Output only. Zone where the virtual machine is located. Only applicable for instances
     /// in App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "6")]
     pub vm_zone_name: ::prost::alloc::string::String,
-    /// Virtual machine ID of this instance. Only applicable for instances in
+    /// Output only. Virtual machine ID of this instance. Only applicable for instances in
     /// App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "7")]
     pub vm_id: ::prost::alloc::string::String,
-    /// Time that this instance was started.
+    /// Output only. Time that this instance was started.
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "8")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Number of requests since this instance was started.
-    ///
-    /// @OutputOnly
+    /// Output only. Number of requests since this instance was started.
     #[prost(int32, tag = "9")]
     pub requests: i32,
-    /// Number of errors since this instance was started.
-    ///
-    /// @OutputOnly
+    /// Output only. Number of errors since this instance was started.
     #[prost(int32, tag = "10")]
     pub errors: i32,
-    /// Average queries per second (QPS) over the last minute.
-    ///
-    /// @OutputOnly
+    /// Output only. Average queries per second (QPS) over the last minute.
     #[prost(float, tag = "11")]
     pub qps: f32,
-    /// Average latency (ms) over the last minute.
-    ///
-    /// @OutputOnly
+    /// Output only. Average latency (ms) over the last minute.
     #[prost(int32, tag = "12")]
     pub average_latency: i32,
-    /// Total memory in use (bytes).
-    ///
-    /// @OutputOnly
+    /// Output only. Total memory in use (bytes).
     #[prost(int64, tag = "13")]
     pub memory_usage: i64,
-    /// Status of the virtual machine where this instance lives. Only applicable
+    /// Output only. Status of the virtual machine where this instance lives. Only applicable
     /// for instances in App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "14")]
     pub vm_status: ::prost::alloc::string::String,
-    /// Whether this instance is in debug mode. Only applicable for instances in
+    /// Output only. Whether this instance is in debug mode. Only applicable for instances in
     /// App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(bool, tag = "15")]
     pub vm_debug_enabled: bool,
-    /// The IP address of this instance. Only applicable for instances in App
+    /// Output only. The IP address of this instance. Only applicable for instances in App
     /// Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "16")]
     pub vm_ip: ::prost::alloc::string::String,
+    /// Output only. The liveness health check of this instance. Only applicable for instances
+    /// in App Engine flexible environment.
+    #[prost(enumeration = "instance::liveness::LivenessState", tag = "17")]
+    pub vm_liveness: i32,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
+    /// Wrapper for LivenessState enum.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Liveness {}
+    /// Nested message and enum types in `Liveness`.
+    pub mod liveness {
+        /// Liveness health check status for Flex instances.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum LivenessState {
+            /// There is no liveness health check for the instance. Only applicable for
+            /// instances in App Engine standard environment.
+            Unspecified = 0,
+            /// The health checking system is aware of the instance but its health is
+            /// not known at the moment.
+            Unknown = 1,
+            /// The instance is reachable i.e. a connection to the application health
+            /// checking endpoint can be established, and conforms to the requirements
+            /// defined by the health check.
+            Healthy = 2,
+            /// The instance is reachable, but does not conform to the requirements
+            /// defined by the health check.
+            Unhealthy = 3,
+            /// The instance is being drained. The existing connections to the instance
+            /// have time to complete, but the new ones are being refused.
+            Draining = 4,
+            /// The instance is unreachable i.e. a connection to the application health
+            /// checking endpoint cannot be established, or the server does not respond
+            /// within the specified timeout.
+            Timeout = 5,
+        }
+    }
     /// Availability of the instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -985,6 +992,30 @@ pub struct ZipInfo {
     #[prost(int32, tag = "4")]
     pub files_count: i32,
 }
+/// A NetworkSettings resource is a container for ingress settings for a version
+/// or service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkSettings {
+    /// The ingress settings for version or service.
+    #[prost(enumeration = "network_settings::IngressTrafficAllowed", tag = "1")]
+    pub ingress_traffic_allowed: i32,
+}
+/// Nested message and enum types in `NetworkSettings`.
+pub mod network_settings {
+    /// If unspecified, INGRESS_TRAFFIC_ALLOWED_ALL will be used.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum IngressTrafficAllowed {
+        /// Unspecified
+        Unspecified = 0,
+        /// Allow HTTP traffic from public and private sources.
+        All = 1,
+        /// Allow HTTP traffic from only private VPC sources.
+        InternalOnly = 2,
+        /// Allow HTTP traffic from private VPC sources and through load balancers.
+        InternalAndLb = 3,
+    }
+}
 /// A Version resource is a specific set of source code and configuration files
 /// that are deployed into a service.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1078,6 +1109,11 @@ pub struct Version {
     /// The path or name of the app's main executable.
     #[prost(string, tag = "22")]
     pub runtime_main_executable_path: ::prost::alloc::string::String,
+    /// The identity that the deployed version will run as.
+    /// Admin API will use the App Engine Appspot service account as default if
+    /// this field is neither provided in app.yaml file nor through CLI flag.
+    #[prost(string, tag = "127")]
+    pub service_account: ::prost::alloc::string::String,
     /// An ordered list of URL-matching patterns that should be applied to incoming
     /// requests. The first matching URL handles the request and other request
     /// handlers are not attempted.
@@ -1107,6 +1143,12 @@ pub struct Version {
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(map = "string, string", tag = "104")]
     pub env_variables:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Environment variables available to the build environment.
+    ///
+    /// Only returned in `GET` requests if `view=FULL` is set.
+    #[prost(map = "string, string", tag = "125")]
+    pub build_env_variables:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Duration that static files should be cached by web proxies and browsers.
     /// Only applicable if the corresponding
@@ -1164,7 +1206,7 @@ pub struct Version {
     /// Enables VPC connectivity for standard apps.
     #[prost(message, optional, tag = "121")]
     pub vpc_access_connector: ::core::option::Option<VpcAccessConnector>,
-    /// Controls how instances are created.
+    /// Controls how instances are created, scaled, and reaped.
     ///
     /// Defaults to `AutomaticScaling`.
     #[prost(oneof = "version::Scaling", tags = "3, 4, 5")]
@@ -1172,13 +1214,14 @@ pub struct Version {
 }
 /// Nested message and enum types in `Version`.
 pub mod version {
-    /// Controls how instances are created.
+    /// Controls how instances are created, scaled, and reaped.
     ///
     /// Defaults to `AutomaticScaling`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Scaling {
         /// Automatic scaling is based on request rate, response latencies, and other
-        /// application metrics.
+        /// application metrics. Instances are dynamically created and destroyed as
+        /// needed in order to handle traffic.
         #[prost(message, tag = "3")]
         AutomaticScaling(super::AutomaticScaling),
         /// A service with basic scaling will create an instance when the application
@@ -1189,6 +1232,7 @@ pub mod version {
         BasicScaling(super::BasicScaling),
         /// A service with manual scaling runs continuously, allowing you to perform
         /// complex initialization and rely on the state of its memory over time.
+        /// Manually scaled versions are sometimes referred to as "backends".
         #[prost(message, tag = "5")]
         ManualScaling(super::ManualScaling),
     }
@@ -1474,6 +1518,10 @@ pub struct Resources {
     /// User specified volumes.
     #[prost(message, repeated, tag = "4")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
+    /// The name of the encryption key that is stored in Google Cloud KMS.
+    /// Only should be used by Cloud Composer to encrypt the vm disk
+    #[prost(string, tag = "5")]
+    pub kms_key_reference: ::prost::alloc::string::String,
 }
 /// VPC access connector specification.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1563,6 +1611,9 @@ pub struct Service {
     /// different versions within the service.
     #[prost(message, optional, tag = "3")]
     pub split: ::core::option::Option<TrafficSplit>,
+    /// Ingress settings for this service. Will apply to all versions.
+    #[prost(message, optional, tag = "6")]
+    pub network_settings: ::core::option::Option<NetworkSettings>,
 }
 /// Traffic routing configuration for versions within a single service. Traffic
 /// splits define how traffic directed to the service is assigned to versions.
@@ -3168,6 +3219,10 @@ pub struct LocationMetadata {
     /// @OutputOnly
     #[prost(bool, tag = "4")]
     pub flexible_environment_available: bool,
+    /// Output only. [Search API](https://cloud.google.com/appengine/docs/standard/python/search)
+    /// is available in the given location.
+    #[prost(bool, tag = "6")]
+    pub search_api_available: bool,
 }
 /// Metadata for the given [google.longrunning.Operation][google.longrunning.Operation].
 #[derive(Clone, PartialEq, ::prost::Message)]

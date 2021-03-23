@@ -449,7 +449,7 @@ pub mod restore {
         MetadataOnly = 2,
     }
 }
-/// Request message for [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices].
+/// Request message for [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The relative resource name of the location of metastore services to
@@ -463,13 +463,13 @@ pub struct ListServicesRequest {
     /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices]
+    /// Optional. A page token, received from a previous [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices]
     /// call. Provide this token to retrieve the subsequent page.
     ///
     /// To retrieve the first page, supply an empty page token.
     ///
     /// When paginating, other parameters provided to
-    /// [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices] must match the call that provided the
+    /// [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices] must match the call that provided the
     /// page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -482,7 +482,7 @@ pub struct ListServicesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices].
+/// Response message for [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The services in the specified location.
@@ -496,7 +496,7 @@ pub struct ListServicesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for [DataprocMetastore.GetService][google.cloud.metastore.v1alpha.DataprocMetastore.GetService].
+/// Request message for [DataprocMetastore.GetService][google.cloud.metastore.v1beta.DataprocMetastore.GetService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The relative resource name of the metastore service to retrieve, in the
@@ -506,7 +506,7 @@ pub struct GetServiceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.CreateService][google.cloud.metastore.v1alpha.DataprocMetastore.CreateService].
+/// Request message for [DataprocMetastore.CreateService][google.cloud.metastore.v1beta.DataprocMetastore.CreateService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The relative resource name of the location in which to create a metastore
@@ -543,7 +543,7 @@ pub struct CreateServiceRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.UpdateService][google.cloud.metastore.v1alpha.DataprocMetastore.UpdateService].
+/// Request message for [DataprocMetastore.UpdateService][google.cloud.metastore.v1beta.DataprocMetastore.UpdateService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. A field mask used to specify the fields to be overwritten in the
@@ -574,7 +574,7 @@ pub struct UpdateServiceRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.DeleteService][google.cloud.metastore.v1alpha.DataprocMetastore.DeleteService].
+/// Request message for [DataprocMetastore.DeleteService][google.cloud.metastore.v1beta.DataprocMetastore.DeleteService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The relative resource name of the metastore service to delete, in the
@@ -598,7 +598,7 @@ pub struct DeleteServiceRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1alpha.DataprocMetastore.ListMetadataImports].
+/// Request message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1beta.DataprocMetastore.ListMetadataImports].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataImportsRequest {
     /// Required. The relative resource name of the service whose metadata imports to
@@ -612,13 +612,13 @@ pub struct ListMetadataImportsRequest {
     /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices]
+    /// Optional. A page token, received from a previous [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices]
     /// call. Provide this token to retrieve the subsequent page.
     ///
     /// To retrieve the first page, supply an empty page token.
     ///
     /// When paginating, other parameters provided to
-    /// [DataprocMetastore.ListServices][google.cloud.metastore.v1alpha.DataprocMetastore.ListServices] must match the call that provided the
+    /// [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices] must match the call that provided the
     /// page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -631,7 +631,7 @@ pub struct ListMetadataImportsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1alpha.DataprocMetastore.ListMetadataImports].
+/// Response message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1beta.DataprocMetastore.ListMetadataImports].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataImportsResponse {
     /// The imports in the specified service.
@@ -645,7 +645,7 @@ pub struct ListMetadataImportsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for [DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1alpha.DataprocMetastore.GetMetadataImport].
+/// Request message for [DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.GetMetadataImport].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetadataImportRequest {
     /// Required. The relative resource name of the metadata import to retrieve, in the
@@ -655,7 +655,7 @@ pub struct GetMetadataImportRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1alpha.DataprocMetastore.CreateMetadataImport].
+/// Request message for [DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.CreateMetadataImport].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMetadataImportRequest {
     /// Required. The relative resource name of the service in which to create a metastore
@@ -692,7 +692,7 @@ pub struct CreateMetadataImportRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1alpha.DataprocMetastore.UpdateMetadataImport].
+/// Request message for [DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.UpdateMetadataImport].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMetadataImportRequest {
     /// Required. A field mask used to specify the fields to be overwritten in the
@@ -723,7 +723,7 @@ pub struct UpdateMetadataImportRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.ListBackups][google.cloud.metastore.v1alpha.DataprocMetastore.ListBackups].
+/// Request message for [DataprocMetastore.ListBackups][google.cloud.metastore.v1beta.DataprocMetastore.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The relative resource name of the service whose backups to
@@ -737,13 +737,13 @@ pub struct ListBackupsRequest {
     /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous [DataprocMetastore.ListBackups][google.cloud.metastore.v1alpha.DataprocMetastore.ListBackups]
+    /// Optional. A page token, received from a previous [DataprocMetastore.ListBackups][google.cloud.metastore.v1beta.DataprocMetastore.ListBackups]
     /// call. Provide this token to retrieve the subsequent page.
     ///
     /// To retrieve the first page, supply an empty page token.
     ///
     /// When paginating, other parameters provided to
-    /// [DataprocMetastore.ListBackups][google.cloud.metastore.v1alpha.DataprocMetastore.ListBackups] must match the call that provided the
+    /// [DataprocMetastore.ListBackups][google.cloud.metastore.v1beta.DataprocMetastore.ListBackups] must match the call that provided the
     /// page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -756,7 +756,7 @@ pub struct ListBackupsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for [DataprocMetastore.ListBackups][google.cloud.metastore.v1alpha.DataprocMetastore.ListBackups].
+/// Response message for [DataprocMetastore.ListBackups][google.cloud.metastore.v1beta.DataprocMetastore.ListBackups].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The backups of the specified service.
@@ -770,7 +770,7 @@ pub struct ListBackupsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for [DataprocMetastore.GetBackup][google.cloud.metastore.v1alpha.DataprocMetastore.GetBackup].
+/// Request message for [DataprocMetastore.GetBackup][google.cloud.metastore.v1beta.DataprocMetastore.GetBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. The relative resource name of the backup to retrieve, in the
@@ -780,7 +780,7 @@ pub struct GetBackupRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.CreateBackup][google.cloud.metastore.v1alpha.DataprocMetastore.CreateBackup].
+/// Request message for [DataprocMetastore.CreateBackup][google.cloud.metastore.v1beta.DataprocMetastore.CreateBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. The relative resource name of the service in which to create a backup
@@ -816,7 +816,7 @@ pub struct CreateBackupRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.DeleteBackup][google.cloud.metastore.v1alpha.DataprocMetastore.DeleteBackup].
+/// Request message for [DataprocMetastore.DeleteBackup][google.cloud.metastore.v1beta.DataprocMetastore.DeleteBackup].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. The relative resource name of the backup to delete, in the
@@ -840,7 +840,7 @@ pub struct DeleteBackupRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.ExportMetadata][google.cloud.metastore.v1alpha.DataprocMetastore.ExportMetadata].
+/// Request message for [DataprocMetastore.ExportMetadata][google.cloud.metastore.v1beta.DataprocMetastore.ExportMetadata].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataRequest {
     /// Required. The relative resource name of the metastore service to run export, in the
@@ -1034,7 +1034,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListServices",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/ListServices",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1051,7 +1051,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetService",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/GetService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1071,7 +1071,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateService",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/CreateService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1091,7 +1091,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/UpdateService",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/UpdateService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1111,7 +1111,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/DeleteService",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/DeleteService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1128,7 +1128,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListMetadataImports",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/ListMetadataImports",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1145,7 +1145,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetMetadataImport",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/GetMetadataImport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1165,7 +1165,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateMetadataImport",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/CreateMetadataImport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1186,7 +1186,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/UpdateMetadataImport",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/UpdateMetadataImport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1206,7 +1206,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ExportMetadata",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/ExportMetadata",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1226,7 +1226,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/RestoreService",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/RestoreService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1243,7 +1243,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListBackups",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/ListBackups",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1260,7 +1260,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetBackup",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/GetBackup",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1280,7 +1280,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateBackup",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/CreateBackup",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1300,7 +1300,7 @@ pub mod dataproc_metastore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/DeleteBackup",
+                "/google.cloud.metastore.v1beta.DataprocMetastore/DeleteBackup",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

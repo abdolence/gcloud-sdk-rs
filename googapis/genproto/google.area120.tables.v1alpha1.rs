@@ -35,6 +35,43 @@ pub struct ListTablesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for TablesService.GetWorkspace.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetWorkspaceRequest {
+    /// Required. The name of the workspace to retrieve.
+    /// Format: workspaces/{workspace}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for TablesService.ListWorkspaces.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWorkspacesRequest {
+    /// The maximum number of workspaces to return. The service may return fewer
+    /// than this value.
+    ///
+    /// If unspecified, at most 10 workspaces are returned. The maximum value is
+    /// 25; values above 25 are coerced to 25.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListWorkspaces` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListWorkspaces` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for TablesService.ListWorkspaces.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWorkspacesResponse {
+    /// The list of workspaces.
+    #[prost(message, repeated, tag = "1")]
+    pub workspaces: ::prost::alloc::vec::Vec<Workspace>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is empty, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Request message for TablesService.GetRow.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRowRequest {
@@ -72,6 +109,11 @@ pub struct ListRowsRequest {
     /// Defaults to user entered name.
     #[prost(enumeration = "View", tag = "4")]
     pub view: i32,
+    /// Optional. Raw text query to search for in rows of the table.
+    /// Special characters must be escaped. Logical operators and field specific
+    /// filtering not supported.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for TablesService.ListRows.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -161,6 +203,20 @@ pub struct DeleteRowRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for TablesService.BatchDeleteRows
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDeleteRowsRequest {
+    /// Required. The parent table shared by all rows being deleted.
+    /// Format: tables/{table}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the rows to delete. All rows must belong to the parent table
+    /// or else the entire batch will fail. A maximum of 500 rows can be deleted
+    /// in a batch.
+    /// Format: tables/{table}/rows/{row}
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// A single table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
@@ -183,13 +239,61 @@ pub struct ColumnDescription {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Data type of the column
-    /// Supported types are number, text, boolean, number_list, text_list,
-    /// boolean_list.
+    /// Supported types are auto_id, boolean, boolean_list, creator,
+    /// create_timestamp, date, dropdown, location, integer,
+    /// integer_list, number, number_list, person, person_list, tags, check_list,
+    /// text, text_list, update_timestamp, updater, relationship,
+    /// file_attachment_list.
+    /// These types directly map to the column types supported on Tables website.
     #[prost(string, tag = "2")]
     pub data_type: ::prost::alloc::string::String,
     /// Internal id for a column.
     #[prost(string, tag = "3")]
     pub id: ::prost::alloc::string::String,
+    /// Optional. Range of labeled values for the column.
+    /// Some columns like tags and drop-downs limit the values to a set of
+    /// possible values. We return the range of values in such cases to help
+    /// clients implement better user data validation.
+    #[prost(message, repeated, tag = "4")]
+    pub labels: ::prost::alloc::vec::Vec<LabeledItem>,
+    /// Optional. Additional details about a relationship column. Specified when data_type
+    /// is relationship.
+    #[prost(message, optional, tag = "5")]
+    pub relationship_details: ::core::option::Option<RelationshipDetails>,
+    /// Optional. Indicates that this is a lookup column whose value is derived from the
+    /// relationship column specified in the details. Lookup columns can not be
+    /// updated directly. To change the value you must update the associated
+    /// relationship column.
+    #[prost(message, optional, tag = "6")]
+    pub lookup_details: ::core::option::Option<LookupDetails>,
+}
+/// A single item in a labeled column.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LabeledItem {
+    /// Display string as entered by user.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Internal id associated with the item.
+    #[prost(string, tag = "2")]
+    pub id: ::prost::alloc::string::String,
+}
+/// Details about a relationship column.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RelationshipDetails {
+    /// The name of the table this relationship is linked to.
+    #[prost(string, tag = "1")]
+    pub linked_table: ::prost::alloc::string::String,
+}
+/// Details about a lookup column whose value comes from the associated
+/// relationship.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupDetails {
+    /// The name of the relationship column associated with the lookup.
+    #[prost(string, tag = "1")]
+    pub relationship_column: ::prost::alloc::string::String,
+    /// The id of the relationship column.
+    #[prost(string, tag = "2")]
+    pub relationship_column_id: ::prost::alloc::string::String,
 }
 /// A single row in a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -204,6 +308,20 @@ pub struct Row {
     /// the view in the request.
     #[prost(map = "string, message", tag = "2")]
     pub values: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
+}
+/// A single workspace.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Workspace {
+    /// The resource name of the workspace.
+    /// Workspace names have the form `workspaces/{workspace}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The human readable title of the workspace.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The list of tables in the workspace.
+    #[prost(message, repeated, tag = "3")]
+    pub tables: ::prost::alloc::vec::Vec<Table>,
 }
 /// Column identifier used for the values in the row.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -226,6 +344,10 @@ pub mod tables_service_client {
     #[doc = ""]
     #[doc = " - Each Table has a collection of [Row][google.area120.tables.v1alpha1.Row]"]
     #[doc = "   resources, named `tables/*/rows/*`"]
+    #[doc = ""]
+    #[doc = " - The API has a collection of"]
+    #[doc = "   [Workspace][google.area120.tables.v1alpha1.Workspace]"]
+    #[doc = "   resources, named `workspaces/*`."]
     pub struct TablesServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -275,6 +397,40 @@ pub mod tables_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/ListTables",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets a workspace. Returns NOT_FOUND if the workspace does not exist."]
+        pub async fn get_workspace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetWorkspaceRequest>,
+        ) -> Result<tonic::Response<super::Workspace>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.area120.tables.v1alpha1.TablesService/GetWorkspace",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists workspaces for the user."]
+        pub async fn list_workspaces(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListWorkspacesRequest>,
+        ) -> Result<tonic::Response<super::ListWorkspacesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.area120.tables.v1alpha1.TablesService/ListWorkspaces",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -394,6 +550,23 @@ pub mod tables_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.area120.tables.v1alpha1.TablesService/DeleteRow",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes multiple rows."]
+        pub async fn batch_delete_rows(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchDeleteRowsRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.area120.tables.v1alpha1.TablesService/BatchDeleteRows",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

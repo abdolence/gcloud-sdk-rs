@@ -158,10 +158,11 @@ pub struct ReportStateAndNotificationRequest {
     /// Required. Third-party user ID.
     #[prost(string, tag = "2")]
     pub agent_user_id: ::prost::alloc::string::String,
-    /// Token to maintain state in the follow up notification response.
-    /// Deprecated. See the [notifications
-    /// guide](https://developers.google.com/assistant/smarthome/develop/notifications)
-    /// for details on implementing follow up notifications.
+    /// Deprecated.
+    /// (-- Token to maintain state in the follow up notification response. See the
+    /// notifications guide at
+    /// https://developers.google.com/assistant/smarthome/develop/notifications for
+    /// details on implementing follow up notifications --)
     #[deprecated]
     #[prost(string, tag = "5")]
     pub follow_up_token: ::prost::alloc::string::String,

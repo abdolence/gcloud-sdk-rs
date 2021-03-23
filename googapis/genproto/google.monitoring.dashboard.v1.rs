@@ -36,6 +36,8 @@ pub struct Aggregation {
     /// `ALIGN_NONE` is specified, this field is required or an error is returned.
     /// If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
     /// specified, then this field is ignored.
+    ///
+    /// The maximum value of the `alignment_period` is 2 years, or 104 weeks.
     #[prost(message, optional, tag = "1")]
     pub alignment_period: ::core::option::Option<::prost_types::Duration>,
     /// An `Aligner` describes how to bring the data points in a single
@@ -868,6 +870,47 @@ pub struct GridLayout {
     #[prost(message, repeated, tag = "2")]
     pub widgets: ::prost::alloc::vec::Vec<Widget>,
 }
+/// A mosaic layout divides the available space into a grid of blocks, and
+/// overlays the grid with tiles. Unlike `GridLayout`, tiles may span multiple
+/// grid blocks and can be placed at arbitrary locations in the grid.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MosaicLayout {
+    /// The number of columns in the mosaic grid. The number of columns must be
+    /// between 1 and 12, inclusive.
+    #[prost(int32, tag = "1")]
+    pub columns: i32,
+    /// The tiles to display.
+    #[prost(message, repeated, tag = "3")]
+    pub tiles: ::prost::alloc::vec::Vec<mosaic_layout::Tile>,
+}
+/// Nested message and enum types in `MosaicLayout`.
+pub mod mosaic_layout {
+    /// A single tile in the mosaic. The placement and size of the tile are
+    /// configurable.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Tile {
+        /// The zero-indexed position of the tile in grid blocks relative to the
+        /// left edge of the grid. Tiles must be contained within the specified
+        /// number of columns. `x_pos` cannot be negative.
+        #[prost(int32, tag = "1")]
+        pub x_pos: i32,
+        /// The zero-indexed position of the tile in grid blocks relative to the
+        /// top edge of the grid. `y_pos` cannot be negative.
+        #[prost(int32, tag = "2")]
+        pub y_pos: i32,
+        /// The width of the tile, measured in grid blocks. Tiles must have a
+        /// minimum width of 1.
+        #[prost(int32, tag = "3")]
+        pub width: i32,
+        /// The height of the tile, measured in grid blocks. Tiles must have a
+        /// minimum height of 1.
+        #[prost(int32, tag = "4")]
+        pub height: i32,
+        /// The informational widget contained in the tile. For example an `XyChart`.
+        #[prost(message, optional, tag = "5")]
+        pub widget: ::core::option::Option<super::Widget>,
+    }
+}
 /// A simplified layout that divides the available space into rows
 /// and arranges a set of widgets horizontally in each row.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -936,7 +979,7 @@ pub struct Dashboard {
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
     /// A dashboard's root container element that defines the layout style.
-    #[prost(oneof = "dashboard::Layout", tags = "5, 8, 9")]
+    #[prost(oneof = "dashboard::Layout", tags = "5, 6, 8, 9")]
     pub layout: ::core::option::Option<dashboard::Layout>,
 }
 /// Nested message and enum types in `Dashboard`.
@@ -948,6 +991,10 @@ pub mod dashboard {
         /// informational elements like widgets or tiles.
         #[prost(message, tag = "5")]
         GridLayout(super::GridLayout),
+        /// The content is arranged as a grid of tiles, with each content widget
+        /// occupying one or more grid blocks.
+        #[prost(message, tag = "6")]
+        MosaicLayout(super::MosaicLayout),
         /// The content is divided into equally spaced rows and the widgets are
         /// arranged horizontally.
         #[prost(message, tag = "8")]
@@ -1053,11 +1100,8 @@ pub mod dashboards_service_client {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
         }
-        #[doc = " Creates a new custom dashboard."]
-        #[doc = ""]
-        #[doc = " This method requires the `monitoring.dashboards.create` permission"]
-        #[doc = " on the specified project. For more information, see"]
-        #[doc = " [Google Cloud IAM](https://cloud.google.com/iam)."]
+        #[doc = " Creates a new custom dashboard. For examples on how you can use this API to create dashboards, see [Managing dashboards by API](https://cloud.google.com/monitoring/dashboards/api-dashboard)."]
+        #[doc = " This method requires the `monitoring.dashboards.create` permission on the specified project. For more information about permissions, see [Cloud Identity and Access Management](https://cloud.google.com/iam)."]
         pub async fn create_dashboard(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDashboardRequest>,
@@ -1078,7 +1122,7 @@ pub mod dashboards_service_client {
         #[doc = ""]
         #[doc = " This method requires the `monitoring.dashboards.list` permission"]
         #[doc = " on the specified project. For more information, see"]
-        #[doc = " [Google Cloud IAM](https://cloud.google.com/iam)."]
+        #[doc = " [Cloud Identity and Access Management](https://cloud.google.com/iam)."]
         pub async fn list_dashboards(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDashboardsRequest>,
@@ -1099,7 +1143,7 @@ pub mod dashboards_service_client {
         #[doc = ""]
         #[doc = " This method requires the `monitoring.dashboards.get` permission"]
         #[doc = " on the specified dashboard. For more information, see"]
-        #[doc = " [Google Cloud IAM](https://cloud.google.com/iam)."]
+        #[doc = " [Cloud Identity and Access Management](https://cloud.google.com/iam)."]
         pub async fn get_dashboard(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDashboardRequest>,
@@ -1120,7 +1164,7 @@ pub mod dashboards_service_client {
         #[doc = ""]
         #[doc = " This method requires the `monitoring.dashboards.delete` permission"]
         #[doc = " on the specified dashboard. For more information, see"]
-        #[doc = " [Google Cloud IAM](https://cloud.google.com/iam)."]
+        #[doc = " [Cloud Identity and Access Management](https://cloud.google.com/iam)."]
         pub async fn delete_dashboard(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDashboardRequest>,
@@ -1141,7 +1185,7 @@ pub mod dashboards_service_client {
         #[doc = ""]
         #[doc = " This method requires the `monitoring.dashboards.update` permission"]
         #[doc = " on the specified dashboard. For more information, see"]
-        #[doc = " [Google Cloud IAM](https://cloud.google.com/iam)."]
+        #[doc = " [Cloud Identity and Access Management](https://cloud.google.com/iam)."]
         pub async fn update_dashboard(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDashboardRequest>,

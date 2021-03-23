@@ -29,28 +29,34 @@ pub mod typed_value {
         DistributionValue(super::super::super::api::Distribution),
     }
 }
-/// A closed time interval. It extends from the start time to the end time, and
-/// includes both: `[startTime, endTime]`. Valid time intervals depend on the
-/// [`MetricKind`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind)
-/// of the metric value. In no case can the end time be earlier than the start
-/// time.
+/// A closed time interval. It extends from the start time to the end time, and includes both: `[startTime, endTime]`. Valid time intervals depend on the [`MetricKind`](/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind) of the metric value. The end time must not be earlier than the start time. When writing data points, the start time must not be more than 25 hours in the past and the end time must not be more than five minutes in the future.
 ///
-/// * For a `GAUGE` metric, the `startTime` value is technically optional; if
+/// * For `GAUGE` metrics, the `startTime` value is technically optional; if
 ///   no value is specified, the start time defaults to the value of the
 ///   end time, and the interval represents a single point in time. If both
 ///   start and end times are specified, they must be identical. Such an
 ///   interval is valid only for `GAUGE` metrics, which are point-in-time
-///   measurements.
+///   measurements. The end time of a new interval must be at least a
+///   millisecond after the end time of the previous interval.
 ///
-/// * For `DELTA` and `CUMULATIVE` metrics, the start time must be earlier
-///   than the end time.
+/// * For `DELTA` metrics, the start time and end time must specify a
+///   non-zero interval, with subsequent points specifying contiguous and
+///   non-overlapping intervals. For `DELTA` metrics, the start time of
+///   the next interval must be at least a millisecond after the end time
+///   of the previous interval.
 ///
-/// * In all cases, the start time of the next interval must be
-///   at least a millisecond after the end time of the previous interval.
-///   Because the interval is closed, if the start time of a new interval
-///   is the same as the end time of the previous interval, data written
-///   at the new start time could overwrite data written at the previous
-///   end time.
+/// * For `CUMULATIVE` metrics, the start time and end time must specify a
+///   a non-zero interval, with subsequent points specifying the same
+///   start time and increasing end times, until an event resets the
+///   cumulative value to zero and sets a new start time for the following
+///   points. The new start time must be at least a millisecond after the
+///   end time of the previous interval.
+///
+/// * The start time of a new interval must be at least a millisecond after the
+///   end time of the previous interval because intervals are closed. If the
+///   start time of a new interval is the same as the end time of the previous
+///   interval, then data written at the new start time could overwrite data
+///   written at the previous end time.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeInterval {
     /// Required. The end of the time interval.
@@ -96,10 +102,13 @@ pub struct Aggregation {
     /// time. This will be done before the per-series aligner can be applied to
     /// the data.
     ///
-    /// The value must be at least 60 seconds. If a per-series aligner other than
-    /// `ALIGN_NONE` is specified, this field is required or an error is returned.
-    /// If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
-    /// specified, then this field is ignored.
+    /// The value must be at least 60 seconds. If a per-series
+    /// aligner other than `ALIGN_NONE` is specified, this field is required or an
+    /// error is returned. If no per-series aligner is specified, or the aligner
+    /// `ALIGN_NONE` is specified, then this field is ignored.
+    ///
+    /// The maximum value of the `alignment_period` is 104 weeks (2 years) for
+    /// charts, and 90,000 seconds (25 hours) for alerting policies.
     #[prost(message, optional, tag = "1")]
     pub alignment_period: ::core::option::Option<::prost_types::Duration>,
     /// An `Aligner` describes how to bring the data points in a single
@@ -577,7 +586,7 @@ pub mod alert_policy {
         #[prost(string, tag = "6")]
         pub display_name: ::prost::alloc::string::String,
         /// Only one of the following condition types will be specified.
-        #[prost(oneof = "condition::Condition", tags = "1, 2")]
+        #[prost(oneof = "condition::Condition", tags = "1, 2, 19")]
         pub condition: ::core::option::Option<condition::Condition>,
     }
     /// Nested message and enum types in `Condition`.
@@ -609,16 +618,16 @@ pub mod alert_policy {
         /// against a threshold.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MetricThreshold {
-            /// A [filter](https://cloud.google.com/monitoring/api/v3/filters) that
+            /// Required. A [filter](https://cloud.google.com/monitoring/api/v3/filters) that
             /// identifies which time series should be compared with the threshold.
             ///
             /// The filter is similar to the one that is specified in the
             /// [`ListTimeSeries`
             /// request](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list)
             /// (that call is useful to verify the time series that will be retrieved /
-            /// processed) and must specify the metric type and optionally may contain
-            /// restrictions on resource type, resource labels, and metric labels.
-            /// This field may not exceed 2048 Unicode characters in length.
+            /// processed). The filter must specify the metric type and the resource
+            /// type. Optionally, it can specify resource labels and metric labels.
+            /// This field must not exceed 2048 Unicode characters in length.
             #[prost(string, tag = "2")]
             pub filter: ::prost::alloc::string::String,
             /// Specifies the alignment of data points in individual time series as
@@ -696,16 +705,16 @@ pub mod alert_policy {
         /// resource does not include any data in the specified `duration`.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MetricAbsence {
-            /// A [filter](https://cloud.google.com/monitoring/api/v3/filters) that
+            /// Required. A [filter](https://cloud.google.com/monitoring/api/v3/filters) that
             /// identifies which time series should be compared with the threshold.
             ///
             /// The filter is similar to the one that is specified in the
             /// [`ListTimeSeries`
             /// request](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list)
             /// (that call is useful to verify the time series that will be retrieved /
-            /// processed) and must specify the metric type and optionally may contain
-            /// restrictions on resource type, resource labels, and metric labels.
-            /// This field may not exceed 2048 Unicode characters in length.
+            /// processed). The filter must specify the metric type and the resource
+            /// type. Optionally, it can specify resource labels and metric labels.
+            /// This field must not exceed 2048 Unicode characters in length.
             #[prost(string, tag = "1")]
             pub filter: ::prost::alloc::string::String,
             /// Specifies the alignment of data points in individual time series as
@@ -722,9 +731,10 @@ pub mod alert_policy {
             #[prost(message, repeated, tag = "5")]
             pub aggregations: ::prost::alloc::vec::Vec<super::super::Aggregation>,
             /// The amount of time that a time series must fail to report new
-            /// data to be considered failing. Currently, only values that
-            /// are a multiple of a minute--e.g.  60, 120, or 300
-            /// seconds--are supported. If an invalid value is given, an
+            /// data to be considered failing. The minimum value of this field
+            /// is 120 seconds. Larger values that are a multiple of a
+            /// minute--for example, 240 or 300 seconds--are supported.
+            /// If an invalid value is given, an
             /// error will be returned. The `Duration.nanos` field is
             /// ignored.
             #[prost(message, optional, tag = "2")]
@@ -733,6 +743,35 @@ pub mod alert_policy {
             /// in order for the condition to trigger. If unspecified, then the
             /// condition will trigger if the comparison is true for any of the
             /// time series that have been identified by `filter` and `aggregations`.
+            #[prost(message, optional, tag = "3")]
+            pub trigger: ::core::option::Option<Trigger>,
+        }
+        /// A condition type that allows alert policies to be defined using
+        /// [Monitoring Query Language](https://cloud.google.com/monitoring/mql).
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MonitoringQueryLanguageCondition {
+            /// [Monitoring Query Language](https://cloud.google.com/monitoring/mql)
+            /// query that outputs a boolean stream.
+            #[prost(string, tag = "1")]
+            pub query: ::prost::alloc::string::String,
+            /// The amount of time that a time series must violate the
+            /// threshold to be considered failing. Currently, only values
+            /// that are a multiple of a minute--e.g., 0, 60, 120, or 300
+            /// seconds--are supported. If an invalid value is given, an
+            /// error will be returned. When choosing a duration, it is useful to
+            /// keep in mind the frequency of the underlying time series data
+            /// (which may also be affected by any alignments specified in the
+            /// `aggregations` field); a good duration is long enough so that a single
+            /// outlier does not generate spurious alerts, but short enough that
+            /// unhealthy states are detected and alerted on quickly.
+            #[prost(message, optional, tag = "2")]
+            pub duration: ::core::option::Option<::prost_types::Duration>,
+            /// The number/percent of time series for which the comparison must hold
+            /// in order for the condition to trigger. If unspecified, then the
+            /// condition will trigger if the comparison is true for any of the
+            /// time series that have been identified by `filter` and `aggregations`,
+            /// or by the ratio, if `denominator_filter` and `denominator_aggregations`
+            /// are specified.
             #[prost(message, optional, tag = "3")]
             pub trigger: ::core::option::Option<Trigger>,
         }
@@ -746,6 +785,10 @@ pub mod alert_policy {
             /// receive new data points.
             #[prost(message, tag = "2")]
             ConditionAbsent(MetricAbsence),
+            /// A condition that uses the Monitoring Query Language to define
+            /// alerts.
+            #[prost(message, tag = "19")]
+            ConditionMonitoringQueryLanguage(MonitoringQueryLanguageCondition),
         }
     }
     /// Operators for combining conditions.
@@ -776,10 +819,11 @@ pub struct CreateAlertPolicyRequest {
     ///     projects/[PROJECT_ID_OR_NUMBER]
     ///
     /// Note that this field names the parent container in which the alerting
-    /// policy will be written, not the name of the created policy. The alerting
-    /// policy that is returned will have a name that contains a normalized
-    /// representation of this name as a prefix but adds a suffix of the form
-    /// `/alertPolicies/[ALERT_POLICY_ID]`, identifying the policy in the
+    /// policy will be written, not the name of the created policy. |name| must be
+    /// a host project of a workspace, otherwise INVALID_ARGUMENT error will
+    /// return. The alerting policy that is returned will have a name that contains
+    /// a normalized representation of this name as a prefix but adds a suffix of
+    /// the form `/alertPolicies/[ALERT_POLICY_ID]`, identifying the policy in the
     /// container.
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
@@ -847,6 +891,10 @@ pub struct ListAlertPoliciesResponse {
     /// use that value as `page_token` in the next call to this method.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// The total number of alert policies in all pages. This number is only an
+    /// estimate, and may change in subsequent pages. https://aip.dev/158
+    #[prost(int32, tag = "4")]
+    pub total_size: i32,
 }
 /// The protocol for the `UpdateAlertPolicy` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -923,7 +971,7 @@ pub mod alert_policy_service_client {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
         }
-        #[doc = " Lists the existing alerting policies for the project."]
+        #[doc = " Lists the existing alerting policies for the workspace."]
         pub async fn list_alert_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAlertPoliciesRequest>,
@@ -1025,16 +1073,17 @@ pub mod alert_policy_service_client {
         }
     }
 }
-/// A set of (label, value) pairs which were dropped during aggregation, attached
-/// to google.api.Distribution.Exemplars in google.api.Distribution values during
-/// aggregation.
+/// A set of (label, value) pairs that were removed from a Distribution
+/// time series during aggregation and then added as an attachment to a
+/// Distribution.Exemplar.
 ///
-/// These values are used in combination with the label values that remain on the
-/// aggregated Distribution timeseries to construct the full label set for the
-/// exemplar values.  The resulting full label set may be used to identify the
-/// specific task/job/instance (for example) which may be contributing to a
-/// long-tail, while allowing the storage savings of only storing aggregated
-/// distribution values for a large group.
+/// The full label set for the exemplars is constructed by using the dropped
+/// pairs in combination with the label values that remain on the aggregated
+/// Distribution time series. The constructed full label set can be used to
+/// identify the specific entity, such as the instance or job, which might be
+/// contributing to a long-tail. However, with dropped labels, the storage
+/// requirements are reduced because only the aggregated distribution values for
+/// a large group of time series are stored.
 ///
 /// Note that there are no guarantees on ordering of the labels from
 /// exemplar-to-exemplar and from distribution-to-distribution in the same
@@ -1455,8 +1504,8 @@ pub struct TimeSeries {
     #[prost(message, optional, tag = "2")]
     pub resource: ::core::option::Option<super::super::api::MonitoredResource>,
     /// Output only. The associated monitored resource metadata. When reading a
-    /// a timeseries, this field will include metadata labels that are explicitly
-    /// named in the reduction. When creating a timeseries, this field is ignored.
+    /// time series, this field will include metadata labels that are explicitly
+    /// named in the reduction. When creating a time series, this field is ignored.
     #[prost(message, optional, tag = "7")]
     pub metadata: ::core::option::Option<super::super::api::MonitoredResourceMetadata>,
     /// The metric kind of the time series. When listing time series, this metric
@@ -1494,8 +1543,13 @@ pub struct TimeSeries {
     /// must be `BOOL`, `INT64`, `DOUBLE`, or `DISTRIBUTION`.
     #[prost(message, repeated, tag = "5")]
     pub points: ::prost::alloc::vec::Vec<Point>,
+    /// The units in which the metric value is reported. It is only applicable
+    /// if the `value_type` is `INT64`, `DOUBLE`, or `DISTRIBUTION`. The `unit`
+    /// defines the representation of the stored metric values.
+    #[prost(string, tag = "8")]
+    pub unit: ::prost::alloc::string::String,
 }
-/// A descriptor for the labels and points in a timeseries.
+/// A descriptor for the labels and points in a time series.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesDescriptor {
     /// Descriptors for the labels.
@@ -1525,6 +1579,12 @@ pub mod time_series_descriptor {
             tag = "3"
         )]
         pub metric_kind: i32,
+        /// The unit in which `time_series` point values are reported. `unit`
+        /// follows the UCUM format for units as seen in
+        /// https://unitsofmeasure.org/ucum.html.
+        /// `unit` is only valid if `value_type` is INTEGER, DOUBLE, DISTRIBUTION.
+        #[prost(string, tag = "4")]
+        pub unit: ::prost::alloc::string::String,
     }
 }
 /// Represents the values of a time series associated with a
@@ -1787,9 +1847,12 @@ pub struct DeleteMetricDescriptorRequest {
 /// The `ListTimeSeries` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTimeSeriesRequest {
-    /// Required. The project on which to execute the request. The format is:
+    /// Required. The project, organization or folder on which to execute the request. The
+    /// format is:
     ///
     ///     projects/[PROJECT_ID_OR_NUMBER]
+    ///     organizations/[ORGANIZATION_ID]
+    ///     folders/[FOLDER_ID]
     #[prost(string, tag = "10")]
     pub name: ::prost::alloc::string::String,
     /// Required. A [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
@@ -1813,6 +1876,10 @@ pub struct ListTimeSeriesRequest {
     /// series data is returned.
     #[prost(message, optional, tag = "5")]
     pub aggregation: ::core::option::Option<Aggregation>,
+    /// Apply a second aggregation after `aggregation` is applied. May only be
+    /// specified if `aggregation` is specified.
+    #[prost(message, optional, tag = "11")]
+    pub secondary_aggregation: ::core::option::Option<Aggregation>,
     /// Unsupported: must be left blank. The points in each time series are
     /// currently returned in reverse time order (most recent to oldest).
     #[prost(string, tag = "6")]
@@ -1862,6 +1929,14 @@ pub struct ListTimeSeriesResponse {
     /// to be incomplete.
     #[prost(message, repeated, tag = "3")]
     pub execution_errors: ::prost::alloc::vec::Vec<super::super::rpc::Status>,
+    /// The unit in which all `time_series` point values are reported. `unit`
+    /// follows the UCUM format for units as seen in
+    /// https://unitsofmeasure.org/ucum.html.
+    /// If different `time_series` have different units (for example, because they
+    /// come from different metric types, or a unit is absent), then `unit` will be
+    /// "{not_a_unit}".
+    #[prost(string, tag = "5")]
+    pub unit: ::prost::alloc::string::String,
 }
 /// The `CreateTimeSeries` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1927,8 +2002,9 @@ pub struct QueryTimeSeriesRequest {
     ///     projects/[PROJECT_ID_OR_NUMBER]
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The query in the monitoring query language format. The default
-    /// time zone is in UTC.
+    /// Required. The query in the [Monitoring Query
+    /// Language](https://cloud.google.com/monitoring/mql/reference) format.
+    /// The default time zone is in UTC.
     #[prost(string, tag = "7")]
     pub query: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of time_series_data to return.
@@ -2170,7 +2246,10 @@ pub struct NotificationChannelDescriptor {
     /// In the above, `[TYPE]` is the value of the `type` field.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
-    /// The type of notification channel, such as "email", "sms", etc.
+    /// The type of notification channel, such as "email" and "sms". To view the
+    /// full list of channels, see
+    /// [Channel
+    /// descriptors](https://cloud.google.com/monitoring/alerts/using-channels-api#ncd).
     /// Notification channel types are globally unique.
     #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
@@ -2274,6 +2353,12 @@ pub struct NotificationChannel {
     /// of alerting policies on the channel at some point in the future.
     #[prost(message, optional, tag = "11")]
     pub enabled: ::core::option::Option<bool>,
+    /// Record of the creation of this channel.
+    #[prost(message, optional, tag = "12")]
+    pub creation_record: ::core::option::Option<MutationRecord>,
+    /// Records of the modification of this channel.
+    #[prost(message, repeated, tag = "13")]
+    pub mutation_records: ::prost::alloc::vec::Vec<MutationRecord>,
 }
 /// Nested message and enum types in `NotificationChannel`.
 pub mod notification_channel {
@@ -2419,6 +2504,10 @@ pub struct ListNotificationChannelsResponse {
     /// all results have been returned.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// The total number of notification channels in all pages. This number is only
+    /// an estimate, and may change in subsequent pages. https://aip.dev/158
+    #[prost(int32, tag = "4")]
+    pub total_size: i32,
 }
 /// The `GetNotificationChannel` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2753,6 +2842,62 @@ pub mod notification_channel_service_client {
         }
     }
 }
+#[doc = r" Generated client implementations."]
+pub mod query_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    #[doc = " The QueryService API is used to manage time series data in Stackdriver"]
+    #[doc = " Monitoring. Time series data is a collection of data points that describes"]
+    #[doc = " the time-varying values of a metric."]
+    pub struct QueryServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> QueryServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Queries time series using Monitoring Query Language. This method does not require a Workspace."]
+        pub async fn query_time_series(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryTimeSeriesRequest>,
+        ) -> Result<tonic::Response<super::QueryTimeSeriesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.monitoring.v3.QueryService/QueryTimeSeries",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for QueryServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for QueryServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "QueryServiceClient {{ ... }}")
+        }
+    }
+}
 /// A `Service` is a discrete, autonomous, and network-accessible unit, designed
 /// to solve an individual concern
 /// ([Wikipedia](https://en.wikipedia.org/wiki/Service-orientation)). In
@@ -2772,7 +2917,7 @@ pub struct Service {
     #[prost(message, optional, tag = "13")]
     pub telemetry: ::core::option::Option<service::Telemetry>,
     /// REQUIRED. Service-identifying atoms specifying the underlying service.
-    #[prost(oneof = "service::Identifier", tags = "6, 7, 8, 9, 10")]
+    #[prost(oneof = "service::Identifier", tags = "6, 7, 8, 9, 10, 11")]
     pub identifier: ::core::option::Option<service::Identifier>,
 }
 /// Nested message and enum types in `Service`.
@@ -2800,7 +2945,8 @@ pub mod service {
         pub service: ::prost::alloc::string::String,
     }
     /// Istio service scoped to a single Kubernetes cluster. Learn more at
-    /// http://istio.io.
+    /// https://istio.io. Clusters running OSS Istio will have their services
+    /// ingested as this type.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterIstio {
         /// The location of the Kubernetes cluster in which this Istio service is
@@ -2822,7 +2968,8 @@ pub mod service {
         #[prost(string, tag = "4")]
         pub service_name: ::prost::alloc::string::String,
     }
-    /// Istio service scoped to an Istio mesh
+    /// Istio service scoped to an Istio mesh. Anthos clusters running ASM < 1.6.8
+    /// will have their services ingested as this type.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MeshIstio {
         /// Identifier for the mesh in which this Istio service is defined.
@@ -2837,6 +2984,28 @@ pub mod service {
         /// `destination_service_name` metric label in Istio metrics.
         #[prost(string, tag = "4")]
         pub service_name: ::prost::alloc::string::String,
+    }
+    /// Canonical service scoped to an Istio mesh. Anthos clusters running ASM >=
+    /// 1.6.8 will have their services ingested as this type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IstioCanonicalService {
+        /// Identifier for the Istio mesh in which this canonical service is defined.
+        /// Corresponds to the `mesh_uid` metric label in
+        /// [Istio metrics](https://cloud.google.com/monitoring/api/metrics_istio).
+        #[prost(string, tag = "1")]
+        pub mesh_uid: ::prost::alloc::string::String,
+        /// The namespace of the canonical service underlying this service.
+        /// Corresponds to the `destination_canonical_service_namespace` metric
+        /// label in [Istio
+        /// metrics](https://cloud.google.com/monitoring/api/metrics_istio).
+        #[prost(string, tag = "3")]
+        pub canonical_service_namespace: ::prost::alloc::string::String,
+        /// The name of the canonical service underlying this service.
+        /// Corresponds to the `destination_canonical_service_name` metric label in
+        /// label in [Istio
+        /// metrics](https://cloud.google.com/monitoring/api/metrics_istio).
+        #[prost(string, tag = "4")]
+        pub canonical_service: ::prost::alloc::string::String,
     }
     /// Configuration for how to query telemetry on a Service.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2864,6 +3033,11 @@ pub mod service {
         /// Type used for Istio services scoped to an Istio mesh.
         #[prost(message, tag = "10")]
         MeshIstio(MeshIstio),
+        /// Type used for canonical services scoped to an Istio mesh.
+        /// Metrics for Istio are
+        /// [documented here](https://istio.io/latest/docs/reference/config/metrics/)
+        #[prost(message, tag = "11")]
+        IstioCanonicalService(IstioCanonicalService),
     }
 }
 /// A Service-Level Objective (SLO) describes a level of desired good service. It
@@ -3226,16 +3400,20 @@ pub struct ListServicesRequest {
     ///
     ///     - `identifier_case`
     ///     - `app_engine.module_id`
-    ///     - `cloud_endpoints.service`
-    ///     - `cluster_istio.location`
-    ///     - `cluster_istio.cluster_name`
-    ///     - `cluster_istio.service_namespace`
-    ///     - `cluster_istio.service_name`
+    ///     - `cloud_endpoints.service` (reserved for future use)
+    ///     - `mesh_istio.mesh_uid`
+    ///     - `mesh_istio.service_namespace`
+    ///     - `mesh_istio.service_name`
+    ///     - `cluster_istio.location` (deprecated)
+    ///     - `cluster_istio.cluster_name` (deprecated)
+    ///     - `cluster_istio.service_namespace` (deprecated)
+    ///     - `cluster_istio.service_name` (deprecated)
     ///
     /// `identifier_case` refers to which option in the identifier oneof is
     /// populated. For example, the filter `identifier_case = "CUSTOM"` would match
     /// all services with a value for the `custom` field. Valid options are
-    /// "CUSTOM", "APP_ENGINE", "CLOUD_ENDPOINTS", and "CLUSTER_ISTIO".
+    /// "CUSTOM", "APP_ENGINE", "MESH_ISTIO", plus "CLUSTER_ISTIO" (deprecated)
+    /// and "CLOUD_ENDPOINTS" (reserved for future use).
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// A non-negative number that is the maximum number of results to return.
@@ -3672,6 +3850,9 @@ pub struct UptimeCheckConfig {
     ///
     ///      projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     ///
+    /// `[PROJECT_ID_OR_NUMBER]` is the Workspace host project associated with the
+    /// Uptime check.
+    ///
     /// This field should be omitted when creating the Uptime check configuration;
     /// on create, the resource name is assigned by the server and included in the
     /// response.
@@ -3745,7 +3926,8 @@ pub mod uptime_check_config {
     /// Information involved in an HTTP/HTTPS Uptime check request.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HttpCheck {
-        /// The HTTP request method to use for the check.
+        /// The HTTP request method to use for the check. If set to
+        /// `METHOD_UNSPECIFIED` then `request_method` defaults to `GET`.
         #[prost(enumeration = "http_check::RequestMethod", tag = "8")]
         pub request_method: i32,
         /// If `true`, use HTTPS instead of HTTP to run the check.
@@ -3768,7 +3950,7 @@ pub mod uptime_check_config {
         /// defaults to empty.
         #[prost(message, optional, tag = "4")]
         pub auth_info: ::core::option::Option<http_check::BasicAuthentication>,
-        /// Boolean specifiying whether to encrypt the header information.
+        /// Boolean specifying whether to encrypt the header information.
         /// Encryption should be specified for any headers related to authentication
         /// that you do not wish to be seen when retrieving the configuration. The
         /// server will be responsible for encrypting the headers.
@@ -3789,7 +3971,14 @@ pub mod uptime_check_config {
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
-        /// The content type to use for the check.
+        /// The content type header to use for the check. The following
+        /// configurations result in errors:
+        /// 1. Content type is specified in both the `headers` field and the
+        /// `content_type` field.
+        /// 2. Request method is `GET` and `content_type` is not `TYPE_UNSPECIFIED`
+        /// 3. Request method is `POST` and `content_type` is `TYPE_UNSPECIFIED`.
+        /// 4. Request method is `POST` and a "Content-Type" header is provided via
+        /// `headers` field. The `content_type` field should be used instead.
         #[prost(enumeration = "http_check::ContentType", tag = "9")]
         pub content_type: i32,
         /// Boolean specifying whether to include SSL certificate validation as a
@@ -3798,11 +3987,14 @@ pub mod uptime_check_config {
         /// setting `validate_ssl` to `true` has no effect.
         #[prost(bool, tag = "7")]
         pub validate_ssl: bool,
-        /// The request body associated with the HTTP request. If `content_type` is
-        /// `URL_ENCODED`, the body passed in must be URL-encoded. Users can provide
-        /// a `Content-Length` header via the `headers` field or the API will do
-        /// so. The maximum byte size is 1 megabyte. Note: As with all `bytes` fields
-        /// JSON representations are base64 encoded.
+        /// The request body associated with the HTTP POST request. If `content_type`
+        /// is `URL_ENCODED`, the body passed in must be URL-encoded. Users can
+        /// provide a `Content-Length` header via the `headers` field or the API will
+        /// do so. If the `request_method` is `GET` and `body` is not empty, the API
+        /// will return an error. The maximum byte size is 1 megabyte. Note: As with
+        /// all `bytes` fields, JSON representations are base64 encoded. e.g.:
+        /// "foo=bar" in URL-encoded form is "foo%3Dbar" and in base64 encoding is
+        /// "Zm9vJTI1M0RiYXI=".
         #[prost(bytes = "vec", tag = "10")]
         pub body: ::prost::alloc::vec::Vec<u8>,
     }
@@ -3834,16 +4026,13 @@ pub mod uptime_check_config {
             /// POST request.
             Post = 2,
         }
-        /// Header options corresponding to the Content-Type of the body in HTTP
-        /// requests. Note that a `Content-Type` header cannot be present in the
-        /// `headers` field if this field is specified.
+        /// Header options corresponding to the content type of a HTTP request body.
         #[derive(
             Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
         )]
         #[repr(i32)]
         pub enum ContentType {
-            /// No content type specified. If the request method is POST, an
-            /// unspecified content type results in a check creation rejection.
+            /// No content type specified.
             TypeUnspecified = 0,
             /// `body` is in URL-encoded form. Equivalent to setting the `Content-Type`
             /// to `application/x-www-form-urlencoded` in the HTTP request.

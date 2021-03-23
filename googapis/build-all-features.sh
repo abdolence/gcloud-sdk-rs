@@ -6,6 +6,7 @@ cd $current_dir
 
 features=(
   default
+  ccc-hosted-marketplace-v2
   google-actions-sdk-v2
   google-actions-sdk-v2-conversation
   google-actions-sdk-v2-interactionmodel
@@ -13,11 +14,6 @@ features=(
   google-actions-sdk-v2-interactionmodel-type
   google-actions-type
   google-ads-admob-v1
-  google-ads-googleads-v3-common
-  google-ads-googleads-v3-enums
-  google-ads-googleads-v3-errors
-  google-ads-googleads-v3-resources
-  google-ads-googleads-v3-services
   google-ads-googleads-v4-common
   google-ads-googleads-v4-enums
   google-ads-googleads-v4-errors
@@ -35,6 +31,7 @@ features=(
   # google-ads-googleads-v6-services
   google-analytics-admin-v1alpha
   google-analytics-data-v1alpha
+  google-analytics-data-v1beta
   google-api
   google-api-expr-v1alpha1
   google-api-expr-v1beta1
@@ -44,6 +41,7 @@ features=(
   google-appengine-logging-v1
   google-appengine-v1
   google-appengine-v1beta
+  google-apps-drive-activity-v2
   google-apps-script-type
   google-apps-script-type-calendar
   google-apps-script-type-docs
@@ -81,6 +79,7 @@ features=(
   google-cloud-asset-v1p2beta1
   google-cloud-asset-v1p4beta1
   google-cloud-asset-v1p5beta1
+  google-cloud-asset-v1p7beta1
   google-cloud-assuredworkloads-v1beta1
   google-cloud-audit
   google-cloud-automl-v1
@@ -97,11 +96,12 @@ features=(
   google-cloud-bigquery-storage-v1beta2
   google-cloud-bigquery-v2
   google-cloud-billing-budgets-v1
-  google-cloud-billing-budgets-v1alpha1
   google-cloud-billing-budgets-v1beta1
   google-cloud-billing-v1
   google-cloud-binaryauthorization-v1beta1
   google-cloud-channel-v1
+  google-cloud-clouddms-logging-v1
+  google-cloud-clouddms-v1
   google-cloud-datacatalog-v1
   google-cloud-datacatalog-v1beta1
   google-cloud-datalabeling-v1beta1
@@ -113,6 +113,7 @@ features=(
   google-cloud-dialogflow-cx-v3beta1
   google-cloud-dialogflow-v2
   google-cloud-dialogflow-v2beta1
+  google-cloud-documentai-v1
   google-cloud-documentai-v1beta1
   google-cloud-documentai-v1beta2
   google-cloud-documentai-v1beta3
@@ -138,6 +139,7 @@ features=(
   google-cloud-memcache-v1beta2
   google-cloud-metastore-logging-v1
   google-cloud-metastore-v1alpha
+  google-cloud-metastore-v1beta
   google-cloud-ml-v1
   google-cloud-networkconnectivity-v1alpha1
   google-cloud-notebooks-v1beta1
@@ -164,6 +166,7 @@ features=(
   google-cloud-redis-v1
   google-cloud-redis-v1beta1
   google-cloud-resourcemanager-v2
+  google-cloud-resourcesettings-v1
   google-cloud-retail-v2
   google-cloud-retail-v2alpha
   google-cloud-retail-v2beta
@@ -180,6 +183,7 @@ features=(
   google-cloud-securitycenter-v1p1beta1
   google-cloud-servicedirectory-v1
   google-cloud-servicedirectory-v1beta1
+  google-cloud-shell-v1
   google-cloud-speech-v1
   google-cloud-speech-v1p1beta1
   google-cloud-support-common
@@ -204,6 +208,7 @@ features=(
   google-cloud-vision-v1p2beta1
   google-cloud-vision-v1p3beta1
   google-cloud-vision-v1p4beta1
+  google-cloud-vpcaccess-v1
   google-cloud-webrisk-v1
   google-cloud-webrisk-v1beta1
   google-cloud-websecurityscanner-v1

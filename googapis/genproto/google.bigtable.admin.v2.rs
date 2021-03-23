@@ -126,9 +126,27 @@ pub struct Cluster {
     /// parent instance's tables, unless explicitly overridden.
     #[prost(enumeration = "StorageType", tag = "5")]
     pub default_storage_type: i32,
+    /// Immutable. The encryption configuration for CMEK-protected clusters.
+    #[prost(message, optional, tag = "6")]
+    pub encryption_config: ::core::option::Option<cluster::EncryptionConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
+    /// Cloud Key Management Service (Cloud KMS) settings for a CMEK-protected
+    /// cluster.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EncryptionConfig {
+        /// Describes the Cloud KMS encryption key that will be used to protect the
+        /// destination Bigtable cluster. The requirements for this key are:
+        ///  1) The Cloud Bigtable service account associated with the project that
+        ///  contains this cluster must be granted the
+        ///  `cloudkms.cryptoKeyEncrypterDecrypter` role on the CMEK key.
+        ///  2) Only regional keys can be used and the region of the CMEK key must
+        ///  match the region of the cluster.
+        /// 3) All clusters within an instance must use the same CMEK key.
+        #[prost(string, tag = "1")]
+        pub kms_key_name: ::prost::alloc::string::String,
+    }
     /// Possible states of a cluster.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -158,7 +176,7 @@ pub mod cluster {
 pub struct AppProfile {
     /// (`OutputOnly`)
     /// The unique name of the app profile. Values are of the form
-    /// `projects/<project>/instances/<instance>/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
+    /// `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Strongly validated etag for optimistic concurrency control. Preserve the
@@ -924,8 +942,8 @@ pub mod restore_info {
 /// Each table is served using the resources of its parent cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
-    /// Output only. The unique name of the table. Values are of the form
-    /// `projects/<project>/instances/<instance>/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
+    /// The unique name of the table. Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
     /// Views: `NAME_ONLY`, `SCHEMA_VIEW`, `REPLICATION_VIEW`, `FULL`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -933,7 +951,7 @@ pub struct Table {
     /// If it could not be determined whether or not the table has data in a
     /// particular cluster (for example, if its zone is unavailable), then
     /// there will be an entry for the cluster with UNKNOWN `replication_status`.
-    /// Views: `REPLICATION_VIEW`, `FULL`
+    /// Views: `REPLICATION_VIEW`, `ENCRYPTION_VIEW`, `FULL`
     #[prost(map = "string, message", tag = "2")]
     pub cluster_states:
         ::std::collections::HashMap<::prost::alloc::string::String, table::ClusterState>,
@@ -962,6 +980,13 @@ pub mod table {
         /// Output only. The state of replication for the table in this cluster.
         #[prost(enumeration = "cluster_state::ReplicationState", tag = "1")]
         pub replication_state: i32,
+        /// Output only. The encryption information for the table in this cluster.
+        /// If the encryption key protecting this resource is customer managed, then
+        /// its version can be rotated in Cloud Key Management Service (Cloud KMS).
+        /// The primary version of the key and its status will be reflected here when
+        /// changes propagate from Cloud KMS.
+        #[prost(message, repeated, tag = "2")]
+        pub encryption_info: ::prost::alloc::vec::Vec<super::EncryptionInfo>,
     }
     /// Nested message and enum types in `ClusterState`.
     pub mod cluster_state {
@@ -1017,6 +1042,8 @@ pub mod table {
         /// Only populates `name` and fields related to the table's replication
         /// state.
         ReplicationView = 3,
+        /// Only populates 'name' and fields related to the table's encryption state.
+        EncryptionView = 5,
         /// Populates all fields.
         Full = 4,
     }
@@ -1075,6 +1102,47 @@ pub mod gc_rule {
         Union(Union),
     }
 }
+/// Encryption information for a given resource.
+/// If this resource is protected with customer managed encryption, the in-use
+/// Cloud Key Management Service (Cloud KMS) key version is specified along with
+/// its status.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionInfo {
+    /// Output only. The type of encryption used to protect this resource.
+    #[prost(enumeration = "encryption_info::EncryptionType", tag = "3")]
+    pub encryption_type: i32,
+    /// Output only. The status of encrypt/decrypt calls on underlying data for
+    /// this resource. Regardless of status, the existing data is always encrypted
+    /// at rest.
+    #[prost(message, optional, tag = "4")]
+    pub encryption_status: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. The version of the Cloud KMS key specified in the parent
+    /// cluster that is in use for the data underlying this table.
+    #[prost(string, tag = "2")]
+    pub kms_key_version: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `EncryptionInfo`.
+pub mod encryption_info {
+    /// Possible encryption types for a resource.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum EncryptionType {
+        /// Encryption type was not specified, though data at rest remains encrypted.
+        Unspecified = 0,
+        /// The data backing this resource is encrypted at rest with a key that is
+        /// fully managed by Google. No key version or status will be populated.
+        /// This is the default state.
+        GoogleDefaultEncryption = 1,
+        /// The data backing this resource is encrypted at rest with a key that is
+        /// managed by the customer.
+        /// The in-use version of the key and its status are populated for
+        /// CMEK-protected tables.
+        /// CMEK-protected backups are pinned to the key version that was in use at
+        /// the time the backup was taken. This key version is populated but its
+        /// status is not tracked and is reported as `UNKNOWN`.
+        CustomerManagedEncryption = 2,
+    }
+}
 /// A snapshot of a table at a particular time. A snapshot can be used as a
 /// checkpoint for data restoration or a data source for a new table.
 ///
@@ -1086,7 +1154,7 @@ pub mod gc_rule {
 pub struct Snapshot {
     /// Output only. The unique name of the snapshot.
     /// Values are of the form
-    /// `projects/<project>/instances/<instance>/clusters/<cluster>/snapshots/<snapshot>`.
+    /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The source table at the time the snapshot was taken.
@@ -1173,6 +1241,9 @@ pub struct Backup {
     /// Output only. The current state of the backup.
     #[prost(enumeration = "backup::State", tag = "7")]
     pub state: i32,
+    /// Output only. The encryption information for the backup.
+    #[prost(message, optional, tag = "9")]
+    pub encryption_info: ::core::option::Option<EncryptionInfo>,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {

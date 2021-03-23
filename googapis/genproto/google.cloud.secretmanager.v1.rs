@@ -30,6 +30,10 @@ pub struct Secret {
     #[prost(map = "string, string", tag = "4")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Optional. A list of up to 10 Pub/Sub topics to which messages are published when
+    /// control plane operations are called on the secret or its versions.
+    #[prost(message, repeated, tag = "5")]
+    pub topics: ::prost::alloc::vec::Vec<Topic>,
     /// Expiration policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. If specified the [Secret][google.cloud.secretmanager.v1.Secret]
     /// and all [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be automatically deleted at
     /// expiration. Expired secrets are irreversibly deleted.
@@ -263,6 +267,16 @@ pub struct CustomerManagedEncryptionStatus {
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.
     #[prost(string, tag = "1")]
     pub kms_key_version_name: ::prost::alloc::string::String,
+}
+/// A Pub/Sub topic which Secret Manager will publish to when control plane
+/// events occur on this secret.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Topic {
+    /// Required. The resource name of the Pub/Sub topic that will be published to, in the
+    /// following format: `projects/*/topics/*`. For publication to succeed, the
+    /// Secret Manager P4SA must have `pubsub.publisher` permissions on the topic.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// A secret payload resource in the Secret Manager API. This contains the
 /// sensitive secret payload that is associated with a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].

@@ -110,8 +110,8 @@ pub struct VideoActionRecognitionPredictionInstance {
     /// The end, exclusive, of the video's time segment on which to perform
     /// the prediction. Expressed as a number of seconds as measured from the
     /// start of the video, with "s" appended at the end. Fractions are allowed,
-    /// up to a microsecond precision, and "Infinity" is allowed, which means the
-    /// end of the video.
+    /// up to a microsecond precision, and "inf" or "Infinity" is allowed, which
+    /// means the end of the video.
     #[prost(string, tag = "4")]
     pub time_segment_end: ::prost::alloc::string::String,
 }
@@ -135,8 +135,8 @@ pub struct VideoClassificationPredictionInstance {
     /// The end, exclusive, of the video's time segment on which to perform
     /// the prediction. Expressed as a number of seconds as measured from the
     /// start of the video, with "s" appended at the end. Fractions are allowed,
-    /// up to a microsecond precision, and "Infinity" is allowed, which means the
-    /// end of the video.
+    /// up to a microsecond precision, and "inf" or "Infinity" is allowed, which
+    /// means the end of the video.
     #[prost(string, tag = "4")]
     pub time_segment_end: ::prost::alloc::string::String,
 }
@@ -160,8 +160,8 @@ pub struct VideoObjectTrackingPredictionInstance {
     /// The end, exclusive, of the video's time segment on which to perform
     /// the prediction. Expressed as a number of seconds as measured from the
     /// start of the video, with "s" appended at the end. Fractions are allowed,
-    /// up to a microsecond precision, and "Infinity" is allowed, which means the
-    /// end of the video.
+    /// up to a microsecond precision, and "inf" or "Infinity" is allowed, which
+    /// means the end of the video.
     #[prost(string, tag = "4")]
     pub time_segment_end: ::prost::alloc::string::String,
 }

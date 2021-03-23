@@ -36,6 +36,19 @@ pub enum PolylineQuality {
     /// `HIGH_QUALITY` option.
     Overview = 2,
 }
+/// Specifies the preferred type of polyline to be returned.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PolylineEncoding {
+    /// No polyline type preference specified. Defaults to `ENCODED_POLYLINE`.
+    Unspecified = 0,
+    /// Specifies a polyline encoded using the [polyline encoding
+    /// algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+    EncodedPolyline = 1,
+    /// Specifies a polyline using the [GeoJSON LineString
+    /// format](https://tools.ietf.org/html/rfc7946#section-3.1.4)
+    GeoJsonLinestring = 2,
+}
 /// List of toll passes around the world that we support.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -154,6 +167,9 @@ pub struct ComputeRoutesRequest {
     /// Optional. Specifies your preference for the quality of the polyline.
     #[prost(enumeration = "PolylineQuality", tag = "6")]
     pub polyline_quality: i32,
+    /// Optional. Specifies the preferred encoding for the polyline.
+    #[prost(enumeration = "PolylineEncoding", tag = "12")]
+    pub polyline_encoding: i32,
     /// Optional. The departure time. If you don't set this value, then this value
     /// defaults to the time that you made the request. If you set this value to a
     /// time that has already occurred, then the request fails.
@@ -242,6 +258,9 @@ pub enum RouteTravelMode {
     /// Two-wheeled, motorized vehicle. For example, motorcycle. Note that this
     /// differs from the `BICYCLE` travel mode which covers human-powered mode.
     TwoWheeler = 4,
+    /// Travel by licensed taxi, which may allow the vehicle to travel on
+    /// designated taxi lanes in some areas.
+    Taxi = 5,
 }
 /// A set of values that specify factors to take into consideration when
 /// calculating the route.
@@ -433,13 +452,15 @@ pub struct RouteTravelAdvisory {
     #[prost(message, optional, tag = "2")]
     pub toll_info: ::core::option::Option<TollInfo>,
     /// Speed reading intervals detailing traffic density. Applicable in case of
-    /// TRAFFIC_AWARE and TRAFFIC_AWARE_OPTIMAL routing preferences.
-    /// The intervals cover the entire polyline of the route without overlaps, i.e.
-    /// the start point of a given interval coincides with the end point of the
+    /// `TRAFFIC_AWARE` and `TRAFFIC_AWARE_OPTIMAL` routing preferences.
+    /// The intervals cover the entire polyline of the route without overlap.
+    /// The start point of a specified interval is the same as the end point of the
     /// preceding interval.
+    ///
     /// Example:
-    ///   polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
-    ///   speed_reading_intervals: [A,C),  [C,D), [D,G).
+    ///
+    ///     polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    ///     speed_reading_intervals: [A,C), [C,D), [D,G).
     #[prost(message, repeated, tag = "3")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
@@ -454,6 +475,35 @@ pub struct RouteLegTravelAdvisory {
     /// If this field does not exist, then there is no toll on the RouteLeg.
     #[prost(message, optional, tag = "1")]
     pub toll_info: ::core::option::Option<TollInfo>,
+    /// Speed reading intervals detailing traffic density. Applicable in case of
+    /// `TRAFFIC_AWARE` and `TRAFFIC_AWARE_OPTIMAL` routing preferences.
+    /// The intervals cover the entire polyline of the RouteLg without overlap.
+    /// The start point of a specified interval is the same as the end point of the
+    /// preceding interval.
+    ///
+    /// Example:
+    ///
+    ///     polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    ///     speed_reading_intervals: [A,C), [C,D), [D,G).
+    #[prost(message, repeated, tag = "2")]
+    pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
+}
+/// Encapsulates the additional information that the user should be informed
+/// about, such as possible traffic zone restriction on a leg step.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouteLegStepTravelAdvisory {
+    /// Speed reading intervals detailing traffic density. Applicable in case of
+    /// `TRAFFIC_AWARE` and `TRAFFIC_AWARE_OPTIMAL` routing preferences.
+    /// The intervals cover the entire polyline of the RouteLegStep without
+    /// overlap. The start point of a specified interval is the same as the end
+    /// point of the preceding interval.
+    ///
+    /// Example:
+    ///
+    ///     polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    ///     speed_reading_intervals: [A,C), [C,D), [D,G).
+    #[prost(message, repeated, tag = "1")]
+    pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
 /// Encapsulates the traffic restriction applied to the route. As of October
 /// 2019, only Jakarta, Indonesia takes into consideration.
@@ -551,6 +601,10 @@ pub struct RouteLegStep {
     /// Navigation instructions.
     #[prost(message, optional, tag = "6")]
     pub navigation_instruction: ::core::option::Option<NavigationInstruction>,
+    /// Encapsulates the additional information that the user should be informed
+    /// about, such as possible traffic zone restriction on a leg step.
+    #[prost(message, optional, tag = "7")]
+    pub travel_advisory: ::core::option::Option<RouteLegStepTravelAdvisory>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NavigationInstruction {
@@ -569,11 +623,11 @@ pub struct NavigationInstruction {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
-    /// In JSON, when the index is 0, the field will appear to be unpopulated.
+    /// In JSON, when the index is 0, the field appears to be unpopulated.
     #[prost(int32, tag = "1")]
     pub start_polyline_point_index: i32,
     /// The ending index of this interval in the polyline.
-    /// In JSON, when the index is 0, the field will appear to be unpopulated.
+    /// In JSON, when the index is 0, the field appears to be unpopulated.
     #[prost(int32, tag = "2")]
     pub end_polyline_point_index: i32,
     /// Traffic speed in this interval.

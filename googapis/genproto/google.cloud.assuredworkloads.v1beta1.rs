@@ -145,6 +145,11 @@ pub struct Workload {
     /// Regimes.
     #[prost(message, optional, tag = "14")]
     pub kms_settings: ::core::option::Option<workload::KmsSettings>,
+    /// Input only. Resource properties that are used to customize workload resources.
+    /// These properties (such as custom project id) will be used to create
+    /// workload resources if possible. This field is optional.
+    #[prost(message, repeated, tag = "15")]
+    pub resource_settings: ::prost::alloc::vec::Vec<workload::ResourceSettings>,
     /// Settings specific to the selected [compliance_regime]
     #[prost(oneof = "workload::ComplianceRegimeSettings", tags = "7, 8, 11, 12")]
     pub compliance_regime_settings: ::core::option::Option<workload::ComplianceRegimeSettings>,
@@ -219,6 +224,20 @@ pub mod workload {
         #[prost(message, optional, tag = "1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
+    /// Represent the custom settings for the resources to be created.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ResourceSettings {
+        /// Resource identifier.
+        /// For a project this represents project_id. If the project is already
+        /// taken, the workload creation will fail.
+        #[prost(string, tag = "1")]
+        pub resource_id: ::prost::alloc::string::String,
+        /// Indicates the type of resource. This field should be specified to
+        /// correspond the id to the right project type (CONSUMER_PROJECT or
+        /// ENCRYPTION_KEYS_PROJECT)
+        #[prost(enumeration = "resource_info::ResourceType", tag = "2")]
+        pub resource_type: i32,
+    }
     /// Supported Compliance Regimes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -235,6 +254,10 @@ pub mod workload {
         FedrampModerate = 4,
         /// Assured Workloads For US Regions data protection controls
         UsRegionalAccess = 5,
+        /// Health Insurance Portability and Accountability Act controls
+        Hipaa = 6,
+        /// Health Information Trust Alliance controls
+        Hitrust = 7,
     }
     /// Settings specific to the selected [compliance_regime]
     #[derive(Clone, PartialEq, ::prost::Oneof)]

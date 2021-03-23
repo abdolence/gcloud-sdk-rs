@@ -229,6 +229,12 @@ pub struct Authority {
     /// a new issuer (and re-enabling Workload Identity).
     #[prost(string, tag = "1")]
     pub issuer: ::prost::alloc::string::String,
+    /// Optional. OIDC verification keys for this Membership in JWKS format (RFC 7517).
+    ///
+    /// When this field is set, OIDC discovery will NOT be performed on `issuer`,
+    /// and instead OIDC tokens will be validated using this field.
+    #[prost(bytes = "vec", tag = "5")]
+    pub oidc_jwks: ::prost::alloc::vec::Vec<u8>,
     /// Output only. An identity provider that reflects the `issuer` in the workload identity
     /// pool.
     #[prost(string, tag = "3")]

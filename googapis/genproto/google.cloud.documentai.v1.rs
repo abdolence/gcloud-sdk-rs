@@ -46,17 +46,17 @@ pub struct Document {
     /// Optional. UTF-8 encoded text in reading order from the document.
     #[prost(string, tag = "4")]
     pub text: ::prost::alloc::string::String,
-    /// Styles for the [Document.text][google.cloud.documentai.v1beta3.Document.text].
+    /// Styles for the [Document.text][google.cloud.documentai.v1.Document.text].
     #[prost(message, repeated, tag = "5")]
     pub text_styles: ::prost::alloc::vec::Vec<document::Style>,
-    /// Visual page layout for the [Document][google.cloud.documentai.v1beta3.Document].
+    /// Visual page layout for the [Document][google.cloud.documentai.v1.Document].
     #[prost(message, repeated, tag = "6")]
     pub pages: ::prost::alloc::vec::Vec<document::Page>,
-    /// A list of entities detected on [Document.text][google.cloud.documentai.v1beta3.Document.text]. For document shards,
+    /// A list of entities detected on [Document.text][google.cloud.documentai.v1.Document.text]. For document shards,
     /// entities in this list may cross shard boundaries.
     #[prost(message, repeated, tag = "7")]
     pub entities: ::prost::alloc::vec::Vec<document::Entity>,
-    /// Relationship among [Document.entities][google.cloud.documentai.v1beta3.Document.entities].
+    /// Relationship among [Document.entities][google.cloud.documentai.v1.Document.entities].
     #[prost(message, repeated, tag = "8")]
     pub entity_relations: ::prost::alloc::vec::Vec<document::EntityRelation>,
     /// A list of text corrections made to [Document.text].  This is usually
@@ -91,7 +91,7 @@ pub mod document {
         /// Total number of shards.
         #[prost(int64, tag = "2")]
         pub shard_count: i64,
-        /// The index of the first character in [Document.text][google.cloud.documentai.v1beta3.Document.text] in the overall
+        /// The index of the first character in [Document.text][google.cloud.documentai.v1.Document.text] in the overall
         /// document global text.
         #[prost(int64, tag = "3")]
         pub text_offset: i64,
@@ -100,7 +100,7 @@ pub mod document {
     /// conventions as much as possible.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Style {
-        /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1beta3.Document.text].
+        /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1.Document.text].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
         /// Text color.
@@ -139,11 +139,11 @@ pub mod document {
             pub unit: ::prost::alloc::string::String,
         }
     }
-    /// A page in a [Document][google.cloud.documentai.v1beta3.Document].
+    /// A page in a [Document][google.cloud.documentai.v1.Document].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Page {
-        /// 1-based index for current [Page][google.cloud.documentai.v1beta3.Document.Page] in a parent [Document][google.cloud.documentai.v1beta3.Document].
-        /// Useful when a page is taken out of a [Document][google.cloud.documentai.v1beta3.Document] for individual
+        /// 1-based index for current [Page][google.cloud.documentai.v1.Document.Page] in a parent [Document][google.cloud.documentai.v1.Document].
+        /// Useful when a page is taken out of a [Document][google.cloud.documentai.v1.Document] for individual
         /// processing.
         #[prost(int32, tag = "1")]
         pub page_number: i32,
@@ -153,13 +153,13 @@ pub mod document {
         #[prost(message, optional, tag = "13")]
         pub image: ::core::option::Option<page::Image>,
         /// Transformation matrices that were applied to the original document image
-        /// to produce [Page.image][google.cloud.documentai.v1beta3.Document.Page.image].
+        /// to produce [Page.image][google.cloud.documentai.v1.Document.Page.image].
         #[prost(message, repeated, tag = "14")]
         pub transforms: ::prost::alloc::vec::Vec<page::Matrix>,
         /// Physical dimension of the page.
         #[prost(message, optional, tag = "2")]
         pub dimension: ::core::option::Option<page::Dimension>,
-        /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for the page.
+        /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for the page.
         #[prost(message, optional, tag = "3")]
         pub layout: ::core::option::Option<page::Layout>,
         /// A list of detected languages together with confidence.
@@ -246,18 +246,18 @@ pub mod document {
         /// Visual element describing a layout unit on a page.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Layout {
-            /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1beta3.Document.text].
+            /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1.Document.text].
             #[prost(message, optional, tag = "1")]
             pub text_anchor: ::core::option::Option<super::TextAnchor>,
-            /// Confidence of the current [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] within context of the object this
+            /// Confidence of the current [Layout][google.cloud.documentai.v1.Document.Page.Layout] within context of the object this
             /// layout is for. e.g. confidence can be for a single token, a table,
             /// a visual element, etc. depending on context. Range [0, 1].
             #[prost(float, tag = "2")]
             pub confidence: f32,
-            /// The bounding polygon for the [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout].
+            /// The bounding polygon for the [Layout][google.cloud.documentai.v1.Document.Page.Layout].
             #[prost(message, optional, tag = "3")]
             pub bounding_poly: ::core::option::Option<super::super::BoundingPoly>,
-            /// Detected orientation for the [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout].
+            /// Detected orientation for the [Layout][google.cloud.documentai.v1.Document.Page.Layout].
             #[prost(enumeration = "layout::Orientation", tag = "4")]
             pub orientation: i32,
         }
@@ -288,7 +288,7 @@ pub mod document {
         /// common line-spacing and orientation.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Block {
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for [Block][google.cloud.documentai.v1beta3.Document.Page.Block].
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for [Block][google.cloud.documentai.v1.Document.Page.Block].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
@@ -301,7 +301,7 @@ pub mod document {
         /// A collection of lines that a human would perceive as a paragraph.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Paragraph {
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for [Paragraph][google.cloud.documentai.v1beta3.Document.Page.Paragraph].
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for [Paragraph][google.cloud.documentai.v1.Document.Page.Paragraph].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
@@ -315,7 +315,7 @@ pub mod document {
         /// Does not cross column boundaries, can be horizontal, vertical, etc.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Line {
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for [Line][google.cloud.documentai.v1beta3.Document.Page.Line].
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for [Line][google.cloud.documentai.v1.Document.Page.Line].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
@@ -328,10 +328,10 @@ pub mod document {
         /// A detected token.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Token {
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for [Token][google.cloud.documentai.v1beta3.Document.Page.Token].
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for [Token][google.cloud.documentai.v1.Document.Page.Token].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
-            /// Detected break at the end of a [Token][google.cloud.documentai.v1beta3.Document.Page.Token].
+            /// Detected break at the end of a [Token][google.cloud.documentai.v1.Document.Page.Token].
             #[prost(message, optional, tag = "2")]
             pub detected_break: ::core::option::Option<token::DetectedBreak>,
             /// A list of detected languages together with confidence.
@@ -343,7 +343,7 @@ pub mod document {
         }
         /// Nested message and enum types in `Token`.
         pub mod token {
-            /// Detected break at the end of a [Token][google.cloud.documentai.v1beta3.Document.Page.Token].
+            /// Detected break at the end of a [Token][google.cloud.documentai.v1.Document.Page.Token].
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DetectedBreak {
                 /// Detected break type.
@@ -373,10 +373,10 @@ pub mod document {
         /// page.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VisualElement {
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for [VisualElement][google.cloud.documentai.v1beta3.Document.Page.VisualElement].
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for [VisualElement][google.cloud.documentai.v1.Document.Page.VisualElement].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
-            /// Type of the [VisualElement][google.cloud.documentai.v1beta3.Document.Page.VisualElement].
+            /// Type of the [VisualElement][google.cloud.documentai.v1.Document.Page.VisualElement].
             #[prost(string, tag = "2")]
             pub r#type: ::prost::alloc::string::String,
             /// A list of detected languages together with confidence.
@@ -386,7 +386,7 @@ pub mod document {
         /// A table representation similar to HTML table structure.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Table {
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for [Table][google.cloud.documentai.v1beta3.Document.Page.Table].
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for [Table][google.cloud.documentai.v1.Document.Page.Table].
             #[prost(message, optional, tag = "1")]
             pub layout: ::core::option::Option<Layout>,
             /// Header rows of the table.
@@ -411,7 +411,7 @@ pub mod document {
             /// A cell representation inside the table.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct TableCell {
-                /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for [TableCell][google.cloud.documentai.v1beta3.Document.Page.Table.TableCell].
+                /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for [TableCell][google.cloud.documentai.v1.Document.Page.Table.TableCell].
                 #[prost(message, optional, tag = "1")]
                 pub layout: ::core::option::Option<super::Layout>,
                 /// How many rows this cell spans.
@@ -428,11 +428,11 @@ pub mod document {
         /// A form field detected on the page.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FormField {
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for the [FormField][google.cloud.documentai.v1beta3.Document.Page.FormField] name. e.g. `Address`, `Email`,
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for the [FormField][google.cloud.documentai.v1.Document.Page.FormField] name. e.g. `Address`, `Email`,
             /// `Grand total`, `Phone number`, etc.
             #[prost(message, optional, tag = "1")]
             pub field_name: ::core::option::Option<Layout>,
-            /// [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout] for the [FormField][google.cloud.documentai.v1beta3.Document.Page.FormField] value.
+            /// [Layout][google.cloud.documentai.v1.Document.Page.Layout] for the [FormField][google.cloud.documentai.v1.Document.Page.FormField] value.
             #[prost(message, optional, tag = "2")]
             pub field_value: ::core::option::Option<Layout>,
             /// A list of detected languages for name together with confidence.
@@ -467,7 +467,7 @@ pub mod document {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entity {
         /// Optional. Provenance of the entity.
-        /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1beta3.Document.text].
+        /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1.Document.text].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
         /// Entity type from a schema e.g. `Address`.
@@ -555,7 +555,7 @@ pub mod document {
             }
         }
     }
-    /// Relationship between [Entities][google.cloud.documentai.v1beta3.Document.Entity].
+    /// Relationship between [Entities][google.cloud.documentai.v1.Document.Entity].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityRelation {
         /// Subject entity id.
@@ -568,10 +568,10 @@ pub mod document {
         #[prost(string, tag = "3")]
         pub relation: ::prost::alloc::string::String,
     }
-    /// Text reference indexing into the [Document.text][google.cloud.documentai.v1beta3.Document.text].
+    /// Text reference indexing into the [Document.text][google.cloud.documentai.v1.Document.text].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextAnchor {
-        /// The text segments from the [Document.text][google.cloud.documentai.v1beta3.Document.text].
+        /// The text segments from the [Document.text][google.cloud.documentai.v1.Document.text].
         #[prost(message, repeated, tag = "1")]
         pub text_segments: ::prost::alloc::vec::Vec<text_anchor::TextSegment>,
         /// Contains the content of the text span so that users do
@@ -581,21 +581,21 @@ pub mod document {
     }
     /// Nested message and enum types in `TextAnchor`.
     pub mod text_anchor {
-        /// A text segment in the [Document.text][google.cloud.documentai.v1beta3.Document.text]. The indices may be out of bounds
+        /// A text segment in the [Document.text][google.cloud.documentai.v1.Document.text]. The indices may be out of bounds
         /// which indicate that the text extends into another document shard for
-        /// large sharded documents. See [ShardInfo.text_offset][google.cloud.documentai.v1beta3.Document.ShardInfo.text_offset]
+        /// large sharded documents. See [ShardInfo.text_offset][google.cloud.documentai.v1.Document.ShardInfo.text_offset]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TextSegment {
-            /// [TextSegment][google.cloud.documentai.v1beta3.Document.TextAnchor.TextSegment] start UTF-8 char index in the [Document.text][google.cloud.documentai.v1beta3.Document.text].
+            /// [TextSegment][google.cloud.documentai.v1.Document.TextAnchor.TextSegment] start UTF-8 char index in the [Document.text][google.cloud.documentai.v1.Document.text].
             #[prost(int64, tag = "1")]
             pub start_index: i64,
-            /// [TextSegment][google.cloud.documentai.v1beta3.Document.TextAnchor.TextSegment] half open end UTF-8 char index in the
-            /// [Document.text][google.cloud.documentai.v1beta3.Document.text].
+            /// [TextSegment][google.cloud.documentai.v1.Document.TextAnchor.TextSegment] half open end UTF-8 char index in the
+            /// [Document.text][google.cloud.documentai.v1.Document.text].
             #[prost(int64, tag = "2")]
             pub end_index: i64,
         }
     }
-    /// Referencing the visual context of the entity in the [Document.pages][google.cloud.documentai.v1beta3.Document.pages].
+    /// Referencing the visual context of the entity in the [Document.pages][google.cloud.documentai.v1.Document.pages].
     /// Page anchors can be cross-page, consist of multiple bounding polygons and
     /// optionally reference specific layout element types.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -609,14 +609,14 @@ pub mod document {
         /// Represents a weak reference to a page element within a document.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PageRef {
-            /// Required. Index into the [Document.pages][google.cloud.documentai.v1beta3.Document.pages] element, for example using
+            /// Required. Index into the [Document.pages][google.cloud.documentai.v1.Document.pages] element, for example using
             /// [Document.pages][page_refs.page] to locate the related page element.
             #[prost(int64, tag = "1")]
             pub page: i64,
             /// Optional. The type of the layout element that is being referenced if any.
             #[prost(enumeration = "page_ref::LayoutType", tag = "2")]
             pub layout_type: i32,
-            /// Optional. Deprecated.  Use [PageRef.bounding_poly][google.cloud.documentai.v1beta3.Document.PageAnchor.PageRef.bounding_poly] instead.
+            /// Optional. Deprecated.  Use [PageRef.bounding_poly][google.cloud.documentai.v1.Document.PageAnchor.PageRef.bounding_poly] instead.
             #[deprecated]
             #[prost(string, tag = "3")]
             pub layout_id: ::prost::alloc::string::String,
@@ -634,19 +634,19 @@ pub mod document {
             pub enum LayoutType {
                 /// Layout Unspecified.
                 Unspecified = 0,
-                /// References a [Page.blocks][google.cloud.documentai.v1beta3.Document.Page.blocks] element.
+                /// References a [Page.blocks][google.cloud.documentai.v1.Document.Page.blocks] element.
                 Block = 1,
-                /// References a [Page.paragraphs][google.cloud.documentai.v1beta3.Document.Page.paragraphs] element.
+                /// References a [Page.paragraphs][google.cloud.documentai.v1.Document.Page.paragraphs] element.
                 Paragraph = 2,
-                /// References a [Page.lines][google.cloud.documentai.v1beta3.Document.Page.lines] element.
+                /// References a [Page.lines][google.cloud.documentai.v1.Document.Page.lines] element.
                 Line = 3,
-                /// References a [Page.tokens][google.cloud.documentai.v1beta3.Document.Page.tokens] element.
+                /// References a [Page.tokens][google.cloud.documentai.v1.Document.Page.tokens] element.
                 Token = 4,
-                /// References a [Page.visual_elements][google.cloud.documentai.v1beta3.Document.Page.visual_elements] element.
+                /// References a [Page.visual_elements][google.cloud.documentai.v1.Document.Page.visual_elements] element.
                 VisualElement = 5,
-                /// Refrrences a [Page.tables][google.cloud.documentai.v1beta3.Document.Page.tables] element.
+                /// Refrrences a [Page.tables][google.cloud.documentai.v1.Document.Page.tables] element.
                 Table = 6,
-                /// References a [Page.form_fields][google.cloud.documentai.v1beta3.Document.Page.form_fields] element.
+                /// References a [Page.form_fields][google.cloud.documentai.v1.Document.Page.form_fields] element.
                 FormField = 7,
             }
         }
@@ -757,7 +757,7 @@ pub mod document {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextChange {
         /// Provenance of the correction.
-        /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1beta3.Document.text].  There can only be a
+        /// Text anchor indexing into the [Document.text][google.cloud.documentai.v1.Document.text].  There can only be a
         /// single `TextAnchor.text_segments` element.  If the start and
         /// end index of the text segment are the same, the text change is inserted
         /// before that index.
@@ -873,10 +873,6 @@ pub struct ProcessRequest {
     /// Required. The processor resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The document payload, the [content] and [mime_type] fields must be set.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub document: ::core::option::Option<Document>,
     /// Whether Human Review feature should be skipped for this request. Default to
     /// false.
     #[prost(bool, tag = "3")]
@@ -942,13 +938,6 @@ pub struct ProcessResponse {
     /// behavior.
     #[prost(message, optional, tag = "1")]
     pub document: ::core::option::Option<Document>,
-    /// The name of the operation triggered by the processed document. If the human
-    /// review process is not triggered, this field will be empty. It has the same
-    /// response type and metadata as the long running operation returned by
-    /// ReviewDocument method.
-    #[deprecated]
-    #[prost(string, tag = "2")]
-    pub human_review_operation: ::prost::alloc::string::String,
     /// The status of human review on the processed document.
     #[prost(message, optional, tag = "3")]
     pub human_review_status: ::core::option::Option<HumanReviewStatus>,
@@ -959,14 +948,6 @@ pub struct BatchProcessRequest {
     /// Required. The processor resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The input config for each single document in the batch process.
-    #[deprecated]
-    #[prost(message, repeated, tag = "2")]
-    pub input_configs: ::prost::alloc::vec::Vec<batch_process_request::BatchInputConfig>,
-    /// The overall output config for batch process.
-    #[deprecated]
-    #[prost(message, optional, tag = "3")]
-    pub output_config: ::core::option::Option<batch_process_request::BatchOutputConfig>,
     /// The input documents for batch process.
     #[prost(message, optional, tag = "5")]
     pub input_documents: ::core::option::Option<BatchDocumentsInputConfig>,
@@ -977,28 +958,6 @@ pub struct BatchProcessRequest {
     /// false.
     #[prost(bool, tag = "4")]
     pub skip_human_review: bool,
-}
-/// Nested message and enum types in `BatchProcessRequest`.
-pub mod batch_process_request {
-    /// The message for input config in batch process.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct BatchInputConfig {
-        /// The Cloud Storage location as the source of the document.
-        #[prost(string, tag = "1")]
-        pub gcs_source: ::prost::alloc::string::String,
-        /// Mimetype of the input. If the input is a raw document, the supported
-        /// mimetypes are application/pdf, image/tiff, and image/gif.
-        /// If the input is a [Document] proto, the type should be application/json.
-        #[prost(string, tag = "2")]
-        pub mime_type: ::prost::alloc::string::String,
-    }
-    /// The message for output config in batch process.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct BatchOutputConfig {
-        /// The output Cloud Storage directory to put the processed documents.
-        #[prost(string, tag = "1")]
-        pub gcs_destination: ::prost::alloc::string::String,
-    }
 }
 /// Response message for batch process document method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1042,13 +1001,6 @@ pub mod batch_process_metadata {
         /// of the processed document if it was successful, otherwise empty.
         #[prost(string, tag = "3")]
         pub output_gcs_destination: ::prost::alloc::string::String,
-        /// The name of the operation triggered by the processed document. If the
-        /// human review process is not triggered, this field will be empty. It has
-        /// the same response type and metadata as the long running operation
-        /// returned by ReviewDocument method.
-        #[deprecated]
-        #[prost(string, tag = "4")]
-        pub human_review_operation: ::prost::alloc::string::String,
         /// The status of human review on the processed document.
         #[prost(message, optional, tag = "5")]
         pub human_review_status: ::core::option::Option<super::HumanReviewStatus>,
@@ -1080,10 +1032,6 @@ pub struct ReviewDocumentRequest {
     /// reviewed with.
     #[prost(string, tag = "1")]
     pub human_review_config: ::prost::alloc::string::String,
-    /// The document that needs human review.
-    #[deprecated]
-    #[prost(message, optional, tag = "2")]
-    pub document: ::core::option::Option<Document>,
     /// The document payload.
     #[prost(oneof = "review_document_request::Source", tags = "4")]
     pub source: ::core::option::Option<review_document_request::Source>,
@@ -1108,42 +1056,9 @@ pub struct ReviewDocumentResponse {
 /// The long running operation metadata for review document method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReviewDocumentOperationMetadata {
-    /// Used only when Operation.done is false.
-    #[prost(enumeration = "review_document_operation_metadata::State", tag = "1")]
-    pub state: i32,
-    /// A message providing more details about the current state of processing.
-    /// For example, the error message if the operation is failed.
-    #[prost(string, tag = "2")]
-    pub state_message: ::prost::alloc::string::String,
-    /// The creation time of the operation.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The last update time of the operation.
-    #[prost(message, optional, tag = "4")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The basic metadata of the long running operation.
     #[prost(message, optional, tag = "5")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
-}
-/// Nested message and enum types in `ReviewDocumentOperationMetadata`.
-pub mod review_document_operation_metadata {
-    /// State of the longrunning operation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum State {
-        /// Unspecified state.
-        Unspecified = 0,
-        /// Operation is still running.
-        Running = 1,
-        /// Operation is being cancelled.
-        Cancelling = 2,
-        /// Operation succeeded.
-        Succeeded = 3,
-        /// Operation failed.
-        Failed = 4,
-        /// Operation is cancelled.
-        Cancelled = 5,
-    }
 }
 /// The common metadata for long running operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1220,7 +1135,7 @@ pub mod document_processor_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ProcessDocument",
+                "/google.cloud.documentai.v1.DocumentProcessorService/ProcessDocument",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1241,7 +1156,7 @@ pub mod document_processor_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.documentai.v1beta3.DocumentProcessorService/BatchProcessDocuments",
+                "/google.cloud.documentai.v1.DocumentProcessorService/BatchProcessDocuments",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1262,7 +1177,7 @@ pub mod document_processor_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ReviewDocument",
+                "/google.cloud.documentai.v1.DocumentProcessorService/ReviewDocument",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

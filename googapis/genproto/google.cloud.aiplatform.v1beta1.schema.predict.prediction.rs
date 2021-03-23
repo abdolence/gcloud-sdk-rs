@@ -47,15 +47,15 @@ pub struct ImageSegmentationPredictionResult {
     /// AnntoationSpec and the color can be found in model's metadata. The model
     /// will choose the most likely category and if none of the categories reach
     /// the confidence threshold, the pixel will be marked as background.
-    #[prost(bytes = "vec", tag = "1")]
-    pub category_mask: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "1")]
+    pub category_mask: ::prost::alloc::string::String,
     /// A one channel image which is encoded as an 8bit lossless PNG. The size of
     /// the image will be the same as the original image. For a specific pixel,
     /// darker color means less confidence in correctness of the cateogry in the
     /// categoryMask for the corresponding pixel. Black means no confidence and
     /// white means complete confidence.
-    #[prost(bytes = "vec", tag = "2")]
-    pub confidence_mask: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "2")]
+    pub confidence_mask: ::prost::alloc::string::String,
 }
 /// Prediction output format for Tabular Classification.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -109,43 +109,16 @@ pub struct TextExtractionPredictionResult {
     #[prost(float, repeated, tag = "5")]
     pub confidences: ::prost::alloc::vec::Vec<f32>,
 }
-/// Represents a line of JSONL in the text sentiment batch prediction output
-/// file. This is a hack to allow printing of integer values.
+/// Prediction output format for Text Sentiment
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentPredictionResult {
-    /// User's input instance.
-    #[prost(message, optional, tag = "1")]
-    pub instance: ::core::option::Option<super::instance::TextSentimentPredictionInstance>,
-    /// The prediction result.
-    #[prost(message, optional, tag = "2")]
-    pub prediction: ::core::option::Option<text_sentiment_prediction_result::Prediction>,
-}
-/// Nested message and enum types in `TextSentimentPredictionResult`.
-pub mod text_sentiment_prediction_result {
-    /// Prediction output format for Text Sentiment.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Prediction {
-        /// The integer sentiment labels between 0 (inclusive) and sentimentMax label
-        /// (inclusive), while 0 maps to the least positive sentiment and
-        /// sentimentMax maps to the most positive one. The higher the score is, the
-        /// more positive the sentiment in the text snippet is. Note: sentimentMax is
-        /// an integer value between 1 (inclusive) and 10 (inclusive).
-        #[prost(int32, tag = "1")]
-        pub sentiment: i32,
-    }
-}
-/// Prediction output format for Time Series Forecasting.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TimeSeriesForecastingPredictionResult {
-    /// The regression value.
-    #[prost(float, tag = "1")]
-    pub value: f32,
-    /// The lower bound of the prediction interval.
-    #[prost(float, tag = "2")]
-    pub lower_bound: f32,
-    /// The upper bound of the prediction interval.
-    #[prost(float, tag = "3")]
-    pub upper_bound: f32,
+    /// The integer sentiment labels between 0 (inclusive) and sentimentMax label
+    /// (inclusive), while 0 maps to the least positive sentiment and
+    /// sentimentMax maps to the most positive one. The higher the score is, the
+    /// more positive the sentiment in the text snippet is. Note: sentimentMax is
+    /// an integer value between 1 (inclusive) and 10 (inclusive).
+    #[prost(int32, tag = "1")]
+    pub sentiment: i32,
 }
 /// Prediction output format for Video Action Recognition.
 #[derive(Clone, PartialEq, ::prost::Message)]

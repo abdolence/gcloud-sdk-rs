@@ -188,7 +188,7 @@ pub struct ResourceManifest {
 pub struct GkeCluster {
     /// Immutable. Self-link of the GCP resource for the GKE cluster. For example:
     ///
-    ///     //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+    /// > container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
     ///
     /// Zonal clusters are also supported.
     #[prost(string, tag = "1")]
@@ -253,6 +253,12 @@ pub struct Authority {
     /// pool.
     #[prost(string, tag = "3")]
     pub identity_provider: ::prost::alloc::string::String,
+    /// Optional. OIDC verification keys for this Membership in JWKS format (RFC 7517).
+    ///
+    /// When this field is set, OIDC discovery will NOT be performed on `issuer`,
+    /// and instead OIDC tokens will be validated using this field.
+    #[prost(bytes = "vec", tag = "4")]
+    pub oidc_jwks: ::prost::alloc::vec::Vec<u8>,
 }
 /// State of the Membership resource.
 #[derive(Clone, PartialEq, ::prost::Message)]

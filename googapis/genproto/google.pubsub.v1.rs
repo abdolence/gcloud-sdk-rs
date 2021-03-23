@@ -178,6 +178,7 @@ pub enum Encoding {
 pub mod schema_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
+    #[doc = " Service for doing schema-related operations."]
     pub struct SchemaServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -362,8 +363,6 @@ pub struct Topic {
     #[prost(string, tag = "5")]
     pub kms_key_name: ::prost::alloc::string::String,
     /// Settings for validating messages published against a schema.
-    ///
-    /// EXPERIMENTAL: Schema support is in development and may not work yet.
     #[prost(message, optional, tag = "6")]
     pub schema_settings: ::core::option::Option<SchemaSettings>,
     /// Reserved for future use. This field is set only in responses from the

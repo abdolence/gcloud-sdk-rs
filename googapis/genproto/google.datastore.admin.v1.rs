@@ -1,4 +1,4 @@
-/// A minimal index definition.
+/// Datastore composite index definition.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
     /// Output only. Project ID.
@@ -302,6 +302,29 @@ pub struct EntityFilter {
     #[prost(string, repeated, tag = "2")]
     pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// The request for
+/// [google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIndexRequest {
+    /// Project ID against which to make the request.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The index to create. The name and state fields are output only and will be
+    /// ignored. Single property indexes cannot be created or deleted.
+    #[prost(message, optional, tag = "3")]
+    pub index: ::core::option::Option<Index>,
+}
+/// The request for
+/// [google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIndexRequest {
+    /// Project ID against which to make the request.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The resource ID of the index to delete.
+    #[prost(string, tag = "3")]
+    pub index_id: ::prost::alloc::string::String,
+}
 /// The request for [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
@@ -502,6 +525,68 @@ pub mod datastore_admin_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Creates the specified index."]
+        #[doc = " A newly created index's initial state is `CREATING`. On completion of the"]
+        #[doc = " returned [google.longrunning.Operation][google.longrunning.Operation], the state will be `READY`."]
+        #[doc = " If the index already exists, the call will return an `ALREADY_EXISTS`"]
+        #[doc = " status."]
+        #[doc = ""]
+        #[doc = " During index creation, the process could result in an error, in which"]
+        #[doc = " case the index will move to the `ERROR` state. The process can be recovered"]
+        #[doc = " by fixing the data that caused the error, removing the index with"]
+        #[doc = " [delete][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex], then"]
+        #[doc = " re-creating the index with [create]"]
+        #[doc = " [google.datastore.admin.v1.DatastoreAdmin.CreateIndex]."]
+        #[doc = ""]
+        #[doc = " Indexes with a single property cannot be created."]
+        pub async fn create_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateIndexRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.admin.v1.DatastoreAdmin/CreateIndex",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes an existing index."]
+        #[doc = " An index can only be deleted if it is in a `READY` or `ERROR` state. On"]
+        #[doc = " successful execution of the request, the index will be in a `DELETING`"]
+        #[doc = " [state][google.datastore.admin.v1.Index.State]. And on completion of the"]
+        #[doc = " returned [google.longrunning.Operation][google.longrunning.Operation], the index will be removed."]
+        #[doc = ""]
+        #[doc = " During index deletion, the process could result in an error, in which"]
+        #[doc = " case the index will move to the `ERROR` state. The process can be recovered"]
+        #[doc = " by fixing the data that caused the error, followed by calling"]
+        #[doc = " [delete][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex] again."]
+        pub async fn delete_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIndexRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.admin.v1.DatastoreAdmin/DeleteIndex",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Gets an index."]
         pub async fn get_index(
             &mut self,
@@ -551,4 +636,56 @@ pub mod datastore_admin_client {
             write!(f, "DatastoreAdminClient {{ ... }}")
         }
     }
+}
+/// An event signifying a change in state of a [migration from Cloud Datastore to
+/// Cloud Firestore in Datastore
+/// mode](https://cloud.google.com/datastore/docs/upgrade-to-firestore).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrationStateEvent {
+    /// The new state of the migration.
+    #[prost(enumeration = "MigrationState", tag = "1")]
+    pub state: i32,
+}
+/// An event signifying the start of a new step in a [migration from Cloud
+/// Datastore to Cloud Firestore in Datastore
+/// mode](https://cloud.google.com/datastore/docs/upgrade-to-firestore).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrationProgressEvent {
+    /// The step that is starting.
+    ///
+    /// An event with step set to `START` indicates that the migration
+    /// has been reverted back to the initial pre-migration state.
+    #[prost(enumeration = "MigrationStep", tag = "1")]
+    pub step: i32,
+}
+/// States for a migration.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MigrationState {
+    /// Unspecified.
+    Unspecified = 0,
+    /// The migration is running.
+    Running = 1,
+    /// The migration is paused.
+    Paused = 2,
+    /// The migration is complete.
+    Complete = 3,
+}
+/// Steps in a migration.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MigrationStep {
+    /// Unspecified.
+    Unspecified = 0,
+    /// Start of migration.
+    Start = 1,
+    /// Data is copied to Cloud Firestore and then verified to match the data in
+    /// Cloud Datastore.
+    CopyAndVerify = 2,
+    /// Eventually-consistent reads are redirected to Cloud Firestore.
+    RedirectEventuallyConsistentReads = 3,
+    /// Strongly-consistent reads are redirected to Cloud Firestore.
+    RedirectStronglyConsistentReads = 4,
+    /// Writes are redirected to Cloud Firestore.
+    RedirectWrites = 5,
 }

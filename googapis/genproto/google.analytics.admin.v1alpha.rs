@@ -534,9 +534,9 @@ pub struct UpdateAccountRequest {
     /// The account's `name` field is used to identify the account.
     #[prost(message, optional, tag = "1")]
     pub account: ::core::option::Option<Account>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -622,9 +622,9 @@ pub struct UpdatePropertyRequest {
     /// updated.
     #[prost(message, optional, tag = "1")]
     pub property: ::core::option::Option<Property>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -856,9 +856,9 @@ pub struct UpdateWebDataStreamRequest {
     /// The `name` field is used to identify the web stream to be updated.
     #[prost(message, optional, tag = "1")]
     pub web_data_stream: ::core::option::Option<WebDataStream>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -929,9 +929,9 @@ pub struct UpdateIosAppDataStreamRequest {
     /// The `name` field is used to identify the iOS app stream to be updated.
     #[prost(message, optional, tag = "1")]
     pub ios_app_data_stream: ::core::option::Option<IosAppDataStream>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1002,9 +1002,9 @@ pub struct UpdateAndroidAppDataStreamRequest {
     /// The `name` field is used to identify the android app stream to be updated.
     #[prost(message, optional, tag = "1")]
     pub android_app_data_stream: ::core::option::Option<AndroidAppDataStream>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1069,9 +1069,9 @@ pub struct UpdateEnhancedMeasurementSettingsRequest {
     /// The `name` field is used to identify the settings to be updated.
     #[prost(message, optional, tag = "1")]
     pub enhanced_measurement_settings: ::core::option::Option<EnhancedMeasurementSettings>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1092,9 +1092,9 @@ pub struct UpdateFirebaseLinkRequest {
     /// Required. The Firebase link to update.
     #[prost(message, optional, tag = "1")]
     pub firebase_link: ::core::option::Option<FirebaseLink>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1165,9 +1165,9 @@ pub struct UpdateGoogleAdsLinkRequest {
     /// The GoogleAdsLink to update
     #[prost(message, optional, tag = "1")]
     pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
-    /// Required. The list of fields to be updated. Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match
-    /// all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1807,7 +1807,15 @@ pub mod analytics_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an iOS app data stream with the specified location and attributes."]
+        #[doc = " Creates an iOS app stream with the specified location and attributes."]
+        #[doc = ""]
+        #[doc = " Note that an iOS app stream must be linked to a Firebase app to receive"]
+        #[doc = " traffic."]
+        #[doc = ""]
+        #[doc = " To create a working app stream, make sure your property is linked to a"]
+        #[doc = " Firebase project. Then, use the Firebase API to create a Firebase app,"]
+        #[doc = " which will also create an appropriate data stream in Analytics (may take up"]
+        #[doc = " to 24 hours)."]
         pub async fn create_ios_app_data_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateIosAppDataStreamRequest>,
@@ -1895,7 +1903,15 @@ pub mod analytics_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an android app stream with the specified location and attributes."]
+        #[doc = " Creates an Android app stream with the specified location and attributes."]
+        #[doc = ""]
+        #[doc = " Note that an Android app stream must be linked to a Firebase app to receive"]
+        #[doc = " traffic."]
+        #[doc = ""]
+        #[doc = " To create a working app stream, make sure your property is linked to a"]
+        #[doc = " Firebase project. Then, use the Firebase API to create a Firebase app,"]
+        #[doc = " which will also create an appropriate data stream in Analytics (may take up"]
+        #[doc = " to 24 hours)."]
         pub async fn create_android_app_data_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAndroidAppDataStreamRequest>,

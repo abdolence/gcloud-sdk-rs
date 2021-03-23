@@ -407,7 +407,7 @@ pub struct QueryPlan {
 /// [Rollback][google.spanner.v1.Spanner.Rollback] request to abort the
 /// transaction.
 ///
-/// ### Semantics
+/// ## Semantics
 ///
 /// Cloud Spanner can commit the transaction if all read locks it acquired
 /// are still valid at commit time, and it is able to acquire write
@@ -420,7 +420,7 @@ pub struct QueryPlan {
 /// use Cloud Spanner locks for any sort of mutual exclusion other than
 /// between Cloud Spanner transactions themselves.
 ///
-/// ### Retrying Aborted Transactions
+/// ## Retrying Aborted Transactions
 ///
 /// When a transaction aborts, the application can choose to retry the
 /// whole transaction again. To maximize the chances of successfully
@@ -436,7 +436,7 @@ pub struct QueryPlan {
 /// instead, it is better to limit the total amount of wall time spent
 /// retrying.
 ///
-/// ### Idle Transactions
+/// ## Idle Transactions
 ///
 /// A transaction is considered idle if it has no outstanding reads or
 /// SQL queries and has not started a read or SQL query within the last 10
@@ -486,7 +486,7 @@ pub struct QueryPlan {
 ///
 /// Each type of timestamp bound is discussed in detail below.
 ///
-/// ### Strong
+/// ## Strong
 ///
 /// Strong reads are guaranteed to see the effects of all transactions
 /// that have committed before the start of the read. Furthermore, all
@@ -502,7 +502,7 @@ pub struct QueryPlan {
 ///
 /// See [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong].
 ///
-/// ### Exact Staleness
+/// ## Exact Staleness
 ///
 /// These timestamp bounds execute reads at a user-specified
 /// timestamp. Reads at a timestamp are guaranteed to see a consistent
@@ -524,7 +524,7 @@ pub struct QueryPlan {
 /// See [TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp] and
 /// [TransactionOptions.ReadOnly.exact_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness].
 ///
-/// ### Bounded Staleness
+/// ## Bounded Staleness
 ///
 /// Bounded staleness modes allow Cloud Spanner to pick the read timestamp,
 /// subject to a user-provided staleness bound. Cloud Spanner chooses the
@@ -554,7 +554,7 @@ pub struct QueryPlan {
 /// See [TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness] and
 /// [TransactionOptions.ReadOnly.min_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp].
 ///
-/// ### Old Read Timestamps and Garbage Collection
+/// ## Old Read Timestamps and Garbage Collection
 ///
 /// Cloud Spanner continuously garbage collects deleted and overwritten data
 /// in the background to reclaim storage space. This process is known
@@ -1190,6 +1190,44 @@ pub struct DeleteSessionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Common request options for various APIs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RequestOptions {
+    /// Priority for the request.
+    #[prost(enumeration = "request_options::Priority", tag = "1")]
+    pub priority: i32,
+}
+/// Nested message and enum types in `RequestOptions`.
+pub mod request_options {
+    /// The relative priority for requests. Note that priority is not applicable
+    /// for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
+    ///
+    /// The priority acts as a hint to the Cloud Spanner scheduler and does not
+    /// guarantee priority or order of execution. For example:
+    ///
+    /// * Some parts of a write operation always execute at `PRIORITY_HIGH`,
+    ///   regardless of the specified priority. This may cause you to see an
+    ///   increase in high priority workload even when executing a low priority
+    ///   request. This can also potentially cause a priority inversion where a
+    ///   lower priority request will be fulfilled ahead of a higher priority
+    ///   request.
+    /// * If a transaction contains multiple operations with different priorities,
+    ///   Cloud Spanner does not guarantee to process the higher priority
+    ///   operations first. There may be other constraints to satisfy, such as
+    ///   order of operations.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Priority {
+        /// `PRIORITY_UNSPECIFIED` is equivalent to `PRIORITY_HIGH`.
+        Unspecified = 0,
+        /// This specifies that the request is low priority.
+        Low = 1,
+        /// This specifies that the request is medium priority.
+        Medium = 2,
+        /// This specifies that the request is high priority.
+        High = 3,
+    }
+}
 /// The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
 /// [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1271,6 +1309,9 @@ pub struct ExecuteSqlRequest {
     /// Query optimizer configuration to use for the given query.
     #[prost(message, optional, tag = "10")]
     pub query_options: ::core::option::Option<execute_sql_request::QueryOptions>,
+    /// Common options for this request.
+    #[prost(message, optional, tag = "11")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// Nested message and enum types in `ExecuteSqlRequest`.
 pub mod execute_sql_request {
@@ -1282,15 +1323,18 @@ pub mod execute_sql_request {
         /// This parameter allows individual queries to pick different query
         /// optimizer versions.
         ///
-        /// Specifying "latest" as a value instructs Cloud Spanner to use the
+        /// Specifying `latest` as a value instructs Cloud Spanner to use the
         /// latest supported query optimizer version. If not specified, Cloud Spanner
-        /// uses optimizer version set at the database level options. Any other
+        /// uses the optimizer version set at the database level options. Any other
         /// positive integer (from the list of supported optimizer versions)
         /// overrides the default optimizer version for query execution.
+        ///
         /// The list of supported optimizer versions can be queried from
-        /// SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS. Executing a SQL statement
-        /// with an invalid optimizer version will fail with a syntax error
-        /// (`INVALID_ARGUMENT`) status.
+        /// SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS.
+        ///
+        /// Executing a SQL statement with an invalid optimizer version fails with
+        /// an `INVALID_ARGUMENT` error.
+        ///
         /// See
         /// https://cloud.google.com/spanner/docs/query-optimizer/manage-query-optimizer
         /// for more information on managing the query optimizer.
@@ -1298,6 +1342,32 @@ pub mod execute_sql_request {
         /// The `optimizer_version` statement hint has precedence over this setting.
         #[prost(string, tag = "1")]
         pub optimizer_version: ::prost::alloc::string::String,
+        /// Query optimizer statistics package to use.
+        ///
+        /// This parameter allows individual queries to use a different query
+        /// optimizer statistics.
+        ///
+        /// Specifying `latest` as a value instructs Cloud Spanner to use the latest
+        /// generated statistics package. If not specified, Cloud Spanner uses
+        /// statistics package set at the database level options, or latest if
+        /// the database option is not set.
+        ///
+        /// The statistics package requested by the query has to be exempt from
+        /// garbage collection. This can be achieved with the following DDL
+        /// statement:
+        ///
+        /// ```
+        /// ALTER STATISTICS <package_name> SET OPTIONS (allow_gc=false)
+        /// ```
+        ///
+        /// The list of available statistics packages can be queried from
+        /// `SPANNER_SYS.OPTIMIZER_STATISTICS_PACKAGES`.
+        ///
+        /// Executing a SQL statement with an invalid optimizer statistics package
+        /// or with statistics package that allows garbage collection fails with
+        /// an `INVALID_ARGUMENT` error.
+        #[prost(string, tag = "2")]
+        pub optimizer_statistics_package: ::prost::alloc::string::String,
     }
     /// Mode in which the statement must be processed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1344,6 +1414,9 @@ pub struct ExecuteBatchDmlRequest {
     /// handled requests will yield the same response as the first execution.
     #[prost(int64, tag = "4")]
     pub seqno: i64,
+    /// Common options for this request.
+    #[prost(message, optional, tag = "5")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// Nested message and enum types in `ExecuteBatchDmlRequest`.
 pub mod execute_batch_dml_request {
@@ -1604,6 +1677,9 @@ pub struct ReadRequest {
     /// PartitionReadRequest message used to create this partition_token.
     #[prost(bytes = "vec", tag = "10")]
     pub partition_token: ::prost::alloc::vec::Vec<u8>,
+    /// Common options for this request.
+    #[prost(message, optional, tag = "11")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The request for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1614,6 +1690,13 @@ pub struct BeginTransactionRequest {
     /// Required. Options for the new transaction.
     #[prost(message, optional, tag = "2")]
     pub options: ::core::option::Option<TransactionOptions>,
+    /// Common options for this request.
+    /// Priority is ignored for this request. Setting the priority in this
+    /// request_options struct will not do anything. To set the priority for a
+    /// transaction, set it on the reads and writes that are part of this
+    /// transaction instead.
+    #[prost(message, optional, tag = "3")]
+    pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The request for [Commit][google.spanner.v1.Spanner.Commit].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1631,6 +1714,9 @@ pub struct CommitRequest {
     /// `false`.
     #[prost(bool, tag = "5")]
     pub return_commit_stats: bool,
+    /// Common options for this request.
+    #[prost(message, optional, tag = "6")]
+    pub request_options: ::core::option::Option<RequestOptions>,
     /// Required. The transaction in which to commit.
     #[prost(oneof = "commit_request::Transaction", tags = "2, 3")]
     pub transaction: ::core::option::Option<commit_request::Transaction>,

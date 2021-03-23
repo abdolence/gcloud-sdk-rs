@@ -86,14 +86,14 @@ pub struct MergeShelvesRequest {
     pub name: ::prost::alloc::string::String,
     /// The name of the shelf we're removing books from and deleting.
     #[prost(string, tag = "2")]
-    pub other_shelf_name: ::prost::alloc::string::String,
+    pub other_shelf: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.CreateBook.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBookRequest {
     /// The name of the shelf in which the book is created.
     #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// The book to create.
     #[prost(message, optional, tag = "2")]
     pub book: ::core::option::Option<Book>,
@@ -110,7 +110,7 @@ pub struct GetBookRequest {
 pub struct ListBooksRequest {
     /// The name of the shelf whose books we'd like to list.
     #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
+    pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer books than requested.
     /// If unspecified, server will pick an appropriate default.
     #[prost(int32, tag = "2")]
@@ -140,11 +140,11 @@ pub struct ListBooksResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBookRequest {
     /// The name of the book to update.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The book to update with. The name must match or be empty.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag = "1")]
     pub book: ::core::option::Option<Book>,
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for LibraryService.DeleteBook.
 #[derive(Clone, PartialEq, ::prost::Message)]

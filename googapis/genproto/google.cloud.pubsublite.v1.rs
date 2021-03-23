@@ -69,6 +69,11 @@ pub mod topic {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PartitionConfig {
         /// The number of partitions in the topic. Must be at least 1.
+        ///
+        /// Once a topic has been created the number of partitions can be increased
+        /// but not decreased. Message ordering is not guaranteed across a topic
+        /// resize. For more information see
+        /// https://cloud.google.com/pubsub/lite/docs/topics#scaling_capacity
         #[prost(int64, tag = "1")]
         pub count: i64,
         /// The throughput dimension of this topic.
@@ -305,6 +310,11 @@ pub struct CreateSubscriptionRequest {
     /// This value is structured like: `my-sub-name`.
     #[prost(string, tag = "3")]
     pub subscription_id: ::prost::alloc::string::String,
+    /// If true, the newly created subscription will only receive messages
+    /// published after the subscription was created. Otherwise, the entire
+    /// message backlog will be received on the subscription. Defaults to false.
+    #[prost(bool, tag = "4")]
+    pub skip_backlog: bool,
 }
 /// Request for GetSubscription.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1378,10 +1388,10 @@ pub mod topic_stats_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Compute the head cursor for the partition."]
-        #[doc = " The head cursor’s offset is guaranteed to be before or equal to all"]
-        #[doc = " messages which have not yet been acknowledged to be published, and"]
+        #[doc = " The head cursor's offset is guaranteed to be less than or equal to all"]
+        #[doc = " messages which have not yet been acknowledged as published, and"]
         #[doc = " greater than the offset of any message whose publish has already"]
-        #[doc = " been acknowledged. It is 0 if there have never been messages on the"]
+        #[doc = " been acknowledged. It is zero if there have never been messages in the"]
         #[doc = " partition."]
         pub async fn compute_head_cursor(
             &mut self,
