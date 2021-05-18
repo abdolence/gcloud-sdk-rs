@@ -28,11 +28,14 @@ fn gen() {
     let _ = fs::create_dir(out_dir.as_path());
     let includes = [proto_root];
 
+    let mut config = prost_build::Config::new();
+    config.protoc_arg("--experimental_allow_proto3_optional");
+
     tonic_build::configure()
         .build_server(false)
         .format(false)
         .out_dir(out_dir.clone())
-        .compile(&gen::proto_path(&protos), &includes)
+        .compile_with_config(config, &gen::proto_path(&protos), &includes)
         .unwrap();
     tonic_build::fmt(out_dir.to_str().unwrap());
 
