@@ -71,7 +71,7 @@ pub struct UpdateScanConfigRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod container_analysis_v1_beta1_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Retrieves analysis results of Cloud components such as Docker container"]
     #[doc = " images. The Container Analysis API is an implementation of the"]
@@ -86,23 +86,50 @@ pub mod container_analysis_v1_beta1_client {
     #[doc = " For example, an SSL vulnerability could affect multiple images. In this case,"]
     #[doc = " there would be one note for the vulnerability and an occurrence for each"]
     #[doc = " image with the vulnerability referring to that note."]
+    #[derive(Debug, Clone)]
     pub struct ContainerAnalysisV1Beta1Client<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ContainerAnalysisV1Beta1Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ContainerAnalysisV1Beta1Client<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ContainerAnalysisV1Beta1Client::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Sets the access control policy on the specified note or occurrence."]
         #[doc = " Requires `containeranalysis.notes.setIamPolicy` or"]
@@ -226,18 +253,6 @@ pub mod container_analysis_v1_beta1_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/UpdateScanConfig") ;
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ContainerAnalysisV1Beta1Client<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ContainerAnalysisV1Beta1Client<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ContainerAnalysisV1Beta1Client {{ ... }}")
         }
     }
 }

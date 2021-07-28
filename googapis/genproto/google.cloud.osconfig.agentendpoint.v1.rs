@@ -52,7 +52,10 @@ pub mod inventory {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SoftwarePackage {
         /// Information about the different types of software packages.
-        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8")]
+        #[prost(
+            oneof = "software_package::Details",
+            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9"
+        )]
         pub details: ::core::option::Option<software_package::Details>,
     }
     /// Nested message and enum types in `SoftwarePackage`.
@@ -99,6 +102,9 @@ pub mod inventory {
             /// Details of a COS package.
             #[prost(message, tag = "8")]
             CosPackage(super::VersionedPackage),
+            /// Details of Windows Application.
+            #[prost(message, tag = "9")]
+            WindowsApplication(super::WindowsApplication),
         }
     }
     /// Information related to the a standard versioned package.  This includes
@@ -114,6 +120,25 @@ pub mod inventory {
         /// The version of the package.
         #[prost(string, tag = "3")]
         pub version: ::prost::alloc::string::String,
+    }
+    /// Information related to a Quick Fix Engineering package.
+    /// Fields are taken from Windows QuickFixEngineering Interface and match
+    /// the source names:
+    /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsQuickFixEngineeringPackage {
+        /// A short textual description of the QFE update.
+        #[prost(string, tag = "1")]
+        pub caption: ::prost::alloc::string::String,
+        /// A textual description of the QFE update.
+        #[prost(string, tag = "2")]
+        pub description: ::prost::alloc::string::String,
+        /// Unique identifier associated with a particular QFE update.
+        #[prost(string, tag = "3")]
+        pub hot_fix_id: ::prost::alloc::string::String,
+        /// Date that the QFE update was installed.  Mapped from installed_on field.
+        #[prost(message, optional, tag = "4")]
+        pub install_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Details related to a Zypper Patch.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -182,24 +207,26 @@ pub mod inventory {
             pub name: ::prost::alloc::string::String,
         }
     }
-    /// Information related to a Quick Fix Engineering package.
-    /// Fields are taken from Windows QuickFixEngineering Interface and match
-    /// the source names:
-    /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+    /// Details about Windows Application - based on Windows Registry.
+    /// All fields in this message are taken from:
+    /// https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct WindowsQuickFixEngineeringPackage {
-        /// A short textual description of the QFE update.
+    pub struct WindowsApplication {
+        /// DisplayName field from Windows Registry.
         #[prost(string, tag = "1")]
-        pub caption: ::prost::alloc::string::String,
-        /// A textual description of the QFE update.
+        pub display_name: ::prost::alloc::string::String,
+        /// DisplayVersion field from Windows Registry.
         #[prost(string, tag = "2")]
-        pub description: ::prost::alloc::string::String,
-        /// Unique identifier associated with a particular QFE update.
+        pub display_version: ::prost::alloc::string::String,
+        /// Publisher field from Windows Registry.
         #[prost(string, tag = "3")]
-        pub hot_fix_id: ::prost::alloc::string::String,
-        /// Date that the QFE update was installed.  Mapped from installed_on field.
+        pub publisher: ::prost::alloc::string::String,
+        /// Installation date field from Windows Registry.
         #[prost(message, optional, tag = "4")]
-        pub install_time: ::core::option::Option<::prost_types::Timestamp>,
+        pub install_date: ::core::option::Option<super::super::super::super::super::r#type::Date>,
+        /// HelpLink field from Windows Registry.
+        #[prost(string, tag = "5")]
+        pub help_link: ::prost::alloc::string::String,
     }
 }
 /// Step performed by the OS Config agent for configuring an `OSPolicyResource`
@@ -212,6 +239,10 @@ pub struct OsPolicyResourceConfigStep {
     /// Outcome of the configuration step.
     #[prost(enumeration = "os_policy_resource_config_step::Outcome", tag = "2")]
     pub outcome: i32,
+    /// An error message recorded during the execution of this step.
+    /// Only populated when outcome is FAILED.
+    #[prost(string, tag = "3")]
+    pub error_message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `OSPolicyResourceConfigStep`.
 pub mod os_policy_resource_config_step {
@@ -261,6 +292,27 @@ pub struct OsPolicyResourceCompliance {
     /// Compliance state of the OS policy resource.
     #[prost(enumeration = "OsPolicyComplianceState", tag = "3")]
     pub state: i32,
+    /// Resource specific output.
+    #[prost(oneof = "os_policy_resource_compliance::Output", tags = "4")]
+    pub output: ::core::option::Option<os_policy_resource_compliance::Output>,
+}
+/// Nested message and enum types in `OSPolicyResourceCompliance`.
+pub mod os_policy_resource_compliance {
+    /// ExecResource specific output.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExecResourceOutput {
+        /// Output from Enforcement phase output file (if run).
+        /// Output size is limited to 100K bytes.
+        #[prost(bytes = "vec", tag = "2")]
+        pub enforcement_output: ::prost::alloc::vec::Vec<u8>,
+    }
+    /// Resource specific output.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Output {
+        /// ExecResource specific output.
+        #[prost(message, tag = "4")]
+        ExecResourceOutput(ExecResourceOutput),
+    }
 }
 /// Supported OSPolicy compliance states.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -325,8 +377,8 @@ pub mod os_policy {
             /// Specifies a file available via some URI.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Remote {
-                /// Required. URI from which to fetch the object. It should contain both the
-                /// protocol and path following the format `{protocol}://{location}`.
+                /// Required. URI from which to fetch the object. It should contain both
+                /// the protocol and path following the format `{protocol}://{location}`.
                 #[prost(string, tag = "1")]
                 pub uri: ::prost::alloc::string::String,
                 /// SHA256 checksum of the remote file.
@@ -363,8 +415,8 @@ pub mod os_policy {
         /// A resource that manages a system package.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PackageResource {
-            /// Required. The desired state the agent should maintain for this package. The
-            /// default is to ensure the package is installed.
+            /// Required. The desired state the agent should maintain for this package.
+            /// The default is to ensure the package is installed.
             #[prost(enumeration = "package_resource::DesiredState", tag = "1")]
             pub desired_state: i32,
             /// A system package.
@@ -505,8 +557,8 @@ pub mod os_policy {
             /// /etc/apt/sources.list.d/google_osconfig.list.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct AptRepository {
-                /// Required. Type of archive files in this repository. The default behavior is
-                /// DEB.
+                /// Required. Type of archive files in this repository. The default
+                /// behavior is DEB.
                 #[prost(enumeration = "apt_repository::ArchiveType", tag = "1")]
                 pub archive_type: i32,
                 /// Required. URI for this repository.
@@ -515,8 +567,8 @@ pub mod os_policy {
                 /// Required. Distribution of this repository.
                 #[prost(string, tag = "3")]
                 pub distribution: ::prost::alloc::string::String,
-                /// Required. List of components for this repository. Must contain at least one
-                /// item.
+                /// Required. List of components for this repository. Must contain at
+                /// least one item.
                 #[prost(string, repeated, tag = "4")]
                 pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
                 /// URI of the key file for this repository. The agent maintains a
@@ -545,8 +597,8 @@ pub mod os_policy {
             /// `/etc/yum.repos.d/google_osconfig.repo`.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct YumRepository {
-                /// Required. A one word, unique name for this repository. This is  the `repo
-                /// id` in the yum config file and also the `display_name` if
+                /// Required. A one word, unique name for this repository. This is  the
+                /// `repo id` in the yum config file and also the `display_name` if
                 /// `display_name` is omitted. This id is also used as the unique
                 /// identifier when checking for resource conflicts.
                 #[prost(string, tag = "1")]
@@ -566,8 +618,8 @@ pub mod os_policy {
             /// `/etc/zypp/repos.d/google_osconfig.repo`.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ZypperRepository {
-                /// Required. A one word, unique name for this repository. This is the `repo
-                /// id` in the zypper config file and also the `display_name` if
+                /// Required. A one word, unique name for this repository. This is the
+                /// `repo id` in the zypper config file and also the `display_name` if
                 /// `display_name` is omitted. This id is also used as the unique
                 /// identifier when checking for GuestPolicy conflicts.
                 #[prost(string, tag = "1")]
@@ -614,10 +666,10 @@ pub mod os_policy {
         /// A resource that contains custom validation and enforcement steps.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ExecResource {
-            /// Required. What to run to validate this resource is in the desired state.
-            /// An exit code of 100 indicates "in desired state", and exit code of 101
-            /// indicates "not in desired state". Any other exit code indicates a
-            /// failure running validate.
+            /// Required. What to run to validate this resource is in the desired
+            /// state. An exit code of 100 indicates "in desired state", and exit code
+            /// of 101 indicates "not in desired state". Any other exit code indicates
+            /// a failure running validate.
             #[prost(message, optional, tag = "1")]
             pub validate: ::core::option::Option<exec_resource::Exec>,
             /// What to run to bring this resource into the desired state.
@@ -637,6 +689,14 @@ pub mod os_policy {
                 /// Required. The script interpreter to use.
                 #[prost(enumeration = "exec::Interpreter", tag = "4")]
                 pub interpreter: i32,
+                /// Only recorded for enforce Exec.
+                /// Path to an output file (that is created by this Exec) whose
+                /// content will be recorded in OSPolicyResourceCompliance after a
+                /// successful run. Absence or failure to read this file will result in
+                /// this ExecResource being non-compliant. Output file size is limited to
+                /// 100K bytes.
+                #[prost(string, tag = "5")]
+                pub output_file_path: ::prost::alloc::string::String,
                 /// What to execute.
                 #[prost(oneof = "exec::Source", tags = "1, 2")]
                 pub source: ::core::option::Option<exec::Source>,
@@ -1376,6 +1436,7 @@ pub struct ReportTaskProgressRequest {
     /// specified below:
     /// APPLY_PATCHES = ApplyPatchesTaskProgress
     /// EXEC_STEP = Progress not supported for this type.
+    /// APPLY_CONFIG_TASK = ApplyConfigTaskProgress
     #[prost(enumeration = "TaskType", tag = "3")]
     pub task_type: i32,
     /// Intermediate progress of the current task.
@@ -1422,6 +1483,7 @@ pub struct ReportTaskCompleteRequest {
     /// specified below:
     /// APPLY_PATCHES = ApplyPatchesTaskOutput
     /// EXEC_STEP = ExecStepTaskOutput
+    /// APPLY_CONFIG_TASK = ApplyConfigTaskOutput
     #[prost(enumeration = "TaskType", tag = "3")]
     pub task_type: i32,
     /// Descriptive error message if the task execution ended in error.
@@ -1464,8 +1526,24 @@ pub struct RegisterAgentRequest {
     /// Required. The capabilities supported by the agent. Supported values are:
     /// PATCH_GA
     /// GUEST_POLICY_BETA
+    /// CONFIG_V1
     #[prost(string, repeated, tag = "3")]
     pub supported_capabilities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The operating system long name.
+    /// For example 'Debian GNU/Linux 9' or 'Microsoft Window Server 2019
+    /// Datacenter'.
+    #[prost(string, tag = "4")]
+    pub os_long_name: ::prost::alloc::string::String,
+    /// The operating system short name.
+    /// For example, 'windows' or 'debian'.
+    #[prost(string, tag = "5")]
+    pub os_short_name: ::prost::alloc::string::String,
+    /// The version of the operating system.
+    #[prost(string, tag = "6")]
+    pub os_version: ::prost::alloc::string::String,
+    /// The system architecture of the operating system.
+    #[prost(string, tag = "7")]
+    pub os_architecture: ::prost::alloc::string::String,
 }
 /// The response message after the agent registered.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1478,13 +1556,13 @@ pub struct ReportInventoryRequest {
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
-    /// Required. This is a client created checksum that should be generated based on the
-    /// contents of the reported inventory.  This will be used by the service to
-    /// determine if it has the latest version of inventory.
+    /// Required. This is a client created checksum that should be generated based
+    /// on the contents of the reported inventory.  This will be used by the
+    /// service to determine if it has the latest version of inventory.
     #[prost(string, tag = "2")]
     pub inventory_checksum: ::prost::alloc::string::String,
-    /// Optional. This is the details of the inventory.  Should only be provided if the
-    /// inventory has changed since the last report, or if instructed by the
+    /// Optional. This is the details of the inventory.  Should only be provided if
+    /// the inventory has changed since the last report, or if instructed by the
     /// service to provide full inventory.
     #[prost(message, optional, tag = "3")]
     pub inventory: ::core::option::Option<Inventory>,
@@ -1498,26 +1576,53 @@ pub struct ReportInventoryResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod agent_endpoint_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " OS Config agent endpoint API."]
+    #[derive(Debug, Clone)]
     pub struct AgentEndpointServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AgentEndpointServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AgentEndpointServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AgentEndpointServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Stream established by client to receive Task notifications."]
         pub async fn receive_task_notification(
@@ -1624,18 +1729,6 @@ pub mod agent_endpoint_service_client {
                 "/google.cloud.osconfig.agentendpoint.v1.AgentEndpointService/ReportInventory",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AgentEndpointServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AgentEndpointServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AgentEndpointServiceClient {{ ... }}")
         }
     }
 }

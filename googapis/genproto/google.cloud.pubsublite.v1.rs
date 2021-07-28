@@ -48,6 +48,24 @@ pub struct SequencedMessage {
     #[prost(int64, tag = "4")]
     pub size_bytes: i64,
 }
+/// Metadata about a reservation resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Reservation {
+    /// The name of the reservation.
+    /// Structured like:
+    /// projects/{project_number}/locations/{location}/reservations/{reservation_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The reserved throughput capacity. Every unit of throughput capacity is
+    /// equivalent to 1 MiB/s of published messages or 2 MiB/s of subscribed
+    /// messages.
+    ///
+    /// Any topics which are declared as using capacity from a Reservation will
+    /// consume resources from this reservation instead of being charged
+    /// individually.
+    #[prost(int64, tag = "2")]
+    pub throughput_capacity: i64,
+}
 /// Metadata about a topic resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Topic {
@@ -62,6 +80,9 @@ pub struct Topic {
     /// The settings for this topic's message retention.
     #[prost(message, optional, tag = "3")]
     pub retention_config: ::core::option::Option<topic::RetentionConfig>,
+    /// The settings for this topic's Reservation usage.
+    #[prost(message, optional, tag = "4")]
+    pub reservation_config: ::core::option::Option<topic::ReservationConfig>,
 }
 /// Nested message and enum types in `Topic`.
 pub mod topic {
@@ -127,6 +148,15 @@ pub mod topic {
         #[prost(message, optional, tag = "2")]
         pub period: ::core::option::Option<::prost_types::Duration>,
     }
+    /// The settings for this topic's Reservation usage.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReservationConfig {
+        /// The Reservation to use for this topic's throughput capacity.
+        /// Structured like:
+        /// projects/{project_number}/locations/{location}/reservations/{reservation_id}
+        #[prost(string, tag = "1")]
+        pub throughput_reservation: ::prost::alloc::string::String,
+    }
 }
 /// Metadata about a subscription resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -174,6 +204,33 @@ pub mod subscription {
             /// in higher end-to-end latency, but consistent delivery.
             DeliverAfterStored = 2,
         }
+    }
+}
+/// A target publish or event time. Can be used for seeking to or retrieving the
+/// corresponding cursor.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeTarget {
+    /// The type of message time to query.
+    #[prost(oneof = "time_target::Time", tags = "1, 2")]
+    pub time: ::core::option::Option<time_target::Time>,
+}
+/// Nested message and enum types in `TimeTarget`.
+pub mod time_target {
+    /// The type of message time to query.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Time {
+        /// Request the cursor of the first message with publish time greater than or
+        /// equal to `publish_time`. All messages thereafter are guaranteed to have
+        /// publish times >= `publish_time`.
+        #[prost(message, tag = "1")]
+        PublishTime(::prost_types::Timestamp),
+        /// Request the cursor of the first message with event time greater than or
+        /// equal to `event_time`. If messages are missing an event time, the publish
+        /// time is used as a fallback. As event times are user supplied, subsequent
+        /// messages may have event times less than `event_time` and should be
+        /// filtered by the client, if necessary.
+        #[prost(message, tag = "2")]
+        EventTime(::prost_types::Timestamp),
     }
 }
 /// Request for CreateTopic.
@@ -373,29 +430,225 @@ pub struct DeleteSubscriptionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request for SeekSubscription.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SeekSubscriptionRequest {
+    /// Required. The name of the subscription to seek.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The target to seek to. Must be set.
+    #[prost(oneof = "seek_subscription_request::Target", tags = "2, 3")]
+    pub target: ::core::option::Option<seek_subscription_request::Target>,
+}
+/// Nested message and enum types in `SeekSubscriptionRequest`.
+pub mod seek_subscription_request {
+    /// A named position with respect to the message backlog.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum NamedTarget {
+        /// Unspecified named target. Do not use.
+        Unspecified = 0,
+        /// Seek to the oldest retained message.
+        Tail = 1,
+        /// Seek past all recently published messages, skipping the entire message
+        /// backlog.
+        Head = 2,
+    }
+    /// The target to seek to. Must be set.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Target {
+        /// Seek to a named position with respect to the message backlog.
+        #[prost(enumeration = "NamedTarget", tag = "2")]
+        NamedTarget(i32),
+        /// Seek to the first message whose publish or event time is greater than or
+        /// equal to the specified query time. If no such message can be located,
+        /// will seek to the end of the message backlog.
+        #[prost(message, tag = "3")]
+        TimeTarget(super::TimeTarget),
+    }
+}
+/// Response for SeekSubscription long running operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SeekSubscriptionResponse {}
+/// Metadata for long running operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the operation finished running. Not set if the operation has not
+    /// completed.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Resource path for the target of the operation. For example, targets of
+    /// seeks are subscription resources, structured like:
+    /// projects/{project_number}/locations/{location}/subscriptions/{subscription_id}
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// Name of the verb executed by the operation.
+    #[prost(string, tag = "4")]
+    pub verb: ::prost::alloc::string::String,
+}
+/// Request for CreateReservation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateReservationRequest {
+    /// Required. The parent location in which to create the reservation.
+    /// Structured like `projects/{project_number}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Configuration of the reservation to create. Its `name` field is ignored.
+    #[prost(message, optional, tag = "2")]
+    pub reservation: ::core::option::Option<Reservation>,
+    /// Required. The ID to use for the reservation, which will become the final component of
+    /// the reservation's name.
+    ///
+    /// This value is structured like: `my-reservation-name`.
+    #[prost(string, tag = "3")]
+    pub reservation_id: ::prost::alloc::string::String,
+}
+/// Request for GetReservation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetReservationRequest {
+    /// Required. The name of the reservation whose configuration to return.
+    /// Structured like:
+    /// projects/{project_number}/locations/{location}/reservations/{reservation_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for ListReservations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReservationsRequest {
+    /// Required. The parent whose reservations are to be listed.
+    /// Structured like `projects/{project_number}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of reservations to return. The service may return fewer
+    /// than this value. If unset or zero, all reservations for the parent will be
+    /// returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListReservations` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListReservations` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for ListReservations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReservationsResponse {
+    /// The list of reservation in the requested parent. The order of the
+    /// reservations is unspecified.
+    #[prost(message, repeated, tag = "1")]
+    pub reservations: ::prost::alloc::vec::Vec<Reservation>,
+    /// A token that can be sent as `page_token` to retrieve the next page of
+    /// results. If this field is omitted, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for UpdateReservation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateReservationRequest {
+    /// Required. The reservation to update. Its `name` field must be populated.
+    #[prost(message, optional, tag = "1")]
+    pub reservation: ::core::option::Option<Reservation>,
+    /// Required. A mask specifying the reservation fields to change.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for DeleteReservation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteReservationRequest {
+    /// Required. The name of the reservation to delete.
+    /// Structured like:
+    /// projects/{project_number}/locations/{location}/reservations/{reservation_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for ListReservationTopics.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReservationTopicsRequest {
+    /// Required. The name of the reservation whose topics to list.
+    /// Structured like:
+    /// projects/{project_number}/locations/{location}/reservations/{reservation_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The maximum number of topics to return. The service may return fewer
+    /// than this value.
+    /// If unset or zero, all topics for the given reservation will be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListReservationTopics` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListReservationTopics`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for ListReservationTopics.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReservationTopicsResponse {
+    /// The names of topics attached to the reservation. The order of the
+    /// topics is unspecified.
+    #[prost(string, repeated, tag = "1")]
+    pub topics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A token that can be sent as `page_token` to retrieve the next page of
+    /// results. If this field is omitted, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 #[doc = r" Generated client implementations."]
 pub mod admin_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The service that a client application uses to manage topics and"]
     #[doc = " subscriptions, such creating, listing, and deleting topics and subscriptions."]
+    #[derive(Debug, Clone)]
     pub struct AdminServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AdminServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AdminServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AdminServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a new topic."]
         pub async fn create_topic(
@@ -601,17 +854,147 @@ pub mod admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T: Clone> Clone for AdminServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
+        #[doc = " Performs an out-of-band seek for a subscription to a specified target,"]
+        #[doc = " which may be timestamps or named positions within the message backlog."]
+        #[doc = " Seek translates these targets to cursors for each partition and"]
+        #[doc = " orchestrates subscribers to start consuming messages from these seek"]
+        #[doc = " cursors."]
+        #[doc = ""]
+        #[doc = " If an operation is returned, the seek has been registered and subscribers"]
+        #[doc = " will eventually receive messages from the seek cursors (i.e. eventual"]
+        #[doc = " consistency), as long as they are using a minimum supported client library"]
+        #[doc = " version and not a system that tracks cursors independently of Pub/Sub Lite"]
+        #[doc = " (e.g. Apache Beam, Dataflow, Spark). The seek operation will fail for"]
+        #[doc = " unsupported clients."]
+        #[doc = ""]
+        #[doc = " If clients would like to know when subscribers react to the seek (or not),"]
+        #[doc = " they can poll the operation. The seek operation will succeed and complete"]
+        #[doc = " once subscribers are ready to receive messages from the seek cursors for"]
+        #[doc = " all partitions of the topic. This means that the seek operation will not"]
+        #[doc = " complete until all subscribers come online."]
+        #[doc = ""]
+        #[doc = " If the previous seek operation has not yet completed, it will be aborted"]
+        #[doc = " and the new invocation of seek will supersede it."]
+        pub async fn seek_subscription(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SeekSubscriptionRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.AdminService/SeekSubscription",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T> std::fmt::Debug for AdminServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdminServiceClient {{ ... }}")
+        #[doc = " Creates a new reservation."]
+        pub async fn create_reservation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateReservationRequest>,
+        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.AdminService/CreateReservation",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns the reservation configuration."]
+        pub async fn get_reservation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetReservationRequest>,
+        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.AdminService/GetReservation",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns the list of reservations for the given project."]
+        pub async fn list_reservations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListReservationsRequest>,
+        ) -> Result<tonic::Response<super::ListReservationsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.AdminService/ListReservations",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates properties of the specified reservation."]
+        pub async fn update_reservation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateReservationRequest>,
+        ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.AdminService/UpdateReservation",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes the specified reservation."]
+        pub async fn delete_reservation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteReservationRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.AdminService/DeleteReservation",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists the topics attached to the specified reservation."]
+        pub async fn list_reservation_topics(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListReservationTopicsRequest>,
+        ) -> Result<tonic::Response<super::ListReservationTopicsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.AdminService/ListReservationTopics",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }
@@ -749,28 +1132,55 @@ pub struct ListPartitionCursorsResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod cursor_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The service that a subscriber client application uses to manage committed"]
     #[doc = " cursors while receiving messsages. A cursor represents a subscriber's"]
     #[doc = " progress within a topic partition for a given subscription."]
+    #[derive(Debug, Clone)]
     pub struct CursorServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> CursorServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CursorServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            CursorServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Establishes a stream with the server for managing committed cursors."]
         pub async fn streaming_commit_cursor(
@@ -827,18 +1237,6 @@ pub mod cursor_service_client {
                 "/google.cloud.pubsublite.v1.CursorService/ListPartitionCursors",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for CursorServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for CursorServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "CursorServiceClient {{ ... }}")
         }
     }
 }
@@ -914,29 +1312,56 @@ pub mod publish_response {
 }
 #[doc = r" Generated client implementations."]
 pub mod publisher_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The service that a publisher client application uses to publish messages to"]
     #[doc = " topics. Published messages are retained by the service for the duration of"]
     #[doc = " the retention period configured for the respective topic, and are delivered"]
     #[doc = " to subscriber clients upon request (via the `SubscriberService`)."]
+    #[derive(Debug, Clone)]
     pub struct PublisherServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> PublisherServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PublisherServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            PublisherServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Establishes a stream with the server for publishing messages. Once the"]
         #[doc = " stream is initialized, the client publishes messages by sending publish"]
@@ -965,18 +1390,6 @@ pub mod publisher_service_client {
                 .await
         }
     }
-    impl<T: Clone> Clone for PublisherServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for PublisherServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "PublisherServiceClient {{ ... }}")
-        }
-    }
 }
 /// The first request that must be sent on a newly-opened stream. The client must
 /// wait for the response before sending subsequent requests on the stream.
@@ -989,6 +1402,11 @@ pub struct InitialSubscribeRequest {
     /// so `partition` must be in the range [0, topic.num_partitions).
     #[prost(int64, tag = "2")]
     pub partition: i64,
+    /// Optional. Initial target location within the message backlog. If not set, messages
+    /// will be delivered from the commit cursor for the given subscription and
+    /// partition.
+    #[prost(message, optional, tag = "4")]
+    pub initial_location: ::core::option::Option<SeekRequest>,
 }
 /// Response to an InitialSubscribeRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -999,9 +1417,11 @@ pub struct InitialSubscribeResponse {
     pub cursor: ::core::option::Option<Cursor>,
 }
 /// Request to update the stream's delivery cursor based on the given target.
-/// Resets the server available tokens to 0. SeekRequests may not be sent while
-/// another SeekRequest is outstanding (i.e., has not received a SeekResponse) on
-/// the same stream. SeekRequests past head result in stream breakage.
+/// Resets the server available tokens to 0. SeekRequests past head result in
+/// stream breakage.
+///
+/// SeekRequests may not be sent while another SeekRequest is outstanding (i.e.,
+/// has not received a SeekResponse) on the same stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SeekRequest {
     /// The target to seek to. Must be set.
@@ -1169,27 +1589,54 @@ pub mod partition_assignment_request {
 }
 #[doc = r" Generated client implementations."]
 pub mod subscriber_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The service that a subscriber client application uses to receive messages"]
     #[doc = " from subscriptions."]
+    #[derive(Debug, Clone)]
     pub struct SubscriberServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SubscriberServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SubscriberServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SubscriberServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Establishes a stream with the server for receiving messages."]
         pub async fn subscribe(
@@ -1212,42 +1659,57 @@ pub mod subscriber_service_client {
                 .await
         }
     }
-    impl<T: Clone> Clone for SubscriberServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SubscriberServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SubscriberServiceClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod partition_assignment_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The service that a subscriber client application uses to determine which"]
     #[doc = " partitions it should connect to."]
+    #[derive(Debug, Clone)]
     pub struct PartitionAssignmentServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> PartitionAssignmentServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PartitionAssignmentServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            PartitionAssignmentServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Assign partitions for this client to handle for the specified subscription."]
         #[doc = ""]
@@ -1276,18 +1738,6 @@ pub mod partition_assignment_service_client {
             self.inner
                 .streaming(request.into_streaming_request(), path, codec)
                 .await
-        }
-    }
-    impl<T: Clone> Clone for PartitionAssignmentServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for PartitionAssignmentServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "PartitionAssignmentServiceClient {{ ... }}")
         }
     }
 }
@@ -1346,28 +1796,80 @@ pub struct ComputeHeadCursorResponse {
     #[prost(message, optional, tag = "1")]
     pub head_cursor: ::core::option::Option<Cursor>,
 }
+/// Compute the corresponding cursor for a publish or event time in a topic
+/// partition.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeTimeCursorRequest {
+    /// Required. The topic for which we should compute the cursor.
+    #[prost(string, tag = "1")]
+    pub topic: ::prost::alloc::string::String,
+    /// Required. The partition for which we should compute the cursor.
+    #[prost(int64, tag = "2")]
+    pub partition: i64,
+    /// Required. The target publish or event time. Specifying a future time will return an
+    /// unset cursor.
+    #[prost(message, optional, tag = "3")]
+    pub target: ::core::option::Option<TimeTarget>,
+}
+/// Response containing the cursor corresponding to a publish or event time in a
+/// topic partition.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeTimeCursorResponse {
+    /// If present, the cursor references the first message with time greater than
+    /// or equal to the specified target time. If such a message cannot be found,
+    /// the cursor will be unset (i.e. `cursor` is not present).
+    #[prost(message, optional, tag = "1")]
+    pub cursor: ::core::option::Option<Cursor>,
+}
 #[doc = r" Generated client implementations."]
 pub mod topic_stats_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " This service allows users to get stats about messages in their topic."]
+    #[derive(Debug, Clone)]
     pub struct TopicStatsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> TopicStatsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> TopicStatsServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            TopicStatsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Compute statistics about a range of messages in a given topic and"]
         #[doc = " partition."]
@@ -1409,17 +1911,23 @@ pub mod topic_stats_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T: Clone> Clone for TopicStatsServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for TopicStatsServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "TopicStatsServiceClient {{ ... }}")
+        #[doc = " Compute the corresponding cursor for a publish or event time in a topic"]
+        #[doc = " partition."]
+        pub async fn compute_time_cursor(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ComputeTimeCursorRequest>,
+        ) -> Result<tonic::Response<super::ComputeTimeCursorResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.pubsublite.v1.TopicStatsService/ComputeTimeCursor",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }

@@ -4,29 +4,65 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Endpoint {
     /// Immutable. The resource name for the endpoint in the format
-    /// 'projects/*/locations/*/namespaces/*/services/*/endpoints/*'.
+    /// `projects/*/locations/*/namespaces/*/services/*/endpoints/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An IPv4 or IPv6 address. Service Directory will reject bad
-    /// addresses like:
-    ///   "8.8.8"
-    ///   "8.8.8.8:53"
-    ///   "test:bad:address"
-    ///   "[::1]"
-    ///   "[::1]:8080"
+    /// Optional. An IPv4 or IPv6 address. Service Directory rejects bad addresses like:
+    ///
+    /// *   `8.8.8`
+    /// *   `8.8.8.8:53`
+    /// *   `test:bad:address`
+    /// *   `[::1]`
+    /// *   `[::1]:8080`
+    ///
     /// Limited to 45 characters.
     #[prost(string, tag = "2")]
     pub address: ::prost::alloc::string::String,
-    /// Optional. Service Directory will reject values outside of [0, 65535].
+    /// Optional. Service Directory rejects values outside of `[0, 65535]`.
     #[prost(int32, tag = "3")]
     pub port: i32,
     /// Optional. Metadata for the endpoint. This data can be consumed by service
-    /// clients.  The entire metadata dictionary may contain up to 512 characters,
-    /// spread accoss all key-value pairs. Metadata that goes beyond any these
-    /// limits will be rejected.
+    /// clients.
+    ///
+    /// Restrictions:
+    ///
+    /// *   The entire metadata dictionary may contain up to 512 characters,
+    ///     spread accoss all key-value pairs. Metadata that goes beyond this
+    ///     limit are rejected
+    /// *   Valid metadata keys have two segments: an optional prefix and name,
+    ///     separated by a slash (/). The name segment is required and must be 63
+    ///     characters or less, beginning and ending with an alphanumeric character
+    ///     ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and
+    ///     alphanumerics between. The prefix is optional. If specified, the prefix
+    ///     must be a DNS subdomain: a series of DNS labels separated by dots (.),
+    ///     not longer than 253 characters in total, followed by a slash (/).
+    ///     Metadata that fails to meet these requirements are rejected
+    /// *   The `(*.)google.com/` and `(*.)googleapis.com/` prefixes are reserved
+    ///     for system metadata managed by Service Directory. If the user tries
+    ///     to write to these keyspaces, those entries are silently ignored by
+    ///     the system
+    ///
+    /// Note: This field is equivalent to the `annotations` field in the v1 API.
+    /// They have the same syntax and read/write to the same location in Service
+    /// Directory.
     #[prost(map = "string, string", tag = "4")]
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Immutable. The Google Compute Engine network (VPC) of the endpoint in the format
+    /// `projects/<project number>/locations/global/networks/*`.
+    ///
+    /// The project must be specified by project number (project id is rejected).
+    /// Incorrectly formatted networks are rejected, but no other validation
+    /// is performed on this field (ex. network or project existence, reachability,
+    /// or permissions).
+    #[prost(string, tag = "5")]
+    pub network: ::prost::alloc::string::String,
+    /// Output only. The timestamp when the endpoint was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the endpoint was last updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// An individual service. A service contains a name and optional metadata.
 /// A service must exist before
@@ -35,20 +71,49 @@ pub struct Endpoint {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Immutable. The resource name for the service in the format
-    /// 'projects/*/locations/*/namespaces/*/services/*'.
+    /// `projects/*/locations/*/namespaces/*/services/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Metadata for the service. This data can be consumed by service
-    /// clients.  The entire metadata dictionary may contain up to 2000 characters,
-    /// spread across all key-value pairs. Metadata that goes beyond any these
-    /// limits will be rejected.
+    /// clients.
+    ///
+    /// Restrictions:
+    ///
+    /// *   The entire metadata dictionary may contain up to 2000 characters,
+    ///     spread accoss all key-value pairs. Metadata that goes beyond this
+    ///     limit are rejected
+    /// *   Valid metadata keys have two segments: an optional prefix and name,
+    ///     separated by a slash (/). The name segment is required and must be 63
+    ///     characters or less, beginning and ending with an alphanumeric character
+    ///     ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and
+    ///     alphanumerics between. The prefix is optional. If specified, the prefix
+    ///     must be a DNS subdomain: a series of DNS labels separated by dots (.),
+    ///     not longer than 253 characters in total, followed by a slash (/).
+    ///     Metadata that fails to meet these requirements are rejected
+    /// *   The `(*.)google.com/` and `(*.)googleapis.com/` prefixes are reserved
+    ///     for system metadata managed by Service Directory. If the user tries
+    ///     to write to these keyspaces, those entries are silently ignored by
+    ///     the system
+    ///
+    /// Note: This field is equivalent to the `annotations` field in the v1 API.
+    /// They have the same syntax and read/write to the same location in Service
+    /// Directory.
     #[prost(map = "string, string", tag = "2")]
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Output only. Endpoints associated with this service. Returned on LookupService.Resolve.
-    /// Control plane clients should use RegistrationService.ListEndpoints.
+    /// Output only. Endpoints associated with this service. Returned on
+    /// [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService]. Control plane clients should use
+    /// [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
     #[prost(message, repeated, tag = "3")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
+    /// Output only. The timestamp when the service was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the service was last updated. Note: endpoints being
+    /// created/deleted/updated within the service are not considered service
+    /// updates for the purpose of this timestamp.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request message for [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
 /// Looks up a service by its name, returns the service and its endpoints.
@@ -64,22 +129,37 @@ pub struct ResolveServiceRequest {
     pub max_endpoints: i32,
     /// Optional. The filter applied to the endpoints of the resolved service.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name" or "metadata.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS and is
-    /// roughly the same as "=".
-    /// <value> must be the same data type as the field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name`, `address`, `port`, or `metadata.<key>` for
+    ///     map field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///     means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "metadata.owner" returns Endpoints that have a label with the
-    ///   key "owner", this is the same as "metadata:owner"
-    /// * "metadata.protocol=gRPC" returns Endpoints that have key/value
-    ///   "protocol=gRPC"
-    /// * "metadata.owner!=sd AND metadata.foo=bar" returns
-    ///   Endpoints that have "owner" field in metadata with a value that is not
-    ///   "sd" AND have the key/value foo=bar.
+    ///
+    /// *   `metadata.owner` returns endpoints that have a annotation with the key
+    ///     `owner`, this is the same as `metadata:owner`
+    /// *   `metadata.protocol=gRPC` returns endpoints that have key/value
+    ///     `protocol=gRPC`
+    /// *   `address=192.108.1.105` returns endpoints that have this address
+    /// *   `port>8080` returns endpoints that have port number larger than 8080
+    /// *
+    /// `name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/my-service/endpoints/endpoint-c`
+    ///     returns endpoints that have name that is alphabetically later than the
+    ///     string, so "endpoint-e" is returned but "endpoint-a" is not
+    /// *   `metadata.owner!=sd AND metadata.foo=bar` returns endpoints that have
+    ///     `owner` in annotation key but value is not `sd` AND have key/value
+    ///      `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that endpoint
+    ///     doesn't have a field called "doesnotexist". Since the filter does not
+    ///     match any endpoint, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](https://aip.dev/160).
     #[prost(string, tag = "3")]
     pub endpoint_filter: ::prost::alloc::string::String,
 }
@@ -91,26 +171,53 @@ pub struct ResolveServiceResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod lookup_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service Directory API for looking up service data at runtime."]
+    #[derive(Debug, Clone)]
     pub struct LookupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> LookupServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> LookupServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            LookupServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns a [service][google.cloud.servicedirectory.v1beta1.Service] and its"]
         #[doc = " associated endpoints."]
@@ -132,18 +239,6 @@ pub mod lookup_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for LookupServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for LookupServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "LookupServiceClient {{ ... }}")
-        }
-    }
 }
 /// A container for [services][google.cloud.servicedirectory.v1beta1.Service].
 /// Namespaces allow administrators to group services together and define
@@ -151,15 +246,21 @@ pub mod lookup_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Namespace {
     /// Immutable. The resource name for the namespace in the format
-    /// 'projects/*/locations/*/namespaces/*'.
+    /// `projects/*/locations/*/namespaces/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Resource labels associated with this Namespace.
-    /// No more than 64 user labels can be associated with a given resource.  Label
+    /// Optional. Resource labels associated with this namespace.
+    /// No more than 64 user labels can be associated with a given resource. Label
     /// keys and values can be no longer than 63 characters.
     #[prost(map = "string, string", tag = "2")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Output only. The timestamp when the namespace was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the namespace was last updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request message for [RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -184,8 +285,8 @@ pub struct CreateNamespaceRequest {
 /// The request message for [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesRequest {
-    /// Required. The resource name of the project and location whose namespaces we'd like to
-    /// list.
+    /// Required. The resource name of the project and location whose namespaces you'd like
+    /// to list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
@@ -194,40 +295,45 @@ pub struct ListNamespacesRequest {
     /// Optional. The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to list result by.
+    /// Optional. The filter to list results by.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name", or "labels.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and
-    /// is roughly the same as "=".
-    /// <value> must be the same data type as field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name` or `labels.<key>` for map field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///     means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "labels.owner" returns Namespaces that have a label with the key "owner"
-    ///   this is the same as "labels:owner".
-    /// * "labels.protocol=gRPC" returns Namespaces that have key/value
-    ///   "protocol=gRPC".
-    /// * "name>projects/my-project/locations/us-east/namespaces/namespace-c"
-    ///   returns Namespaces that have name that is alphabetically later than the
-    ///   string, so "namespace-e" will be returned but "namespace-a" will not be.
-    /// * "labels.owner!=sd AND labels.foo=bar" returns Namespaces that have
-    ///   "owner" in label key but value is not "sd" AND have key/value foo=bar.
-    /// * "doesnotexist.foo=bar" returns an empty list. Note that Namespace doesn't
-    ///   have a field called "doesnotexist". Since the filter does not match any
-    ///   Namespaces, it returns no results.
+    ///
+    /// *   `labels.owner` returns namespaces that have a label with the key
+    ///     `owner`, this is the same as `labels:owner`
+    /// *   `labels.owner=sd` returns namespaces that have key/value `owner=sd`
+    /// *   `name>projects/my-project/locations/us-east1/namespaces/namespace-c`
+    ///     returns namespaces that have name that is alphabetically later than the
+    ///     string, so "namespace-e" is returned but "namespace-a" is not
+    /// *   `labels.owner!=sd AND labels.foo=bar` returns namespaces that have
+    ///     `owner` in label key but value is not `sd` AND have key/value `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that namespace
+    ///     doesn't have a field called "doesnotexist". Since the filter does not
+    ///     match any namespaces, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](https://aip.dev/160).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. The order to list result by.
+    /// Optional. The order to list results by.
     ///
-    /// General order by string syntax:
-    /// <field> (<asc|desc>) (,)
-    /// <field> allows values {"name"}
-    /// <asc/desc> ascending or descending order by <field>. If this is left
-    /// blank, "asc" is used.
-    /// Note that an empty order_by string result in default order, which is order
-    /// by name in ascending order.
+    /// General `order_by` string syntax: `<field> (<asc|desc>) (,)`
+    ///
+    /// *   `<field>` allows value: `name`
+    /// *   `<asc|desc>` ascending or descending order by `<field>`. If this is
+    ///     left blank, `asc` is used
+    ///
+    /// Note that an empty `order_by` string results in default order, which is
+    /// order by `name` in ascending order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -288,7 +394,7 @@ pub struct CreateServiceRequest {
 /// The request message for [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
-    /// Required. The resource name of the namespace whose services we'd
+    /// Required. The resource name of the namespace whose services you'd
     /// like to list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -299,32 +405,48 @@ pub struct ListServicesRequest {
     /// if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to list result by.
+    /// Optional. The filter to list results by.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name", or "metadata.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and
-    /// is roughly the same as "=".
-    /// <value> must be the same data type as field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name` or `metadata.<key>` for map field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///     means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "metadata.owner" returns Services that have a label with the key "owner"
-    ///   this is the same as "metadata:owner".
-    /// * "metadata.protocol=gRPC" returns Services that have key/value
-    ///   "protocol=gRPC".
-    /// * "name>projects/my-project/locations/us-east/namespaces/my-namespace/services/service-c"
-    ///   returns Services that have name that is alphabetically later than the
-    ///   string, so "service-e" will be returned but "service-a" will not be.
-    /// * "metadata.owner!=sd AND metadata.foo=bar" returns Services that have
-    ///   "owner" in label key but value is not "sd" AND have key/value foo=bar.
-    /// * "doesnotexist.foo=bar" returns an empty list. Note that Service doesn't
-    ///   have a field called "doesnotexist". Since the filter does not match any
-    ///   Services, it returns no results.
+    ///
+    /// *   `metadata.owner` returns services that have a metadata with the key
+    ///     `owner`, this is the same as `metadata:owner`
+    /// *   `metadata.protocol=gRPC` returns services that have key/value
+    ///     `protocol=gRPC`
+    /// *
+    /// `name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/service-c`
+    ///     returns services that have name that is alphabetically later than the
+    ///     string, so "service-e" is returned but "service-a" is not
+    /// *   `metadata.owner!=sd AND metadata.foo=bar` returns services that have
+    ///     `owner` in metadata key but value is not `sd` AND have key/value
+    ///     `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that service
+    ///     doesn't have a field called "doesnotexist". Since the filter does not
+    ///     match any services, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](https://aip.dev/160).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. The order to list result by.
+    /// Optional. The order to list results by.
+    ///
+    /// General `order_by` string syntax: `<field> (<asc|desc>) (,)`
+    ///
+    /// *   `<field>` allows value: `name`
+    /// *   `<asc|desc>` ascending or descending order by `<field>`. If this is
+    ///     left blank, `asc` is used
+    ///
+    /// Note that an empty `order_by` string results in default order, which is
+    /// order by `name` in ascending order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -341,7 +463,7 @@ pub struct ListServicesResponse {
 }
 /// The request message for [RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService].
 /// This should not be used for looking up a service. Insead, use the `resolve`
-/// method as it will contain all endpoints and associated metadata.
+/// method as it contains all endpoints and associated metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The name of the service to get.
@@ -387,7 +509,7 @@ pub struct CreateEndpointRequest {
 /// The request message for [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsRequest {
-    /// Required. The resource name of the service whose endpoints we'd like to
+    /// Required. The resource name of the service whose endpoints you'd like to
     /// list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -398,34 +520,51 @@ pub struct ListEndpointsRequest {
     /// if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The filter to list result by.
+    /// Optional. The filter to list results by.
     ///
-    /// General filter string syntax:
-    /// <field> <operator> <value> (<logical connector>)
-    /// <field> can be "name", "address", "port" or "metadata.<key>" for map field.
-    /// <operator> can be "<, >, <=, >=, !=, =, :". Of which ":" means HAS, and
-    /// is roughly the same as "=".
-    /// <value> must be the same data type as field.
-    /// <logical connector> can be "AND, OR, NOT".
+    /// General `filter` string syntax:
+    /// `<field> <operator> <value> (<logical connector>)`
+    ///
+    /// *   `<field>` can be `name`, `address`, `port`, or `metadata.<key>` for map
+    ///     field
+    /// *   `<operator>` can be `<`, `>`, `<=`, `>=`, `!=`, `=`, `:`. Of which `:`
+    ///     means `HAS`, and is roughly the same as `=`
+    /// *   `<value>` must be the same data type as field
+    /// *   `<logical connector>` can be `AND`, `OR`, `NOT`
     ///
     /// Examples of valid filters:
-    /// * "metadata.owner" returns Endpoints that have a label with the key "owner"
-    ///   this is the same as "metadata:owner".
-    /// * "metadata.protocol=gRPC" returns Endpoints that have key/value
-    ///   "protocol=gRPC".
-    /// * "address=192.108.1.105" returns Endpoints that have this address.
-    /// * "port>8080" returns Endpoints that have port number larger than 8080.
-    /// * "name>projects/my-project/locations/us-east/namespaces/my-namespace/services/my-service/endpoints/endpoint-c"
-    ///   returns Endpoints that have name that is alphabetically later than the
-    ///   string, so "endpoint-e" will be returned but "endpoint-a" will not be.
-    /// * "metadata.owner!=sd AND metadata.foo=bar" returns Endpoints that have
-    ///   "owner" in label key but value is not "sd" AND have key/value foo=bar.
-    /// * "doesnotexist.foo=bar" returns an empty list. Note that Endpoint doesn't
-    ///   have a field called "doesnotexist". Since the filter does not match any
-    ///   Endpoints, it returns no results.
+    ///
+    /// *   `metadata.owner` returns endpoints that have a metadata with the key
+    ///     `owner`, this is the same as `metadata:owner`
+    /// *   `metadata.protocol=gRPC` returns endpoints that have key/value
+    ///     `protocol=gRPC`
+    /// *   `address=192.108.1.105` returns endpoints that have this address
+    /// *   `port>8080` returns endpoints that have port number larger than 8080
+    /// *
+    /// `name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/my-service/endpoints/endpoint-c`
+    ///     returns endpoints that have name that is alphabetically later than the
+    ///     string, so "endpoint-e" is returned but "endpoint-a" is not
+    /// *   `metadata.owner!=sd AND metadata.foo=bar` returns endpoints that have
+    ///     `owner` in metadata key but value is not `sd` AND have key/value
+    ///      `foo=bar`
+    /// *   `doesnotexist.foo=bar` returns an empty list. Note that endpoint
+    ///     doesn't have a field called "doesnotexist". Since the filter does not
+    ///     match any endpoints, it returns no results
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](https://aip.dev/160).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. The order to list result by.
+    /// Optional. The order to list results by.
+    ///
+    /// General `order_by` string syntax: `<field> (<asc|desc>) (,)`
+    ///
+    /// *   `<field>` allows values: `name`, `address`, `port`
+    /// *   `<asc|desc>` ascending or descending order by `<field>`. If this is
+    ///     left blank, `asc` is used
+    ///
+    /// Note that an empty `order_by` string results in default order, which is
+    /// order by `name` in ascending order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -468,7 +607,7 @@ pub struct DeleteEndpointRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod registration_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service Directory API for registering services. It defines the following"]
     #[doc = " resource model:"]
@@ -485,25 +624,52 @@ pub mod registration_service_client {
     #[doc = " [Endpoint][google.cloud.servicedirectory.v1beta1.Endpoint]"]
     #[doc = " resources, named"]
     #[doc = " `projects/*/locations/*/namespaces/*/services/*/endpoints/*`."]
+    #[derive(Debug, Clone)]
     pub struct RegistrationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> RegistrationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> RegistrationServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            RegistrationServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = " Creates a namespace, and returns the new Namespace."]
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
+        }
+        #[doc = " Creates a namespace, and returns the new namespace."]
         pub async fn create_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateNamespaceRequest>,
@@ -589,7 +755,7 @@ pub mod registration_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a service, and returns the new Service."]
+        #[doc = " Creates a service, and returns the new service."]
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
@@ -675,7 +841,7 @@ pub mod registration_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a endpoint, and returns the new Endpoint."]
+        #[doc = " Creates an endpoint, and returns the new endpoint."]
         pub async fn create_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEndpointRequest>,
@@ -709,7 +875,7 @@ pub mod registration_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a endpoint."]
+        #[doc = " Gets an endpoint."]
         pub async fn get_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEndpointRequest>,
@@ -726,7 +892,7 @@ pub mod registration_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a endpoint."]
+        #[doc = " Updates an endpoint."]
         pub async fn update_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEndpointRequest>,
@@ -743,7 +909,7 @@ pub mod registration_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a endpoint."]
+        #[doc = " Deletes an endpoint."]
         pub async fn delete_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEndpointRequest>,
@@ -817,18 +983,6 @@ pub mod registration_service_client {
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for RegistrationServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for RegistrationServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "RegistrationServiceClient {{ ... }}")
         }
     }
 }

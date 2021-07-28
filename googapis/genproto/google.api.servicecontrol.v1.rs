@@ -121,6 +121,9 @@ pub struct Distribution {
     /// Any suffix of trailing zeros may be omitted.
     #[prost(int64, repeated, tag = "6")]
     pub bucket_counts: ::prost::alloc::vec::Vec<i64>,
+    /// Example points. Must be in increasing order of `value` field.
+    #[prost(message, repeated, tag = "10")]
+    pub exemplars: ::prost::alloc::vec::Vec<super::super::distribution::Exemplar>,
     /// Defines the buckets in the histogram. `bucket_option` and `bucket_counts`
     /// must be both set, or both unset.
     ///
@@ -436,11 +439,13 @@ pub struct MetricValue {
     /// The start of the time period over which this metric value's measurement
     /// applies. The time period has different semantics for different metric
     /// types (cumulative, delta, and gauge). See the metric definition
-    /// documentation in the service configuration for details.
+    /// documentation in the service configuration for details. If not specified,
+    /// [google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time] will be used.
     #[prost(message, optional, tag = "2")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end of the time period over which this metric value's measurement
-    /// applies.
+    /// applies.  If not specified,
+    /// [google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time] will be used.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value. The type of value used in the request must
@@ -520,8 +525,10 @@ pub struct Operation {
     #[prost(message, optional, tag = "4")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of the operation.
-    /// Required when the operation is used in [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],
-    /// but optional when the operation is used in [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].
+    /// Required when the operation is used in
+    /// [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],
+    /// but optional when the operation is used in
+    /// [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].
     #[prost(message, optional, tag = "5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels describing the operation. Only the following labels are allowed:
@@ -571,12 +578,12 @@ pub mod operation {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Importance {
-        /// The API implementation may cache and aggregate the data.
-        /// The data may be lost when rare and unexpected system failures occur.
+        /// Allows data caching, batching, and aggregation. It provides
+        /// higher performance with higher data loss risk.
         Low = 0,
-        /// The API implementation doesn't cache and aggregate the data.
-        /// If the method returns successfully, it's guaranteed that the data has
-        /// been persisted in durable storage.
+        /// Disables data aggregation to minimize data loss. It is for operations
+        /// that contains significant monetary value or audit trail. This feature
+        /// only applies to the client libraries.
         High = 1,
     }
 }
@@ -619,6 +626,7 @@ pub struct QuotaOperation {
     /// This field should not be set if any of the following is true:
     /// (1) the quota operation is performed on non-API resources.
     /// (2) quota_metrics is set because the caller is doing quota override.
+    ///
     ///
     /// Example of an RPC method name:
     ///     google.example.library.v1.LibraryService.CreateShelf
@@ -685,13 +693,13 @@ pub mod quota_operation {
         /// Unimplemented. When used in AllocateQuotaRequest, this returns the
         /// effective quota limit(s) in the response, and no quota check will be
         /// performed. Not supported for other requests, and even for
-        /// AllocateQuotaRequest, this is currently supported only for whitelisted
+        /// AllocateQuotaRequest, this is currently supported only for allowlisted
         /// services.
         QueryOnly = 4,
         /// The operation allocates quota for the amount specified in the service
         /// configuration or specified using the quota metrics. If the requested
         /// amount is higher than the available quota, request does not fail and
-        /// remaining quota would become negative (going over the limit)
+        /// remaining quota would become negative (going over the limit).
         /// Not supported for Rate Quota.
         AdjustOnly = 5,
     }
@@ -736,6 +744,10 @@ pub struct QuotaError {
     /// Free-form text that provides details on the cause of the error.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
+    /// Contains additional information about the quota error.
+    /// If available, `status.code` will be non zero.
+    #[prost(message, optional, tag = "4")]
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Nested message and enum types in `QuotaError`.
 pub mod quota_error {
@@ -765,29 +777,56 @@ pub mod quota_error {
 }
 #[doc = r" Generated client implementations."]
 pub mod quota_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " [Google Quota Control API](/service-control/overview)"]
     #[doc = ""]
     #[doc = " Allows clients to allocate and release quota against a [managed"]
     #[doc = " service](https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService)."]
+    #[derive(Debug, Clone)]
     pub struct QuotaControllerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> QuotaControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> QuotaControllerClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            QuotaControllerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Attempts to allocate quota for the specified consumer. It should be called"]
         #[doc = " before the operation is executed."]
@@ -817,18 +856,6 @@ pub mod quota_controller_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for QuotaControllerClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for QuotaControllerClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "QuotaControllerClient {{ ... }}")
-        }
-    }
 }
 /// Request message for the Check method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -855,8 +882,9 @@ pub struct CheckRequest {
 /// Response message for the Check method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
-    /// The same operation_id value used in the [CheckRequest][google.api.servicecontrol.v1.CheckRequest].
-    /// Used for logging and diagnostics purposes.
+    /// The same operation_id value used in the
+    /// [CheckRequest][google.api.servicecontrol.v1.CheckRequest]. Used for logging
+    /// and diagnostics purposes.
     #[prost(string, tag = "1")]
     pub operation_id: ::prost::alloc::string::String,
     /// Indicate the decision of the check.
@@ -954,7 +982,8 @@ pub struct ReportRequest {
     ///
     /// There is no limit on the number of operations in the same ReportRequest,
     /// however the ReportRequest size should be no larger than 1MB. See
-    /// [ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors] for partial failure behavior.
+    /// [ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors]
+    /// for partial failure behavior.
     #[prost(message, repeated, tag = "2")]
     pub operations: ::prost::alloc::vec::Vec<Operation>,
     /// Specifies which version of service config should be used to process the
@@ -993,42 +1022,73 @@ pub struct ReportResponse {
 }
 /// Nested message and enum types in `ReportResponse`.
 pub mod report_response {
-    /// Represents the processing error of one [Operation][google.api.servicecontrol.v1.Operation] in the request.
+    /// Represents the processing error of one
+    /// [Operation][google.api.servicecontrol.v1.Operation] in the request.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReportError {
-        /// The [Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id] value from the request.
+        /// The
+        /// [Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id]
+        /// value from the request.
         #[prost(string, tag = "1")]
         pub operation_id: ::prost::alloc::string::String,
-        /// Details of the error when processing the [Operation][google.api.servicecontrol.v1.Operation].
+        /// Details of the error when processing the
+        /// [Operation][google.api.servicecontrol.v1.Operation].
         #[prost(message, optional, tag = "2")]
         pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
 }
 #[doc = r" Generated client implementations."]
 pub mod service_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " [Google Service Control API](/service-control/overview)"]
     #[doc = ""]
     #[doc = " Lets clients check and report operations against a [managed"]
     #[doc = " service](https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService)."]
+    #[derive(Debug, Clone)]
     pub struct ServiceControllerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ServiceControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ServiceControllerClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ServiceControllerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Checks whether an operation on a service should be allowed to proceed"]
         #[doc = " based on the configuration of the service and related policies. It must be"]
@@ -1041,7 +1101,8 @@ pub mod service_controller_client {
         #[doc = " propagation, therefore callers MUST NOT depend on the `Check` method having"]
         #[doc = " the latest policy information."]
         #[doc = ""]
-        #[doc = " NOTE: the [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has the size limit of 64KB."]
+        #[doc = " NOTE: the [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has"]
+        #[doc = " the size limit (wire-format byte size) of 1MB."]
         #[doc = ""]
         #[doc = " This method requires the `servicemanagement.services.check` permission"]
         #[doc = " on the specified service. For more information, see"]
@@ -1071,8 +1132,8 @@ pub mod service_controller_client {
         #[doc = " the aggregation time window to avoid data loss risk more than 0.01%"]
         #[doc = " for business and compliance reasons."]
         #[doc = ""]
-        #[doc = " NOTE: the [ReportRequest][google.api.servicecontrol.v1.ReportRequest] has the size limit (wire-format byte size) of"]
-        #[doc = " 1MB."]
+        #[doc = " NOTE: the [ReportRequest][google.api.servicecontrol.v1.ReportRequest] has"]
+        #[doc = " the size limit (wire-format byte size) of 1MB."]
         #[doc = ""]
         #[doc = " This method requires the `servicemanagement.services.report` permission"]
         #[doc = " on the specified service. For more information, see"]
@@ -1092,18 +1153,6 @@ pub mod service_controller_client {
                 "/google.api.servicecontrol.v1.ServiceController/Report",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ServiceControllerClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ServiceControllerClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ServiceControllerClient {{ ... }}")
         }
     }
 }

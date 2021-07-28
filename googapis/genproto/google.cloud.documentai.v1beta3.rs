@@ -5,7 +5,7 @@ pub struct Vertex {
     /// X coordinate.
     #[prost(int32, tag = "1")]
     pub x: i32,
-    /// Y coordinate.
+    /// Y coordinate (starts from the top of the image).
     #[prost(int32, tag = "2")]
     pub y: i32,
 }
@@ -17,7 +17,7 @@ pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
     pub x: f32,
-    /// Y coordinate.
+    /// Y coordinate (starts from the top of the image).
     #[prost(float, tag = "2")]
     pub y: f32,
 }
@@ -191,6 +191,9 @@ pub mod document {
         /// A list of visually detected form fields on the page.
         #[prost(message, repeated, tag = "11")]
         pub form_fields: ::prost::alloc::vec::Vec<page::FormField>,
+        /// The history of this page.
+        #[prost(message, optional, tag = "16")]
+        pub provenance: ::core::option::Option<Provenance>,
     }
     /// Nested message and enum types in `Page`.
     pub mod page {
@@ -448,6 +451,9 @@ pub mod document {
             /// - "filled_checkbox"
             #[prost(string, tag = "5")]
             pub value_type: ::prost::alloc::string::String,
+            /// The history of this annotation.
+            #[prost(message, optional, tag = "8")]
+            pub provenance: ::core::option::Option<super::Provenance>,
         }
         /// Detected language for a structural component.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -611,6 +617,8 @@ pub mod document {
         pub struct PageRef {
             /// Required. Index into the [Document.pages][google.cloud.documentai.v1beta3.Document.pages] element, for example using
             /// [Document.pages][page_refs.page] to locate the related page element.
+            /// This field is skipped when its value is the default 0. See
+            /// https://developers.google.com/protocol-buffers/docs/proto3#json.
             #[prost(int64, tag = "1")]
             pub page: i64,
             /// Optional. The type of the layout element that is being referenced if any.
@@ -623,6 +631,9 @@ pub mod document {
             /// Optional. Identifies the bounding polygon of a layout element on the page.
             #[prost(message, optional, tag = "4")]
             pub bounding_poly: ::core::option::Option<super::super::BoundingPoly>,
+            /// Optional. Confidence of detected page element, if applicable. Range [0, 1].
+            #[prost(float, tag = "5")]
+            pub confidence: f32,
         }
         /// Nested message and enum types in `PageRef`.
         pub mod page_ref {
@@ -660,6 +671,7 @@ pub mod document {
         pub revision: i32,
         /// The Id of this operation.  Needs to be unique within the scope of the
         /// revision.
+        #[deprecated]
         #[prost(int32, tag = "2")]
         pub id: i32,
         /// References to the original elements that are replaced.
@@ -679,7 +691,12 @@ pub mod document {
             /// The index of the [Document.revisions] identifying the parent revision.
             #[prost(int32, tag = "1")]
             pub revision: i32,
+            /// The index of the parent revisions corresponding collection of items
+            /// (eg. list of entities, properties within entities, etc.)
+            #[prost(int32, tag = "3")]
+            pub index: i32,
             /// The id of the parent provenance.
+            #[deprecated]
             #[prost(int32, tag = "2")]
             pub id: i32,
         }
@@ -865,6 +882,129 @@ pub mod document_output_config {
         /// Output config to write the results to Cloud Storage.
         #[prost(message, tag = "1")]
         GcsOutputConfig(GcsOutputConfig),
+    }
+}
+/// The common metadata for long running operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommonOperationMetadata {
+    /// The state of the operation.
+    #[prost(enumeration = "common_operation_metadata::State", tag = "1")]
+    pub state: i32,
+    /// A message providing more details about the current state of processing.
+    #[prost(string, tag = "2")]
+    pub state_message: ::prost::alloc::string::String,
+    /// The creation time of the operation.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The last update time of the operation.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `CommonOperationMetadata`.
+pub mod common_operation_metadata {
+    /// State of the longrunning operation.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.
+        Unspecified = 0,
+        /// Operation is still running.
+        Running = 1,
+        /// Operation is being cancelled.
+        Cancelling = 2,
+        /// Operation succeeded.
+        Succeeded = 3,
+        /// Operation failed.
+        Failed = 4,
+        /// Operation is cancelled.
+        Cancelled = 5,
+    }
+}
+/// The first-class citizen for DocumentAI. Each processor defines how to extract
+/// structural information from a document.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Processor {
+    /// Output only. Immutable. The resource name of the processor.
+    /// Format: projects/{project}/locations/{location}/processors/{processor}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The processor type.
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+    /// The display name of the processor.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The state of the processor.
+    #[prost(enumeration = "processor::State", tag = "4")]
+    pub state: i32,
+    /// The default processor version.
+    #[prost(string, tag = "9")]
+    pub default_processor_version: ::prost::alloc::string::String,
+    /// Output only. Immutable. The http endpoint that can be called to invoke processing.
+    #[prost(string, tag = "6")]
+    pub process_endpoint: ::prost::alloc::string::String,
+    /// The time the processor was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The KMS key used for encryption/decryption in CMEK scenarios.
+    /// See https://cloud.google.com/security-key-management.
+    #[prost(string, tag = "8")]
+    pub kms_key_name: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Processor`.
+pub mod processor {
+    /// The possible states of the processor.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The processor is in an unspecified state.
+        Unspecified = 0,
+        /// The processor is enabled.
+        Enabled = 1,
+        /// The processor is disabled.
+        Disabled = 2,
+        /// The processor is being enabled, will become ENABLED if successful.
+        Enabling = 3,
+        /// The processor is being disabled, will become DISABLED if successful.
+        Disabling = 4,
+        /// The processor is being created.
+        Creating = 5,
+        /// The processor failed during creation.
+        Failed = 6,
+        /// The processor is being deleted, will be removed if successful.
+        Deleting = 7,
+    }
+}
+/// A processor type is responsible for performing a certain document
+/// understanding task on a certain type of document.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessorType {
+    /// The resource name of the processor type.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The type of the processor.
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+    /// The processor category.
+    #[prost(string, tag = "3")]
+    pub category: ::prost::alloc::string::String,
+    /// The locations in which this processor is available.
+    #[prost(message, repeated, tag = "4")]
+    pub available_locations: ::prost::alloc::vec::Vec<processor_type::LocationInfo>,
+    /// Whether the processor type allows creation. If yes, user can create a
+    /// processor of this processor type. Otherwise, user needs to require for
+    /// whitelisting.
+    #[prost(bool, tag = "6")]
+    pub allow_creation: bool,
+}
+/// Nested message and enum types in `ProcessorType`.
+pub mod processor_type {
+    /// The location information about where the processor is available.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LocationInfo {
+        /// The location id.
+        #[prost(string, tag = "1")]
+        pub location_id: ::prost::alloc::string::String,
     }
 }
 /// Request message for the process document method.
@@ -1073,7 +1213,112 @@ pub mod batch_process_metadata {
         Failed = 6,
     }
 }
+/// Request message for fetch processor types.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchProcessorTypesRequest {
+    /// Required. The project of processor type to list.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Response message for fetch processor types.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchProcessorTypesResponse {
+    /// The list of processor types.
+    #[prost(message, repeated, tag = "1")]
+    pub processor_types: ::prost::alloc::vec::Vec<ProcessorType>,
+}
+/// Request message for list all processors belongs to a project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListProcessorsRequest {
+    /// Required. The parent (project and location) which owns this collection of Processors.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of processors to return.
+    /// If unspecified, at most 50 processors will be returned.
+    /// The maximum value is 100; values above 100 will be coerced to 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// We will return the processors sorted by creation time. The page token
+    /// will point to the next processor.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for list processors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListProcessorsResponse {
+    /// The list of processors.
+    #[prost(message, repeated, tag = "1")]
+    pub processors: ::prost::alloc::vec::Vec<Processor>,
+    /// Points to the next processor, otherwise empty.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for create a processor. Notice this request is sent to
+/// a regionalized backend service, and if the processor type is not available
+/// on that region, the creation will fail.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateProcessorRequest {
+    /// Required. The parent (project and location) under which to create the processor.
+    /// Format: projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The processor to be created, requires [processor_type] and [display_name]
+    /// to be set. Also, the processor is under CMEK if CMEK fields are set.
+    #[prost(message, optional, tag = "2")]
+    pub processor: ::core::option::Option<Processor>,
+}
+/// Request message for the delete processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteProcessorRequest {
+    /// Required. The processor resource name to be deleted.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The long running operation metadata for delete processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteProcessorMetadata {
+    /// The basic metadata of the long running operation.
+    #[prost(message, optional, tag = "5")]
+    pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
+}
+/// Request message for the enable processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableProcessorRequest {
+    /// Required. The processor resource name to be enabled.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for the enable processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableProcessorResponse {}
+/// The long running operation metadata for enable processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableProcessorMetadata {
+    /// The basic metadata of the long running operation.
+    #[prost(message, optional, tag = "5")]
+    pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
+}
+/// Request message for the disable processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableProcessorRequest {
+    /// Required. The processor resource name to be disabled.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for the disable processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableProcessorResponse {}
+/// The long running operation metadata for disable processor method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableProcessorMetadata {
+    /// The basic metadata of the long running operation.
+    #[prost(message, optional, tag = "5")]
+    pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
+}
 /// Request message for review document method.
+/// Next Id: 6.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReviewDocumentRequest {
     /// Required. The resource name of the HumanReviewConfig that the document will be
@@ -1084,12 +1329,28 @@ pub struct ReviewDocumentRequest {
     #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub document: ::core::option::Option<Document>,
+    /// Whether the validation should be performed on the ad-hoc review request.
+    #[prost(bool, tag = "3")]
+    pub enable_schema_validation: bool,
+    /// The priority of the human review task.
+    #[prost(enumeration = "review_document_request::Priority", tag = "5")]
+    pub priority: i32,
     /// The document payload.
     #[prost(oneof = "review_document_request::Source", tags = "4")]
     pub source: ::core::option::Option<review_document_request::Source>,
 }
 /// Nested message and enum types in `ReviewDocumentRequest`.
 pub mod review_document_request {
+    /// The priority level of the human review task.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Priority {
+        /// The default priority level.
+        Default = 0,
+        /// The urgent priority level. The labeling manager should allocate labeler
+        /// resource to the urgent task queue to respect this priority level.
+        Urgent = 1,
+    }
     /// The document payload.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
@@ -1145,67 +1406,58 @@ pub mod review_document_operation_metadata {
         Cancelled = 5,
     }
 }
-/// The common metadata for long running operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CommonOperationMetadata {
-    /// The state of the operation.
-    #[prost(enumeration = "common_operation_metadata::State", tag = "1")]
-    pub state: i32,
-    /// A message providing more details about the current state of processing.
-    #[prost(string, tag = "2")]
-    pub state_message: ::prost::alloc::string::String,
-    /// The creation time of the operation.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The last update time of the operation.
-    #[prost(message, optional, tag = "4")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `CommonOperationMetadata`.
-pub mod common_operation_metadata {
-    /// State of the longrunning operation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum State {
-        /// Unspecified state.
-        Unspecified = 0,
-        /// Operation is still running.
-        Running = 1,
-        /// Operation is being cancelled.
-        Cancelling = 2,
-        /// Operation succeeded.
-        Succeeded = 3,
-        /// Operation failed.
-        Failed = 4,
-        /// Operation is cancelled.
-        Cancelled = 5,
-    }
-}
 #[doc = r" Generated client implementations."]
 pub mod document_processor_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service to call Cloud DocumentAI to process documents according to the"]
     #[doc = " processor's definition. Processors are built using state-of-the-art Google"]
     #[doc = " AI such as natural language, computer vision, and translation to extract"]
     #[doc = " structured information from unstructured or semi-structured documents."]
+    #[derive(Debug, Clone)]
     pub struct DocumentProcessorServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> DocumentProcessorServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DocumentProcessorServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            DocumentProcessorServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Processes a single document."]
         pub async fn process_document(
@@ -1245,6 +1497,119 @@ pub mod document_processor_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Fetches processor types."]
+        pub async fn fetch_processor_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchProcessorTypesRequest>,
+        ) -> Result<tonic::Response<super::FetchProcessorTypesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/FetchProcessorTypes",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists all processors which belong to this project."]
+        pub async fn list_processors(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListProcessorsRequest>,
+        ) -> Result<tonic::Response<super::ListProcessorsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessors",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a processor from the type processor that the user chose."]
+        #[doc = " The processor will be at \"ENABLED\" state by default after its creation."]
+        pub async fn create_processor(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateProcessorRequest>,
+        ) -> Result<tonic::Response<super::Processor>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/CreateProcessor",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes the processor, unloads all deployed model artifacts if it was"]
+        #[doc = " enabled and then deletes all artifacts associated with this processor."]
+        pub async fn delete_processor(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteProcessorRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeleteProcessor",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Enables a processor"]
+        pub async fn enable_processor(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnableProcessorRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/EnableProcessor",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Disables a processor"]
+        pub async fn disable_processor(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableProcessorRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/DisableProcessor",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Send a document for Human Review. The input document should be processed by"]
         #[doc = " the specified processor."]
         pub async fn review_document(
@@ -1265,18 +1630,6 @@ pub mod document_processor_service_client {
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ReviewDocument",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for DocumentProcessorServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for DocumentProcessorServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "DocumentProcessorServiceClient {{ ... }}")
         }
     }
 }

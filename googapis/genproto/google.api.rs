@@ -35,6 +35,11 @@ pub enum FieldBehavior {
     /// in any arbitrary  order, rather than the order the user originally
     /// provided. Additionally, the list's order may or may not be stable.
     UnorderedList = 6,
+    /// Denotes that this field returns a non-empty default value if not set.
+    /// This indicates that if the user provides the empty value in a request,
+    /// a non-empty value will be returned. The user will not be aware of what
+    /// non-empty value to expect.
+    NonEmptyDefault = 7,
 }
 /// A simple descriptor of a resource type.
 ///
@@ -658,9 +663,10 @@ pub struct CustomHttpPattern {
     #[prost(string, tag = "2")]
     pub path: ::prost::alloc::string::String,
 }
-/// `Authentication` defines the authentication configuration for an API.
+/// `Authentication` defines the authentication configuration for API methods
+/// provided by an API service.
 ///
-/// Example for an API targeted for external use:
+/// Example:
 ///
 ///     name: calendar.googleapis.com
 ///     authentication:
@@ -672,6 +678,9 @@ pub struct CustomHttpPattern {
 ///       - selector: "*"
 ///         requirements:
 ///           provider_id: google_calendar_auth
+///       - selector: google.calendar.Delegate
+///         oauth:
+///           canonical_scopes: https://www.googleapis.com/auth/calendar.read
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authentication {
     /// A list of authentication rules that apply to individual API methods.
@@ -1986,6 +1995,8 @@ pub struct Endpoint {
     /// The canonical name of this endpoint.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Unimplemented. Dot not use.
+    ///
     /// DEPRECATED: This field is no longer supported. Instead of using aliases,
     /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intended
     /// aliases.
@@ -2030,8 +2041,8 @@ pub enum ErrorReason {
     /// Example of an ErrorInfo when the consumer "projects/123" contacting
     /// "pubsub.googleapis.com" service which is disabled:
     ///
-    ///     { "reason": "SERVICE_DISABLED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "SERVICE_DISABLED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "pubsub.googleapis.com"
@@ -2044,10 +2055,11 @@ pub enum ErrorReason {
     /// The request whose associated billing account is disabled.
     ///
     /// Example of an ErrorInfo when the consumer "projects/123" fails to contact
-    /// "pubsub.googleapis.com" service because of the billing account is disabled:
+    /// "pubsub.googleapis.com" service because the associated billing account is
+    /// disabled:
     ///
-    ///     { "reason": "BILLING_DISABLED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "BILLING_DISABLED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "pubsub.googleapis.com"
@@ -2063,8 +2075,8 @@ pub enum ErrorReason {
     /// Example of an ErrorInfo when the request is contacting
     /// "storage.googleapis.com" service with an invalid API key:
     ///
-    ///     { "reason": "API_KEY_INVALID"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "API_KEY_INVALID",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "service": "storage.googleapis.com",
     ///       }
@@ -2073,11 +2085,12 @@ pub enum ErrorReason {
     /// The request is denied because it violates [API key API
     /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_api_restrictions).
     ///
-    /// Example of an ErrorInfo when the request is contacting the service
-    /// "storage.googleapis.com" that is restricted in the API key:
+    /// Example of an ErrorInfo when the consumer "projects/123" fails to call the
+    /// "storage.googleapis.com" service because this service is restricted in the
+    /// API key:
     ///
-    ///     { "reason": "API_KEY_SERVICE_BLOCKED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "API_KEY_SERVICE_BLOCKED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com"
@@ -2087,11 +2100,12 @@ pub enum ErrorReason {
     /// The request is denied because it violates [API key HTTP
     /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_http_restrictions).
     ///
-    /// Example of an ErrorInfo when the http referrer of the request violates API
-    /// key HTTP restrictions:
+    /// Example of an ErrorInfo when the consumer "projects/123" fails to call
+    /// "storage.googleapis.com" service because the http referrer of the request
+    /// violates API key HTTP restrictions:
     ///
-    ///     { "reason": "API_KEY_HTTP_REFERRER_BLOCKED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "API_KEY_HTTP_REFERRER_BLOCKED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com",
@@ -2101,11 +2115,12 @@ pub enum ErrorReason {
     /// The request is denied because it violates [API key IP address
     /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).
     ///
-    /// Example of an ErrorInfo when the caller IP of the request violates API
-    /// key IP address restrictions:
+    /// Example of an ErrorInfo when the consumer "projects/123" fails to call
+    /// "storage.googleapis.com" service because the caller IP of the request
+    /// violates API key IP address restrictions:
     ///
-    ///     { "reason": "API_KEY_IP_ADDRESS_BLOCKED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "API_KEY_IP_ADDRESS_BLOCKED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com",
@@ -2115,11 +2130,12 @@ pub enum ErrorReason {
     /// The request is denied because it violates [API key Android application
     /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).
     ///
-    /// Example of an ErrorInfo when the request from the Android apps violates the
-    /// API key Android application restrictions:
+    /// Example of an ErrorInfo when the consumer "projects/123" fails to call
+    /// "storage.googleapis.com" service because the request from the Android apps
+    /// violates the API key Android application restrictions:
     ///
-    ///     { "reason": "API_KEY_ANDROID_APP_BLOCKED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "API_KEY_ANDROID_APP_BLOCKED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com"
@@ -2129,11 +2145,12 @@ pub enum ErrorReason {
     /// The request is denied because it violates [API key iOS application
     /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).
     ///
-    /// Example of an ErrorInfo when the request from the iOS apps violates the API
-    /// key iOS application restrictions:
+    /// Example of an ErrorInfo when the consumer "projects/123" fails to call
+    /// "storage.googleapis.com" service because the request from the iOS apps
+    /// violates the API key iOS application restrictions:
     ///
-    ///     { "reason": "API_KEY_IOS_APP_BLOCKED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "API_KEY_IOS_APP_BLOCKED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com"
@@ -2149,8 +2166,8 @@ pub enum ErrorReason {
     /// "ReadsPerMinutePerProject" on the quota metric
     /// "pubsub.googleapis.com/read_requests":
     ///
-    ///     { "reason": "RATE_LIMIT_EXCEEDED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "RATE_LIMIT_EXCEEDED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "pubsub.googleapis.com",
@@ -2164,8 +2181,8 @@ pub enum ErrorReason {
     /// limit "DefaultRequestsPerMinutePerOrganization" on the metric
     /// "dataflow.googleapis.com/default_requests".
     ///
-    ///     { "reason": "RATE_LIMIT_EXCEEDED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "RATE_LIMIT_EXCEEDED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "dataflow.googleapis.com",
@@ -2182,8 +2199,8 @@ pub enum ErrorReason {
     /// has reached the maximum value set for the quota limit "VMsPerProject"
     /// on the quota metric "compute.googleapis.com/vms":
     ///
-    ///     { "reason": "RESOURCE_QUOTA_EXCEEDED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "RESOURCE_QUOTA_EXCEEDED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "compute.googleapis.com",
@@ -2197,8 +2214,8 @@ pub enum ErrorReason {
     /// quota limit "jobs-per-organization" on the metric
     /// "dataflow.googleapis.com/job_count".
     ///
-    ///     { "reason": "RESOURCE_QUOTA_EXCEEDED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "RESOURCE_QUOTA_EXCEEDED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "dataflow.googleapis.com",
@@ -2215,8 +2232,8 @@ pub enum ErrorReason {
     /// container "projects/123" under a tax restricted region
     /// "locations/asia-northeast3":
     ///
-    ///     { "reason": "LOCATION_TAX_POLICY_VIOLATED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "LOCATION_TAX_POLICY_VIOLATED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com",
@@ -2228,31 +2245,31 @@ pub enum ErrorReason {
     /// "locations/asia-northeast3" violates the location tax restriction.
     LocationTaxPolicyViolated = 10,
     /// The request is denied because the caller does not have required permission
-    /// on the user project or the user project is invalid. For more information,
-    /// see [System
+    /// on the user project "projects/123" or the user project is invalid. For more
+    /// information, check the [userProject System
     /// Parameters](https://cloud.google.com/apis/docs/system-parameters).
     ///
     /// Example of an ErrorInfo when the caller is calling Cloud Storage service
     /// with insufficient permissions on the user project:
     ///
-    ///     { "reason": "USER_PROJECT_DENIED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "USER_PROJECT_DENIED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com"
     ///       }
     ///     }
     UserProjectDenied = 11,
-    /// The request is denied because the consumer is suspended due to Terms of
-    /// Service(Tos) violations. Check [Project suspension
+    /// The request is denied because the consumer "projects/123" is suspended due
+    /// to Terms of Service(Tos) violations. Check [Project suspension
     /// guidelines](https://cloud.google.com/resource-manager/docs/project-suspension-guidelines)
     /// for more information.
     ///
     /// Example of an ErrorInfo when calling Cloud Storage service with the
     /// suspended consumer "projects/123":
     ///
-    ///     { "reason": "CONSUMER_SUSPENDED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "CONSUMER_SUSPENDED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com"
@@ -2265,8 +2282,8 @@ pub enum ErrorReason {
     /// Example of an ErrorInfo when calling Cloud Storage service with the
     /// invalid consumer "projects/123":
     ///
-    ///     { "reason": "CONSUMER_INVALID"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "CONSUMER_INVALID",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "consumer": "projects/123",
     ///         "service": "storage.googleapis.com"
@@ -2280,11 +2297,12 @@ pub enum ErrorReason {
     /// more information, please refer [VPC Service Controls
     /// Troubleshooting](https://cloud.google.com/vpc-service-controls/docs/troubleshooting#unique-id)
     ///
-    /// Example of an ErrorInfo for a request calling Cloud Storage service is
-    /// rejected by VPC Service Controls.
+    /// Example of an ErrorInfo when the consumer "projects/123" fails to call
+    /// Cloud Storage service because the request is prohibited by the VPC Service
+    /// Controls.
     ///
-    ///     { "reason": "SECURITY_POLICY_VIOLATED"
-    ///       "domain": "googleapis.com"
+    ///     { "reason": "SECURITY_POLICY_VIOLATED",
+    ///       "domain": "googleapis.com",
     ///       "metadata": {
     ///         "uid": "123456789abcde",
     ///         "consumer": "projects/123",
@@ -2294,14 +2312,70 @@ pub enum ErrorReason {
     SecurityPolicyViolated = 15,
     /// The request is denied because the provided access token has expired.
     ///
-    /// Example of an ErrorInfo when the request is calling Google APIs with an
-    /// expired access token:
+    /// Example of an ErrorInfo when the request is calling Cloud Storage service
+    /// with an expired access token:
     ///
-    ///     { "reason": "ACCESS_TOKEN_EXPIRED"
-    ///       "domain": "googleapis.com"
-    ///       "metadata": {}
+    ///     { "reason": "ACCESS_TOKEN_EXPIRED",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "storage.googleapis.com",
+    ///         "method": "google.storage.v1.Storage.GetObject"
+    ///       }
     ///     }
     AccessTokenExpired = 16,
+    /// The request is denied because the provided access token doesn't have at
+    /// least one of the acceptable scopes required for the API. Please check
+    /// [OAuth 2.0 Scopes for Google
+    /// APIs](https://developers.google.com/identity/protocols/oauth2/scopes) for
+    /// the list of the OAuth 2.0 scopes that you might need to request to access
+    /// the API.
+    ///
+    /// Example of an ErrorInfo when the request is calling Cloud Storage service
+    /// with an access token that is missing required scopes:
+    ///
+    ///     { "reason": "ACCESS_TOKEN_SCOPE_INSUFFICIENT",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "storage.googleapis.com",
+    ///         "method": "google.storage.v1.Storage.GetObject"
+    ///       }
+    ///     }
+    AccessTokenScopeInsufficient = 17,
+    /// The request is denied because the account associated with the provided
+    /// access token is in an invalid state, such as disabled or deleted.
+    /// For more information, see https://cloud.google.com/docs/authentication.
+    ///
+    /// Warning: For privacy reasons, the server may not be able to disclose the
+    /// email address for some accounts. The client MUST NOT depend on the
+    /// availability of the `email` attribute.
+    ///
+    /// Example of an ErrorInfo when the request is to the Cloud Storage API with
+    /// an access token that is associated with a disabled or deleted [service
+    /// account](http://cloud/iam/docs/service-accounts):
+    ///
+    ///     { "reason": "ACCOUNT_STATE_INVALID",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "storage.googleapis.com",
+    ///         "method": "google.storage.v1.Storage.GetObject",
+    ///         "email": "user@123.iam.gserviceaccount.com"
+    ///       }
+    ///     }
+    AccountStateInvalid = 18,
+    /// The request is denied because the type of the provided access token is not
+    /// supported by the API being called.
+    ///
+    /// Example of an ErrorInfo when the request is to the Cloud Storage API with
+    /// an unsupported token type.
+    ///
+    ///     { "reason": "ACCESS_TOKEN_TYPE_UNSUPPORTED",
+    ///       "domain": "googleapis.com",
+    ///       "metadata": {
+    ///         "service": "storage.googleapis.com",
+    ///         "method": "google.storage.v1.Storage.GetObject"
+    ///       }
+    ///     }
+    AccessTokenTypeUnsupported = 19,
 }
 /// Message that represents an arbitrary HTTP body. It should only be used for
 /// payload formats that can't be represented as JSON, such as raw binary or
@@ -2395,14 +2469,14 @@ pub struct LogDescriptor {
 ///     monitored_resources:
 ///     - type: library.googleapis.com/branch
 ///       labels:
-///       - key: city
+///       - key: /city
 ///         description: The city where the library branch is located in.
-///       - key: name
+///       - key: /name
 ///         description: The name of the branch.
 ///     logs:
 ///     - name: activity_history
 ///       labels:
-///       - key: customer_id
+///       - key: /customer_id
 ///     - name: purchase_history
 ///     logging:
 ///       producer_destinations:
@@ -2957,7 +3031,6 @@ pub struct UsageRule {
 /// Example:
 ///
 ///     type: google.api.Service
-///     config_version: 3
 ///     name: calendar.googleapis.com
 ///     title: Google Calendar API
 ///     apis:
@@ -3071,7 +3144,68 @@ pub struct Service {
     /// Output only. The source information for this configuration if available.
     #[prost(message, optional, tag = "37")]
     pub source_info: ::core::option::Option<SourceInfo>,
-    /// Deprecated. The service config compiler always sets this field to `3`.
+    /// Obsolete. Do not use.
+    ///
+    /// This field has no semantic meaning. The service config compiler always
+    /// sets this field to `3`.
+    #[deprecated]
     #[prost(message, optional, tag = "20")]
     pub config_version: ::core::option::Option<u32>,
+}
+/// `Visibility` defines restrictions for the visibility of service
+/// elements.  Restrictions are specified using visibility labels
+/// (e.g., PREVIEW) that are elsewhere linked to users and projects.
+///
+/// Users and projects can have access to more than one visibility label. The
+/// effective visibility for multiple labels is the union of each label's
+/// elements, plus any unrestricted elements.
+///
+/// If an element and its parents have no restrictions, visibility is
+/// unconditionally granted.
+///
+/// Example:
+///
+///     visibility:
+///       rules:
+///       - selector: google.calendar.Calendar.EnhancedSearch
+///         restriction: PREVIEW
+///       - selector: google.calendar.Calendar.Delegate
+///         restriction: INTERNAL
+///
+/// Here, all methods are publicly visible except for the restricted methods
+/// EnhancedSearch and Delegate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Visibility {
+    /// A list of visibility rules that apply to individual API elements.
+    ///
+    /// **NOTE:** All service configuration rules follow "last one wins" order.
+    #[prost(message, repeated, tag = "1")]
+    pub rules: ::prost::alloc::vec::Vec<VisibilityRule>,
+}
+/// A visibility rule provides visibility configuration for an individual API
+/// element.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VisibilityRule {
+    /// Selects methods, messages, fields, enums, etc. to which this rule applies.
+    ///
+    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    #[prost(string, tag = "1")]
+    pub selector: ::prost::alloc::string::String,
+    /// A comma-separated list of visibility labels that apply to the `selector`.
+    /// Any of the listed labels can be used to grant the visibility.
+    ///
+    /// If a rule has multiple labels, removing one of the labels but not all of
+    /// them can break clients.
+    ///
+    /// Example:
+    ///
+    ///     visibility:
+    ///       rules:
+    ///       - selector: google.calendar.Calendar.EnhancedSearch
+    ///         restriction: INTERNAL, PREVIEW
+    ///
+    /// Removing INTERNAL from this restriction will break clients that rely on
+    /// this method and only had access to it through INTERNAL.
+    #[prost(string, tag = "2")]
+    pub restriction: ::prost::alloc::string::String,
 }

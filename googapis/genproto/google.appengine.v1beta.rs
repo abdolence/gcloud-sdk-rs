@@ -796,97 +796,104 @@ pub mod firewall_rule {
 /// automatically scale an application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
-    /// Full path to the Instance resource in the API.
+    /// Output only. Full path to the Instance resource in the API.
     /// Example: `apps/myapp/services/default/versions/v1/instances/instance-1`.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Relative name of the instance within the version.
+    /// Output only. Relative name of the instance within the version.
     /// Example: `instance-1`.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
-    /// App Engine release this instance is running on.
-    ///
-    /// @OutputOnly
+    /// Output only. App Engine release this instance is running on.
     #[prost(string, tag = "3")]
     pub app_engine_release: ::prost::alloc::string::String,
-    /// Availability of the instance.
-    ///
-    /// @OutputOnly
+    /// Output only. Availability of the instance.
     #[prost(enumeration = "instance::Availability", tag = "4")]
     pub availability: i32,
-    /// Name of the virtual machine where this instance lives. Only applicable
+    /// Output only. Name of the virtual machine where this instance lives. Only applicable
     /// for instances in App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "5")]
     pub vm_name: ::prost::alloc::string::String,
-    /// Zone where the virtual machine is located. Only applicable for instances
+    /// Output only. Zone where the virtual machine is located. Only applicable for instances
     /// in App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "6")]
     pub vm_zone_name: ::prost::alloc::string::String,
-    /// Virtual machine ID of this instance. Only applicable for instances in
+    /// Output only. Virtual machine ID of this instance. Only applicable for instances in
     /// App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "7")]
     pub vm_id: ::prost::alloc::string::String,
-    /// Time that this instance was started.
+    /// Output only. Time that this instance was started.
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "8")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Number of requests since this instance was started.
-    ///
-    /// @OutputOnly
+    /// Output only. Number of requests since this instance was started.
     #[prost(int32, tag = "9")]
     pub requests: i32,
-    /// Number of errors since this instance was started.
-    ///
-    /// @OutputOnly
+    /// Output only. Number of errors since this instance was started.
     #[prost(int32, tag = "10")]
     pub errors: i32,
-    /// Average queries per second (QPS) over the last minute.
-    ///
-    /// @OutputOnly
+    /// Output only. Average queries per second (QPS) over the last minute.
     #[prost(float, tag = "11")]
     pub qps: f32,
-    /// Average latency (ms) over the last minute.
-    ///
-    /// @OutputOnly
+    /// Output only. Average latency (ms) over the last minute.
     #[prost(int32, tag = "12")]
     pub average_latency: i32,
-    /// Total memory in use (bytes).
-    ///
-    /// @OutputOnly
+    /// Output only. Total memory in use (bytes).
     #[prost(int64, tag = "13")]
     pub memory_usage: i64,
-    /// Status of the virtual machine where this instance lives. Only applicable
+    /// Output only. Status of the virtual machine where this instance lives. Only applicable
     /// for instances in App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "14")]
     pub vm_status: ::prost::alloc::string::String,
-    /// Whether this instance is in debug mode. Only applicable for instances in
+    /// Output only. Whether this instance is in debug mode. Only applicable for instances in
     /// App Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(bool, tag = "15")]
     pub vm_debug_enabled: bool,
-    /// The IP address of this instance. Only applicable for instances in App
+    /// Output only. The IP address of this instance. Only applicable for instances in App
     /// Engine flexible environment.
-    ///
-    /// @OutputOnly
     #[prost(string, tag = "16")]
     pub vm_ip: ::prost::alloc::string::String,
+    /// Output only. The liveness health check of this instance. Only applicable for instances
+    /// in App Engine flexible environment.
+    #[prost(enumeration = "instance::liveness::LivenessState", tag = "17")]
+    pub vm_liveness: i32,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
+    /// Wrapper for LivenessState enum.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Liveness {}
+    /// Nested message and enum types in `Liveness`.
+    pub mod liveness {
+        /// Liveness health check status for Flex instances.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum LivenessState {
+            /// There is no liveness health check for the instance. Only applicable for
+            /// instances in App Engine standard environment.
+            Unspecified = 0,
+            /// The health checking system is aware of the instance but its health is
+            /// not known at the moment.
+            Unknown = 1,
+            /// The instance is reachable i.e. a connection to the application health
+            /// checking endpoint can be established, and conforms to the requirements
+            /// defined by the health check.
+            Healthy = 2,
+            /// The instance is reachable, but does not conform to the requirements
+            /// defined by the health check.
+            Unhealthy = 3,
+            /// The instance is being drained. The existing connections to the instance
+            /// have time to complete, but the new ones are being refused.
+            Draining = 4,
+            /// The instance is unreachable i.e. a connection to the application health
+            /// checking endpoint cannot be established, or the server does not respond
+            /// within the specified timeout.
+            Timeout = 5,
+        }
+    }
     /// Availability of the instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -993,6 +1000,30 @@ pub struct ZipInfo {
     #[prost(int32, tag = "4")]
     pub files_count: i32,
 }
+/// A NetworkSettings resource is a container for ingress settings for a version
+/// or service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkSettings {
+    /// The ingress settings for version or service.
+    #[prost(enumeration = "network_settings::IngressTrafficAllowed", tag = "1")]
+    pub ingress_traffic_allowed: i32,
+}
+/// Nested message and enum types in `NetworkSettings`.
+pub mod network_settings {
+    /// If unspecified, INGRESS_TRAFFIC_ALLOWED_ALL will be used.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum IngressTrafficAllowed {
+        /// Unspecified
+        Unspecified = 0,
+        /// Allow HTTP traffic from public and private sources.
+        All = 1,
+        /// Allow HTTP traffic from only private VPC sources.
+        InternalOnly = 2,
+        /// Allow HTTP traffic from private VPC sources and through load balancers.
+        InternalAndLb = 3,
+    }
+}
 /// A Version resource is a specific set of source code and configuration files
 /// that are deployed into a service.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1046,6 +1077,10 @@ pub struct Version {
     /// Whether to deploy this version in a container on a virtual machine.
     #[prost(bool, tag = "12")]
     pub vm: bool,
+    /// app_engine_apis allows second generation runtimes to access the
+    /// App Engine APIs.
+    #[prost(bool, tag = "128")]
+    pub app_engine_apis: bool,
     /// Metadata settings that are supplied to this version to enable
     /// beta runtime features.
     #[prost(map = "string, string", tag = "13")]
@@ -1086,6 +1121,11 @@ pub struct Version {
     /// The path or name of the app's main executable.
     #[prost(string, tag = "22")]
     pub runtime_main_executable_path: ::prost::alloc::string::String,
+    /// The identity that the deployed version will run as.
+    /// Admin API will use the App Engine Appspot service account as default if
+    /// this field is neither provided in app.yaml file nor through CLI flag.
+    #[prost(string, tag = "127")]
+    pub service_account: ::prost::alloc::string::String,
     /// An ordered list of URL-matching patterns that should be applied to incoming
     /// requests. The first matching URL handles the request and other request
     /// handlers are not attempted.
@@ -1115,6 +1155,12 @@ pub struct Version {
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(map = "string, string", tag = "104")]
     pub env_variables:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Environment variables available to the build environment.
+    ///
+    /// Only returned in `GET` requests if `view=FULL` is set.
+    #[prost(map = "string, string", tag = "125")]
+    pub build_env_variables:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Duration that static files should be cached by web proxies and browsers.
     /// Only applicable if the corresponding
@@ -1172,7 +1218,7 @@ pub struct Version {
     /// Enables VPC connectivity for standard apps.
     #[prost(message, optional, tag = "121")]
     pub vpc_access_connector: ::core::option::Option<VpcAccessConnector>,
-    /// Controls how instances are created.
+    /// Controls how instances are created, scaled, and reaped.
     ///
     /// Defaults to `AutomaticScaling`.
     #[prost(oneof = "version::Scaling", tags = "3, 4, 5")]
@@ -1180,13 +1226,14 @@ pub struct Version {
 }
 /// Nested message and enum types in `Version`.
 pub mod version {
-    /// Controls how instances are created.
+    /// Controls how instances are created, scaled, and reaped.
     ///
     /// Defaults to `AutomaticScaling`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Scaling {
         /// Automatic scaling is based on request rate, response latencies, and other
-        /// application metrics.
+        /// application metrics. Instances are dynamically created and destroyed as
+        /// needed in order to handle traffic.
         #[prost(message, tag = "3")]
         AutomaticScaling(super::AutomaticScaling),
         /// A service with basic scaling will create an instance when the application
@@ -1197,6 +1244,7 @@ pub mod version {
         BasicScaling(super::BasicScaling),
         /// A service with manual scaling runs continuously, allowing you to perform
         /// complex initialization and rely on the state of its memory over time.
+        /// Manually scaled versions are sometimes referred to as "backends".
         #[prost(message, tag = "5")]
         ManualScaling(super::ManualScaling),
     }
@@ -1520,6 +1568,10 @@ pub struct Resources {
     /// User specified volumes.
     #[prost(message, repeated, tag = "4")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
+    /// The name of the encryption key that is stored in Google Cloud KMS.
+    /// Only should be used by Cloud Composer to encrypt the vm disk
+    #[prost(string, tag = "5")]
+    pub kms_key_reference: ::prost::alloc::string::String,
 }
 /// VPC access connector specification.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1609,6 +1661,9 @@ pub struct Service {
     /// different versions within the service.
     #[prost(message, optional, tag = "3")]
     pub split: ::core::option::Option<TrafficSplit>,
+    /// Ingress settings for this service. Will apply to all versions.
+    #[prost(message, optional, tag = "6")]
+    pub network_settings: ::core::option::Option<NetworkSettings>,
 }
 /// Traffic routing configuration for versions within a single service. Traffic
 /// splits define how traffic directed to the service is assigned to versions.
@@ -2180,26 +2235,53 @@ pub enum DomainOverrideStrategy {
 }
 #[doc = r" Generated client implementations."]
 pub mod applications_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages App Engine applications."]
+    #[derive(Debug, Clone)]
     pub struct ApplicationsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ApplicationsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ApplicationsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ApplicationsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Gets information about an application."]
         pub async fn get_application(
@@ -2292,41 +2374,56 @@ pub mod applications_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for ApplicationsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ApplicationsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ApplicationsClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod services_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages services of an application."]
+    #[derive(Debug, Clone)]
     pub struct ServicesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ServicesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ServicesClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ServicesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists all the services in the application."]
         pub async fn list_services(
@@ -2399,41 +2496,56 @@ pub mod services_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for ServicesClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ServicesClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ServicesClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod versions_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages versions of a service."]
+    #[derive(Debug, Clone)]
     pub struct VersionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> VersionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> VersionsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            VersionsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists the versions of a service."]
         pub async fn list_versions(
@@ -2561,41 +2673,56 @@ pub mod versions_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for VersionsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for VersionsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "VersionsClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod instances_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages instances of a version."]
+    #[derive(Debug, Clone)]
     pub struct InstancesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> InstancesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> InstancesClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            InstancesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists the instances of a version."]
         #[doc = ""]
@@ -2689,22 +2816,10 @@ pub mod instances_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for InstancesClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for InstancesClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "InstancesClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod firewall_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Firewall resources are used to define a collection of access control rules"]
     #[doc = " for an Application. Each rule is defined with a position which specifies"]
@@ -2716,23 +2831,50 @@ pub mod firewall_client {
     #[doc = " A final rule always specifies an action that applies to all remaining"]
     #[doc = " IP addresses. The default final rule for a newly-created application will be"]
     #[doc = " set to \"allow\" if not otherwise specified by the user."]
+    #[derive(Debug, Clone)]
     pub struct FirewallClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> FirewallClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FirewallClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            FirewallClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists the firewall rules of an application."]
         pub async fn list_ingress_rules(
@@ -2842,43 +2984,58 @@ pub mod firewall_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for FirewallClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for FirewallClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "FirewallClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod authorized_domains_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages domains a user is authorized to administer. To authorize use of a"]
     #[doc = " domain, verify ownership via"]
     #[doc = " [Webmaster Central](https://www.google.com/webmasters/verification/home)."]
+    #[derive(Debug, Clone)]
     pub struct AuthorizedDomainsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AuthorizedDomainsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AuthorizedDomainsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AuthorizedDomainsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists all domains the user is authorized to administer."]
         pub async fn list_authorized_domains(
@@ -2898,42 +3055,57 @@ pub mod authorized_domains_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for AuthorizedDomainsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AuthorizedDomainsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AuthorizedDomainsClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod authorized_certificates_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages SSL certificates a user is authorized to administer. A user can"]
     #[doc = " administer any SSL certificates applicable to their authorized domains."]
+    #[derive(Debug, Clone)]
     pub struct AuthorizedCertificatesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AuthorizedCertificatesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AuthorizedCertificatesClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AuthorizedCertificatesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists all SSL certificates the user is authorized to administer."]
         pub async fn list_authorized_certificates(
@@ -3026,41 +3198,56 @@ pub mod authorized_certificates_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for AuthorizedCertificatesClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AuthorizedCertificatesClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AuthorizedCertificatesClient {{ ... }}")
-        }
-    }
 }
 #[doc = r" Generated client implementations."]
 pub mod domain_mappings_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages domains serving an application."]
+    #[derive(Debug, Clone)]
     pub struct DomainMappingsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> DomainMappingsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DomainMappingsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            DomainMappingsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists the domain mappings on an application."]
         pub async fn list_domain_mappings(
@@ -3158,18 +3345,6 @@ pub mod domain_mappings_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for DomainMappingsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for DomainMappingsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "DomainMappingsClient {{ ... }}")
-        }
-    }
 }
 /// App Engine admin service audit log.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3210,6 +3385,24 @@ pub struct CreateVersionMethod {
     /// Create version request.
     #[prost(message, optional, tag = "1")]
     pub request: ::core::option::Option<CreateVersionRequest>,
+}
+/// Metadata for the given [google.cloud.location.Location][google.cloud.location.Location].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationMetadata {
+    /// App Engine standard environment is available in the given location.
+    ///
+    /// @OutputOnly
+    #[prost(bool, tag = "2")]
+    pub standard_environment_available: bool,
+    /// App Engine flexible environment is available in the given location.
+    ///
+    /// @OutputOnly
+    #[prost(bool, tag = "4")]
+    pub flexible_environment_available: bool,
+    /// Output only. [Search API](https://cloud.google.com/appengine/docs/standard/python/search)
+    /// is available in the given location.
+    #[prost(bool, tag = "6")]
+    pub search_api_available: bool,
 }
 /// Metadata for the given [google.longrunning.Operation][google.longrunning.Operation].
 #[derive(Clone, PartialEq, ::prost::Message)]

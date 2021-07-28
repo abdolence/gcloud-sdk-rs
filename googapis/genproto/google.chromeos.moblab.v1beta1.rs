@@ -25,7 +25,6 @@ pub struct Milestone {
 }
 /// Resource that represents a build for the given build target, model, milestone
 /// and build version.
-/// NEXT_TAG: 4
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Build {
     /// The resource name of the build.
@@ -40,9 +39,51 @@ pub struct Build {
     /// The build version of the build, e.g. 1234.0.0.
     #[prost(string, tag = "3")]
     pub build_version: ::prost::alloc::string::String,
+    /// The status of the build.
+    #[prost(enumeration = "build::BuildStatus", tag = "4")]
+    pub status: i32,
+    /// The type of the build.
+    #[prost(enumeration = "build::BuildType", tag = "5")]
+    pub r#type: i32,
+    /// The branch of the build.
+    #[prost(string, tag = "6")]
+    pub branch: ::prost::alloc::string::String,
+    /// The read write firmware version of the software that is flashed to the chip
+    /// on the Chrome OS device.
+    #[prost(string, tag = "7")]
+    pub rw_firmware_version: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Build`.
+pub mod build {
+    /// The build status types.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum BuildStatus {
+        /// No build status is specified.
+        Unspecified = 0,
+        /// Complete Status: The build passed.
+        Pass = 1,
+        /// Complete Status: The build failed.
+        Fail = 2,
+        /// Intermediate Status: The build is still running.
+        Running = 3,
+        /// Complete Status: The build was aborted.
+        Aborted = 4,
+    }
+    /// The build types.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum BuildType {
+        /// Invalid build type.
+        Unspecified = 0,
+        /// The release build.
+        Release = 1,
+        /// The firmware build.
+        Firmware = 2,
+    }
 }
 /// Resource that represents a build artifact stored in Google Cloud Storage for
-/// the given build target, model, build version and bucket. NEXT_TAG: 6
+/// the given build target, model, build version and bucket.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildArtifact {
     /// The resource name of the build artifact.
@@ -67,8 +108,48 @@ pub struct BuildArtifact {
     #[prost(uint32, tag = "5")]
     pub object_count: u32,
 }
+/// Request message for finding the most stable build.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindMostStableBuildRequest {
+    /// Required. The full resource name of the build target.
+    /// For example,
+    /// 'buildTargets/octopus'.
+    #[prost(string, tag = "1")]
+    pub build_target: ::prost::alloc::string::String,
+}
+/// Response message for finding the most stable build.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindMostStableBuildResponse {
+    /// The most stable build.
+    #[prost(message, optional, tag = "1")]
+    pub build: ::core::option::Option<Build>,
+}
+/// Request message for listing build targets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBuildTargetsRequest {
+    /// Optional. The number of build targets to return in a page.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListBuildTargets` call. Provide
+    /// this to retrieve the subsequent page.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing build targets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBuildTargetsResponse {
+    /// The list of build targets.
+    #[prost(message, repeated, tag = "1")]
+    pub build_targets: ::prost::alloc::vec::Vec<BuildTarget>,
+    /// Token to retrieve the next page of builds. If this field is omitted, there
+    /// are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Total number of build targets.
+    #[prost(int32, tag = "3")]
+    pub total_size: i32,
+}
 /// Request message for listing builds.
-/// NEXT_TAG: 7
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildsRequest {
     /// Required. The full resource name of the model. The model id is the same as
@@ -104,7 +185,6 @@ pub struct ListBuildsRequest {
     pub group_by: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for listing builds.
-/// NEXT_TAG: 4
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildsResponse {
     /// The list of builds.
@@ -126,9 +206,13 @@ pub struct CheckBuildStageStatusRequest {
     /// 'buildTargets/octopus/models/bobba/builds/12607.6.0/artifacts/chromeos-moblab-peng-staging'.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Filter that specifies value constraints of fields. For example, the
+    /// filter can be set as "filter='type=release'" to only check the release
+    /// builds.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for checking the stage status of a build artifact.
-/// NEXT_TAG: 4
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckBuildStageStatusResponse {
     /// The status to represent if the build is staged or not.
@@ -149,6 +233,11 @@ pub struct StageBuildRequest {
     /// 'buildTargets/octopus/models/bobba/builds/12607.6.0/artifacts/chromeos-moblab-peng-staging'.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Filter that specifies value constraints of fields. For example, the
+    /// filter can be set as "filter='type=release'" to only check the release
+    /// builds.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for staging a build artifact.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -158,7 +247,6 @@ pub struct StageBuildResponse {
     pub staged_build_artifact: ::core::option::Option<BuildArtifact>,
 }
 /// Metadata message for staging a build artifact.
-/// NEXT_TAG: 4
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageBuildMetadata {
     /// Approximate percentage of progress, e.g. "50" means 50%.
@@ -173,26 +261,70 @@ pub struct StageBuildMetadata {
 }
 #[doc = r" Generated client implementations."]
 pub mod build_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages Chrome OS build services."]
+    #[derive(Debug, Clone)]
     pub struct BuildServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> BuildServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> BuildServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            BuildServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
+        }
+        #[doc = " Lists all build targets that a user has access to."]
+        pub async fn list_build_targets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBuildTargetsRequest>,
+        ) -> Result<tonic::Response<super::ListBuildTargetsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chromeos.moblab.v1beta1.BuildService/ListBuildTargets",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists all builds for the given build target and model in descending order"]
         #[doc = " for the milestones and build versions."]
@@ -254,17 +386,33 @@ pub mod build_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T: Clone> Clone for BuildServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BuildServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BuildServiceClient {{ ... }}")
+        #[doc = " Finds the most stable build for the given build target. The definition of"]
+        #[doc = " the most stable build is determined by evaluating the following rules in"]
+        #[doc = " order until one is true. If none are true, then there is no stable build"]
+        #[doc = " and it will return an empty response."]
+        #[doc = ""]
+        #[doc = " Evaluation rules:"]
+        #[doc = "   1. Stable channel build with label “Live”"]
+        #[doc = "   2. Beta channel build with label “Live”"]
+        #[doc = "   3. Dev channel build with label “Live”"]
+        #[doc = "   4. Most recent stable channel build with build status Pass"]
+        #[doc = "   5. Most recent beta channel build with build status Pass"]
+        #[doc = "   6. Most recent dev channel build with build status Pass"]
+        pub async fn find_most_stable_build(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FindMostStableBuildRequest>,
+        ) -> Result<tonic::Response<super::FindMostStableBuildResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chromeos.moblab.v1beta1.BuildService/FindMostStableBuild",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }

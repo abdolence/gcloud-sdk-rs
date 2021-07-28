@@ -1,8 +1,7 @@
 /// Prediction output format for Image and Text Classification.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationPredictionResult {
-    /// The resource IDs of the AnnotationSpecs that had been identified, ordered
-    /// by the confidence score descendingly.
+    /// The resource IDs of the AnnotationSpecs that had been identified.
     #[prost(int64, repeated, tag = "1")]
     pub ids: ::prost::alloc::vec::Vec<i64>,
     /// The display names of the AnnotationSpecs that had been identified, order

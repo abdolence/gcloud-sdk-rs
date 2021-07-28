@@ -21,6 +21,12 @@ pub struct StaticCanvasPrompt {
     /// canvas application.
     #[prost(bool, tag = "5")]
     pub send_state_data_to_canvas_app: bool,
+    /// Optional. If `true` the canvas application occupies the full screen and won't
+    /// have a header at the top. A toast message will also be displayed on the
+    /// loading screen that includes the Action's display name, the developer's
+    /// name, and instructions for exiting the Action. Default value: `false`.
+    #[prost(bool, tag = "6")]
+    pub enable_full_screen: bool,
 }
 /// An image displayed in the card.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -250,6 +256,9 @@ pub struct StaticMediaPrompt {
     /// List of media objects.
     #[prost(message, repeated, tag = "7")]
     pub media_objects: ::prost::alloc::vec::Vec<MediaObject>,
+    /// Repeat mode for the list of Media Objects.
+    #[prost(enumeration = "static_media_prompt::RepeatMode", tag = "9")]
+    pub repeat_mode: i32,
 }
 /// Nested message and enum types in `StaticMediaPrompt`.
 pub mod static_media_prompt {
@@ -274,6 +283,18 @@ pub mod static_media_prompt {
         Paused = 1,
         /// Stopped event. Triggered when user exit out 3p session during media play.
         Stopped = 2,
+    }
+    /// The types of repeat mode for a list of media objects.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RepeatMode {
+        /// Equivalent to OFF.
+        Unspecified = 0,
+        /// End media session at the end of the last media object.
+        Off = 1,
+        /// Loop to the beginning of the first media object when the end of the last
+        /// media object is reached.
+        All = 2,
     }
 }
 /// Represents a single media object.
