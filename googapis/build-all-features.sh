@@ -14,21 +14,21 @@ features=(
   google-actions-sdk-v2-interactionmodel-type
   google-actions-type
   google-ads-admob-v1
-  google-ads-googleads-v4-common
-  google-ads-googleads-v4-enums
-  google-ads-googleads-v4-errors
-  google-ads-googleads-v4-resources
-  google-ads-googleads-v4-services
-  # google-ads-googleads-v5-common
-  # google-ads-googleads-v5-enums
-  # google-ads-googleads-v5-errors
-  # google-ads-googleads-v5-resources
-  # google-ads-googleads-v5-services
   # google-ads-googleads-v6-common
   # google-ads-googleads-v6-enums
   # google-ads-googleads-v6-errors
   # google-ads-googleads-v6-resources
   # google-ads-googleads-v6-services
+  google-ads-googleads-v7-common
+  google-ads-googleads-v7-enums
+  google-ads-googleads-v7-errors
+  google-ads-googleads-v7-resources
+  google-ads-googleads-v7-services
+  google-ads-googleads-v8-common
+  google-ads-googleads-v8-enums
+  google-ads-googleads-v8-errors
+  google-ads-googleads-v8-resources
+  google-ads-googleads-v8-services
   google-analytics-admin-v1alpha
   google-analytics-data-v1alpha
   google-analytics-data-v1beta
@@ -37,10 +37,13 @@ features=(
   google-api-expr-v1beta1
   google-api-servicecontrol-v1
   google-api-servicemanagement-v1
+  google-api-serviceusage-v1
+  google-api-serviceusage-v1beta1
   google-appengine-legacy
   google-appengine-logging-v1
   google-appengine-v1
   google-appengine-v1beta
+  google-apps-alertcenter-v1beta1
   google-apps-drive-activity-v2
   google-apps-script-type
   google-apps-script-type-calendar
@@ -52,10 +55,7 @@ features=(
   google-area120-tables-v1alpha1
   google-assistant-embedded-v1alpha1
   google-assistant-embedded-v1alpha2
-  google-bigtable-admin-cluster-v1
-  google-bigtable-admin-table-v1
   google-bigtable-admin-v2
-  google-bigtable-v1
   google-bigtable-v2
   google-bytestream
   google-chromeos-moblab-v1beta1
@@ -74,6 +74,7 @@ features=(
   google-cloud-aiplatform-v1beta1-schema-predict-prediction
   google-cloud-aiplatform-v1beta1-schema-trainingjob-definition
   google-cloud-apigateway-v1
+  google-cloud-apigeeconnect-v1
   google-cloud-asset-v1
   google-cloud-asset-v1p1beta1
   google-cloud-asset-v1p2beta1
@@ -88,10 +89,10 @@ features=(
   google-cloud-bigquery-connection-v1beta1
   google-cloud-bigquery-datatransfer-v1
   google-cloud-bigquery-logging-v1
+  google-cloud-bigquery-migration-v2alpha
   google-cloud-bigquery-reservation-v1
   google-cloud-bigquery-reservation-v1beta1
   google-cloud-bigquery-storage-v1
-  google-cloud-bigquery-storage-v1alpha2
   google-cloud-bigquery-storage-v1beta1
   google-cloud-bigquery-storage-v1beta2
   google-cloud-bigquery-v2
@@ -102,13 +103,18 @@ features=(
   google-cloud-channel-v1
   google-cloud-clouddms-logging-v1
   google-cloud-clouddms-v1
+  google-cloud-common
+  google-cloud-contactcenterinsights-v1
   google-cloud-datacatalog-v1
   google-cloud-datacatalog-v1beta1
+  google-cloud-datafusion-v1
+  google-cloud-datafusion-v1beta1
   google-cloud-datalabeling-v1beta1
   google-cloud-dataproc-logging
   google-cloud-dataproc-v1
   google-cloud-dataproc-v1beta2
   google-cloud-dataqna-v1alpha
+  google-cloud-datastream-v1alpha1
   google-cloud-dialogflow-cx-v3
   google-cloud-dialogflow-cx-v3beta1
   google-cloud-dialogflow-v2
@@ -119,17 +125,40 @@ features=(
   google-cloud-documentai-v1beta3
   google-cloud-domains-v1alpha2
   google-cloud-domains-v1beta1
+  google-cloud-essentialcontacts-v1
+  google-cloud-eventarc-v1
+  google-cloud-filestore-v1
+  google-cloud-filestore-v1beta1
   google-cloud-functions-v1
   google-cloud-gaming-v1
   google-cloud-gaming-v1beta
+  google-cloud-gkeconnect-gateway-v1
+  google-cloud-gkeconnect-gateway-v1alpha1
+  google-cloud-gkeconnect-gateway-v1beta1
+  google-cloud-gkehub-cloudauditlogging-v1alpha
+  google-cloud-gkehub-configmanagement-v1
+  google-cloud-gkehub-configmanagement-v1alpha
+  google-cloud-gkehub-configmanagement-v1beta
+  google-cloud-gkehub-metering-v1alpha
+  google-cloud-gkehub-metering-v1beta
+  google-cloud-gkehub-multiclusteringress-v1
+  google-cloud-gkehub-multiclusteringress-v1alpha
+  google-cloud-gkehub-multiclusteringress-v1beta
+  google-cloud-gkehub-servicemesh-v1alpha
+  google-cloud-gkehub-v1
+  google-cloud-gkehub-v1alpha
   google-cloud-gkehub-v1alpha2
+  google-cloud-gkehub-v1beta
   google-cloud-gkehub-v1beta1
   google-cloud-gsuiteaddons-v1
+  google-cloud-iap-v1
+  google-cloud-iap-v1beta1
   google-cloud-iot-v1
   google-cloud-kms-v1
   google-cloud-language-v1
   google-cloud-language-v1beta1
   google-cloud-language-v1beta2
+  google-cloud-lifesciences-v2beta
   google-cloud-location
   google-cloud-managedidentities-v1
   google-cloud-managedidentities-v1beta1
@@ -138,16 +167,24 @@ features=(
   google-cloud-memcache-v1
   google-cloud-memcache-v1beta2
   google-cloud-metastore-logging-v1
+  google-cloud-metastore-v1
   google-cloud-metastore-v1alpha
   google-cloud-metastore-v1beta
   google-cloud-ml-v1
   google-cloud-networkconnectivity-v1alpha1
+  google-cloud-networkmanagement-v1
+  google-cloud-networkmanagement-v1beta1
+  google-cloud-networksecurity-v1beta1
+  google-cloud-networkservices-v1beta1
   google-cloud-notebooks-v1beta1
+  google-cloud-orchestration-airflow-service-v1
+  google-cloud-orchestration-airflow-service-v1beta1
   google-cloud-orgpolicy-v1
   google-cloud-orgpolicy-v2
   google-cloud-osconfig-agentendpoint-v1
   google-cloud-osconfig-agentendpoint-v1beta
   google-cloud-osconfig-v1
+  google-cloud-osconfig-v1alpha
   google-cloud-osconfig-v1beta
   google-cloud-oslogin-common
   google-cloud-oslogin-v1
@@ -155,6 +192,7 @@ features=(
   google-cloud-oslogin-v1beta
   google-cloud-phishingprotection-v1beta1
   google-cloud-policytroubleshooter-v1
+  google-cloud-privatecatalog-v1beta1
   google-cloud-pubsublite-v1
   google-cloud-recaptchaenterprise-v1
   google-cloud-recaptchaenterprise-v1beta1
@@ -166,7 +204,9 @@ features=(
   google-cloud-redis-v1
   google-cloud-redis-v1beta1
   google-cloud-resourcemanager-v2
+  google-cloud-resourcemanager-v3
   google-cloud-resourcesettings-v1
+  google-cloud-retail-logging
   google-cloud-retail-v2
   google-cloud-retail-v2alpha
   google-cloud-retail-v2beta
@@ -174,8 +214,10 @@ features=(
   google-cloud-saasaccelerator-management-logs-v1
   google-cloud-scheduler-v1
   google-cloud-scheduler-v1beta1
+  google-cloud-secretmanager-logging-v1
   google-cloud-secretmanager-v1
   google-cloud-secrets-v1beta1
+  google-cloud-security-privateca-v1
   google-cloud-security-privateca-v1beta1
   google-cloud-securitycenter-settings-v1beta1
   google-cloud-securitycenter-v1
@@ -186,6 +228,7 @@ features=(
   google-cloud-shell-v1
   google-cloud-speech-v1
   google-cloud-speech-v1p1beta1
+  google-cloud-sql-v1beta4
   google-cloud-support-common
   google-cloud-support-v1alpha1
   google-cloud-talent-v4
@@ -195,8 +238,10 @@ features=(
   google-cloud-tasks-v2beta3
   google-cloud-texttospeech-v1
   google-cloud-texttospeech-v1beta1
+  google-cloud-tpu-v1
   google-cloud-translation-v3
   google-cloud-translation-v3beta1
+  google-cloud-video-transcoder-v1
   google-cloud-video-transcoder-v1beta1
   google-cloud-videointelligence-v1
   google-cloud-videointelligence-v1beta2
@@ -216,11 +261,13 @@ features=(
   google-cloud-websecurityscanner-v1beta
   google-cloud-workflows-executions-v1
   google-cloud-workflows-executions-v1beta
+  google-cloud-workflows-type
   google-cloud-workflows-v1
   google-cloud-workflows-v1beta
   google-container-v1
   google-container-v1alpha1
   google-container-v1beta1
+  google-dataflow-v1beta3
   google-datastore-admin-v1
   google-datastore-admin-v1beta1
   google-datastore-v1
@@ -239,6 +286,7 @@ features=(
   google-devtools-resultstore-v2
   google-devtools-source-v1
   google-devtools-sourcerepo-v1
+  google-devtools-testing-v1
   google-example-endpointsapis-v1
   google-example-library-v1
   google-firebase-fcm-connection-v1alpha1
@@ -283,6 +331,7 @@ features=(
   google-spanner-admin-instance-v1
   google-spanner-v1
   google-storage-v1
+  google-storage-v2
   google-storagetransfer-v1
   google-streetview-publish-v1
   google-type
@@ -298,6 +347,7 @@ features=(
   grafeas-v1beta1-provenance
   grafeas-v1beta1-source
   # grafeas-v1beta1-vulnerability
+  maps-fleetengine-v1
   storage-clouddms-logging-v1
 )
 
