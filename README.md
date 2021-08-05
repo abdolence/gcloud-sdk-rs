@@ -1,7 +1,7 @@
 # googapis
 
 [![ci](https://github.com/mechiru/googapis/workflows/ci/badge.svg)](https://github.com/mechiru/googapis/actions?query=workflow:ci)
-[![Rust Documentation](https://docs.rs/googapis/badge.svg)](https://docs.rs/googapis)
+[![Rust Documentation](https://docs.rs/googapis/badge.svg)](https://mechiru.github.io/googapis/googapis/index.html)
 [![Latest Version](https://img.shields.io/crates/v/googapis.svg)](https://crates.io/crates/googapis)
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
