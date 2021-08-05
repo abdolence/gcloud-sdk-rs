@@ -1,3 +1,12 @@
+/// A chart that displays alert policy data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AlertChart {
+    /// Required. The resource name of the alert policy. The format is:
+    ///
+    ///     projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Describes how to combine multiple time series to provide a different view of
 /// the data.  Aggregation of time series is done in two steps. First, each time
 /// series in the set is _aligned_ to the same time interval boundaries, then the
@@ -836,7 +845,7 @@ pub struct Widget {
     #[prost(string, tag = "1")]
     pub title: ::prost::alloc::string::String,
     /// Content defines the component used to populate the widget.
-    #[prost(oneof = "widget::Content", tags = "2, 3, 4, 5")]
+    #[prost(oneof = "widget::Content", tags = "2, 3, 4, 5, 7")]
     pub content: ::core::option::Option<widget::Content>,
 }
 /// Nested message and enum types in `Widget`.
@@ -856,6 +865,9 @@ pub mod widget {
         /// A blank space.
         #[prost(message, tag = "5")]
         Blank(()),
+        /// A chart of alert policy data.
+        #[prost(message, tag = "7")]
+        AlertChart(super::AlertChart),
     }
 }
 /// A basic layout divides the available space into vertical columns of equal
@@ -1018,6 +1030,10 @@ pub struct CreateDashboardRequest {
     /// Required. The initial dashboard specification.
     #[prost(message, optional, tag = "2")]
     pub dashboard: ::core::option::Option<Dashboard>,
+    /// If set, validate the request and preview the review, but do not actually
+    /// save it.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
 }
 /// The `ListDashboards` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1075,30 +1091,61 @@ pub struct UpdateDashboardRequest {
     /// Required. The dashboard that will replace the existing dashboard.
     #[prost(message, optional, tag = "1")]
     pub dashboard: ::core::option::Option<Dashboard>,
+    /// If set, validate the request and preview the review, but do not actually
+    /// save it.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
 }
 #[doc = r" Generated client implementations."]
 pub mod dashboards_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages Stackdriver dashboards. A dashboard is an arrangement of data display"]
     #[doc = " widgets in a specific layout."]
+    #[derive(Debug, Clone)]
     pub struct DashboardsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> DashboardsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DashboardsServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            DashboardsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a new custom dashboard. For examples on how you can use this API to create dashboards, see [Managing dashboards by API](https://cloud.google.com/monitoring/dashboards/api-dashboard)."]
         #[doc = " This method requires the `monitoring.dashboards.create` permission on the specified project. For more information about permissions, see [Cloud Identity and Access Management](https://cloud.google.com/iam)."]
@@ -1201,18 +1248,6 @@ pub mod dashboards_service_client {
                 "/google.monitoring.dashboard.v1.DashboardsService/UpdateDashboard",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for DashboardsServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for DashboardsServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "DashboardsServiceClient {{ ... }}")
         }
     }
 }

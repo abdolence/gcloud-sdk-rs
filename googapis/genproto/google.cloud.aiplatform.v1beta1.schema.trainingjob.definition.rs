@@ -312,7 +312,6 @@ pub struct ExportEvaluatedDataItemsConfig {
     ///
     /// If not specified, then results are exported to the following auto-created
     /// BigQuery table:
-    ///
     /// <project_id>:export_evaluated_examples_<model_name>_<yyyy_MM_dd'T'HH_mm_ss_SSS'Z'>.evaluated_examples
     #[prost(string, tag = "1")]
     pub destination_bigquery_uri: ::prost::alloc::string::String,
@@ -411,6 +410,9 @@ pub struct AutoMlTablesInputs {
     /// this configuration is absent, then the export is not performed.
     #[prost(message, optional, tag = "10")]
     pub export_evaluated_data_items_config: ::core::option::Option<ExportEvaluatedDataItemsConfig>,
+    /// Additional experiment flags for the Tables training pipeline.
+    #[prost(string, repeated, tag = "11")]
+    pub additional_experiments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Additional optimization objective configuration. Required for
     /// `maximize-precision-at-recall` and `maximize-recall-at-precision`,
     /// otherwise unused.
@@ -651,6 +653,286 @@ pub struct AutoMlTextSentimentInputs {
     #[prost(int32, tag = "1")]
     pub sentiment_max: i32,
 }
+/// A TrainingJob that trains and uploads an AutoML Forecasting Model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoMlForecasting {
+    /// The input parameters of this TrainingJob.
+    #[prost(message, optional, tag = "1")]
+    pub inputs: ::core::option::Option<AutoMlForecastingInputs>,
+    /// The metadata information.
+    #[prost(message, optional, tag = "2")]
+    pub metadata: ::core::option::Option<AutoMlForecastingMetadata>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoMlForecastingInputs {
+    /// The name of the column that the model is to predict.
+    #[prost(string, tag = "1")]
+    pub target_column: ::prost::alloc::string::String,
+    /// The name of the column that identifies the time series.
+    #[prost(string, tag = "2")]
+    pub time_series_identifier_column: ::prost::alloc::string::String,
+    /// The name of the column that identifies time order in the time series.
+    #[prost(string, tag = "3")]
+    pub time_column: ::prost::alloc::string::String,
+    /// Each transformation will apply transform function to given input column.
+    /// And the result will be used for training.
+    /// When creating transformation for BigQuery Struct column, the column should
+    /// be flattened using "." as the delimiter.
+    #[prost(message, repeated, tag = "4")]
+    pub transformations: ::prost::alloc::vec::Vec<auto_ml_forecasting_inputs::Transformation>,
+    /// Objective function the model is optimizing towards. The training process
+    /// creates a model that optimizes the value of the objective
+    /// function over the validation set.
+    ///
+    /// The supported optimization objectives:
+    ///
+    ///   * "minimize-rmse" (default) - Minimize root-mean-squared error (RMSE).
+    ///
+    ///   * "minimize-mae" - Minimize mean-absolute error (MAE).
+    ///
+    ///   * "minimize-rmsle" - Minimize root-mean-squared log error (RMSLE).
+    ///
+    ///   * "minimize-rmspe" - Minimize root-mean-squared percentage error (RMSPE).
+    ///
+    ///   * "minimize-wape-mae" - Minimize the combination of weighted absolute
+    ///     percentage error (WAPE) and mean-absolute-error (MAE).
+    ///
+    ///   * "minimize-quantile-loss" - Minimize the quantile loss at the quantiles
+    ///     defined in `quantiles`.
+    #[prost(string, tag = "5")]
+    pub optimization_objective: ::prost::alloc::string::String,
+    /// Required. The train budget of creating this model, expressed in milli node
+    /// hours i.e. 1,000 value in this field means 1 node hour.
+    ///
+    /// The training cost of the model will not exceed this budget. The final cost
+    /// will be attempted to be close to the budget, though may end up being (even)
+    /// noticeably smaller - at the backend's discretion. This especially may
+    /// happen when further model training ceases to provide any improvements.
+    ///
+    /// If the budget is set to a value known to be insufficient to train a
+    /// model for the given dataset, the training won't be attempted and
+    /// will error.
+    ///
+    /// The train budget must be between 1,000 and 72,000 milli node hours,
+    /// inclusive.
+    #[prost(int64, tag = "6")]
+    pub train_budget_milli_node_hours: i64,
+    /// Column name that should be used as the weight column.
+    /// Higher values in this column give more importance to the row
+    /// during model training. The column must have numeric values between 0 and
+    /// 10000 inclusively; 0 means the row is ignored for training. If weight
+    /// column field is not set, then all rows are assumed to have equal weight
+    /// of 1.
+    #[prost(string, tag = "7")]
+    pub weight_column: ::prost::alloc::string::String,
+    /// Column names that should be used as attribute columns.
+    /// The value of these columns does not vary as a function of time.
+    /// For example, store ID or item color.
+    #[prost(string, repeated, tag = "19")]
+    pub time_series_attribute_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Names of columns that are unavailable when a forecast is requested.
+    /// This column contains information for the given entity (identified
+    /// by the time_series_identifier_column) that is unknown before the forecast
+    /// For example, actual weather on a given day.
+    #[prost(string, repeated, tag = "20")]
+    pub unavailable_at_forecast_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Names of columns that are available and provided when a forecast
+    /// is requested. These columns
+    /// contain information for the given entity (identified by the
+    /// time_series_identifier_column column) that is known at forecast.
+    /// For example, predicted weather for a specific day.
+    #[prost(string, repeated, tag = "21")]
+    pub available_at_forecast_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Expected difference in time granularity between rows in the data.
+    #[prost(message, optional, tag = "22")]
+    pub data_granularity: ::core::option::Option<auto_ml_forecasting_inputs::Granularity>,
+    /// The amount of time into the future for which forecasted values for the
+    /// target are returned. Expressed in number of units defined by the
+    /// `data_granularity` field.
+    #[prost(int64, tag = "23")]
+    pub forecast_horizon: i64,
+    /// The amount of time into the past training and prediction data is used
+    /// for model training and prediction respectively. Expressed in number of
+    /// units defined by the `data_granularity` field.
+    #[prost(int64, tag = "24")]
+    pub context_window: i64,
+    /// Configuration for exporting test set predictions to a BigQuery table. If
+    /// this configuration is absent, then the export is not performed.
+    #[prost(message, optional, tag = "15")]
+    pub export_evaluated_data_items_config: ::core::option::Option<ExportEvaluatedDataItemsConfig>,
+    /// Quantiles to use for minimize-quantile-loss `optimization_objective`. Up to
+    /// 5 quantiles are allowed of values between 0 and 1, exclusive. Required if
+    /// the value of optimization_objective is minimize-quantile-loss. Represents
+    /// the percent quantiles to use for that objective. Quantiles must be unique.
+    #[prost(double, repeated, tag = "16")]
+    pub quantiles: ::prost::alloc::vec::Vec<f64>,
+    /// Validation options for the data validation component. The available options
+    /// are:
+    ///
+    ///   * "fail-pipeline" - default, will validate against the validation and
+    ///      fail the pipeline if it fails.
+    ///
+    ///   * "ignore-validation" - ignore the results of the validation and continue
+    #[prost(string, tag = "17")]
+    pub validation_options: ::prost::alloc::string::String,
+    /// Additional experiment flags for the time series forcasting training.
+    #[prost(string, repeated, tag = "25")]
+    pub additional_experiments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `AutoMlForecastingInputs`.
+pub mod auto_ml_forecasting_inputs {
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Transformation {
+        /// The transformation that the training pipeline will apply to the input
+        /// columns.
+        #[prost(oneof = "transformation::TransformationDetail", tags = "1, 2, 3, 4, 5")]
+        pub transformation_detail: ::core::option::Option<transformation::TransformationDetail>,
+    }
+    /// Nested message and enum types in `Transformation`.
+    pub mod transformation {
+        /// Training pipeline will infer the proper transformation based on the
+        /// statistic of dataset.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct AutoTransformation {
+            #[prost(string, tag = "1")]
+            pub column_name: ::prost::alloc::string::String,
+        }
+        /// Training pipeline will perform following transformation functions.
+        ///
+        /// *  The value converted to float32.
+        ///
+        /// *  The z_score of the value.
+        ///
+        /// *  log(value+1) when the value is greater than or equal to 0. Otherwise,
+        ///    this transformation is not applied and the value is considered a
+        ///    missing value.
+        ///
+        /// *  z_score of log(value+1) when the value is greater than or equal to 0.
+        ///    Otherwise, this transformation is not applied and the value is
+        ///    considered a missing value.
+        ///
+        /// *  A boolean value that indicates whether the value is valid.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct NumericTransformation {
+            #[prost(string, tag = "1")]
+            pub column_name: ::prost::alloc::string::String,
+        }
+        /// Training pipeline will perform following transformation functions.
+        ///
+        /// *  The categorical string as is--no change to case, punctuation,
+        ///    spelling, tense, and so on.
+        ///
+        /// *  Convert the category name to a dictionary lookup index and generate an
+        ///    embedding for each index.
+        ///
+        /// *  Categories that appear less than 5 times in the training dataset are
+        ///    treated as the "unknown" category. The "unknown" category gets its own
+        ///    special lookup index and resulting embedding.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CategoricalTransformation {
+            #[prost(string, tag = "1")]
+            pub column_name: ::prost::alloc::string::String,
+        }
+        /// Training pipeline will perform following transformation functions.
+        ///
+        /// *  Apply the transformation functions for Numerical columns.
+        ///
+        /// *  Determine the year, month, day,and weekday. Treat each value from the
+        ///    timestamp as a Categorical column.
+        ///
+        /// *  Invalid numerical values (for example, values that fall outside of a
+        ///    typical timestamp range, or are extreme values) receive no special
+        ///    treatment and are not removed.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TimestampTransformation {
+            #[prost(string, tag = "1")]
+            pub column_name: ::prost::alloc::string::String,
+            /// The format in which that time field is expressed. The time_format must
+            /// either be one of:
+            ///
+            /// * `unix-seconds`
+            ///
+            /// * `unix-milliseconds`
+            ///
+            /// * `unix-microseconds`
+            ///
+            /// * `unix-nanoseconds`
+            ///
+            /// (for respectively number of seconds, milliseconds, microseconds and
+            /// nanoseconds since start of the Unix epoch);
+            ///
+            /// or be written in `strftime` syntax.
+            ///
+            /// If time_format is not set, then the
+            /// default format is RFC 3339 `date-time` format, where
+            /// `time-offset` = `"Z"` (e.g. 1985-04-12T23:20:50.52Z)
+            #[prost(string, tag = "2")]
+            pub time_format: ::prost::alloc::string::String,
+        }
+        /// Training pipeline will perform following transformation functions.
+        ///
+        /// *  The text as is--no change to case, punctuation, spelling, tense, and
+        ///    so on.
+        ///
+        /// *  Convert the category name to a dictionary lookup index and generate an
+        ///    embedding for each index.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TextTransformation {
+            #[prost(string, tag = "1")]
+            pub column_name: ::prost::alloc::string::String,
+        }
+        /// The transformation that the training pipeline will apply to the input
+        /// columns.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum TransformationDetail {
+            #[prost(message, tag = "1")]
+            Auto(AutoTransformation),
+            #[prost(message, tag = "2")]
+            Numeric(NumericTransformation),
+            #[prost(message, tag = "3")]
+            Categorical(CategoricalTransformation),
+            #[prost(message, tag = "4")]
+            Timestamp(TimestampTransformation),
+            #[prost(message, tag = "5")]
+            Text(TextTransformation),
+        }
+    }
+    /// A duration of time expressed in time granularity units.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Granularity {
+        /// The time granularity unit of this time period.
+        /// The supported units are:
+        ///
+        ///  * "minute"
+        ///
+        ///  * "hour"
+        ///
+        ///  * "day"
+        ///
+        ///  * "week"
+        ///
+        ///  * "month"
+        ///
+        ///  * "year"
+        #[prost(string, tag = "1")]
+        pub unit: ::prost::alloc::string::String,
+        /// The number of granularity_units between data points in the training
+        /// data. If `granularity_unit` is `minute`,
+        /// can be 1, 5, 10, 15, or 30. For all other values of `granularity_unit`,
+        /// must be 1.
+        #[prost(int64, tag = "2")]
+        pub quantity: i64,
+    }
+}
+/// Model metadata specific to AutoML Forecasting.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoMlForecastingMetadata {
+    /// Output only. The actual training cost of the model, expressed in milli
+    /// node hours, i.e. 1,000 value in this field means 1 node hour. Guaranteed
+    /// to not exceed the train budget.
+    #[prost(int64, tag = "1")]
+    pub train_cost_milli_node_hours: i64,
+}
 /// A TrainingJob that trains and uploads an AutoML Video Action Recognition
 /// Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -681,6 +963,14 @@ pub mod auto_ml_video_action_recognition_inputs {
         /// also be exported (see ModelService.ExportModel) as a TensorFlow or
         /// TensorFlow Lite model and used on a mobile or edge device afterwards.
         MobileVersatile1 = 2,
+        /// A model that, in addition to being available within Google Cloud, can
+        /// also be exported (see ModelService.ExportModel) to a Jetson device
+        /// afterwards.
+        MobileJetsonVersatile1 = 3,
+        /// A model that, in addition to being available within Google Cloud, can
+        /// also be exported (see ModelService.ExportModel) as a TensorFlow or
+        /// TensorFlow Lite model and used on a Coral device afterwards.
+        MobileCoralVersatile1 = 4,
     }
 }
 /// A TrainingJob that trains and uploads an AutoML Video Classification Model.

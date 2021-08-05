@@ -1,3 +1,31 @@
+/// The response for [Commit][google.spanner.v1.Spanner.Commit].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommitResponse {
+    /// The Cloud Spanner timestamp at which the transaction committed.
+    #[prost(message, optional, tag = "1")]
+    pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    /// The statistics about this Commit. Not returned by default.
+    /// For more information, see
+    /// [CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats].
+    #[prost(message, optional, tag = "2")]
+    pub commit_stats: ::core::option::Option<commit_response::CommitStats>,
+}
+/// Nested message and enum types in `CommitResponse`.
+pub mod commit_response {
+    /// Additional statistics about a commit.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CommitStats {
+        /// The total number of mutations for the transaction. Knowing the
+        /// `mutation_count` value can help you maximize the number of mutations
+        /// in a transaction and minimize the number of API round trips. You can
+        /// also monitor this value to prevent transactions from exceeding the system
+        /// [limit](http://cloud.google.com/spanner/quotas#limits_for_creating_reading_updating_and_deleting_data).
+        /// If the number of mutations exceeds the limit, the server returns
+        /// [INVALID_ARGUMENT](http://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT).
+        #[prost(int64, tag = "1")]
+        pub mutation_count: i64,
+    }
+}
 /// KeyRange represents a range of rows in a table or index.
 ///
 /// A range has a start key and an end key. These keys can be open or
@@ -891,6 +919,14 @@ pub enum TypeCode {
     /// <br>`[+-][Digits].Digits[ExponentIndicator[+-]Digits]`
     /// <br>(ExponentIndicator is `"e"` or `"E"`)
     Numeric = 10,
+    /// Encoded as a JSON-formatted 'string' as described in RFC 7159. The
+    /// following rules will be applied when parsing JSON input:
+    /// - Whitespace will be stripped from the document.
+    /// - If a JSON object has duplicate keys, only the first key will be
+    ///   preserved.
+    /// - Members of a JSON object are not guaranteed to have their order
+    ///   preserved. JSON array elements will have their order preserved.
+    Json = 11,
 }
 /// Results from [Read][google.spanner.v1.Spanner.Read] or
 /// [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
@@ -1196,6 +1232,29 @@ pub struct RequestOptions {
     /// Priority for the request.
     #[prost(enumeration = "request_options::Priority", tag = "1")]
     pub priority: i32,
+    /// A per-request tag which can be applied to queries or reads, used for
+    /// statistics collection.
+    /// Both request_tag and transaction_tag can be specified for a read or query
+    /// that belongs to a transaction.
+    /// This field is ignored for requests where it's not applicable (e.g.
+    /// CommitRequest).
+    /// Legal characters for `request_tag` values are all printable characters
+    /// (ASCII 32 - 126) and the length of a request_tag is limited to 50
+    /// characters. Values that exceed this limit are truncated.
+    #[prost(string, tag = "2")]
+    pub request_tag: ::prost::alloc::string::String,
+    /// A tag used for statistics collection about this transaction.
+    /// Both request_tag and transaction_tag can be specified for a read or query
+    /// that belongs to a transaction.
+    /// The value of transaction_tag should be the same for all requests belonging
+    /// to the same transaction.
+    /// If this request doesn’t belong to any transaction, transaction_tag will be
+    /// ignored.
+    /// Legal characters for `transaction_tag` values are all printable characters
+    /// (ASCII 32 - 126) and the length of a transaction_tag is limited to 50
+    /// characters. Values that exceed this limit are truncated.
+    #[prost(string, tag = "3")]
+    pub transaction_tag: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RequestOptions`.
 pub mod request_options {
@@ -1342,15 +1401,15 @@ pub mod execute_sql_request {
         /// The `optimizer_version` statement hint has precedence over this setting.
         #[prost(string, tag = "1")]
         pub optimizer_version: ::prost::alloc::string::String,
-        /// Query optimizer statistics package to use.
+        /// An option to control the selection of optimizer statistics package.
         ///
         /// This parameter allows individual queries to use a different query
-        /// optimizer statistics.
+        /// optimizer statistics package.
         ///
         /// Specifying `latest` as a value instructs Cloud Spanner to use the latest
         /// generated statistics package. If not specified, Cloud Spanner uses
-        /// statistics package set at the database level options, or latest if
-        /// the database option is not set.
+        /// the statistics package set at the database level options, or the latest
+        /// package if the database option is not set.
         ///
         /// The statistics package requested by the query has to be exempt from
         /// garbage collection. This can be achieved with the following DDL
@@ -1361,10 +1420,10 @@ pub mod execute_sql_request {
         /// ```
         ///
         /// The list of available statistics packages can be queried from
-        /// `SPANNER_SYS.OPTIMIZER_STATISTICS_PACKAGES`.
+        /// `INFORMATION_SCHEMA.SPANNER_STATISTICS`.
         ///
         /// Executing a SQL statement with an invalid optimizer statistics package
-        /// or with statistics package that allows garbage collection fails with
+        /// or with a statistics package that allows garbage collection fails with
         /// an `INVALID_ARGUMENT` error.
         #[prost(string, tag = "2")]
         pub optimizer_statistics_package: ::prost::alloc::string::String,
@@ -1742,34 +1801,6 @@ pub mod commit_request {
         SingleUseTransaction(super::TransactionOptions),
     }
 }
-/// The response for [Commit][google.spanner.v1.Spanner.Commit].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CommitResponse {
-    /// The Cloud Spanner timestamp at which the transaction committed.
-    #[prost(message, optional, tag = "1")]
-    pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
-    /// The statistics about this Commit. Not returned by default.
-    /// For more information, see
-    /// [CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats].
-    #[prost(message, optional, tag = "2")]
-    pub commit_stats: ::core::option::Option<commit_response::CommitStats>,
-}
-/// Nested message and enum types in `CommitResponse`.
-pub mod commit_response {
-    /// Additional statistics about a commit.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CommitStats {
-        /// The total number of mutations for the transaction. Knowing the
-        /// `mutation_count` value can help you maximize the number of mutations
-        /// in a transaction and minimize the number of API round trips. You can
-        /// also monitor this value to prevent transactions from exceeding the system
-        /// [limit](http://cloud.google.com/spanner/quotas#limits_for_creating_reading_updating_and_deleting_data).
-        /// If the number of mutations exceeds the limit, the server returns
-        /// [INVALID_ARGUMENT](http://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT).
-        #[prost(int64, tag = "1")]
-        pub mutation_count: i64,
-    }
-}
 /// The request for [Rollback][google.spanner.v1.Spanner.Rollback].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackRequest {
@@ -1782,29 +1813,56 @@ pub struct RollbackRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod spanner_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Cloud Spanner API"]
     #[doc = ""]
     #[doc = " The Cloud Spanner API can be used to manage sessions and execute"]
     #[doc = " transactions on data stored in Cloud Spanner databases."]
+    #[derive(Debug, Clone)]
     pub struct SpannerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SpannerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SpannerClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SpannerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a new session. A session can be used to perform"]
         #[doc = " transactions that read and/or modify data in a Cloud Spanner database."]
@@ -2160,18 +2218,6 @@ pub mod spanner_client {
             let path =
                 http::uri::PathAndQuery::from_static("/google.spanner.v1.Spanner/PartitionRead");
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for SpannerClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SpannerClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SpannerClient {{ ... }}")
         }
     }
 }

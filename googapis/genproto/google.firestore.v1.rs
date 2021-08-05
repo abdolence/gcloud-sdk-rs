@@ -593,7 +593,8 @@ pub mod document_transform {
             /// Unspecified. This value must not be used.
             Unspecified = 0,
             /// The time at which the server processed the request, with millisecond
-            /// precision.
+            /// precision. If used on multiple fields (same or different documents) in
+            /// a transaction, all the fields will get the same server timestamp.
             RequestTime = 1,
         }
         /// The transformation to apply on the field.
@@ -1585,7 +1586,7 @@ pub struct BatchWriteResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod firestore_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The Cloud Firestore service."]
     #[doc = ""]
@@ -1595,23 +1596,50 @@ pub mod firestore_client {
     #[doc = " live synchronization and offline support, while its security features and"]
     #[doc = " integrations with Firebase and Google Cloud Platform (GCP) accelerate"]
     #[doc = " building truly serverless apps."]
+    #[derive(Debug, Clone)]
     pub struct FirestoreClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> FirestoreClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FirestoreClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            FirestoreClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Gets a single document."]
         pub async fn get_document(
@@ -1886,18 +1914,6 @@ pub mod firestore_client {
                 "/google.firestore.v1.Firestore/CreateDocument",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for FirestoreClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for FirestoreClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "FirestoreClient {{ ... }}")
         }
     }
 }

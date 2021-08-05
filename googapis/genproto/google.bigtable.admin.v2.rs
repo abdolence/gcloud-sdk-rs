@@ -530,28 +530,55 @@ pub struct DeleteAppProfileRequest {
 pub struct UpdateAppProfileMetadata {}
 #[doc = r" Generated client implementations."]
 pub mod bigtable_instance_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for creating, configuring, and deleting Cloud Bigtable Instances and"]
     #[doc = " Clusters. Provides access to the Instance and Cluster schemas only, not the"]
     #[doc = " tables' metadata or data stored in those tables."]
+    #[derive(Debug, Clone)]
     pub struct BigtableInstanceAdminClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> BigtableInstanceAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> BigtableInstanceAdminClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            BigtableInstanceAdminClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Create an instance within a project."]
         pub async fn create_instance(
@@ -902,18 +929,6 @@ pub mod bigtable_instance_admin_client {
                 "/google.bigtable.admin.v2.BigtableInstanceAdmin/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for BigtableInstanceAdminClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BigtableInstanceAdminClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BigtableInstanceAdminClient {{ ... }}")
         }
     }
 }
@@ -1292,8 +1307,8 @@ pub enum RestoreSourceType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreTableRequest {
     /// Required. The name of the instance in which to create the restored
-    /// table. This instance must be the parent of the source backup. Values are
-    /// of the form `projects/<project>/instances/<instance>`.
+    /// table. This instance must be in the same project as the source backup.
+    /// Values are of the form `projects/<project>/instances/<instance>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The id of the table to create and restore to. This
@@ -1924,30 +1939,57 @@ pub struct ListBackupsResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod bigtable_table_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for creating, configuring, and deleting Cloud Bigtable tables."]
     #[doc = ""]
     #[doc = ""]
     #[doc = " Provides access to the table schemas only, not the data stored within"]
     #[doc = " the tables."]
+    #[derive(Debug, Clone)]
     pub struct BigtableTableAdminClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> BigtableTableAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> BigtableTableAdminClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            BigtableTableAdminClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a new table in the specified instance."]
         #[doc = " The table can be created with a full set of initial column families,"]
@@ -2318,7 +2360,7 @@ pub mod bigtable_table_admin_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Create a new table by restoring from a completed backup. The new table"]
-        #[doc = " must be in the same instance as the instance containing the backup.  The"]
+        #[doc = " must be in the same project as the instance containing the backup.  The"]
         #[doc = " returned table [long-running operation][google.longrunning.Operation] can"]
         #[doc = " be used to track the progress of the operation, and to cancel it.  The"]
         #[doc = " [metadata][google.longrunning.Operation.metadata] field type is"]
@@ -2404,18 +2446,6 @@ pub mod bigtable_table_admin_client {
                 "/google.bigtable.admin.v2.BigtableTableAdmin/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for BigtableTableAdminClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BigtableTableAdminClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BigtableTableAdminClient {{ ... }}")
         }
     }
 }

@@ -252,16 +252,16 @@ pub struct ThemeCustomization {
     /// This should be specified as a reference to the corresponding image in the
     /// `resources/images/` directory. Eg: `$resources.images.foo` (without the
     /// extension) for image in `resources/images/foo.jpg`
-    /// When working on a project pulled from Console, the Google-managed URL
-    /// pulled could be used. URLs from external sources are not allowed.
+    /// When working on a project pulled from Console the Google managed url pulled
+    /// could be used.
     #[prost(string, tag = "5")]
     pub landscape_background_image: ::prost::alloc::string::String,
     /// Portrait mode (minimum 1200x1920 pixels).
     /// This should be specified as a reference to the corresponding image in the
     /// `resources/images/` directory. Eg: `$resources.images.foo` (without the
     /// extension) for image in `resources/images/foo.jpg`
-    /// When working on a project pulled from Console, the Google-managed URL
-    /// pulled could be used. URLs from external sources are not allowed.
+    /// When working on a project pulled from Console the Google managed url pulled
+    /// could be used.
     #[prost(string, tag = "6")]
     pub portrait_background_image: ::prost::alloc::string::String,
 }
@@ -302,18 +302,18 @@ pub struct LocalizedSettings {
     pub full_description: ::prost::alloc::string::String,
     /// Required. Small square image, 192 x 192 px.
     /// This should be specified as a reference to the corresponding image in the
-    /// `resources/images/` directory. Eg: `$resources.images.foo` (without the
+    /// `resources/images/` directory. For example, `$resources.images.foo` (without the
     /// extension) for image in `resources/images/foo.jpg`
-    /// When working on a project pulled from Console the Google managed url pulled
-    /// could be used.
+    /// When working on a project pulled from Console, the Google-managed URL
+    /// pulled could be used. URLs from external sources are not allowed.
     #[prost(string, tag = "5")]
     pub small_logo_image: ::prost::alloc::string::String,
     /// Optional. Large landscape image, 1920 x 1080 px.
     /// This should be specified as a reference to the corresponding image in the
-    /// `resources/images/` directory. Eg: `$resources.images.foo` (without the
+    /// `resources/images/` directory. For example, `$resources.images.foo` (without the
     /// extension) for image in `resources/images/foo.jpg`
-    /// When working on a project pulled from Console the Google managed url pulled
-    /// could be used.
+    /// When working on a project pulled from Console, the Google-managed URL
+    /// pulled could be used. URLs from external sources are not allowed.
     #[prost(string, tag = "6")]
     pub large_banner_image: ::prost::alloc::string::String,
     /// Required. The name of the developer to be displayed to users.
@@ -625,7 +625,7 @@ pub struct ConfigFile {
     /// Each type of config file should have a corresponding field in the oneof.
     #[prost(
         oneof = "config_file::File",
-        tags = "2, 3, 4, 6, 7, 8, 9, 10, 11, 13, 12"
+        tags = "2, 3, 4, 6, 7, 8, 15, 9, 10, 11, 13, 12"
     )]
     pub file: ::core::option::Option<config_file::File>,
 }
@@ -663,6 +663,10 @@ pub mod config_file {
         /// Allowed file paths: `custom/types/{language}?/{TypeName}.yaml`
         #[prost(message, tag = "8")]
         Type(super::interactionmodel::r#type::Type),
+        /// Single entity set definition.
+        /// Allowed file paths: `custom/entitySets/{language}?/{EntitySetName}.yaml`
+        #[prost(message, tag = "15")]
+        EntitySet(super::interactionmodel::EntitySet),
         /// Single global intent event definition.
         /// Allowed file paths: `custom/global/{GlobalIntentEventName}.yaml`
         /// The file name (GlobalIntentEventName) should be the name of the intent
@@ -1058,6 +1062,45 @@ pub struct DecryptSecretResponse {
     #[prost(string, tag = "1")]
     pub client_secret: ::prost::alloc::string::String,
 }
+/// RPC request for ListSampleProjects.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSampleProjectsRequest {
+    /// Optional. The maximum number of sample projects to return. The service may return
+    /// fewer than this value.
+    /// If unspecified, at most 1000 sample projects will be returned. Values above
+    /// 1000 will be coerced to 1000.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous 'ListSampleProjects' call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// RPC response for ListSampleProjects.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSampleProjectsResponse {
+    /// The list of sample projects supported.
+    #[prost(message, repeated, tag = "1")]
+    pub sample_projects: ::prost::alloc::vec::Vec<SampleProject>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Definition of sample project resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SampleProject {
+    /// The name of the sample project.
+    /// Format: `sampleProjects/{sample_project}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The URL to the zip file where the sample is hosted.
+    #[prost(string, tag = "2")]
+    pub hosted_url: ::prost::alloc::string::String,
+    /// The description of the sample project.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+}
 /// RPC request for listing release channels
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReleaseChannelsRequest {
@@ -1120,26 +1163,53 @@ pub struct ListVersionsResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod actions_sdk_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Actions SDK API which allows developers to build projects using the SDK."]
+    #[derive(Debug, Clone)]
     pub struct ActionsSdkClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ActionsSdkClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ActionsSdkClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ActionsSdkClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Updates the project draft based on the model."]
         pub async fn write_draft(
@@ -1279,6 +1349,23 @@ pub mod actions_sdk_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Lists all the sample projects supported by the gactions CLI."]
+        pub async fn list_sample_projects(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSampleProjectsRequest>,
+        ) -> Result<tonic::Response<super::ListSampleProjectsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.actions.sdk.v2.ActionsSdk/ListSampleProjects",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Lists all release channels and corresponding versions, if any."]
         pub async fn list_release_channels(
             &mut self,
@@ -1312,18 +1399,6 @@ pub mod actions_sdk_client {
                 "/google.actions.sdk.v2.ActionsSdk/ListVersions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ActionsSdkClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ActionsSdkClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ActionsSdkClient {{ ... }}")
         }
     }
 }
@@ -1761,26 +1836,53 @@ pub struct SetWebAndAppActivityControlRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod actions_testing_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Actions Testing API which allows developers to run automated tests."]
+    #[derive(Debug, Clone)]
     pub struct ActionsTestingClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ActionsTestingClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ActionsTestingClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ActionsTestingClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Plays one round of the conversation."]
         pub async fn send_interaction(
@@ -1842,18 +1944,6 @@ pub mod actions_testing_client {
                 "/google.actions.sdk.v2.ActionsTesting/SetWebAndAppActivityControl",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ActionsTestingClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ActionsTestingClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ActionsTestingClient {{ ... }}")
         }
     }
 }

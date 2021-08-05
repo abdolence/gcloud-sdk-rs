@@ -228,6 +228,17 @@ pub struct Fulfillment {
     /// ID>/webhooks/<Webhook ID>`.
     #[prost(string, tag = "2")]
     pub webhook: ::prost::alloc::string::String,
+    /// Whether Dialogflow should return currently queued fulfillment response
+    /// messages in streaming APIs. If a webhook is specified, it happens before
+    /// Dialogflow invokes webhook.
+    /// Warning:
+    /// 1) This flag only affects streaming API. Responses are still queued
+    /// and returned once in non-streaming API.
+    /// 2) The flag can be enabled in any fulfillment but only the first 3 partial
+    /// responses will be returned. You may only want to apply it to fulfillments
+    /// that have slow webhooks.
+    #[prost(bool, tag = "8")]
+    pub return_partial_responses: bool,
     /// The tag used by the webhook to identify which fulfillment is being called.
     /// This field is required if `webhook` is specified.
     #[prost(string, tag = "3")]
@@ -600,11 +611,17 @@ pub struct ListPagesRequest {
     /// dependent:
     ///
     /// *  `Page.entry_fulfillment.messages`
+    /// *  `Page.entry_fulfillment.conditional_cases`
+    /// *  `Page.event_handlers.trigger_fulfillment.messages`
+    /// *  `Page.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
-    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
-    /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
+    /// `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases`
+    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
+    /// *
+    /// `Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -645,11 +662,17 @@ pub struct GetPageRequest {
     /// dependent:
     ///
     /// *  `Page.entry_fulfillment.messages`
+    /// *  `Page.entry_fulfillment.conditional_cases`
+    /// *  `Page.event_handlers.trigger_fulfillment.messages`
+    /// *  `Page.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
-    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
-    /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
+    /// `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases`
+    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
+    /// *
+    /// `Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -673,11 +696,17 @@ pub struct CreatePageRequest {
     /// The language of the following fields in `page`:
     ///
     /// *  `Page.entry_fulfillment.messages`
+    /// *  `Page.entry_fulfillment.conditional_cases`
+    /// *  `Page.event_handlers.trigger_fulfillment.messages`
+    /// *  `Page.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
-    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
-    /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
+    /// `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases`
+    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
+    /// *
+    /// `Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -696,11 +725,17 @@ pub struct UpdatePageRequest {
     /// The language of the following fields in `page`:
     ///
     /// *  `Page.entry_fulfillment.messages`
+    /// *  `Page.entry_fulfillment.conditional_cases`
+    /// *  `Page.event_handlers.trigger_fulfillment.messages`
+    /// *  `Page.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages`
-    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
-    /// *  `Page.transition_routes.trigger_fulfillment.messages`
     /// *
-    /// `Page.transition_route_groups.transition_routes.trigger_fulfillment.messages`
+    /// `Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases`
+    /// *  `Page.form.parameters.fill_behavior.reprompt_event_handlers.messages`
+    /// *
+    /// `Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases`
+    /// *  `Page.transition_routes.trigger_fulfillment.messages`
+    /// *  `Page.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -737,26 +772,53 @@ pub struct DeletePageRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod pages_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Pages][google.cloud.dialogflow.cx.v3beta1.Page]."]
+    #[derive(Debug, Clone)]
     pub struct PagesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> PagesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PagesClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            PagesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all pages in the specified flow."]
         pub async fn list_pages(
@@ -842,18 +904,6 @@ pub mod pages_client {
                 "/google.cloud.dialogflow.cx.v3beta1.Pages/DeletePage",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for PagesClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for PagesClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "PagesClient {{ ... }}")
         }
     }
 }
@@ -1041,6 +1091,18 @@ pub struct Flow {
     /// get executed, with the rest being ignored.
     #[prost(message, repeated, tag = "10")]
     pub event_handlers: ::prost::alloc::vec::Vec<EventHandler>,
+    /// A flow's transition route group serve two purposes:
+    ///
+    /// *   They are responsible for matching the user's first utterances in the
+    /// flow.
+    /// *   They are inherited by every page's [transition
+    /// route groups][Page.transition_route_groups]. Transition route groups
+    /// defined in the page have higher priority than those defined in the flow.
+    ///
+    /// Format:`projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>`.
+    #[prost(string, repeated, tag = "15")]
+    pub transition_route_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// NLU related settings of the flow.
     #[prost(message, optional, tag = "11")]
     pub nlu_settings: ::core::option::Option<NluSettings>,
@@ -1058,7 +1120,9 @@ pub struct CreateFlowRequest {
     /// The language of the following fields in `flow`:
     ///
     /// *  `Flow.event_handlers.trigger_fulfillment.messages`
+    /// *  `Flow.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Flow.transition_routes.trigger_fulfillment.messages`
+    /// *  `Flow.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -1107,7 +1171,9 @@ pub struct ListFlowsRequest {
     /// dependent:
     ///
     /// *  `Flow.event_handlers.trigger_fulfillment.messages`
+    /// *  `Flow.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Flow.transition_routes.trigger_fulfillment.messages`
+    /// *  `Flow.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -1141,7 +1207,9 @@ pub struct GetFlowRequest {
     /// dependent:
     ///
     /// *  `Flow.event_handlers.trigger_fulfillment.messages`
+    /// *  `Flow.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Flow.transition_routes.trigger_fulfillment.messages`
+    /// *  `Flow.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -1164,7 +1232,9 @@ pub struct UpdateFlowRequest {
     /// The language of the following fields in `flow`:
     ///
     /// *  `Flow.event_handlers.trigger_fulfillment.messages`
+    /// *  `Flow.event_handlers.trigger_fulfillment.conditional_cases`
     /// *  `Flow.transition_routes.trigger_fulfillment.messages`
+    /// *  `Flow.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -1222,30 +1292,153 @@ pub struct FlowValidationResult {
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// The request message for [Flows.ImportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ImportFlow].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportFlowRequest {
+    /// Required. The agent to import the flow into.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Flow import mode. If not specified, `KEEP` is assumed.
+    #[prost(enumeration = "import_flow_request::ImportOption", tag = "4")]
+    pub import_option: i32,
+    /// Required. The flow to import.
+    #[prost(oneof = "import_flow_request::Flow", tags = "2, 3")]
+    pub flow: ::core::option::Option<import_flow_request::Flow>,
+}
+/// Nested message and enum types in `ImportFlowRequest`.
+pub mod import_flow_request {
+    /// Import option.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ImportOption {
+        /// Unspecified. Treated as `KEEP`.
+        Unspecified = 0,
+        /// Always respect settings in exported flow content. It may cause a
+        /// import failure if some settings (e.g. custom NLU) are not supported in
+        /// the agent to import into.
+        Keep = 1,
+        /// Fallback to default settings if some settings are not supported in the
+        /// agent to import into. E.g. Standard NLU will be used if custom NLU is
+        /// not available.
+        Fallback = 2,
+    }
+    /// Required. The flow to import.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Flow {
+        /// The [Google Cloud Storage](https://cloud.google.com/storage/docs/) URI
+        /// to import flow from. The format of this URI must be
+        /// `gs://<bucket-name>/<object-name>`.
+        #[prost(string, tag = "2")]
+        FlowUri(::prost::alloc::string::String),
+        /// Uncompressed raw byte content for flow.
+        #[prost(bytes, tag = "3")]
+        FlowContent(::prost::alloc::vec::Vec<u8>),
+    }
+}
+/// The response message for [Flows.ImportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ImportFlow].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportFlowResponse {
+    /// The unique identifier of the new flow.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>`.
+    #[prost(string, tag = "1")]
+    pub flow: ::prost::alloc::string::String,
+}
+/// The request message for [Flows.ExportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ExportFlow].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportFlowRequest {
+    /// Required. The name of the flow to export.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The [Google Cloud Storage](https://cloud.google.com/storage/docs/) URI to
+    /// export the flow to. The format of this URI must be
+    /// `gs://<bucket-name>/<object-name>`.
+    /// If left unspecified, the serialized flow is returned inline.
+    #[prost(string, tag = "2")]
+    pub flow_uri: ::prost::alloc::string::String,
+    /// Optional. Whether to export flows referenced by the specified flow.
+    #[prost(bool, tag = "4")]
+    pub include_referenced_flows: bool,
+}
+/// The response message for [Flows.ExportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ExportFlow].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportFlowResponse {
+    /// The exported flow.
+    #[prost(oneof = "export_flow_response::Flow", tags = "1, 2")]
+    pub flow: ::core::option::Option<export_flow_response::Flow>,
+}
+/// Nested message and enum types in `ExportFlowResponse`.
+pub mod export_flow_response {
+    /// The exported flow.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Flow {
+        /// The URI to a file containing the exported flow. This field is populated
+        /// only if `flow_uri` is specified in [ExportFlowRequest][google.cloud.dialogflow.cx.v3beta1.ExportFlowRequest].
+        #[prost(string, tag = "1")]
+        FlowUri(::prost::alloc::string::String),
+        /// Uncompressed raw byte content for flow.
+        #[prost(bytes, tag = "2")]
+        FlowContent(::prost::alloc::vec::Vec<u8>),
+    }
+}
 #[doc = r" Generated client implementations."]
 pub mod flows_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Flows][google.cloud.dialogflow.cx.v3beta1.Flow]."]
+    #[derive(Debug, Clone)]
     pub struct FlowsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> FlowsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FlowsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            FlowsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a flow in the specified agent."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn create_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFlowRequest>,
@@ -1314,6 +1507,10 @@ pub mod flows_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the specified flow."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn update_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFlowRequest>,
@@ -1332,6 +1529,10 @@ pub mod flows_client {
         }
         #[doc = " Trains the specified flow. Note that only the flow in 'draft' environment"]
         #[doc = " is trained."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn train_flow(
             &mut self,
             request: impl tonic::IntoRequest<super::TrainFlowRequest>,
@@ -1388,17 +1589,52 @@ pub mod flows_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T: Clone> Clone for FlowsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
+        #[doc = " Imports the specified flow to the specified agent from a binary file."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
+        pub async fn import_flow(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportFlowRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Flows/ImportFlow",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T> std::fmt::Debug for FlowsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "FlowsClient {{ ... }}")
+        #[doc = " Exports the specified flow to a binary file."]
+        #[doc = ""]
+        #[doc = " Note that resources (e.g. intents, entities, webhooks) that the flow"]
+        #[doc = " references will also be exported."]
+        pub async fn export_flow(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportFlowRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Flows/ExportFlow",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }
@@ -1486,8 +1722,9 @@ pub struct SecuritySettings {
     /// Strategy that defines how we do redaction.
     #[prost(enumeration = "security_settings::RedactionStrategy", tag = "3")]
     pub redaction_strategy: i32,
-    /// Defines on what data we apply redaction. Note that we don't
-    /// redact data to which we don't have access, e.g., Stackdriver logs.
+    /// Defines the data for which Dialogflow applies redaction. Dialogflow does
+    /// not redact data that it does not have access to – for example, Cloud
+    /// logging.
     #[prost(enumeration = "security_settings::RedactionScope", tag = "4")]
     pub redaction_scope: i32,
     /// DLP inspect template name. Use this template to define inspect base
@@ -1496,8 +1733,10 @@ pub struct SecuritySettings {
     /// If empty, we use the default DLP inspect config.
     ///
     /// The template name will have one of the following formats:
-    /// `projects/PROJECT_ID/inspectTemplates/TEMPLATE_ID` OR
-    /// `organizations/ORGANIZATION_ID/inspectTemplates/TEMPLATE_ID`
+    /// `projects/<Project ID>/inspectTemplates/<Template ID>` OR
+    /// `projects/<Project ID>/locations/<Location ID>/inspectTemplates/<Template
+    /// ID>` OR
+    /// `organizations/<Organization ID>/inspectTemplates/<Template ID>`
     #[prost(string, tag = "9")]
     pub inspect_template: ::prost::alloc::string::String,
     /// List of types of data to remove when retention settings triggers purge.
@@ -1537,8 +1776,8 @@ pub mod security_settings {
     pub enum PurgeDataType {
         /// Unspecified. Do not use.
         Unspecified = 0,
-        /// Dialogflow history. This does not include Stackdriver log, which is
-        /// owned by the user not Dialogflow.
+        /// Dialogflow history. This does not include Cloud logging, which is
+        /// owned by the user - not Dialogflow.
         DialogflowHistory = 1,
     }
     /// Specifies how data is retained. Note that even if the data is
@@ -1546,37 +1785,68 @@ pub mod security_settings {
     /// a few days without allowing direct readings.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataRetention {
-        /// Retains the data for the specified number of days.
+        /// Retains data in interaction logging for the specified number of days.
+        /// This does not apply to Cloud logging, which is owned by the user - not
+        /// Dialogflow.
         /// User must Set a value lower than Dialogflow's default 30d TTL. Setting a
         /// value higher than that has no effect.
         /// A missing value or setting to 0 also means we use Dialogflow's default
         /// TTL.
+        /// Note: Interaction logging is a limited access feature. Talk to your
+        /// Google representative to check availability for you.
         #[prost(int32, tag = "6")]
         RetentionWindowDays(i32),
     }
 }
 #[doc = r" Generated client implementations."]
 pub mod security_settings_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing security settings for Dialogflow."]
+    #[derive(Debug, Clone)]
     pub struct SecuritySettingsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SecuritySettingsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SecuritySettingsServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SecuritySettingsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Create security settings in the specified location."]
         pub async fn create_security_settings(
@@ -1659,18 +1929,6 @@ pub mod security_settings_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for SecuritySettingsServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SecuritySettingsServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SecuritySettingsServiceClient {{ ... }}")
-        }
-    }
 }
 /// Settings related to speech recognition.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1698,13 +1956,17 @@ pub struct Agent {
     /// Required. The human-readable name of the agent, unique within the location.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Immutable. The default language of the agent as a language tag.
+    /// Required. Immutable. The default language of the agent as a language tag.
     /// See [Language
     /// Support](https://cloud.google.com/dialogflow/cx/docs/reference/language)
     /// for a list of the currently supported language codes.
     /// This field cannot be set by the [Agents.UpdateAgent][google.cloud.dialogflow.cx.v3beta1.Agents.UpdateAgent] method.
     #[prost(string, tag = "3")]
     pub default_language_code: ::prost::alloc::string::String,
+    /// The list of all languages supported by the agent (except for the
+    /// `default_language_code`).
+    #[prost(string, repeated, tag = "4")]
+    pub supported_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The time zone of the agent from the [time zone
     /// database](https://www.iana.org/time-zones), e.g., America/New_York,
     /// Europe/Paris.
@@ -1821,6 +2083,11 @@ pub struct ExportAgentRequest {
     /// If left unspecified, the serialized agent is returned inline.
     #[prost(string, tag = "2")]
     pub agent_uri: ::prost::alloc::string::String,
+    /// Optional. Environment name. If not set, draft environment is assumed.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/environments/<Environment ID>`.
+    #[prost(string, tag = "5")]
+    pub environment: ::prost::alloc::string::String,
 }
 /// The response message for [Agents.ExportAgent][google.cloud.dialogflow.cx.v3beta1.Agents.ExportAgent].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1923,26 +2190,53 @@ pub struct AgentValidationResult {
 }
 #[doc = r" Generated client implementations."]
 pub mod agents_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Agents][google.cloud.dialogflow.cx.v3beta1.Agent]."]
+    #[derive(Debug, Clone)]
     pub struct AgentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AgentsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AgentsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AgentsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all agents in the specified location."]
         pub async fn list_agents(
@@ -1979,6 +2273,10 @@ pub mod agents_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates an agent in the specified location."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn create_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAgentRequest>,
@@ -1996,6 +2294,10 @@ pub mod agents_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the specified agent."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn update_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAgentRequest>,
@@ -2053,6 +2355,10 @@ pub mod agents_client {
         #[doc = ""]
         #[doc = " Replaces the current agent with a new one. Note that all existing resources"]
         #[doc = " in agent (e.g. intents, entity types, flows) will be removed."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn restore_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::RestoreAgentRequest>,
@@ -2108,18 +2414,6 @@ pub mod agents_client {
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgentValidationResult",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AgentsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AgentsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AgentsClient {{ ... }}")
         }
     }
 }
@@ -2655,26 +2949,53 @@ pub struct DeleteEntityTypeRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod entity_types_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [EntityTypes][google.cloud.dialogflow.cx.v3beta1.EntityType]."]
+    #[derive(Debug, Clone)]
     pub struct EntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> EntityTypesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> EntityTypesClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            EntityTypesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all entity types in the specified agent."]
         pub async fn list_entity_types(
@@ -2728,6 +3049,10 @@ pub mod entity_types_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the specified entity type."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn update_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEntityTypeRequest>,
@@ -2745,6 +3070,10 @@ pub mod entity_types_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Deletes the specified entity type."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn delete_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEntityTypeRequest>,
@@ -2760,18 +3089,6 @@ pub mod entity_types_client {
                 "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/DeleteEntityType",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for EntityTypesClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for EntityTypesClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "EntityTypesClient {{ ... }}")
         }
     }
 }
@@ -2817,7 +3134,7 @@ pub struct Intent {
     /// fallback intents act as negative examples that triggers no-match event.
     #[prost(bool, tag = "6")]
     pub is_fallback: bool,
-    /// Optional. The key/value metadata to label an intent. Labels can contain
+    /// The key/value metadata to label an intent. Labels can contain
     /// lowercase letters, digits and the symbols '-' and '_'. International
     /// characters are allowed, including letters from unicase alphabets. Keys must
     /// start with a letter. Keys and values can be no longer than 63 characters
@@ -2832,7 +3149,7 @@ pub struct Intent {
     #[prost(map = "string, string", tag = "7")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Optional. Human readable description for better understanding an intent like its
+    /// Human readable description for better understanding an intent like its
     /// scope, content, result etc. Maximum character limit: 140 characters.
     #[prost(string, tag = "8")]
     pub description: ::prost::alloc::string::String,
@@ -3044,26 +3361,53 @@ pub enum IntentView {
 }
 #[doc = r" Generated client implementations."]
 pub mod intents_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Intents][google.cloud.dialogflow.cx.v3beta1.Intent]."]
+    #[derive(Debug, Clone)]
     pub struct IntentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> IntentsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> IntentsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            IntentsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all intents in the specified agent."]
         pub async fn list_intents(
@@ -3100,6 +3444,10 @@ pub mod intents_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates an intent in the specified agent."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn create_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateIntentRequest>,
@@ -3117,6 +3465,10 @@ pub mod intents_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the specified intent."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn update_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateIntentRequest>,
@@ -3134,6 +3486,10 @@ pub mod intents_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Deletes the specified intent."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn delete_intent(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteIntentRequest>,
@@ -3149,18 +3505,6 @@ pub mod intents_client {
                 "/google.cloud.dialogflow.cx.v3beta1.Intents/DeleteIntent",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for IntentsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for IntentsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "IntentsClient {{ ... }}")
         }
     }
 }
@@ -3310,26 +3654,53 @@ pub struct DeleteSessionEntityTypeRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod session_entity_types_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [SessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityType]."]
+    #[derive(Debug, Clone)]
     pub struct SessionEntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SessionEntityTypesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SessionEntityTypesClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SessionEntityTypesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all session entity types in the specified session."]
         pub async fn list_session_entity_types(
@@ -3366,9 +3737,6 @@ pub mod session_entity_types_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a session entity type."]
-        #[doc = ""]
-        #[doc = " If the specified session entity type already exists, overrides the"]
-        #[doc = " session entity type."]
         pub async fn create_session_entity_type(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSessionEntityTypeRequest>,
@@ -3418,18 +3786,6 @@ pub mod session_entity_types_client {
                 "/google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes/DeleteSessionEntityType",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for SessionEntityTypesClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SessionEntityTypesClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SessionEntityTypesClient {{ ... }}")
         }
     }
 }
@@ -3490,6 +3846,30 @@ pub struct DetectIntentResponse {
     /// The config used by the speech synthesizer to generate the output audio.
     #[prost(message, optional, tag = "5")]
     pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
+    /// Response type.
+    #[prost(enumeration = "detect_intent_response::ResponseType", tag = "6")]
+    pub response_type: i32,
+    /// Indicates whether the partial response can be cancelled when a later
+    /// response arrives. e.g. if the agent specified some music as partial
+    /// response, it can be cancelled.
+    #[prost(bool, tag = "7")]
+    pub allow_cancellation: bool,
+}
+/// Nested message and enum types in `DetectIntentResponse`.
+pub mod detect_intent_response {
+    /// Represents different DetectIntentResponse types.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ResponseType {
+        /// Not specified. This should never happen.
+        Unspecified = 0,
+        /// Partial response. e.g. Aggregated responses in a Fulfillment that enables
+        /// `return_partial_response` can be returned as partial response.
+        /// WARNING: partial response is not eligible for barge-in.
+        Partial = 1,
+        /// Final response.
+        Final = 2,
+    }
 }
 /// The top-level message sent by the client to the
 /// [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.StreamingDetectIntent] method.
@@ -3549,6 +3929,12 @@ pub struct StreamingDetectIntentRequest {
     /// Instructs the speech synthesizer how to generate the output audio.
     #[prost(message, optional, tag = "4")]
     pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
+    /// Enable partial detect intent response. If this flag is not enabled,
+    /// response stream still contains only one final `DetectIntentResponse` even
+    /// if some `Fulfillment`s in the agent have been configured to return partial
+    /// responses.
+    #[prost(bool, tag = "5")]
+    pub enable_partial_response: bool,
 }
 /// The top-level message returned from the `StreamingDetectIntent` method.
 ///
@@ -3559,7 +3945,12 @@ pub struct StreamingDetectIntentRequest {
 ///     complete transcript of what the user said. The last `recognition_result`
 ///     has `is_final` set to `true`.
 ///
-/// 2.  The last message contains `detect_intent_response`.
+/// 2.  If `enable_partial_response` is true, the following N messages
+///     (currently 1 <= N <= 4) contain `detect_intent_response`. The first (N-1)
+///     `detect_intent_response`s will have `response_type` set to `PARTIAL`.
+///     The last `detect_intent_response` has `response_type` set to `FINAL`.
+///     If `response_type` is false, response stream only contains
+///     the final `detect_intent_response`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingDetectIntentResponse {
     /// The output response.
@@ -3696,12 +4087,26 @@ pub struct QueryParameters {
     pub session_entity_types: ::prost::alloc::vec::Vec<SessionEntityType>,
     /// This field can be used to pass custom data into the webhook associated with
     /// the agent. Arbitrary JSON objects are supported.
+    /// Some integrations that query a Dialogflow agent may provide additional
+    /// information in the payload.
+    /// In particular, for the Dialogflow Phone Gateway integration, this field has
+    /// the form:
+    /// ```
+    /// {
+    ///  "telephony": {
+    ///    "caller_id": "+18558363987"
+    ///  }
+    /// }
+    /// ```
     #[prost(message, optional, tag = "4")]
     pub payload: ::core::option::Option<::prost_types::Struct>,
     /// Additional parameters to be put into [session
     /// parameters][SessionInfo.parameters]. To remove a
     /// parameter from the session, clients should explicitly set the parameter
     /// value to null.
+    ///
+    /// You can reference the session parameters in the agent with the following
+    /// format: $session.params.parameter-id.
     ///
     /// Depending on your protocol or client library language, this is a
     /// map, associative array, symbol table, dictionary, or JSON object
@@ -3712,13 +4117,27 @@ pub struct QueryParameters {
     /// -   MapValue type:
     ///     -   If parameter's entity type is a composite entity: map
     ///     -   Else: depending on parameter value type, could be one of string,
-    ///     number, boolean, null, list or map
+    ///         number, boolean, null, list or map
     /// -   MapValue value:
     ///     -   If parameter's entity type is a composite entity:
     ///         map from composite entity property names to property values
     ///     -   Else: parameter value
     #[prost(message, optional, tag = "5")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
+    /// The unique identifier of the [page][google.cloud.dialogflow.cx.v3beta1.Page] to override the [current
+    /// page][QueryResult.current_page] in the session.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    ///
+    /// If `current_page` is specified, the previous state of the session will be
+    /// ignored by Dialogflow, including the [previous
+    /// page][QueryResult.current_page] and the [previous session
+    /// parameters][QueryResult.parameters].
+    /// In most cases, [current_page][google.cloud.dialogflow.cx.v3beta1.QueryParameters.current_page] and
+    /// [parameters][google.cloud.dialogflow.cx.v3beta1.QueryParameters.parameters] should be configured together to
+    /// direct a session to a specific state.
+    #[prost(string, tag = "6")]
+    pub current_page: ::prost::alloc::string::String,
     /// Whether to disable webhook calls for this request.
     #[prost(bool, tag = "7")]
     pub disable_webhook: bool,
@@ -3871,10 +4290,12 @@ pub mod query_result {
         Text(::prost::alloc::string::String),
         /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was provided as input, this field will
         /// contain a copy of the intent identifier.
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>/intents/<Intent ID>`.
         #[prost(string, tag = "11")]
         TriggerIntent(::prost::alloc::string::String),
         /// If [natural language speech audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was provided as input,
-        /// this field will contain the trascript for the audio.
+        /// this field will contain the transcript for the audio.
         #[prost(string, tag = "12")]
         Transcript(::prost::alloc::string::String),
         /// If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput] was provided as input, this field will contain
@@ -4055,10 +4476,12 @@ pub mod match_intent_response {
         Text(::prost::alloc::string::String),
         /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was provided as input, this field will
         /// contain a copy of the intent identifier.
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>/intents/<Intent ID>`.
         #[prost(string, tag = "2")]
         TriggerIntent(::prost::alloc::string::String),
         /// If [natural language speech audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was provided as input,
-        /// this field will contain the trascript for the audio.
+        /// this field will contain the transcript for the audio.
         #[prost(string, tag = "3")]
         Transcript(::prost::alloc::string::String),
         /// If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput] was provided as input, this field will
@@ -4124,28 +4547,55 @@ pub struct SentimentAnalysisResult {
 }
 #[doc = r" Generated client implementations."]
 pub mod sessions_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " A session represents an interaction with a user. You retrieve user input"]
     #[doc = " and pass it to the [DetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.DetectIntent] method to determine"]
     #[doc = " user intent and respond."]
+    #[derive(Debug, Clone)]
     pub struct SessionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SessionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SessionsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SessionsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Processes a natural language query and returns structured, actionable data"]
         #[doc = " as a result. This method is not idempotent, because it may cause session"]
@@ -4237,18 +4687,6 @@ pub mod sessions_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for SessionsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SessionsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SessionsClient {{ ... }}")
-        }
-    }
 }
 /// An TransitionRouteGroup represents a group of
 /// [`TransitionRoutes`][google.cloud.dialogflow.cx.v3beta1.TransitionRoute] to be used by a [Page][google.cloud.dialogflow.cx.v3beta1.Page].
@@ -4284,9 +4722,12 @@ pub struct ListTransitionRouteGroupsRequest {
     /// The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// The language to list transition route groups for. The field
-    /// [`messages`][TransitionRoute.trigger_fulfillment.messages] in
-    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute] is language dependent.
+    /// The language to list transition route groups for. The following fields are
+    /// language dependent:
+    ///
+    /// *  `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages`
+    /// *
+    /// `TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -4318,9 +4759,12 @@ pub struct GetTransitionRouteGroupRequest {
     /// ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The language to list transition route groups for. The field
-    /// [`messages`][TransitionRoute.trigger_fulfillment.messages] in
-    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute] is language dependent.
+    /// The language to retrieve the transition route group for. The following
+    /// fields are language dependent:
+    ///
+    /// *  `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages`
+    /// *
+    /// `TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -4341,9 +4785,11 @@ pub struct CreateTransitionRouteGroupRequest {
     /// Required. The transition route group to create.
     #[prost(message, optional, tag = "2")]
     pub transition_route_group: ::core::option::Option<TransitionRouteGroup>,
-    /// The language to list transition route groups for. The field
-    /// [`messages`][TransitionRoute.trigger_fulfillment.messages] in
-    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute] is language dependent.
+    /// The language of the following fields in `TransitionRouteGroup`:
+    ///
+    /// *  `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages`
+    /// *
+    /// `TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -4362,9 +4808,11 @@ pub struct UpdateTransitionRouteGroupRequest {
     /// The mask to control which fields get updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// The language to list transition route groups for. The field
-    /// [`messages`][TransitionRoute.trigger_fulfillment.messages] in
-    /// [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute] is language dependent.
+    /// The language of the following fields in `TransitionRouteGroup`:
+    ///
+    /// *  `TransitionRouteGroup.transition_routes.trigger_fulfillment.messages`
+    /// *
+    /// `TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases`
     ///
     /// If not specified, the agent's default language is used.
     /// [Many
@@ -4394,26 +4842,53 @@ pub struct DeleteTransitionRouteGroupRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod transition_route_groups_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [TransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]."]
+    #[derive(Debug, Clone)]
     pub struct TransitionRouteGroupsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> TransitionRouteGroupsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> TransitionRouteGroupsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            TransitionRouteGroupsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all transition route groups in the specified flow."]
         pub async fn list_transition_route_groups(
@@ -4449,6 +4924,10 @@ pub mod transition_route_groups_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates an [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup] in the specified flow."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn create_transition_route_group(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTransitionRouteGroupRequest>,
@@ -4464,6 +4943,10 @@ pub mod transition_route_groups_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates the specified [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn update_transition_route_group(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTransitionRouteGroupRequest>,
@@ -4479,6 +4962,10 @@ pub mod transition_route_groups_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Deletes the specified [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]."]
+        #[doc = ""]
+        #[doc = " Note: You should always train a flow prior to sending it queries. See the"]
+        #[doc = " [training"]
+        #[doc = " documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training)."]
         pub async fn delete_transition_route_group(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTransitionRouteGroupRequest>,
@@ -4492,18 +4979,6 @@ pub mod transition_route_groups_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups/DeleteTransitionRouteGroup") ;
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for TransitionRouteGroupsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for TransitionRouteGroupsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "TransitionRouteGroupsClient {{ ... }}")
         }
     }
 }
@@ -4607,6 +5082,9 @@ pub mod conversation_turn {
         /// enabled.
         #[prost(bool, tag = "3")]
         pub is_webhook_enabled: bool,
+        /// Whether sentiment analysis is enabled.
+        #[prost(bool, tag = "7")]
+        pub enable_sentiment_analysis: bool,
     }
     /// The output from the virtual agent.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5207,6 +5685,15 @@ pub struct ListTestCaseResultsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The request message for [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCaseResult].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTestCaseResultRequest {
+    /// Required. The name of the testcase.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// The test result for a test case and an agent environment.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -5220,27 +5707,54 @@ pub enum TestResult {
 }
 #[doc = r" Generated client implementations."]
 pub mod test_cases_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Test Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and"]
     #[doc = " [Test Case Results][google.cloud.dialogflow.cx.v3beta1.TestCaseResult]."]
+    #[derive(Debug, Clone)]
     pub struct TestCasesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> TestCasesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> TestCasesClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            TestCasesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Fetches a list of test cases for a given agent."]
         pub async fn list_test_cases(
@@ -5444,17 +5958,22 @@ pub mod test_cases_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T: Clone> Clone for TestCasesClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for TestCasesClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "TestCasesClient {{ ... }}")
+        #[doc = " Gets a test case result."]
+        pub async fn get_test_case_result(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTestCaseResultRequest>,
+        ) -> Result<tonic::Response<super::TestCaseResult>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.TestCases/GetTestCaseResult",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }
@@ -5598,28 +6117,142 @@ pub struct LookupEnvironmentHistoryResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Represents a result from running a test case in an agent environment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContinuousTestResult {
+    /// The resource name for the continuous test result. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/environments/<Environment
+    /// ID>/continuousTestResults/<ContinuousTestResult ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The result of this continuous test run, i.e. whether all the tests in this
+    /// continuous test run pass or not.
+    #[prost(
+        enumeration = "continuous_test_result::AggregatedTestResult",
+        tag = "2"
+    )]
+    pub result: i32,
+    /// A list of individual test case results names in this continuous test run.
+    #[prost(string, repeated, tag = "3")]
+    pub test_case_results: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Time when the continuous testing run starts.
+    #[prost(message, optional, tag = "4")]
+    pub run_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `ContinuousTestResult`.
+pub mod continuous_test_result {
+    /// The overall result for a continuous test run in an agent environment.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AggregatedTestResult {
+        /// Not specified. Should never be used.
+        Unspecified = 0,
+        /// All the tests passed.
+        Passed = 1,
+        /// At least one test did not pass.
+        Failed = 2,
+    }
+}
+/// The request message for [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3beta1.Environments.RunContinuousTest].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunContinuousTestRequest {
+    /// Required. Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/environments/<Environment ID>`.
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+}
+/// The response message for [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3beta1.Environments.RunContinuousTest].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunContinuousTestResponse {
+    /// The result for a continuous test run.
+    #[prost(message, optional, tag = "1")]
+    pub continuous_test_result: ::core::option::Option<ContinuousTestResult>,
+}
+/// Metadata returned for the [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3beta1.Environments.RunContinuousTest] long running
+/// operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunContinuousTestMetadata {
+    /// The test errors.
+    #[prost(message, repeated, tag = "1")]
+    pub errors: ::prost::alloc::vec::Vec<TestError>,
+}
+/// The request message for [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3beta1.Environments.ListContinuousTestResults].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListContinuousTestResultsRequest {
+    /// Required. The environment to list results for.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/
+    /// environments/<Environment ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of items to return in a single page. By default 100 and
+    /// at most 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response message for [Environments.ListTestCaseResults][].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListContinuousTestResultsResponse {
+    /// The list of continuous test results.
+    #[prost(message, repeated, tag = "1")]
+    pub continuous_test_results: ::prost::alloc::vec::Vec<ContinuousTestResult>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 #[doc = r" Generated client implementations."]
 pub mod environments_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Environments][google.cloud.dialogflow.cx.v3beta1.Environment]."]
+    #[derive(Debug, Clone)]
     pub struct EnvironmentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> EnvironmentsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> EnvironmentsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            EnvironmentsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all environments in the specified [Agent][google.cloud.dialogflow.cx.v3beta1.Agent]."]
         pub async fn list_environments(
@@ -5730,17 +6363,43 @@ pub mod environments_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T: Clone> Clone for EnvironmentsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
+        #[doc = " Kicks off a continuous test under the specified [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]."]
+        pub async fn run_continuous_test(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunContinuousTestRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Environments/RunContinuousTest",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T> std::fmt::Debug for EnvironmentsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "EnvironmentsClient {{ ... }}")
+        #[doc = " Fetches a list of continuous test results for a given environment."]
+        pub async fn list_continuous_test_results(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListContinuousTestResultsRequest>,
+        ) -> Result<tonic::Response<super::ListContinuousTestResultsResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Environments/ListContinuousTestResults",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }
@@ -5888,7 +6547,7 @@ pub mod experiment {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VersionMetrics {
             /// The name of the flow [Version][google.cloud.dialogflow.cx.v3beta1.Version].
-            /// Format: `projects/<Project Number>/locations/<Location
+            /// Format: `projects/<Project ID>/locations/<Location
             /// ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>`.
             #[prost(string, tag = "1")]
             pub version: ::prost::alloc::string::String,
@@ -6088,26 +6747,53 @@ pub struct StopExperimentRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod experiments_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Experiments][google.cloud.dialogflow.cx.v3beta1.Experiment]."]
+    #[derive(Debug, Clone)]
     pub struct ExperimentsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ExperimentsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ExperimentsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ExperimentsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all experiments in the specified [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]."]
         pub async fn list_experiments(
@@ -6229,18 +6915,6 @@ pub mod experiments_client {
                 "/google.cloud.dialogflow.cx.v3beta1.Experiments/StopExperiment",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ExperimentsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ExperimentsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ExperimentsClient {{ ... }}")
         }
     }
 }
@@ -6369,40 +7043,67 @@ pub struct DeleteVersionRequest {
 /// The request message for [Versions.LoadVersion][google.cloud.dialogflow.cx.v3beta1.Versions.LoadVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoadVersionRequest {
-    /// Required. The [Version][google.cloud.dialogflow.cx.v3beta1.Version] to be loaded to draft version.
+    /// Required. The [Version][google.cloud.dialogflow.cx.v3beta1.Version] to be loaded to draft flow.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
     /// ID>/flows/<Flow ID>/versions/<Version ID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// This field is used to prevent accidental overwrite of other agent resources
-    /// in the draft version, which can potentially impact other flow's behavior.
-    /// If `allow_override_agent_resources` is false, conflicted agent-level
-    /// resources will not be overridden (i.e. intents, entities, webhooks).
+    /// This field is used to prevent accidental overwrite of other agent
+    /// resources, which can potentially impact other flow's behavior. If
+    /// `allow_override_agent_resources` is false, conflicted agent-level resources
+    /// will not be overridden (i.e. intents, entities, webhooks).
     #[prost(bool, tag = "2")]
     pub allow_override_agent_resources: bool,
 }
 #[doc = r" Generated client implementations."]
 pub mod versions_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Versions][google.cloud.dialogflow.cx.v3beta1.Version]."]
+    #[derive(Debug, Clone)]
     pub struct VersionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> VersionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> VersionsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            VersionsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all versions in the specified [Flow][google.cloud.dialogflow.cx.v3beta1.Flow]."]
         pub async fn list_versions(
@@ -6492,7 +7193,7 @@ pub mod versions_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Loads a specified version to draft version."]
+        #[doc = " Loads resources in the specified version to the draft flow."]
         pub async fn load_version(
             &mut self,
             request: impl tonic::IntoRequest<super::LoadVersionRequest>,
@@ -6511,18 +7212,6 @@ pub mod versions_client {
                 "/google.cloud.dialogflow.cx.v3beta1.Versions/LoadVersion",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for VersionsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for VersionsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "VersionsClient {{ ... }}")
         }
     }
 }
@@ -6551,7 +7240,7 @@ pub struct Webhook {
     #[prost(bool, tag = "5")]
     pub disabled: bool,
     /// Required. The webhook configuration.
-    #[prost(oneof = "webhook::Webhook", tags = "4")]
+    #[prost(oneof = "webhook::Webhook", tags = "4, 7")]
     pub webhook: ::core::option::Option<webhook::Webhook>,
 }
 /// Nested message and enum types in `Webhook`.
@@ -6578,12 +7267,32 @@ pub mod webhook {
             ::prost::alloc::string::String,
         >,
     }
+    /// Represents configuration for a [Service
+    /// Directory](https://cloud.google.com/service-directory) service.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ServiceDirectoryConfig {
+        /// Required. The name of [Service
+        /// Directory](https://cloud.google.com/service-directory) service.
+        /// Format: `projects/<Project ID>/locations/<Location
+        /// ID>/namespaces/<Namespace ID>/services/<Service ID>`.
+        /// `Location ID` of the service directory must be the same as the location
+        /// of the agent.
+        #[prost(string, tag = "1")]
+        pub service: ::prost::alloc::string::String,
+        /// Generic Service configuration of this webhook.
+        #[prost(message, optional, tag = "2")]
+        pub generic_web_service: ::core::option::Option<GenericWebService>,
+    }
     /// Required. The webhook configuration.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Webhook {
         /// Configuration for a generic web service.
         #[prost(message, tag = "4")]
         GenericWebService(GenericWebService),
+        /// Configuration for a [Service
+        /// Directory](https://cloud.google.com/service-directory) service.
+        #[prost(message, tag = "7")]
+        ServiceDirectory(ServiceDirectoryConfig),
     }
 }
 /// The request message for [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
@@ -6664,13 +7373,18 @@ pub struct DeleteWebhookRequest {
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
-/// The request message for a webhook call.
+/// The request message for a webhook call. The request is sent as a JSON object
+/// and the field names will be presented in camel cases.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebhookRequest {
     /// Always present. The unique identifier of the [DetectIntentResponse][google.cloud.dialogflow.cx.v3beta1.DetectIntentResponse] that
     /// will be returned to the API caller.
     #[prost(string, tag = "1")]
     pub detect_intent_response_id: ::prost::alloc::string::String,
+    /// The language code specified in the [original
+    /// request][QueryInput.language_code].
+    #[prost(string, tag = "15")]
+    pub language_code: ::prost::alloc::string::String,
     /// Always present. Information about the fulfillment that triggered this
     /// webhook call.
     #[prost(message, optional, tag = "6")]
@@ -6696,6 +7410,9 @@ pub struct WebhookRequest {
     /// filled when sentiment analysis is configured to be enabled for the request.
     #[prost(message, optional, tag = "9")]
     pub sentiment_analysis_result: ::core::option::Option<webhook_request::SentimentAnalysisResult>,
+    /// The original conversational query.
+    #[prost(oneof = "webhook_request::Query", tags = "10, 11, 12, 14")]
+    pub query: ::core::option::Option<webhook_request::Query>,
 }
 /// Nested message and enum types in `WebhookRequest`.
 pub mod webhook_request {
@@ -6711,8 +7428,9 @@ pub mod webhook_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IntentInfo {
         /// Always present. The unique identifier of the last matched
-        /// [intent][google.cloud.dialogflow.cx.v3beta1.Intent]. Format: `projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/intents/<Intent ID>`.
+        /// [intent][google.cloud.dialogflow.cx.v3beta1.Intent].
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>/intents/<Intent ID>`.
         #[prost(string, tag = "1")]
         pub last_matched_intent: ::prost::alloc::string::String,
         /// Always present. The display name of the last matched [intent][google.cloud.dialogflow.cx.v3beta1.Intent].
@@ -6758,6 +7476,28 @@ pub mod webhook_request {
         /// negative).
         #[prost(float, tag = "2")]
         pub magnitude: f32,
+    }
+    /// The original conversational query.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Query {
+        /// If [natural language text][google.cloud.dialogflow.cx.v3beta1.TextInput] was provided as input, this field
+        /// will contain a copy of the text.
+        #[prost(string, tag = "10")]
+        Text(::prost::alloc::string::String),
+        /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was provided as input, this field will
+        /// contain a copy of the intent identifier.
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>/intents/<Intent ID>`.
+        #[prost(string, tag = "11")]
+        TriggerIntent(::prost::alloc::string::String),
+        /// If [natural language speech audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was provided as input,
+        /// this field will contain the transcript for the audio.
+        #[prost(string, tag = "12")]
+        Transcript(::prost::alloc::string::String),
+        /// If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput] was provided as input, this field will contain
+        /// the name of the event.
+        #[prost(string, tag = "14")]
+        TriggerEvent(::prost::alloc::string::String),
     }
 }
 /// The response message for a webhook call.
@@ -6937,26 +7677,53 @@ pub struct SessionInfo {
 }
 #[doc = r" Generated client implementations."]
 pub mod webhooks_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for managing [Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook]."]
+    #[derive(Debug, Clone)]
     pub struct WebhooksClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> WebhooksClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> WebhooksClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            WebhooksClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the list of all webhooks in the specified agent."]
         pub async fn list_webhooks(
@@ -7042,18 +7809,6 @@ pub mod webhooks_client {
                 "/google.cloud.dialogflow.cx.v3beta1.Webhooks/DeleteWebhook",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for WebhooksClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for WebhooksClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "WebhooksClient {{ ... }}")
         }
     }
 }

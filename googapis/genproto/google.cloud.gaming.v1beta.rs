@@ -250,14 +250,15 @@ pub struct ListGameServerClustersRequest {
     /// "projects/{project}/locations/{location}/realms/{realm}".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return.  If unspecified, the server
-    /// will pick an appropriate default. The server may return fewer items than
-    /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerClustersResponse.next_page_token] to
-    /// determine if there are more GameServerClusters left to be queried.
+    /// Optional. The maximum number of items to return.  If unspecified, the
+    /// server will pick an appropriate default. The server may return fewer items
+    /// than requested. A caller should only rely on response's
+    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerClustersResponse.next_page_token]
+    /// to determine if there are more GameServerClusters left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. The next_page_token value returned from a previous List request, if any.
+    /// Optional. The next_page_token value returned from a previous List request,
+    /// if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
@@ -483,27 +484,54 @@ pub struct GameServerCluster {
 }
 #[doc = r" Generated client implementations."]
 pub mod game_server_clusters_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The game server cluster maps to Kubernetes clusters running Agones and is"]
     #[doc = " used to manage fleets within clusters."]
+    #[derive(Debug, Clone)]
     pub struct GameServerClustersServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> GameServerClustersServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GameServerClustersServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            GameServerClustersServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists game server clusters in a given project and location."]
         pub async fn list_game_server_clusters(
@@ -649,18 +677,6 @@ pub mod game_server_clusters_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for GameServerClustersServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for GameServerClustersServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "GameServerClustersServiceClient {{ ... }}")
-        }
-    }
 }
 /// Request message for GameServerConfigsService.ListGameServerConfigs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -673,11 +689,12 @@ pub struct ListGameServerConfigsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerConfigsResponse.next_page_token] to
-    /// determine if there are more GameServerConfigs left to be queried.
+    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerConfigsResponse.next_page_token]
+    /// to determine if there are more GameServerConfigs left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. The next_page_token value returned from a previous list request, if any.
+    /// Optional. The next_page_token value returned from a previous list request,
+    /// if any.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to apply to list results.
@@ -800,26 +817,53 @@ pub struct GameServerConfig {
 }
 #[doc = r" Generated client implementations."]
 pub mod game_server_configs_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The game server config configures the game servers in an Agones fleet."]
+    #[derive(Debug, Clone)]
     pub struct GameServerConfigsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> GameServerConfigsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GameServerConfigsServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            GameServerConfigsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists game server configs in a given project, location, and game server"]
         #[doc = " deployment."]
@@ -900,18 +944,6 @@ pub mod game_server_configs_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for GameServerConfigsServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for GameServerConfigsServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "GameServerConfigsServiceClient {{ ... }}")
-        }
-    }
 }
 /// Request message for GameServerDeploymentsService.ListGameServerDeployments.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -920,11 +952,11 @@ pub struct ListGameServerDeploymentsRequest {
     /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return.  If unspecified, the server
-    /// will pick an appropriate default. The server may return fewer items than
-    /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerDeploymentsResponse.next_page_token] to
-    /// determine if there are more GameServerDeployments left to be queried.
+    /// Optional. The maximum number of items to return.  If unspecified, the
+    /// server will pick an appropriate default. The server may return fewer items
+    /// than requested. A caller should only rely on response's
+    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerDeploymentsResponse.next_page_token]
+    /// to determine if there are more GameServerDeployments left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
@@ -956,7 +988,8 @@ pub struct ListGameServerDeploymentsResponse {
 /// Request message for GameServerDeploymentsService.GetGameServerDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGameServerDeploymentRequest {
-    /// Required. The name of the game server delpoyment to retrieve. Uses the form:
+    /// Required. The name of the game server delpoyment to retrieve. Uses the
+    /// form:
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}`.
     #[prost(string, tag = "1")]
@@ -966,7 +999,8 @@ pub struct GetGameServerDeploymentRequest {
 /// GameServerDeploymentsService.GetGameServerDeploymentRollout.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGameServerDeploymentRolloutRequest {
-    /// Required. The name of the game server delpoyment to retrieve. Uses the form:
+    /// Required. The name of the game server delpoyment to retrieve. Uses the
+    /// form:
     ///
     /// `projects/{project}/locations/{location}/gameServerDeployments/{deployment}/rollout`.
     #[prost(string, tag = "1")]
@@ -1167,8 +1201,8 @@ pub struct PreviewGameServerDeploymentRolloutRequest {
     /// // /docs/reference/google.protobuf#fieldmask
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. The target timestamp to compute the preview. Defaults to the immediately
-    /// after the proposed rollout completes.
+    /// Optional. The target timestamp to compute the preview. Defaults to the
+    /// immediately after the proposed rollout completes.
     #[prost(message, optional, tag = "3")]
     pub preview_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -1188,27 +1222,54 @@ pub struct PreviewGameServerDeploymentRolloutResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod game_server_deployments_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The game server deployment is used to control the deployment of Agones"]
     #[doc = " fleets."]
+    #[derive(Debug, Clone)]
     pub struct GameServerDeploymentsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> GameServerDeploymentsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GameServerDeploymentsServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            GameServerDeploymentsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists game server deployments in a given project and location."]
         pub async fn list_game_server_deployments(
@@ -1372,18 +1433,6 @@ pub mod game_server_deployments_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for GameServerDeploymentsServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for GameServerDeploymentsServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "GameServerDeploymentsServiceClient {{ ... }}")
-        }
-    }
 }
 /// Request message for RealmsService.ListRealms.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1395,8 +1444,8 @@ pub struct ListRealmsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListRealmsResponse.next_page_token] to
-    /// determine if there are more realms left to be queried.
+    /// [next_page_token][google.cloud.gaming.v1beta.ListRealmsResponse.next_page_token]
+    /// to determine if there are more realms left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
@@ -1518,8 +1567,8 @@ pub struct Realm {
     #[prost(map = "string, string", tag = "4")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Required. Time zone where all policies targeting this realm are evaluated. The value
-    /// of this field must be from the IANA time zone database:
+    /// Required. Time zone where all policies targeting this realm are evaluated.
+    /// The value of this field must be from the IANA time zone database:
     /// https://www.iana.org/time-zones.
     #[prost(string, tag = "6")]
     pub time_zone: ::prost::alloc::string::String,
@@ -1532,27 +1581,54 @@ pub struct Realm {
 }
 #[doc = r" Generated client implementations."]
 pub mod realms_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " A realm is a grouping of game server clusters that are considered"]
     #[doc = " interchangeable."]
+    #[derive(Debug, Clone)]
     pub struct RealmsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> RealmsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> RealmsServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            RealmsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists realms in a given project and location."]
         pub async fn list_realms(
@@ -1664,18 +1740,6 @@ pub mod realms_service_client {
                 "/google.cloud.gaming.v1beta.RealmsService/PreviewRealmUpdate",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for RealmsServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for RealmsServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "RealmsServiceClient {{ ... }}")
         }
     }
 }

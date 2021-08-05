@@ -542,8 +542,8 @@ pub struct ProductDetail {
 pub struct GcsSource {
     /// Required. Google Cloud Storage URIs to input files. URI can be up to
     /// 2000 characters long. URIs can match the full object path (for example,
-    /// gs://bucket/directory/object.json) or a pattern matching one or more
-    /// files, such as gs://bucket/directory/*.json. A request can
+    /// `gs://bucket/directory/object.json`) or a pattern matching one or more
+    /// files, such as `gs://bucket/directory/*.json`. A request can
     /// contain at most 100 files, and each file can be up to 2 GB. See
     /// [Importing catalog information](/recommendations-ai/docs/upload-catalog)
     /// for the expected file format and setup instructions.
@@ -588,7 +588,7 @@ pub mod import_errors_config {
 /// Request message for Import methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportCatalogItemsRequest {
-    /// Required. "projects/1234/locations/global/catalogs/default_catalog"
+    /// Required. `projects/1234/locations/global/catalogs/default_catalog`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Unique identifier provided by client, within the ancestor
@@ -608,7 +608,7 @@ pub struct ImportCatalogItemsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsRequest {
     /// Required.
-    /// "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store"
+    /// `projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Unique identifier provided by client, within the ancestor
@@ -718,7 +718,7 @@ pub struct UserEventImportSummary {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCatalogItemRequest {
     /// Required. The parent catalog resource name, such as
-    /// "projects/*/locations/global/catalogs/default_catalog".
+    /// `projects/*/locations/global/catalogs/default_catalog`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The catalog item to create.
@@ -729,7 +729,7 @@ pub struct CreateCatalogItemRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCatalogItemRequest {
     /// Required. Full resource name of catalog item, such as
-    /// "projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id".
+    /// `projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -737,7 +737,7 @@ pub struct GetCatalogItemRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCatalogItemsRequest {
     /// Required. The parent catalog resource name, such as
-    /// "projects/*/locations/global/catalogs/default_catalog".
+    /// `projects/*/locations/global/catalogs/default_catalog`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of results to return per page. If zero, the
@@ -782,32 +782,59 @@ pub struct UpdateCatalogItemRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCatalogItemRequest {
     /// Required. Full resource name of catalog item, such as
-    /// "projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id".
+    /// `projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod catalog_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for ingesting catalog information of the customer's website."]
+    #[derive(Debug, Clone)]
     pub struct CatalogServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> CatalogServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CatalogServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            CatalogServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a catalog item."]
         pub async fn create_catalog_item(
@@ -921,18 +948,6 @@ pub mod catalog_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for CatalogServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for CatalogServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "CatalogServiceClient {{ ... }}")
-        }
-    }
 }
 /// Registered Api Key.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -945,7 +960,7 @@ pub struct PredictionApiKeyRegistration {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePredictionApiKeyRegistrationRequest {
     /// Required. The parent resource path.
-    /// "projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+    /// `projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The prediction API key registration.
@@ -956,7 +971,7 @@ pub struct CreatePredictionApiKeyRegistrationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPredictionApiKeyRegistrationsRequest {
     /// Required. The parent placement resource name such as
-    /// "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store"
+    /// `projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of results to return per page. If unset, the
@@ -982,36 +997,63 @@ pub struct ListPredictionApiKeyRegistrationsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePredictionApiKeyRegistrationRequest {
     /// Required. The API key to unregister including full resource path.
-    /// "projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/predictionApiKeyRegistrations/<YOUR_API_KEY>"
+    /// `projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/predictionApiKeyRegistrations/<YOUR_API_KEY>`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod prediction_api_key_registry_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for registering API keys for use with the `predict` method. If you"]
     #[doc = " use an API key to request predictions, you must first register the API key."]
     #[doc = " Otherwise, your prediction request is rejected. If you use OAuth to"]
     #[doc = " authenticate your `predict` method call, you do not need to register an API"]
     #[doc = " key. You can register up to 20 API keys per project."]
+    #[derive(Debug, Clone)]
     pub struct PredictionApiKeyRegistryClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> PredictionApiKeyRegistryClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PredictionApiKeyRegistryClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            PredictionApiKeyRegistryClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Register an API key for use with predict method."]
         pub async fn create_prediction_api_key_registration(
@@ -1060,24 +1102,12 @@ pub mod prediction_api_key_registry_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for PredictionApiKeyRegistryClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for PredictionApiKeyRegistryClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "PredictionApiKeyRegistryClient {{ ... }}")
-        }
-    }
 }
 /// Request message for Predict method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictRequest {
     /// Required. Full resource name of the format:
-    /// {name=projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/placements/*}
+    /// `{name=projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/placements/*}`
     /// The id of the recommendation engine placement. This id is used to identify
     /// the set of models that will be used to make the prediction.
     ///
@@ -1224,26 +1254,53 @@ pub mod predict_response {
 }
 #[doc = r" Generated client implementations."]
 pub mod prediction_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for making recommendation prediction."]
+    #[derive(Debug, Clone)]
     pub struct PredictionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> PredictionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PredictionServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Makes a recommendation prediction. If using API Key based authentication,"]
         #[doc = " the API Key must be registered using the"]
@@ -1266,25 +1323,13 @@ pub mod prediction_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for PredictionServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for PredictionServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "PredictionServiceClient {{ ... }}")
-        }
-    }
 }
 /// Request message for PurgeUserEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeUserEventsRequest {
     /// Required. The resource name of the event_store under which the events are
     /// created. The format is
-    /// "projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}"
+    /// `projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The filter string to specify the events to be deleted. Empty
@@ -1341,7 +1386,7 @@ pub struct PurgeUserEventsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteUserEventRequest {
     /// Required. The parent eventStore resource name, such as
-    /// "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+    /// `projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User event to write.
@@ -1352,7 +1397,7 @@ pub struct WriteUserEventRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CollectUserEventRequest {
     /// Required. The parent eventStore name, such as
-    /// "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+    /// `projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. URL encoded UserEvent proto.
@@ -1374,7 +1419,7 @@ pub struct CollectUserEventRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUserEventsRequest {
     /// Required. The parent eventStore resource name, such as
-    /// "projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store".
+    /// `projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of results to return per page. If zero, the
@@ -1432,26 +1477,53 @@ pub struct ListUserEventsResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod user_event_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service for ingesting end user actions on the customer website."]
+    #[derive(Debug, Clone)]
     pub struct UserEventServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> UserEventServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> UserEventServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            UserEventServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Writes a single user event."]
         pub async fn write_user_event(
@@ -1557,18 +1629,6 @@ pub mod user_event_service_client {
                 "/google.cloud.recommendationengine.v1beta1.UserEventService/ImportUserEvents",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for UserEventServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for UserEventServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "UserEventServiceClient {{ ... }}")
         }
     }
 }

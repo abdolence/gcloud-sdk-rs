@@ -90,7 +90,7 @@ pub struct Connection {
     #[prost(bool, tag = "7")]
     pub has_credential: bool,
     /// Properties specific to the underlying data source.
-    #[prost(oneof = "connection::Properties", tags = "4, 8")]
+    #[prost(oneof = "connection::Properties", tags = "4, 8, 21")]
     pub properties: ::core::option::Option<connection::Properties>,
 }
 /// Nested message and enum types in `Connection`.
@@ -104,6 +104,9 @@ pub mod connection {
         /// Amazon Web Services (AWS) properties.
         #[prost(message, tag = "8")]
         Aws(super::AwsProperties),
+        /// Cloud Spanner properties.
+        #[prost(message, tag = "21")]
+        CloudSpanner(super::CloudSpannerProperties),
     }
 }
 /// Connection properties specific to the Cloud SQL.
@@ -146,11 +149,21 @@ pub struct CloudSqlCredential {
     #[prost(string, tag = "2")]
     pub password: ::prost::alloc::string::String,
 }
+/// Connection properties specific to Cloud Spanner.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudSpannerProperties {
+    /// Cloud Spanner database in the form `project/instance/database'
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    /// If parallelism should be used when reading from Cloud Spanner
+    #[prost(bool, tag = "2")]
+    pub use_parallelism: bool,
+}
 /// Connection properties specific to Amazon Web Services (AWS).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsProperties {
     /// Authentication method chosen at connection creation.
-    #[prost(oneof = "aws_properties::AuthenticationMethod", tags = "2")]
+    #[prost(oneof = "aws_properties::AuthenticationMethod", tags = "2, 3")]
     pub authentication_method: ::core::option::Option<aws_properties::AuthenticationMethod>,
 }
 /// Nested message and enum types in `AwsProperties`.
@@ -162,6 +175,10 @@ pub mod aws_properties {
         /// into customer's AWS IAM Role.
         #[prost(message, tag = "2")]
         CrossAccountRole(super::AwsCrossAccountRole),
+        /// Authentication using Google owned service account to assume into
+        /// customer's AWS IAM Role.
+        #[prost(message, tag = "3")]
+        AccessRole(super::AwsAccessRole),
     }
 }
 /// Authentication method for Amazon Web Services (AWS) that uses Google owned
@@ -181,28 +198,68 @@ pub struct AwsCrossAccountRole {
     #[prost(string, tag = "3")]
     pub external_id: ::prost::alloc::string::String,
 }
+/// Authentication method for Amazon Web Services (AWS) that uses Google owned
+/// Google service account to assume into customer's AWS IAM Role.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsAccessRole {
+    /// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
+    /// Connection.
+    #[prost(string, tag = "1")]
+    pub iam_role_id: ::prost::alloc::string::String,
+    /// A unique Google-owned and Google-generated identity for the Connection.
+    /// This identity will be used to access the user's AWS IAM Role.
+    #[prost(string, tag = "2")]
+    pub identity: ::prost::alloc::string::String,
+}
 #[doc = r" Generated client implementations."]
 pub mod connection_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Manages external data source connections and credentials."]
+    #[derive(Debug, Clone)]
     pub struct ConnectionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ConnectionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ConnectionServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ConnectionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a new connection."]
         pub async fn create_connection(
@@ -366,18 +423,6 @@ pub mod connection_service_client {
                 "/google.cloud.bigquery.connection.v1.ConnectionService/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ConnectionServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ConnectionServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ConnectionServiceClient {{ ... }}")
         }
     }
 }

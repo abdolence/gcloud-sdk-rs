@@ -55,7 +55,11 @@ pub struct CloudIdentityInfo {
     /// Output only. The primary domain name.
     #[prost(string, tag = "9")]
     pub primary_domain: ::prost::alloc::string::String,
-    /// Whether the domain is verified.
+    /// Output only. Whether the domain is verified.
+    /// This field is not returned for a Customer's cloud_identity_info resource.
+    /// Partners can use the domains.get() method of the Workspace SDK's
+    /// Directory API, or listen to the PRIMARY_DOMAIN_VERIFIED Pub/Sub event in
+    /// to track domain verification of their resolve Workspace customers.
     #[prost(bool, tag = "4")]
     pub is_domain_verified: bool,
     /// The alternate email.
@@ -92,7 +96,7 @@ pub mod cloud_identity_info {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// The kind of value.
-    #[prost(oneof = "value::Kind", tags = "1, 2, 3, 4")]
+    #[prost(oneof = "value::Kind", tags = "1, 2, 3, 4, 5")]
     pub kind: ::core::option::Option<value::Kind>,
 }
 /// Nested message and enum types in `Value`.
@@ -112,6 +116,9 @@ pub mod value {
         /// Represents an 'Any' proto value.
         #[prost(message, tag = "4")]
         ProtoValue(::prost_types::Any),
+        /// Represents a boolean value.
+        #[prost(bool, tag = "5")]
+        BoolValue(bool),
     }
 }
 /// Information needed to create an Admin User for Google Workspace.
@@ -197,36 +204,33 @@ pub struct Customer {
     /// Required. Name of the organization that the customer entity represents.
     #[prost(string, tag = "2")]
     pub org_display_name: ::prost::alloc::string::String,
-    /// Required. Address of the organization of the customer entity.
-    /// Region and zip codes are required to enforce US laws and embargoes.
-    /// Valid address lines are required for all customers.
-    /// Language code is discarded. Use the Customer-level language code to set the
-    /// customer's language.
+    /// Required. The organization address for the customer. To enforce US laws and
+    /// embargoes, we require a region and zip code. You must provide valid
+    /// addresses for every customer. To set the customer's language, use the
+    /// Customer-level language code.
     #[prost(message, optional, tag = "3")]
     pub org_postal_address: ::core::option::Option<super::super::super::r#type::PostalAddress>,
     /// Primary contact info.
     #[prost(message, optional, tag = "4")]
     pub primary_contact_info: ::core::option::Option<ContactInfo>,
-    /// Secondary contact email.
-    /// Alternate email and primary contact email are required to have different
-    /// domains if primary contact email is present.
-    /// When creating admin.google.com accounts, users get notified credentials at
-    /// this email. This email address is also used as a recovery email.
+    /// Secondary contact email. You need to provide an alternate email to create
+    /// different domains if a primary contact email already exists. Users will
+    /// receive a notification with credentials when you create an admin.google.com
+    /// account. Secondary emails are also recovery email addresses.
     #[prost(string, tag = "5")]
     pub alternate_email: ::prost::alloc::string::String,
-    /// Required. Primary domain used by the customer.
-    /// Domain of primary contact email is required to be same as the provided
-    /// domain.
+    /// Required. The customer's primary domain. Must match the primary contact
+    /// email's domain.
     #[prost(string, tag = "6")]
     pub domain: ::prost::alloc::string::String,
-    /// Output only. The time at which the customer is created.
+    /// Output only. Time when the customer was created.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which the customer is updated.
+    /// Output only. Time when the customer was updated.
     #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Customer's cloud_identity_id.
-    /// Populated only if a Cloud Identity resource exists for this customer.
+    /// Output only. The customer's Cloud Identity ID if the customer has a Cloud
+    /// Identity resource.
     #[prost(string, tag = "9")]
     pub cloud_identity_id: ::prost::alloc::string::String,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
@@ -246,26 +250,25 @@ pub struct Customer {
 /// Contact information for a customer account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContactInfo {
-    /// First name of the contact in the customer account.
+    /// The customer account contact's first name.
     #[prost(string, tag = "1")]
     pub first_name: ::prost::alloc::string::String,
-    /// Last name of the contact in the customer account.
+    /// The customer account contact's last name.
     #[prost(string, tag = "2")]
     pub last_name: ::prost::alloc::string::String,
-    /// Output only. Display name of the contact in the customer account.
-    /// Populated by combining customer first name and last name.
+    /// Output only. The customer account contact's display name, formatted as a
+    /// combination of the customer's first and last name.
     #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
-    /// Email of the contact in the customer account.
-    /// Email is required for entitlements that need creation of admin.google.com
-    /// accounts. The email will be the username used in credentials to access the
-    /// admin.google.com account.
+    /// The customer account's contact email. Required for entitlements that create
+    /// admin.google.com accounts, and serves as the customer's username for those
+    /// accounts.
     #[prost(string, tag = "5")]
     pub email: ::prost::alloc::string::String,
-    /// Optional. Job title of the contact in the customer account.
+    /// Optional. The customer account contact's job title.
     #[prost(string, tag = "6")]
     pub title: ::prost::alloc::string::String,
-    /// Phone number of the contact in the customer account.
+    /// The customer account's contact phone number.
     #[prost(string, tag = "7")]
     pub phone: ::prost::alloc::string::String,
 }
@@ -800,6 +803,9 @@ pub struct TransferableSku {
     /// The SKU pertaining to the provisioning resource as specified in the Offer.
     #[prost(message, optional, tag = "11")]
     pub sku: ::core::option::Option<Sku>,
+    /// Optional. The customer to transfer has an entitlement with the populated legacy SKU.
+    #[prost(message, optional, tag = "12")]
+    pub legacy_sku: ::core::option::Option<Sku>,
 }
 /// Specifies transfer eligibility of a SKU.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -872,33 +878,32 @@ pub mod operation_metadata {
 /// Request message for [CloudChannelService.CheckCloudIdentityAccountsExist][google.cloud.channel.v1.CloudChannelService.CheckCloudIdentityAccountsExist].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckCloudIdentityAccountsExistRequest {
-    /// Required. The resource name of the reseller account.
-    /// The parent takes the format: accounts/{account_id}
+    /// Required. The reseller account's resource name.
+    /// Parent uses the format: accounts/{account_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Domain for which the Cloud Identity account customer is fetched.
+    /// Required. Domain to fetch for Cloud Identity account customer.
     #[prost(string, tag = "2")]
     pub domain: ::prost::alloc::string::String,
 }
-/// Entity representing a Cloud Identity account which may or may not be
+/// Entity representing a Cloud Identity account that may be
 /// associated with a Channel Services API partner.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudIdentityCustomerAccount {
-    /// True if a Cloud Identity account exists for a specific domain.
+    /// Returns true if a Cloud Identity account exists for a specific domain.
     #[prost(bool, tag = "1")]
     pub existing: bool,
-    /// True if the Cloud Identity account is associated with a customer
-    /// belonging to the Channel Services partner making the API call.
+    /// Returns true if the Cloud Identity account is associated with a customer
+    /// of the Channel Services partner.
     #[prost(bool, tag = "2")]
     pub owned: bool,
-    /// Name of the customer that owns the Cloud Identity account. This field is
-    /// populated ONLY if owned = true.
-    /// The customer_name takes the format:
+    /// If owned = true, the name of the customer that owns the Cloud Identity
+    /// account.
+    /// Customer_name uses the format:
     /// accounts/{account_id}/customers/{customer_id}
     #[prost(string, tag = "3")]
     pub customer_name: ::prost::alloc::string::String,
-    /// Cloud Identity ID of the customer. This field is populated ONLY if
-    /// existing = true.
+    /// If existing = true, the Cloud Identity ID of the customer.
     #[prost(string, tag = "4")]
     pub customer_cloud_identity_id: ::prost::alloc::string::String,
 }
@@ -913,17 +918,17 @@ pub struct CheckCloudIdentityAccountsExistResponse {
 /// Request message for [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomersRequest {
-    /// Required. The resource name of the reseller account from which to list customers.
-    /// The parent takes the format: accounts/{account_id}.
+    /// Required. The resource name of the reseller account to list customers from.
+    /// Parent uses the format: accounts/{account_id}.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of customers to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 customers will be returned. The
-    /// maximum value is 50; values about 50 will be coerced to 50.
+    /// than this value. If unspecified, returns at most 10 customers. The
+    /// maximum value is 50.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
-    /// Typically obtained via
+    /// Optional. A token identifying a page of results other than the first page.
+    /// Obtained through
     /// [ListCustomersResponse.next_page_token][google.cloud.channel.v1.ListCustomersResponse.next_page_token] of the previous
     /// [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers] call.
     #[prost(string, tag = "3")]
@@ -932,7 +937,7 @@ pub struct ListCustomersRequest {
 /// Response message for [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomersResponse {
-    /// The customers belonging to the reseller or distributor.
+    /// The customers belonging to a reseller or distributor.
     #[prost(message, repeated, tag = "1")]
     pub customers: ::prost::alloc::vec::Vec<Customer>,
     /// A token to retrieve the next page of results.
@@ -944,7 +949,7 @@ pub struct ListCustomersResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerRequest {
     /// Required. The resource name of the customer to retrieve.
-    /// The name takes the format: accounts/{account_id}/customers/{customer_id}
+    /// Name uses the format: accounts/{account_id}/customers/{customer_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -952,7 +957,7 @@ pub struct GetCustomerRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomerRequest {
     /// Required. The resource name of reseller account in which to create the customer.
-    /// The parent takes the format: accounts/{account_id}
+    /// Parent uses the format: accounts/{account_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The customer to create.
@@ -990,26 +995,25 @@ pub struct ProvisionCloudIdentityRequest {
     /// Admin user information.
     #[prost(message, optional, tag = "3")]
     pub user: ::core::option::Option<AdminUser>,
-    /// If set, validate the request and preview the review, but do not actually
-    /// post it.
+    /// Validate the request and preview the review, but do not post it.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
 /// Request message for [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntitlementsRequest {
-    /// Required. The resource name of the reseller's customer account for which to list
-    /// entitlements.
-    /// The parent takes the format: accounts/{account_id}/customers/{customer_id}
+    /// Required. The resource name of the reseller's customer account to list
+    /// entitlements for.
+    /// Parent uses the format: accounts/{account_id}/customers/{customer_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 50 entitlements will be returned.
-    /// The maximum value is 100; values above 100 will be coerced to 100.
+    /// If unspecified, return at most 50 entitlements.
+    /// The maximum value is 100; the server will coerce values above 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
-    /// Typically obtained via
+    /// Optional. A token for a page of results other than the first page.
+    /// Obtained using
     /// [ListEntitlementsResponse.next_page_token][google.cloud.channel.v1.ListEntitlementsResponse.next_page_token] of the previous
     /// [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements] call.
     #[prost(string, tag = "3")]
@@ -1018,10 +1022,10 @@ pub struct ListEntitlementsRequest {
 /// Response message for [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntitlementsResponse {
-    /// The entitlements belonging to the reseller's customer.
+    /// The reseller customer's entitlements.
     #[prost(message, repeated, tag = "1")]
     pub entitlements: ::prost::alloc::vec::Vec<Entitlement>,
-    /// A token to List next page of results.
+    /// A token to list the next page of results.
     /// Pass to [ListEntitlementsRequest.page_token][google.cloud.channel.v1.ListEntitlementsRequest.page_token] to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1029,38 +1033,37 @@ pub struct ListEntitlementsResponse {
 /// Request message for [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferableSkusRequest {
-    /// Required. The resource name of the reseller's account.
-    /// The parent takes the format: accounts/{account_id}
+    /// Required. The reseller account's resource name.
+    /// Parent uses the format: accounts/{account_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 100 SKUs will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// The requested page size. Server might return fewer results than requested.
+    /// If unspecified, returns at most 100 SKUs.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     /// Optional.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A token identifying a page of results, if other than the first one.
-    /// Typically obtained via
+    /// A token for a page of results other than the first page.
+    /// Obtained using
     /// [ListTransferableSkusResponse.next_page_token][google.cloud.channel.v1.ListTransferableSkusResponse.next_page_token] of the previous
     /// [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus] call.
     /// Optional.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// This token is generated by the Super Admin of the resold customer to
+    /// The super admin of the resold customer generates this token to
     /// authorize a reseller to access their Cloud Identity and purchase
-    /// entitlements on their behalf. This token can be omitted once the
-    /// authorization is generated. See https://support.google.com/a/answer/7643790
-    /// for more details.
+    /// entitlements on their behalf. You can omit this token after authorization.
+    /// See https://support.google.com/a/answer/7643790 for more details.
     #[prost(string, tag = "5")]
     pub auth_token: ::prost::alloc::string::String,
-    /// The BCP-47 language code, such as "en-US".  If specified, the
-    /// response will be localized to the corresponding language code. Default is
-    /// "en-US".
+    /// The BCP-47 language code. For example, "en-US". The
+    /// response will localize in the corresponding language code, if specified.
+    /// The default value is "en-US".
     /// Optional.
     #[prost(string, tag = "6")]
     pub language_code: ::prost::alloc::string::String,
     /// Specifies the identity of transferred customer.
-    /// Either a cloud_identity_id of the customer OR the customer name is
+    /// Either a cloud_identity_id of the customer or the customer name is
     /// required to look up transferable SKUs.
     #[prost(
         oneof = "list_transferable_skus_request::TransferredCustomerIdentity",
@@ -1072,7 +1075,7 @@ pub struct ListTransferableSkusRequest {
 /// Nested message and enum types in `ListTransferableSkusRequest`.
 pub mod list_transferable_skus_request {
     /// Specifies the identity of transferred customer.
-    /// Either a cloud_identity_id of the customer OR the customer name is
+    /// Either a cloud_identity_id of the customer or the customer name is
     /// required to look up transferable SKUs.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TransferredCustomerIdentity {
@@ -1081,7 +1084,7 @@ pub mod list_transferable_skus_request {
         CloudIdentityId(::prost::alloc::string::String),
         /// A reseller is required to create a customer and use the resource name of
         /// the created customer here.
-        /// The customer_name takes the format:
+        /// Customer_name uses the format:
         /// accounts/{account_id}/customers/{customer_id}
         #[prost(string, tag = "7")]
         CustomerName(::prost::alloc::string::String),
@@ -1090,8 +1093,7 @@ pub mod list_transferable_skus_request {
 /// Response message for [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferableSkusResponse {
-    /// Information about existing SKUs for a customer that would need to be
-    /// transferred.
+    /// Information about existing SKUs for a customer that needs a transfer.
     #[prost(message, repeated, tag = "1")]
     pub transferable_skus: ::prost::alloc::vec::Vec<TransferableSku>,
     /// A token to retrieve the next page of results.
@@ -1107,26 +1109,26 @@ pub struct ListTransferableOffersRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 100 Offers will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// If unspecified, returns at most 100 offers.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A token identifying a page of results, if other than the first one.
-    /// Typically obtained via
+    /// A token for a page of results other than the first page.
+    /// Obtained using
     /// [ListTransferableOffersResponse.next_page_token][google.cloud.channel.v1.ListTransferableOffersResponse.next_page_token] of the previous
     /// [CloudChannelService.ListTransferableOffers][google.cloud.channel.v1.CloudChannelService.ListTransferableOffers] call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Required. SKU for which the Offers are being looked up.
+    /// Required. The SKU to look up Offers for.
     #[prost(string, tag = "6")]
     pub sku: ::prost::alloc::string::String,
-    /// The BCP-47 language code, such as "en-US".  If specified, the
-    /// response will be localized to the corresponding language code. Default is
-    /// "en-US".
+    /// The BCP-47 language code. For example, "en-US". The
+    /// response will localize in the corresponding language code, if specified.
+    /// The default value is "en-US".
     #[prost(string, tag = "7")]
     pub language_code: ::prost::alloc::string::String,
     /// Specifies the identity of transferred customer.
-    /// Either a cloud_identity_id of the customer OR the customer name is
+    /// Either a cloud_identity_id of the customer or the customer name is
     /// required to look up transferrable Offers.
     #[prost(
         oneof = "list_transferable_offers_request::TransferredCustomerIdentity",
@@ -1138,7 +1140,7 @@ pub struct ListTransferableOffersRequest {
 /// Nested message and enum types in `ListTransferableOffersRequest`.
 pub mod list_transferable_offers_request {
     /// Specifies the identity of transferred customer.
-    /// Either a cloud_identity_id of the customer OR the customer name is
+    /// Either a cloud_identity_id of the customer or the customer name is
     /// required to look up transferrable Offers.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TransferredCustomerIdentity {
@@ -1146,7 +1148,7 @@ pub mod list_transferable_offers_request {
         #[prost(string, tag = "4")]
         CloudIdentityId(::prost::alloc::string::String),
         /// A reseller should create a customer and use the resource name of
-        /// the created customer here.
+        /// that customer here.
         #[prost(string, tag = "5")]
         CustomerName(::prost::alloc::string::String),
     }
@@ -1176,8 +1178,8 @@ pub struct TransferableOffer {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntitlementRequest {
     /// Required. The resource name of the entitlement to retrieve.
-    /// The name takes the format:
-    /// accounts/{account_id}/customers/{customer_id}/entitlements/{id}
+    /// Name uses the format:
+    /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1186,16 +1188,16 @@ pub struct GetEntitlementRequest {
 pub struct ListChannelPartnerLinksRequest {
     /// Required. The resource name of the reseller account for listing channel partner
     /// links.
-    /// The parent takes the format: accounts/{account_id}
+    /// Parent uses the format: accounts/{account_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server might return fewer results than requested.
     /// If unspecified, server will pick a default size (25).
-    /// The maximum value is 200, values above 200 will be coerced to 200.
+    /// The maximum value is 200; the server will coerce values above 200.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
-    /// Typically obtained via
+    /// Optional. A token for a page of results other than the first page.
+    /// Obtained using
     /// [ListChannelPartnerLinksResponse.next_page_token][google.cloud.channel.v1.ListChannelPartnerLinksResponse.next_page_token] of the previous
     /// [CloudChannelService.ListChannelPartnerLinks][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks] call.
     #[prost(string, tag = "3")]
@@ -1219,7 +1221,7 @@ pub struct ListChannelPartnerLinksResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChannelPartnerLinkRequest {
     /// Required. The resource name of the channel partner link to retrieve.
-    /// The name takes the format: accounts/{account_id}/channelPartnerLinks/{id}
+    /// Name uses the format: accounts/{account_id}/channelPartnerLinks/{id}
     /// where {id} is the Cloud Identity ID of the partner.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1230,9 +1232,9 @@ pub struct GetChannelPartnerLinkRequest {
 /// Request message for [CloudChannelService.CreateChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerLink]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelPartnerLinkRequest {
-    /// Required. The resource name of reseller's account for which to create a channel
-    /// partner link.
-    /// The parent takes the format: accounts/{account_id}
+    /// Required. Create a channel partner link for the provided reseller account's
+    /// resource name.
+    /// Parent uses the format: accounts/{account_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The channel partner link to create.
@@ -1245,16 +1247,16 @@ pub struct CreateChannelPartnerLinkRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateChannelPartnerLinkRequest {
     /// Required. The resource name of the channel partner link to cancel.
-    /// The name takes the format: accounts/{account_id}/channelPartnerLinks/{id}
+    /// Name uses the format: accounts/{account_id}/channelPartnerLinks/{id}
     /// where {id} is the Cloud Identity ID of the partner.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The channel partner link to update. Only field
-    /// channel_partner_link.link_state is allowed to be updated.
+    /// Required. The channel partner link to update. Only channel_partner_link.link_state
+    /// is allowed for updates.
     #[prost(message, optional, tag = "2")]
     pub channel_partner_link: ::core::option::Option<ChannelPartnerLink>,
     /// Required. The update mask that applies to the resource.
-    /// The only allowable value for update mask is
+    /// The only allowable value for an update mask is
     /// channel_partner_link.link_state.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -1262,22 +1264,21 @@ pub struct UpdateChannelPartnerLinkRequest {
 /// Request message for [CloudChannelService.CreateEntitlement][google.cloud.channel.v1.CloudChannelService.CreateEntitlement]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntitlementRequest {
-    /// Required. The resource name of reseller's customer account in which to create the
+    /// Required. The resource name of the reseller's customer account in which to create the
     /// entitlement.
-    /// The parent takes the format: accounts/{account_id}/customers/{customer_id}
+    /// Parent uses the format: accounts/{account_id}/customers/{customer_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The entitlement to create.
     #[prost(message, optional, tag = "2")]
     pub entitlement: ::core::option::Option<Entitlement>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1288,29 +1289,27 @@ pub struct CreateEntitlementRequest {
 /// Request message for [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferEntitlementsRequest {
-    /// Required. The resource name of reseller's customer account where the entitlements
-    /// transfer to.
-    /// The parent takes the format: accounts/{account_id}/customers/{customer_id}
+    /// Required. The resource name of the reseller's customer account that will receive
+    /// transferred entitlements.
+    /// Parent uses the format: accounts/{account_id}/customers/{customer_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The new entitlements to be created or transferred.
+    /// Required. The new entitlements to create or transfer.
     #[prost(message, repeated, tag = "2")]
     pub entitlements: ::prost::alloc::vec::Vec<Entitlement>,
-    /// This token is generated by the Super Admin of the resold customer to
+    /// The super admin of the resold customer generates this token to
     /// authorize a reseller to access their Cloud Identity and purchase
-    /// entitlements on their behalf. This token can be omitted once the
-    /// authorization is generated. See https://support.google.com/a/answer/7643790
-    /// for more details.
+    /// entitlements on their behalf. You can omit this token after authorization.
+    /// See https://support.google.com/a/answer/7643790 for more details.
     #[prost(string, tag = "4")]
     pub auth_token: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1319,32 +1318,31 @@ pub struct TransferEntitlementsRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
-/// This will be put into the response field of google.longrunning.Operation.
+/// This is put in the response field of google.longrunning.Operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferEntitlementsResponse {
-    /// The entitlements that have been transferred.
+    /// The transferred entitlements.
     #[prost(message, repeated, tag = "1")]
     pub entitlements: ::prost::alloc::vec::Vec<Entitlement>,
 }
 /// Request message for [CloudChannelService.TransferEntitlementsToGoogle][google.cloud.channel.v1.CloudChannelService.TransferEntitlementsToGoogle].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferEntitlementsToGoogleRequest {
-    /// Required. The resource name of reseller's customer account where the entitlements
+    /// Required. The resource name of the reseller's customer account where the entitlements
     /// transfer from.
-    /// The parent takes the format: accounts/{account_id}/customers/{customer_id}
+    /// Parent uses the format: accounts/{account_id}/customers/{customer_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The entitlements to be transferred to Google.
+    /// Required. The entitlements to transfer to Google.
     #[prost(message, repeated, tag = "2")]
     pub entitlements: ::prost::alloc::vec::Vec<Entitlement>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1356,26 +1354,23 @@ pub struct TransferEntitlementsToGoogleRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeParametersRequest {
     /// Required. The name of the entitlement to update.
-    /// The name takes the format:
+    /// Name uses the format:
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Entitlement parameters to update. Only editable parameters are allowed to
-    /// be changed.
+    /// Required. Entitlement parameters to update. You can only change editable parameters.
     #[prost(message, repeated, tag = "2")]
     pub parameters: ::prost::alloc::vec::Vec<Parameter>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
-    /// The request ID must be
-    /// a valid [UUID](https://tools.ietf.org/html/rfc4122) with the exception that
-    /// zero UUID is not supported
+    /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
+    /// with the exception that zero UUID is not supported
     /// (`00000000-0000-0000-0000-000000000000`).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
@@ -1387,21 +1382,20 @@ pub struct ChangeParametersRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeRenewalSettingsRequest {
     /// Required. The name of the entitlement to update.
-    /// The name takes the format:
+    /// Name uses the format:
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. New renewal settings.
     #[prost(message, optional, tag = "4")]
     pub renewal_settings: ::core::option::Option<RenewalSettings>,
-    /// Optional. A request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1412,8 +1406,8 @@ pub struct ChangeRenewalSettingsRequest {
 /// Request message for [CloudChannelService.ChangeOffer][google.cloud.channel.v1.CloudChannelService.ChangeOffer].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeOfferRequest {
-    /// Required. The name of the entitlement to update.
-    /// Format:
+    /// Required. The resource name of the entitlement to update.
+    /// Name uses the format:
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1427,14 +1421,13 @@ pub struct ChangeOfferRequest {
     /// Optional. Purchase order id provided by the reseller.
     #[prost(string, tag = "5")]
     pub purchase_order_id: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1445,19 +1438,18 @@ pub struct ChangeOfferRequest {
 /// Request message for [CloudChannelService.StartPaidService][google.cloud.channel.v1.CloudChannelService.StartPaidService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartPaidServiceRequest {
-    /// Required. The name of the entitlement for which paid service is being started.
-    /// The name takes the format:
+    /// Required. The name of the entitlement to start a paid service for.
+    /// Name uses the format:
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1469,18 +1461,17 @@ pub struct StartPaidServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelEntitlementRequest {
     /// Required. The resource name of the entitlement to cancel.
-    /// The name takes the format:
+    /// Name uses the format:
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1492,18 +1483,17 @@ pub struct CancelEntitlementRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuspendEntitlementRequest {
     /// Required. The resource name of the entitlement to suspend.
-    /// The name takes the format:
+    /// Name uses the format:
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
@@ -1515,24 +1505,32 @@ pub struct SuspendEntitlementRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActivateEntitlementRequest {
     /// Required. The resource name of the entitlement to activate.
-    /// The name takes the format:
+    /// Name uses the format:
     /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID so
-    /// that if you must retry your request, the server will know to ignore the
-    /// request if it has already been completed.
+    /// Optional. You can specify an optional unique request ID, and if you need to retry
+    /// your request, the server will know to ignore the request if it's complete.
     ///
-    /// For example, consider a situation where you make an initial request and
-    /// the request times out. If you make the request again with the same
-    /// request ID, the server can check if the original operation with the same
-    /// request ID was received, and if so, will ignore the second request.
+    /// For example, you make an initial request and the request times out. If you
+    /// make the request again with the same request ID, the server can check if
+    /// it received the original operation with the same request ID. If it did, it
+    /// will ignore the second request.
     ///
     /// The request ID must be a valid [UUID](https://tools.ietf.org/html/rfc4122)
     /// with the exception that zero UUID is not supported
     /// (`00000000-0000-0000-0000-000000000000`).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for LookupOffer.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupOfferRequest {
+    /// Required. The resource name of the entitlement to retrieve the Offer.
+    /// Entitlement uses the format:
+    /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
+    #[prost(string, tag = "1")]
+    pub entitlement: ::prost::alloc::string::String,
 }
 /// Request message for ListProducts.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1542,16 +1540,16 @@ pub struct ListProductsRequest {
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 100 Products will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// If unspecified, returns at most 100 Products.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
+    /// Optional. A token for a page of results other than the first page.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The BCP-47 language code, such as "en-US".  If specified, the
-    /// response will be localized to the corresponding language code. Default is
-    /// "en-US".
+    /// Optional. The BCP-47 language code. For example, "en-US". The
+    /// response will localize in the corresponding language code, if specified.
+    /// The default value is "en-US".
     #[prost(string, tag = "4")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -1568,8 +1566,8 @@ pub struct ListProductsResponse {
 /// Request message for ListSkus.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkusRequest {
-    /// Required. The resource name of the Product for which to list SKUs.
-    /// The parent takes the format: products/{product_id}.
+    /// Required. The resource name of the Product to list SKUs for.
+    /// Parent uses the format: products/{product_id}.
     /// Supports products/- to retrieve SKUs for all products.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1578,17 +1576,17 @@ pub struct ListSkusRequest {
     #[prost(string, tag = "2")]
     pub account: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 100 SKUs will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// If unspecified, returns at most 100 SKUs.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
+    /// Optional. A token for a page of results other than the first page.
     /// Optional.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The BCP-47 language code, such as "en-US".  If specified, the
-    /// response will be localized to the corresponding language code. Default is
-    /// "en-US".
+    /// Optional. The BCP-47 language code. For example, "en-US". The
+    /// response will localize in the corresponding language code, if specified.
+    /// The default value is "en-US".
     #[prost(string, tag = "5")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -1606,27 +1604,27 @@ pub struct ListSkusResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOffersRequest {
     /// Required. The resource name of the reseller account from which to list Offers.
-    /// The parent takes the format: accounts/{account_id}.
+    /// Parent uses the format: accounts/{account_id}.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 500 Offers will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// If unspecified, returns at most 500 Offers.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
+    /// Optional. A token for a page of results other than the first page.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The expression to filter results by name (name of
-    /// the Offer), sku.name (name of the SKU) or sku.product.name (name of the
+    /// the Offer), sku.name (name of the SKU), or sku.product.name (name of the
     /// Product).
     /// Example 1: sku.product.name=products/p1 AND sku.name!=products/p1/skus/s1
     /// Example 2: name=accounts/a1/offers/o1
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. The BCP-47 language code, such as "en-US".  If specified, the
-    /// response will be localized to the corresponding language code. Default is
-    /// "en-US".
+    /// Optional. The BCP-47 language code. For example, "en-US". The
+    /// response will localize in the corresponding language code, if specified.
+    /// The default value is "en-US".
     #[prost(string, tag = "5")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -1643,25 +1641,24 @@ pub struct ListOffersResponse {
 /// Request message for ListPurchasableSkus.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPurchasableSkusRequest {
-    /// Required. The resource name of the customer for which to list SKUs.
+    /// Required. The resource name of the customer to list SKUs for.
     /// Format: accounts/{account_id}/customers/{customer_id}.
     #[prost(string, tag = "1")]
     pub customer: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 100 SKUs will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// If unspecified, returns at most 100 SKUs.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
+    /// Optional. A token for a page of results other than the first page.
     #[prost(string, tag = "5")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The BCP-47 language code, such as "en-US".  If specified, the
-    /// response will be localized to the corresponding language code. Default is
-    /// "en-US".
+    /// Optional. The BCP-47 language code. For example, "en-US". The
+    /// response will localize in the corresponding language code, if specified.
+    /// The default value is "en-US".
     #[prost(string, tag = "6")]
     pub language_code: ::prost::alloc::string::String,
-    /// Purchase option for the request. Defines the purchase for which the SKUs
-    /// are being listed.
+    /// Defines the intended purchase.
     #[prost(oneof = "list_purchasable_skus_request::PurchaseOption", tags = "2, 3")]
     pub purchase_option: ::core::option::Option<list_purchasable_skus_request::PurchaseOption>,
 }
@@ -1706,8 +1703,7 @@ pub mod list_purchasable_skus_request {
             Downgrade = 2,
         }
     }
-    /// Purchase option for the request. Defines the purchase for which the SKUs
-    /// are being listed.
+    /// Defines the intended purchase.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PurchaseOption {
         /// List SKUs for CreateEntitlement purchase.
@@ -1728,7 +1724,7 @@ pub struct ListPurchasableSkusResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// SKU that can be used for a puchase. This is used in ListPurchasableSku API
+/// SKU that you can purchase. This is used in ListPurchasableSku API
 /// response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurchasableSku {
@@ -1739,25 +1735,24 @@ pub struct PurchasableSku {
 /// Request message for ListPurchasableOffers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPurchasableOffersRequest {
-    /// Required. The resource name of the customer for which to list Offers.
+    /// Required. The resource name of the customer to list Offers for.
     /// Format: accounts/{account_id}/customers/{customer_id}.
     #[prost(string, tag = "1")]
     pub customer: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server might return fewer results than requested.
-    /// If unspecified, at most 100 Offers will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// If unspecified, returns at most 100 Offers.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results, if other than the first one.
+    /// Optional. A token for a page of results other than the first page.
     #[prost(string, tag = "5")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The BCP-47 language code, such as "en-US".  If specified, the
-    /// response will be localized to the corresponding language code. Default is
-    /// "en-US".
+    /// Optional. The BCP-47 language code. For example, "en-US". The
+    /// response will localize in the corresponding language code, if specified.
+    /// The default value is "en-US".
     #[prost(string, tag = "6")]
     pub language_code: ::prost::alloc::string::String,
-    /// Purchase option for the request. Defines the purchase for which the Offers
-    /// are being listed.
+    /// Defines the intended purchase.
     #[prost(
         oneof = "list_purchasable_offers_request::PurchaseOption",
         tags = "2, 3"
@@ -1782,14 +1777,13 @@ pub mod list_purchasable_offers_request {
         /// accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         #[prost(string, tag = "1")]
         pub entitlement: ::prost::alloc::string::String,
-        /// Optional. Resource name of the SKU that is being changed to. Should be provided if
+        /// Optional. Resource name of the new target SKU. Provide this SKU when
         /// upgrading or downgrading an entitlement. Format:
         /// products/{product_id}/skus/{sku_id}
         #[prost(string, tag = "2")]
         pub new_sku: ::prost::alloc::string::String,
     }
-    /// Purchase option for the request. Defines the purchase for which the Offers
-    /// are being listed.
+    /// Defines the intended purchase.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PurchaseOption {
         /// List Offers for CreateEntitlement purchase.
@@ -1810,7 +1804,7 @@ pub struct ListPurchasableOffersResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Offer that can be puchased for a customer. This is used in
+/// Offer that you can purchase for a customer. This is used in the
 /// ListPurchasableOffer API response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurchasableOffer {
@@ -1824,15 +1818,14 @@ pub struct RegisterSubscriberRequest {
     /// Required. Resource name of the account.
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
-    /// Required. Service account which will provide subscriber access to the
-    /// registered topic.
+    /// Required. Service account that provides subscriber access to the registered topic.
     #[prost(string, tag = "2")]
     pub service_account: ::prost::alloc::string::String,
 }
 /// Response Message for RegisterSubscriber.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterSubscriberResponse {
-    /// Name of the topic to which the subscriber will listen to.
+    /// Name of the topic the subscriber will listen to.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
 }
@@ -1842,16 +1835,14 @@ pub struct UnregisterSubscriberRequest {
     /// Required. Resource name of the account.
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
-    /// Required. Service account which will be unregistered from getting subscriber access
-    /// to the topic.
+    /// Required. Service account to unregister from subscriber access to the topic.
     #[prost(string, tag = "2")]
     pub service_account: ::prost::alloc::string::String,
 }
 /// Response Message for UnregisterSubscriber.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnregisterSubscriberResponse {
-    /// Name of the topic from which the service account subscriber access has been
-    /// removed.
+    /// Name of the topic the service account subscriber access was removed from.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
 }
@@ -1863,15 +1854,15 @@ pub struct ListSubscribersRequest {
     pub account: ::prost::alloc::string::String,
     /// Optional. The maximum number of service accounts to return. The service may return
     /// fewer than this value.
-    /// If unspecified, at most 100 service accounts will be returned.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// If unspecified, returns at most 100 service accounts.
+    /// The maximum value is 1000; the server will coerce values above 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. A page token, received from a previous `ListSubscribers` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListSubscribers` must
-    ///  match the call that provided the page token.
+    /// match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -1891,59 +1882,82 @@ pub struct ListSubscribersResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod cloud_channel_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " CloudChannelService enables Google cloud resellers and distributors to manage"]
-    #[doc = " their customers, channel partners, entitlements and reports."]
+    #[doc = " CloudChannelService lets Google cloud resellers and distributors manage"]
+    #[doc = " their customers, channel partners, entitlements, and reports."]
     #[doc = ""]
     #[doc = " Using this service:"]
-    #[doc = " 1. Resellers or distributors can manage a customer entity."]
-    #[doc = " 2. Distributors can register an authorized reseller in their channel and then"]
-    #[doc = "    enable delegated admin access for the reseller."]
-    #[doc = " 3. Resellers or distributors can manage entitlements for their customers."]
+    #[doc = " 1. Resellers and distributors can manage a customer entity."]
+    #[doc = " 2. Distributors can register an authorized reseller in their channel and"]
+    #[doc = "    provide them with delegated admin access."]
+    #[doc = " 3. Resellers and distributors can manage customer entitlements."]
     #[doc = ""]
-    #[doc = " The service primarily exposes the following resources:"]
-    #[doc = " - [Customer][google.cloud.channel.v1.Customer]s: A Customer represents an entity managed by a reseller or"]
-    #[doc = " distributor. A customer typically represents an enterprise. In an n-tier"]
-    #[doc = " resale channel hierarchy, customers are generally represented as leaf nodes."]
-    #[doc = " Customers primarily have an Entitlement sub-resource discussed below."]
+    #[doc = " CloudChannelService exposes the following resources:"]
+    #[doc = " - [Customer][google.cloud.channel.v1.Customer]s: An entity—usually an enterprise—managed by a reseller or"]
+    #[doc = " distributor."]
     #[doc = ""]
-    #[doc = " - [Entitlement][google.cloud.channel.v1.Entitlement]s: An Entitlement represents an entity which provides a"]
-    #[doc = " customer means to start using a service. Entitlements are created or updated"]
-    #[doc = " as a result of a successful fulfillment."]
+    #[doc = " - [Entitlement][google.cloud.channel.v1.Entitlement]s: An entity that provides a customer with the means to use"]
+    #[doc = " a service. Entitlements are created or updated as a result of a successful"]
+    #[doc = " fulfillment."]
     #[doc = ""]
-    #[doc = " - [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]s: A ChannelPartnerLink is an entity that identifies"]
-    #[doc = " links between distributors and their indirect resellers in a channel."]
+    #[doc = " - [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]s: An entity that identifies links between"]
+    #[doc = " distributors and their indirect resellers in a channel."]
+    #[derive(Debug, Clone)]
     pub struct CloudChannelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> CloudChannelServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CloudChannelServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            CloudChannelServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = " List downstream [Customer][google.cloud.channel.v1.Customer]s."]
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
+        }
+        #[doc = " List [Customer][google.cloud.channel.v1.Customer]s."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " List of [Customer][google.cloud.channel.v1.Customer]s pertaining to the reseller or empty list if"]
-        #[doc = " there are none."]
+        #[doc = " Return value:"]
+        #[doc = " List of [Customer][google.cloud.channel.v1.Customer]s, or an empty list if there are no customers."]
         pub async fn list_customers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCustomersRequest>,
@@ -1960,19 +1974,18 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns a requested [Customer][google.cloud.channel.v1.Customer] resource."]
+        #[doc = " Returns the requested [Customer][google.cloud.channel.v1.Customer] resource."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * NOT_FOUND: If the customer resource doesn't exist. Usually"]
-        #[doc = " the result of an invalid name parameter."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: The customer resource doesn't exist. Usually the result of an"]
+        #[doc = " invalid name parameter."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " [Customer][google.cloud.channel.v1.Customer] resource if found, error otherwise."]
+        #[doc = " Return value:"]
+        #[doc = " The [Customer][google.cloud.channel.v1.Customer] resource."]
         pub async fn get_customer(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCustomerRequest>,
@@ -1989,22 +2002,21 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Confirms the existence of Cloud Identity accounts, based on the domain and"]
-        #[doc = " whether the Cloud Identity accounts are owned by the reseller."]
+        #[doc = " Confirms the existence of Cloud Identity accounts based on the domain and"]
+        #[doc = " if the Cloud Identity accounts are owned by the reseller."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * INVALID_VALUE: Invalid domain value in the request."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " List of [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount] resources for the domain."]
-        #[doc = " List may be empty."]
+        #[doc = " Return value:"]
+        #[doc = " A list of [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount] resources for the domain (may be"]
+        #[doc = " empty)"]
         #[doc = ""]
-        #[doc = " Note: in the v1alpha1 version of the API, a NOT_FOUND error is returned if"]
+        #[doc = " Note: in the v1alpha1 version of the API, a NOT_FOUND error returns if"]
         #[doc = " no [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount] resources match the domain."]
         pub async fn check_cloud_identity_accounts_exist(
             &mut self,
@@ -2026,18 +2038,16 @@ pub mod cloud_channel_service_client {
         #[doc = " Creates a new [Customer][google.cloud.channel.v1.Customer] resource under the reseller or distributor"]
         #[doc = " account."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: It can happen in following scenarios -"]
-        #[doc = "     * Missing or invalid required parameters in the request."]
-        #[doc = "     * Domain field value doesn't match the domain specified in primary"]
-        #[doc = "     email."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT:"]
+        #[doc = "     * Required request parameters are missing or invalid."]
+        #[doc = "     * Domain field value doesn't match the primary email domain."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " If successful, the newly created [Customer][google.cloud.channel.v1.Customer] resource, otherwise"]
-        #[doc = " returns an error."]
+        #[doc = " Return value:"]
+        #[doc = " The newly created [Customer][google.cloud.channel.v1.Customer] resource."]
         pub async fn create_customer(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCustomerRequest>,
@@ -2054,21 +2064,18 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates an existing [Customer][google.cloud.channel.v1.Customer] resource belonging to the reseller or"]
+        #[doc = " Updates an existing [Customer][google.cloud.channel.v1.Customer] resource for the reseller or"]
         #[doc = " distributor."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer] resource found for the name"]
-        #[doc = " specified in the request."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer] resource found for the name in the request."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " If successful, the updated [Customer][google.cloud.channel.v1.Customer] resource, otherwise returns"]
-        #[doc = " an error."]
+        #[doc = " Return value:"]
+        #[doc = " The updated [Customer][google.cloud.channel.v1.Customer] resource."]
         pub async fn update_customer(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCustomerRequest>,
@@ -2085,17 +2092,15 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes the given [Customer][google.cloud.channel.v1.Customer] permanently and irreversibly."]
+        #[doc = " Deletes the given [Customer][google.cloud.channel.v1.Customer] permanently."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the account making the request does not own"]
+        #[doc = " * PERMISSION_DENIED: The account making the request does not own"]
         #[doc = " this customer."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * FAILED_PRECONDITION: If the customer has existing entitlements."]
-        #[doc = " * NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer] resource found for the name"]
-        #[doc = " specified in the request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * FAILED_PRECONDITION: The customer has existing entitlements."]
+        #[doc = " * NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer] resource found for the name in the request."]
         pub async fn delete_customer(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCustomerRequest>,
@@ -2113,25 +2118,25 @@ pub mod cloud_channel_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a Cloud Identity for the given customer using the customer's"]
-        #[doc = " information or the information provided here, if present."]
+        #[doc = " information, or the information provided here."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " *  PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " *  INVALID_ARGUMENT: Missing or invalid required parameters in the request."]
-        #[doc = " *  NOT_FOUND: If the customer is not found for the reseller."]
-        #[doc = " *  ALREADY_EXISTS: If the customer's primary email already exists. In this"]
-        #[doc = "    case, retry after changing the customer's primary contact email."]
-        #[doc = " *  INTERNAL: Any non-user error related to a technical issue in the"]
-        #[doc = "    backend. Contact Cloud Channel support in this case."]
-        #[doc = " *  UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = "    Contact Cloud Channel support in this case."]
+        #[doc = " *  PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " *  INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " *  NOT_FOUND: The customer was not found."]
+        #[doc = " *  ALREADY_EXISTS: The customer's primary email already exists. Retry"]
+        #[doc = "    after changing the customer's primary contact email."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
-        #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
+        #[doc = " CloudChannelOperationsService. The Operation metadata contains an"]
         #[doc = " instance of [OperationMetadata][google.cloud.channel.v1.OperationMetadata]."]
         pub async fn provision_cloud_identity(
             &mut self,
@@ -2152,16 +2157,15 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List [Entitlement][google.cloud.channel.v1.Entitlement]s belonging to a customer."]
+        #[doc = " Lists [Entitlement][google.cloud.channel.v1.Entitlement]s belonging to a customer."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the request."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " List of [Entitlement][google.cloud.channel.v1.Entitlement]s belonging to the customer, or empty list if"]
-        #[doc = " there are none."]
+        #[doc = " Return value:"]
+        #[doc = " A list of the customer's [Entitlement][google.cloud.channel.v1.Entitlement]s."]
         pub async fn list_entitlements(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEntitlementsRequest>,
@@ -2178,24 +2182,24 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List [TransferableSku][google.cloud.channel.v1.TransferableSku]s of a customer based on Cloud Identity ID or"]
+        #[doc = " List [TransferableSku][google.cloud.channel.v1.TransferableSku]s of a customer based on the Cloud Identity ID or"]
         #[doc = " Customer Name in the request."]
         #[doc = ""]
-        #[doc = " This method is used when a reseller lists the entitlements"]
-        #[doc = " information of a customer that is not owned. The reseller should provide"]
-        #[doc = " the customer's Cloud Identity ID or Customer Name."]
+        #[doc = " Use this method to list the entitlements information of an"]
+        #[doc = " unowned customer. You should provide the customer's"]
+        #[doc = " Cloud Identity ID or Customer Name."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: Appears because of one of the following -"]
-        #[doc = "     * The customer doesn't belong to the reseller and no auth token."]
+        #[doc = " * PERMISSION_DENIED:"]
+        #[doc = "     * The customer doesn't belong to the reseller and has no auth token."]
         #[doc = "     * The supplied auth token is invalid."]
-        #[doc = "     * The reseller account making the request and the queries reseller"]
-        #[doc = "     account are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the request."]
+        #[doc = "     * The reseller account making the request is different"]
+        #[doc = "     from the reseller account in the query."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " List of [TransferableSku][google.cloud.channel.v1.TransferableSku] for the given customer."]
+        #[doc = " Return value:"]
+        #[doc = " A list of the customer's [TransferableSku][google.cloud.channel.v1.TransferableSku]."]
         pub async fn list_transferable_skus(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferableSkusRequest>,
@@ -2215,21 +2219,20 @@ pub mod cloud_channel_service_client {
         #[doc = " List [TransferableOffer][google.cloud.channel.v1.TransferableOffer]s of a customer based on Cloud Identity ID or"]
         #[doc = " Customer Name in the request."]
         #[doc = ""]
-        #[doc = " This method is used when a reseller gets the entitlement"]
-        #[doc = " information of a customer that is not owned. The reseller should provide"]
-        #[doc = " the customer's Cloud Identity ID or Customer Name."]
+        #[doc = " Use this method when a reseller gets the entitlement information of an"]
+        #[doc = " unowned customer. The reseller should provide the customer's"]
+        #[doc = " Cloud Identity ID or Customer Name."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: Appears because of one of the following:"]
-        #[doc = "     * If the customer doesn't belong to the reseller and no auth token or"]
-        #[doc = "     invalid auth token is supplied."]
-        #[doc = "     * If the reseller account making the request and the reseller account"]
-        #[doc = "     being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED:"]
+        #[doc = "     * The customer doesn't belong to the reseller and has no auth token."]
+        #[doc = "     * The supplied auth token is invalid."]
+        #[doc = "     * The reseller account making the request is different"]
+        #[doc = "     from the reseller account in the query."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = ""]
-        #[doc = " Return Value:"]
+        #[doc = " Return value:"]
         #[doc = " List of [TransferableOffer][google.cloud.channel.v1.TransferableOffer] for the given customer and SKU."]
         pub async fn list_transferable_offers(
             &mut self,
@@ -2247,18 +2250,16 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns a requested [Entitlement][google.cloud.channel.v1.Entitlement] resource."]
+        #[doc = " Returns the requested [Entitlement][google.cloud.channel.v1.Entitlement] resource."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * NOT_FOUND: If the entitlement is not found for the customer."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: The customer entitlement was not found."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " If found, the requested [Entitlement][google.cloud.channel.v1.Entitlement] resource, otherwise returns"]
-        #[doc = " an error."]
+        #[doc = " Return value:"]
+        #[doc = " The requested [Entitlement][google.cloud.channel.v1.Entitlement] resource."]
         pub async fn get_entitlement(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEntitlementRequest>,
@@ -2277,39 +2278,36 @@ pub mod cloud_channel_service_client {
         }
         #[doc = " Creates an entitlement for a customer."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: It can happen in below scenarios -"]
-        #[doc = "     * Missing or invalid required parameters in the request."]
-        #[doc = "     * Cannot purchase an entitlement if there is already an entitlement for"]
-        #[doc = "     customer, for a SKU from the same product family."]
-        #[doc = "     * INVALID_VALUE: Offer passed in isn't valid. Make sure OfferId is"]
-        #[doc = "     valid. If it is valid, then contact Google Channel support for further"]
-        #[doc = "     troubleshooting."]
-        #[doc = " * NOT_FOUND: If the customer or offer resource is not found for the"]
-        #[doc = " reseller."]
-        #[doc = " * ALREADY_EXISTS: This failure can happen in the following cases:"]
-        #[doc = "     * If the SKU has been already purchased for the customer."]
-        #[doc = "     * If the customer's primary email already exists. In this case retry"]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT:"]
+        #[doc = "     * Required request parameters are missing or invalid."]
+        #[doc = "     * There is already a customer entitlement for a SKU from the same"]
+        #[doc = "     product family."]
+        #[doc = " * INVALID_VALUE: Make sure the OfferId is valid. If it is, contact"]
+        #[doc = " Google Channel support for further troubleshooting."]
+        #[doc = " * NOT_FOUND: The customer or offer resource was not found."]
+        #[doc = " * ALREADY_EXISTS:"]
+        #[doc = "     * The SKU was already purchased for the customer."]
+        #[doc = "     * The customer's primary email already exists. Retry"]
         #[doc = "     after changing the customer's primary contact email."]
-        #[doc = " * CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can happen in the"]
-        #[doc = " following cases:"]
-        #[doc = "     * Purchasing a SKU that requires domain verification and the domain has"]
-        #[doc = "     not been verified."]
-        #[doc = "     * Purchasing an Add-On SKU like Vault or Drive without purchasing the"]
-        #[doc = "     pre-requisite SKU, such as Google Workspace Business Starter."]
-        #[doc = "     * Applicable only for developer accounts: reseller and resold domain."]
-        #[doc = "     Must meet the following domain naming requirements:"]
+        #[doc = " * CONDITION_NOT_MET or FAILED_PRECONDITION:"]
+        #[doc = "     * The domain required for purchasing a SKU has not been verified."]
+        #[doc = "     * A pre-requisite SKU required to purchase an Add-On SKU is missing."]
+        #[doc = "     For example, Google Workspace Business Starter is required to purchase"]
+        #[doc = "     Vault or Drive."]
+        #[doc = "     * (Developer accounts only) Reseller and resold domain must meet the"]
+        #[doc = "     following naming requirements:"]
         #[doc = "         * Domain names must start with goog-test."]
-        #[doc = "         * Resold domain names must include the reseller domain."]
+        #[doc = "         * Domain names must include the reseller domain."]
         #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
-        #[doc = " backend. Contact Cloud Channel Support in this case."]
-        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the"]
-        #[doc = " backend. Contact Cloud Channel Support in this case."]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2333,26 +2331,25 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Change parameters of the entitlement"]
+        #[doc = " Change parameters of the entitlement."]
         #[doc = ""]
-        #[doc = " An entitlement parameters update is a long-running operation and results in"]
-        #[doc = " updates to the entitlement as a result of fulfillment."]
+        #[doc = " An entitlement update is a long-running operation and it updates the"]
+        #[doc = " entitlement as a result of fulfillment."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request. For example, if the number of seats being changed to is greater"]
-        #[doc = " than the allowed number of max seats for the resource. Or decreasing seats"]
-        #[doc = " for a commitment based plan."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " For example, the number of seats being changed is greater than the allowed"]
+        #[doc = " number of max seats, or decreasing seats for a commitment based plan."]
         #[doc = " * NOT_FOUND: Entitlement resource not found."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue"]
-        #[doc = " in the backend. In this case, contact Cloud Channel support."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2378,24 +2375,23 @@ pub mod cloud_channel_service_client {
         }
         #[doc = " Updates the renewal settings for an existing customer entitlement."]
         #[doc = ""]
-        #[doc = " An entitlement update is a long-running operation and results in updates to"]
-        #[doc = " the entitlement as a result of fulfillment."]
+        #[doc = " An entitlement update is a long-running operation and it updates the"]
+        #[doc = " entitlement as a result of fulfillment."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * NOT_FOUND: Entitlement resource not found."]
         #[doc = " * NOT_COMMITMENT_PLAN: Renewal Settings are only applicable for a"]
-        #[doc = " commitment plan. Can't enable or disable renewal for non-commitment plans."]
-        #[doc = " * INTERNAL: Any non user error related to a technical issue in the"]
-        #[doc = " backend. In this case, contact Cloud Channel support."]
-        #[doc = " * UNKNOWN: Any non user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " commitment plan. Can't enable or disable renewals for non-commitment plans."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = "   Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2421,22 +2417,21 @@ pub mod cloud_channel_service_client {
         }
         #[doc = " Updates the Offer for an existing customer entitlement."]
         #[doc = ""]
-        #[doc = " An entitlement update is a long-running operation and results in updates to"]
-        #[doc = " the entitlement as a result of fulfillment."]
+        #[doc = " An entitlement update is a long-running operation and it updates the"]
+        #[doc = " entitlement as a result of fulfillment."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * NOT_FOUND: Offer or Entitlement resource not found."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2463,24 +2458,23 @@ pub mod cloud_channel_service_client {
         #[doc = " Starts paid service for a trial entitlement."]
         #[doc = ""]
         #[doc = " Starts paid service for a trial entitlement immediately. This method is"]
-        #[doc = " only applicable if a plan has already been set up for a trial entitlement"]
-        #[doc = " but has some trial days remaining."]
+        #[doc = " only applicable if a plan is set up for a trial entitlement but has some"]
+        #[doc = " trial days remaining."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * NOT_FOUND: Entitlement resource not found."]
         #[doc = " * FAILED_PRECONDITION/NOT_IN_TRIAL: This method only works for"]
         #[doc = " entitlement on trial plans."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
-        #[doc = " * UNKNOWN: Any non-user error related to a technical issue"]
-        #[doc = " in the backend. In this case, contact Cloud Channel support."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2505,22 +2499,22 @@ pub mod cloud_channel_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Suspends a previously fulfilled entitlement."]
+        #[doc = ""]
         #[doc = " An entitlement suspension is a long-running operation."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * NOT_FOUND: Entitlement resource not found."]
         #[doc = " * NOT_ACTIVE: Entitlement is not active."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2545,27 +2539,26 @@ pub mod cloud_channel_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Cancels a previously fulfilled entitlement."]
+        #[doc = ""]
         #[doc = " An entitlement cancellation is a long-running operation."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller or"]
-        #[doc = " if the reseller account making the request and reseller account being"]
-        #[doc = " queried for are different."]
-        #[doc = " * FAILED_PRECONDITION: If there are any Google Cloud projects linked to the"]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * FAILED_PRECONDITION: There are Google Cloud projects linked to the"]
         #[doc = " Google Cloud entitlement's Cloud Billing subaccount."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * NOT_FOUND: Entitlement resource not found."]
         #[doc = " * DELETION_TYPE_NOT_ALLOWED: Cancel is only allowed for Google Workspace"]
-        #[doc = " add-ons or entitlements for Google Cloud's development platform."]
+        #[doc = " add-ons, or entitlements for Google Cloud's development platform."]
         #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
-        #[doc = " backend. In this case, contact Cloud Channel support."]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The response will contain"]
@@ -2590,32 +2583,29 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Activates a previously suspended entitlement. The entitlement must be in a"]
-        #[doc = " suspended state for it to be activated. Entitlements suspended for pending"]
-        #[doc = " ToS acceptance can't be activated using this method. An entitlement"]
-        #[doc = " activation is a long-running operation and can result in updates to"]
+        #[doc = " Activates a previously suspended entitlement. Entitlements suspended for"]
+        #[doc = " pending ToS acceptance can't be activated using this method."]
+        #[doc = ""]
+        #[doc = " An entitlement activation is a long-running operation and it updates"]
         #[doc = " the state of the customer entitlement."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller or"]
-        #[doc = " if the reseller account making the request and reseller account being"]
-        #[doc = " queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * NOT_FOUND: Entitlement resource not found."]
-        #[doc = " * SUSPENSION_NOT_RESELLER_INITIATED: Can't activate an"]
-        #[doc = " entitlement that is pending TOS acceptance. Only reseller initiated"]
-        #[doc = " suspensions can be activated."]
-        #[doc = " * NOT_SUSPENDED: Can't activate entitlements that are already in ACTIVE"]
-        #[doc = " state. Can only activate suspended entitlements."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue"]
-        #[doc = " in the backend. In this case, contact Cloud Channel support."]
+        #[doc = " * SUSPENSION_NOT_RESELLER_INITIATED: Can only activate reseller-initiated"]
+        #[doc = " suspensions and entitlements that have accepted the TOS."]
+        #[doc = " * NOT_SUSPENDED: Can only activate suspended entitlements not in an ACTIVE"]
+        #[doc = " state."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2641,31 +2631,29 @@ pub mod cloud_channel_service_client {
         }
         #[doc = " Transfers customer entitlements to new reseller."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the request."]
-        #[doc = " * NOT_FOUND: If the customer or offer resource is not found for the"]
-        #[doc = " reseller."]
-        #[doc = " * ALREADY_EXISTS: If the SKU has been already transferred for the customer."]
-        #[doc = " * CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can happen in the"]
-        #[doc = " following cases:"]
-        #[doc = "     * Transferring a SKU that requires domain verification and the domain"]
-        #[doc = "     has not been verified."]
-        #[doc = "     * Transferring an Add-On SKU like Vault or Drive without transferring"]
-        #[doc = "     the pre-requisite SKU, such as G Suite Basic."]
-        #[doc = "     * Applicable only for developer accounts: reseller and resold domain"]
-        #[doc = "     must follow the domain naming convention as follows:"]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: The customer or offer resource was not found."]
+        #[doc = " * ALREADY_EXISTS: The SKU was already transferred for the customer."]
+        #[doc = " * CONDITION_NOT_MET or FAILED_PRECONDITION:"]
+        #[doc = "     * The SKU requires domain verification to transfer, but the domain is"]
+        #[doc = "     not verified."]
+        #[doc = "     * An Add-On SKU (example, Vault or Drive) is missing the"]
+        #[doc = "     pre-requisite SKU (example, G Suite Basic)."]
+        #[doc = "     * (Developer accounts only) Reseller and resold domain must meet the"]
+        #[doc = "     following naming requirements:"]
         #[doc = "         * Domain names must start with goog-test."]
-        #[doc = "         * Resold domain names must include the reseller domain."]
-        #[doc = "     * All transferring entitlements must be specified."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the backend."]
-        #[doc = " Please contact Cloud Channel Support in this case."]
+        #[doc = "         * Domain names must include the reseller domain."]
+        #[doc = "     * Specify all transferring entitlements."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " Please contact Cloud Channel Support in this case."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The Operation metadata will contain an"]
@@ -2689,32 +2677,30 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Transfers customer entitlements from current reseller to Google."]
+        #[doc = " Transfers customer entitlements from their current reseller to Google."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the request."]
-        #[doc = " * NOT_FOUND: If the customer or offer resource is not found for the"]
-        #[doc = " reseller."]
-        #[doc = " * ALREADY_EXISTS: If the SKU has been already transferred for the customer."]
-        #[doc = " * CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can happen in"]
-        #[doc = " the following cases:"]
-        #[doc = "     * Transferring a SKU that requires domain verification and the domain"]
-        #[doc = "     has not been verified."]
-        #[doc = "     * Transferring an Add-On SKU like Vault or Drive without purchasing the"]
-        #[doc = "     pre-requisite SKU, such as G Suite Basic."]
-        #[doc = "     * Applicable only for developer accounts: reseller and resold domain"]
-        #[doc = "     must follow the domain naming convention as follows:"]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: The customer or offer resource was not found."]
+        #[doc = " * ALREADY_EXISTS: The SKU was already transferred for the customer."]
+        #[doc = " * CONDITION_NOT_MET or FAILED_PRECONDITION:"]
+        #[doc = "     * The SKU requires domain verification to transfer, but the domain is"]
+        #[doc = "     not verified."]
+        #[doc = "     * An Add-On SKU (example, Vault or Drive) is missing the"]
+        #[doc = "     pre-requisite SKU (example, G Suite Basic)."]
+        #[doc = "     * (Developer accounts only) Reseller and resold domain must meet the"]
+        #[doc = "     following naming requirements:"]
         #[doc = "         * Domain names must start with goog-test."]
-        #[doc = "         * Resold domain names must include the reseller domain."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the backend."]
-        #[doc = " Please contact Cloud Channel Support in this case."]
+        #[doc = "         * Domain names must include the reseller domain."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " Please contact Cloud Channel Support in this case."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Long Running Operation ID."]
+        #[doc = " Return value:"]
+        #[doc = " The ID of a long-running operation."]
         #[doc = ""]
         #[doc = " To get the results of the operation, call the GetOperation method of"]
         #[doc = " CloudChannelOperationsService. The response will contain"]
@@ -2740,18 +2726,16 @@ pub mod cloud_channel_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " List [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]s belonging to a distributor."]
-        #[doc = " To call this method, you must be a distributor."]
+        #[doc = " You must be a distributor to call this method."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " If successful, returns the list of [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resources"]
-        #[doc = " for the distributor account, otherwise returns an error."]
+        #[doc = " Return value:"]
+        #[doc = " The list of the distributor account's [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resources."]
         pub async fn list_channel_partner_links(
             &mut self,
             request: impl tonic::IntoRequest<super::ListChannelPartnerLinksRequest>,
@@ -2769,20 +2753,19 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns a requested [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource."]
-        #[doc = " To call this method, you must be a distributor."]
+        #[doc = " Returns the requested [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource."]
+        #[doc = " You must be a distributor to call this method."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * NOT_FOUND: ChannelPartnerLink resource not found. Results"]
-        #[doc = " due invalid channel partner link name."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: ChannelPartnerLink resource not found because of an"]
+        #[doc = " invalid channel partner link name."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource if found, otherwise returns an error."]
+        #[doc = " Return value:"]
+        #[doc = " The [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource."]
         pub async fn get_channel_partner_link(
             &mut self,
             request: impl tonic::IntoRequest<super::GetChannelPartnerLinkRequest>,
@@ -2799,30 +2782,28 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Initiates a channel partner link between a distributor and a reseller or"]
+        #[doc = " Initiates a channel partner link between a distributor and a reseller, or"]
         #[doc = " between resellers in an n-tier reseller channel."]
-        #[doc = " To accept the invite, the invited partner should follow the invite_link_uri"]
-        #[doc = " provided in the response. If the link creation is accepted, a valid link is"]
-        #[doc = " set up between the two involved parties."]
-        #[doc = " To call this method, you must be a distributor."]
+        #[doc = " Invited partners need to follow the invite_link_uri provided in the"]
+        #[doc = " response to accept. After accepting the invitation, a link is set up"]
+        #[doc = " between the two parties."]
+        #[doc = " You must be a distributor to call this method."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * ALREADY_EXISTS: If the ChannelPartnerLink sent in the request already"]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * ALREADY_EXISTS: The ChannelPartnerLink sent in the request already"]
         #[doc = " exists."]
-        #[doc = " * NOT_FOUND: If no Cloud Identity customer exists for domain provided."]
+        #[doc = " * NOT_FOUND: No Cloud Identity customer exists for provided domain."]
         #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
-        #[doc = " backend. In this case, contact Cloud Channel support."]
-        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in"]
-        #[doc = " the backend. In this case, contact Cloud Channel support."]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Newly created [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource if successful,"]
-        #[doc = " otherwise error is returned."]
+        #[doc = " Return value:"]
+        #[doc = " The new [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource."]
         pub async fn create_channel_partner_link(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateChannelPartnerLinkRequest>,
@@ -2839,28 +2820,27 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a channel partner link. A distributor calls this method to change a"]
-        #[doc = " link's status. For example, suspend a partner link."]
-        #[doc = " To call this method, you must be a distributor."]
+        #[doc = " Updates a channel partner link. Distributors call this method to change a"]
+        #[doc = " link's status. For example, to suspend a partner link."]
+        #[doc = " You must be a distributor to call this method."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being queried for are different."]
-        #[doc = " * INVALID_ARGUMENT: It can happen in following scenarios -"]
-        #[doc = "     * Missing or invalid required parameters in the request."]
-        #[doc = "     * Updating link state from invited to active or suspended."]
-        #[doc = "     * Sending reseller_cloud_identity_id, invite_url or name in update"]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request is different"]
+        #[doc = " from the reseller account in the API request."]
+        #[doc = " * INVALID_ARGUMENT:"]
+        #[doc = "     * Required request parameters are missing or invalid."]
+        #[doc = "     * Link state cannot change from invited to active or suspended."]
+        #[doc = "     * Cannot send reseller_cloud_identity_id, invite_url, or name in update"]
         #[doc = "     mask."]
         #[doc = " * NOT_FOUND: ChannelPartnerLink resource not found."]
-        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
+        #[doc = " backend. Contact Cloud Channel support."]
         #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
-        #[doc = " In this case, contact Cloud Channel support."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " If successful, the updated [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource, otherwise"]
-        #[doc = " returns an error."]
+        #[doc = " Return value:"]
+        #[doc = " The updated [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink] resource."]
         pub async fn update_channel_partner_link(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateChannelPartnerLinkRequest>,
@@ -2877,12 +2857,37 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Returns the requested [Offer][google.cloud.channel.v1.Offer] resource."]
+        #[doc = ""]
+        #[doc = " Possible error codes:"]
+        #[doc = ""]
+        #[doc = " * PERMISSION_DENIED: The entitlement doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: Entitlement or offer was not found."]
+        #[doc = ""]
+        #[doc = " Return value:"]
+        #[doc = " The [Offer][google.cloud.channel.v1.Offer] resource."]
+        pub async fn lookup_offer(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupOfferRequest>,
+        ) -> Result<tonic::Response<super::Offer>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.channel.v1.CloudChannelService/LookupOffer",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Lists the Products the reseller is authorized to sell."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         pub async fn list_products(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProductsRequest>,
@@ -2901,10 +2906,9 @@ pub mod cloud_channel_service_client {
         }
         #[doc = " Lists the SKUs for a product the reseller is authorized to sell."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         pub async fn list_skus(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSkusRequest>,
@@ -2923,10 +2927,9 @@ pub mod cloud_channel_service_client {
         }
         #[doc = " Lists the Offers the reseller can sell."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         pub async fn list_offers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListOffersRequest>,
@@ -2943,16 +2946,15 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists the Purchasable SKUs for following cases:"]
+        #[doc = " Lists the following:"]
         #[doc = ""]
-        #[doc = " * SKUs that can be newly purchased for a customer"]
-        #[doc = " * SKUs that can be upgraded/downgraded to, for an entitlement."]
+        #[doc = " * SKUs that you can purchase for a customer"]
+        #[doc = " * SKUs that you can upgrade or downgrade for an entitlement."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller"]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         pub async fn list_purchasable_skus(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPurchasableSkusRequest>,
@@ -2969,16 +2971,15 @@ pub mod cloud_channel_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists the Purchasable Offers for the following cases:"]
+        #[doc = " Lists the following:"]
         #[doc = ""]
-        #[doc = " * Offers that can be newly purchased for a customer"]
-        #[doc = " * Offers that can be changed to, for an entitlement."]
+        #[doc = " * Offers that you can purchase for a customer."]
+        #[doc = " * Offers that you can change for an entitlement."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the customer doesn't belong to the reseller"]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * PERMISSION_DENIED: The customer doesn't belong to the reseller"]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         pub async fn list_purchasable_offers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPurchasableOffersRequest>,
@@ -2996,24 +2997,22 @@ pub mod cloud_channel_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Registers a service account with subscriber privileges on the Cloud Pub/Sub"]
-        #[doc = " topic created for this Channel Services account. Once you create a"]
-        #[doc = " subscriber, you will get the events as per [SubscriberEvent][google.cloud.channel.v1.SubscriberEvent]"]
+        #[doc = " topic for this Channel Services account. After you create a"]
+        #[doc = " subscriber, you get the events through [SubscriberEvent][google.cloud.channel.v1.SubscriberEvent]"]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being provided are different, or if the impersonated user"]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request and the"]
+        #[doc = " provided reseller account are different, or the impersonated user"]
         #[doc = " is not a super admin."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
         #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
-        #[doc = " backend. In this case, contact Cloud Channel support."]
-        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in"]
-        #[doc = " the backend. In this case, contact Cloud Channel support."]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Topic name with service email address registered if successful,"]
-        #[doc = " otherwise error is returned."]
+        #[doc = " Return value:"]
+        #[doc = " The topic name with the registered service email address."]
         pub async fn register_subscriber(
             &mut self,
             request: impl tonic::IntoRequest<super::RegisterSubscriberRequest>,
@@ -3032,26 +3031,25 @@ pub mod cloud_channel_service_client {
         }
         #[doc = " Unregisters a service account with subscriber privileges on the Cloud"]
         #[doc = " Pub/Sub topic created for this Channel Services account. If there are no"]
-        #[doc = " more service account left with sunbscriber privileges, the topic will be"]
-        #[doc = " deleted. You can check this by calling ListSubscribers api."]
+        #[doc = " service accounts left with subscriber privileges, this deletes the topic."]
+        #[doc = " You can call ListSubscribers to check for these accounts."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being provided are different, or if the impersonated user"]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request and the"]
+        #[doc = " provided reseller account are different, or the impersonated user"]
         #[doc = " is not a super admin."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * NOT_FOUND: If the topic resource doesn't exist."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: The topic resource doesn't exist."]
         #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
-        #[doc = " backend. In this case, contact Cloud Channel support."]
-        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in"]
-        #[doc = " the backend. In this case, contact Cloud Channel support."]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " Topic name from which service email address has been unregistered if"]
-        #[doc = " successful, otherwise error is returned. If the service email was already"]
-        #[doc = " not associated with the topic, the success response will be returned."]
+        #[doc = " Return value:"]
+        #[doc = " The topic name that unregistered the service email address."]
+        #[doc = " Returns a success response if the service email address wasn't registered"]
+        #[doc = " with the topic."]
         pub async fn unregister_subscriber(
             &mut self,
             request: impl tonic::IntoRequest<super::UnregisterSubscriberRequest>,
@@ -3071,22 +3069,20 @@ pub mod cloud_channel_service_client {
         #[doc = " Lists service accounts with subscriber privileges on the Cloud Pub/Sub"]
         #[doc = " topic created for this Channel Services account."]
         #[doc = ""]
-        #[doc = " Possible Error Codes:"]
+        #[doc = " Possible error codes:"]
         #[doc = ""]
-        #[doc = " * PERMISSION_DENIED: If the reseller account making the request and the"]
-        #[doc = " reseller account being provided are different, or if the account is not"]
-        #[doc = " a super admin."]
-        #[doc = " * INVALID_ARGUMENT: Missing or invalid required parameters in the"]
-        #[doc = " request."]
-        #[doc = " * NOT_FOUND: If the topic resource doesn't exist."]
+        #[doc = " * PERMISSION_DENIED: The reseller account making the request and the"]
+        #[doc = " provided reseller account are different, or the impersonated user"]
+        #[doc = " is not a super admin."]
+        #[doc = " * INVALID_ARGUMENT: Required request parameters are missing or invalid."]
+        #[doc = " * NOT_FOUND: The topic resource doesn't exist."]
         #[doc = " * INTERNAL: Any non-user error related to a technical issue in the"]
-        #[doc = " backend. In this case, contact Cloud Channel support."]
-        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in"]
-        #[doc = " the backend. In this case, contact Cloud Channel support."]
+        #[doc = " backend. Contact Cloud Channel support."]
+        #[doc = " * UNKNOWN: Any non-user error related to a technical issue in the backend."]
+        #[doc = " Contact Cloud Channel support."]
         #[doc = ""]
-        #[doc = " Return Value:"]
-        #[doc = " List of service email addresses if successful, otherwise error is"]
-        #[doc = " returned."]
+        #[doc = " Return value:"]
+        #[doc = " A list of service email addresses."]
         pub async fn list_subscribers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSubscribersRequest>,
@@ -3102,18 +3098,6 @@ pub mod cloud_channel_service_client {
                 "/google.cloud.channel.v1.CloudChannelService/ListSubscribers",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for CloudChannelServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for CloudChannelServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "CloudChannelServiceClient {{ ... }}")
         }
     }
 }
@@ -3136,6 +3120,10 @@ pub mod customer_event {
     pub enum Type {
         /// Default value. This state doesn't show unless an error occurs.
         Unspecified = 0,
+        /// Primary domain for customer was changed.
+        PrimaryDomainChanged = 1,
+        /// Primary domain of the customer has been verified.
+        PrimaryDomainVerified = 2,
     }
 }
 /// Represents Pub/Sub message content describing entitlement update.
@@ -3182,6 +3170,8 @@ pub mod entitlement_event {
         PaidServiceStarted = 11,
         /// License was assigned to or revoked from a user.
         LicenseAssignmentChanged = 12,
+        /// License cap was changed for the entitlement.
+        LicenseCapChanged = 13,
     }
 }
 /// Represents information which resellers will get as part of notification from

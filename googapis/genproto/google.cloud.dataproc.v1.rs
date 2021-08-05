@@ -243,27 +243,54 @@ pub struct ListAutoscalingPoliciesResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod autoscaling_policy_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The API interface for managing autoscaling policies in the"]
     #[doc = " Dataproc API."]
+    #[derive(Debug, Clone)]
     pub struct AutoscalingPolicyServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AutoscalingPolicyServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AutoscalingPolicyServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AutoscalingPolicyServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates new autoscaling policy."]
         pub async fn create_autoscaling_policy(
@@ -356,33 +383,38 @@ pub mod autoscaling_policy_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for AutoscalingPolicyServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AutoscalingPolicyServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AutoscalingPolicyServiceClient {{ ... }}")
-        }
-    }
 }
 /// Cluster components that can be activated.
+/// Next ID: 16.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Component {
     /// Unspecified component. Specifying this will cause Cluster creation to fail.
     Unspecified = 0,
-    /// The Anaconda python distribution.
+    /// The Anaconda python distribution. The Anaconda component is not supported
+    /// in the Dataproc
+    /// <a
+    /// href="/dataproc/docs/concepts/versioning/dataproc-release-2.0">2.0
+    /// image</a>. The 2.0 image is pre-installed with Miniconda.
     Anaconda = 5,
+    /// Docker
+    Docker = 13,
+    /// The Druid query engine. (alpha)
+    Druid = 9,
+    /// Flink
+    Flink = 14,
+    /// HBase. (beta)
+    Hbase = 11,
     /// The Hive Web HCatalog (the REST service for accessing HCatalog).
     HiveWebhcat = 3,
     /// The Jupyter Notebook.
     Jupyter = 1,
     /// The Presto query engine.
     Presto = 6,
+    /// The Ranger service.
+    Ranger = 12,
+    /// The Solr service.
+    Solr = 10,
     /// The Zeppelin notebook.
     Zeppelin = 4,
     /// The Zookeeper service.
@@ -442,6 +474,8 @@ pub struct ClusterConfig {
     /// and manage this project-level, per-location bucket (see
     /// [Dataproc staging
     /// bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)).
+    /// **This field requires a Cloud Storage bucket name, not a URI to a Cloud
+    /// Storage bucket.**
     #[prost(string, tag = "1")]
     pub config_bucket: ::prost::alloc::string::String,
     /// Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data,
@@ -453,6 +487,8 @@ pub struct ClusterConfig {
     /// and manage this project-level, per-location bucket. The default bucket has
     /// a TTL of 90 days, but you can use any TTL (or none) if you specify a
     /// bucket.
+    /// **This field requires a Cloud Storage bucket name, not a URI to a Cloud
+    /// Storage bucket.**
     #[prost(string, tag = "2")]
     pub temp_bucket: ::prost::alloc::string::String,
     /// Optional. The shared Compute Engine config settings for
@@ -505,6 +541,37 @@ pub struct ClusterConfig {
     /// Optional. Port/endpoint configuration for this cluster
     #[prost(message, optional, tag = "19")]
     pub endpoint_config: ::core::option::Option<EndpointConfig>,
+    /// Optional. Metastore configuration.
+    #[prost(message, optional, tag = "20")]
+    pub metastore_config: ::core::option::Option<MetastoreConfig>,
+    /// Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to
+    /// Kubernetes. Setting this is considered mutually exclusive with Compute
+    /// Engine-based options such as `gce_cluster_config`, `master_config`,
+    /// `worker_config`, `secondary_worker_config`, and `autoscaling_config`.
+    #[prost(message, optional, tag = "21")]
+    pub gke_cluster_config: ::core::option::Option<GkeClusterConfig>,
+}
+/// The GKE config for this cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GkeClusterConfig {
+    /// Optional. A target for the deployment.
+    #[prost(message, optional, tag = "1")]
+    pub namespaced_gke_deployment_target:
+        ::core::option::Option<gke_cluster_config::NamespacedGkeDeploymentTarget>,
+}
+/// Nested message and enum types in `GkeClusterConfig`.
+pub mod gke_cluster_config {
+    /// A full, namespace-isolated deployment target for an existing GKE cluster.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NamespacedGkeDeploymentTarget {
+        /// Optional. The target GKE cluster to deploy to.
+        /// Format: 'projects/{project}/locations/{location}/clusters/{cluster_id}'
+        #[prost(string, tag = "1")]
+        pub target_gke_cluster: ::prost::alloc::string::String,
+        /// Optional. A namespace within the GKE cluster to deploy into.
+        #[prost(string, tag = "2")]
+        pub cluster_namespace: ::prost::alloc::string::String,
+    }
 }
 /// Endpoint config for this cluster
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -591,6 +658,12 @@ pub struct GceClusterConfig {
     /// configured to be accessible without external IP addresses.
     #[prost(bool, tag = "7")]
     pub internal_ip_only: bool,
+    /// Optional. The type of IPv6 access for a cluster.
+    #[prost(
+        enumeration = "gce_cluster_config::PrivateIpv6GoogleAccess",
+        tag = "12"
+    )]
+    pub private_ipv6_google_access: i32,
     /// Optional. The [Dataproc service
     /// account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc)
     /// (also see [VM Data Plane
@@ -633,13 +706,79 @@ pub struct GceClusterConfig {
     /// Optional. Reservation Affinity for consuming Zonal reservation.
     #[prost(message, optional, tag = "11")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
+    /// Optional. Node Group Affinity for sole-tenant clusters.
+    #[prost(message, optional, tag = "13")]
+    pub node_group_affinity: ::core::option::Option<NodeGroupAffinity>,
+    /// Optional. Shielded Instance Config for clusters using [Compute Engine Shielded
+    /// VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).
+    #[prost(message, optional, tag = "14")]
+    pub shielded_instance_config: ::core::option::Option<ShieldedInstanceConfig>,
+}
+/// Nested message and enum types in `GceClusterConfig`.
+pub mod gce_cluster_config {
+    /// `PrivateIpv6GoogleAccess` controls whether and how Dataproc cluster nodes
+    /// can communicate with Google Services through gRPC over IPv6.
+    /// These values are directly mapped to corresponding values in the
+    /// [Compute Engine Instance
+    /// fields](https://cloud.google.com/compute/docs/reference/rest/v1/instances).
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PrivateIpv6GoogleAccess {
+        /// If unspecified, Compute Engine default behavior will apply, which
+        /// is the same as [INHERIT_FROM_SUBNETWORK][google.cloud.dataproc.v1.GceClusterConfig.PrivateIpv6GoogleAccess.INHERIT_FROM_SUBNETWORK].
+        Unspecified = 0,
+        /// Private access to and from Google Services configuration
+        /// inherited from the subnetwork configuration. This is the
+        /// default Compute Engine behavior.
+        InheritFromSubnetwork = 1,
+        /// Enables outbound private IPv6 access to Google Services from the Dataproc
+        /// cluster.
+        Outbound = 2,
+        /// Enables bidirectional private IPv6 access between Google Services and the
+        /// Dataproc cluster.
+        Bidirectional = 3,
+    }
+}
+/// Node Group Affinity for clusters using sole-tenant node groups.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeGroupAffinity {
+    /// Required. The URI of a
+    /// sole-tenant [node group
+    /// resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups)
+    /// that the cluster will be created on.
+    ///
+    /// A full URL, partial URI, or node group name are valid. Examples:
+    ///
+    /// * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1`
+    /// * `projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1`
+    /// * `node-group-1`
+    #[prost(string, tag = "1")]
+    pub node_group_uri: ::prost::alloc::string::String,
+}
+/// Shielded Instance Config for clusters using [Compute Engine Shielded
+/// VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShieldedInstanceConfig {
+    /// Optional. Defines whether instances have Secure Boot enabled.
+    #[prost(bool, tag = "1")]
+    pub enable_secure_boot: bool,
+    /// Optional. Defines whether instances have the vTPM enabled.
+    #[prost(bool, tag = "2")]
+    pub enable_vtpm: bool,
+    /// Optional. Defines whether instances have integrity monitoring enabled.
+    #[prost(bool, tag = "3")]
+    pub enable_integrity_monitoring: bool,
 }
 /// The config settings for Compute Engine resources in
 /// an instance group, such as a master or worker group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupConfig {
     /// Optional. The number of VM instances in the instance group.
-    /// For master instance groups, must be set to 1.
+    /// For [HA
+    /// cluster](/dataproc/docs/concepts/configuring-clusters/high-availability)
+    /// [master_config](#FIELDS.master_config) groups, **must be set to 3**.
+    /// For standard cluster [master_config](#FIELDS.master_config) groups,
+    /// **must be set to 1**.
     #[prost(int32, tag = "1")]
     pub num_instances: i32,
     /// Output only. The list of instance names. Dataproc derives the names
@@ -777,8 +916,10 @@ pub struct AcceleratorConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskConfig {
     /// Optional. Type of the boot disk (default is "pd-standard").
-    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
-    /// "pd-standard" (Persistent Disk Hard Disk Drive).
+    /// Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive),
+    /// "pd-ssd" (Persistent Disk Solid State Drive),
+    /// or "pd-standard" (Persistent Disk Hard Disk Drive).
+    /// See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).
     #[prost(string, tag = "3")]
     pub boot_disk_type: ::prost::alloc::string::String,
     /// Optional. Size in GB of the boot disk (default is 500GB).
@@ -846,6 +987,12 @@ pub mod cluster_status {
         Deleting = 4,
         /// The cluster is being updated. It continues to accept and process jobs.
         Updating = 5,
+        /// The cluster is being stopped. It cannot be used.
+        Stopping = 6,
+        /// The cluster is currently stopped. It is not ready for use.
+        Stopped = 7,
+        /// The cluster is being started. It is not ready for use.
+        Starting = 8,
     }
     /// The cluster substate.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -866,12 +1013,16 @@ pub mod cluster_status {
         StaleStatus = 2,
     }
 }
-/// Security related configuration, including Kerberos.
+/// Security related configuration, including encryption, Kerberos, etc.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityConfig {
-    /// Kerberos related configuration.
+    /// Optional. Kerberos related configuration.
     #[prost(message, optional, tag = "1")]
     pub kerberos_config: ::core::option::Option<KerberosConfig>,
+    /// Optional. Identity related configuration, including service account based
+    /// secure multi-tenancy user mappings.
+    #[prost(message, optional, tag = "2")]
+    pub identity_config: ::core::option::Option<IdentityConfig>,
 }
 /// Specifies Kerberos related configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -880,11 +1031,11 @@ pub struct KerberosConfig {
     /// this field to true to enable Kerberos on a cluster.
     #[prost(bool, tag = "1")]
     pub enable_kerberos: bool,
-    /// Required. The Cloud Storage URI of a KMS encrypted file containing the root
+    /// Optional. The Cloud Storage URI of a KMS encrypted file containing the root
     /// principal password.
     #[prost(string, tag = "2")]
     pub root_principal_password_uri: ::prost::alloc::string::String,
-    /// Required. The uri of the KMS key used to encrypt various sensitive
+    /// Optional. The uri of the KMS key used to encrypt various sensitive
     /// files.
     #[prost(string, tag = "3")]
     pub kms_key_uri: ::prost::alloc::string::String,
@@ -944,6 +1095,15 @@ pub struct KerberosConfig {
     #[prost(string, tag = "15")]
     pub realm: ::prost::alloc::string::String,
 }
+/// Identity related configuration, including service account based
+/// secure multi-tenancy user mappings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IdentityConfig {
+    /// Required. Map of user to service account.
+    #[prost(map = "string, string", tag = "1")]
+    pub user_service_account_mapping:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
 /// Specifies the selection and config of software inside the cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SoftwareConfig {
@@ -986,9 +1146,9 @@ pub struct SoftwareConfig {
 pub struct LifecycleConfig {
     /// Optional. The duration to keep the cluster alive while idling (when no jobs
     /// are running). Passing this threshold will cause the cluster to be
-    /// deleted. Minimum value is 10 minutes; maximum value is 14 days (see JSON
+    /// deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON
     /// representation of
-    /// [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json).
+    /// [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
     #[prost(message, optional, tag = "1")]
     pub idle_delete_ttl: ::core::option::Option<::prost_types::Duration>,
     /// Output only. The time when cluster became idle (most recent job finished)
@@ -1020,6 +1180,17 @@ pub mod lifecycle_config {
         AutoDeleteTtl(::prost_types::Duration),
     }
 }
+/// Specifies a Metastore configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetastoreConfig {
+    /// Required. Resource name of an existing Dataproc Metastore service.
+    ///
+    /// Example:
+    ///
+    /// * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`
+    #[prost(string, tag = "1")]
+    pub dataproc_metastore_service: ::prost::alloc::string::String,
+}
 /// Contains cluster daemon metrics, such as HDFS and YARN stats.
 ///
 /// **Beta Feature**: This report is available for testing purposes only. It may
@@ -1046,9 +1217,9 @@ pub struct CreateClusterRequest {
     /// Required. The cluster to create.
     #[prost(message, optional, tag = "2")]
     pub cluster: ::core::option::Option<Cluster>,
-    /// Optional. A unique id used to identify the request. If the server
-    /// receives two [CreateClusterRequest][google.cloud.dataproc.v1.CreateClusterRequest] requests  with the same
-    /// id, then the second request will be ignored and the
+    /// Optional. A unique id used to identify the request. If the server receives two
+    /// [CreateClusterRequest](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.CreateClusterRequest)s
+    /// with the same id, then the second request will be ignored and the
     /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the backend
     /// is returned.
     ///
@@ -1141,8 +1312,9 @@ pub struct UpdateClusterRequest {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. A unique id used to identify the request. If the server
-    /// receives two [UpdateClusterRequest][google.cloud.dataproc.v1.UpdateClusterRequest] requests  with the same
-    /// id, then the second request will be ignored and the
+    /// receives two
+    /// [UpdateClusterRequest](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.UpdateClusterRequest)s
+    /// with the same id, then the second request will be ignored and the
     /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the
     /// backend is returned.
     ///
@@ -1152,6 +1324,70 @@ pub struct UpdateClusterRequest {
     /// The id must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). The maximum length is 40 characters.
     #[prost(string, tag = "7")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// A request to stop a cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StopClusterRequest {
+    /// Required. The ID of the Google Cloud Platform project the
+    /// cluster belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The Dataproc region in which to handle the request.
+    #[prost(string, tag = "2")]
+    pub region: ::prost::alloc::string::String,
+    /// Required. The cluster name.
+    #[prost(string, tag = "3")]
+    pub cluster_name: ::prost::alloc::string::String,
+    /// Optional. Specifying the `cluster_uuid` means the RPC will fail
+    /// (with error NOT_FOUND) if a cluster with the specified UUID does not exist.
+    #[prost(string, tag = "4")]
+    pub cluster_uuid: ::prost::alloc::string::String,
+    /// Optional. A unique id used to identify the request. If the server
+    /// receives two
+    /// [StopClusterRequest](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.StopClusterRequest)s
+    /// with the same id, then the second request will be ignored and the
+    /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the
+    /// backend is returned.
+    ///
+    /// Recommendation: Set this value to a
+    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
+    ///
+    /// The id must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "5")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// A request to start a cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartClusterRequest {
+    /// Required. The ID of the Google Cloud Platform project the
+    /// cluster belongs to.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The Dataproc region in which to handle the request.
+    #[prost(string, tag = "2")]
+    pub region: ::prost::alloc::string::String,
+    /// Required. The cluster name.
+    #[prost(string, tag = "3")]
+    pub cluster_name: ::prost::alloc::string::String,
+    /// Optional. Specifying the `cluster_uuid` means the RPC will fail
+    /// (with error NOT_FOUND) if a cluster with the specified UUID does not exist.
+    #[prost(string, tag = "4")]
+    pub cluster_uuid: ::prost::alloc::string::String,
+    /// Optional. A unique id used to identify the request. If the server
+    /// receives two
+    /// [StartClusterRequest](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.StartClusterRequest)s
+    /// with the same id, then the second request will be ignored and the
+    /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the
+    /// backend is returned.
+    ///
+    /// Recommendation: Set this value to a
+    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
+    ///
+    /// The id must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "5")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a cluster.
@@ -1172,8 +1408,9 @@ pub struct DeleteClusterRequest {
     #[prost(string, tag = "4")]
     pub cluster_uuid: ::prost::alloc::string::String,
     /// Optional. A unique id used to identify the request. If the server
-    /// receives two [DeleteClusterRequest][google.cloud.dataproc.v1.DeleteClusterRequest] requests  with the same
-    /// id, then the second request will be ignored and the
+    /// receives two
+    /// [DeleteClusterRequest](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.DeleteClusterRequest)s
+    /// with the same id, then the second request will be ignored and the
     /// first [google.longrunning.Operation][google.longrunning.Operation] created and stored in the
     /// backend is returned.
     ///
@@ -1303,27 +1540,54 @@ pub mod reservation_affinity {
 }
 #[doc = r" Generated client implementations."]
 pub mod cluster_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The ClusterControllerService provides methods to manage clusters"]
     #[doc = " of Compute Engine instances."]
+    #[derive(Debug, Clone)]
     pub struct ClusterControllerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ClusterControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ClusterControllerClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ClusterControllerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a cluster in a project. The returned"]
         #[doc = " [Operation.metadata][google.longrunning.Operation.metadata] will be"]
@@ -1366,6 +1630,46 @@ pub mod cluster_controller_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataproc.v1.ClusterController/UpdateCluster",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Stops a cluster in a project."]
+        pub async fn stop_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopClusterRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.ClusterController/StopCluster",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Starts a cluster in a project."]
+        pub async fn start_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartClusterRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.ClusterController/StartCluster",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1450,18 +1754,6 @@ pub mod cluster_controller_client {
                 "/google.cloud.dataproc.v1.ClusterController/DiagnoseCluster",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ClusterControllerClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ClusterControllerClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ClusterControllerClient {{ ... }}")
         }
     }
 }
@@ -1672,9 +1964,9 @@ pub struct PySparkJob {
 /// A list of queries to run on a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryList {
-    /// Required. The queries to execute. You do not need to terminate a query
-    /// with a semicolon. Multiple queries can be specified in one string
-    /// by separating each with a semicolon. Here is an example of an Cloud
+    /// Required. The queries to execute. You do not need to end a query expression
+    /// with a semicolon. Multiple queries can be specified in one
+    /// string by separating each with a semicolon. Here is an example of a
     /// Dataproc API snippet that uses a QueryList to specify a HiveJob:
     ///
     ///     "hiveJob": {
@@ -1912,6 +2204,11 @@ pub struct JobPlacement {
     /// the job is submitted.
     #[prost(string, tag = "2")]
     pub cluster_uuid: ::prost::alloc::string::String,
+    /// Optional. Cluster labels to identify a cluster where the job will be
+    /// submitted.
+    #[prost(map = "string, string", tag = "3")]
+    pub cluster_labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Dataproc job status.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1990,8 +2287,8 @@ pub mod job_status {
 /// Encapsulates the full scoping used to reference a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobReference {
-    /// Optional. The ID of the Google Cloud Platform project that the job belongs to. If
-    /// specified, must match the request project ID.
+    /// Optional. The ID of the Google Cloud Platform project that the job belongs
+    /// to. If specified, must match the request project ID.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Optional. The job ID, which must be unique within the project.
@@ -2107,8 +2404,8 @@ pub struct Job {
     /// may be reused over time.
     #[prost(string, tag = "22")]
     pub job_uuid: ::prost::alloc::string::String,
-    /// Output only. Indicates whether the job is completed. If the value is `false`,
-    /// the job is still in progress. If `true`, the job is completed, and
+    /// Output only. Indicates whether the job is completed. If the value is
+    /// `false`, the job is still in progress. If `true`, the job is completed, and
     /// `status.state` field will indicate if it was successful, failed,
     /// or cancelled.
     #[prost(bool, tag = "24")]
@@ -2152,7 +2449,7 @@ pub mod job {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobScheduling {
     /// Optional. Maximum number of times per hour a driver may be restarted as
-    /// a result of driver terminating with non-zero code before job is
+    /// a result of driver exiting with non-zero code before job is
     /// reported failed.
     ///
     /// A job may be reported as thrashing if driver exits with non-zero code
@@ -2161,6 +2458,11 @@ pub struct JobScheduling {
     /// Maximum value is 10.
     #[prost(int32, tag = "1")]
     pub max_failures_per_hour: i32,
+    /// Optional. Maximum number of times in total a driver may be restarted as a
+    /// result of driver exiting with non-zero code before job is reported failed.
+    /// Maximum value is 240.
+    #[prost(int32, tag = "2")]
+    pub max_failures_total: i32,
 }
 /// A request to submit a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2176,8 +2478,9 @@ pub struct SubmitJobRequest {
     #[prost(message, optional, tag = "2")]
     pub job: ::core::option::Option<Job>,
     /// Optional. A unique id used to identify the request. If the server
-    /// receives two [SubmitJobRequest][google.cloud.dataproc.v1.SubmitJobRequest] requests  with the same
-    /// id, then the second request will be ignored and the
+    /// receives two
+    /// [SubmitJobRequest](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.SubmitJobRequest)s
+    /// with the same id, then the second request will be ignored and the
     /// first [Job][google.cloud.dataproc.v1.Job] created and stored in the backend
     /// is returned.
     ///
@@ -2345,26 +2648,53 @@ pub struct DeleteJobRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod job_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The JobController provides methods to manage jobs."]
+    #[derive(Debug, Clone)]
     pub struct JobControllerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> JobControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> JobControllerClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            JobControllerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Submits a job to a cluster."]
         pub async fn submit_job(
@@ -2494,18 +2824,6 @@ pub mod job_controller_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-    impl<T: Clone> Clone for JobControllerClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for JobControllerClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "JobControllerClient {{ ... }}")
-        }
-    }
 }
 /// The status of the operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2628,6 +2946,18 @@ pub struct WorkflowTemplate {
     /// instantiated.
     #[prost(message, repeated, tag = "9")]
     pub parameters: ::prost::alloc::vec::Vec<TemplateParameter>,
+    /// Optional. Timeout duration for the DAG of jobs, expressed in seconds (see
+    /// [JSON representation of
+    /// duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+    /// The timeout duration must be from 10 minutes ("600s") to 24 hours
+    /// ("86400s"). The timer begins when the first job is submitted. If the
+    /// workflow is running at the end of the timeout period, any remaining jobs
+    /// are cancelled, the workflow is ended, and if the workflow was running on a
+    /// [managed
+    /// cluster](/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster),
+    /// the cluster is deleted.
+    #[prost(message, optional, tag = "10")]
+    pub dag_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Specifies workflow execution target.
 ///
@@ -2708,8 +3038,8 @@ pub struct OrderedJob {
     ///
     /// The step id is used as prefix for job id, as job
     /// `goog-dataproc-workflow-step-id` label, and in
-    /// [prerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids] field from other
-    /// steps.
+    /// [prerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids]
+    /// field from other steps.
     ///
     /// The id must contain only letters (a-z, A-Z), numbers (0-9),
     /// underscores (_), and hyphens (-). Cannot begin or end with underscore
@@ -2795,10 +3125,10 @@ pub struct TemplateParameter {
     /// A field is allowed to appear in at most one parameter's list of field
     /// paths.
     ///
-    /// A field path is similar in syntax to a [google.protobuf.FieldMask][google.protobuf.FieldMask].
-    /// For example, a field path that references the zone field of a workflow
-    /// template's cluster selector would be specified as
-    /// `placement.clusterSelector.zone`.
+    /// A field path is similar in syntax to a
+    /// [google.protobuf.FieldMask][google.protobuf.FieldMask]. For example, a
+    /// field path that references the zone field of a workflow template's cluster
+    /// selector would be specified as `placement.clusterSelector.zone`.
     ///
     /// Also, field paths can reference fields using the following syntax:
     ///
@@ -2928,6 +3258,21 @@ pub struct WorkflowMetadata {
     /// Output only. The UUID of target cluster.
     #[prost(string, tag = "11")]
     pub cluster_uuid: ::prost::alloc::string::String,
+    /// Output only. The timeout duration for the DAG of jobs, expressed in seconds
+    /// (see [JSON representation of
+    /// duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+    #[prost(message, optional, tag = "12")]
+    pub dag_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. DAG start time, only set for workflows with
+    /// [dag_timeout][google.cloud.dataproc.v1.WorkflowMetadata.dag_timeout] when
+    /// DAG begins.
+    #[prost(message, optional, tag = "13")]
+    pub dag_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. DAG end time, only set for workflows with
+    /// [dag_timeout][google.cloud.dataproc.v1.WorkflowMetadata.dag_timeout] when
+    /// DAG ends.
+    #[prost(message, optional, tag = "14")]
+    pub dag_end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `WorkflowMetadata`.
 pub mod workflow_metadata {
@@ -3081,7 +3426,7 @@ pub struct InstantiateWorkflowTemplateRequest {
     #[prost(string, tag = "5")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. Map from parameter names to values that should be used for those
-    /// parameters. Values may not exceed 100 characters.
+    /// parameters. Values may not exceed 1000 characters.
     #[prost(map = "string, string", tag = "6")]
     pub parameters:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -3185,27 +3530,54 @@ pub struct DeleteWorkflowTemplateRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod workflow_template_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The API interface for managing Workflow Templates in the"]
     #[doc = " Dataproc API."]
+    #[derive(Debug, Clone)]
     pub struct WorkflowTemplateServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> WorkflowTemplateServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> WorkflowTemplateServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            WorkflowTemplateServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates new workflow template."]
         pub async fn create_workflow_template(
@@ -3286,7 +3658,8 @@ pub mod workflow_template_service_client {
         #[doc = " Instantiates a template and begins execution."]
         #[doc = ""]
         #[doc = " This method is equivalent to executing the sequence"]
-        #[doc = " [CreateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate], [InstantiateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate],"]
+        #[doc = " [CreateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.CreateWorkflowTemplate],"]
+        #[doc = " [InstantiateWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.InstantiateWorkflowTemplate],"]
         #[doc = " [DeleteWorkflowTemplate][google.cloud.dataproc.v1.WorkflowTemplateService.DeleteWorkflowTemplate]."]
         #[doc = ""]
         #[doc = " The returned Operation can be used to track execution of"]
@@ -3375,18 +3748,6 @@ pub mod workflow_template_service_client {
                 "/google.cloud.dataproc.v1.WorkflowTemplateService/DeleteWorkflowTemplate",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for WorkflowTemplateServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for WorkflowTemplateServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "WorkflowTemplateServiceClient {{ ... }}")
         }
     }
 }

@@ -306,6 +306,9 @@ pub mod crypto_key_version {
         EcSignP256Sha256 = 12,
         /// ECDSA on the NIST P-384 curve with a SHA384 digest.
         EcSignP384Sha384 = 13,
+        /// ECDSA on the non-NIST secp256k1 curve. This curve is only supported for
+        /// HSM protection level.
+        EcSignSecp256k1Sha256 = 31,
         /// Algorithm representing symmetric encryption by an external key manager.
         ExternalSymmetricEncryption = 18,
     }
@@ -1301,7 +1304,7 @@ pub struct LocationMetadata {
 }
 #[doc = r" Generated client implementations."]
 pub mod key_management_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Google Cloud Key Management Service"]
     #[doc = ""]
@@ -1315,23 +1318,50 @@ pub mod key_management_service_client {
     #[doc = ""]
     #[doc = " If you are using manual gRPC libraries, see"]
     #[doc = " [Using gRPC with Cloud KMS](https://cloud.google.com/kms/docs/grpc)."]
+    #[derive(Debug, Clone)]
     pub struct KeyManagementServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> KeyManagementServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> KeyManagementServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            KeyManagementServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists [KeyRings][google.cloud.kms.v1.KeyRing]."]
         pub async fn list_key_rings(
@@ -1706,7 +1736,8 @@ pub mod key_management_service_client {
         }
         #[doc = " Update the version of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt]."]
         #[doc = ""]
-        #[doc = " Returns an error if called on an asymmetric key."]
+        #[doc = " Returns an error if called on a key whose purpose is not"]
+        #[doc = " [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]."]
         pub async fn update_crypto_key_primary_version(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCryptoKeyPrimaryVersionRequest>,
@@ -1773,18 +1804,6 @@ pub mod key_management_service_client {
                 "/google.cloud.kms.v1.KeyManagementService/RestoreCryptoKeyVersion",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for KeyManagementServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for KeyManagementServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "KeyManagementServiceClient {{ ... }}")
         }
     }
 }

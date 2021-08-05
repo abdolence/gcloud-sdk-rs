@@ -23,7 +23,8 @@ pub struct LatLng {
 /// * A year and month value, with a zero day, such as a credit card expiration
 /// date
 ///
-/// Related types are [google.type.TimeOfDay][google.type.TimeOfDay] and `google.protobuf.Timestamp`.
+/// Related types are [google.type.TimeOfDay][google.type.TimeOfDay] and
+/// `google.protobuf.Timestamp`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Date {
     /// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
@@ -203,20 +204,21 @@ pub struct Money {
 }
 /// Represents a color in the RGBA color space. This representation is designed
 /// for simplicity of conversion to/from color representations in various
-/// languages over compactness; for example, the fields of this representation
-/// can be trivially provided to the constructor of "java.awt.Color" in Java; it
-/// can also be trivially provided to UIColor's "+colorWithRed:green:blue:alpha"
+/// languages over compactness. For example, the fields of this representation
+/// can be trivially provided to the constructor of `java.awt.Color` in Java; it
+/// can also be trivially provided to UIColor's `+colorWithRed:green:blue:alpha`
 /// method in iOS; and, with just a little work, it can be easily formatted into
-/// a CSS "rgba()" string in JavaScript, as well.
+/// a CSS `rgba()` string in JavaScript.
 ///
-/// Note: this proto does not carry information about the absolute color space
+/// This reference page doesn't carry information about the absolute color
+/// space
 /// that should be used to interpret the RGB value (e.g. sRGB, Adobe RGB,
-/// DCI-P3, BT.2020, etc.). By default, applications SHOULD assume the sRGB color
+/// DCI-P3, BT.2020, etc.). By default, applications should assume the sRGB color
 /// space.
 ///
-/// Note: when color equality needs to be decided, implementations, unless
-/// documented otherwise, will treat two colors to be equal if all their red,
-/// green, blue and alpha values each differ by at most 1e-5.
+/// When color equality needs to be decided, implementations, unless
+/// documented otherwise, treat two colors as equal if all their red,
+/// green, blue, and alpha values each differ by at most 1e-5.
 ///
 /// Example (Java):
 ///
@@ -303,7 +305,7 @@ pub struct Money {
 ///        var blue = Math.floor(blueFrac * 255);
 ///
 ///        if (!('alpha' in rgb_color)) {
-///           return rgbToCssColor_(red, green, blue);
+///           return rgbToCssColor(red, green, blue);
 ///        }
 ///
 ///        var alphaFrac = rgb_color.alpha.value || 0.0;
@@ -311,7 +313,7 @@ pub struct Money {
 ///        return ['rgba(', rgbParams, ',', alphaFrac, ')'].join('');
 ///     };
 ///
-///     var rgbToCssColor_ = function(red, green, blue) {
+///     var rgbToCssColor = function(red, green, blue) {
 ///       var rgbNumber = new Number((red << 16) | (green << 8) | blue);
 ///       var hexString = rgbNumber.toString(16);
 ///       var missingZeros = 6 - hexString.length;
@@ -338,14 +340,14 @@ pub struct Color {
     /// The fraction of this color that should be applied to the pixel. That is,
     /// the final pixel color is defined by the equation:
     ///
-    ///   pixel color = alpha * (this color) + (1.0 - alpha) * (background color)
+    ///   `pixel color = alpha * (this color) + (1.0 - alpha) * (background color)`
     ///
     /// This means that a value of 1.0 corresponds to a solid color, whereas
     /// a value of 0.0 corresponds to a completely transparent color. This
     /// uses a wrapper message rather than a simple float scalar so that it is
     /// possible to distinguish between a default value and the value being unset.
-    /// If omitted, this color object is to be rendered as a solid color
-    /// (as if the alpha value had been explicitly given with a value of 1.0).
+    /// If omitted, this color object is rendered as a solid color
+    /// (as if the alpha value had been explicitly given a value of 1.0).
     #[prost(message, optional, tag = "4")]
     pub alpha: ::core::option::Option<f32>,
 }
@@ -483,7 +485,8 @@ pub enum DayOfWeek {
 }
 /// Represents a time of day. The date and time zone are either not significant
 /// or are specified elsewhere. An API may choose to allow leap seconds. Related
-/// types are [google.type.Date][google.type.Date] and `google.protobuf.Timestamp`.
+/// types are [google.type.Date][google.type.Date] and
+/// `google.protobuf.Timestamp`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeOfDay {
     /// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
@@ -527,6 +530,78 @@ pub enum CalendarPeriod {
     Half = 6,
     /// A year.
     Year = 7,
+}
+/// A representation of a decimal value, such as 2.5. Clients may convert values
+/// into language-native decimal formats, such as Java's [BigDecimal][] or
+/// Python's [decimal.Decimal][].
+///
+/// [BigDecimal]:
+/// https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html
+/// [decimal.Decimal]: https://docs.python.org/3/library/decimal.html
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Decimal {
+    /// The decimal value, as a string.
+    ///
+    /// The string representation consists of an optional sign, `+` (`U+002B`)
+    /// or `-` (`U+002D`), followed by a sequence of zero or more decimal digits
+    /// ("the integer"), optionally followed by a fraction, optionally followed
+    /// by an exponent.
+    ///
+    /// The fraction consists of a decimal point followed by zero or more decimal
+    /// digits. The string must contain at least one digit in either the integer
+    /// or the fraction. The number formed by the sign, the integer and the
+    /// fraction is referred to as the significand.
+    ///
+    /// The exponent consists of the character `e` (`U+0065`) or `E` (`U+0045`)
+    /// followed by one or more decimal digits.
+    ///
+    /// Services **should** normalize decimal values before storing them by:
+    ///
+    ///   - Removing an explicitly-provided `+` sign (`+2.5` -> `2.5`).
+    ///   - Replacing a zero-length integer value with `0` (`.5` -> `0.5`).
+    ///   - Coercing the exponent character to lower-case (`2.5E8` -> `2.5e8`).
+    ///   - Removing an explicitly-provided zero exponent (`2.5e0` -> `2.5`).
+    ///
+    /// Services **may** perform additional normalization based on its own needs
+    /// and the internal decimal implementation selected, such as shifting the
+    /// decimal point and exponent value together (example: `2.5e-1` <-> `0.25`).
+    /// Additionally, services **may** preserve trailing zeroes in the fraction
+    /// to indicate increased precision, but are not required to do so.
+    ///
+    /// Note that only the `.` character is supported to divide the integer
+    /// and the fraction; `,` **should not** be supported regardless of locale.
+    /// Additionally, thousand separators **should not** be supported. If a
+    /// service does support them, values **must** be normalized.
+    ///
+    /// The ENBF grammar is:
+    ///
+    ///     DecimalString =
+    ///       [Sign] Significand [Exponent];
+    ///
+    ///     Sign = '+' | '-';
+    ///
+    ///     Significand =
+    ///       Digits ['.'] [Digits] | [Digits] '.' Digits;
+    ///
+    ///     Exponent = ('e' | 'E') [Sign] Digits;
+    ///
+    ///     Digits = { '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' };
+    ///
+    /// Services **should** clearly document the range of supported values, the
+    /// maximum supported precision (total number of digits), and, if applicable,
+    /// the scale (number of digits after the decimal point), as well as how it
+    /// behaves when receiving out-of-bounds values.
+    ///
+    /// Services **may** choose to accept values passed as input even when the
+    /// value has a higher precision or scale than the service supports, and
+    /// **should** round the value to fit the supported scale. Alternatively, the
+    /// service **may** error with `400 Bad Request` (`INVALID_ARGUMENT` in gRPC)
+    /// if precision would be lost.
+    ///
+    /// Services **should** error with `400 Bad Request` (`INVALID_ARGUMENT` in
+    /// gRPC) if the service receives a value outside of the supported range.
+    #[prost(string, tag = "1")]
+    pub value: ::prost::alloc::string::String,
 }
 /// Represents a fraction in terms of a numerator divided by a denominator.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -577,7 +652,7 @@ pub struct LocalizedText {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Month {
-    /// The unspecifed month.
+    /// The unspecified month.
     Unspecified = 0,
     /// The month of January.
     January = 1,
