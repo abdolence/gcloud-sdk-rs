@@ -6,12 +6,12 @@
 //! Cargo.toml:
 //! ```toml
 //! [dependencies]
-//! googapis = { version = "0.4", features = ["google-spanner-admin-database-v1"] }
-//! gouth = { version = "0.1" }
-//! tonic = { version = "0.4", features = ["tls"] }
-//! prost = "0.7"
-//! prost-types = "0.7"
-//! tokio = { version = "1.1", features = ["rt-multi-thread", "time", "fs", "macros"] }
+//! googapis = { version = "0.5", features = ["google-spanner-admin-database-v1"] }
+//! gouth = { version = "0.2" }
+//! tonic = { version = "0.5", features = ["tls"] }
+//! prost = "0.8"
+//! prost-types = "0.8"
+//! tokio = { version = "1.9", features = ["rt-multi-thread", "time", "fs", "macros"] }
 //! ```
 //!
 //! main.rs:
