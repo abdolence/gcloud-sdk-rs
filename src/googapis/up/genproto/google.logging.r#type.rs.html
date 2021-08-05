@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.logging.r#type.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.logging.r#type.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+</pre><pre class="rust">
+<span class="doccomment">/// The severity of the event described in a log entry, expressed as one of the</span>
+<span class="doccomment">/// standard severity levels listed below.  For your reference, the levels are</span>
+<span class="doccomment">/// assigned the listed numeric values. The effect of using numeric values other</span>
+<span class="doccomment">/// than those listed is undefined.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You can filter for log entries by severity.  For example, the following</span>
+<span class="doccomment">/// filter expression will match log entries with severities `INFO`, `NOTICE`,</span>
+<span class="doccomment">/// and `WARNING`:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     severity &gt; DEBUG AND severity &lt;= WARNING</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If you are writing log entries, you should map other severity encodings to</span>
+<span class="doccomment">/// one of these standard levels. For example, you might map all of Java&#39;s FINE,</span>
+<span class="doccomment">/// FINER, and FINEST levels to `LogSeverity.DEBUG`. You can preserve the</span>
+<span class="doccomment">/// original severity level in the log entry payload if you wish.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LogSeverity</span> {
+    <span class="doccomment">/// (0) The log entry has no assigned severity level.</span>
+    <span class="ident">Default</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="doccomment">/// (100) Debug or trace information.</span>
+    <span class="ident">Debug</span> <span class="op">=</span> <span class="number">100</span>,
+    <span class="doccomment">/// (200) Routine information, such as ongoing status or performance.</span>
+    <span class="ident">Info</span> <span class="op">=</span> <span class="number">200</span>,
+    <span class="doccomment">/// (300) Normal but significant events, such as start up, shut down, or</span>
+    <span class="doccomment">/// a configuration change.</span>
+    <span class="ident">Notice</span> <span class="op">=</span> <span class="number">300</span>,
+    <span class="doccomment">/// (400) Warning events might cause problems.</span>
+    <span class="ident">Warning</span> <span class="op">=</span> <span class="number">400</span>,
+    <span class="doccomment">/// (500) Error events are likely to cause problems.</span>
+    <span class="ident">Error</span> <span class="op">=</span> <span class="number">500</span>,
+    <span class="doccomment">/// (600) Critical events cause more severe problems or outages.</span>
+    <span class="ident">Critical</span> <span class="op">=</span> <span class="number">600</span>,
+    <span class="doccomment">/// (700) A person must take an action immediately.</span>
+    <span class="ident">Alert</span> <span class="op">=</span> <span class="number">700</span>,
+    <span class="doccomment">/// (800) One or more systems are unusable.</span>
+    <span class="ident">Emergency</span> <span class="op">=</span> <span class="number">800</span>,
+}
+<span class="doccomment">/// A common proto for logging HTTP requests. Only contains semantics</span>
+<span class="doccomment">/// defined by the HTTP specification. Product-specific logging</span>
+<span class="doccomment">/// information MUST be defined in a separate message.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpRequest</span> {
+    <span class="doccomment">/// The request method. Examples: `&quot;GET&quot;`, `&quot;HEAD&quot;`, `&quot;PUT&quot;`, `&quot;POST&quot;`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">request_method</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The scheme (http, https), the host name, the path and the query</span>
+    <span class="doccomment">/// portion of the URL that was requested.</span>
+    <span class="doccomment">/// Example: `&quot;http://example.com/some/info?color=red&quot;`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">request_url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The size of the HTTP request message in bytes, including the request</span>
+    <span class="doccomment">/// headers and the request body.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">request_size</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// The response code indicating the status of response.</span>
+    <span class="doccomment">/// Examples: 200, 404.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// The size of the HTTP response message sent back to the client, in bytes,</span>
+    <span class="doccomment">/// including the response headers and the response body.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">response_size</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// The user agent sent by the client. Example:</span>
+    <span class="doccomment">/// `&quot;Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; Q312461; .NET</span>
+    <span class="doccomment">/// CLR 1.0.3705)&quot;`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">user_agent</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The IP address (IPv4 or IPv6) of the client that issued the HTTP</span>
+    <span class="doccomment">/// request. This field can include port information. Examples:</span>
+    <span class="doccomment">/// `&quot;192.168.1.1&quot;`, `&quot;10.0.0.1:80&quot;`, `&quot;FE80::0202:B3FF:FE1E:8329&quot;`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">remote_ip</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The IP address (IPv4 or IPv6) of the origin server that the request was</span>
+    <span class="doccomment">/// sent to. This field can include port information. Examples:</span>
+    <span class="doccomment">/// `&quot;192.168.1.1&quot;`, `&quot;10.0.0.1:80&quot;`, `&quot;FE80::0202:B3FF:FE1E:8329&quot;`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">server_ip</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The referer URL of the request, as defined in</span>
+    <span class="doccomment">/// [HTTP/1.1 Header Field</span>
+    <span class="doccomment">/// Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">referer</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The request processing latency on the server, from the time the request was</span>
+    <span class="doccomment">/// received until the response was sent.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">latency</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Whether or not a cache lookup was attempted.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cache_lookup</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Whether or not an entity was served from cache</span>
+    <span class="doccomment">/// (with or without validation).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cache_hit</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Whether or not the response was validated with the origin server before</span>
+    <span class="doccomment">/// being served from cache. This field is only meaningful if `cache_hit` is</span>
+    <span class="doccomment">/// True.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cache_validated_with_origin_server</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// The number of HTTP response bytes inserted into cache. Set only when a</span>
+    <span class="doccomment">/// cache fill was attempted.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cache_fill_bytes</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Protocol used for the request. Examples: &quot;HTTP/1.1&quot;, &quot;HTTP/2&quot;, &quot;websocket&quot;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">protocol</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

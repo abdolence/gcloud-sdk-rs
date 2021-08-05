@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Inputs","The input values for the Autoscaling recommendation alogirthm."],["Outputs","Autoscaler recommendations."]]});

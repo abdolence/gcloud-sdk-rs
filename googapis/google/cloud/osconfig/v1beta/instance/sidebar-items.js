@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PatchState","Patch state of an instance."]]});

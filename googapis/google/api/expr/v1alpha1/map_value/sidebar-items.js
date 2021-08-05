@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Entry","An entry in the map."]]});

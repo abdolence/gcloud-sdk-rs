@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["KnowledgeType","The knowledge type of document content."],["Source","Required. The source of this document."]],"struct":[["ReloadStatus","The status of a reload attempt."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DeploymentState","Deployment state of the model."],["ModelMetadata","Required. The model metadata that is specific to the problem type. Must match the metadata type of the dataset used to train the model."]]});

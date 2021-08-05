@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MigrateDataLabelingAnnotatedDatasetConfig","Config for migrating AnnotatedDataset in datalabeling.googleapis.com to Vertex AI’s SavedQuery."]]});

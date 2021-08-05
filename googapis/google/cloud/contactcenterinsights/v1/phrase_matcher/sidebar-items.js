@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PhraseMatcherType","Specifies how to combine each phrase match rule group to determine whether there is a match."]]});

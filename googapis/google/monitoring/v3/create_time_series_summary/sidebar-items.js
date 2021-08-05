@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Error","Detailed information about an error category."]]});

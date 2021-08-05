@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudMemcacheClient","Configures and manages Cloud Memorystore for Memcached instances."]]});

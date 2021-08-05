@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AccountType","Required. The type of account, based what it’s for (e.g. Google) and what its login mechanism is (e.g. username and password)."]]});

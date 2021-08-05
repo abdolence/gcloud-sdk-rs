@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Fulfillment","Required. The fulfillment configuration."]],"mod":[["feature","Nested message and enum types in `Feature`."]],"struct":[["Feature","Whether fulfillment is enabled for the specific feature."],["GenericWebService","Represents configuration for a generic web service. Dialogflow supports two mechanisms for authentications:"]]});

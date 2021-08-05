@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"enum":[["OperatingSystemType","The operating system options for account entries."]],"struct":[["PosixAccount","The POSIX account information associated with a Google account."],["SshPublicKey","The SSH public key information associated with a Google account."]]});

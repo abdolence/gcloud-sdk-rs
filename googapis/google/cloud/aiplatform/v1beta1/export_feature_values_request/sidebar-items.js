@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Mode",""]],"struct":[["SnapshotExport","Describes exporting Feature values as of the snapshot timestamp."]]});

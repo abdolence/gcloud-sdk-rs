@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PersonName","The name of a person. It can be one of [formatted_name][google.cloud.talent.v4beta1.PersonName.formatted_name] or [structured_name][google.cloud.talent.v4beta1.PersonName.structured_name]."]],"struct":[["PersonStructuredName","Resource that represents a person’s structured name."]]});

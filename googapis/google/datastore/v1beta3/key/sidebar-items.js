@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["path_element","Nested message and enum types in `PathElement`."]],"struct":[["PathElement","A (kind, ID/name) pair used to construct a key path."]]});

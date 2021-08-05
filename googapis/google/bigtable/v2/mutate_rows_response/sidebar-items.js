@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Entry","The result of applying a passed mutation in the original request."]]});

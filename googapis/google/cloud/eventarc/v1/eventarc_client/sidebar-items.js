@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EventarcClient","Eventarc allows users to subscribe to various events that are provided by Google Cloud services and forward them to supported destinations."]]});

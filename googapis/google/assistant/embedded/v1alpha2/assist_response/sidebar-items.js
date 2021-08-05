@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EventType","Indicates the type of event."]]});

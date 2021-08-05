@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SearchTermTargetingStatus","Indicates whether the search term is one of your targeted or excluded keywords."]]});

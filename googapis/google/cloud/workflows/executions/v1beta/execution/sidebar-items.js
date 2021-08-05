@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Describes the current state of the execution. More states may be added in the future."]],"struct":[["Error","Error describes why the execution was abnormally terminated."]]});

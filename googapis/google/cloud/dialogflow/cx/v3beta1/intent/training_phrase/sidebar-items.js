@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Part","Represents a part of a training phrase."]]});

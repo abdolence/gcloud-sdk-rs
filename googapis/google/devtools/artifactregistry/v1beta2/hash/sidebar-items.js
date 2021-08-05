@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["HashType","The algorithm used to compute the hash."]]});

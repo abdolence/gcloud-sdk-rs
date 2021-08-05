@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DataSink","The write sink for the data."],["DataSource","The read source of the data."]]});

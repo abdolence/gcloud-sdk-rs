@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SemanticMarkupType","Semantic markup types."]],"struct":[["SemanticMarkup","Semantic markup denotes a substring (by index and length) with markup information."]]});

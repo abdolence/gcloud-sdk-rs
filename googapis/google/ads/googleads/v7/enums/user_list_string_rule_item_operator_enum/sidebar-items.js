@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["UserListStringRuleItemOperator","Enum describing possible user list string rule item operators."]]});

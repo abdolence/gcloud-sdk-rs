@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Config","A configuration request or report; see the `configs` field for more information."],["Property","A global property; see the `properties` field for more information."]]});

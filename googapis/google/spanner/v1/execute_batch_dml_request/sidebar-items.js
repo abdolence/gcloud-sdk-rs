@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Statement","A single DML statement."]]});

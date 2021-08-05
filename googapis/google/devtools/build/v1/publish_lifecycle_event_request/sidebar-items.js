@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ServiceLevel","The service level of the build request. Backends only uses this value when the BuildEnqueued event is published to determine what level of service this build should receive."]]});

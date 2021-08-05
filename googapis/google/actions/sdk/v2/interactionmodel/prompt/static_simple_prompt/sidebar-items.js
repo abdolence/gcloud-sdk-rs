@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Variant","Represents a variant which is part of the simple prompt."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RuleItem","An atomic rule item."]]});

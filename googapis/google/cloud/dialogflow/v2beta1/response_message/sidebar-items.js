@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Message","Required. The rich response message."]],"struct":[["EndInteraction","Indicates that interaction with the Dialogflow agent has ended."],["LiveAgentHandoff","Indicates that the conversation should be handed off to a human agent."],["Text","The text response message."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CertificateConfig","The config used to create a signed X.509 certificate."]],"struct":[["RevocationDetails","Describes fields that are relavent to the revocation of a [Certificate][google.cloud.security.privateca.v1.Certificate]."]]});

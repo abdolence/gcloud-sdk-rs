@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RecognizedCelebrity","The recognized celebrity with confidence score."]]});

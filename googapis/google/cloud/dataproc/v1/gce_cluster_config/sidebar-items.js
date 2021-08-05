@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PrivateIpv6GoogleAccess","`PrivateIpv6GoogleAccess` controls whether and how Dataproc cluster nodes can communicate with Google Services through gRPC over IPv6. These values are directly mapped to corresponding values in the Compute Engine Instance fields."]]});

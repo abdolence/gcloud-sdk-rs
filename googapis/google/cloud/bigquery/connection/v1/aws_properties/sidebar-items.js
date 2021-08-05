@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AuthenticationMethod","Authentication method chosen at connection creation."]]});

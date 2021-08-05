@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["IngressSettings","Available ingress settings."],["SourceCode","The location of the function source code."],["Trigger","An event that triggers the function."],["VpcConnectorEgressSettings","Available egress settings."]]});

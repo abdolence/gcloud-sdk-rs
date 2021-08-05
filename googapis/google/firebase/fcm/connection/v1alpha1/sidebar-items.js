@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["connection_api_client","Generated client implementations."],["downstream_response","Nested message and enum types in `DownstreamResponse`."],["upstream_request","Nested message and enum types in `UpstreamRequest`."]],"struct":[["Ack","Acknowledgement to indicate a client successfully received an FCM message."],["DownstreamResponse","Response sent to the connected client from FCM."],["Message","Message created through the Send API."],["UpstreamRequest","Request sent to FCM from the connected client."]]});

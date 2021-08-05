@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TransformationResultCode","Possible outcomes of transformations."]],"struct":[["SummaryResult","A collection that informs the user the number of times a particular `TransformationResultCode` and error details occurred."]]});

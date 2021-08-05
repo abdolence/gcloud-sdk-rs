@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MetadataStoreState","Represents state information for a MetadataStore."]]});

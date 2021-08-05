@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DataProtectionMode","Specifies different modes of operation in relation to the data retention."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["JobStateMatcher","A matcher that specifies categories of job states."]]});

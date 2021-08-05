@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["JobConfig","Specify the `job_config` for transcoding job. When you use a `template_id` to create a job, the `Job.config` is populated by the `JobTemplate.config`."],["ProcessingState","The current state of the job."]],"struct":[["OriginUri","The origin URI."]]});

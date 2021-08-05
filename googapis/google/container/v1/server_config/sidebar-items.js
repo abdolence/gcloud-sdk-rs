@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ReleaseChannelConfig","ReleaseChannelConfig exposes configuration for a release channel."]]});

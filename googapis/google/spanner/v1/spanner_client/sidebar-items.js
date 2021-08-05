@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SpannerClient","Cloud Spanner API"]]});

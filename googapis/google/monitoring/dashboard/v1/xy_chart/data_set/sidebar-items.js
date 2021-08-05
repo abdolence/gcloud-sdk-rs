@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PlotType","The types of plotting strategies for data sets."]]});

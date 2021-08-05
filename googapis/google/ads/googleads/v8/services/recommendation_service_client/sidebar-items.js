@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RecommendationServiceClient","Service to manage recommendations."]]});

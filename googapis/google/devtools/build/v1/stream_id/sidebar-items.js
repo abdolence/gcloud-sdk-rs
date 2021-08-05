@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BuildComponent","Which build component generates this event stream. Each build component may generate one event stream."]]});

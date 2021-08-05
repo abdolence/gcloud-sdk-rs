@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CustomerEncryption","Describes the customer-specified mechanism used to store the data at rest."]]});

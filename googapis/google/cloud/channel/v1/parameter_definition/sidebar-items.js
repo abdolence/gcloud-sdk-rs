@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ParameterType","Data type of the parameter."]]});

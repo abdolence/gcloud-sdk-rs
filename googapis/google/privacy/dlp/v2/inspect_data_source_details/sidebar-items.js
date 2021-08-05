@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RequestedOptions","Snapshot of the inspection configuration."],["Result","All result fields mentioned below are updated while the job is processing."]]});

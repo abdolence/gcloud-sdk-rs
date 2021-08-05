@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["InstanceAdminClient","Cloud Spanner Instance Admin API"]]});

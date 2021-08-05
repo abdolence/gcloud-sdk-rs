@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SingleCategoryStats","The statistics of a single CATEGORY value."]]});

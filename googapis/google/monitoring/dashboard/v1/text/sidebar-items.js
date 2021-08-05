@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Format","The format type of the text content."]]});

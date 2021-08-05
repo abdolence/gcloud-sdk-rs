@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SourceInfo","Information about the source used to restore the database, as specified by `source` in [RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest]."]]});

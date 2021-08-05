@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IdentityAwareProxyAdminServiceClient","APIs for Identity-Aware Proxy Admin configurations."]]});

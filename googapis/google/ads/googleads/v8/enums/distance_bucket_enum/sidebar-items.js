@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DistanceBucket","The distance bucket for a user’s distance from an advertiser’s location extension."]]});

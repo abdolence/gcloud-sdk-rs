@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","The application state, corresponding to YarnProtos.YarnApplicationStateProto."]]});

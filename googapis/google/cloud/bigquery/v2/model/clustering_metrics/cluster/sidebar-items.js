@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["feature_value","Nested message and enum types in `FeatureValue`."]],"struct":[["FeatureValue","Representative value of a single feature within the cluster."]]});

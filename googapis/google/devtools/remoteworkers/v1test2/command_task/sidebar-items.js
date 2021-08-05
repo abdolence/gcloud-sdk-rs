@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["inputs","Nested message and enum types in `Inputs`."]],"struct":[["Inputs","Describes the inputs to a shell-style task."],["Outputs","Describes the expected outputs of the command."],["Timeouts","Describes the timeouts associated with this task."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Field","Message representing a single field of a struct."]]});

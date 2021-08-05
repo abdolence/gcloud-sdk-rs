@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MetadataServiceClient","Service for reading and writing metadata entries."]]});

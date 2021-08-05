@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CompletionResult","Resource that represents completion results."]]});

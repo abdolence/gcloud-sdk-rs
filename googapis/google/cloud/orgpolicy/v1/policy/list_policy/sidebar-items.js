@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AllValues","This enum can be used to set `Policies` that apply to all possible configuration values rather than specific values in `allowed_values` or `denied_values`."]]});

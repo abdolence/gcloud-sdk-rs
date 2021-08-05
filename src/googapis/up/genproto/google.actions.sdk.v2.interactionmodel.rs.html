@@ -1,0 +1,685 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.actions.sdk.v2.interactionmodel.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.interactionmodel.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+</pre><pre class="rust">
+<span class="doccomment">/// Entity sets describe the pre-defined set of entities that the values of</span>
+<span class="doccomment">/// built-in intent parameters can come from. Entity sets can be referenced from</span>
+<span class="doccomment">/// entity_set in built-in intent parameters.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EntitySet</span> {
+    <span class="doccomment">/// Required. The list of entities this entity set supports.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">entities</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">entity_set::Entity</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `EntitySet`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">entity_set</span> {
+    <span class="doccomment">/// An entity a built-in intent parameter value can come from.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Entity</span> {
+        <span class="doccomment">/// Required. The ID of the entity.</span>
+        <span class="doccomment">/// For a list of built-in-intent parameters and their supported entities,</span>
+        <span class="doccomment">/// see</span>
+        <span class="doccomment">/// https://developers.google.com/assistant/conversational/build/built-in-intents</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+}
+<span class="doccomment">/// Defines a handler to be executed after an event. Examples of events are</span>
+<span class="doccomment">/// intent and condition based events in a scene.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventHandler</span> {
+    <span class="doccomment">/// Name of the webhook handler to call.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">webhook_handler</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Prompts can either be inlined or referenced by name.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;event_handler::Prompt&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;2, 3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">event_handler::Prompt</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `EventHandler`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">event_handler</span> {
+    <span class="doccomment">/// Prompts can either be inlined or referenced by name.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Prompt</span> {
+        <span class="doccomment">/// Inlined static prompt. Can contain references to string resources in</span>
+        <span class="doccomment">/// bundles.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="ident">StaticPrompt</span>(<span class="kw">super</span><span class="ident">::prompt::StaticPrompt</span>),
+        <span class="doccomment">/// Name of the static prompt to invoke.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="ident">StaticPromptName</span>(<span class="ident">::prost::alloc::string::String</span>),
+    }
+}
+<span class="doccomment">/// Defines a global intent handler. Global intent events are scoped to the</span>
+<span class="doccomment">/// entire Actions project and may be overridden by intent handlers in a scene.</span>
+<span class="doccomment">/// Intent names must be unique within an Actions project.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Global intents can be matched anytime during a session, allowing users to</span>
+<span class="doccomment">/// access common flows like  &quot;get help&quot; or &quot;go back home.&quot; They can also be</span>
+<span class="doccomment">/// used to deep link users into specific flows when they invoke an Action.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Note, the intent name is specified in the name of the file.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GlobalIntentEvent</span> {
+    <span class="doccomment">/// Optional. Destination scene which the conversation should jump to. The state of the</span>
+    <span class="doccomment">/// current scene is destroyed on the transition.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transition_to_scene</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Event handler which is triggered when the intent is matched. Should execute</span>
+    <span class="doccomment">/// before transitioning to the destination scene. Useful to generate Prompts</span>
+    <span class="doccomment">/// in response to events.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">handler</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EventHandler</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Intents map open-ended user input to structured objects. Spoken</span>
+<span class="doccomment">/// phrases are matched to intents with Google&#39;s Natural Language Understanding</span>
+<span class="doccomment">/// (NLU). Intent matches can trigger events in your conversation design to</span>
+<span class="doccomment">/// progress the user&#39;s conversation.</span>
+<span class="doccomment">/// The intent name is specified in the name of the file.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Intent</span> {
+    <span class="doccomment">/// The list of parameters within the training phrases. All parameters must be</span>
+    <span class="doccomment">/// defined here to be used in the training phrase.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">parameters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">intent::IntentParameter</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Training phrases allow Google’s NLU to automatically match intents with</span>
+    <span class="doccomment">/// user input. The more unique phrases that are provided, the better chance</span>
+    <span class="doccomment">/// this intent will be matched.</span>
+    <span class="doccomment">/// The following is the format of training phrase part which are annotated.</span>
+    <span class="doccomment">/// Note that `auto` field is optional and the default behavior when `auto` is</span>
+    <span class="doccomment">/// not specified is equivalent to `auto=false`.</span>
+    <span class="doccomment">/// `($&lt;paramName&gt; &#39;&lt;sample text&gt;&#39; auto=&lt;true or false&gt;)`</span>
+    <span class="doccomment">/// `auto = true` means the part was auto annotated by NLU.</span>
+    <span class="doccomment">/// `auto = false` means the part was annotated by the user. This is the</span>
+    <span class="doccomment">///     default when auto is not specified.</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">/// &quot;Book a flight from ($source &#39;San Francisco&#39; auto=false) to ($dest</span>
+    <span class="doccomment">/// &#39;Vancouver&#39;)&quot;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">training_phrases</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Intent`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">intent</span> {
+    <span class="doccomment">/// Definition of a parameter which can be used inside training phrases.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntentParameter</span> {
+        <span class="doccomment">/// Required. Unique name of the intent parameter. Can be used in conditions and</span>
+        <span class="doccomment">/// responses to reference intent parameters extracted by NLU with</span>
+        <span class="doccomment">/// $intent.params.[name].resolved</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// The type of the intent parameter.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;intent_parameter::ParameterType&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;2, 3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">parameter_type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">intent_parameter::ParameterType</span><span class="op">&gt;</span>,
+    }
+    <span class="doccomment">/// Nested message and enum types in `IntentParameter`.</span>
+    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">intent_parameter</span> {
+        <span class="doccomment">/// Entity set references for an intent parameter.</span>
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+        <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EntitySetReferences</span> {
+            <span class="doccomment">/// Required. Entity set references for an intent parameter.</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+            <span class="kw">pub</span> <span class="ident">entity_set_references</span>:
+                <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">entity_set_references::EntitySetReference</span><span class="op">&gt;</span>,
+        }
+        <span class="doccomment">/// Nested message and enum types in `EntitySetReferences`.</span>
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">entity_set_references</span> {
+            <span class="doccomment">/// A reference to the set of allowed entities for this intent parameter.</span>
+            <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+            <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EntitySetReference</span> {
+                <span class="doccomment">/// Required. Identifies the specific collection of entities to be considered for a</span>
+                <span class="doccomment">/// given parameter. The corresponding entity set definition should be</span>
+                <span class="doccomment">/// present in the custom/entitySets/ directory.</span>
+                <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+                <span class="kw">pub</span> <span class="ident">entity_set</span>: <span class="ident">::prost::alloc::string::String</span>,
+            }
+        }
+        <span class="doccomment">/// The type of the intent parameter.</span>
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+        <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParameterType</span> {
+            <span class="doccomment">/// Optional. Declares the data type of this parameter.</span>
+            <span class="doccomment">/// This should not be set for built-in intents.</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+            <span class="ident">Type</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::ClassReference</span>),
+            <span class="doccomment">/// Optional. References to the sets of allowed entities for this intent parameter.</span>
+            <span class="doccomment">/// Only valid for parameters of a built-in intent. These</span>
+            <span class="doccomment">/// references point to entity sets in the &#39;custom/entitySets&#39; directory.</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+            <span class="ident">EntitySetReferences</span>(<span class="ident">EntitySetReferences</span>),
+        }
+    }
+}
+<span class="doccomment">/// Registers events that trigger as the result of a true condition.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ConditionalEvent</span> {
+    <span class="doccomment">/// Required. Filter condition for this event to trigger. If condition is evaluated to</span>
+    <span class="doccomment">/// true then the associated `handler` will be triggered.</span>
+    <span class="doccomment">/// The following variable references are supported:</span>
+    <span class="doccomment">///   `$session` - To reference data in session storage.</span>
+    <span class="doccomment">///   `$user` - To reference data in user storage.</span>
+    <span class="doccomment">/// The following boolean operators are supported (with examples):</span>
+    <span class="doccomment">///   `&amp;&amp;` - `session.params.counter &gt; 0 &amp;&amp; session.params.counter &lt; 100`</span>
+    <span class="doccomment">///   `||` - `session.params.foo == &quot;John&quot; || session.params.counter == &quot;Adam&quot;`</span>
+    <span class="doccomment">///   `!`  - `!(session.params.counter == 5)`</span>
+    <span class="doccomment">/// The following comparisons are supported:</span>
+    <span class="doccomment">///   `==`, `!=`, `&lt;`, `&gt;`, `&lt;=`, `&gt;=`</span>
+    <span class="doccomment">/// The following list and string operators are supported (with examples):</span>
+    <span class="doccomment">///   `in`        - &quot;Watermelon&quot; in `session.params.fruitList`</span>
+    <span class="doccomment">///   `size`      - `size(session.params.fruitList) &gt; 2`</span>
+    <span class="doccomment">///   `substring` - `session.params.fullName.contains(&quot;John&quot;)`</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">condition</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Destination scene which the conversation should jump to when the associated</span>
+    <span class="doccomment">/// condition is evaluated to true. The state of the current scene is destroyed</span>
+    <span class="doccomment">/// on the transition.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transition_to_scene</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Event handler which is triggered when the associated condition is evaluated</span>
+    <span class="doccomment">/// to `true`. Should execute before transitioning to the destination scene.</span>
+    <span class="doccomment">/// Useful to generate Prompts in response to events.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">handler</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EventHandler</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Registers Events which trigger as the result of an intent match.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntentEvent</span> {
+    <span class="doccomment">/// Required. Intent triggering the event.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">intent</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Destination scene which the conversation should jump to. The state of the</span>
+    <span class="doccomment">/// current scene is destroyed on the transition.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transition_to_scene</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Event handler which is triggered when the intent is matched. Should execute</span>
+    <span class="doccomment">/// before transitioning to the destination scene. Useful to generate prompts</span>
+    <span class="doccomment">/// in response to events.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">handler</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EventHandler</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Configuration for a slot. Slots are single units of data that can be filled</span>
+<span class="doccomment">/// through natural language (ie. intent parameters), session parameters, and</span>
+<span class="doccomment">/// other sources.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Slot</span> {
+    <span class="doccomment">/// Required. Name of the slot.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. Declares the data type of this slot.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">r#type</span><span class="ident">::ClassReference</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Indicates whether the slot is required to be filled before</span>
+    <span class="doccomment">/// advancing. Required slots that are not filled will trigger a customizable</span>
+    <span class="doccomment">/// prompt to the user.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">required</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Optional. Registers Prompts for different stages of slot filling.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">prompt_settings</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">slot::PromptSettings</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Commit behavior associated with the slot.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">commit_behavior</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">slot::CommitBehavior</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Additional configuration associated with the slot which is</span>
+    <span class="doccomment">/// used for filling the slot. The format of the config is specific to the</span>
+    <span class="doccomment">/// type of the slot. Resource references to user or session parameter can be</span>
+    <span class="doccomment">/// added to this config. This config is needed for filling slots related to</span>
+    <span class="doccomment">/// transactions and user engagement.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">///  For a slot of type actions.type.CompletePurchaseValue, the following</span>
+    <span class="doccomment">///  config proposes a digital good order with a reference to a client defined</span>
+    <span class="doccomment">///  session parameter `userSelectedSkuId`:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///    {</span>
+    <span class="doccomment">///      &quot;@type&quot;: &quot;type.googleapis.com/</span>
+    <span class="doccomment">///                  google.actions.transactions.v3.CompletePurchaseValueSpec&quot;,</span>
+    <span class="doccomment">///      &quot;skuId&quot;: {</span>
+    <span class="doccomment">///        &quot;skuType&quot;: &quot;SKU_TYPE_IN_APP&quot;,</span>
+    <span class="doccomment">///        &quot;id&quot;: &quot;$session.params.userSelectedSkuId&quot;,</span>
+    <span class="doccomment">///        &quot;packageName&quot;: &quot;com.example.company&quot;</span>
+    <span class="doccomment">///      }</span>
+    <span class="doccomment">///    }</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Value</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Configuration to populate a default value for this slot.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">default_value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">slot::DefaultValue</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Slot`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">slot</span> {
+    <span class="doccomment">/// A single place where slot prompts are defined.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PromptSettings</span> {
+        <span class="doccomment">/// Prompt for the slot value itself. Example: &quot;What size did you want?&quot;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">initial_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Prompt to give when the user&#39;s input does not match the expected</span>
+        <span class="doccomment">/// value type for the slot for the first time. Example: &quot;Sorry, I</span>
+        <span class="doccomment">/// didn&#39;t get that.&quot;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">no_match_prompt1</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Prompt to give when the user&#39;s input does not match the expected</span>
+        <span class="doccomment">/// value type for the slot for the second time. Example: &quot;Sorry, I</span>
+        <span class="doccomment">/// didn&#39;t get that.&quot;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">no_match_prompt2</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Prompt to give when the user&#39;s input does not match the expected</span>
+        <span class="doccomment">/// value type for the slot for the last time. Example: &quot;Sorry, I</span>
+        <span class="doccomment">/// didn&#39;t get that.&quot;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">no_match_final_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Prompt to give when the user does not provide an input for the first</span>
+        <span class="doccomment">/// time. Example: &quot;Sorry, I didn&#39;t get that.&quot;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">no_input_prompt1</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Prompt to give when the user does not provide an input for the second</span>
+        <span class="doccomment">/// time. Example: &quot;Sorry, I didn&#39;t get that.&quot;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">no_input_prompt2</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Prompt to give when the user does not provide an input for the last</span>
+        <span class="doccomment">/// time. Example: &quot;Sorry, I didn&#39;t get that.&quot;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">no_input_final_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+    }
+    <span class="doccomment">/// Message describing the commit behavior associated with the slot after it</span>
+    <span class="doccomment">/// has been successfully filled.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitBehavior</span> {
+        <span class="doccomment">/// The session parameter to write the slot value after it is filled. Note</span>
+        <span class="doccomment">/// that nested paths are not currently supported. &quot;$$&quot; is used to write the</span>
+        <span class="doccomment">/// slot value to a session parameter with same name as the slot.</span>
+        <span class="doccomment">/// Eg: write_session_param = &quot;fruit&quot; corresponds to &quot;$session.params.fruit&quot;.</span>
+        <span class="doccomment">/// write_session_param = &quot;ticket&quot; corresponds to &quot;$session.params.ticket&quot;.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">write_session_param</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+    <span class="doccomment">/// Configuration to populate a default value for this slot.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DefaultValue</span> {
+        <span class="doccomment">/// Optional. The session parameter to be used to initialize the slot value, if it has</span>
+        <span class="doccomment">/// a non-empty value. The type of the value must match the type of the slot.</span>
+        <span class="doccomment">/// Note that nested paths are not currently supported.</span>
+        <span class="doccomment">/// Eg: `session_param = &quot;fruit&quot;` corresponds to `$session.params.fruit`.</span>
+        <span class="doccomment">/// `session_param = &quot;ticket&quot;` corresponds to `$session.params.ticket`.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">session_param</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// Optional. Constant default value for the slot. This will only be used if a value</span>
+        <span class="doccomment">/// for this slot was not populated through the `session_param`. The</span>
+        <span class="doccomment">/// type for this value must match the type of the slot.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">constant</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Value</span><span class="op">&gt;</span>,
+    }
+}
+<span class="doccomment">/// Scene is the basic unit of control flow when designing a conversation. They</span>
+<span class="doccomment">/// can be chained together with other scenes, generate prompts for the end user,</span>
+<span class="doccomment">/// and define slots.</span>
+<span class="doccomment">/// The scene name is specified in the name of the file.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Scene</span> {
+    <span class="doccomment">/// Handler to invoke when transitioning into this scene.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">on_enter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EventHandler</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The list of events that trigger based on intents. These events can</span>
+    <span class="doccomment">/// be triggered at any time after the on_load Handler has been called.</span>
+    <span class="doccomment">/// Important - these events define the set of intents which are scoped to</span>
+    <span class="doccomment">/// this scene and will take precedence over any globally defined events that</span>
+    <span class="doccomment">/// have the same intents or their triggering phrases. Intent names must be</span>
+    <span class="doccomment">/// unique within a scene.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">intent_events</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">IntentEvent</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The list of events to trigger based on conditional statements. These are</span>
+    <span class="doccomment">/// evaluated after the form has been filled or immediately after on_load if</span>
+    <span class="doccomment">/// this scene does not have a form (evaluation is only done once). Only the</span>
+    <span class="doccomment">/// first matching event will be triggered.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">conditional_events</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ConditionalEvent</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Ordered list of slots. Each slot defines the type of data</span>
+    <span class="doccomment">/// that it will resolve and configuration to customize the experience of this</span>
+    <span class="doccomment">/// resolution (e.g. prompts).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">slots</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Slot</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Handler called when there is a change in state of a slot not</span>
+    <span class="doccomment">/// caused by updates within another Handler. This allows slots to be</span>
+    <span class="doccomment">/// invalidated, the scene invalidated or other changes to scene state.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">on_slot_updated</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EventHandler</span><span class="op">&gt;</span>,
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

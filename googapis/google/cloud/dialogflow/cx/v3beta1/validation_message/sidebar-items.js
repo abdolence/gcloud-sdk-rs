@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResourceType","Resource types."],["Severity","Severity level."]]});

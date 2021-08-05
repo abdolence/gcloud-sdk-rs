@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AutomatedAgentReplyType","Represents different automated agent reply types."],["Match","Info on the query match for the automated agent response."],["Response","Required."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResumeType","When to start listening."],["TargetType","The type of target to listen to."]],"mod":[["query_target","Nested message and enum types in `QueryTarget`."]],"struct":[["DocumentsTarget","A target specified by a set of documents names."],["QueryTarget","A target specified by a query."]]});

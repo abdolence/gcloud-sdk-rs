@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ClusterIpAllocation","Configuration of allocating IP addresses for pods in the GKE cluster."],["ServicesIpAllocation","Configuration of allocating IP addresses for services in the GKE cluster."]]});

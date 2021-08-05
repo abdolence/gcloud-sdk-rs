@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ReservationResourceUsage","Job resource usage breakdown by reservation."]]});

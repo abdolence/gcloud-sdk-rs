@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["confusion_matrix","Nested message and enum types in `ConfusionMatrix`."]],"struct":[["ConfidenceMetricsEntry","Metrics for a single confidence threshold."],["ConfusionMatrix","Confusion matrix of the model running the classification."]]});

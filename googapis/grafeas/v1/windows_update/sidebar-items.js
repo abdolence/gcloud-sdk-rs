@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Category","The category to which the update belongs."],["Identity","The unique identifier of the update."]]});

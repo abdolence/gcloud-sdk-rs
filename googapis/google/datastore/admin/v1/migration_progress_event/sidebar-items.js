@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConcurrencyMode","Concurrency modes for transactions in Cloud Firestore."],["StepDetails","Details about this step."]],"struct":[["PrepareStepDetails","Details for the `PREPARE` step."],["RedirectWritesStepDetails","Details for the `REDIRECT_WRITES` step."]]});

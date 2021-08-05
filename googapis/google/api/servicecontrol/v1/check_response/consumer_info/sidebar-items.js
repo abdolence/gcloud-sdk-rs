@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConsumerType","The type of the consumer as defined in Google Resource Manager."]]});

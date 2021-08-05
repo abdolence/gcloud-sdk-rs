@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ChangeStatusResourceType","Enum listing the resource types support by the ChangeStatus resource."]]});

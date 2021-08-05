@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Status","Current status of the operation."],["Type","Operation type."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BigtableInstanceAdminClient","Service for creating, configuring, and deleting Cloud Bigtable Instances and Clusters. Provides access to the Instance and Cluster schemas only, not the tables’ metadata or data stored in those tables."]]});

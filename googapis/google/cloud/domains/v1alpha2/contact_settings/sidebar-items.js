@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Contact","Details required for a contact associated with a `Registration`."]]});

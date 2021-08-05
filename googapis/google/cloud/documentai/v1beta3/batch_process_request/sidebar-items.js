@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BatchInputConfig","The message for input config in batch process."],["BatchOutputConfig","The message for output config in batch process."]]});

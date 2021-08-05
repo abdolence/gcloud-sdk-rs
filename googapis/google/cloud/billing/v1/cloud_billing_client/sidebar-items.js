@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudBillingClient","Retrieves GCP Console billing accounts and associates them with projects."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Inspection rule types."]]});

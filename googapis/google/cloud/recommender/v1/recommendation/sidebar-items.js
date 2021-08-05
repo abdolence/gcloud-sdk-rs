@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["InsightReference","Reference to an associated insight."]]});

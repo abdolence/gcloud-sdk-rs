@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PublisherServiceClient","The service that a publisher client application uses to publish messages to topics. Published messages are retained by the service for the duration of the retention period configured for the respective topic, and are delivered to subscriber clients upon request (via the `SubscriberService`)."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MessagePlaceholderField","Possible values for Message placeholder fields."]]});

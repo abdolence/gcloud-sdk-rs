@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ValueType","An enum representing the value type of a feature."]]});

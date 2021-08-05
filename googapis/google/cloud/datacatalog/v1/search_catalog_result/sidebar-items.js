@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["System","The source system of the entry. Only applicable when `search_result_type` is ENTRY."]]});

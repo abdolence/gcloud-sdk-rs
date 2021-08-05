@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Details","Information about the different types of software packages."]]});

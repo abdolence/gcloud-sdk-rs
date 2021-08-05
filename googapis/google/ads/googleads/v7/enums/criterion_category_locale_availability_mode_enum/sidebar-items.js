@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CriterionCategoryLocaleAvailabilityMode","Enum containing the possible CriterionCategoryLocaleAvailabilityMode."]]});

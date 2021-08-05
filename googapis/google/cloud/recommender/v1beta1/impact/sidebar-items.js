@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Category","The category of the impact."],["Projection","Contains projections (if any) for this category."]]});

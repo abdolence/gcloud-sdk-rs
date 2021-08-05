@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudSupportClient","Retrieves the list of Google Cloud Platform Support accounts and manages support cases associated with them."]]});

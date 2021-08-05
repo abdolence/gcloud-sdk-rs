@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RenewalMethod","Defines how the `Registration` is renewed."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Resource","The resource depended upon. It may be a Target, ConfiguredTarget, or Action."]]});

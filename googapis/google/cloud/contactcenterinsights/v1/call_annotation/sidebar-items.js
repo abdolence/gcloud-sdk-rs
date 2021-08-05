@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Data","The data in the annotation."]]});

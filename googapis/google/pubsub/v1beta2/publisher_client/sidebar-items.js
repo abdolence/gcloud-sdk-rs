@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PublisherClient","The service that an application uses to manipulate topics, and to send messages to a topic."]]});

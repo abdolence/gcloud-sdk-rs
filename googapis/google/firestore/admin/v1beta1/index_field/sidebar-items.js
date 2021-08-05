@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Mode","The mode determines how a field is indexed."]]});

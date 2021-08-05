@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ChangedResource","A wrapper proto presenting all supported resources. Only the resource of the change_resource_type will be set."]]});

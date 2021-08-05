@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ProductInfo","Information about a product."],["Result","Information about a product."]]});

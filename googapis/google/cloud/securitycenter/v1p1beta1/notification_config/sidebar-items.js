@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EventType","The type of events."],["NotifyConfig","The config for triggering notifications."]],"struct":[["StreamingConfig","The config for streaming-based notifications, which send each event as soon as it is detected."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Property","A device property; see `properties` for more information."]]});

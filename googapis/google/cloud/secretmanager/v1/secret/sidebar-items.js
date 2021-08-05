@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Expiration","Expiration policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. If specified the [Secret][google.cloud.secretmanager.v1.Secret] and all [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be automatically deleted at expiration. Expired secrets are irreversibly deleted."]]});

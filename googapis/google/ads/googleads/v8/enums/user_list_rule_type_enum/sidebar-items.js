@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["UserListRuleType","Enum describing possible user list rule types."]]});

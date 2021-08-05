@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Type of Google Cloud Vision API feature to be extracted."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["version_state","Nested message and enum types in `VersionState`."]],"struct":[["VersionState","Represents the current state of the version."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Source","Who/what made the change"]],"struct":[["HumanReview","Human Review information of the document."]]});

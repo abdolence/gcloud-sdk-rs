@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["HumanLabelingBudget","Required. Max human labeling DataItems. The rest part will be labeled by machine."]]});

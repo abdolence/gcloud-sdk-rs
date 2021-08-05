@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LifeEventServiceClient","Service to fetch Google Ads Life Events."]]});

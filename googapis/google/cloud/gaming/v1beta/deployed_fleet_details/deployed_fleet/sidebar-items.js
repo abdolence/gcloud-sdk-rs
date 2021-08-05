@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DeployedFleetStatus","DeployedFleetStatus has details about the Agones fleets such as how many are running, how many allocated, and so on."]]});

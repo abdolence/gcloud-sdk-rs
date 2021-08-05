@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["field_transform","Nested message and enum types in `FieldTransform`."]],"struct":[["FieldTransform","A transformation of a field of the document."]]});

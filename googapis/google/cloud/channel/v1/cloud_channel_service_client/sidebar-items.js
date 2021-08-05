@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudChannelServiceClient","CloudChannelService lets Google cloud resellers and distributors manage their customers, channel partners, entitlements, and reports."]]});

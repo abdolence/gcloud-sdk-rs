@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Contents","The value of the variable. It can be either a binary or a string value. You must specify one of either `value` or `text`. Specifying both will cause the server to return an error."]]});

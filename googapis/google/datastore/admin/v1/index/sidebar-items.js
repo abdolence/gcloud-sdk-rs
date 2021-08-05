@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AncestorMode","For an ordered index, specifies whether each of the entity’s ancestors will be included."],["Direction","The direction determines how a property is indexed."],["State","The possible set of states of an index."]],"struct":[["IndexedProperty","A property of an index."]]});

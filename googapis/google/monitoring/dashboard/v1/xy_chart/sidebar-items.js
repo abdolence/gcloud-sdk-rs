@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["axis","Nested message and enum types in `Axis`."],["data_set","Nested message and enum types in `DataSet`."]],"struct":[["Axis","A chart axis."],["DataSet","Groups a time series query definition with charting options."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SessionEntityTypesClient","Service for managing [SessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityType]."]]});

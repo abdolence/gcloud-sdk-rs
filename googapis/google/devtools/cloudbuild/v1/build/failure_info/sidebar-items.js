@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FailureType","The name of a fatal problem encountered during the execution of the build."]]});

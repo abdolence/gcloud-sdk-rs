@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EntryType","Required. Entry type."],["System","The source system of the entry."],["TypeSpec","Type specification information."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ValueType","Value types that can be used as label values."]]});

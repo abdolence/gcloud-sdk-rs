@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConversionActionCountingType","Indicates how conversions for this action will be counted. For more information, see https://support.google.com/google-ads/answer/3438531."]]});

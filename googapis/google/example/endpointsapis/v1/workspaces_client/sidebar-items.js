@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WorkspacesClient","Manages workspaces."]]});

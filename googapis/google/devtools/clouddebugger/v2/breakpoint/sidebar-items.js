@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Action","Actions that can be taken when a breakpoint hits. Agents should reject breakpoints with unsupported or unknown action values."],["LogLevel","Log severity levels."]]});

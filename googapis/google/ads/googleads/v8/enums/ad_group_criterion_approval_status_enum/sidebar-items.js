@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AdGroupCriterionApprovalStatus","Enumerates AdGroupCriterion approval statuses."]]});

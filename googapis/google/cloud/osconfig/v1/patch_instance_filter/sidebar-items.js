@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GroupLabel","Targets a group of VM instances by using their assigned labels. Labels are key-value pairs. A `GroupLabel` is a combination of labels that is used to target VMs for a patch job."]]});

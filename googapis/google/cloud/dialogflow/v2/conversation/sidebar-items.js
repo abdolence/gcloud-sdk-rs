@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConversationStage","Enumeration of the different conversation stages a conversation can be in. Reference: https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages"],["LifecycleState","Enumeration of the completion status of the conversation."]]});

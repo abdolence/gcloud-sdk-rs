@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResponseType","The type of response this is."]]});

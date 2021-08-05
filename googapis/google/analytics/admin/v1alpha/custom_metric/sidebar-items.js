@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MeasurementUnit","Possible types of representing the custom metric’s value."],["MetricScope","The scope of this metric."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["InstancesClient","Manages instances of a version."]]});

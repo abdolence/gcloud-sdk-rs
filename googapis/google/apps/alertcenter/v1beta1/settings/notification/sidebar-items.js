@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Destination","Exactly one destination to be specified."],["PayloadFormat","The format of the payload."]],"struct":[["CloudPubsubTopic","A reference to a Cloud Pubsub topic."]]});

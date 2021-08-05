@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FoldersClient","Manages Cloud Resource Folders. Cloud Resource Folders can be used to organize the resources under an organization and to control the IAM policies applied to groups of resources."]]});

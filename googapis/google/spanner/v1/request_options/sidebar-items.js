@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Priority","The relative priority for requests. Note that priority is not applicable for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction]."]]});

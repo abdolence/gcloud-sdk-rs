@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RecommendationType","Extra catalog item metadata for different recommendation types."]],"struct":[["CategoryHierarchy","Category represents catalog item category hierarchy."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","The state of the finding."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SqlOutOfDiskState","This enum lists all possible states regarding out-of-disk issues."]]});

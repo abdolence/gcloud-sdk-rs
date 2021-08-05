@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["OperationsClient","Manages long-running operations with an API service."]]});

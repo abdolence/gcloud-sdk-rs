@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FloatList","A list of float features."],["StringList","A list of string features."]]});

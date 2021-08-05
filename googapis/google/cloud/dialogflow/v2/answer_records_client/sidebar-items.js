@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AnswerRecordsClient","Service for managing [AnswerRecords][google.cloud.dialogflow.v2.AnswerRecord]."]]});

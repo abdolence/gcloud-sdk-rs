@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EnvironmentsClient","Managed Apache Airflow Environments."]]});

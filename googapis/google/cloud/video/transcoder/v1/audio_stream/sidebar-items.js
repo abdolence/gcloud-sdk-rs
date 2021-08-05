@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AudioMapping","The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Authority","Entity that creates credentials for service account and assumes its identity for authentication."]],"struct":[["FirstPartyPrincipal","First party identity principal."],["ThirdPartyPrincipal","Third party identity principal."]]});

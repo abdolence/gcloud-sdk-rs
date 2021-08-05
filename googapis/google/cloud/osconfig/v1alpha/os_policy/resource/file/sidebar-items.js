@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","A specific type of file."]],"struct":[["Gcs","Specifies a file available as a Cloud Storage Object."],["Remote","Specifies a file available via some URI."]]});

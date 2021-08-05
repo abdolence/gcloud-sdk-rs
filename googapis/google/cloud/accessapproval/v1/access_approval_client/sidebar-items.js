@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AccessApprovalClient","This API allows a customer to manage accesses to cloud resources by Google personnel. It defines the following resource model:"]]});

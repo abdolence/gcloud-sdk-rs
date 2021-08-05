@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RoleLaunchStage","A stage representing a role’s lifecycle phase."]]});

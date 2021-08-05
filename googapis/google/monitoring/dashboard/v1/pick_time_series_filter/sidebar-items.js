@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Direction","Describes the ranking directions."],["Method","The value reducers that can be applied to a `PickTimeSeriesFilter`."]]});

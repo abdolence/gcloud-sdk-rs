@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BucketOption","Defines the buckets in the histogram. `bucket_option` and `bucket_counts` must be both set, or both unset."]],"struct":[["ExplicitBuckets","Describing buckets with arbitrary user-provided width."],["ExponentialBuckets","Describing buckets with exponentially growing width."],["LinearBuckets","Describing buckets with constant width."]]});

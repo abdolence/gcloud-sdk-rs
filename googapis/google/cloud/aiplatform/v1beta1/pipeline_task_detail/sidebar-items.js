@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Specifies state of TaskExecution"]],"struct":[["ArtifactList","A list of artifact metadata."]]});

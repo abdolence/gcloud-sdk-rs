@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AccessibleBiddingStrategyServiceClient","Service to read accessible bidding strategies."]]});

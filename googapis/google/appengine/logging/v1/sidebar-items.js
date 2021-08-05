@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"struct":[["LogLine","Application log line emitted while processing a request."],["RequestLog","Complete log information about a single HTTP request to an App Engine application."],["SourceLocation","Specifies a location in a source code file."],["SourceReference","A reference to a particular snapshot of the source tree used to build and deploy an application."]]});

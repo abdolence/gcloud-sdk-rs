@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WordInfo","Word-level info for words in a transcript."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["LocationType","Different ways to represent a location."]]});

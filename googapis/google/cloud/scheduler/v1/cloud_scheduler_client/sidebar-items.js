@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudSchedulerClient","The Cloud Scheduler API allows external entities to reliably schedule asynchronous jobs."]]});

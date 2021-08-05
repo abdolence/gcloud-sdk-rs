@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TestCasesClient","Service for managing [Test Cases][google.cloud.dialogflow.cx.v3.TestCase] and [Test Case Results][google.cloud.dialogflow.cx.v3.TestCaseResult]."]]});

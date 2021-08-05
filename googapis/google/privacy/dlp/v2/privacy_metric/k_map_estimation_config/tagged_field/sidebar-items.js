@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Tag","Semantic tag that identifies what a column contains, to determine which statistical model to use to estimate the reidentifiability of each value. [required]"]]});

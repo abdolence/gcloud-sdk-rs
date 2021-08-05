@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TypeSpec","Output only."]]});

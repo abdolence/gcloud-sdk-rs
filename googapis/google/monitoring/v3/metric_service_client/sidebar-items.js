@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MetricServiceClient","Manages metric descriptors, monitored resource descriptors, and time series data."]]});

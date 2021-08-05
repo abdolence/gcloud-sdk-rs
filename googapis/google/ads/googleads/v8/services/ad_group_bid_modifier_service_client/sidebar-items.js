@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AdGroupBidModifierServiceClient","Service to manage ad group bid modifiers."]]});

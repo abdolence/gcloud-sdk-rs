@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AttributionModel","The attribution model that describes how to distribute credit for a particular conversion across potentially many prior interactions."]]});

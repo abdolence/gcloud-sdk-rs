@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Partition","BigQuery table partition info. Leave this empty if the BigQuery table is not partitioned."]]});

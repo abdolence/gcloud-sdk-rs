@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AssetFieldTypeViewServiceClient","Service to fetch asset field type views."]]});

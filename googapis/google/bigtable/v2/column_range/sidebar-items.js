@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EndQualifier","The column qualifier at which to end the range (within `column_family`). If neither field is set, interpreted as the infinite string, exclusive."],["StartQualifier","The column qualifier at which to start the range (within `column_family`). If neither field is set, interpreted as the empty string, inclusive."]]});

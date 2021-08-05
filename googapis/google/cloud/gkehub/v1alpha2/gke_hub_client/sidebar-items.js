@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GkeHubClient","GKE Hub CRUD API for the Membership resource. The Membership service is currently only available in the global location."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["IntentBatch","The source of the intent batch."]]});

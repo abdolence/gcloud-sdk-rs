@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ApplicationsClient","Manages App Engine applications."]]});

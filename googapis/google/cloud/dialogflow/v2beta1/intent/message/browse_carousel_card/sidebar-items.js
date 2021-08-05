@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ImageDisplayOptions","Image display options for Actions on Google. This should be used for when the image’s aspect ratio does not match the image container’s aspect ratio."]],"mod":[["browse_carousel_card_item","Nested message and enum types in `BrowseCarouselCardItem`."]],"struct":[["BrowseCarouselCardItem","Browsing carousel tile"]]});

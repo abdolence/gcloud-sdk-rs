@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Possible schema definition types."]]});

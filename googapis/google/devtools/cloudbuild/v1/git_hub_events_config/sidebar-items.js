@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Event","Filter describing the types of events to trigger a build. Currently supported event types: push, pull_request."]]});

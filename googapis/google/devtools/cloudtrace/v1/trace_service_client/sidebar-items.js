@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TraceServiceClient","This file describes an API for collecting and viewing traces and spans within a trace.  A Trace is a collection of spans corresponding to a single operation or set of operations for an application. A span is an individual timed event which forms a node of the trace tree. Spans for a single trace may span multiple services."]]});

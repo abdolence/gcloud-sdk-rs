@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Detail","Output only . Additional information about the annotation specific to the AutoML domain."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AgentsClient","Service for managing [Agents][google.cloud.dialogflow.cx.v3beta1.Agent]."]]});

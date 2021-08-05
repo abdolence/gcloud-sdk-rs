@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Degree","The degree information. It can be one of [degree_description][google.cloud.talent.v4beta1.EducationRecord.degree_description] or [structured_degree][google.cloud.talent.v4beta1.EducationRecord.structured_degree]."]]});

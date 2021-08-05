@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Ref","The revision to fetch from the Git repository such as a branch, a tag, a commit SHA, or any Git ref."]]});

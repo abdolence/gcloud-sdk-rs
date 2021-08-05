@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Filter","If not set, all devices and gateways are returned. If set, the list is filtered based on gateway type and associations."]]});

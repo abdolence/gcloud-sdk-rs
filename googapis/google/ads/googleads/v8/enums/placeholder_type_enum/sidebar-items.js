@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PlaceholderType","Possible placeholder types for a feed mapping."]]});

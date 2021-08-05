@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Criterion","The ad group criterion."]],"struct":[["PositionEstimates","Estimates for criterion bids at various positions."],["QualityInfo","A container for ad group criterion quality information."]]});

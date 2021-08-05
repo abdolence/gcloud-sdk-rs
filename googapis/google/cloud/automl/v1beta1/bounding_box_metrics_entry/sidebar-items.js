@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ConfidenceMetricsEntry","Metrics for a single confidence threshold."]]});

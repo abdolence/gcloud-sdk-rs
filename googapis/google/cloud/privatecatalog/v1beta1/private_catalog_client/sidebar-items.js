@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PrivateCatalogClient","`PrivateCatalog` allows catalog consumers to retrieve `Catalog`, `Product` and `Version` resources under a target resource context."]]});

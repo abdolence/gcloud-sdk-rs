@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ResultStoreDownloadClient","This is the interface used to download information from the ResultStore database."]]});

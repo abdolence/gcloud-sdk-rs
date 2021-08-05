@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["restriction_change","Nested message and enum types in `RestrictionChange`."]],"struct":[["RestrictionChange","Information about restriction policy changes to a feature."]]});

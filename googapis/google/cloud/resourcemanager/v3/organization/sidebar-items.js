@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Owner","The owner of this organization. The owner should be specified on creation. Once set, it cannot be changed."],["State","Organization lifecycle states."]]});

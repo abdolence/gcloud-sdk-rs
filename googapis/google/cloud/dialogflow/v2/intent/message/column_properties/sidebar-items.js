@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["HorizontalAlignment","Text alignments within a cell."]]});

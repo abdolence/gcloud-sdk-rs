@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["JobResult","Mutation result of a job."]]});

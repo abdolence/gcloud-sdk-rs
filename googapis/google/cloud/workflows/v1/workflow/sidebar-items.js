@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SourceCode","Required. Location of the workflow source code. Modifying this field for an existing workflow results in a new workflow revision."],["State","Describes the current state of workflow deployment. More states may be added in the future."]]});

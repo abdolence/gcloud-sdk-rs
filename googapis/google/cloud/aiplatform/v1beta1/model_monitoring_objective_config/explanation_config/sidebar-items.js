@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["explanation_baseline","Nested message and enum types in `ExplanationBaseline`."]],"struct":[["ExplanationBaseline","Output from [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] for Model Monitoring baseline dataset, which can be used to generate baseline attribution scores."]]});

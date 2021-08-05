@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FunctionError","Enum describing possible function errors."]]});

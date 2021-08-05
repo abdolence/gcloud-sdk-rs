@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["KeywordPlanAdGroupServiceClient","Service to manage Keyword Plan ad groups."]]});

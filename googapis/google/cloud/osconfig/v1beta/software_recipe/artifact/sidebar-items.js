@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Artifact","A specific type of artifact."]],"struct":[["Gcs","Specifies an artifact available as a Google Cloud Storage object."],["Remote","Specifies an artifact available via some URI."]]});

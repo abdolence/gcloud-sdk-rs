@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","All the possible API Config states."]],"struct":[["File","A lightweight description of a file."],["GrpcServiceDefinition","A gRPC service definition."],["OpenApiDocument","An OpenAPI Specification Document describing an API."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["release_channel_config","Nested message and enum types in `ReleaseChannelConfig`."]],"struct":[["ReleaseChannelConfig","ReleaseChannelConfig exposes configuration for a release channel."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TargetPlatform","Cloud platforms supported by Cloud Web Security Scanner."],["UserAgent","Type of user agents used for scanning."]],"mod":[["authentication","Nested message and enum types in `Authentication`."]],"struct":[["Authentication","Scan authentication configuration."],["Schedule","Scan schedule configuration."]]});

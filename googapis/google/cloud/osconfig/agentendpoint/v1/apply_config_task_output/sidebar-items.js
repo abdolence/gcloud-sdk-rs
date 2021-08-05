@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","The final state of this task."]],"struct":[["OsPolicyResult","Result of applying desired state config for an OS policy."]]});

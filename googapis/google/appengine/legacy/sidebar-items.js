@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"struct":[["AuditData","Admin Console legacy audit log."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DimensionScope","Valid values for the scope of this dimension."]]});

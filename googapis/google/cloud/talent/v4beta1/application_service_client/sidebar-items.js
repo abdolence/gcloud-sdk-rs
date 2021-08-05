@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ApplicationServiceClient","A service that handles application management, including CRUD and enumeration."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["page_ref","Nested message and enum types in `PageRef`."]],"struct":[["PageRef","Represents a weak reference to a page element within a document."]]});

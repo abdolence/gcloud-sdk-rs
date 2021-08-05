@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UserInput","The input from the human user."],["VirtualAgentOutput","The output from the virtual agent."]]});

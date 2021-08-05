@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FilterType","Specify the type of filtering."]]});

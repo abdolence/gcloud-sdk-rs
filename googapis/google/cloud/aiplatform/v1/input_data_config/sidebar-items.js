@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Destination","Only applicable to Custom and Hyperparameter Tuning TrainingPipelines."],["Split","The instructions how the input data should be split between the training, validation and test sets. If no split type is provided, the [fraction_split][google.cloud.aiplatform.v1.InputDataConfig.fraction_split] is used by default."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AllowedIpRange","Allowed IP range with user-provided description."]]});

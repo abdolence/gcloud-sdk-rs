@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Signature","Required. The signature, generally over the `resource_url`, that verifies this attestation. The semantics of the signature veracity are ultimately determined by the verification engine."]]});

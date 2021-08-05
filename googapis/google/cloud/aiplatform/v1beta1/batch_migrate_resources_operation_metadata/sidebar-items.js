@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["partial_result","Nested message and enum types in `PartialResult`."]],"struct":[["PartialResult","Represents a partial result in batch migration operation for one [MigrateResourceRequest][google.cloud.aiplatform.v1beta1.MigrateResourceRequest]."]]});

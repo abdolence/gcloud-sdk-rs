@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Status","The status of the transfer job."]]});

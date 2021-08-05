@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Value",""]],"mod":[["categorical_value","Nested message and enum types in `CategoricalValue`."]],"struct":[["CategoricalValue","Representative value of a categorical feature."]]});

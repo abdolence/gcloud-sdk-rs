@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Method","Method for calculating shift that takes context into consideration. If set, must also set context. Can only be applied to table items."]]});

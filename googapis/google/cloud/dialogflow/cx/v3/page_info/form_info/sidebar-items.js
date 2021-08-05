@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["parameter_info","Nested message and enum types in `ParameterInfo`."]],"struct":[["ParameterInfo","Represents parameter information."]]});

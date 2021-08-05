@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Data","Input only. The data representing the image. For Predict calls [image_bytes][google.cloud.automl.v1.Image.image_bytes] must be set ."]]});

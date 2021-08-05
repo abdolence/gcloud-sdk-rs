@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FrequencyCapEventType","The type of event that the cap applies to (e.g. impression)."]]});

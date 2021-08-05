@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Template","The template from which to create the job."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Role","Enumeration of the roles a participant can play in a conversation."]]});

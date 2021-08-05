@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Details","Detailed log information."],["State","Possible states of the execution. There could be more states in the future."]],"struct":[["Failure","Detailed information about the execution failure."],["Start","Detailed information about the start of the execution."],["Success","Detailed information about the successful finish of the execution."]]});

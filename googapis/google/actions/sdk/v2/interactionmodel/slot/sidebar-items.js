@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CommitBehavior","Message describing the commit behavior associated with the slot after it has been successfully filled."],["DefaultValue","Configuration to populate a default value for this slot."],["PromptSettings","A single place where slot prompts are defined."]]});

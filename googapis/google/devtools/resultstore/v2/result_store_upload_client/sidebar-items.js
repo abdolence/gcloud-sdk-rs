@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ResultStoreUploadClient","This is the interface used to upload information to the ResultStore database, to update that information as necessary, and to make it immutable at the end."]]});

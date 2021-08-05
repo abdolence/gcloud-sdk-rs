@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Id","A cloud repository can be identified by either its project ID and repository name combination, or its globally unique identifier."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Destination","Exporter destination."]],"struct":[["BigQueryDestination","A BigQuery Table Reference."]]});

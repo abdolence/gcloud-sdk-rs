@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Split","An initial split point for a newly created table."]]});

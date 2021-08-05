@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Result","A single result. This can be empty if the server is just returning a transaction."]]});

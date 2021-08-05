@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CriterionError","Enum describing possible criterion errors."]]});

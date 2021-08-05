@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Destination","The desination of the transfer config."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["InfoTypeLimit","Max findings configuration per infoType, per content item or long running DlpJob."]]});

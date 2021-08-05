@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Destination","Asset feed destination."]]});

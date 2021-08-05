@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NotificationChannelServiceClient","The Notification Channel API provides access to configuration that controls how messages related to incidents are sent."]]});

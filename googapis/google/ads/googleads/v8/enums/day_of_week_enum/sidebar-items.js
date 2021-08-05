@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DayOfWeek","Enumerates days of the week, e.g., “Monday”."]]});

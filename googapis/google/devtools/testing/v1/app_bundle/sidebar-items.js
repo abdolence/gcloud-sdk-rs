@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Bundle","Required. Bundle location information."]]});

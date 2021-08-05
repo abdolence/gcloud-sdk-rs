@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ParticipantsClient","Service for managing [Participants][google.cloud.dialogflow.v2.Participant]."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["metric","Nested message and enum types in `Metric`."]],"struct":[["Metric","Progress metric is (string, int|float|string) pair."]]});

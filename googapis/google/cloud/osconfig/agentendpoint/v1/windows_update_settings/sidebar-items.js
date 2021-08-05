@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Classification","Microsoft Windows update classifications as defined in [1] https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro"]]});

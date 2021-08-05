@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SampleMethod","How to sample bytes if not all bytes are scanned. Meaningful only when used in conjunction with bytes_limit_per_file. If not specified, scanning would start from the top."]],"struct":[["FileSet","Set of files to scan."]]});

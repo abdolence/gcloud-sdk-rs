@@ -1,0 +1,1101 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.actions.sdk.v2.conversation.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.conversation.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+</pre><pre class="rust">
+<span class="doccomment">/// Represents an intent.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Intent</span> {
+    <span class="doccomment">/// Required. The name of the last matched intent.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. Represents parameters identified as part of intent matching.</span>
+    <span class="doccomment">/// This is a map of the name of the identified parameter to the value of the</span>
+    <span class="doccomment">/// parameter identified from user input. All parameters defined in</span>
+    <span class="doccomment">/// the matched intent that are identified will be surfaced here.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">params</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">IntentParameterValue</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Typed or spoken input from the end user that matched this intent.</span>
+    <span class="doccomment">/// This will be populated when an intent is matched, based on the user input.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">query</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Represents a value for intent parameter.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntentParameterValue</span> {
+    <span class="doccomment">/// Required. Original text value extracted from user utterance.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">original</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. Structured value for parameter extracted from user input.</span>
+    <span class="doccomment">/// This will only be populated if the parameter is defined in the matched</span>
+    <span class="doccomment">/// intent and the value of the parameter could be identified during intent</span>
+    <span class="doccomment">/// matching.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">resolved</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Value</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Represents an Interactive Canvas response to be sent to the user.</span>
+<span class="doccomment">/// This can be used in conjunction with the &quot;first_simple&quot; field in the</span>
+<span class="doccomment">/// containing prompt to speak to the user in addition to displaying a</span>
+<span class="doccomment">/// interactive canvas response. The maximum size of the response is 50k bytes.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Canvas</span> {
+    <span class="doccomment">/// URL of the interactive canvas web app to load. If not set, the url from</span>
+    <span class="doccomment">/// current active canvas will be reused.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. JSON data to be passed through to the immersive experience</span>
+    <span class="doccomment">/// web page as an event.</span>
+    <span class="doccomment">/// If the &quot;override&quot; field in the containing prompt is &quot;false&quot; data values</span>
+    <span class="doccomment">/// defined in this Canvas prompt will be added after data values defined in</span>
+    <span class="doccomment">/// previous Canvas prompts.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost_types::Value</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Default value: false.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">suppress_mic</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// If `true` the canvas application occupies the full screen and won&#39;t</span>
+    <span class="doccomment">/// have a header at the top. A toast message will also be displayed on the</span>
+    <span class="doccomment">/// loading screen that includes the Action&#39;s display name, the developer&#39;s</span>
+    <span class="doccomment">/// name, and instructions for exiting the Action. Default value: `false`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">enable_full_screen</span>: <span class="ident">bool</span>,
+}
+<span class="doccomment">/// An image displayed in the card.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Image</span> {
+    <span class="doccomment">/// The source url of the image. Images can be JPG, PNG and GIF (animated and</span>
+    <span class="doccomment">/// non-animated). For example,`https://www.agentx.com/logo.png`. Required.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// A text description of the image to be used for accessibility, e.g. screen</span>
+    <span class="doccomment">/// readers.</span>
+    <span class="doccomment">/// Required.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">alt</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The height of the image in pixels.</span>
+    <span class="doccomment">/// Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">height</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// The width of the image in pixels.</span>
+    <span class="doccomment">/// Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">width</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Image`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">image</span> {
+    <span class="doccomment">/// Possible image display options for affecting the presentation of the image.</span>
+    <span class="doccomment">/// This should be used for when the image&#39;s aspect ratio does not match the</span>
+    <span class="doccomment">/// image container&#39;s aspect ratio.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ImageFill</span> {
+        <span class="doccomment">/// Unspecified image fill.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Fill the gaps between the image and the image container with gray bars.</span>
+        <span class="ident">Gray</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Fill the gaps between the image and the image container with white bars.</span>
+        <span class="ident">White</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// Image is scaled such that the image width and height match or exceed the</span>
+        <span class="doccomment">/// container dimensions. This may crop the top and bottom of the image if</span>
+        <span class="doccomment">/// the scaled image height is greater than the container height, or crop the</span>
+        <span class="doccomment">/// left and right of the image if the scaled image width is greater than the</span>
+        <span class="doccomment">/// container width. This is similar to &quot;Zoom Mode&quot; on a widescreen TV when</span>
+        <span class="doccomment">/// playing a 4:3 video.</span>
+        <span class="ident">Cropped</span> <span class="op">=</span> <span class="number">3</span>,
+    }
+}
+<span class="doccomment">/// Link content.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Link</span> {
+    <span class="doccomment">/// Name of the link</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// What happens when a user opens the link</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">open</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">OpenUrl</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Action taken when a user opens a link.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OpenUrl</span> {
+    <span class="doccomment">/// The url field which could be any of:</span>
+    <span class="doccomment">/// - http/https urls for opening an App-linked App or a webpage</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Indicates a hint for the url type.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;UrlHint&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">hint</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Different types of url hints.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UrlHint</span> {
+    <span class="doccomment">/// Unspecified</span>
+    <span class="ident">LinkUnspecified</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="doccomment">/// URL that points directly to AMP content, or to a canonical URL</span>
+    <span class="doccomment">/// which refers to AMP content via &lt;link rel=&quot;amphtml&quot;&gt;.</span>
+    <span class="ident">Amp</span> <span class="op">=</span> <span class="number">1</span>,
+}
+<span class="doccomment">/// A basic card for displaying some information, e.g. an image and/or text.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Card</span> {
+    <span class="doccomment">/// Overall title of the card.</span>
+    <span class="doccomment">/// Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">subtitle</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Body text of the card.</span>
+    <span class="doccomment">/// Supports a limited set of markdown syntax for formatting.</span>
+    <span class="doccomment">/// Required, unless image is present.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// A hero image for the card. The height is fixed to 192dp.</span>
+    <span class="doccomment">/// Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Image</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// How the image background will be filled. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;image::ImageFill&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">image_fill</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Button.</span>
+    <span class="doccomment">/// Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">button</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Link</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// A card for presenting a collection of options to select from.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Collection</span> {
+    <span class="doccomment">/// Title of the collection. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Subtitle of the collection. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">subtitle</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// min: 2 max: 10</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">items</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">collection::CollectionItem</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// How the image backgrounds of collection items will be filled. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;image::ImageFill&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">image_fill</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Collection`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">collection</span> {
+    <span class="doccomment">/// An item in the collection</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CollectionItem</span> {
+        <span class="doccomment">/// Required. The NLU key that matches the entry key name in the associated</span>
+        <span class="doccomment">/// Type.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+}
+<span class="doccomment">/// A card for presenting a list of options to select from.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">List</span> {
+    <span class="doccomment">/// Title of the list. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Subtitle of the list. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">subtitle</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// min: 2 max: 30</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">items</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">list::ListItem</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `List`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">list</span> {
+    <span class="doccomment">/// An item in the list</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListItem</span> {
+        <span class="doccomment">/// Required. The NLU key that matches the entry key name in the associated</span>
+        <span class="doccomment">/// Type.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+}
+<span class="doccomment">/// Represents one media object.</span>
+<span class="doccomment">/// Contains information about the media, such as name, description, url, etc.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Media</span> {
+    <span class="doccomment">/// Media type.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;media::MediaType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">media_type</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Start offset of the first media object.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">start_offset</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional media control types this media response session can support.</span>
+    <span class="doccomment">/// If set, request will be made to 3p when a certain media event happens.</span>
+    <span class="doccomment">/// If not set, 3p must still handle two default control type, FINISHED and</span>
+    <span class="doccomment">/// FAILED.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;media::OptionalMediaControls&quot;</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">optional_media_controls</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// List of Media Objects</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">media_objects</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">MediaObject</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Media`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">media</span> {
+    <span class="doccomment">/// Media type of this response.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MediaType</span> {
+        <span class="doccomment">/// Unspecified media type.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Audio file.</span>
+        <span class="ident">Audio</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Response to acknowledge a media status report.</span>
+        <span class="ident">MediaStatusAck</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+    <span class="doccomment">/// Optional media control types the media response can support</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OptionalMediaControls</span> {
+        <span class="doccomment">/// Unspecified value</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Paused event. Triggered when user pauses the media.</span>
+        <span class="ident">Paused</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Stopped event. Triggered when user exits out of 3p session during media</span>
+        <span class="doccomment">/// play.</span>
+        <span class="ident">Stopped</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+}
+<span class="doccomment">/// Represents a single media object</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MediaObject</span> {
+    <span class="doccomment">/// Name of this media object.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Description of this media object.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The url pointing to the media content.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Image to show with the media card.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">MediaImage</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Image to show with the media card.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MediaImage</span> {
+    <span class="doccomment">/// Image.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;media_image::Image&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">media_image::Image</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `MediaImage`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">media_image</span> {
+    <span class="doccomment">/// Image.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Image</span> {
+        <span class="doccomment">/// A large image, such as the cover of the album, etc.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="ident">Large</span>(<span class="kw">super</span><span class="ident">::Image</span>),
+        <span class="doccomment">/// A small image icon displayed on the right from the title.</span>
+        <span class="doccomment">/// It&#39;s resized to 36x36 dp.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="ident">Icon</span>(<span class="kw">super</span><span class="ident">::Image</span>),
+    }
+}
+<span class="doccomment">/// A table card for displaying a table of text.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Table</span> {
+    <span class="doccomment">/// Overall title of the table. Optional but must be set if subtitle is set.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Subtitle for the table. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">subtitle</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Image associated with the table. Optional.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Image</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Headers and alignment of columns.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">columns</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">TableColumn</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Row data of the table. The first 3 rows are guaranteed to be shown but</span>
+    <span class="doccomment">/// others might be cut on certain surfaces. Please test with the simulator to</span>
+    <span class="doccomment">/// see which rows will be shown for a given surface. On surfaces that support</span>
+    <span class="doccomment">/// the WEB_BROWSER capability, you can point the user to</span>
+    <span class="doccomment">/// a web page with more data.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">rows</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">TableRow</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Button.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">button</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Link</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Describes a column in a table.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TableColumn</span> {
+    <span class="doccomment">/// Header text for the column.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Horizontal alignment of content w.r.t column. If unspecified, content</span>
+    <span class="doccomment">/// will be aligned to the leading edge.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;table_column::HorizontalAlignment&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">align</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `TableColumn`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">table_column</span> {
+    <span class="doccomment">/// The alignment of the content within the cell.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">HorizontalAlignment</span> {
+        <span class="doccomment">/// Unspecified horizontal alignment.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Leading edge of the cell. This is the default.</span>
+        <span class="ident">Leading</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Content is aligned to the center of the column.</span>
+        <span class="ident">Center</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// Content is aligned to the trailing edge of the column.</span>
+        <span class="ident">Trailing</span> <span class="op">=</span> <span class="number">3</span>,
+    }
+}
+<span class="doccomment">/// Describes a cell in a row.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TableCell</span> {
+    <span class="doccomment">/// Text content of the cell.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Describes a row in the table.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TableRow</span> {
+    <span class="doccomment">/// Cells in this row. The first 3 cells are guaranteed to be shown but</span>
+    <span class="doccomment">/// others might be cut on certain surfaces. Please test with the simulator</span>
+    <span class="doccomment">/// to see which cells will be shown for a given surface.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cells</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">TableCell</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Indicates whether there should be a divider after each row.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">divider</span>: <span class="ident">bool</span>,
+}
+<span class="doccomment">/// Content to be shown.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Content</span> {
+    <span class="doccomment">/// Content.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;content::Content&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2, 3, 4, 5, 6, 7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">content</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">content::Content</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Content`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">content</span> {
+    <span class="doccomment">/// Content.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Content</span> {
+        <span class="doccomment">/// A basic card.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="ident">Card</span>(<span class="kw">super</span><span class="ident">::Card</span>),
+        <span class="doccomment">/// An image.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="ident">Image</span>(<span class="kw">super</span><span class="ident">::Image</span>),
+        <span class="doccomment">/// Table card.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="ident">Table</span>(<span class="kw">super</span><span class="ident">::Table</span>),
+        <span class="doccomment">/// Response indicating a set of media to be played.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+        <span class="ident">Media</span>(<span class="kw">super</span><span class="ident">::Media</span>),
+        <span class="doccomment">/// A response to be used for interactive canvas experience.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="ident">Canvas</span>(<span class="kw">super</span><span class="ident">::Canvas</span>),
+        <span class="doccomment">/// A card presenting a collection of options to select from.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+        <span class="ident">Collection</span>(<span class="kw">super</span><span class="ident">::Collection</span>),
+        <span class="doccomment">/// A card presenting a list of options to select from.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+        <span class="ident">List</span>(<span class="kw">super</span><span class="ident">::List</span>),
+    }
+}
+<span class="doccomment">/// Represents a simple prompt to be send to a user.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Simple</span> {
+    <span class="doccomment">/// Optional. Represents the speech to be spoken to the user. Can be SSML or</span>
+    <span class="doccomment">/// text to speech.</span>
+    <span class="doccomment">/// If the &quot;override&quot; field in the containing prompt is &quot;true&quot;, the speech</span>
+    <span class="doccomment">/// defined in this field replaces the previous Simple prompt&#39;s speech.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">speech</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional text to display in the chat bubble. If not given, a display</span>
+    <span class="doccomment">/// rendering of the speech field above will be used. Limited to 640</span>
+    <span class="doccomment">/// chars.</span>
+    <span class="doccomment">/// If the &quot;override&quot; field in the containing prompt is &quot;true&quot;, the text</span>
+    <span class="doccomment">/// defined in this field replaces to the previous Simple prompt&#39;s text.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Input suggestion to be presented to the user.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Suggestion</span> {
+    <span class="doccomment">/// Required. The text shown in the suggestion chip. When tapped, this text will be</span>
+    <span class="doccomment">/// posted back to the conversation verbatim as if the user had typed it.</span>
+    <span class="doccomment">/// Each title must be unique among the set of suggestion chips.</span>
+    <span class="doccomment">/// Max 25 chars</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Represent a response to a user.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Prompt</span> {
+    <span class="doccomment">/// Optional. Mode for how this messages should be merged with previously</span>
+    <span class="doccomment">/// defined messages.</span>
+    <span class="doccomment">/// &quot;false&quot; will clear all previously defined messages (first and last</span>
+    <span class="doccomment">/// simple, content, suggestions link and canvas) and add messages defined in</span>
+    <span class="doccomment">/// this prompt.</span>
+    <span class="doccomment">/// &quot;true&quot; will add messages defined in this prompt to messages defined in</span>
+    <span class="doccomment">/// previous responses. Setting this field to &quot;true&quot; will also enable appending</span>
+    <span class="doccomment">/// to some fields inside Simple prompts, the Suggestion prompt and the Canvas</span>
+    <span class="doccomment">/// prompt (part of the Content prompt). The Content and Link messages will</span>
+    <span class="doccomment">/// always be overwritten if defined in the prompt.</span>
+    <span class="doccomment">/// Default value is &quot;false&quot;.</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>]</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">append</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Optional. Mode for how this messages should be merged with previously</span>
+    <span class="doccomment">/// defined messages.</span>
+    <span class="doccomment">/// &quot;true&quot; clears all previously defined messages (first and last</span>
+    <span class="doccomment">/// simple, content, suggestions link and canvas) and adds messages defined in</span>
+    <span class="doccomment">/// this prompt.</span>
+    <span class="doccomment">/// &quot;false&quot; adds messages defined in this prompt to messages defined in</span>
+    <span class="doccomment">/// previous responses. Leaving this field to &quot;false&quot; also enables</span>
+    <span class="doccomment">/// appending to some fields inside Simple prompts, the Suggestions prompt,</span>
+    <span class="doccomment">/// and the Canvas prompt (part of the Content prompt). The Content and Link</span>
+    <span class="doccomment">/// messages are always overwritten if defined in the prompt. Default</span>
+    <span class="doccomment">/// value is &quot;false&quot;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">r#override</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Optional. The first voice and text-only response.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">first_simple</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Simple</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. A content like a card, list or media to display to the user.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">content</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Content</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. The last voice and text-only response.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">last_simple</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Simple</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Suggestions to be displayed to the user which will always appear</span>
+    <span class="doccomment">/// at the end of the response.</span>
+    <span class="doccomment">/// If the &quot;override&quot; field in the containing prompt is &quot;false&quot;, the titles</span>
+    <span class="doccomment">/// defined in this field will be added to titles defined in any previously</span>
+    <span class="doccomment">/// defined suggestions prompts and duplicate values will be removed.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">suggestions</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Suggestion</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. An additional suggestion chip that can link out to the associated app</span>
+    <span class="doccomment">/// or site.</span>
+    <span class="doccomment">/// The chip will be rendered with the title &quot;Open &lt;name&gt;&quot;. Max 20 chars.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">link</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Link</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Represents a Interactive Canvas response to be sent to the user.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">canvas</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Canvas</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Represents a slot.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Slot</span> {
+    <span class="doccomment">/// The mode of the slot (required or optional). Can be set by developer.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;slot::SlotMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">mode</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// The status of the slot.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;slot::SlotStatus&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// The value of the slot. Changing this value in the response, will</span>
+    <span class="doccomment">/// modify the value in slot filling.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Value</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Indicates if the slot value was collected on the last turn.</span>
+    <span class="doccomment">/// This field is read-only.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">updated</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Optional. This prompt is sent to the user when needed to fill a required</span>
+    <span class="doccomment">/// slot. This prompt overrides the existing prompt defined in the console.</span>
+    <span class="doccomment">/// This field is not included in the webhook request.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Prompt</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Slot`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">slot</span> {
+    <span class="doccomment">/// Represents the mode of a slot, that is, if it is required or not.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SlotMode</span> {
+        <span class="doccomment">/// Fallback value when the usage field is not populated.</span>
+        <span class="ident">ModeUnspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Indicates that the slot is not required to complete slot filling.</span>
+        <span class="ident">Optional</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Indicates that the slot is required to complete slot filling.</span>
+        <span class="ident">Required</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+    <span class="doccomment">/// Represents the status of a slot.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SlotStatus</span> {
+        <span class="doccomment">/// Fallback value when the usage field is not populated.</span>
+        <span class="ident">SlotUnspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Indicates that the slot does not have any values. This status cannot be</span>
+        <span class="doccomment">/// modified through the response.</span>
+        <span class="ident">Empty</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Indicates that the slot value is invalid. This status can be set</span>
+        <span class="doccomment">/// through the response.</span>
+        <span class="ident">Invalid</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// Indicates that the slot has a value. This status cannot be modified</span>
+        <span class="doccomment">/// through the response.</span>
+        <span class="ident">Filled</span> <span class="op">=</span> <span class="number">3</span>,
+    }
+}
+<span class="doccomment">/// Represents the current status of slot filling.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SlotFillingStatus</span> {
+    <span class="doccomment">/// Fallback value when the usage field is not populated.</span>
+    <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="doccomment">/// The slots have been initialized but slot filling has not started.</span>
+    <span class="ident">Initialized</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="doccomment">/// The slot values are being collected.</span>
+    <span class="ident">Collecting</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="doccomment">/// All slot values are final and cannot be changed.</span>
+    <span class="ident">Final</span> <span class="op">=</span> <span class="number">4</span>,
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

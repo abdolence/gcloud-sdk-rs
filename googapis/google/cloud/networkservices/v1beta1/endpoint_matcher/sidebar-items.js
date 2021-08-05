@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MatcherType","Specifies type of the matcher used for this endpoint matcher."]],"mod":[["metadata_label_matcher","Nested message and enum types in `MetadataLabelMatcher`."]],"struct":[["MetadataLabelMatcher","The matcher that is based on node metadata presented by xDS clients."]]});

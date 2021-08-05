@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CustomerPayPerConversionEligibilityFailureReason","Enum describing possible reasons a customer is not eligible to use PaymentMode.CONVERSIONS."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type",""]],"struct":[["TimespanConfig","Configuration of the timespan of the items to include in scanning. Currently only supported when inspecting Google Cloud Storage and BigQuery."]]});

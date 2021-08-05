@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VehicleServiceClient","Vehicle management service."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Header","Describes a HTTP Header."]]});

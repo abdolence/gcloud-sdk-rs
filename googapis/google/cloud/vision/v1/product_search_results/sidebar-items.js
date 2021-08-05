@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GroupedResult","Information about the products similar to a single product in a query image."],["ObjectAnnotation","Prediction for what the object in the bounding box is."],["Result","Information about a product."]]});

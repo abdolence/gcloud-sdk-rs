@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ConnectionServiceClient","Manages external data source connections and credentials."]]});

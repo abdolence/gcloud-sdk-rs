@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SourceInfo","Information about the source used to restore the table, as specified by `source` in [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest]."]]});

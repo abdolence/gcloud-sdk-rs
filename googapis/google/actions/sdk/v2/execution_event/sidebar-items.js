@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EventData","Detailed information specific to different of events that may be involved in processing a conversation round. The field set here defines the type of this event."]]});

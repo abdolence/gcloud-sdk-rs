@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["StartingIntent","Required. Intent details to start an activity."]]});

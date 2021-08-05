@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ServedAssetFieldType","The possible asset field types."]]});

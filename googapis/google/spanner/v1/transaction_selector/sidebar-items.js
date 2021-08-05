@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Selector","If no fields are set, the default is a single use transaction with strong concurrency."]]});

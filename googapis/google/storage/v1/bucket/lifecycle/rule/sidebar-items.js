@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Action","An action to take on an object."],["Condition","A condition of an object which triggers some action."]]});

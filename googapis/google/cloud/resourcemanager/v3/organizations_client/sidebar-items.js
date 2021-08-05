@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["OrganizationsClient","Allows users to manage their organization resources."]]});

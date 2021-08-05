@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ProductCustomAttributeIndex","The index of the product custom attribute."]]});

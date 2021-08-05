@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Transition","A transition coverage in a transition route group."]]});

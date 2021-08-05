@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Details",""],["JobState","Possible states of a job. New items may be added."]]});

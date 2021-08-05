@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.apps.script.r#type.gmail.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.apps.script.r#type.gmail.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+</pre><pre class="rust">
+<span class="doccomment">/// Properties customizing the appearance and execution of a Gmail add-on.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GmailAddOnManifest</span> {
+    <span class="doccomment">/// Defines an endpoint that will be executed in contexts that don&#39;t</span>
+    <span class="doccomment">/// match a declared contextual trigger. Any cards generated by this function</span>
+    <span class="doccomment">/// will always be available to the user, but may be eclipsed by contextual</span>
+    <span class="doccomment">/// content when this add-on declares more targeted triggers.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If present, this overrides the configuration from</span>
+    <span class="doccomment">/// `addOns.common.homepageTrigger`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">homepage_trigger</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::HomepageExtensionPoint</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Defines the set of conditions that trigger the add-on.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">contextual_triggers</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ContextualTrigger</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Defines set of [universal</span>
+    <span class="doccomment">/// actions](/gmail/add-ons/how-tos/universal-actions) for the add-on. The user</span>
+    <span class="doccomment">/// triggers universal actions from the add-on toolbar menu.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">universal_actions</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">UniversalAction</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Defines the compose time trigger for a compose time add-on. This is the</span>
+    <span class="doccomment">/// trigger that causes an add-on to take action when the user is composing an</span>
+    <span class="doccomment">/// email.</span>
+    <span class="doccomment">/// All compose time addons are required to have the</span>
+    <span class="doccomment">/// gmail.addons.current.action.compose scope even though it might not edit the</span>
+    <span class="doccomment">/// draft.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">compose_trigger</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ComposeTrigger</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The name of an endpoint that verifies that the add-on has</span>
+    <span class="doccomment">/// all the required third-party authorizations, by probing the third-party</span>
+    <span class="doccomment">/// APIs. If the probe fails, the function should throw an exception to</span>
+    <span class="doccomment">/// initiate the authorization flow. This function is called before each</span>
+    <span class="doccomment">/// invocation of the add-on, in order to ensure a smooth user experience.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">authorization_check_function</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// An action that is always available in the add-on toolbar menu regardless of</span>
+<span class="doccomment">/// message context.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UniversalAction</span> {
+    <span class="doccomment">/// Required. User-visible text describing the action, for example, &quot;Add a new</span>
+    <span class="doccomment">/// contact.&quot;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The type of the action determines the behavior of Gmail when the user</span>
+    <span class="doccomment">/// invokes the action.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;universal_action::ActionType&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;2, 3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">action_type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">universal_action::ActionType</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `UniversalAction`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">universal_action</span> {
+    <span class="doccomment">/// The type of the action determines the behavior of Gmail when the user</span>
+    <span class="doccomment">/// invokes the action.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ActionType</span> {
+        <span class="doccomment">/// A link that is opened by Gmail when the user triggers the action.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="ident">OpenLink</span>(<span class="ident">::prost::alloc::string::String</span>),
+        <span class="doccomment">/// An endpoint that is called when the user triggers the</span>
+        <span class="doccomment">/// action. See the [universal actions</span>
+        <span class="doccomment">/// guide](/gmail/add-ons/how-tos/universal-actions) for details.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="ident">RunFunction</span>(<span class="ident">::prost::alloc::string::String</span>),
+    }
+}
+<span class="doccomment">/// A trigger that activates when user is composing an email.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ComposeTrigger</span> {
+    <span class="doccomment">/// Defines the set of actions for compose time add-on. These are actions</span>
+    <span class="doccomment">/// that user can trigger on a compose time addon.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">actions</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MenuItemExtensionPoint</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Define the level of data access when a compose time addon is triggered.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;compose_trigger::DraftAccess&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">draft_access</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `ComposeTrigger`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">compose_trigger</span> {
+    <span class="doccomment">/// An enum defining the level of data access this compose trigger requires.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DraftAccess</span> {
+        <span class="doccomment">/// Default value when nothing is set for DraftAccess.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// NONE means compose trigger won&#39;t be able to access any data of the draft</span>
+        <span class="doccomment">/// when a compose addon is triggered.</span>
+        <span class="prelude-val">None</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// METADATA gives compose trigger the permission to access the metadata of</span>
+        <span class="doccomment">/// the draft when a compose addon is triggered. This includes the audience</span>
+        <span class="doccomment">/// list (To/cc list) of a draft message.</span>
+        <span class="ident">Metadata</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+}
+<span class="doccomment">/// Defines a trigger that fires when the open email meets a specific criteria.</span>
+<span class="doccomment">/// When the trigger fires, it executes a specific endpoint, usually</span>
+<span class="doccomment">/// in order to create new cards and update the UI.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ContextualTrigger</span> {
+    <span class="doccomment">/// Required. The name of the endpoint to call when a message matches the</span>
+    <span class="doccomment">/// trigger.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">on_trigger_function</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The type of trigger determines the conditions Gmail uses to show the</span>
+    <span class="doccomment">/// add-on.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;contextual_trigger::Trigger&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">trigger</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">contextual_trigger::Trigger</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `ContextualTrigger`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">contextual_trigger</span> {
+    <span class="doccomment">/// The type of trigger determines the conditions Gmail uses to show the</span>
+    <span class="doccomment">/// add-on.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Trigger</span> {
+        <span class="doccomment">/// UnconditionalTriggers are executed when any mail message is opened.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="ident">Unconditional</span>(<span class="kw">super</span><span class="ident">::UnconditionalTrigger</span>),
+    }
+}
+<span class="doccomment">/// A trigger that fires when any email message is opened.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnconditionalTrigger</span> {}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

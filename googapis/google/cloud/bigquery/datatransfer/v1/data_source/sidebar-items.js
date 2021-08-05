@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AuthorizationType","The type of authorization needed for this data source."],["DataRefreshType","Represents how the data source supports data auto refresh."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ClassItem","An item of the class."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"struct":[["DateRange","Represents a range based on whole or partial calendar dates, e.g. the duration of a hotel reservation or the Common Era. This can represent:"],["DateTimeRange","Represents a date and time range. This can represent:"]]});

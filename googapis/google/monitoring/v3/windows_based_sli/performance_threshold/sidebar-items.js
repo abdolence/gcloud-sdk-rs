@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","The means, either a request-based SLI or a basic SLI, by which to compute performance over a window."]]});

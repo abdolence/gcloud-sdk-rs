@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TimestampBound","How to choose the timestamp for the read-only transaction."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CustomerType","CustomerType of the customer"]]});

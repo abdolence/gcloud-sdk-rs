@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Event","Specifies the Pub/Sub event provided to the partners. This is a required field."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Manager","Types of package managers that may be used to manage this package."]]});

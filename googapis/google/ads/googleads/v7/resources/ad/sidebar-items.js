@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AdData","Details pertinent to the ad type. Exactly one value must be set."]]});

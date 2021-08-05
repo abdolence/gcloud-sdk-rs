@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ProfileEventType","The enum represents types of client events for a candidate profile."]]});

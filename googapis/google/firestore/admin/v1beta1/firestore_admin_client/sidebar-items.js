@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FirestoreAdminClient","The Cloud Firestore Admin API."]]});

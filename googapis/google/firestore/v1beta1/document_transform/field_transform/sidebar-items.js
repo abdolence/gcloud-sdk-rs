@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ServerValue","A value that is calculated by the server."],["TransformType","The transformation to apply on the field."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["StorageClient","Manages Google Cloud Storage resources."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BudgetStatus","Possible statuses of a Budget."]]});

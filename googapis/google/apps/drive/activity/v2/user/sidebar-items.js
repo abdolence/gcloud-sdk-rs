@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","The type of user, such as known, unknown, and deleted."]],"struct":[["DeletedUser","A user whose account has since been deleted."],["KnownUser","A known user."],["UnknownUser","A user about whom nothing is currently known."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Level","Possible Level values of a validation unit corresponding to its domain of discourse."],["Severity","Possible Severity values of an issued result."]]});

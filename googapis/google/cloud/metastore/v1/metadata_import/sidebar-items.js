@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Metadata","The metadata to be imported."],["State","The current state of the metadata import."]],"mod":[["database_dump","Nested message and enum types in `DatabaseDump`."]],"struct":[["DatabaseDump","A specification of the location of and metadata about a database dump from a relational database management system."]]});

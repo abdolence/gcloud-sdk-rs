@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.retail.logging.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.retail.logging.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+</pre><pre class="rust">
+<span class="doccomment">/// Describes a running service that sends errors.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ServiceContext</span> {
+    <span class="doccomment">/// An identifier of the service.</span>
+    <span class="doccomment">/// For example, &quot;retail.googleapis.com&quot;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">service</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// HTTP request data that is related to a reported error.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpRequestContext</span> {
+    <span class="doccomment">/// The HTTP response status code for the request.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">response_status_code</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Indicates a location in the source code of the service for which</span>
+<span class="doccomment">/// errors are reported.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SourceLocation</span> {
+    <span class="doccomment">/// Human-readable name of a function or method.</span>
+    <span class="doccomment">/// For example, &quot;google.cloud.retail.v2.UserEventService.ImportUserEvents&quot;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">function_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// A description of the context in which an error occurred.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ErrorContext</span> {
+    <span class="doccomment">/// The HTTP request which was processed when the error was triggered.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">http_request</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">HttpRequestContext</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The location in the source code where the decision was made to</span>
+    <span class="doccomment">/// report the error, usually the place where it was logged.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">report_location</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">SourceLocation</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// The error payload that is populated on LRO import APIs. Including:</span>
+<span class="doccomment">///   &quot;google.cloud.retail.v2.ProductService.ImportProducts&quot;</span>
+<span class="doccomment">///   &quot;google.cloud.retail.v2.EventService.ImportUserEvents&quot;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImportErrorContext</span> {
+    <span class="doccomment">/// The operation resource name of the LRO.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">operation_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Cloud Storage file path of the import source.</span>
+    <span class="doccomment">/// Can be set for batch operation error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">gcs_path</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Line number of the content in file.</span>
+    <span class="doccomment">/// Should be empty for permission or batch operation error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">line_number</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Detailed content which caused the error.</span>
+    <span class="doccomment">/// Should be empty for permission or batch operation error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;import_error_context::LineContent&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;4, 5, 6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">line_content</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">import_error_context::LineContent</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `ImportErrorContext`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">import_error_context</span> {
+    <span class="doccomment">/// Detailed content which caused the error.</span>
+    <span class="doccomment">/// Should be empty for permission or batch operation error.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LineContent</span> {
+        <span class="doccomment">/// The detailed content which caused the error on importing a catalog item.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+        <span class="ident">CatalogItem</span>(<span class="ident">::prost::alloc::string::String</span>),
+        <span class="doccomment">/// The detailed content which caused the error on importing a product.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="ident">Product</span>(<span class="ident">::prost::alloc::string::String</span>),
+        <span class="doccomment">/// The detailed content which caused the error on importing a user event.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+        <span class="ident">UserEvent</span>(<span class="ident">::prost::alloc::string::String</span>),
+    }
+}
+<span class="doccomment">/// An error log which is reported to the Error Reporting system.</span>
+<span class="doccomment">/// This proto a superset of</span>
+<span class="doccomment">/// google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ErrorLog</span> {
+    <span class="doccomment">/// The service context in which this error has occurred.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">service_context</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ServiceContext</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A description of the context in which the error occurred.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">context</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ErrorContext</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A message describing the error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">message</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The RPC status associated with the error log.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The API request payload, represented as a protocol buffer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Most API request types are supported. For example:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   &quot;type.googleapis.com/google.cloud.retail.v2.ProductService.CreateProductRequest&quot;</span>
+    <span class="doccomment">///   &quot;type.googleapis.com/google.cloud.retail.v2.UserEventService.WriteUserEventRequest&quot;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">request_payload</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The API response payload, represented as a protocol buffer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is used to log some &quot;soft errors&quot;, where the response is valid but we</span>
+    <span class="doccomment">/// consider there are some quality issues like unjoined events.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The following API responses are supported and no PII is included:</span>
+    <span class="doccomment">///   &quot;google.cloud.retail.v2.PredictionService.Predict&quot;</span>
+    <span class="doccomment">///   &quot;google.cloud.retail.v2.UserEventService.WriteUserEvent&quot;</span>
+    <span class="doccomment">///   &quot;google.cloud.retail.v2.UserEventService.CollectUserEvent&quot;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">response_payload</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The error payload that is populated on LRO import APIs.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">import_payload</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ImportErrorContext</span><span class="op">&gt;</span>,
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SlotMode","Represents the mode of a slot, that is, if it is required or not."],["SlotStatus","Represents the status of a slot."]]});

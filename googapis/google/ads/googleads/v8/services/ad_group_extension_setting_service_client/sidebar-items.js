@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AdGroupExtensionSettingServiceClient","Service to manage ad group extension settings."]]});

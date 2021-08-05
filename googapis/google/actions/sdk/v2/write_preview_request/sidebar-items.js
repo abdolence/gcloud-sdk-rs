@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Source","Data source used to created the preview."]],"struct":[["ContentFromDraft","Indicates the preview content will be coming from the Draft."],["ContentFromSubmittedVersion","Indicates the preview content will be coming from an exiting version."],["PreviewSettings","Settings for updating the preview."]]});

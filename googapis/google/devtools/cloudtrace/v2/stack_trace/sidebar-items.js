@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["StackFrame","Represents a single stack frame in a stack trace."],["StackFrames","A collection of stack frames, which can be truncated."]]});

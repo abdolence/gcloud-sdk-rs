@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Target","Feed mapping target. Can be either a placeholder or a criterion. For a given feed, the active FeedMappings must have unique targets. Required."]]});

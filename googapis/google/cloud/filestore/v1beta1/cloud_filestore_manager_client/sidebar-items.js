@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudFilestoreManagerClient","Configures and manages Cloud Filestore resources."]]});

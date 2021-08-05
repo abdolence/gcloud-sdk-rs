@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Violation","A message type used to describe a single quota violation.  For example, a daily quota or a custom quota that was exceeded."]]});

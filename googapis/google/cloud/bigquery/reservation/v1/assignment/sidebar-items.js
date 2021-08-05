@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["JobType","Types of job, which could be specified when using the reservation."],["State","Assignment will remain in PENDING state if no active capacity commitment is present. It will become ACTIVE when some capacity commitment becomes active."]]});

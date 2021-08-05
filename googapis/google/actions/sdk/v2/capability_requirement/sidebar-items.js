@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SurfaceCapability","Possible set of surface capabilities."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ExecutionsClient","Executions is used to start and manage running instances of [Workflows][google.cloud.workflows.v1beta.Workflow] called executions."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AttackComplexity",""],["AttackVector",""],["Impact",""],["PrivilegesRequired",""],["Scope",""],["UserInteraction",""]]});

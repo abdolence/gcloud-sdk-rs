@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ChangeType","Specifies how the index is changing."]]});

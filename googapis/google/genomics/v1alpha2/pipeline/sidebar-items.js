@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Executor","Required. The executor indicates in which environment the pipeline runs."]]});

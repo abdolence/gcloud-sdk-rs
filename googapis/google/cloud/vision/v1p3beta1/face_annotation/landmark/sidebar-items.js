@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Face landmark (feature) type. Left and right are defined from the vantage of the viewer of the image without considering mirror projections typical of photos. So, `LEFT_EYE`, typically, is the person’s right eye."]]});

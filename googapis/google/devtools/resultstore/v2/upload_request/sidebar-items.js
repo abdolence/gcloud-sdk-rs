@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Resource","The proto of the resource being uploaded."],["UploadOperation","The operation for the request (e.g. Create(), Update(), etc.)"]],"struct":[["Id","The resource ID components that identify the resource being uploaded."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CampaignStatus","Possible statuses of a campaign."]]});

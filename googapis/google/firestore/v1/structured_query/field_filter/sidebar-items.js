@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Operator","A field filter operator."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ActionDetail","Data describing the type and additional information of an action."]]});

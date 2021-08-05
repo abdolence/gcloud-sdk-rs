@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ContentType","Type of the attestation plaintext that was signed."]]});

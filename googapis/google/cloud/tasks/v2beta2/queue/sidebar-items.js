@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","State of the queue."],["TargetType","Caller-specified and required in [CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue][], after which the queue config type becomes output only, though fields within the config are mutable."]]});

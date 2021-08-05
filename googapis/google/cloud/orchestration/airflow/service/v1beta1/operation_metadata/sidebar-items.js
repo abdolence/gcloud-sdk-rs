@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","An enum describing the overall state of an operation."],["Type","Type of longrunning operation."]]});

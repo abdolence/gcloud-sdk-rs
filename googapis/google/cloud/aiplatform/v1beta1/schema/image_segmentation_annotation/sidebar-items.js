@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Annotation",""]],"struct":[["MaskAnnotation","The mask based segmentation annotation."],["PolygonAnnotation","Represents a polygon in image."],["PolylineAnnotation","Represents a polyline in image."]]});

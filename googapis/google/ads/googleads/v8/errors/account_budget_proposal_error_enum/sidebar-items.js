@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AccountBudgetProposalError","Enum describing possible account budget proposal errors."]]});

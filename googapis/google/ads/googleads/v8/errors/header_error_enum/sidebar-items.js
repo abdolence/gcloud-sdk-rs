@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["HeaderError","Enum describing possible header errors."]]});

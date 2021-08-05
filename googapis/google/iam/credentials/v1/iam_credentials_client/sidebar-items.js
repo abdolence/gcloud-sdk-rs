@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IamCredentialsClient","A service account is a special type of Google account that belongs to your application or a virtual machine (VM), instead of to an individual end user. Your application assumes the identity of the service account to call Google APIs, so that the users aren’t directly involved."]]});

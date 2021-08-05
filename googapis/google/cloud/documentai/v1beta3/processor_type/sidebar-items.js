@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LocationInfo","The location information about where the processor is available."]]});

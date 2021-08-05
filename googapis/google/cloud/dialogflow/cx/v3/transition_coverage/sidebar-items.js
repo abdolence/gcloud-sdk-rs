@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["transition","Nested message and enum types in `Transition`."],["transition_node","Nested message and enum types in `TransitionNode`."]],"struct":[["Transition","A transition in a page."],["TransitionNode","The source or target of a transition."]]});

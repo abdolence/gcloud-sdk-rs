@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DiscountType","Discount type, can be percentage off or amount off."],["PromotionTrigger","Promotion trigger. Can be by promotion code or promo by eligible order amount."]]});

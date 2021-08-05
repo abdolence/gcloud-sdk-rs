@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Slice","Definition of a slice."]]});

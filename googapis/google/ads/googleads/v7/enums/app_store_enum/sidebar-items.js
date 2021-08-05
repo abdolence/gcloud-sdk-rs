@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AppStore","App store type in an app extension."]]});

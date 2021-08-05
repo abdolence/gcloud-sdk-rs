@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DataType","The data type for setting values of this setting. See [Value][google.cloud.resourcesettings.v1.Value] for more details on the available data types."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResumeType","The format of a structured resume."]]});

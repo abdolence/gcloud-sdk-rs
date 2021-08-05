@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AdditionalOptimizationObjectiveConfig","Additional optimization objective configuration. Required for `MAXIMIZE_PRECISION_AT_RECALL` and `MAXIMIZE_RECALL_AT_PRECISION`, otherwise unused."]]});

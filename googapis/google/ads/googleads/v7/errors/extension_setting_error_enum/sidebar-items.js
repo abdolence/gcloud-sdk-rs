@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ExtensionSettingError","Enum describing possible extension setting errors."]]});

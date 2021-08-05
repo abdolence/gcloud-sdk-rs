@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FirewallRuleType","The firewall rule’s type."]]});

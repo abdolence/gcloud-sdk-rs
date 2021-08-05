@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Algorithm","List of algorithms used to create a DNSKEY. Certain algorithms are not supported for particular domains."],["DigestType","List of hash functions that may have been used to generate a digest of a DNSKEY."]]});

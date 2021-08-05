@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Content","Only one type of content can be present in a Prompt."]]});

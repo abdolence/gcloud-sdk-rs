@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AutoSuggestionServiceClient","This stateless API provides automatic suggestions for natural language queries for the data sources in the provided project and location."]]});

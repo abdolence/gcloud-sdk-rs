@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Result","The result of running a test case."]]});

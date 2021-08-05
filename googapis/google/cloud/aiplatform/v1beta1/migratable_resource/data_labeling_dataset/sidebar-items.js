@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DataLabelingAnnotatedDataset","Represents one AnnotatedDataset in datalabeling.googleapis.com."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Price","Product price. Only one of ‘exactPrice’/‘priceRange’ can be provided."],["StockState","Item stock state. If this field is unspecified, the item is assumed to be in stock."]],"struct":[["ExactPrice","Exact product price."],["PriceRange","Product price range when there are a range of prices for different variations of the same product."]]});

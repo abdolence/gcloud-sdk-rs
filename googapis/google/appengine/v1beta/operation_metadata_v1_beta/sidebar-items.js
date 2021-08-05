@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MethodMetadata","Metadata specific to the type of operation in progress. @OutputOnly"]]});

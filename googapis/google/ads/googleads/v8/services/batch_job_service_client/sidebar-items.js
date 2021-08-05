@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BatchJobServiceClient","Service to manage batch jobs."]]});

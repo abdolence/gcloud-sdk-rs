@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CpcSimulationKeyValue","When SimulationModificationMethod = UNIFORM or DEFAULT, cpc_bid_micros is set. When SimulationModificationMethod = SCALING, cpc_bid_scaling_modifier is set."]]});

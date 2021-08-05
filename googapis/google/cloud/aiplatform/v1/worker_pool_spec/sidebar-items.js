@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Task","The custom task to be executed in this worker pool."]]});

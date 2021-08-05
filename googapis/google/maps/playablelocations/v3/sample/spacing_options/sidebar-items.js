@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PointType","Specifies whether the playable location’s geographic coordinates (latitude and longitude) correspond to its center-point, or to its location snapped to the sidewalk of the nearest road."]]});

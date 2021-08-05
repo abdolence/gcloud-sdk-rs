@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Source","The source that this file share has been restored from. Empty if the file share is created from scratch."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GeographicViewServiceClient","Service to manage geographic views."]]});

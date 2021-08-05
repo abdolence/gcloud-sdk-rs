@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Change","Selects the game server config and how it should be applied."],["Selector","Selector chooses the game server config targets."]]});

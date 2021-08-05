@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Alphabet","Choose an alphabet which the data being transformed will be made up of."],["FfxCommonNativeAlphabet","These are commonly used subsets of the alphabet that the FFX mode natively supports. In the algorithm, the alphabet is selected using the “radix”. Therefore each corresponds to particular radix."]]});

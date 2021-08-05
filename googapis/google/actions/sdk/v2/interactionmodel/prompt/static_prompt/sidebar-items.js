@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["static_prompt_candidate","Nested message and enum types in `StaticPromptCandidate`."]],"struct":[["Selector","Defines the criteria for whether a prompt matches a request."],["StaticPromptCandidate","Represents a static prompt candidate."]]});

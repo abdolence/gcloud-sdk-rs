@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Image","The reference to an external Compute Engine VM image."]]});

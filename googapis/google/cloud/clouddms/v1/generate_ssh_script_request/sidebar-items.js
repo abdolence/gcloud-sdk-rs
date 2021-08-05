@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["VmConfig","The VM configuration"]]});

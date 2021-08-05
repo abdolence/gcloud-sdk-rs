@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Orientation","Detected human reading orientation."]]});

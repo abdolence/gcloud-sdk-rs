@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["LineContent","Detailed content which caused the error. Should be empty for permission or batch operation error."]]});

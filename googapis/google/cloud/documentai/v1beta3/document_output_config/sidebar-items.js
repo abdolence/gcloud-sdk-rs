@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Destination","The destination of the results."]],"struct":[["GcsOutputConfig","The configuration used when outputting documents."]]});

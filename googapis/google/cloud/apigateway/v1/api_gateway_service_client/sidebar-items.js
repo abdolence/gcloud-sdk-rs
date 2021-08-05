@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ApiGatewayServiceClient","The API Gateway Service is the interface for managing API Gateways."]]});

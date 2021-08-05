@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CurrencyCodeError","Enum describing possible currency code errors."]]});

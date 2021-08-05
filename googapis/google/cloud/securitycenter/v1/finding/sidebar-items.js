@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FindingClass","Represents what kind of Finding it is."],["Severity","The severity of the finding."],["State","The state of the finding."]]});

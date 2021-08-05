@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AdGroupAdRotationMode","The possible ad rotation modes of an ad group."]]});

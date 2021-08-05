@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SmartCampaignSuggestServiceClient","Service to get suggestions for Smart Campaigns."]]});

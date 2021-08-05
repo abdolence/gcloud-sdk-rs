@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RolloutState","OS policy assignment rollout state"]],"struct":[["InstanceFilter","Message to represent the filters to select VMs for an assignment"],["LabelSet","Message representing label set."],["Rollout","Message to configure the rollout at the zonal level for the OS policy assignment."]]});

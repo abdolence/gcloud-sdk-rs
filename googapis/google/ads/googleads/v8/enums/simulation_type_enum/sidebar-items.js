@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SimulationType","Enum describing the field a simulation modifies."]]});

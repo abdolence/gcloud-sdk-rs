@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EntityTypeBatch","The source of the entity type batch."]]});

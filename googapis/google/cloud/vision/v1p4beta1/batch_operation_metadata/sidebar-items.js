@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Enumerates the possible states that the batch request can be in."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ServicesClient","Manages services of an application."]]});

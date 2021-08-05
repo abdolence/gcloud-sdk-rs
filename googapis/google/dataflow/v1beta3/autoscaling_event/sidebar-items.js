@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AutoscalingEventType","Indicates the type of autoscaling event."]]});

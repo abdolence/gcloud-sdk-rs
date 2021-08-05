@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["GoogleAdsFieldDataType","These are the various types a GoogleAdsService artifact may take on."]]});

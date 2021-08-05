@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["QuasiIdentifierField","A quasi-identifier column has a custom_tag, used to know which column in the data corresponds to which column in the statistical model."]]});

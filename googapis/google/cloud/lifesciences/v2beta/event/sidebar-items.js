@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Details","Machine-readable details about the event."]]});

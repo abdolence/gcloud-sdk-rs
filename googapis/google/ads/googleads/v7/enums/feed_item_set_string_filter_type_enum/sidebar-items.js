@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FeedItemSetStringFilterType","describe the possible types for a FeedItemSetStringFilter."]]});

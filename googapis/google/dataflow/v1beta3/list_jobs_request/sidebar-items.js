@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Filter","This field filters out and returns jobs in the specified job state. The order of data returned is determined by the filter used, and is subject to change."]]});

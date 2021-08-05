@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PropertyType","Supported data type of the property values"]]});

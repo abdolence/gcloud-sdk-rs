@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MonetaryCost","Encapsulates the cost used in the rate card."]]});

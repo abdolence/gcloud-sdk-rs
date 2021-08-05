@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Entity","Represents an entity object that contains the regular expression that is used for comparison."]]});

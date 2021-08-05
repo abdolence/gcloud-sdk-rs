@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"struct":[["FeatureSpec","Multi-cluster Ingress: The configuration for the MultiClusterIngress feature."]]});

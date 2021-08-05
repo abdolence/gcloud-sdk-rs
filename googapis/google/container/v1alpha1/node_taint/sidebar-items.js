@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Effect","Possible values for Effect in taint."]]});

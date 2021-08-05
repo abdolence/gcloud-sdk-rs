@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LibraryServiceClient","This API represents a simple digital library.  It lets you manage Shelf resources and Book resources in the library. It defines the following resource model:"]]});

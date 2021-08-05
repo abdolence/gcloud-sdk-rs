@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["QueryError","Enum describing possible query errors."]]});

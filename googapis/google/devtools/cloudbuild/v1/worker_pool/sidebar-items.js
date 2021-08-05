@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Config","Private Pool configuration for the `WorkerPool`."],["State","State of the `WorkerPool`."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudBuildClient","Creates and manages builds on Google Cloud Platform."]]});

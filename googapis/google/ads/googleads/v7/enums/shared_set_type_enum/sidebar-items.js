@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SharedSetType","Enum listing the possible shared set types."]]});

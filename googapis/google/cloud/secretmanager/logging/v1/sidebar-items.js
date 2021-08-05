@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["secret_event","Nested message and enum types in `SecretEvent`."]],"struct":[["SecretEvent","Logged event relating to a specific secret"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SnapshotAnalysis","Configuration of the Featurestore’s Snapshot Analysis Based Monitoring. This type of analysis generates statistics for each Feature based on a snapshot of the latest feature value of each entities every monitoring_interval."]]});

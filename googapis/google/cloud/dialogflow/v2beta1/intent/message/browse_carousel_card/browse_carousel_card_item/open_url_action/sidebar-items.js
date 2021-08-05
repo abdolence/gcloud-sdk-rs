@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["UrlTypeHint","Type of the URI."]]});

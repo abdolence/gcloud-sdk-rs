@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["KeywordPlanIdeaServiceClient","Service to generate keyword ideas."]]});

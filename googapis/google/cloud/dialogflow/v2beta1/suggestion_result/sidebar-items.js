@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SuggestionResponse","Different type of suggestion response."]]});

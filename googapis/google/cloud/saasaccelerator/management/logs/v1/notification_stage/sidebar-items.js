@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Event","Event that triggered the notification."],["Stage","Types of Notification Status."]]});

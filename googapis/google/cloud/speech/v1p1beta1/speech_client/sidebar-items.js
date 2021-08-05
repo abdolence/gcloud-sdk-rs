@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SpeechClient","Service that implements Google Cloud Speech API."]]});

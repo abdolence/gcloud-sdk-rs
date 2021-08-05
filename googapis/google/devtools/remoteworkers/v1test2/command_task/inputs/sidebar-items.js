@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EnvironmentVariable","An environment variable required by this task."]]});

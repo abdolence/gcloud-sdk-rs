@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["InputType","Indicates the input source, typed query or voice query."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NamespacedGkeDeploymentTarget","A full, namespace-isolated deployment target for an existing GKE cluster."]]});

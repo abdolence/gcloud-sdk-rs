@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SpecificSettings","Component specific settings.  This must match the component value."]],"struct":[["DetectorSettings","Settings for each detector."]]});

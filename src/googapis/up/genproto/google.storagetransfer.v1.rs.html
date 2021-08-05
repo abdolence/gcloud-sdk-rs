@@ -1,0 +1,2157 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.storagetransfer.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.storagetransfer.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<span id="2">   2</span>
+<span id="3">   3</span>
+<span id="4">   4</span>
+<span id="5">   5</span>
+<span id="6">   6</span>
+<span id="7">   7</span>
+<span id="8">   8</span>
+<span id="9">   9</span>
+<span id="10">  10</span>
+<span id="11">  11</span>
+<span id="12">  12</span>
+<span id="13">  13</span>
+<span id="14">  14</span>
+<span id="15">  15</span>
+<span id="16">  16</span>
+<span id="17">  17</span>
+<span id="18">  18</span>
+<span id="19">  19</span>
+<span id="20">  20</span>
+<span id="21">  21</span>
+<span id="22">  22</span>
+<span id="23">  23</span>
+<span id="24">  24</span>
+<span id="25">  25</span>
+<span id="26">  26</span>
+<span id="27">  27</span>
+<span id="28">  28</span>
+<span id="29">  29</span>
+<span id="30">  30</span>
+<span id="31">  31</span>
+<span id="32">  32</span>
+<span id="33">  33</span>
+<span id="34">  34</span>
+<span id="35">  35</span>
+<span id="36">  36</span>
+<span id="37">  37</span>
+<span id="38">  38</span>
+<span id="39">  39</span>
+<span id="40">  40</span>
+<span id="41">  41</span>
+<span id="42">  42</span>
+<span id="43">  43</span>
+<span id="44">  44</span>
+<span id="45">  45</span>
+<span id="46">  46</span>
+<span id="47">  47</span>
+<span id="48">  48</span>
+<span id="49">  49</span>
+<span id="50">  50</span>
+<span id="51">  51</span>
+<span id="52">  52</span>
+<span id="53">  53</span>
+<span id="54">  54</span>
+<span id="55">  55</span>
+<span id="56">  56</span>
+<span id="57">  57</span>
+<span id="58">  58</span>
+<span id="59">  59</span>
+<span id="60">  60</span>
+<span id="61">  61</span>
+<span id="62">  62</span>
+<span id="63">  63</span>
+<span id="64">  64</span>
+<span id="65">  65</span>
+<span id="66">  66</span>
+<span id="67">  67</span>
+<span id="68">  68</span>
+<span id="69">  69</span>
+<span id="70">  70</span>
+<span id="71">  71</span>
+<span id="72">  72</span>
+<span id="73">  73</span>
+<span id="74">  74</span>
+<span id="75">  75</span>
+<span id="76">  76</span>
+<span id="77">  77</span>
+<span id="78">  78</span>
+<span id="79">  79</span>
+<span id="80">  80</span>
+<span id="81">  81</span>
+<span id="82">  82</span>
+<span id="83">  83</span>
+<span id="84">  84</span>
+<span id="85">  85</span>
+<span id="86">  86</span>
+<span id="87">  87</span>
+<span id="88">  88</span>
+<span id="89">  89</span>
+<span id="90">  90</span>
+<span id="91">  91</span>
+<span id="92">  92</span>
+<span id="93">  93</span>
+<span id="94">  94</span>
+<span id="95">  95</span>
+<span id="96">  96</span>
+<span id="97">  97</span>
+<span id="98">  98</span>
+<span id="99">  99</span>
+<span id="100"> 100</span>
+<span id="101"> 101</span>
+<span id="102"> 102</span>
+<span id="103"> 103</span>
+<span id="104"> 104</span>
+<span id="105"> 105</span>
+<span id="106"> 106</span>
+<span id="107"> 107</span>
+<span id="108"> 108</span>
+<span id="109"> 109</span>
+<span id="110"> 110</span>
+<span id="111"> 111</span>
+<span id="112"> 112</span>
+<span id="113"> 113</span>
+<span id="114"> 114</span>
+<span id="115"> 115</span>
+<span id="116"> 116</span>
+<span id="117"> 117</span>
+<span id="118"> 118</span>
+<span id="119"> 119</span>
+<span id="120"> 120</span>
+<span id="121"> 121</span>
+<span id="122"> 122</span>
+<span id="123"> 123</span>
+<span id="124"> 124</span>
+<span id="125"> 125</span>
+<span id="126"> 126</span>
+<span id="127"> 127</span>
+<span id="128"> 128</span>
+<span id="129"> 129</span>
+<span id="130"> 130</span>
+<span id="131"> 131</span>
+<span id="132"> 132</span>
+<span id="133"> 133</span>
+<span id="134"> 134</span>
+<span id="135"> 135</span>
+<span id="136"> 136</span>
+<span id="137"> 137</span>
+<span id="138"> 138</span>
+<span id="139"> 139</span>
+<span id="140"> 140</span>
+<span id="141"> 141</span>
+<span id="142"> 142</span>
+<span id="143"> 143</span>
+<span id="144"> 144</span>
+<span id="145"> 145</span>
+<span id="146"> 146</span>
+<span id="147"> 147</span>
+<span id="148"> 148</span>
+<span id="149"> 149</span>
+<span id="150"> 150</span>
+<span id="151"> 151</span>
+<span id="152"> 152</span>
+<span id="153"> 153</span>
+<span id="154"> 154</span>
+<span id="155"> 155</span>
+<span id="156"> 156</span>
+<span id="157"> 157</span>
+<span id="158"> 158</span>
+<span id="159"> 159</span>
+<span id="160"> 160</span>
+<span id="161"> 161</span>
+<span id="162"> 162</span>
+<span id="163"> 163</span>
+<span id="164"> 164</span>
+<span id="165"> 165</span>
+<span id="166"> 166</span>
+<span id="167"> 167</span>
+<span id="168"> 168</span>
+<span id="169"> 169</span>
+<span id="170"> 170</span>
+<span id="171"> 171</span>
+<span id="172"> 172</span>
+<span id="173"> 173</span>
+<span id="174"> 174</span>
+<span id="175"> 175</span>
+<span id="176"> 176</span>
+<span id="177"> 177</span>
+<span id="178"> 178</span>
+<span id="179"> 179</span>
+<span id="180"> 180</span>
+<span id="181"> 181</span>
+<span id="182"> 182</span>
+<span id="183"> 183</span>
+<span id="184"> 184</span>
+<span id="185"> 185</span>
+<span id="186"> 186</span>
+<span id="187"> 187</span>
+<span id="188"> 188</span>
+<span id="189"> 189</span>
+<span id="190"> 190</span>
+<span id="191"> 191</span>
+<span id="192"> 192</span>
+<span id="193"> 193</span>
+<span id="194"> 194</span>
+<span id="195"> 195</span>
+<span id="196"> 196</span>
+<span id="197"> 197</span>
+<span id="198"> 198</span>
+<span id="199"> 199</span>
+<span id="200"> 200</span>
+<span id="201"> 201</span>
+<span id="202"> 202</span>
+<span id="203"> 203</span>
+<span id="204"> 204</span>
+<span id="205"> 205</span>
+<span id="206"> 206</span>
+<span id="207"> 207</span>
+<span id="208"> 208</span>
+<span id="209"> 209</span>
+<span id="210"> 210</span>
+<span id="211"> 211</span>
+<span id="212"> 212</span>
+<span id="213"> 213</span>
+<span id="214"> 214</span>
+<span id="215"> 215</span>
+<span id="216"> 216</span>
+<span id="217"> 217</span>
+<span id="218"> 218</span>
+<span id="219"> 219</span>
+<span id="220"> 220</span>
+<span id="221"> 221</span>
+<span id="222"> 222</span>
+<span id="223"> 223</span>
+<span id="224"> 224</span>
+<span id="225"> 225</span>
+<span id="226"> 226</span>
+<span id="227"> 227</span>
+<span id="228"> 228</span>
+<span id="229"> 229</span>
+<span id="230"> 230</span>
+<span id="231"> 231</span>
+<span id="232"> 232</span>
+<span id="233"> 233</span>
+<span id="234"> 234</span>
+<span id="235"> 235</span>
+<span id="236"> 236</span>
+<span id="237"> 237</span>
+<span id="238"> 238</span>
+<span id="239"> 239</span>
+<span id="240"> 240</span>
+<span id="241"> 241</span>
+<span id="242"> 242</span>
+<span id="243"> 243</span>
+<span id="244"> 244</span>
+<span id="245"> 245</span>
+<span id="246"> 246</span>
+<span id="247"> 247</span>
+<span id="248"> 248</span>
+<span id="249"> 249</span>
+<span id="250"> 250</span>
+<span id="251"> 251</span>
+<span id="252"> 252</span>
+<span id="253"> 253</span>
+<span id="254"> 254</span>
+<span id="255"> 255</span>
+<span id="256"> 256</span>
+<span id="257"> 257</span>
+<span id="258"> 258</span>
+<span id="259"> 259</span>
+<span id="260"> 260</span>
+<span id="261"> 261</span>
+<span id="262"> 262</span>
+<span id="263"> 263</span>
+<span id="264"> 264</span>
+<span id="265"> 265</span>
+<span id="266"> 266</span>
+<span id="267"> 267</span>
+<span id="268"> 268</span>
+<span id="269"> 269</span>
+<span id="270"> 270</span>
+<span id="271"> 271</span>
+<span id="272"> 272</span>
+<span id="273"> 273</span>
+<span id="274"> 274</span>
+<span id="275"> 275</span>
+<span id="276"> 276</span>
+<span id="277"> 277</span>
+<span id="278"> 278</span>
+<span id="279"> 279</span>
+<span id="280"> 280</span>
+<span id="281"> 281</span>
+<span id="282"> 282</span>
+<span id="283"> 283</span>
+<span id="284"> 284</span>
+<span id="285"> 285</span>
+<span id="286"> 286</span>
+<span id="287"> 287</span>
+<span id="288"> 288</span>
+<span id="289"> 289</span>
+<span id="290"> 290</span>
+<span id="291"> 291</span>
+<span id="292"> 292</span>
+<span id="293"> 293</span>
+<span id="294"> 294</span>
+<span id="295"> 295</span>
+<span id="296"> 296</span>
+<span id="297"> 297</span>
+<span id="298"> 298</span>
+<span id="299"> 299</span>
+<span id="300"> 300</span>
+<span id="301"> 301</span>
+<span id="302"> 302</span>
+<span id="303"> 303</span>
+<span id="304"> 304</span>
+<span id="305"> 305</span>
+<span id="306"> 306</span>
+<span id="307"> 307</span>
+<span id="308"> 308</span>
+<span id="309"> 309</span>
+<span id="310"> 310</span>
+<span id="311"> 311</span>
+<span id="312"> 312</span>
+<span id="313"> 313</span>
+<span id="314"> 314</span>
+<span id="315"> 315</span>
+<span id="316"> 316</span>
+<span id="317"> 317</span>
+<span id="318"> 318</span>
+<span id="319"> 319</span>
+<span id="320"> 320</span>
+<span id="321"> 321</span>
+<span id="322"> 322</span>
+<span id="323"> 323</span>
+<span id="324"> 324</span>
+<span id="325"> 325</span>
+<span id="326"> 326</span>
+<span id="327"> 327</span>
+<span id="328"> 328</span>
+<span id="329"> 329</span>
+<span id="330"> 330</span>
+<span id="331"> 331</span>
+<span id="332"> 332</span>
+<span id="333"> 333</span>
+<span id="334"> 334</span>
+<span id="335"> 335</span>
+<span id="336"> 336</span>
+<span id="337"> 337</span>
+<span id="338"> 338</span>
+<span id="339"> 339</span>
+<span id="340"> 340</span>
+<span id="341"> 341</span>
+<span id="342"> 342</span>
+<span id="343"> 343</span>
+<span id="344"> 344</span>
+<span id="345"> 345</span>
+<span id="346"> 346</span>
+<span id="347"> 347</span>
+<span id="348"> 348</span>
+<span id="349"> 349</span>
+<span id="350"> 350</span>
+<span id="351"> 351</span>
+<span id="352"> 352</span>
+<span id="353"> 353</span>
+<span id="354"> 354</span>
+<span id="355"> 355</span>
+<span id="356"> 356</span>
+<span id="357"> 357</span>
+<span id="358"> 358</span>
+<span id="359"> 359</span>
+<span id="360"> 360</span>
+<span id="361"> 361</span>
+<span id="362"> 362</span>
+<span id="363"> 363</span>
+<span id="364"> 364</span>
+<span id="365"> 365</span>
+<span id="366"> 366</span>
+<span id="367"> 367</span>
+<span id="368"> 368</span>
+<span id="369"> 369</span>
+<span id="370"> 370</span>
+<span id="371"> 371</span>
+<span id="372"> 372</span>
+<span id="373"> 373</span>
+<span id="374"> 374</span>
+<span id="375"> 375</span>
+<span id="376"> 376</span>
+<span id="377"> 377</span>
+<span id="378"> 378</span>
+<span id="379"> 379</span>
+<span id="380"> 380</span>
+<span id="381"> 381</span>
+<span id="382"> 382</span>
+<span id="383"> 383</span>
+<span id="384"> 384</span>
+<span id="385"> 385</span>
+<span id="386"> 386</span>
+<span id="387"> 387</span>
+<span id="388"> 388</span>
+<span id="389"> 389</span>
+<span id="390"> 390</span>
+<span id="391"> 391</span>
+<span id="392"> 392</span>
+<span id="393"> 393</span>
+<span id="394"> 394</span>
+<span id="395"> 395</span>
+<span id="396"> 396</span>
+<span id="397"> 397</span>
+<span id="398"> 398</span>
+<span id="399"> 399</span>
+<span id="400"> 400</span>
+<span id="401"> 401</span>
+<span id="402"> 402</span>
+<span id="403"> 403</span>
+<span id="404"> 404</span>
+<span id="405"> 405</span>
+<span id="406"> 406</span>
+<span id="407"> 407</span>
+<span id="408"> 408</span>
+<span id="409"> 409</span>
+<span id="410"> 410</span>
+<span id="411"> 411</span>
+<span id="412"> 412</span>
+<span id="413"> 413</span>
+<span id="414"> 414</span>
+<span id="415"> 415</span>
+<span id="416"> 416</span>
+<span id="417"> 417</span>
+<span id="418"> 418</span>
+<span id="419"> 419</span>
+<span id="420"> 420</span>
+<span id="421"> 421</span>
+<span id="422"> 422</span>
+<span id="423"> 423</span>
+<span id="424"> 424</span>
+<span id="425"> 425</span>
+<span id="426"> 426</span>
+<span id="427"> 427</span>
+<span id="428"> 428</span>
+<span id="429"> 429</span>
+<span id="430"> 430</span>
+<span id="431"> 431</span>
+<span id="432"> 432</span>
+<span id="433"> 433</span>
+<span id="434"> 434</span>
+<span id="435"> 435</span>
+<span id="436"> 436</span>
+<span id="437"> 437</span>
+<span id="438"> 438</span>
+<span id="439"> 439</span>
+<span id="440"> 440</span>
+<span id="441"> 441</span>
+<span id="442"> 442</span>
+<span id="443"> 443</span>
+<span id="444"> 444</span>
+<span id="445"> 445</span>
+<span id="446"> 446</span>
+<span id="447"> 447</span>
+<span id="448"> 448</span>
+<span id="449"> 449</span>
+<span id="450"> 450</span>
+<span id="451"> 451</span>
+<span id="452"> 452</span>
+<span id="453"> 453</span>
+<span id="454"> 454</span>
+<span id="455"> 455</span>
+<span id="456"> 456</span>
+<span id="457"> 457</span>
+<span id="458"> 458</span>
+<span id="459"> 459</span>
+<span id="460"> 460</span>
+<span id="461"> 461</span>
+<span id="462"> 462</span>
+<span id="463"> 463</span>
+<span id="464"> 464</span>
+<span id="465"> 465</span>
+<span id="466"> 466</span>
+<span id="467"> 467</span>
+<span id="468"> 468</span>
+<span id="469"> 469</span>
+<span id="470"> 470</span>
+<span id="471"> 471</span>
+<span id="472"> 472</span>
+<span id="473"> 473</span>
+<span id="474"> 474</span>
+<span id="475"> 475</span>
+<span id="476"> 476</span>
+<span id="477"> 477</span>
+<span id="478"> 478</span>
+<span id="479"> 479</span>
+<span id="480"> 480</span>
+<span id="481"> 481</span>
+<span id="482"> 482</span>
+<span id="483"> 483</span>
+<span id="484"> 484</span>
+<span id="485"> 485</span>
+<span id="486"> 486</span>
+<span id="487"> 487</span>
+<span id="488"> 488</span>
+<span id="489"> 489</span>
+<span id="490"> 490</span>
+<span id="491"> 491</span>
+<span id="492"> 492</span>
+<span id="493"> 493</span>
+<span id="494"> 494</span>
+<span id="495"> 495</span>
+<span id="496"> 496</span>
+<span id="497"> 497</span>
+<span id="498"> 498</span>
+<span id="499"> 499</span>
+<span id="500"> 500</span>
+<span id="501"> 501</span>
+<span id="502"> 502</span>
+<span id="503"> 503</span>
+<span id="504"> 504</span>
+<span id="505"> 505</span>
+<span id="506"> 506</span>
+<span id="507"> 507</span>
+<span id="508"> 508</span>
+<span id="509"> 509</span>
+<span id="510"> 510</span>
+<span id="511"> 511</span>
+<span id="512"> 512</span>
+<span id="513"> 513</span>
+<span id="514"> 514</span>
+<span id="515"> 515</span>
+<span id="516"> 516</span>
+<span id="517"> 517</span>
+<span id="518"> 518</span>
+<span id="519"> 519</span>
+<span id="520"> 520</span>
+<span id="521"> 521</span>
+<span id="522"> 522</span>
+<span id="523"> 523</span>
+<span id="524"> 524</span>
+<span id="525"> 525</span>
+<span id="526"> 526</span>
+<span id="527"> 527</span>
+<span id="528"> 528</span>
+<span id="529"> 529</span>
+<span id="530"> 530</span>
+<span id="531"> 531</span>
+<span id="532"> 532</span>
+<span id="533"> 533</span>
+<span id="534"> 534</span>
+<span id="535"> 535</span>
+<span id="536"> 536</span>
+<span id="537"> 537</span>
+<span id="538"> 538</span>
+<span id="539"> 539</span>
+<span id="540"> 540</span>
+<span id="541"> 541</span>
+<span id="542"> 542</span>
+<span id="543"> 543</span>
+<span id="544"> 544</span>
+<span id="545"> 545</span>
+<span id="546"> 546</span>
+<span id="547"> 547</span>
+<span id="548"> 548</span>
+<span id="549"> 549</span>
+<span id="550"> 550</span>
+<span id="551"> 551</span>
+<span id="552"> 552</span>
+<span id="553"> 553</span>
+<span id="554"> 554</span>
+<span id="555"> 555</span>
+<span id="556"> 556</span>
+<span id="557"> 557</span>
+<span id="558"> 558</span>
+<span id="559"> 559</span>
+<span id="560"> 560</span>
+<span id="561"> 561</span>
+<span id="562"> 562</span>
+<span id="563"> 563</span>
+<span id="564"> 564</span>
+<span id="565"> 565</span>
+<span id="566"> 566</span>
+<span id="567"> 567</span>
+<span id="568"> 568</span>
+<span id="569"> 569</span>
+<span id="570"> 570</span>
+<span id="571"> 571</span>
+<span id="572"> 572</span>
+<span id="573"> 573</span>
+<span id="574"> 574</span>
+<span id="575"> 575</span>
+<span id="576"> 576</span>
+<span id="577"> 577</span>
+<span id="578"> 578</span>
+<span id="579"> 579</span>
+<span id="580"> 580</span>
+<span id="581"> 581</span>
+<span id="582"> 582</span>
+<span id="583"> 583</span>
+<span id="584"> 584</span>
+<span id="585"> 585</span>
+<span id="586"> 586</span>
+<span id="587"> 587</span>
+<span id="588"> 588</span>
+<span id="589"> 589</span>
+<span id="590"> 590</span>
+<span id="591"> 591</span>
+<span id="592"> 592</span>
+<span id="593"> 593</span>
+<span id="594"> 594</span>
+<span id="595"> 595</span>
+<span id="596"> 596</span>
+<span id="597"> 597</span>
+<span id="598"> 598</span>
+<span id="599"> 599</span>
+<span id="600"> 600</span>
+<span id="601"> 601</span>
+<span id="602"> 602</span>
+<span id="603"> 603</span>
+<span id="604"> 604</span>
+<span id="605"> 605</span>
+<span id="606"> 606</span>
+<span id="607"> 607</span>
+<span id="608"> 608</span>
+<span id="609"> 609</span>
+<span id="610"> 610</span>
+<span id="611"> 611</span>
+<span id="612"> 612</span>
+<span id="613"> 613</span>
+<span id="614"> 614</span>
+<span id="615"> 615</span>
+<span id="616"> 616</span>
+<span id="617"> 617</span>
+<span id="618"> 618</span>
+<span id="619"> 619</span>
+<span id="620"> 620</span>
+<span id="621"> 621</span>
+<span id="622"> 622</span>
+<span id="623"> 623</span>
+<span id="624"> 624</span>
+<span id="625"> 625</span>
+<span id="626"> 626</span>
+<span id="627"> 627</span>
+<span id="628"> 628</span>
+<span id="629"> 629</span>
+<span id="630"> 630</span>
+<span id="631"> 631</span>
+<span id="632"> 632</span>
+<span id="633"> 633</span>
+<span id="634"> 634</span>
+<span id="635"> 635</span>
+<span id="636"> 636</span>
+<span id="637"> 637</span>
+<span id="638"> 638</span>
+<span id="639"> 639</span>
+<span id="640"> 640</span>
+<span id="641"> 641</span>
+<span id="642"> 642</span>
+<span id="643"> 643</span>
+<span id="644"> 644</span>
+<span id="645"> 645</span>
+<span id="646"> 646</span>
+<span id="647"> 647</span>
+<span id="648"> 648</span>
+<span id="649"> 649</span>
+<span id="650"> 650</span>
+<span id="651"> 651</span>
+<span id="652"> 652</span>
+<span id="653"> 653</span>
+<span id="654"> 654</span>
+<span id="655"> 655</span>
+<span id="656"> 656</span>
+<span id="657"> 657</span>
+<span id="658"> 658</span>
+<span id="659"> 659</span>
+<span id="660"> 660</span>
+<span id="661"> 661</span>
+<span id="662"> 662</span>
+<span id="663"> 663</span>
+<span id="664"> 664</span>
+<span id="665"> 665</span>
+<span id="666"> 666</span>
+<span id="667"> 667</span>
+<span id="668"> 668</span>
+<span id="669"> 669</span>
+<span id="670"> 670</span>
+<span id="671"> 671</span>
+<span id="672"> 672</span>
+<span id="673"> 673</span>
+<span id="674"> 674</span>
+<span id="675"> 675</span>
+<span id="676"> 676</span>
+<span id="677"> 677</span>
+<span id="678"> 678</span>
+<span id="679"> 679</span>
+<span id="680"> 680</span>
+<span id="681"> 681</span>
+<span id="682"> 682</span>
+<span id="683"> 683</span>
+<span id="684"> 684</span>
+<span id="685"> 685</span>
+<span id="686"> 686</span>
+<span id="687"> 687</span>
+<span id="688"> 688</span>
+<span id="689"> 689</span>
+<span id="690"> 690</span>
+<span id="691"> 691</span>
+<span id="692"> 692</span>
+<span id="693"> 693</span>
+<span id="694"> 694</span>
+<span id="695"> 695</span>
+<span id="696"> 696</span>
+<span id="697"> 697</span>
+<span id="698"> 698</span>
+<span id="699"> 699</span>
+<span id="700"> 700</span>
+<span id="701"> 701</span>
+<span id="702"> 702</span>
+<span id="703"> 703</span>
+<span id="704"> 704</span>
+<span id="705"> 705</span>
+<span id="706"> 706</span>
+<span id="707"> 707</span>
+<span id="708"> 708</span>
+<span id="709"> 709</span>
+<span id="710"> 710</span>
+<span id="711"> 711</span>
+<span id="712"> 712</span>
+<span id="713"> 713</span>
+<span id="714"> 714</span>
+<span id="715"> 715</span>
+<span id="716"> 716</span>
+<span id="717"> 717</span>
+<span id="718"> 718</span>
+<span id="719"> 719</span>
+<span id="720"> 720</span>
+<span id="721"> 721</span>
+<span id="722"> 722</span>
+<span id="723"> 723</span>
+<span id="724"> 724</span>
+<span id="725"> 725</span>
+<span id="726"> 726</span>
+<span id="727"> 727</span>
+<span id="728"> 728</span>
+<span id="729"> 729</span>
+<span id="730"> 730</span>
+<span id="731"> 731</span>
+<span id="732"> 732</span>
+<span id="733"> 733</span>
+<span id="734"> 734</span>
+<span id="735"> 735</span>
+<span id="736"> 736</span>
+<span id="737"> 737</span>
+<span id="738"> 738</span>
+<span id="739"> 739</span>
+<span id="740"> 740</span>
+<span id="741"> 741</span>
+<span id="742"> 742</span>
+<span id="743"> 743</span>
+<span id="744"> 744</span>
+<span id="745"> 745</span>
+<span id="746"> 746</span>
+<span id="747"> 747</span>
+<span id="748"> 748</span>
+<span id="749"> 749</span>
+<span id="750"> 750</span>
+<span id="751"> 751</span>
+<span id="752"> 752</span>
+<span id="753"> 753</span>
+<span id="754"> 754</span>
+<span id="755"> 755</span>
+<span id="756"> 756</span>
+<span id="757"> 757</span>
+<span id="758"> 758</span>
+<span id="759"> 759</span>
+<span id="760"> 760</span>
+<span id="761"> 761</span>
+<span id="762"> 762</span>
+<span id="763"> 763</span>
+<span id="764"> 764</span>
+<span id="765"> 765</span>
+<span id="766"> 766</span>
+<span id="767"> 767</span>
+<span id="768"> 768</span>
+<span id="769"> 769</span>
+<span id="770"> 770</span>
+<span id="771"> 771</span>
+<span id="772"> 772</span>
+<span id="773"> 773</span>
+<span id="774"> 774</span>
+<span id="775"> 775</span>
+<span id="776"> 776</span>
+<span id="777"> 777</span>
+<span id="778"> 778</span>
+<span id="779"> 779</span>
+<span id="780"> 780</span>
+<span id="781"> 781</span>
+<span id="782"> 782</span>
+<span id="783"> 783</span>
+<span id="784"> 784</span>
+<span id="785"> 785</span>
+<span id="786"> 786</span>
+<span id="787"> 787</span>
+<span id="788"> 788</span>
+<span id="789"> 789</span>
+<span id="790"> 790</span>
+<span id="791"> 791</span>
+<span id="792"> 792</span>
+<span id="793"> 793</span>
+<span id="794"> 794</span>
+<span id="795"> 795</span>
+<span id="796"> 796</span>
+<span id="797"> 797</span>
+<span id="798"> 798</span>
+<span id="799"> 799</span>
+<span id="800"> 800</span>
+<span id="801"> 801</span>
+<span id="802"> 802</span>
+<span id="803"> 803</span>
+<span id="804"> 804</span>
+<span id="805"> 805</span>
+<span id="806"> 806</span>
+<span id="807"> 807</span>
+<span id="808"> 808</span>
+<span id="809"> 809</span>
+<span id="810"> 810</span>
+<span id="811"> 811</span>
+<span id="812"> 812</span>
+<span id="813"> 813</span>
+<span id="814"> 814</span>
+<span id="815"> 815</span>
+<span id="816"> 816</span>
+<span id="817"> 817</span>
+<span id="818"> 818</span>
+<span id="819"> 819</span>
+<span id="820"> 820</span>
+<span id="821"> 821</span>
+<span id="822"> 822</span>
+<span id="823"> 823</span>
+<span id="824"> 824</span>
+<span id="825"> 825</span>
+<span id="826"> 826</span>
+<span id="827"> 827</span>
+<span id="828"> 828</span>
+<span id="829"> 829</span>
+<span id="830"> 830</span>
+<span id="831"> 831</span>
+<span id="832"> 832</span>
+<span id="833"> 833</span>
+<span id="834"> 834</span>
+<span id="835"> 835</span>
+<span id="836"> 836</span>
+<span id="837"> 837</span>
+<span id="838"> 838</span>
+<span id="839"> 839</span>
+<span id="840"> 840</span>
+<span id="841"> 841</span>
+<span id="842"> 842</span>
+<span id="843"> 843</span>
+<span id="844"> 844</span>
+<span id="845"> 845</span>
+<span id="846"> 846</span>
+<span id="847"> 847</span>
+<span id="848"> 848</span>
+<span id="849"> 849</span>
+<span id="850"> 850</span>
+<span id="851"> 851</span>
+<span id="852"> 852</span>
+<span id="853"> 853</span>
+<span id="854"> 854</span>
+<span id="855"> 855</span>
+<span id="856"> 856</span>
+<span id="857"> 857</span>
+<span id="858"> 858</span>
+<span id="859"> 859</span>
+<span id="860"> 860</span>
+<span id="861"> 861</span>
+<span id="862"> 862</span>
+<span id="863"> 863</span>
+<span id="864"> 864</span>
+<span id="865"> 865</span>
+<span id="866"> 866</span>
+<span id="867"> 867</span>
+<span id="868"> 868</span>
+<span id="869"> 869</span>
+<span id="870"> 870</span>
+<span id="871"> 871</span>
+<span id="872"> 872</span>
+<span id="873"> 873</span>
+<span id="874"> 874</span>
+<span id="875"> 875</span>
+<span id="876"> 876</span>
+<span id="877"> 877</span>
+<span id="878"> 878</span>
+<span id="879"> 879</span>
+<span id="880"> 880</span>
+<span id="881"> 881</span>
+<span id="882"> 882</span>
+<span id="883"> 883</span>
+<span id="884"> 884</span>
+<span id="885"> 885</span>
+<span id="886"> 886</span>
+<span id="887"> 887</span>
+<span id="888"> 888</span>
+<span id="889"> 889</span>
+<span id="890"> 890</span>
+<span id="891"> 891</span>
+<span id="892"> 892</span>
+<span id="893"> 893</span>
+<span id="894"> 894</span>
+<span id="895"> 895</span>
+<span id="896"> 896</span>
+<span id="897"> 897</span>
+<span id="898"> 898</span>
+<span id="899"> 899</span>
+<span id="900"> 900</span>
+<span id="901"> 901</span>
+<span id="902"> 902</span>
+<span id="903"> 903</span>
+<span id="904"> 904</span>
+<span id="905"> 905</span>
+<span id="906"> 906</span>
+<span id="907"> 907</span>
+<span id="908"> 908</span>
+<span id="909"> 909</span>
+<span id="910"> 910</span>
+<span id="911"> 911</span>
+<span id="912"> 912</span>
+<span id="913"> 913</span>
+<span id="914"> 914</span>
+<span id="915"> 915</span>
+<span id="916"> 916</span>
+<span id="917"> 917</span>
+<span id="918"> 918</span>
+<span id="919"> 919</span>
+<span id="920"> 920</span>
+<span id="921"> 921</span>
+<span id="922"> 922</span>
+<span id="923"> 923</span>
+<span id="924"> 924</span>
+<span id="925"> 925</span>
+<span id="926"> 926</span>
+<span id="927"> 927</span>
+<span id="928"> 928</span>
+<span id="929"> 929</span>
+<span id="930"> 930</span>
+<span id="931"> 931</span>
+<span id="932"> 932</span>
+<span id="933"> 933</span>
+<span id="934"> 934</span>
+<span id="935"> 935</span>
+<span id="936"> 936</span>
+<span id="937"> 937</span>
+<span id="938"> 938</span>
+<span id="939"> 939</span>
+<span id="940"> 940</span>
+<span id="941"> 941</span>
+<span id="942"> 942</span>
+<span id="943"> 943</span>
+<span id="944"> 944</span>
+<span id="945"> 945</span>
+<span id="946"> 946</span>
+<span id="947"> 947</span>
+<span id="948"> 948</span>
+<span id="949"> 949</span>
+<span id="950"> 950</span>
+<span id="951"> 951</span>
+<span id="952"> 952</span>
+<span id="953"> 953</span>
+<span id="954"> 954</span>
+<span id="955"> 955</span>
+<span id="956"> 956</span>
+<span id="957"> 957</span>
+<span id="958"> 958</span>
+<span id="959"> 959</span>
+<span id="960"> 960</span>
+<span id="961"> 961</span>
+<span id="962"> 962</span>
+<span id="963"> 963</span>
+<span id="964"> 964</span>
+<span id="965"> 965</span>
+<span id="966"> 966</span>
+<span id="967"> 967</span>
+<span id="968"> 968</span>
+<span id="969"> 969</span>
+<span id="970"> 970</span>
+<span id="971"> 971</span>
+<span id="972"> 972</span>
+<span id="973"> 973</span>
+<span id="974"> 974</span>
+<span id="975"> 975</span>
+<span id="976"> 976</span>
+<span id="977"> 977</span>
+<span id="978"> 978</span>
+<span id="979"> 979</span>
+<span id="980"> 980</span>
+<span id="981"> 981</span>
+<span id="982"> 982</span>
+<span id="983"> 983</span>
+<span id="984"> 984</span>
+<span id="985"> 985</span>
+<span id="986"> 986</span>
+<span id="987"> 987</span>
+<span id="988"> 988</span>
+<span id="989"> 989</span>
+<span id="990"> 990</span>
+<span id="991"> 991</span>
+<span id="992"> 992</span>
+<span id="993"> 993</span>
+<span id="994"> 994</span>
+<span id="995"> 995</span>
+<span id="996"> 996</span>
+<span id="997"> 997</span>
+<span id="998"> 998</span>
+<span id="999"> 999</span>
+<span id="1000">1000</span>
+<span id="1001">1001</span>
+<span id="1002">1002</span>
+<span id="1003">1003</span>
+<span id="1004">1004</span>
+<span id="1005">1005</span>
+<span id="1006">1006</span>
+<span id="1007">1007</span>
+<span id="1008">1008</span>
+<span id="1009">1009</span>
+<span id="1010">1010</span>
+<span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
+<span id="1014">1014</span>
+<span id="1015">1015</span>
+<span id="1016">1016</span>
+<span id="1017">1017</span>
+<span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
+<span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
+<span id="1073">1073</span>
+<span id="1074">1074</span>
+<span id="1075">1075</span>
+<span id="1076">1076</span>
+</pre><pre class="rust">
+<span class="doccomment">/// Google service account</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GoogleServiceAccount</span> {
+    <span class="doccomment">/// Email address of the service account.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">account_email</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Unique identifier for the service account.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">subject_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// AWS access key (see</span>
+<span class="doccomment">/// [AWS Security</span>
+<span class="doccomment">/// Credentials](https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html)).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For information on our data retention policy for user credentials, see</span>
+<span class="doccomment">/// [User credentials](/storage-transfer/docs/data-retention#user-credentials).</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AwsAccessKey</span> {
+    <span class="doccomment">/// Required. AWS access key ID.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">access_key_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. AWS secret access key. This field is not returned in RPC</span>
+    <span class="doccomment">/// responses.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">secret_access_key</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Azure credentials</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For information on our data retention policy for user credentials, see</span>
+<span class="doccomment">/// [User credentials](/storage-transfer/docs/data-retention#user-credentials).</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AzureCredentials</span> {
+    <span class="doccomment">/// Required. Azure shared access signature (SAS).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// &lt;aside class=&quot;note&quot;&gt;</span>
+    <span class="doccomment">/// &lt;strong&gt;Note:&lt;/strong&gt;Copying data from Azure Data Lake</span>
+    <span class="doccomment">/// Storage (ADLS) Gen 2 is in [Preview](/products/#product-launch-stages).</span>
+    <span class="doccomment">/// During Preview, if you are copying data from ADLS Gen 2, you must use an</span>
+    <span class="doccomment">/// account SAS.</span>
+    <span class="doccomment">/// &lt;/aside&gt;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For more information about SAS, see</span>
+    <span class="doccomment">/// [Grant limited access to Azure Storage resources using shared access</span>
+    <span class="doccomment">/// signatures</span>
+    <span class="doccomment">/// (SAS)](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">sas_token</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Conditions that determine which objects will be transferred. Applies only</span>
+<span class="doccomment">/// to Cloud Data Sources such as S3, Azure, and Cloud Storage.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The &quot;last modification time&quot; refers to the time of the</span>
+<span class="doccomment">/// last change to the object&#39;s content or metadata — specifically, this is</span>
+<span class="doccomment">/// the `updated` property of Cloud Storage objects, the `LastModified` field</span>
+<span class="doccomment">/// of S3 objects, and the `Last-Modified` header of Azure blobs.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ObjectConditions</span> {
+    <span class="doccomment">/// If specified, only objects with a &quot;last modification time&quot; before</span>
+    <span class="doccomment">/// `NOW` - `min_time_elapsed_since_last_modification` and objects that don&#39;t</span>
+    <span class="doccomment">///  have a &quot;last modification time&quot; are transferred.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For each [TransferOperation][google.storagetransfer.v1.TransferOperation]</span>
+    <span class="doccomment">/// started by this [TransferJob][google.storagetransfer.v1.TransferJob], `NOW`</span>
+    <span class="doccomment">/// refers to the [start_time]</span>
+    <span class="doccomment">/// [google.storagetransfer.v1.TransferOperation.start_time] of the</span>
+    <span class="doccomment">/// `TransferOperation`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">min_time_elapsed_since_last_modification</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// If specified, only objects with a &quot;last modification time&quot; on or after</span>
+    <span class="doccomment">/// `NOW` - `max_time_elapsed_since_last_modification` and objects that don&#39;t</span>
+    <span class="doccomment">/// have a &quot;last modification time&quot; are transferred.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For each [TransferOperation][google.storagetransfer.v1.TransferOperation]</span>
+    <span class="doccomment">/// started by this [TransferJob][google.storagetransfer.v1.TransferJob],</span>
+    <span class="doccomment">/// `NOW` refers to the [start_time]</span>
+    <span class="doccomment">/// [google.storagetransfer.v1.TransferOperation.start_time] of the</span>
+    <span class="doccomment">/// `TransferOperation`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">max_time_elapsed_since_last_modification</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// If you specify `include_prefixes`, Storage Transfer Service uses the items</span>
+    <span class="doccomment">/// in the `include_prefixes` array to determine which objects to include in a</span>
+    <span class="doccomment">/// transfer. Objects must start with one of the matching `include_prefixes`</span>
+    <span class="doccomment">/// for inclusion in the transfer. If [exclude_prefixes]</span>
+    <span class="doccomment">/// [google.storagetransfer.v1.ObjectConditions.exclude_prefixes] is specified,</span>
+    <span class="doccomment">/// objects must not start with any of the `exclude_prefixes` specified for</span>
+    <span class="doccomment">/// inclusion in the transfer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The following are requirements of `include_prefixes`:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * Each include-prefix can contain any sequence of Unicode characters, to</span>
+    <span class="doccomment">///     a max length of 1024 bytes when UTF8-encoded, and must not contain</span>
+    <span class="doccomment">///     Carriage Return or Line Feed characters.  Wildcard matching and regular</span>
+    <span class="doccomment">///     expression matching are not supported.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * Each include-prefix must omit the leading slash. For example, to</span>
+    <span class="doccomment">///     include the object `s3://my-aws-bucket/logs/y=2015/requests.gz`,</span>
+    <span class="doccomment">///     specify the include-prefix as `logs/y=2015/requests.gz`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * None of the include-prefix values can be empty, if specified.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * Each include-prefix must include a distinct portion of the object</span>
+    <span class="doccomment">///     namespace. No include-prefix may be a prefix of another</span>
+    <span class="doccomment">///     include-prefix.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The max size of `include_prefixes` is 1000.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For more information, see [Filtering objects from</span>
+    <span class="doccomment">/// transfers](/storage-transfer/docs/filtering-objects-from-transfers).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">include_prefixes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// If you specify `exclude_prefixes`, Storage Transfer Service uses the items</span>
+    <span class="doccomment">/// in the `exclude_prefixes` array to determine which objects to exclude from</span>
+    <span class="doccomment">/// a transfer. Objects must not start with one of the matching</span>
+    <span class="doccomment">/// `exclude_prefixes` for inclusion in a transfer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The following are requirements of `exclude_prefixes`:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * Each exclude-prefix can contain any sequence of Unicode characters, to</span>
+    <span class="doccomment">///     a max length of 1024 bytes when UTF8-encoded, and must not contain</span>
+    <span class="doccomment">///     Carriage Return or Line Feed characters.  Wildcard matching and regular</span>
+    <span class="doccomment">///     expression matching are not supported.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * Each exclude-prefix must omit the leading slash. For example, to</span>
+    <span class="doccomment">///     exclude the object `s3://my-aws-bucket/logs/y=2015/requests.gz`,</span>
+    <span class="doccomment">///     specify the exclude-prefix as `logs/y=2015/requests.gz`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * None of the exclude-prefix values can be empty, if specified.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * Each exclude-prefix must exclude a distinct portion of the object</span>
+    <span class="doccomment">///     namespace. No exclude-prefix may be a prefix of another</span>
+    <span class="doccomment">///     exclude-prefix.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   * If [include_prefixes]</span>
+    <span class="doccomment">///     [google.storagetransfer.v1.ObjectConditions.include_prefixes] is</span>
+    <span class="doccomment">///     specified, then each exclude-prefix must start with the value of a path</span>
+    <span class="doccomment">///     explicitly included by `include_prefixes`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The max size of `exclude_prefixes` is 1000.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For more information, see [Filtering objects from</span>
+    <span class="doccomment">/// transfers](/storage-transfer/docs/filtering-objects-from-transfers).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">exclude_prefixes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// If specified, only objects with a &quot;last modification time&quot; on or after</span>
+    <span class="doccomment">/// this timestamp and objects that don&#39;t have a &quot;last modification time&quot; are</span>
+    <span class="doccomment">/// transferred.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The `last_modified_since` and `last_modified_before` fields can be used</span>
+    <span class="doccomment">/// together for chunked data processing. For example, consider a script that</span>
+    <span class="doccomment">/// processes each day&#39;s worth of data at a time. For that you&#39;d set each</span>
+    <span class="doccomment">/// of the fields as follows:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// *  `last_modified_since` to the start of the day</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// *  `last_modified_before` to the end of the day</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">last_modified_since</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// If specified, only objects with a &quot;last modification time&quot; before this</span>
+    <span class="doccomment">/// timestamp and objects that don&#39;t have a &quot;last modification time&quot; will be</span>
+    <span class="doccomment">/// transferred.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">last_modified_before</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// In a GcsData resource, an object&#39;s name is the Cloud Storage object&#39;s</span>
+<span class="doccomment">/// name and its &quot;last modification time&quot; refers to the object&#39;s `updated`</span>
+<span class="doccomment">/// property of Cloud Storage objects, which changes when the content or the</span>
+<span class="doccomment">/// metadata of the object is updated.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GcsData</span> {
+    <span class="doccomment">/// Required. Cloud Storage bucket name. Must meet</span>
+    <span class="doccomment">/// [Bucket Name Requirements](/storage/docs/naming#requirements).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bucket_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Root path to transfer objects.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Must be an empty string or full path name that ends with a &#39;/&#39;. This field</span>
+    <span class="doccomment">/// is treated as an object prefix. As such, it should generally not begin with</span>
+    <span class="doccomment">/// a &#39;/&#39;.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The root path value must meet</span>
+    <span class="doccomment">/// [Object Name Requirements](/storage/docs/naming#objectnames).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">path</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// An AwsS3Data resource can be a data source, but not a data sink.</span>
+<span class="doccomment">/// In an AwsS3Data resource, an object&#39;s name is the S3 object&#39;s key name.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AwsS3Data</span> {
+    <span class="doccomment">/// Required. S3 Bucket name (see</span>
+    <span class="doccomment">/// [Creating a</span>
+    <span class="doccomment">/// bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html)).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bucket_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Input only. AWS access key used to sign the API requests to the AWS S3</span>
+    <span class="doccomment">/// bucket. Permissions on the bucket must be granted to the access ID of the</span>
+    <span class="doccomment">/// AWS access key. This field is required.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For information on our data retention policy for user credentials, see</span>
+    <span class="doccomment">/// [User credentials](/storage-transfer/docs/data-retention#user-credentials).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">aws_access_key</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AwsAccessKey</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Root path to transfer objects.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Must be an empty string or full path name that ends with a &#39;/&#39;. This field</span>
+    <span class="doccomment">/// is treated as an object prefix. As such, it should generally not begin with</span>
+    <span class="doccomment">/// a &#39;/&#39;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">path</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Input only. Role arn to support temporary credentials via</span>
+    <span class="doccomment">/// AssumeRoleWithWebIdentity.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When role arn is provided, transfer service will fetch temporary</span>
+    <span class="doccomment">/// credentials for the session using AssumeRoleWithWebIdentity call for the</span>
+    <span class="doccomment">/// provided role using the [GoogleServiceAccount] for this project.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">role_arn</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// An AzureBlobStorageData resource can be a data source, but not a data sink.</span>
+<span class="doccomment">/// An AzureBlobStorageData resource represents one Azure container. The storage</span>
+<span class="doccomment">/// account determines the [Azure</span>
+<span class="doccomment">/// endpoint](https://docs.microsoft.com/en-us/azure/storage/common/storage-create-storage-account#storage-account-endpoints).</span>
+<span class="doccomment">/// In an AzureBlobStorageData resource, a blobs&#39;s name is the [Azure Blob</span>
+<span class="doccomment">/// Storage blob&#39;s key</span>
+<span class="doccomment">/// name](https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names).</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AzureBlobStorageData</span> {
+    <span class="doccomment">/// Required. The name of the Azure Storage account.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">storage_account</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. Input only. Credentials used to authenticate API requests to</span>
+    <span class="doccomment">/// Azure.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For information on our data retention policy for user credentials, see</span>
+    <span class="doccomment">/// [User credentials](/storage-transfer/docs/data-retention#user-credentials).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">azure_credentials</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AzureCredentials</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Required. The container to transfer from the Azure Storage account.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">container</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Root path to transfer objects.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Must be an empty string or full path name that ends with a &#39;/&#39;. This field</span>
+    <span class="doccomment">/// is treated as an object prefix. As such, it should generally not begin with</span>
+    <span class="doccomment">/// a &#39;/&#39;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">path</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// An HttpData resource specifies a list of objects on the web to be transferred</span>
+<span class="doccomment">/// over HTTP.  The information of the objects to be transferred is contained in</span>
+<span class="doccomment">/// a file referenced by a URL. The first line in the file must be</span>
+<span class="doccomment">/// `&quot;TsvHttpData-1.0&quot;`, which specifies the format of the file.  Subsequent</span>
+<span class="doccomment">/// lines specify the information of the list of objects, one object per list</span>
+<span class="doccomment">/// entry. Each entry has the following tab-delimited fields:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * **HTTP URL** — The location of the object.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * **Length** — The size of the object in bytes.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * **MD5** — The base64-encoded MD5 hash of the object.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For an example of a valid TSV file, see</span>
+<span class="doccomment">/// [Transferring data from</span>
+<span class="doccomment">/// URLs](https://cloud.google.com/storage-transfer/docs/create-url-list).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// When transferring data based on a URL list, keep the following in mind:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * When an object located at `http(s)://hostname:port/&lt;URL-path&gt;` is</span>
+<span class="doccomment">/// transferred to a data sink, the name of the object at the data sink is</span>
+<span class="doccomment">/// `&lt;hostname&gt;/&lt;URL-path&gt;`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * If the specified size of an object does not match the actual size of the</span>
+<span class="doccomment">/// object fetched, the object will not be transferred.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * If the specified MD5 does not match the MD5 computed from the transferred</span>
+<span class="doccomment">/// bytes, the object transfer will fail.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * Ensure that each URL you specify is publicly accessible. For</span>
+<span class="doccomment">/// example, in Cloud Storage you can</span>
+<span class="doccomment">/// [share an object publicly]</span>
+<span class="doccomment">/// (/storage/docs/cloud-console#_sharingdata) and get a link to it.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * Storage Transfer Service obeys `robots.txt` rules and requires the source</span>
+<span class="doccomment">/// HTTP server to support `Range` requests and to return a `Content-Length`</span>
+<span class="doccomment">/// header in each response.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * [ObjectConditions][google.storagetransfer.v1.ObjectConditions] have no</span>
+<span class="doccomment">/// effect when filtering objects to transfer.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpData</span> {
+    <span class="doccomment">/// Required. The URL that points to the file that stores the object list</span>
+    <span class="doccomment">/// entries. This file must allow public access.  Currently, only URLs with</span>
+    <span class="doccomment">/// HTTP and HTTPS schemes are supported.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">list_url</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// TransferOptions define the actions to be performed on objects in a transfer.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransferOptions</span> {
+    <span class="doccomment">/// When to overwrite objects that already exist in the sink. The default is</span>
+    <span class="doccomment">/// that only objects that are different from the source are ovewritten. If</span>
+    <span class="doccomment">/// true, all objects in the sink whose name matches an object in the source</span>
+    <span class="doccomment">/// will be overwritten with the source object.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">overwrite_objects_already_existing_in_sink</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Whether objects that exist only in the sink should be deleted.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Note:** This option and [delete_objects_from_source_after_transfer]</span>
+    <span class="doccomment">/// [google.storagetransfer.v1.TransferOptions.delete_objects_from_source_after_transfer]</span>
+    <span class="doccomment">/// are mutually exclusive.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">delete_objects_unique_in_sink</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Whether objects should be deleted from the source after they are</span>
+    <span class="doccomment">/// transferred to the sink.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Note:** This option and [delete_objects_unique_in_sink]</span>
+    <span class="doccomment">/// [google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink]</span>
+    <span class="doccomment">/// are mutually exclusive.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">delete_objects_from_source_after_transfer</span>: <span class="ident">bool</span>,
+}
+<span class="doccomment">/// Configuration for running a transfer.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransferSpec</span> {
+    <span class="doccomment">/// Only objects that satisfy these object conditions are included in the set</span>
+    <span class="doccomment">/// of data source and data sink objects.  Object conditions based on</span>
+    <span class="doccomment">/// objects&#39; &quot;last modification time&quot; do not exclude objects in a data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">object_conditions</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ObjectConditions</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// If the option</span>
+    <span class="doccomment">/// [delete_objects_unique_in_sink][google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink]</span>
+    <span class="doccomment">/// is `true` and time-based object conditions such as &#39;last modification time&#39;</span>
+    <span class="doccomment">/// are specified, the request fails with an</span>
+    <span class="doccomment">/// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transfer_options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransferOptions</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The write sink for the data.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;transfer_spec::DataSink&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">data_sink</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">transfer_spec::DataSink</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The read source of the data.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;transfer_spec::DataSource&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2, 3, 8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">data_source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">transfer_spec::DataSource</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `TransferSpec`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">transfer_spec</span> {
+    <span class="doccomment">/// The write sink for the data.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DataSink</span> {
+        <span class="doccomment">/// A Cloud Storage data sink.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+        <span class="ident">GcsDataSink</span>(<span class="kw">super</span><span class="ident">::GcsData</span>),
+    }
+    <span class="doccomment">/// The read source of the data.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DataSource</span> {
+        <span class="doccomment">/// A Cloud Storage data source.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="ident">GcsDataSource</span>(<span class="kw">super</span><span class="ident">::GcsData</span>),
+        <span class="doccomment">/// An AWS S3 data source.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="ident">AwsS3DataSource</span>(<span class="kw">super</span><span class="ident">::AwsS3Data</span>),
+        <span class="doccomment">/// An HTTP URL data source.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="ident">HttpDataSource</span>(<span class="kw">super</span><span class="ident">::HttpData</span>),
+        <span class="doccomment">/// An Azure Blob Storage data source.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+        <span class="ident">AzureBlobStorageDataSource</span>(<span class="kw">super</span><span class="ident">::AzureBlobStorageData</span>),
+    }
+}
+<span class="doccomment">/// Transfers can be scheduled to recur or to run just once.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Schedule</span> {
+    <span class="doccomment">/// Required. The start date of a transfer. Date boundaries are determined</span>
+    <span class="doccomment">/// relative to UTC time. If `schedule_start_date` and</span>
+    <span class="doccomment">/// [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]</span>
+    <span class="doccomment">/// are in the past relative to the job&#39;s creation time, the transfer starts</span>
+    <span class="doccomment">/// the day after you schedule the transfer request.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Note:** When starting jobs at or near midnight UTC it is possible that</span>
+    <span class="doccomment">/// a job will start later than expected. For example, if you send an outbound</span>
+    <span class="doccomment">/// request on June 1 one millisecond prior to midnight UTC and the Storage</span>
+    <span class="doccomment">/// Transfer Service server receives the request on June 2, then it will create</span>
+    <span class="doccomment">/// a TransferJob with `schedule_start_date` set to June 2 and a</span>
+    <span class="doccomment">/// `start_time_of_day` set to midnight UTC. The first scheduled</span>
+    <span class="doccomment">/// [TransferOperation][google.storagetransfer.v1.TransferOperation] will take</span>
+    <span class="doccomment">/// place on June 3 at midnight UTC.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">schedule_start_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The last day a transfer runs. Date boundaries are determined relative to</span>
+    <span class="doccomment">/// UTC time. A job will run once per 24 hours within the following guidelines:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// *   If `schedule_end_date` and</span>
+    <span class="doccomment">/// [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]</span>
+    <span class="doccomment">/// are the same and in</span>
+    <span class="doccomment">///     the future relative to UTC, the transfer is executed only one time.</span>
+    <span class="doccomment">/// *   If `schedule_end_date` is later than `schedule_start_date`  and</span>
+    <span class="doccomment">///     `schedule_end_date` is in the future relative to UTC, the job will</span>
+    <span class="doccomment">///     run each day at</span>
+    <span class="doccomment">///     [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]</span>
+    <span class="doccomment">///     through `schedule_end_date`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">schedule_end_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The time in UTC that a transfer job is scheduled to run. Transfers may</span>
+    <span class="doccomment">/// start later than this time.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If `start_time_of_day` is not specified:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// *   One-time transfers run immediately.</span>
+    <span class="doccomment">/// *   Recurring transfers run immediately, and each day at midnight UTC,</span>
+    <span class="doccomment">///     through</span>
+    <span class="doccomment">///     [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If `start_time_of_day` is specified:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// *   One-time transfers run at the specified time.</span>
+    <span class="doccomment">/// *   Recurring transfers run at the specified time each day, through</span>
+    <span class="doccomment">///     `schedule_end_date`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">start_time_of_day</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::TimeOfDay</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The time in UTC that no further transfer operations are scheduled. Combined</span>
+    <span class="doccomment">/// with</span>
+    <span class="doccomment">/// [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date],</span>
+    <span class="doccomment">/// `end_time_of_day` specifies the end date and time for starting new transfer</span>
+    <span class="doccomment">/// operations. This field must be greater than or equal to the timestamp</span>
+    <span class="doccomment">/// corresponding to the combintation of</span>
+    <span class="doccomment">/// [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]</span>
+    <span class="doccomment">/// and</span>
+    <span class="doccomment">/// [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day],</span>
+    <span class="doccomment">/// and is subject to the following:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// *   If `end_time_of_day` is not set and `schedule_end_date` is set, then</span>
+    <span class="doccomment">///     a default value of `23:59:59` is used for `end_time_of_day`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// *   If `end_time_of_day` is set and `schedule_end_date` is not set, then</span>
+    <span class="doccomment">///     [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] is returned.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">end_time_of_day</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::TimeOfDay</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Interval between the start of each scheduled TransferOperation. If</span>
+    <span class="doccomment">/// unspecified, the default value is 24 hours. This value may not be less than</span>
+    <span class="doccomment">/// 1 hour.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">repeat_interval</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// This resource represents the configuration of a transfer job that runs</span>
+<span class="doccomment">/// periodically.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransferJob</span> {
+    <span class="doccomment">/// A unique name (within the transfer project) assigned when the job is</span>
+    <span class="doccomment">/// created.  If this field is empty in a CreateTransferJobRequest, Storage</span>
+    <span class="doccomment">/// Transfer Service will assign a unique name. Otherwise, the specified name</span>
+    <span class="doccomment">/// is used as the unique name for this job.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the specified name is in use by a job, the creation request fails with</span>
+    <span class="doccomment">/// an [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This name must start with `&quot;transferJobs/&quot;` prefix and end with a letter or</span>
+    <span class="doccomment">/// a number, and should be no more than 128 characters. This name must not</span>
+    <span class="doccomment">/// start with &#39;transferJobs/OPI&#39;. &#39;transferJobs/OPI&#39; is a reserved prefix.</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">/// `&quot;transferJobs/^(?!OPI)[A-Za-z0-9-._~]*[A-Za-z0-9]$&quot;`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Invalid job names will fail with an</span>
+    <span class="doccomment">/// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// A description provided by the user for the job. Its max length is 1024</span>
+    <span class="doccomment">/// bytes when Unicode-encoded.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The ID of the Google Cloud Platform Project that owns the job.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Transfer specification.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transfer_spec</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransferSpec</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Notification configuration.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">notification_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">NotificationConfig</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Specifies schedule for the transfer job.</span>
+    <span class="doccomment">/// This is an optional field. When the field is not set, the job will never</span>
+    <span class="doccomment">/// execute a transfer, unless you invoke RunTransferJob or update the job to</span>
+    <span class="doccomment">/// have a non-empty schedule.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">schedule</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Schedule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Status of the job. This value MUST be specified for</span>
+    <span class="doccomment">/// `CreateTransferJobRequests`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Note:** The effect of the new job status takes place during a subsequent</span>
+    <span class="doccomment">/// job run. For example, if you change the job status from</span>
+    <span class="doccomment">/// [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED] to</span>
+    <span class="doccomment">/// [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], and an</span>
+    <span class="doccomment">/// operation spawned by the transfer is running, the status change would not</span>
+    <span class="doccomment">/// affect the current operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;transfer_job::Status&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Output only. The time that the transfer job was created.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">creation_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. The time that the transfer job was last modified.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">last_modification_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. The time that the transfer job was deleted.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">deletion_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The name of the most recently started TransferOperation of this JobConfig.</span>
+    <span class="doccomment">/// Present if a TransferOperation has been created for this JobConfig.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">latest_operation_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `TransferJob`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">transfer_job</span> {
+    <span class="doccomment">/// The status of the transfer job.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Status</span> {
+        <span class="doccomment">/// Zero is an illegal value.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// New transfers will be performed based on the schedule.</span>
+        <span class="ident">Enabled</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// New transfers will not be scheduled.</span>
+        <span class="ident">Disabled</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// This is a soft delete state. After a transfer job is set to this</span>
+        <span class="doccomment">/// state, the job and all the transfer executions are subject to</span>
+        <span class="doccomment">/// garbage collection. Transfer jobs become eligible for garbage collection</span>
+        <span class="doccomment">/// 30 days after their status is set to `DELETED`.</span>
+        <span class="ident">Deleted</span> <span class="op">=</span> <span class="number">3</span>,
+    }
+}
+<span class="doccomment">/// An entry describing an error that has occurred.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ErrorLogEntry</span> {
+    <span class="doccomment">/// Required. A URL that refers to the target (a data source, a data sink,</span>
+    <span class="doccomment">/// or an object) with which the error is associated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// A list of messages that carry the error details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error_details</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// A summary of errors by error code, plus a count and sample error log</span>
+<span class="doccomment">/// entries.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ErrorSummary</span> {
+    <span class="doccomment">/// Required.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;super::super::rpc::Code&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error_code</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. Count of this type of error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error_count</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Error samples.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// At most 5 error log entries will be recorded for a given</span>
+    <span class="doccomment">/// error code for a single transfer operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error_log_entries</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ErrorLogEntry</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// A collection of counters that report the progress of a transfer operation.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransferCounters</span> {
+    <span class="doccomment">/// Objects found in the data source that are scheduled to be transferred,</span>
+    <span class="doccomment">/// excluding any that are filtered based on object conditions or skipped due</span>
+    <span class="doccomment">/// to sync.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_found_from_source</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes found in the data source that are scheduled to be transferred,</span>
+    <span class="doccomment">/// excluding any that are filtered based on object conditions or skipped due</span>
+    <span class="doccomment">/// to sync.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_found_from_source</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Objects found only in the data sink that are scheduled to be deleted.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_found_only_from_sink</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes found only in the data sink that are scheduled to be deleted.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_found_only_from_sink</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Objects in the data source that are not transferred because they already</span>
+    <span class="doccomment">/// exist in the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_from_source_skipped_by_sync</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes in the data source that are not transferred because they already</span>
+    <span class="doccomment">/// exist in the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_from_source_skipped_by_sync</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Objects that are copied to the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_copied_to_sink</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes that are copied to the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_copied_to_sink</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Objects that are deleted from the data source.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_deleted_from_source</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes that are deleted from the data source.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_deleted_from_source</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Objects that are deleted from the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_deleted_from_sink</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes that are deleted from the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_deleted_from_sink</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Objects in the data source that failed to be transferred or that failed</span>
+    <span class="doccomment">/// to be deleted after being transferred.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_from_source_failed</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes in the data source that failed to be transferred or that failed to</span>
+    <span class="doccomment">/// be deleted after being transferred.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_from_source_failed</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Objects that failed to be deleted from the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">objects_failed_to_delete_from_sink</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Bytes that failed to be deleted from the data sink.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">bytes_failed_to_delete_from_sink</span>: <span class="ident">i64</span>,
+}
+<span class="doccomment">/// Specification to configure notifications published to Cloud Pub/Sub.</span>
+<span class="doccomment">/// Notifications will be published to the customer-provided topic using the</span>
+<span class="doccomment">/// following `PubsubMessage.attributes`:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * `&quot;eventType&quot;`: one of the</span>
+<span class="doccomment">/// [EventType][google.storagetransfer.v1.NotificationConfig.EventType] values</span>
+<span class="doccomment">/// * `&quot;payloadFormat&quot;`: one of the</span>
+<span class="doccomment">/// [PayloadFormat][google.storagetransfer.v1.NotificationConfig.PayloadFormat]</span>
+<span class="doccomment">/// values</span>
+<span class="doccomment">/// * `&quot;projectId&quot;`: the</span>
+<span class="doccomment">/// [project_id][google.storagetransfer.v1.TransferOperation.project_id] of the</span>
+<span class="doccomment">/// `TransferOperation`</span>
+<span class="doccomment">/// * `&quot;transferJobName&quot;`: the</span>
+<span class="doccomment">/// [transfer_job_name][google.storagetransfer.v1.TransferOperation.transfer_job_name]</span>
+<span class="doccomment">/// of the `TransferOperation`</span>
+<span class="doccomment">/// * `&quot;transferOperationName&quot;`: the</span>
+<span class="doccomment">/// [name][google.storagetransfer.v1.TransferOperation.name] of the</span>
+<span class="doccomment">/// `TransferOperation`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `PubsubMessage.data` will contain a</span>
+<span class="doccomment">/// [TransferOperation][google.storagetransfer.v1.TransferOperation] resource</span>
+<span class="doccomment">/// formatted according to the specified `PayloadFormat`.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NotificationConfig</span> {
+    <span class="doccomment">/// Required. The `Topic.name` of the Cloud Pub/Sub topic to which to publish</span>
+    <span class="doccomment">/// notifications. Must be of the format: `projects/{project}/topics/{topic}`.</span>
+    <span class="doccomment">/// Not matching this format will result in an</span>
+    <span class="doccomment">/// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">pubsub_topic</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Event types for which a notification is desired. If empty, send</span>
+    <span class="doccomment">/// notifications for all event types.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;notification_config::EventType&quot;</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">event_types</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Required. The desired format of the notification message payloads.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;notification_config::PayloadFormat&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">payload_format</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `NotificationConfig`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">notification_config</span> {
+    <span class="doccomment">/// Enum for specifying event types for which notifications are to be</span>
+    <span class="doccomment">/// published.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Additional event types may be added in the future. Clients should either</span>
+    <span class="doccomment">/// safely ignore unrecognized event types or explicitly specify which event</span>
+    <span class="doccomment">/// types they are prepared to accept.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventType</span> {
+        <span class="doccomment">/// Illegal value, to avoid allowing a default.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// `TransferOperation` completed with status</span>
+        <span class="doccomment">/// [SUCCESS][google.storagetransfer.v1.TransferOperation.Status.SUCCESS].</span>
+        <span class="ident">TransferOperationSuccess</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// `TransferOperation` completed with status</span>
+        <span class="doccomment">/// [FAILED][google.storagetransfer.v1.TransferOperation.Status.FAILED].</span>
+        <span class="ident">TransferOperationFailed</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// `TransferOperation` completed with status</span>
+        <span class="doccomment">/// [ABORTED][google.storagetransfer.v1.TransferOperation.Status.ABORTED].</span>
+        <span class="ident">TransferOperationAborted</span> <span class="op">=</span> <span class="number">3</span>,
+    }
+    <span class="doccomment">/// Enum for specifying the format of a notification message&#39;s payload.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PayloadFormat</span> {
+        <span class="doccomment">/// Illegal value, to avoid allowing a default.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// No payload is included with the notification.</span>
+        <span class="prelude-val">None</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// `TransferOperation` is [formatted as a JSON</span>
+        <span class="doccomment">/// response](https://developers.google.com/protocol-buffers/docs/proto3#json),</span>
+        <span class="doccomment">/// in application/json.</span>
+        <span class="ident">Json</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+}
+<span class="doccomment">/// A description of the execution of a transfer.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransferOperation</span> {
+    <span class="doccomment">/// A globally unique ID assigned by the system.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The ID of the Google Cloud Platform Project that owns the operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Transfer specification.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transfer_spec</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransferSpec</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Notification configuration.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">notification_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">NotificationConfig</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Start time of this transfer execution.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">start_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// End time of this transfer execution.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Status of the transfer operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;transfer_operation::Status&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Information about the progress of the transfer operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">counters</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransferCounters</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Summarizes errors encountered with sample error log entries.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error_breakdowns</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ErrorSummary</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The name of the transfer job that triggers this transfer operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transfer_job_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `TransferOperation`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">transfer_operation</span> {
+    <span class="doccomment">/// The status of a TransferOperation.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Status</span> {
+        <span class="doccomment">/// Zero is an illegal value.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// In progress.</span>
+        <span class="ident">InProgress</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Paused.</span>
+        <span class="ident">Paused</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// Completed successfully.</span>
+        <span class="ident">Success</span> <span class="op">=</span> <span class="number">3</span>,
+        <span class="doccomment">/// Terminated due to an unrecoverable failure.</span>
+        <span class="ident">Failed</span> <span class="op">=</span> <span class="number">4</span>,
+        <span class="doccomment">/// Aborted by the user.</span>
+        <span class="ident">Aborted</span> <span class="op">=</span> <span class="number">5</span>,
+        <span class="doccomment">/// Temporarily delayed by the system. No user action is required.</span>
+        <span class="ident">Queued</span> <span class="op">=</span> <span class="number">6</span>,
+    }
+}
+<span class="doccomment">/// Request passed to GetGoogleServiceAccount.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetGoogleServiceAccountRequest</span> {
+    <span class="doccomment">/// Required. The ID of the Google Cloud Platform Console project that the</span>
+    <span class="doccomment">/// Google service account is associated with.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request passed to CreateTransferJob.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateTransferJobRequest</span> {
+    <span class="doccomment">/// Required. The job to create.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transfer_job</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransferJob</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Request passed to UpdateTransferJob.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateTransferJobRequest</span> {
+    <span class="doccomment">/// Required. The name of job to update.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">job_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. The ID of the Google Cloud Platform Console project that owns the</span>
+    <span class="doccomment">/// job.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. The job to update. `transferJob` is expected to specify only</span>
+    <span class="doccomment">/// four fields:</span>
+    <span class="doccomment">/// [description][google.storagetransfer.v1.TransferJob.description],</span>
+    <span class="doccomment">/// [transfer_spec][google.storagetransfer.v1.TransferJob.transfer_spec],</span>
+    <span class="doccomment">/// [notification_config][google.storagetransfer.v1.TransferJob.notification_config],</span>
+    <span class="doccomment">/// and [status][google.storagetransfer.v1.TransferJob.status].  An</span>
+    <span class="doccomment">/// `UpdateTransferJobRequest` that specifies other fields are rejected with</span>
+    <span class="doccomment">/// the error [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. Updating a</span>
+    <span class="doccomment">/// job status to</span>
+    <span class="doccomment">/// [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED] requires</span>
+    <span class="doccomment">/// `storagetransfer.jobs.delete` permissions.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transfer_job</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransferJob</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The field mask of the fields in `transferJob` that are to be updated in</span>
+    <span class="doccomment">/// this request.  Fields in `transferJob` that can be updated are:</span>
+    <span class="doccomment">/// [description][google.storagetransfer.v1.TransferJob.description],</span>
+    <span class="doccomment">/// [transfer_spec][google.storagetransfer.v1.TransferJob.transfer_spec],</span>
+    <span class="doccomment">/// [notification_config][google.storagetransfer.v1.TransferJob.notification_config],</span>
+    <span class="doccomment">/// and [status][google.storagetransfer.v1.TransferJob.status].  To update the</span>
+    <span class="doccomment">/// `transfer_spec` of the job, a complete transfer specification must be</span>
+    <span class="doccomment">/// provided. An incomplete specification missing any required fields is</span>
+    <span class="doccomment">/// rejected with the error</span>
+    <span class="doccomment">/// [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">update_transfer_job_field_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Request passed to GetTransferJob.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetTransferJobRequest</span> {
+    <span class="doccomment">/// Required.</span>
+    <span class="doccomment">/// The job to get.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">job_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. The ID of the Google Cloud Platform Console project that owns the</span>
+    <span class="doccomment">/// job.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// `projectId`, `jobNames`, and `jobStatuses` are query parameters that can</span>
+<span class="doccomment">/// be specified when listing transfer jobs.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListTransferJobsRequest</span> {
+    <span class="doccomment">/// Required. A list of query parameters specified as JSON text in the form of:</span>
+    <span class="doccomment">/// `{&quot;projectId&quot;:&quot;my_project_id&quot;,</span>
+    <span class="doccomment">///  &quot;jobNames&quot;:[&quot;jobid1&quot;,&quot;jobid2&quot;,...],</span>
+    <span class="doccomment">///  &quot;jobStatuses&quot;:[&quot;status1&quot;,&quot;status2&quot;,...]}`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Since `jobNames` and `jobStatuses` support multiple values, their values</span>
+    <span class="doccomment">/// must be specified with array notation. `projectId` is required.</span>
+    <span class="doccomment">/// `jobNames` and `jobStatuses` are optional.  The valid values for</span>
+    <span class="doccomment">/// `jobStatuses` are case-insensitive:</span>
+    <span class="doccomment">/// [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED],</span>
+    <span class="doccomment">/// [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], and</span>
+    <span class="doccomment">/// [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The list page size. The max allowed value is 256.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// The list page token.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Response from ListTransferJobs.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListTransferJobsResponse</span> {
+    <span class="doccomment">/// A list of transfer jobs.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transfer_jobs</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">TransferJob</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The list next page token.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request passed to PauseTransferOperation.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PauseTransferOperationRequest</span> {
+    <span class="doccomment">/// Required. The name of the transfer operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request passed to ResumeTransferOperation.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResumeTransferOperationRequest</span> {
+    <span class="doccomment">/// Required. The name of the transfer operation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request passed to RunTransferJob.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunTransferJobRequest</span> {
+    <span class="doccomment">/// Required. The name of the transfer job.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">job_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. The ID of the Google Cloud Platform Console project that owns the</span>
+    <span class="doccomment">/// transfer job.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Generated client implementations.&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">storage_transfer_service_client</span> {
+    <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused_variables</span>, <span class="ident">dead_code</span>, <span class="ident">missing_docs</span>, <span class="ident">clippy::let_unit_value</span>)]</span>
+    <span class="kw">use</span> <span class="ident">tonic::codegen</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Storage Transfer Service and its protos.&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Transfers data between between Google Cloud Storage buckets or from a data&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; source external to Google to a Cloud Storage bucket.&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StorageTransferServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">inner</span>: <span class="ident">tonic::client::Grpc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    }
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">StorageTransferServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
+        <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
+    {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">tonic::client::Grpc::new</span>(<span class="ident">inner</span>);
+            <span class="self">Self</span> { <span class="ident">inner</span> }
+        }
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_interceptor</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
+            <span class="ident">inner</span>: <span class="ident">T</span>,
+            <span class="ident">interceptor</span>: <span class="ident">F</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageTransferServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+        <span class="kw">where</span>
+            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
+                <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
+                <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
+                    <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::ResponseBody</span>,
+                <span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+            <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span>:
+                <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
+        {
+            <span class="ident">StorageTransferServiceClient::new</span>(<span class="ident">InterceptedService::new</span>(<span class="ident">inner</span>, <span class="ident">interceptor</span>))
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Compress requests with `gzip`.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; This requires the server to support it otherwise it might respond with an&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; error.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_gzip</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">send_gzip</span>();
+            <span class="self">self</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Enable decompressing responses with `gzip`.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_gzip</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">accept_gzip</span>();
+            <span class="self">self</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns the Google service account that is used by Storage Transfer&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Service to access buckets in the project where transfers&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; run or in other projects. Each Google service account is associated&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; with one Google Cloud Platform Console project. Users&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; should add this service account to the Google Cloud Storage bucket&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; ACLs to grant access to Storage Transfer Service. This service&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; account is created and owned by Storage Transfer Service and can&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; only be used by Storage Transfer Service.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_google_service_account</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetGoogleServiceAccountRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GoogleServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/GetGoogleServiceAccount&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a transfer job that runs periodically.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_transfer_job</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateTransferJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TransferJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/CreateTransferJob&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates a transfer job. Updating a job&#39;s transfer spec does not affect&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; transfer operations that are running already.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; **Note:** The job&#39;s [status][google.storagetransfer.v1.TransferJob.status]&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; field can be modified using this RPC (for example, to set a job&#39;s status to&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED],&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], or&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_transfer_job</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateTransferJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TransferJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/UpdateTransferJob&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a transfer job.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_transfer_job</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetTransferJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TransferJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/GetTransferJob&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists transfer jobs.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_transfer_jobs</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListTransferJobsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListTransferJobsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/ListTransferJobs&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Pauses a transfer operation.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pause_transfer_operation</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PauseTransferOperationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/PauseTransferOperation&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Resumes a transfer operation that is paused.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">resume_transfer_operation</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ResumeTransferOperationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/ResumeTransferOperation&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Attempts to start a new TransferOperation for the current TransferJob. A&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; TransferJob has a maximum of one active TransferOperation. If this method&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; is called while a TransferOperation is active, an error wil be returned.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_transfer_job</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunTransferJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+        {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.storagetransfer.v1.StorageTransferService/RunTransferJob&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+    }
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

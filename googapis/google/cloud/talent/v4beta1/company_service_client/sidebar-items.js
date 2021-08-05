@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CompanyServiceClient","A service that handles company management, including CRUD and enumeration."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BidModifierSource","Enum describing possible bid modifier sources."]]});

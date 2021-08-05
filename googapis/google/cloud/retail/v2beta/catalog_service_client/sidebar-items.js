@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CatalogServiceClient","Service for managing catalog configuration."]]});

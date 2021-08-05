@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RecommenderClient","Provides insights and recommendations for cloud customers for various categories like performance optimization, cost savings, reliability, feature discovery, etc. Insights and recommendations are generated automatically based on analysis of user resources, configuration and monitoring metrics."]]});

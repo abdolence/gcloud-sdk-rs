@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Annotation","Required. Text extraction annotations can either be a text segment or a text relation."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DataFusionClient","Service for creating and managing Data Fusion instances. Data Fusion enables ETL developers to build code-free, data integration pipelines via a point-and-click UI."]]});

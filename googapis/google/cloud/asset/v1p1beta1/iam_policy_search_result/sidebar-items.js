@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Explanation","Explanation about the IAM policy search result."]]});

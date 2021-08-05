@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SubscriberServiceClient","The service that a subscriber client application uses to receive messages from subscriptions."]]});

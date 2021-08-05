@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GroupLabel","Represents a group of VM intances that can be identified as having all these labels, for example “env=prod and app=web”."],["OsType","Defines the criteria for selecting VM Instances by OS type."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ModelTrainingMode","NLU model training mode."],["ModelType","NLU model type."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Possible states of a snapshot."]]});

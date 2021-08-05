@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AutoExpansionMode","Represents different entity type expansion modes. Automated expansion allows an agent to recognize values that have not been explicitly listed in the entity (for example, new kinds of shopping list items)."],["Kind","Represents kinds of entities."]],"struct":[["Entity","An entity entry for an associated entity type."]]});

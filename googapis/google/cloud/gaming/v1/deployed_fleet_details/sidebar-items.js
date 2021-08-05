@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["deployed_fleet","Nested message and enum types in `DeployedFleet`."]],"struct":[["DeployedFleet","Agones fleet specification and details."],["DeployedFleetAutoscaler","Details about the Agones autoscaler."]]});

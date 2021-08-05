@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PriorAssetState","State of prior asset."]]});

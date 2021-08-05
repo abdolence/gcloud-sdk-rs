@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Mode","The `mode` of the transaction, indicating whether write operations are supported."]],"struct":[["ReadOnly","Options specific to read-only transactions."],["ReadWrite","Options specific to read / write transactions."]]});

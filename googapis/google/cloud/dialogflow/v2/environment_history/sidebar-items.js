@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Entry","Represents an environment history entry."]]});

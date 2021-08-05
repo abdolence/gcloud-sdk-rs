@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["JobEventType","An enumeration of an event attributed to the behavior of the end user, such as a job seeker."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ValidationContext","Context to identify the resource the validation message relates to."]]});

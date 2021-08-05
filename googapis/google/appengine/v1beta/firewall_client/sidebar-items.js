@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FirewallClient","Firewall resources are used to define a collection of access control rules for an Application. Each rule is defined with a position which specifies the rule’s order in the sequence of rules, an IP range to be matched against requests, and an action to take upon matching requests."]]});

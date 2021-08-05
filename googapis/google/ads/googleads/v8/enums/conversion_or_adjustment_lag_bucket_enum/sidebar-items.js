@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConversionOrAdjustmentLagBucket","Enum representing the number of days between the impression and the conversion or between the impression and adjustments to the conversion."]]});

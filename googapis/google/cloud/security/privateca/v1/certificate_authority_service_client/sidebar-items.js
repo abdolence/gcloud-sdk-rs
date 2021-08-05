@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CertificateAuthorityServiceClient","[Certificate Authority Service][google.cloud.security.privateca.v1.CertificateAuthorityService] manages private certificate authorities and issued certificates."]]});

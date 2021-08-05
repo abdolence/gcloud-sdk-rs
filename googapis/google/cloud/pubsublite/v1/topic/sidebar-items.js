@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["partition_config","Nested message and enum types in `PartitionConfig`."]],"struct":[["PartitionConfig","The settings for a topic’s partitions."],["ReservationConfig","The settings for this topic’s Reservation usage."],["RetentionConfig","The settings for a topic’s message retention."]]});

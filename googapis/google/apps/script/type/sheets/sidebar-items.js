@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"struct":[["SheetsAddOnManifest","Sheets add-on manifest."],["SheetsExtensionPoint","Common format for declaring a Sheets add-on’s triggers."]]});

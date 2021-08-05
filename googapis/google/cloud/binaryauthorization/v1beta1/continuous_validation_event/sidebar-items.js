@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EventType","Type of CV event."]],"mod":[["continuous_validation_pod_event","Nested message and enum types in `ContinuousValidationPodEvent`."]],"struct":[["ContinuousValidationPodEvent","An auditing event for one Pod."],["UnsupportedPolicyEvent","An event describing that the project policy is unsupported by CV."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Severity","The severity of the finding. This field is managed by the source that writes the finding."],["State","The state of the finding."]]});

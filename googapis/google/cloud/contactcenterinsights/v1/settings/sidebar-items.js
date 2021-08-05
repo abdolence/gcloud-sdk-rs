@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AnalysisConfig","Default configuration when creating Analyses in Insights."]]});

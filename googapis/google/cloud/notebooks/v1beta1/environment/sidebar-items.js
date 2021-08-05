@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ImageType","Type of the environment; can be one of VM image, or container image."]]});

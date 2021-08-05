@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["notification","Nested message and enum types in `Notification`."]],"struct":[["Notification","Settings for callback notifications. For more details see Google Workspace Alert Notification."]]});

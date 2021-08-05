@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AffiliateLocationFeedRelationshipType","Possible values for a relationship type for an affiliate location feed."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","The job state."],["Substate","The job substate."]]});

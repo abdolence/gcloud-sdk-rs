@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["OsPolicyCompliance","Compliance data for an OS policy"]]});

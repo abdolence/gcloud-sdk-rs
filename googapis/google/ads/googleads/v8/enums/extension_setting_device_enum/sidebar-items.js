@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ExtensionSettingDevice","Possible device types for an extension setting."]]});

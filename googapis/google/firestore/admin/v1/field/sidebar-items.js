@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IndexConfig","The index configuration for this field."]]});

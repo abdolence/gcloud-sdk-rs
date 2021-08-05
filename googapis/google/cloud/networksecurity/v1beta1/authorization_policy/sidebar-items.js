@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Action","Possible values that define what action to take."]],"mod":[["rule","Nested message and enum types in `Rule`."]],"struct":[["Rule","Specification of rules."]]});

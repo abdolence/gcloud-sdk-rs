@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AdServiceClient","Service to manage ads."]]});

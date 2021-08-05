@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["open_url_action","Nested message and enum types in `OpenUrlAction`."]],"struct":[["OpenUrlAction","Actions on Google action to open a given url."]]});

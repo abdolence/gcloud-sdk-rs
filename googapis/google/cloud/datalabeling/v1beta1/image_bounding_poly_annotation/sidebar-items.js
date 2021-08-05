@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BoundedArea","The region of the polygon. If it is a bounding box, it is guaranteed to be four points."]]});

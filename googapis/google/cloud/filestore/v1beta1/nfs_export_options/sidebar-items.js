@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AccessMode","The access mode."],["SquashMode","The squash mode."]]});

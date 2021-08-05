@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EnvironmentType","Types of environments the Test API supports."]]});

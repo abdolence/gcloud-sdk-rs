@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["destination","Nested message and enum types in `Destination`."]],"struct":[["Destination","Specification of traffic destination attributes."],["Source","Specification of traffic source attributes."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"struct":[["OperationMetadata","Represents the metadata of the long-running operation."]]});

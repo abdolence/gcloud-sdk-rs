@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Action","The type of action performed on a Binding in a policy."]]});

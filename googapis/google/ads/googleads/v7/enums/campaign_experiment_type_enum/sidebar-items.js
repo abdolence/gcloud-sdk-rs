@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CampaignExperimentType","Indicates if this campaign is a normal campaign, a draft campaign, or an experiment campaign."]]});

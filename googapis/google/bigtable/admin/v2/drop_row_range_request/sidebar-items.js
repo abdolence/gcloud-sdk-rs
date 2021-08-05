@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Target","Delete all rows or by prefix."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Possible states an environment might transition between during startup. These states are not normally actionable by clients, but may be used to show a progress message to the user. An environment won’t necessarily go through all of these states when starting. More states are likely to be added in the future."]]});

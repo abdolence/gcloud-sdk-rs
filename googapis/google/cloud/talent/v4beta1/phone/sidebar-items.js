@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PhoneType","Enum that represents the type of the telephone."]]});

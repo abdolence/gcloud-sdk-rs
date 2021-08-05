@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OperationType","The type of index operation."]]});

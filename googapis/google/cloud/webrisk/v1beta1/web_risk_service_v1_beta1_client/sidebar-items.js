@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WebRiskServiceV1Beta1Client","Web Risk v1beta1 API defines an interface to detect malicious URLs on your website and in client applications."]]});

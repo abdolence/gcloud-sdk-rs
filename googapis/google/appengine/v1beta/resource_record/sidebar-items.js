@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RecordType","A resource record type."]]});

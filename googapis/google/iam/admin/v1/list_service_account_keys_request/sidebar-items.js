@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["KeyType","`KeyType` filters to selectively retrieve certain varieties of keys."]]});

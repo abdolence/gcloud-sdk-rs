@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BadLocationReason","The reason why the playable location is considered bad."]]});

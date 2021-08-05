@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FeaturestoreOnlineServingServiceClient","A service for serving online feature values."]]});

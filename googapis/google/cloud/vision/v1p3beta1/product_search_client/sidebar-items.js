@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ProductSearchClient","Manages Products and ProductSets of reference images for use in product search. It uses the following resource model:"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Value","Value of this time series data point."]]});

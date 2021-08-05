@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["fallback_info","Nested message and enum types in `FallbackInfo`."]],"struct":[["FallbackInfo","Encapsulates fallback info for ComputeCustomRoutes. ComputeCustomRoutes performs two types of fallbacks:"]]});

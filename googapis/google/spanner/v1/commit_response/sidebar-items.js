@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CommitStats","Additional statistics about a commit."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["locations_client","Generated client implementations."]],"struct":[["GetLocationRequest","The request message for [Locations.GetLocation][google.cloud.location.Locations.GetLocation]."],["ListLocationsRequest","The request message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations]."],["ListLocationsResponse","The response message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations]."],["Location","A resource that represents Google Cloud Platform location."]]});

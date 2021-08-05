@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SharedCriterionServiceClient","Service to manage shared criteria."]]});

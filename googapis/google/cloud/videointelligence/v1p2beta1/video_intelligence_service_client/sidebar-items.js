@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VideoIntelligenceServiceClient","Service that implements Google Cloud Video Intelligence API."]]});

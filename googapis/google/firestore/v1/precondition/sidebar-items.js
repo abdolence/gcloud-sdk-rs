@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConditionType","The type of precondition."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DerivedInfo","Derived details about the company."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RoutingType","Types of VPN routing policy. For details, refer to Networks and Tunnel routing."]]});

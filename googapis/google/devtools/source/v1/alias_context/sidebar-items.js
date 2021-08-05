@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Kind","The type of an Alias."]]});

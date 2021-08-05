@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FrequencyCapTimeUnit","Unit of time the cap is defined at (e.g. day, week)."]]});

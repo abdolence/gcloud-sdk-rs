@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["JobsV1Beta3Client","Provides a method to create and modify Google Cloud Dataflow jobs. A Job is a multi-stage computation graph run by the Cloud Dataflow service."]]});

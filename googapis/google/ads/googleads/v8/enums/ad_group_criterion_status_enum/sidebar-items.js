@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AdGroupCriterionStatus","The possible statuses of an AdGroupCriterion."]]});

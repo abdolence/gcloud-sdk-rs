@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TestType","Either a TestCase of a TestSuite"]]});

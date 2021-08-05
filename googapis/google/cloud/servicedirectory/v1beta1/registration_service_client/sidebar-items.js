@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegistrationServiceClient","Service Directory API for registering services. It defines the following resource model:"]]});

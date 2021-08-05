@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MetadataSchemaType","Describes the type of the MetadataSchema."]]});

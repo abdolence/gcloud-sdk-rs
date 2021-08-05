@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["KeywordViewServiceClient","Service to manage keyword views."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Schema","The schema for the read. If read_options.selected_fields is set, the schema may be different from the table schema as it will only contain the selected fields."]],"struct":[["TableModifiers","Additional attributes when reading a table."],["TableReadOptions","Options dictating how we read a table."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["transcript_segment","Nested message and enum types in `TranscriptSegment`."]],"struct":[["TranscriptSegment","A segment of a full transcript."]]});

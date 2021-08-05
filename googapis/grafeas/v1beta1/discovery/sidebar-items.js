@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["discovered","Nested message and enum types in `Discovered`."]],"struct":[["Details","Details of a discovery occurrence."],["Discovered","Provides information about the analysis status of a discovered resource."],["Discovery","A note that indicates a type of analysis a provider would perform. This note exists in a provider’s project. A `Discovery` occurrence is created in a consumer’s project at the start of analysis."]]});

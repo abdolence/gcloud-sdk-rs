@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AssetValidationState","Possible validation steates of an asset reference."],["Source","The destination of the asset."]]});

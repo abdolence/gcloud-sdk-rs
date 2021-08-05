@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PublicAccessPrevention","Public Access Prevention config values."]],"struct":[["UniformBucketLevelAccess","Settings for Uniform Bucket level access. See https://cloud.google.com/storage/docs/uniform-bucket-level-access."]]});

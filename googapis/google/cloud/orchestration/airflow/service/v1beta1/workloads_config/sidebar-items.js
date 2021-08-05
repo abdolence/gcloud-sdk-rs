@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SchedulerResource","Configuration for resources used by Airflow schedulers."],["WebServerResource","Configuration for resources used by Airflow web server."],["WorkerResource","Configuration for resources used by Airflow workers."]]});

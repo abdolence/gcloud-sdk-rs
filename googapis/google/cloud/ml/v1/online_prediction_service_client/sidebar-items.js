@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["OnlinePredictionServiceClient","The Prediction API, which serves predictions for models managed by ModelService."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BudgetAmount","Specification for what amount to use as the budget."]]});

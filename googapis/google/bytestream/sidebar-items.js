@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["byte_stream_client","Generated client implementations."]],"struct":[["QueryWriteStatusRequest","Request object for ByteStream.QueryWriteStatus."],["QueryWriteStatusResponse","Response object for ByteStream.QueryWriteStatus."],["ReadRequest","Request object for ByteStream.Read."],["ReadResponse","Response object for ByteStream.Read."],["WriteRequest","Request object for ByteStream.Write."],["WriteResponse","Response object for ByteStream.Write."]]});

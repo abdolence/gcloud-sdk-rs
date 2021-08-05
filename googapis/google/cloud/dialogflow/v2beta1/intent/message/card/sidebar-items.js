@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Button","Optional. Contains information about a button."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GkeHubClient","The GKE Hub service handles the registration of many Kubernetes clusters to Google Cloud, and the management of multi-cluster features over those clusters."]]});

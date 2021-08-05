@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AcceleratorType","Each type represents an Accelerator (Add-On) supported by Cloud Data Fusion service."],["State","Different values possible for the state of an accelerator"]]});

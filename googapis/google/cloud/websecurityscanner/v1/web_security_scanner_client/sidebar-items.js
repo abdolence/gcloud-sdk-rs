@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WebSecurityScannerClient","Web Security Scanner Service identifies security vulnerabilities in web applications hosted on Google Cloud. It crawls your application, and attempts to exercise as many user inputs and event handlers as possible."]]});

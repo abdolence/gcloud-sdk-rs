@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["LocationType","LocationType is the type of GKE location, regional or zonal."]]});

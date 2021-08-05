@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Decision","The current decision on the approval request."]]});

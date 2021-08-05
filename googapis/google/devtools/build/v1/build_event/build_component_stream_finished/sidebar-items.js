@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FinishType","How did the event stream finish."]]});

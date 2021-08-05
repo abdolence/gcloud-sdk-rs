@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Credential","Credential specific to the underlying data source."]]});

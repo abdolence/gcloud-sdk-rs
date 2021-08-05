@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["OpenUriAction","Opens the given URI."]]});

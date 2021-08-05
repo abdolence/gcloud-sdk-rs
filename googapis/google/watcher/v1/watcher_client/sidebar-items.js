@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WatcherClient","The service that a client uses to connect to the watcher system. The errors returned by the service are in the canonical error space, see [google.rpc.Code][]."]]});

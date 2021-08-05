@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PricingModel","Pricing model applicable to this support account."],["State","The current state of this SupportAccount."]]});

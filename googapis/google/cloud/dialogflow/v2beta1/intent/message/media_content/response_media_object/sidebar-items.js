@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Image","Image to show with the media card."]]});

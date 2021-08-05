@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MessageType","Required. The message to send to the worker."],["View","The view specifies a subset of [Task][google.cloud.tasks.v2.Task] data."]]});

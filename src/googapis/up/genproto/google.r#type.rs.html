@@ -1,0 +1,1709 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.r#type.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.r#type.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+</pre><pre class="rust">
+<span class="doccomment">/// An object that represents a latitude/longitude pair. This is expressed as a</span>
+<span class="doccomment">/// pair of doubles to represent degrees latitude and degrees longitude. Unless</span>
+<span class="doccomment">/// specified otherwise, this must conform to the</span>
+<span class="doccomment">/// &lt;a href=&quot;http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf&quot;&gt;WGS84</span>
+<span class="doccomment">/// standard&lt;/a&gt;. Values must be within normalized ranges.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LatLng</span> {
+    <span class="doccomment">/// The latitude in degrees. It must be in the range [-90.0, +90.0].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">latitude</span>: <span class="ident">f64</span>,
+    <span class="doccomment">/// The longitude in degrees. It must be in the range [-180.0, +180.0].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">longitude</span>: <span class="ident">f64</span>,
+}
+<span class="doccomment">/// Represents a whole or partial calendar date, such as a birthday. The time of</span>
+<span class="doccomment">/// day and time zone are either specified elsewhere or are insignificant. The</span>
+<span class="doccomment">/// date is relative to the Gregorian Calendar. This can represent one of the</span>
+<span class="doccomment">/// following:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * A full date, with non-zero year, month, and day values</span>
+<span class="doccomment">/// * A month and day value, with a zero year, such as an anniversary</span>
+<span class="doccomment">/// * A year on its own, with zero month and day values</span>
+<span class="doccomment">/// * A year and month value, with a zero day, such as a credit card expiration</span>
+<span class="doccomment">/// date</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Related types are [google.type.TimeOfDay][google.type.TimeOfDay] and</span>
+<span class="doccomment">/// `google.protobuf.Timestamp`.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Date</span> {
+    <span class="doccomment">/// Year of the date. Must be from 1 to 9999, or 0 to specify a date without</span>
+    <span class="doccomment">/// a year.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">year</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Month of a year. Must be from 1 to 12, or 0 to specify a year without a</span>
+    <span class="doccomment">/// month and day.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">month</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0</span>
+    <span class="doccomment">/// to specify a year by itself or a year and month where the day isn&#39;t</span>
+    <span class="doccomment">/// significant.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">day</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Represents civil time (or occasionally physical time).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This type can represent a civil time in one of a few possible ways:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///  * When utc_offset is set and time_zone is unset: a civil time on a calendar</span>
+<span class="doccomment">///    day with a particular offset from UTC.</span>
+<span class="doccomment">///  * When time_zone is set and utc_offset is unset: a civil time on a calendar</span>
+<span class="doccomment">///    day in a particular time zone.</span>
+<span class="doccomment">///  * When neither time_zone nor utc_offset is set: a civil time on a calendar</span>
+<span class="doccomment">///    day in local time.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The date is relative to the Proleptic Gregorian Calendar.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If year is 0, the DateTime is considered not to have a specific year. month</span>
+<span class="doccomment">/// and day must have valid, non-zero values.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This type may also be used to represent a physical time if all the date and</span>
+<span class="doccomment">/// time fields are set and either case of the `time_offset` oneof is set.</span>
+<span class="doccomment">/// Consider using `Timestamp` message for physical time instead. If your use</span>
+<span class="doccomment">/// case also would like to store the user&#39;s timezone, that can be done in</span>
+<span class="doccomment">/// another field.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This type is more flexible than some applications may want. Make sure to</span>
+<span class="doccomment">/// document and validate your application&#39;s limitations.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DateTime</span> {
+    <span class="doccomment">/// Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a</span>
+    <span class="doccomment">/// datetime without a year.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">year</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. Month of year. Must be from 1 to 12.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">month</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. Day of month. Must be from 1 to 31 and valid for the year and</span>
+    <span class="doccomment">/// month.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">day</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. Hours of day in 24 hour format. Should be from 0 to 23. An API</span>
+    <span class="doccomment">/// may choose to allow the value &quot;24:00:00&quot; for scenarios like business</span>
+    <span class="doccomment">/// closing time.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">hours</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. Minutes of hour of day. Must be from 0 to 59.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">minutes</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. Seconds of minutes of the time. Must normally be from 0 to 59. An</span>
+    <span class="doccomment">/// API may allow the value 60 if it allows leap-seconds.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">seconds</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. Fractions of seconds in nanoseconds. Must be from 0 to</span>
+    <span class="doccomment">/// 999,999,999.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">nanos</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Optional. Specifies either the UTC offset or the time zone of the DateTime.</span>
+    <span class="doccomment">/// Choose carefully between them, considering that time zone data may change</span>
+    <span class="doccomment">/// in the future (for example, a country modifies their DST start/end dates,</span>
+    <span class="doccomment">/// and future DateTimes in the affected range had already been stored).</span>
+    <span class="doccomment">/// If omitted, the DateTime is considered to be in local time.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;date_time::TimeOffset&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;8, 9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">time_offset</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">date_time::TimeOffset</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `DateTime`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">date_time</span> {
+    <span class="doccomment">/// Optional. Specifies either the UTC offset or the time zone of the DateTime.</span>
+    <span class="doccomment">/// Choose carefully between them, considering that time zone data may change</span>
+    <span class="doccomment">/// in the future (for example, a country modifies their DST start/end dates,</span>
+    <span class="doccomment">/// and future DateTimes in the affected range had already been stored).</span>
+    <span class="doccomment">/// If omitted, the DateTime is considered to be in local time.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TimeOffset</span> {
+        <span class="doccomment">/// UTC offset. Must be whole seconds, between -18 hours and +18 hours.</span>
+        <span class="doccomment">/// For example, a UTC offset of -4:00 would be represented as</span>
+        <span class="doccomment">/// { seconds: -14400 }.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+        <span class="ident">UtcOffset</span>(<span class="ident">::prost_types::Duration</span>),
+        <span class="doccomment">/// Time zone.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+        <span class="ident">TimeZone</span>(<span class="kw">super</span><span class="ident">::TimeZone</span>),
+    }
+}
+<span class="doccomment">/// Represents a time zone from the</span>
+<span class="doccomment">/// [IANA Time Zone Database](https://www.iana.org/time-zones).</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TimeZone</span> {
+    <span class="doccomment">/// IANA Time Zone Database time zone, e.g. &quot;America/New_York&quot;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. IANA Time Zone Database version number, e.g. &quot;2019a&quot;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Represents a textual expression in the Common Expression Language (CEL)</span>
+<span class="doccomment">/// syntax. CEL is a C-like expression language. The syntax and semantics of CEL</span>
+<span class="doccomment">/// are documented at https://github.com/google/cel-spec.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example (Comparison):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     title: &quot;Summary size limit&quot;</span>
+<span class="doccomment">///     description: &quot;Determines if a summary is less than 100 chars&quot;</span>
+<span class="doccomment">///     expression: &quot;document.summary.size() &lt; 100&quot;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example (Equality):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     title: &quot;Requestor is owner&quot;</span>
+<span class="doccomment">///     description: &quot;Determines if requestor is the document owner&quot;</span>
+<span class="doccomment">///     expression: &quot;document.owner == request.auth.claims.email&quot;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example (Logic):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     title: &quot;Public documents&quot;</span>
+<span class="doccomment">///     description: &quot;Determine whether the document should be publicly visible&quot;</span>
+<span class="doccomment">///     expression: &quot;document.type != &#39;private&#39; &amp;&amp; document.type != &#39;internal&#39;&quot;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example (Data Manipulation):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     title: &quot;Notification string&quot;</span>
+<span class="doccomment">///     description: &quot;Create a notification string with a timestamp.&quot;</span>
+<span class="doccomment">///     expression: &quot;&#39;New message received at &#39; + string(document.create_time)&quot;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The exact variables and functions that may be referenced within an expression</span>
+<span class="doccomment">/// are determined by the service that evaluates it. See the service</span>
+<span class="doccomment">/// documentation for additional information.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Expr</span> {
+    <span class="doccomment">/// Textual representation of an expression in Common Expression Language</span>
+    <span class="doccomment">/// syntax.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">expression</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Title for the expression, i.e. a short string describing</span>
+    <span class="doccomment">/// its purpose. This can be used e.g. in UIs which allow to enter the</span>
+    <span class="doccomment">/// expression.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Description of the expression. This is a longer text which</span>
+    <span class="doccomment">/// describes the expression, e.g. when hovered over it in a UI.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. String indicating the location of the expression for error</span>
+    <span class="doccomment">/// reporting, e.g. a file name and a position in the file.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Represents an amount of money with its currency type.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Money</span> {
+    <span class="doccomment">/// The three-letter currency code defined in ISO 4217.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">currency_code</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The whole units of the amount.</span>
+    <span class="doccomment">/// For example if `currencyCode` is `&quot;USD&quot;`, then 1 unit is one US dollar.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">units</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// Number of nano (10^-9) units of the amount.</span>
+    <span class="doccomment">/// The value must be between -999,999,999 and +999,999,999 inclusive.</span>
+    <span class="doccomment">/// If `units` is positive, `nanos` must be positive or zero.</span>
+    <span class="doccomment">/// If `units` is zero, `nanos` can be positive, zero, or negative.</span>
+    <span class="doccomment">/// If `units` is negative, `nanos` must be negative or zero.</span>
+    <span class="doccomment">/// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">nanos</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Represents a color in the RGBA color space. This representation is designed</span>
+<span class="doccomment">/// for simplicity of conversion to/from color representations in various</span>
+<span class="doccomment">/// languages over compactness. For example, the fields of this representation</span>
+<span class="doccomment">/// can be trivially provided to the constructor of `java.awt.Color` in Java; it</span>
+<span class="doccomment">/// can also be trivially provided to UIColor&#39;s `+colorWithRed:green:blue:alpha`</span>
+<span class="doccomment">/// method in iOS; and, with just a little work, it can be easily formatted into</span>
+<span class="doccomment">/// a CSS `rgba()` string in JavaScript.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This reference page doesn&#39;t carry information about the absolute color</span>
+<span class="doccomment">/// space</span>
+<span class="doccomment">/// that should be used to interpret the RGB value (e.g. sRGB, Adobe RGB,</span>
+<span class="doccomment">/// DCI-P3, BT.2020, etc.). By default, applications should assume the sRGB color</span>
+<span class="doccomment">/// space.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// When color equality needs to be decided, implementations, unless</span>
+<span class="doccomment">/// documented otherwise, treat two colors as equal if all their red,</span>
+<span class="doccomment">/// green, blue, and alpha values each differ by at most 1e-5.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example (Java):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///      import com.google.type.Color;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///      // ...</span>
+<span class="doccomment">///      public static java.awt.Color fromProto(Color protocolor) {</span>
+<span class="doccomment">///        float alpha = protocolor.hasAlpha()</span>
+<span class="doccomment">///            ? protocolor.getAlpha().getValue()</span>
+<span class="doccomment">///            : 1.0;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///        return new java.awt.Color(</span>
+<span class="doccomment">///            protocolor.getRed(),</span>
+<span class="doccomment">///            protocolor.getGreen(),</span>
+<span class="doccomment">///            protocolor.getBlue(),</span>
+<span class="doccomment">///            alpha);</span>
+<span class="doccomment">///      }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///      public static Color toProto(java.awt.Color color) {</span>
+<span class="doccomment">///        float red = (float) color.getRed();</span>
+<span class="doccomment">///        float green = (float) color.getGreen();</span>
+<span class="doccomment">///        float blue = (float) color.getBlue();</span>
+<span class="doccomment">///        float denominator = 255.0;</span>
+<span class="doccomment">///        Color.Builder resultBuilder =</span>
+<span class="doccomment">///            Color</span>
+<span class="doccomment">///                .newBuilder()</span>
+<span class="doccomment">///                .setRed(red / denominator)</span>
+<span class="doccomment">///                .setGreen(green / denominator)</span>
+<span class="doccomment">///                .setBlue(blue / denominator);</span>
+<span class="doccomment">///        int alpha = color.getAlpha();</span>
+<span class="doccomment">///        if (alpha != 255) {</span>
+<span class="doccomment">///          result.setAlpha(</span>
+<span class="doccomment">///              FloatValue</span>
+<span class="doccomment">///                  .newBuilder()</span>
+<span class="doccomment">///                  .setValue(((float) alpha) / denominator)</span>
+<span class="doccomment">///                  .build());</span>
+<span class="doccomment">///        }</span>
+<span class="doccomment">///        return resultBuilder.build();</span>
+<span class="doccomment">///      }</span>
+<span class="doccomment">///      // ...</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example (iOS / Obj-C):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///      // ...</span>
+<span class="doccomment">///      static UIColor* fromProto(Color* protocolor) {</span>
+<span class="doccomment">///         float red = [protocolor red];</span>
+<span class="doccomment">///         float green = [protocolor green];</span>
+<span class="doccomment">///         float blue = [protocolor blue];</span>
+<span class="doccomment">///         FloatValue* alpha_wrapper = [protocolor alpha];</span>
+<span class="doccomment">///         float alpha = 1.0;</span>
+<span class="doccomment">///         if (alpha_wrapper != nil) {</span>
+<span class="doccomment">///           alpha = [alpha_wrapper value];</span>
+<span class="doccomment">///         }</span>
+<span class="doccomment">///         return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];</span>
+<span class="doccomment">///      }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///      static Color* toProto(UIColor* color) {</span>
+<span class="doccomment">///          CGFloat red, green, blue, alpha;</span>
+<span class="doccomment">///          if (![color getRed:&amp;red green:&amp;green blue:&amp;blue alpha:&amp;alpha]) {</span>
+<span class="doccomment">///            return nil;</span>
+<span class="doccomment">///          }</span>
+<span class="doccomment">///          Color* result = [[Color alloc] init];</span>
+<span class="doccomment">///          [result setRed:red];</span>
+<span class="doccomment">///          [result setGreen:green];</span>
+<span class="doccomment">///          [result setBlue:blue];</span>
+<span class="doccomment">///          if (alpha &lt;= 0.9999) {</span>
+<span class="doccomment">///            [result setAlpha:floatWrapperWithValue(alpha)];</span>
+<span class="doccomment">///          }</span>
+<span class="doccomment">///          [result autorelease];</span>
+<span class="doccomment">///          return result;</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">///     // ...</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///  Example (JavaScript):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     // ...</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     var protoToCssColor = function(rgb_color) {</span>
+<span class="doccomment">///        var redFrac = rgb_color.red || 0.0;</span>
+<span class="doccomment">///        var greenFrac = rgb_color.green || 0.0;</span>
+<span class="doccomment">///        var blueFrac = rgb_color.blue || 0.0;</span>
+<span class="doccomment">///        var red = Math.floor(redFrac * 255);</span>
+<span class="doccomment">///        var green = Math.floor(greenFrac * 255);</span>
+<span class="doccomment">///        var blue = Math.floor(blueFrac * 255);</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///        if (!(&#39;alpha&#39; in rgb_color)) {</span>
+<span class="doccomment">///           return rgbToCssColor(red, green, blue);</span>
+<span class="doccomment">///        }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///        var alphaFrac = rgb_color.alpha.value || 0.0;</span>
+<span class="doccomment">///        var rgbParams = [red, green, blue].join(&#39;,&#39;);</span>
+<span class="doccomment">///        return [&#39;rgba(&#39;, rgbParams, &#39;,&#39;, alphaFrac, &#39;)&#39;].join(&#39;&#39;);</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     var rgbToCssColor = function(red, green, blue) {</span>
+<span class="doccomment">///       var rgbNumber = new Number((red &lt;&lt; 16) | (green &lt;&lt; 8) | blue);</span>
+<span class="doccomment">///       var hexString = rgbNumber.toString(16);</span>
+<span class="doccomment">///       var missingZeros = 6 - hexString.length;</span>
+<span class="doccomment">///       var resultBuilder = [&#39;#&#39;];</span>
+<span class="doccomment">///       for (var i = 0; i &lt; missingZeros; i++) {</span>
+<span class="doccomment">///          resultBuilder.push(&#39;0&#39;);</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       resultBuilder.push(hexString);</span>
+<span class="doccomment">///       return resultBuilder.join(&#39;&#39;);</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     // ...</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Color</span> {
+    <span class="doccomment">/// The amount of red in the color as a value in the interval [0, 1].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">red</span>: <span class="ident">f32</span>,
+    <span class="doccomment">/// The amount of green in the color as a value in the interval [0, 1].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">green</span>: <span class="ident">f32</span>,
+    <span class="doccomment">/// The amount of blue in the color as a value in the interval [0, 1].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">blue</span>: <span class="ident">f32</span>,
+    <span class="doccomment">/// The fraction of this color that should be applied to the pixel. That is,</span>
+    <span class="doccomment">/// the final pixel color is defined by the equation:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   `pixel color = alpha * (this color) + (1.0 - alpha) * (background color)`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This means that a value of 1.0 corresponds to a solid color, whereas</span>
+    <span class="doccomment">/// a value of 0.0 corresponds to a completely transparent color. This</span>
+    <span class="doccomment">/// uses a wrapper message rather than a simple float scalar so that it is</span>
+    <span class="doccomment">/// possible to distinguish between a default value and the value being unset.</span>
+    <span class="doccomment">/// If omitted, this color object is rendered as a solid color</span>
+    <span class="doccomment">/// (as if the alpha value had been explicitly given a value of 1.0).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">alpha</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Represents a postal address, e.g. for postal delivery or payments addresses.</span>
+<span class="doccomment">/// Given a postal address, a postal service can deliver items to a premise, P.O.</span>
+<span class="doccomment">/// Box or similar.</span>
+<span class="doccomment">/// It is not intended to model geographical locations (roads, towns,</span>
+<span class="doccomment">/// mountains).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In typical usage an address would be created via user input or from importing</span>
+<span class="doccomment">/// existing data, depending on the type of process.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Advice on address input / editing:</span>
+<span class="doccomment">///  - Use an i18n-ready address widget such as</span>
+<span class="doccomment">///    https://github.com/google/libaddressinput)</span>
+<span class="doccomment">/// - Users should not be presented with UI elements for input or editing of</span>
+<span class="doccomment">///   fields outside countries where that field is used.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For more guidance on how to use this schema, please see:</span>
+<span class="doccomment">/// https://support.google.com/business/answer/6397478</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PostalAddress</span> {
+    <span class="doccomment">/// The schema revision of the `PostalAddress`. This must be set to 0, which is</span>
+    <span class="doccomment">/// the latest revision.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// All new revisions **must** be backward compatible with old revisions.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">revision</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Required. CLDR region code of the country/region of the address. This</span>
+    <span class="doccomment">/// is never inferred and it is up to the user to ensure the value is</span>
+    <span class="doccomment">/// correct. See http://cldr.unicode.org/ and</span>
+    <span class="doccomment">/// http://www.unicode.org/cldr/charts/30/supplemental/territory_information.html</span>
+    <span class="doccomment">/// for details. Example: &quot;CH&quot; for Switzerland.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">region_code</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. BCP-47 language code of the contents of this address (if</span>
+    <span class="doccomment">/// known). This is often the UI language of the input form or is expected</span>
+    <span class="doccomment">/// to match one of the languages used in the address&#39; country/region, or their</span>
+    <span class="doccomment">/// transliterated equivalents.</span>
+    <span class="doccomment">/// This can affect formatting in certain countries, but is not critical</span>
+    <span class="doccomment">/// to the correctness of the data and will never affect any validation or</span>
+    <span class="doccomment">/// other non-formatting related operations.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If this value is not known, it should be omitted (rather than specifying a</span>
+    <span class="doccomment">/// possibly incorrect default).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Examples: &quot;zh-Hant&quot;, &quot;ja&quot;, &quot;ja-Latn&quot;, &quot;en&quot;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Postal code of the address. Not all countries use or require</span>
+    <span class="doccomment">/// postal codes to be present, but where they are used, they may trigger</span>
+    <span class="doccomment">/// additional validation with other parts of the address (e.g. state/zip</span>
+    <span class="doccomment">/// validation in the U.S.A.).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">postal_code</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Additional, country-specific, sorting code. This is not used</span>
+    <span class="doccomment">/// in most regions. Where it is used, the value is either a string like</span>
+    <span class="doccomment">/// &quot;CEDEX&quot;, optionally followed by a number (e.g. &quot;CEDEX 7&quot;), or just a number</span>
+    <span class="doccomment">/// alone, representing the &quot;sector code&quot; (Jamaica), &quot;delivery area indicator&quot;</span>
+    <span class="doccomment">/// (Malawi) or &quot;post office indicator&quot; (e.g. Côte d&#39;Ivoire).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">sorting_code</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Highest administrative subdivision which is used for postal</span>
+    <span class="doccomment">/// addresses of a country or region.</span>
+    <span class="doccomment">/// For example, this can be a state, a province, an oblast, or a prefecture.</span>
+    <span class="doccomment">/// Specifically, for Spain this is the province and not the autonomous</span>
+    <span class="doccomment">/// community (e.g. &quot;Barcelona&quot; and not &quot;Catalonia&quot;).</span>
+    <span class="doccomment">/// Many countries don&#39;t use an administrative area in postal addresses. E.g.</span>
+    <span class="doccomment">/// in Switzerland this should be left unpopulated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">administrative_area</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Generally refers to the city/town portion of the address.</span>
+    <span class="doccomment">/// Examples: US city, IT comune, UK post town.</span>
+    <span class="doccomment">/// In regions of the world where localities are not well defined or do not fit</span>
+    <span class="doccomment">/// into this structure well, leave locality empty and use address_lines.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">locality</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Sublocality of the address.</span>
+    <span class="doccomment">/// For example, this can be neighborhoods, boroughs, districts.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">sublocality</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Unstructured address lines describing the lower levels of an address.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Because values in address_lines do not have type information and may</span>
+    <span class="doccomment">/// sometimes contain multiple values in a single field (e.g.</span>
+    <span class="doccomment">/// &quot;Austin, TX&quot;), it is important that the line order is clear. The order of</span>
+    <span class="doccomment">/// address lines should be &quot;envelope order&quot; for the country/region of the</span>
+    <span class="doccomment">/// address. In places where this can vary (e.g. Japan), address_language is</span>
+    <span class="doccomment">/// used to make it explicit (e.g. &quot;ja&quot; for large-to-small ordering and</span>
+    <span class="doccomment">/// &quot;ja-Latn&quot; or &quot;en&quot; for small-to-large). This way, the most specific line of</span>
+    <span class="doccomment">/// an address can be selected based on the language.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The minimum permitted structural representation of an address consists</span>
+    <span class="doccomment">/// of a region_code with all remaining information placed in the</span>
+    <span class="doccomment">/// address_lines. It would be possible to format such an address very</span>
+    <span class="doccomment">/// approximately without geocoding, but no semantic reasoning could be</span>
+    <span class="doccomment">/// made about any of the address components until it was at least</span>
+    <span class="doccomment">/// partially resolved.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Creating an address only containing a region_code and address_lines, and</span>
+    <span class="doccomment">/// then geocoding is the recommended way to handle completely unstructured</span>
+    <span class="doccomment">/// addresses (as opposed to guessing which parts of the address should be</span>
+    <span class="doccomment">/// localities or administrative areas).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">address_lines</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. The recipient at the address.</span>
+    <span class="doccomment">/// This field may, under certain circumstances, contain multiline information.</span>
+    <span class="doccomment">/// For example, it might contain &quot;care of&quot; information.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">recipients</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. The name of the organization at the address.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">organization</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Represents a day of the week.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DayOfWeek</span> {
+    <span class="doccomment">/// The day of the week is unspecified.</span>
+    <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="doccomment">/// Monday</span>
+    <span class="ident">Monday</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="doccomment">/// Tuesday</span>
+    <span class="ident">Tuesday</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="doccomment">/// Wednesday</span>
+    <span class="ident">Wednesday</span> <span class="op">=</span> <span class="number">3</span>,
+    <span class="doccomment">/// Thursday</span>
+    <span class="ident">Thursday</span> <span class="op">=</span> <span class="number">4</span>,
+    <span class="doccomment">/// Friday</span>
+    <span class="ident">Friday</span> <span class="op">=</span> <span class="number">5</span>,
+    <span class="doccomment">/// Saturday</span>
+    <span class="ident">Saturday</span> <span class="op">=</span> <span class="number">6</span>,
+    <span class="doccomment">/// Sunday</span>
+    <span class="ident">Sunday</span> <span class="op">=</span> <span class="number">7</span>,
+}
+<span class="doccomment">/// Represents a time of day. The date and time zone are either not significant</span>
+<span class="doccomment">/// or are specified elsewhere. An API may choose to allow leap seconds. Related</span>
+<span class="doccomment">/// types are [google.type.Date][google.type.Date] and</span>
+<span class="doccomment">/// `google.protobuf.Timestamp`.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TimeOfDay</span> {
+    <span class="doccomment">/// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose</span>
+    <span class="doccomment">/// to allow the value &quot;24:00:00&quot; for scenarios like business closing time.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">hours</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Minutes of hour of day. Must be from 0 to 59.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">minutes</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Seconds of minutes of the time. Must normally be from 0 to 59. An API may</span>
+    <span class="doccomment">/// allow the value 60 if it allows leap-seconds.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">seconds</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">nanos</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// A `CalendarPeriod` represents the abstract concept of a time period that has</span>
+<span class="doccomment">/// a canonical start. Grammatically, &quot;the start of the current</span>
+<span class="doccomment">/// `CalendarPeriod`.&quot; All calendar times begin at midnight UTC.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CalendarPeriod</span> {
+    <span class="doccomment">/// Undefined period, raises an error.</span>
+    <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="doccomment">/// A day.</span>
+    <span class="ident">Day</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="doccomment">/// A week. Weeks begin on Monday, following</span>
+    <span class="doccomment">/// [ISO 8601](https://en.wikipedia.org/wiki/ISO_week_date).</span>
+    <span class="ident">Week</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="doccomment">/// A fortnight. The first calendar fortnight of the year begins at the start</span>
+    <span class="doccomment">/// of week 1 according to</span>
+    <span class="doccomment">/// [ISO 8601](https://en.wikipedia.org/wiki/ISO_week_date).</span>
+    <span class="ident">Fortnight</span> <span class="op">=</span> <span class="number">3</span>,
+    <span class="doccomment">/// A month.</span>
+    <span class="ident">Month</span> <span class="op">=</span> <span class="number">4</span>,
+    <span class="doccomment">/// A quarter. Quarters start on dates 1-Jan, 1-Apr, 1-Jul, and 1-Oct of each</span>
+    <span class="doccomment">/// year.</span>
+    <span class="ident">Quarter</span> <span class="op">=</span> <span class="number">5</span>,
+    <span class="doccomment">/// A half-year. Half-years start on dates 1-Jan and 1-Jul.</span>
+    <span class="ident">Half</span> <span class="op">=</span> <span class="number">6</span>,
+    <span class="doccomment">/// A year.</span>
+    <span class="ident">Year</span> <span class="op">=</span> <span class="number">7</span>,
+}
+<span class="doccomment">/// A representation of a decimal value, such as 2.5. Clients may convert values</span>
+<span class="doccomment">/// into language-native decimal formats, such as Java&#39;s [BigDecimal][] or</span>
+<span class="doccomment">/// Python&#39;s [decimal.Decimal][].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [BigDecimal]:</span>
+<span class="doccomment">/// https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html</span>
+<span class="doccomment">/// [decimal.Decimal]: https://docs.python.org/3/library/decimal.html</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Decimal</span> {
+    <span class="doccomment">/// The decimal value, as a string.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The string representation consists of an optional sign, `+` (`U+002B`)</span>
+    <span class="doccomment">/// or `-` (`U+002D`), followed by a sequence of zero or more decimal digits</span>
+    <span class="doccomment">/// (&quot;the integer&quot;), optionally followed by a fraction, optionally followed</span>
+    <span class="doccomment">/// by an exponent.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The fraction consists of a decimal point followed by zero or more decimal</span>
+    <span class="doccomment">/// digits. The string must contain at least one digit in either the integer</span>
+    <span class="doccomment">/// or the fraction. The number formed by the sign, the integer and the</span>
+    <span class="doccomment">/// fraction is referred to as the significand.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The exponent consists of the character `e` (`U+0065`) or `E` (`U+0045`)</span>
+    <span class="doccomment">/// followed by one or more decimal digits.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Services **should** normalize decimal values before storing them by:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///   - Removing an explicitly-provided `+` sign (`+2.5` -&gt; `2.5`).</span>
+    <span class="doccomment">///   - Replacing a zero-length integer value with `0` (`.5` -&gt; `0.5`).</span>
+    <span class="doccomment">///   - Coercing the exponent character to lower-case (`2.5E8` -&gt; `2.5e8`).</span>
+    <span class="doccomment">///   - Removing an explicitly-provided zero exponent (`2.5e0` -&gt; `2.5`).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Services **may** perform additional normalization based on its own needs</span>
+    <span class="doccomment">/// and the internal decimal implementation selected, such as shifting the</span>
+    <span class="doccomment">/// decimal point and exponent value together (example: `2.5e-1` &lt;-&gt; `0.25`).</span>
+    <span class="doccomment">/// Additionally, services **may** preserve trailing zeroes in the fraction</span>
+    <span class="doccomment">/// to indicate increased precision, but are not required to do so.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that only the `.` character is supported to divide the integer</span>
+    <span class="doccomment">/// and the fraction; `,` **should not** be supported regardless of locale.</span>
+    <span class="doccomment">/// Additionally, thousand separators **should not** be supported. If a</span>
+    <span class="doccomment">/// service does support them, values **must** be normalized.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The ENBF grammar is:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     DecimalString =</span>
+    <span class="doccomment">///       [Sign] Significand [Exponent];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     Sign = &#39;+&#39; | &#39;-&#39;;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     Significand =</span>
+    <span class="doccomment">///       Digits [&#39;.&#39;] [Digits] | [Digits] &#39;.&#39; Digits;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     Exponent = (&#39;e&#39; | &#39;E&#39;) [Sign] Digits;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     Digits = { &#39;0&#39; | &#39;1&#39; | &#39;2&#39; | &#39;3&#39; | &#39;4&#39; | &#39;5&#39; | &#39;6&#39; | &#39;7&#39; | &#39;8&#39; | &#39;9&#39; };</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Services **should** clearly document the range of supported values, the</span>
+    <span class="doccomment">/// maximum supported precision (total number of digits), and, if applicable,</span>
+    <span class="doccomment">/// the scale (number of digits after the decimal point), as well as how it</span>
+    <span class="doccomment">/// behaves when receiving out-of-bounds values.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Services **may** choose to accept values passed as input even when the</span>
+    <span class="doccomment">/// value has a higher precision or scale than the service supports, and</span>
+    <span class="doccomment">/// **should** round the value to fit the supported scale. Alternatively, the</span>
+    <span class="doccomment">/// service **may** error with `400 Bad Request` (`INVALID_ARGUMENT` in gRPC)</span>
+    <span class="doccomment">/// if precision would be lost.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Services **should** error with `400 Bad Request` (`INVALID_ARGUMENT` in</span>
+    <span class="doccomment">/// gRPC) if the service receives a value outside of the supported range.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Represents a fraction in terms of a numerator divided by a denominator.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Fraction</span> {
+    <span class="doccomment">/// The numerator in the fraction, e.g. 2 in 2/3.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">numerator</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// The value by which the numerator is divided, e.g. 3 in 2/3. Must be</span>
+    <span class="doccomment">/// positive.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">denominator</span>: <span class="ident">i64</span>,
+}
+<span class="doccomment">/// Represents a time interval, encoded as a Timestamp start (inclusive) and a</span>
+<span class="doccomment">/// Timestamp end (exclusive).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The start must be less than or equal to the end.</span>
+<span class="doccomment">/// When the start equals the end, the interval is empty (matches no time).</span>
+<span class="doccomment">/// When both start and end are unspecified, the interval matches any time.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Interval</span> {
+    <span class="doccomment">/// Optional. Inclusive start of the interval.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If specified, a Timestamp matching this interval will have to be the same</span>
+    <span class="doccomment">/// or after the start.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">start_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Exclusive end of the interval.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If specified, a Timestamp matching this interval will have to be before the</span>
+    <span class="doccomment">/// end.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Localized variant of a text in a particular language.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LocalizedText</span> {
+    <span class="doccomment">/// Localized string in the language corresponding to `language_code&#39; below.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The text&#39;s BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For more information, see</span>
+    <span class="doccomment">/// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Represents a month in the Gregorian calendar.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Month</span> {
+    <span class="doccomment">/// The unspecified month.</span>
+    <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="doccomment">/// The month of January.</span>
+    <span class="ident">January</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="doccomment">/// The month of February.</span>
+    <span class="ident">February</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="doccomment">/// The month of March.</span>
+    <span class="ident">March</span> <span class="op">=</span> <span class="number">3</span>,
+    <span class="doccomment">/// The month of April.</span>
+    <span class="ident">April</span> <span class="op">=</span> <span class="number">4</span>,
+    <span class="doccomment">/// The month of May.</span>
+    <span class="ident">May</span> <span class="op">=</span> <span class="number">5</span>,
+    <span class="doccomment">/// The month of June.</span>
+    <span class="ident">June</span> <span class="op">=</span> <span class="number">6</span>,
+    <span class="doccomment">/// The month of July.</span>
+    <span class="ident">July</span> <span class="op">=</span> <span class="number">7</span>,
+    <span class="doccomment">/// The month of August.</span>
+    <span class="ident">August</span> <span class="op">=</span> <span class="number">8</span>,
+    <span class="doccomment">/// The month of September.</span>
+    <span class="ident">September</span> <span class="op">=</span> <span class="number">9</span>,
+    <span class="doccomment">/// The month of October.</span>
+    <span class="ident">October</span> <span class="op">=</span> <span class="number">10</span>,
+    <span class="doccomment">/// The month of November.</span>
+    <span class="ident">November</span> <span class="op">=</span> <span class="number">11</span>,
+    <span class="doccomment">/// The month of December.</span>
+    <span class="ident">December</span> <span class="op">=</span> <span class="number">12</span>,
+}
+<span class="doccomment">/// An object representing a phone number, suitable as an API wire format.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This representation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///  - should not be used for locale-specific formatting of a phone number, such</span>
+<span class="doccomment">///    as &quot;+1 (650) 253-0000 ext. 123&quot;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///  - is not designed for efficient storage</span>
+<span class="doccomment">///  - may not be suitable for dialing - specialized libraries (see references)</span>
+<span class="doccomment">///    should be used to parse the number for that purpose</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To do something meaningful with this number, such as format it for various</span>
+<span class="doccomment">/// use-cases, convert it to an `i18n.phonenumbers.PhoneNumber` object first.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For instance, in Java this would be:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///    com.google.type.PhoneNumber wireProto =</span>
+<span class="doccomment">///        com.google.type.PhoneNumber.newBuilder().build();</span>
+<span class="doccomment">///    com.google.i18n.phonenumbers.Phonenumber.PhoneNumber phoneNumber =</span>
+<span class="doccomment">///        PhoneNumberUtil.getInstance().parse(wireProto.getE164Number(), &quot;ZZ&quot;);</span>
+<span class="doccomment">///    if (!wireProto.getExtension().isEmpty()) {</span>
+<span class="doccomment">///      phoneNumber.setExtension(wireProto.getExtension());</span>
+<span class="doccomment">///    }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///  Reference(s):</span>
+<span class="doccomment">///   - https://github.com/google/libphonenumber</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PhoneNumber</span> {
+    <span class="doccomment">/// The phone number&#39;s extension. The extension is not standardized in ITU</span>
+    <span class="doccomment">/// recommendations, except for being defined as a series of numbers with a</span>
+    <span class="doccomment">/// maximum length of 40 digits. Other than digits, some other dialing</span>
+    <span class="doccomment">/// characters such as &#39;,&#39; (indicating a wait) or &#39;#&#39; may be stored here.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that no regions currently use extensions with short codes, so this</span>
+    <span class="doccomment">/// field is normally only set in conjunction with an E.164 number. It is held</span>
+    <span class="doccomment">/// separately from the E.164 number to allow for short code extensions in the</span>
+    <span class="doccomment">/// future.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">extension</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required.  Either a regular number, or a short code.  New fields may be</span>
+    <span class="doccomment">/// added to the oneof below in the future, so clients should ignore phone</span>
+    <span class="doccomment">/// numbers for which none of the fields they coded against are set.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;phone_number::Kind&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">kind</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">phone_number::Kind</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `PhoneNumber`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">phone_number</span> {
+    <span class="doccomment">/// An object representing a short code, which is a phone number that is</span>
+    <span class="doccomment">/// typically much shorter than regular phone numbers and can be used to</span>
+    <span class="doccomment">/// address messages in MMS and SMS systems, as well as for abbreviated dialing</span>
+    <span class="doccomment">/// (e.g. &quot;Text 611 to see how many minutes you have remaining on your plan.&quot;).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Short codes are restricted to a region and are not internationally</span>
+    <span class="doccomment">/// dialable, which means the same short code can exist in different regions,</span>
+    <span class="doccomment">/// with different usage and pricing, even if those regions share the same</span>
+    <span class="doccomment">/// country calling code (e.g. US and CA).</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ShortCode</span> {
+        <span class="doccomment">/// Required. The BCP-47 region code of the location where calls to this</span>
+        <span class="doccomment">/// short code can be made, such as &quot;US&quot; and &quot;BB&quot;.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// Reference(s):</span>
+        <span class="doccomment">///  - http://www.unicode.org/reports/tr35/#unicode_region_subtag</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">region_code</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// Required. The short code digits, without a leading plus (&#39;+&#39;) or country</span>
+        <span class="doccomment">/// calling code, e.g. &quot;611&quot;.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">number</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+    <span class="doccomment">/// Required.  Either a regular number, or a short code.  New fields may be</span>
+    <span class="doccomment">/// added to the oneof below in the future, so clients should ignore phone</span>
+    <span class="doccomment">/// numbers for which none of the fields they coded against are set.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Kind</span> {
+        <span class="doccomment">/// The phone number, represented as a leading plus sign (&#39;+&#39;), followed by a</span>
+        <span class="doccomment">/// phone number that uses a relaxed ITU E.164 format consisting of the</span>
+        <span class="doccomment">/// country calling code (1 to 3 digits) and the subscriber number, with no</span>
+        <span class="doccomment">/// additional spaces or formatting, e.g.:</span>
+        <span class="doccomment">///  - correct: &quot;+15552220123&quot;</span>
+        <span class="doccomment">///  - incorrect: &quot;+1 (555) 222-01234 x123&quot;.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// The ITU E.164 format limits the latter to 12 digits, but in practice not</span>
+        <span class="doccomment">/// all countries respect that, so we relax that restriction here.</span>
+        <span class="doccomment">/// National-only numbers are not allowed.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// References:</span>
+        <span class="doccomment">///  - https://www.itu.int/rec/T-REC-E.164-201011-I</span>
+        <span class="doccomment">///  - https://en.wikipedia.org/wiki/E.164.</span>
+        <span class="doccomment">///  - https://en.wikipedia.org/wiki/List_of_country_calling_codes</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="ident">E164Number</span>(<span class="ident">::prost::alloc::string::String</span>),
+        <span class="doccomment">/// A short code.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// Reference(s):</span>
+        <span class="doccomment">///  - https://en.wikipedia.org/wiki/Short_code</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="ident">ShortCode</span>(<span class="ident">ShortCode</span>),
+    }
+}
+<span class="doccomment">/// A quaternion is defined as the quotient of two directed lines in a</span>
+<span class="doccomment">/// three-dimensional space or equivalently as the quotient of two Euclidean</span>
+<span class="doccomment">/// vectors (https://en.wikipedia.org/wiki/Quaternion).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Quaternions are often used in calculations involving three-dimensional</span>
+<span class="doccomment">/// rotations (https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation),</span>
+<span class="doccomment">/// as they provide greater mathematical robustness by avoiding the gimbal lock</span>
+<span class="doccomment">/// problems that can be encountered when using Euler angles</span>
+<span class="doccomment">/// (https://en.wikipedia.org/wiki/Gimbal_lock).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Quaternions are generally represented in this form:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     w + xi + yj + zk</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// where x, y, z, and w are real numbers, and i, j, and k are three imaginary</span>
+<span class="doccomment">/// numbers.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Our naming choice `(x, y, z, w)` comes from the desire to avoid confusion for</span>
+<span class="doccomment">/// those interested in the geometric properties of the quaternion in the 3D</span>
+<span class="doccomment">/// Cartesian space. Other texts often use alternative names or subscripts, such</span>
+<span class="doccomment">/// as `(a, b, c, d)`, `(1, i, j, k)`, or `(0, 1, 2, 3)`, which are perhaps</span>
+<span class="doccomment">/// better suited for mathematical interpretations.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To avoid any confusion, as well as to maintain compatibility with a large</span>
+<span class="doccomment">/// number of software libraries, the quaternions represented using the protocol</span>
+<span class="doccomment">/// buffer below *must* follow the Hamilton convention, which defines `ij = k`</span>
+<span class="doccomment">/// (i.e. a right-handed algebra), and therefore:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     i^2 = j^2 = k^2 = ijk = −1</span>
+<span class="doccomment">///     ij = −ji = k</span>
+<span class="doccomment">///     jk = −kj = i</span>
+<span class="doccomment">///     ki = −ik = j</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Please DO NOT use this to represent quaternions that follow the JPL</span>
+<span class="doccomment">/// convention, or any of the other quaternion flavors out there.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Definitions:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///   - Quaternion norm (or magnitude): `sqrt(x^2 + y^2 + z^2 + w^2)`.</span>
+<span class="doccomment">///   - Unit (or normalized) quaternion: a quaternion whose norm is 1.</span>
+<span class="doccomment">///   - Pure quaternion: a quaternion whose scalar component (`w`) is 0.</span>
+<span class="doccomment">///   - Rotation quaternion: a unit quaternion used to represent rotation.</span>
+<span class="doccomment">///   - Orientation quaternion: a unit quaternion used to represent orientation.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// A quaternion can be normalized by dividing it by its norm. The resulting</span>
+<span class="doccomment">/// quaternion maintains the same direction, but has a norm of 1, i.e. it moves</span>
+<span class="doccomment">/// on the unit sphere. This is generally necessary for rotation and orientation</span>
+<span class="doccomment">/// quaternions, to avoid rounding errors:</span>
+<span class="doccomment">/// https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Note that `(x, y, z, w)` and `(-x, -y, -z, -w)` represent the same rotation,</span>
+<span class="doccomment">/// but normalization would be even more useful, e.g. for comparison purposes, if</span>
+<span class="doccomment">/// it would produce a unique representation. It is thus recommended that `w` be</span>
+<span class="doccomment">/// kept positive, which can be achieved by changing all the signs when `w` is</span>
+<span class="doccomment">/// negative.</span>
+<span class="doccomment">///</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Quaternion</span> {
+    <span class="doccomment">/// The x component.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">x</span>: <span class="ident">f64</span>,
+    <span class="doccomment">/// The y component.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">y</span>: <span class="ident">f64</span>,
+    <span class="doccomment">/// The z component.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">z</span>: <span class="ident">f64</span>,
+    <span class="doccomment">/// The scalar component.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">w</span>: <span class="ident">f64</span>,
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

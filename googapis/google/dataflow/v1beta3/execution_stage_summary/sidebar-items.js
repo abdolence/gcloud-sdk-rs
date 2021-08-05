@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ComponentSource","Description of an interstitial value between transforms in an execution stage."],["ComponentTransform","Description of a transform executed as part of an execution stage."],["StageSource","Description of an input or output of an execution stage."]]});

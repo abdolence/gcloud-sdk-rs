@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Address","The address of a person. It can be one of [unstructured_address][google.cloud.talent.v4beta1.Address.unstructured_address] or [structured_address][google.cloud.talent.v4beta1.Address.structured_address]."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TransferredCustomerIdentity","Specifies the identity of transferred customer. Either a cloud_identity_id of the customer or the customer name is required to look up transferrable Offers."]]});

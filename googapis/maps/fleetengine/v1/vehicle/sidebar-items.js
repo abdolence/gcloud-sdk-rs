@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["vehicle_type","Nested message and enum types in `VehicleType`."]],"struct":[["VehicleType","Types of vehicles that may be filtered for in SearchVehicles."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GameServerClustersServiceClient","The game server cluster maps to Kubernetes clusters running Agones and is used to manage fleets within clusters."]]});

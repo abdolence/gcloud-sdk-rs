@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CategoricalStatsHistogramBucket","Histogram of value frequencies in the column."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SpendingLimitType","The possible spending limit types used by certain resources as an alternative to absolute money values in micros."]]});

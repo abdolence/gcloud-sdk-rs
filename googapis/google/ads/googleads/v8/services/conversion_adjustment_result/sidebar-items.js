@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConversionIdentifier","Identifies the conversion that was adjusted."]]});

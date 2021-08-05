@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Payload","Payload of conversation event."],["Type","Enumeration of the types of events available."]]});

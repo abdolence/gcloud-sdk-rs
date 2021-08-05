@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TimepointType","The type of timepoint information that is returned in the response."]]});

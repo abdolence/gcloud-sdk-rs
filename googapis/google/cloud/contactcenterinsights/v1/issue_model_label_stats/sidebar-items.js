@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IssueStats","Aggregated statistics about an issue."]]});

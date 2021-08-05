@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LoggingDestination","Configuration of a specific logging destination (the producer project or the consumer project)."]]});

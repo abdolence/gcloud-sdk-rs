@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MetadataLabelMatchCriteria","Possible criteria values that define logic of how matching is made."]],"struct":[["MetadataLabels","Defines a name-pair value for a single label."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["build_signature","Nested message and enum types in `BuildSignature`."]],"struct":[["Build","Note holding the version of the provider’s builder and the signature of the provenance message in the build details occurrence."],["BuildSignature","Message encapsulating the signature of the verified build."],["Details","Details of a build occurrence."]]});

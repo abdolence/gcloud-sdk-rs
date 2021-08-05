@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Response",""]],"struct":[["AppendResult","AppendResult is returned for successful append requests."]]});

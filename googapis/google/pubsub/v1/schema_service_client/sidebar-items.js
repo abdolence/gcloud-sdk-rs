@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SchemaServiceClient","Service for doing schema-related operations."]]});

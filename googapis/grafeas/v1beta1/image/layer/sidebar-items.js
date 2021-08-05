@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Directive","Instructions from Dockerfile."]]});

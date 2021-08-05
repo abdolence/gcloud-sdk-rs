@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ResourceSettingsServiceClient","An interface to interact with resource settings and setting values throughout the resource hierarchy."]]});

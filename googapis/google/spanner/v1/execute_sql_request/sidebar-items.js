@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["QueryMode","Mode in which the statement must be processed."]],"struct":[["QueryOptions","Query optimizer configuration."]]});

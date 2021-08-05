@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["delivery_config","Nested message and enum types in `DeliveryConfig`."]],"struct":[["DeliveryConfig","The settings for a subscription’s message delivery."]]});

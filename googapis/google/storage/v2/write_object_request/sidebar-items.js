@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Data","A portion of the data for the object."],["FirstMessage","The first message of each stream should set one of the following."]]});

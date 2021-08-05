@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["form_info","Nested message and enum types in `FormInfo`."]],"struct":[["FormInfo","Represents form information."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TimestampGranularity","Possible timestamp granularities to use when keeping multiple versions of data in a table."],["View","Defines a view over a table’s fields."]],"mod":[["cluster_state","Nested message and enum types in `ClusterState`."]],"struct":[["ClusterState","The state of a table’s data in a particular cluster."]]});

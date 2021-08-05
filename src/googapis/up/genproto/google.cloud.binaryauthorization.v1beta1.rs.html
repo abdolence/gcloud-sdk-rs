@@ -1,0 +1,1381 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.binaryauthorization.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.binaryauthorization.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+</pre><pre class="rust">
+<span class="doccomment">/// Represents an auditing event from Continuous Validation.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ContinuousValidationEvent</span> {
+    <span class="doccomment">/// Type of CV event.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;continuous_validation_event::EventType&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">event_type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">continuous_validation_event::EventType</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `ContinuousValidationEvent`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">continuous_validation_event</span> {
+    <span class="doccomment">/// An auditing event for one Pod.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ContinuousValidationPodEvent</span> {
+        <span class="doccomment">/// The name of the Pod.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">pod</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// Deploy time of the Pod from k8s.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">deploy_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Termination time of the Pod from k8s, or nothing if still running.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Auditing verdict for this Pod.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(
+            <span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;continuous_validation_pod_event::PolicyConformanceVerdict&quot;</span>,
+            <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>
+        )]</span>
+        <span class="kw">pub</span> <span class="ident">verdict</span>: <span class="ident">i32</span>,
+        <span class="doccomment">/// List of images with auditing details.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">images</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">continuous_validation_pod_event::ImageDetails</span><span class="op">&gt;</span>,
+    }
+    <span class="doccomment">/// Nested message and enum types in `ContinuousValidationPodEvent`.</span>
+    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">continuous_validation_pod_event</span> {
+        <span class="doccomment">/// Container image with auditing details.</span>
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+        <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImageDetails</span> {
+            <span class="doccomment">/// The name of the image.</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+            <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::prost::alloc::string::String</span>,
+            <span class="doccomment">/// The result of the audit for this image.</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;image_details::AuditResult&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+            <span class="kw">pub</span> <span class="ident">result</span>: <span class="ident">i32</span>,
+            <span class="doccomment">/// Description of the above result.</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+            <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+        }
+        <span class="doccomment">/// Nested message and enum types in `ImageDetails`.</span>
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">image_details</span> {
+            <span class="doccomment">/// Result of the audit.</span>
+            <span class="attribute">#[<span class="ident">derive</span>(
+                <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>,
+            )]</span>
+            <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+            <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AuditResult</span> {
+                <span class="doccomment">/// Unspecified result. This is an error.</span>
+                <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+                <span class="doccomment">/// Image is allowed.</span>
+                <span class="ident">Allow</span> <span class="op">=</span> <span class="number">1</span>,
+                <span class="doccomment">/// Image is denied.</span>
+                <span class="ident">Deny</span> <span class="op">=</span> <span class="number">2</span>,
+            }
+        }
+        <span class="doccomment">/// Audit time policy conformance verdict.</span>
+        <span class="attribute">#[<span class="ident">derive</span>(
+            <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>,
+        )]</span>
+        <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+        <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PolicyConformanceVerdict</span> {
+            <span class="doccomment">/// We should always have a verdict. This is an error.</span>
+            <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+            <span class="doccomment">/// The pod violates the policy.</span>
+            <span class="ident">ViolatesPolicy</span> <span class="op">=</span> <span class="number">1</span>,
+        }
+    }
+    <span class="doccomment">/// An event describing that the project policy is unsupported by CV.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnsupportedPolicyEvent</span> {
+        <span class="doccomment">/// A description of the unsupported policy.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+    <span class="doccomment">/// Type of CV event.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventType</span> {
+        <span class="doccomment">/// Pod event.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="ident">PodEvent</span>(<span class="ident">ContinuousValidationPodEvent</span>),
+        <span class="doccomment">/// Unsupported policy event.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="ident">UnsupportedPolicyEvent</span>(<span class="ident">UnsupportedPolicyEvent</span>),
+    }
+}
+<span class="doccomment">/// A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container</span>
+<span class="doccomment">/// image binary authorization.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Policy</span> {
+    <span class="doccomment">/// Output only. The resource name, in the format `projects/*/policy`. There is</span>
+    <span class="doccomment">/// at most one policy per project.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. A descriptive comment.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Controls the evaluation of a Google-maintained global admission</span>
+    <span class="doccomment">/// policy for common system-level images. Images not covered by the global</span>
+    <span class="doccomment">/// policy will be subject to the project admission policy. This setting</span>
+    <span class="doccomment">/// has no effect when specified inside a global admission policy.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;policy::GlobalPolicyEvaluationMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">global_policy_evaluation_mode</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Optional. Admission policy allowlisting. A matching admission request will</span>
+    <span class="doccomment">/// always be permitted. This feature is typically used to exclude Google or</span>
+    <span class="doccomment">/// third-party infrastructure images from Binary Authorization policies.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">admission_whitelist_patterns</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">AdmissionWhitelistPattern</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Per-cluster admission rules. Cluster spec format:</span>
+    <span class="doccomment">/// `location.clusterId`. There can be at most one admission rule per cluster</span>
+    <span class="doccomment">/// spec.</span>
+    <span class="doccomment">/// A `location` is either a compute zone (e.g. us-central1-a) or a region</span>
+    <span class="doccomment">/// (e.g. us-central1).</span>
+    <span class="doccomment">/// For `clusterId` syntax restrictions see</span>
+    <span class="doccomment">/// https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cluster_admission_rules</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">AdmissionRule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Required. Default admission rule for a cluster without a per-cluster, per-</span>
+    <span class="doccomment">/// kubernetes-service-account, or per-istio-service-identity admission rule.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">default_admission_rule</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AdmissionRule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. Time when the policy was last updated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">update_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Policy`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">policy</span> {
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">GlobalPolicyEvaluationMode</span> {
+        <span class="doccomment">/// Not specified: DISABLE is assumed.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Enables global policy evaluation.</span>
+        <span class="ident">Enable</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Disables global policy evaluation.</span>
+        <span class="ident">Disable</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+}
+<span class="doccomment">/// An [admission allowlist</span>
+<span class="doccomment">/// pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]</span>
+<span class="doccomment">/// exempts images from checks by [admission</span>
+<span class="doccomment">/// rules][google.cloud.binaryauthorization.v1beta1.AdmissionRule].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AdmissionWhitelistPattern</span> {
+    <span class="doccomment">/// An image name pattern to allow, in the form `registry/path/to/image`.</span>
+    <span class="doccomment">/// This supports a trailing `*` as a wildcard, but this is allowed only in</span>
+    <span class="doccomment">/// text after the `registry/` part.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name_pattern</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// An [admission rule][google.cloud.binaryauthorization.v1beta1.AdmissionRule]</span>
+<span class="doccomment">/// specifies either that all container images used in a pod creation request</span>
+<span class="doccomment">/// must be attested to by one or more</span>
+<span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor], that all pod</span>
+<span class="doccomment">/// creations will be allowed, or that all pod creations will be denied.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Images matching an [admission allowlist</span>
+<span class="doccomment">/// pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]</span>
+<span class="doccomment">/// are exempted from admission rules and will never block a pod creation.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AdmissionRule</span> {
+    <span class="doccomment">/// Required. How this admission rule will be evaluated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;admission_rule::EvaluationMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">evaluation_mode</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Optional. The resource names of the attestors that must attest to</span>
+    <span class="doccomment">/// a container image, in the format `projects/*/attestors/*`. Each</span>
+    <span class="doccomment">/// attestor must exist before a policy can reference it.  To add an attestor</span>
+    <span class="doccomment">/// to a policy the principal issuing the policy change request must be able</span>
+    <span class="doccomment">/// to read the attestor resource.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note: this field must be non-empty when the evaluation_mode field specifies</span>
+    <span class="doccomment">/// REQUIRE_ATTESTATION, otherwise it must be empty.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">require_attestations_by</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Required. The action when a pod creation is denied by the admission rule.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;admission_rule::EnforcementMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">enforcement_mode</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `AdmissionRule`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">admission_rule</span> {
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EvaluationMode</span> {
+        <span class="doccomment">/// Do not use.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// This rule allows all all pod creations.</span>
+        <span class="ident">AlwaysAllow</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// This rule allows a pod creation if all the attestors listed in</span>
+        <span class="doccomment">/// &#39;require_attestations_by&#39; have valid attestations for all of the</span>
+        <span class="doccomment">/// images in the pod spec.</span>
+        <span class="ident">RequireAttestation</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// This rule denies all pod creations.</span>
+        <span class="ident">AlwaysDeny</span> <span class="op">=</span> <span class="number">3</span>,
+    }
+    <span class="doccomment">/// Defines the possible actions when a pod creation is denied by an admission</span>
+    <span class="doccomment">/// rule.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EnforcementMode</span> {
+        <span class="doccomment">/// Do not use.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Enforce the admission rule by blocking the pod creation.</span>
+        <span class="ident">EnforcedBlockAndAuditLog</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Dryrun mode: Audit logging only.  This will allow the pod creation as if</span>
+        <span class="doccomment">/// the admission request had specified break-glass.</span>
+        <span class="ident">DryrunAuditLogOnly</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+}
+<span class="doccomment">/// An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests</span>
+<span class="doccomment">/// to container image artifacts. An existing attestor cannot be modified except</span>
+<span class="doccomment">/// where indicated.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Attestor</span> {
+    <span class="doccomment">/// Required. The resource name, in the format:</span>
+    <span class="doccomment">/// `projects/*/attestors/*`. This field may not be updated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. A descriptive comment.  This field may be updated.</span>
+    <span class="doccomment">/// The field may be displayed in chooser dialogs.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Output only. Time when the attestor was last updated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">update_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Required. Identifies an</span>
+    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests</span>
+    <span class="doccomment">/// to a container image artifact. This determines how an attestation will be</span>
+    <span class="doccomment">/// stored, and how it will be used during policy enforcement. Updates may not</span>
+    <span class="doccomment">/// change the attestor type, but individual attestor fields may be updated</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;attestor::AttestorType&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">attestor_type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">attestor::AttestorType</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Attestor`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">attestor</span> {
+    <span class="doccomment">/// Required. Identifies an</span>
+    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests</span>
+    <span class="doccomment">/// to a container image artifact. This determines how an attestation will be</span>
+    <span class="doccomment">/// stored, and how it will be used during policy enforcement. Updates may not</span>
+    <span class="doccomment">/// change the attestor type, but individual attestor fields may be updated</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AttestorType</span> {
+        <span class="doccomment">/// A Drydock ATTESTATION_AUTHORITY Note, created by the user.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="ident">UserOwnedDrydockNote</span>(<span class="kw">super</span><span class="ident">::UserOwnedDrydockNote</span>),
+    }
+}
+<span class="doccomment">/// An [user owned drydock</span>
+<span class="doccomment">/// note][google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote]</span>
+<span class="doccomment">/// references a Drydock ATTESTATION_AUTHORITY Note created by the user.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UserOwnedDrydockNote</span> {
+    <span class="doccomment">/// Required. The Drydock resource name of a ATTESTATION_AUTHORITY Note,</span>
+    <span class="doccomment">/// created by the user, in the format: `projects/*/notes/*` (or the legacy</span>
+    <span class="doccomment">/// `providers/*/notes/*`). This field may not be updated.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// An attestation by this attestor is stored as a Drydock</span>
+    <span class="doccomment">/// ATTESTATION_AUTHORITY Occurrence that names a container image and that</span>
+    <span class="doccomment">/// links to this Note. Drydock is an external dependency.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">note_reference</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. Public keys that verify attestations signed by this</span>
+    <span class="doccomment">/// attestor.  This field may be updated.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If this field is non-empty, one of the specified public keys must</span>
+    <span class="doccomment">/// verify that an attestation was signed by this attestor for the</span>
+    <span class="doccomment">/// image specified in the admission request.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If this field is empty, this attestor always returns that no</span>
+    <span class="doccomment">/// valid attestations exist.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">public_keys</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">AttestorPublicKey</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. This field will contain the service account email address</span>
+    <span class="doccomment">/// that this Attestor will use as the principal when querying Container</span>
+    <span class="doccomment">/// Analysis. Attestor administrators must grant this service account the</span>
+    <span class="doccomment">/// IAM role needed to read attestations from the [note_reference][Note] in</span>
+    <span class="doccomment">/// Container Analysis (`containeranalysis.notes.occurrences.viewer`).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This email address is fixed for the lifetime of the Attestor, but callers</span>
+    <span class="doccomment">/// should not make any other assumptions about the service account email;</span>
+    <span class="doccomment">/// future versions may use an email based on a different naming pattern.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">delegation_service_account_email</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// A public key in the PkixPublicKey format (see</span>
+<span class="doccomment">/// https://tools.ietf.org/html/rfc5280#section-4.1.2.7 for details).</span>
+<span class="doccomment">/// Public keys of this type are typically textually encoded using the PEM</span>
+<span class="doccomment">/// format.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PkixPublicKey</span> {
+    <span class="doccomment">/// A PEM-encoded public key, as described in</span>
+    <span class="doccomment">/// https://tools.ietf.org/html/rfc7468#section-13</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">public_key_pem</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The signature algorithm used to verify a message against a signature using</span>
+    <span class="doccomment">/// this key.</span>
+    <span class="doccomment">/// These signature algorithm must match the structure and any object</span>
+    <span class="doccomment">/// identifiers encoded in `public_key_pem` (i.e. this algorithm must match</span>
+    <span class="doccomment">/// that of the public key).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;pkix_public_key::SignatureAlgorithm&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">signature_algorithm</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `PkixPublicKey`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pkix_public_key</span> {
+    <span class="doccomment">/// Represents a signature algorithm and other information necessary to verify</span>
+    <span class="doccomment">/// signatures with a given public key.</span>
+    <span class="doccomment">/// This is based primarily on the public key types supported by Tink&#39;s</span>
+    <span class="doccomment">/// PemKeyType, which is in turn based on KMS&#39;s supported signing algorithms.</span>
+    <span class="doccomment">/// See https://cloud.google.com/kms/docs/algorithms. In the future, BinAuthz</span>
+    <span class="doccomment">/// might support additional public key types independently of Tink and/or KMS.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SignatureAlgorithm</span> {
+        <span class="doccomment">/// Not specified.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// RSASSA-PSS 2048 bit key with a SHA256 digest.</span>
+        <span class="ident">RsaPss2048Sha256</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// RSASSA-PSS 3072 bit key with a SHA256 digest.</span>
+        <span class="ident">RsaPss3072Sha256</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// RSASSA-PSS 4096 bit key with a SHA256 digest.</span>
+        <span class="ident">RsaPss4096Sha256</span> <span class="op">=</span> <span class="number">3</span>,
+        <span class="doccomment">/// RSASSA-PSS 4096 bit key with a SHA512 digest.</span>
+        <span class="ident">RsaPss4096Sha512</span> <span class="op">=</span> <span class="number">4</span>,
+        <span class="doccomment">/// RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.</span>
+        <span class="ident">RsaSignPkcs12048Sha256</span> <span class="op">=</span> <span class="number">5</span>,
+        <span class="doccomment">/// RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.</span>
+        <span class="ident">RsaSignPkcs13072Sha256</span> <span class="op">=</span> <span class="number">6</span>,
+        <span class="doccomment">/// RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.</span>
+        <span class="ident">RsaSignPkcs14096Sha256</span> <span class="op">=</span> <span class="number">7</span>,
+        <span class="doccomment">/// RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.</span>
+        <span class="ident">RsaSignPkcs14096Sha512</span> <span class="op">=</span> <span class="number">8</span>,
+        <span class="doccomment">/// ECDSA on the NIST P-256 curve with a SHA256 digest.</span>
+        <span class="ident">EcdsaP256Sha256</span> <span class="op">=</span> <span class="number">9</span>,
+        <span class="doccomment">/// ECDSA on the NIST P-384 curve with a SHA384 digest.</span>
+        <span class="ident">EcdsaP384Sha384</span> <span class="op">=</span> <span class="number">10</span>,
+        <span class="doccomment">/// ECDSA on the NIST P-521 curve with a SHA512 digest.</span>
+        <span class="ident">EcdsaP521Sha512</span> <span class="op">=</span> <span class="number">11</span>,
+    }
+}
+<span class="doccomment">/// An [attestor public</span>
+<span class="doccomment">/// key][google.cloud.binaryauthorization.v1beta1.AttestorPublicKey] that will be</span>
+<span class="doccomment">/// used to verify attestations signed by this attestor.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AttestorPublicKey</span> {
+    <span class="doccomment">/// Optional. A descriptive comment. This field may be updated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">comment</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The ID of this public key.</span>
+    <span class="doccomment">/// Signatures verified by BinAuthz must include the ID of the public key that</span>
+    <span class="doccomment">/// can be used to verify them, and that ID must match the contents of this</span>
+    <span class="doccomment">/// field exactly.</span>
+    <span class="doccomment">/// Additional restrictions on this field can be imposed based on which public</span>
+    <span class="doccomment">/// key type is encapsulated. See the documentation on `public_key` cases below</span>
+    <span class="doccomment">/// for details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. A public key reference or serialized instance. This field may be</span>
+    <span class="doccomment">/// updated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;attestor_public_key::PublicKey&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;3, 5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">public_key</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">attestor_public_key::PublicKey</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `AttestorPublicKey`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">attestor_public_key</span> {
+    <span class="doccomment">/// Required. A public key reference or serialized instance. This field may be</span>
+    <span class="doccomment">/// updated.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PublicKey</span> {
+        <span class="doccomment">/// ASCII-armored representation of a PGP public key, as the entire output by</span>
+        <span class="doccomment">/// the command `gpg --export --armor foo@example.com` (either LF or CRLF</span>
+        <span class="doccomment">/// line endings).</span>
+        <span class="doccomment">/// When using this field, `id` should be left blank.  The BinAuthz API</span>
+        <span class="doccomment">/// handlers will calculate the ID and fill it in automatically.  BinAuthz</span>
+        <span class="doccomment">/// computes this ID as the OpenPGP RFC4880 V4 fingerprint, represented as</span>
+        <span class="doccomment">/// upper-case hex.  If `id` is provided by the caller, it will be</span>
+        <span class="doccomment">/// overwritten by the API-calculated ID.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="ident">AsciiArmoredPgpPublicKey</span>(<span class="ident">::prost::alloc::string::String</span>),
+        <span class="doccomment">/// A raw PKIX SubjectPublicKeyInfo format public key.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// NOTE: `id` may be explicitly provided by the caller when using this</span>
+        <span class="doccomment">/// type of public key, but it MUST be a valid RFC3986 URI. If `id` is left</span>
+        <span class="doccomment">/// blank, a default one will be computed based on the digest of the DER</span>
+        <span class="doccomment">/// encoding of the public key.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="ident">PkixPublicKey</span>(<span class="kw">super</span><span class="ident">::PkixPublicKey</span>),
+    }
+}
+<span class="doccomment">/// Request message for [BinauthzManagementService.GetPolicy][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetPolicyRequest</span> {
+    <span class="doccomment">/// Required. The resource name of the</span>
+    <span class="doccomment">/// [policy][google.cloud.binaryauthorization.v1beta1.Policy] to retrieve, in</span>
+    <span class="doccomment">/// the format `projects/*/policy`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request message for [BinauthzManagementService.UpdatePolicy][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdatePolicyRequest</span> {
+    <span class="doccomment">/// Required. A new or updated</span>
+    <span class="doccomment">/// [policy][google.cloud.binaryauthorization.v1beta1.Policy] value. The</span>
+    <span class="doccomment">/// service will overwrite the [policy</span>
+    <span class="doccomment">/// name][google.cloud.binaryauthorization.v1beta1.Policy.name] field with the</span>
+    <span class="doccomment">/// resource name in the request URL, in the format `projects/*/policy`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">policy</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Policy</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Request message for [BinauthzManagementService.CreateAttestor][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateAttestorRequest</span> {
+    <span class="doccomment">/// Required. The parent of this</span>
+    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. The</span>
+    <span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] ID.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">attestor_id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. The initial</span>
+    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] value. The</span>
+    <span class="doccomment">/// service will overwrite the [attestor</span>
+    <span class="doccomment">/// name][google.cloud.binaryauthorization.v1beta1.Attestor.name] field with</span>
+    <span class="doccomment">/// the resource name, in the format `projects/*/attestors/*`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">attestor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Attestor</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Request message for [BinauthzManagementService.GetAttestor][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetAttestorRequest</span> {
+    <span class="doccomment">/// Required. The name of the</span>
+    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] to retrieve,</span>
+    <span class="doccomment">/// in the format `projects/*/attestors/*`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request message for [BinauthzManagementService.UpdateAttestor][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateAttestorRequest</span> {
+    <span class="doccomment">/// Required. The updated</span>
+    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] value. The</span>
+    <span class="doccomment">/// service will overwrite the [attestor</span>
+    <span class="doccomment">/// name][google.cloud.binaryauthorization.v1beta1.Attestor.name] field with</span>
+    <span class="doccomment">/// the resource name in the request URL, in the format</span>
+    <span class="doccomment">/// `projects/*/attestors/*`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">attestor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Attestor</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Request message for [BinauthzManagementService.ListAttestors][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListAttestorsRequest</span> {
+    <span class="doccomment">/// Required. The resource name of the project associated with the</span>
+    <span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor], in the</span>
+    <span class="doccomment">/// format `projects/*`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Requested page size. The server may return fewer results than requested. If</span>
+    <span class="doccomment">/// unspecified, the server will pick an appropriate default.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// A token identifying a page of results the server should return. Typically,</span>
+    <span class="doccomment">/// this is the value of</span>
+    <span class="doccomment">/// [ListAttestorsResponse.next_page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsResponse.next_page_token]</span>
+    <span class="doccomment">/// returned from the previous call to the `ListAttestors` method.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Response message for [BinauthzManagementService.ListAttestors][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListAttestorsResponse</span> {
+    <span class="doccomment">/// The list of [attestors][google.cloud.binaryauthorization.v1beta1.Attestor].</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">attestors</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Attestor</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A token to retrieve the next page of results. Pass this value in the</span>
+    <span class="doccomment">/// [ListAttestorsRequest.page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsRequest.page_token]</span>
+    <span class="doccomment">/// field in the subsequent call to the `ListAttestors` method to retrieve the</span>
+    <span class="doccomment">/// next page of results.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request message for [BinauthzManagementService.DeleteAttestor][].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteAttestorRequest</span> {
+    <span class="doccomment">/// Required. The name of the</span>
+    <span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] to delete,</span>
+    <span class="doccomment">/// in the format `projects/*/attestors/*`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Generated client implementations.&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">binauthz_management_service_v1_beta1_client</span> {
+    <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused_variables</span>, <span class="ident">dead_code</span>, <span class="ident">missing_docs</span>, <span class="ident">clippy::let_unit_value</span>)]</span>
+    <span class="kw">use</span> <span class="ident">tonic::codegen</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Google Cloud Management Service for Binary Authorization admission policies&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; and attestation authorities.&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This API implements a REST model with the following objects:&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [Policy][google.cloud.binaryauthorization.v1beta1.Policy]&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [Attestor][google.cloud.binaryauthorization.v1beta1.Attestor]&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BinauthzManagementServiceV1Beta1Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">inner</span>: <span class="ident">tonic::client::Grpc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    }
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">BinauthzManagementServiceV1Beta1Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
+        <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
+    {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">tonic::client::Grpc::new</span>(<span class="ident">inner</span>);
+            <span class="self">Self</span> { <span class="ident">inner</span> }
+        }
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_interceptor</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
+            <span class="ident">inner</span>: <span class="ident">T</span>,
+            <span class="ident">interceptor</span>: <span class="ident">F</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BinauthzManagementServiceV1Beta1Client</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+        <span class="kw">where</span>
+            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
+                <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
+                <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
+                    <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::ResponseBody</span>,
+                <span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+            <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span>:
+                <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
+        {
+            <span class="ident">BinauthzManagementServiceV1Beta1Client::new</span>(<span class="ident">InterceptedService::new</span>(<span class="ident">inner</span>, <span class="ident">interceptor</span>))
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Compress requests with `gzip`.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; This requires the server to support it otherwise it might respond with an&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; error.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_gzip</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">send_gzip</span>();
+            <span class="self">self</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Enable decompressing responses with `gzip`.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_gzip</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">accept_gzip</span>();
+            <span class="self">self</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; A [policy][google.cloud.binaryauthorization.v1beta1.Policy] specifies the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] that must&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; attest to a container image, before the project is allowed to deploy that&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; image. There is at most one policy per project. All image admission&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; requests are permitted if a project has no policy.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the [policy][google.cloud.binaryauthorization.v1beta1.Policy] for this&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; project. Returns a default&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [policy][google.cloud.binaryauthorization.v1beta1.Policy] if the project&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; does not have one.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_policy</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/GetPolicy&quot;</span>) ;
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates or updates a project&#39;s&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [policy][google.cloud.binaryauthorization.v1beta1.Policy], and returns a&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; copy of the new [policy][google.cloud.binaryauthorization.v1beta1.Policy].&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; A policy is always updated as a whole, to avoid race conditions with&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; concurrent policy enforcement (or management!) requests. Returns NOT_FOUND&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; if the project does not exist, INVALID_ARGUMENT if the request is&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; malformed.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_policy</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdatePolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/UpdatePolicy&quot;</span>) ;
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor],&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; and returns a copy of the new&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]. Returns&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; NOT_FOUND if the project does not exist, INVALID_ARGUMENT if the request is&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; malformed, ALREADY_EXISTS if the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] already&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exists.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_attestor</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateAttestorRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/CreateAttestor&quot;</span>) ;
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_attestor</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetAttestorRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/GetAttestor&quot;</span>) ;
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_attestor</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateAttestorRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/UpdateAttestor&quot;</span>) ;
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists [attestors][google.cloud.binaryauthorization.v1beta1.Attestor].&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns INVALID_ARGUMENT if the project does not exist.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_attestors</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAttestorsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAttestorsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/ListAttestors&quot;</span>) ;
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_attestor</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteAttestorRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/DeleteAttestor&quot;</span>) ;
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+    }
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

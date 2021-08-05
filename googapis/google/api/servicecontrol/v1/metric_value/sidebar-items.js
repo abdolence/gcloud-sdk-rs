@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Value","The value. The type of value used in the request must agree with the metric definition in the service configuration, otherwise the MetricValue is rejected."]]});

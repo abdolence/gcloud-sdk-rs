@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ParameterState","Represents the state of a parameter."]]});

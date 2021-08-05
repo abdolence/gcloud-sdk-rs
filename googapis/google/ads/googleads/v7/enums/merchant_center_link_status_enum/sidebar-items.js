@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MerchantCenterLinkStatus","Describes the possible statuses for a link between a Google Ads customer and a Google Merchant Center account."]]});

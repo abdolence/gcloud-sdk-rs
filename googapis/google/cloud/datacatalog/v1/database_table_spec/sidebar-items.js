@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TableType","Type of the table."]]});

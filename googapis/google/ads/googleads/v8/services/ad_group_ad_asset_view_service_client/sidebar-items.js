@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AdGroupAdAssetViewServiceClient","Service to fetch ad group ad asset views."]]});

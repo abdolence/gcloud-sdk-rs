@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Replica","Represents a Replica for this [Secret][google.cloud.secretmanager.v1.Secret]."]]});

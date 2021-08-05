@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ResultStoreFileDownloadClient","This API allows download of File messages referenced in ResultStore resources."]]});

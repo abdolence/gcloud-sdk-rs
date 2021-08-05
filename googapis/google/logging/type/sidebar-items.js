@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"enum":[["LogSeverity","The severity of the event described in a log entry, expressed as one of the standard severity levels listed below.  For your reference, the levels are assigned the listed numeric values. The effect of using numeric values other than those listed is undefined."]],"struct":[["HttpRequest","A common proto for logging HTTP requests. Only contains semantics defined by the HTTP specification. Product-specific logging information MUST be defined in a separate message."]]});

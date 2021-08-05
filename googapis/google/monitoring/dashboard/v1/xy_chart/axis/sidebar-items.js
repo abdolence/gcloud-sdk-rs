@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Scale","Types of scales used in axes."]]});

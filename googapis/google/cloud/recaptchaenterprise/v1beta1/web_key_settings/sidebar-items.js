@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ChallengeSecurityPreference","Enum that represents the possible challenge frequency and difficulty configurations for a web key."],["IntegrationType","Enum that represents the integration types for web keys."]]});

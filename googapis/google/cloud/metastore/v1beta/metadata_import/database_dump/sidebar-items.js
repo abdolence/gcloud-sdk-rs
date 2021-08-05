@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DatabaseType","The type of the database."]]});

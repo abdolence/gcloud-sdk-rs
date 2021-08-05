@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EnforcementMode","Defines the possible actions when a pod creation is denied by an admission rule."],["EvaluationMode",""]]});

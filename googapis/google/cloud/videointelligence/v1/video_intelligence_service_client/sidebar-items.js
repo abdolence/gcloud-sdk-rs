@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VideoIntelligenceServiceClient","Service that implements the Video Intelligence API."]]});

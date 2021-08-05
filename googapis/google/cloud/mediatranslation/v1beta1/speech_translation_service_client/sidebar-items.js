@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SpeechTranslationServiceClient","Provides translation from/to media types."]]});

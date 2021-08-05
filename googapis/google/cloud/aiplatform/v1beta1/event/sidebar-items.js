@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Describes whether an Event’s Artifact is the Execution’s input or output."]]});

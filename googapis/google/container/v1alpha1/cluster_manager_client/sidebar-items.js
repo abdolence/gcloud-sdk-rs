@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ClusterManagerClient","Google Container Engine Cluster Manager v1alpha1"]]});

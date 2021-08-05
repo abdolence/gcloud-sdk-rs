@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ApplicationDetailServiceClient","A service which parses input applications and returns details that can be useful in the context of testing."]]});

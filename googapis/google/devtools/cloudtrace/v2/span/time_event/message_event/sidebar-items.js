@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Indicates whether the message was sent or received."]]});

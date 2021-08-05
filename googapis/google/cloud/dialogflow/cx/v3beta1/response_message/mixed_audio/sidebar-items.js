@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["segment","Nested message and enum types in `Segment`."]],"struct":[["Segment","Represents one segment of audio."]]});

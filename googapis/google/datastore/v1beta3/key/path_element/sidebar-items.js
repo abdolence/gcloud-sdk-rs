@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["IdType","The type of ID."]]});

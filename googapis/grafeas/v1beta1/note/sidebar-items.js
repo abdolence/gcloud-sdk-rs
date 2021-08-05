@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Required. Immutable. The type of analysis this note represents."]]});

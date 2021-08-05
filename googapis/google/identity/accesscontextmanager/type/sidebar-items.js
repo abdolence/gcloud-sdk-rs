@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"enum":[["DeviceEncryptionStatus","The encryption state of the device."],["DeviceManagementLevel","The degree to which the device is managed by the Cloud organization."],["OsType","The operating system type of the device. Next id: 7"]]});

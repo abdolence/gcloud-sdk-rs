@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Possible states of an instance."],["Type","The type of the instance."]]});

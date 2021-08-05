@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AgentService","Required. Specifies which agent service to connect for human agent handoff."]],"struct":[["LivePersonConfig","Configuration specific to LivePerson (https://www.liveperson.com)."],["SalesforceLiveAgentConfig","Configuration specific to Salesforce Live Agent."]]});

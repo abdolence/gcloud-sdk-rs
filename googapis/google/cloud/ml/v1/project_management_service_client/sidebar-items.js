@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ProjectManagementServiceClient","Allows retrieving project related information."]]});

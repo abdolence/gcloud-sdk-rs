@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["KeyValue","A product label represented as a key-value pair."]]});

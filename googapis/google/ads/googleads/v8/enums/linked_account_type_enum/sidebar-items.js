@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["LinkedAccountType","Describes the possible link types between a Google Ads customer and another account."]]});

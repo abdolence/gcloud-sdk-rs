@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AuthMethod","Auth method specifies how the webhook authenticates with GCP."],["State","Enumerates potential issues with the Secret Manager secret provided by the user."]]});

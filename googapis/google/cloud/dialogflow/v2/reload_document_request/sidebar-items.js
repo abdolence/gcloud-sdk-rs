@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Source","The source for document reloading. If provided, the service will load the contents from the source and update document in the knowledge base."]]});

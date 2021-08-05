@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Scope","The criteria that select the subspace used for query matching."]]});

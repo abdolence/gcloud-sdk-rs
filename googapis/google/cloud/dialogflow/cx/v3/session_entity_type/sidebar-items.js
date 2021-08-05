@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EntityOverrideMode","The types of modifications for the session entity type."]]});

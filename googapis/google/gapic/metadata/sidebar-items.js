@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["gapic_metadata","Nested message and enum types in `GapicMetadata`."]],"struct":[["GapicMetadata","Metadata about a GAPIC library for a specific combination of API, version, and computer language."]]});

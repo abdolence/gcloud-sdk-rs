@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BinauthzManagementServiceV1Beta1Client","Google Cloud Management Service for Binary Authorization admission policies and attestation authorities."]]});

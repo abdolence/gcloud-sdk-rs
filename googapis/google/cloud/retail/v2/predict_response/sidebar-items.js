@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PredictionResult","PredictionResult represents the recommendation prediction results."]]});

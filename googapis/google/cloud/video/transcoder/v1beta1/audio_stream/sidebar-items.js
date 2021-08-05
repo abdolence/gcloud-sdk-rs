@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["audio_atom","Nested message and enum types in `AudioAtom`."]],"struct":[["AudioAtom","The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`."]]});

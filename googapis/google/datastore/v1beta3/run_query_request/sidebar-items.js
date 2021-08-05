@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["QueryType","The type of query."]]});

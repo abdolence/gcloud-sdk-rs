@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PivotSelection","A pair of dimension names and values. Rows with this dimension pivot pair are ordered by the metric’s value."]]});

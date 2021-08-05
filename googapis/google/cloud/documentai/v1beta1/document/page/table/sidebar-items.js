@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TableCell","A cell representation inside the table."],["TableRow","A row of table cells."]]});

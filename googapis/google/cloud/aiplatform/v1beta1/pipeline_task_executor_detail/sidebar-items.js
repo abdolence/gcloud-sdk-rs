@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Details",""]],"struct":[["ContainerDetail","The detail of a container execution. It contains the job names of the lifecycle of a container execution."],["CustomJobDetail","The detailed info for a custom job executor."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SourceStreamConfig","Stream configuration that is specific to the data source type."]]});

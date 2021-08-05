@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","The relationship of the current span relative to the linked span: child, parent, or unspecified."]]});

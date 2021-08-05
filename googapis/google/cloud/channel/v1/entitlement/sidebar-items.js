@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ProvisioningState","Indicates the current provisioning state of the entitlement."],["SuspensionReason","Suspension reason for an entitlement if [provisioning_state][google.cloud.channel.v1.Entitlement.provisioning_state] = SUSPENDED."]]});

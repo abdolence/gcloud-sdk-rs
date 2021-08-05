@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Period","The time period over which the objective will be evaluated."],["View","`ServiceLevelObjective.View` determines what form of `ServiceLevelObjective` is returned from `GetServiceLevelObjective`, `ListServiceLevelObjectives`, and `ListServiceLevelObjectiveVersions` RPCs."]]});

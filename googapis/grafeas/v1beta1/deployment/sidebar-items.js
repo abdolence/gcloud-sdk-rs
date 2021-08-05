@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["deployment","Nested message and enum types in `Deployment`."]],"struct":[["Deployable","An artifact that can be deployed in some runtime."],["Deployment","The period during which some deployable was active in a runtime."],["Details","Details of a deployment occurrence."]]});

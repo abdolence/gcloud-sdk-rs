@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Authentication","Authentication settings used by the backend."],["PathTranslation","Path Translation specifies how to combine the backend address with the request path in order to produce the appropriate forwarding URL for the request."]]});

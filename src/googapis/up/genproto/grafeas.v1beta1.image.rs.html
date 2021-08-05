@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/grafeas.v1beta1.image.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>grafeas.v1beta1.image.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+</pre><pre class="rust">
+<span class="doccomment">/// Layer holds metadata specific to a layer of a Docker image.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Layer</span> {
+    <span class="doccomment">/// Required. The recovered Dockerfile directive used to construct this layer.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;layer::Directive&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">directive</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// The recovered arguments to the Dockerfile directive.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">arguments</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `Layer`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">layer</span> {
+    <span class="doccomment">/// Instructions from Dockerfile.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Directive</span> {
+        <span class="doccomment">/// Default value for unsupported/missing directive.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Maintainer</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Run</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Cmd</span> <span class="op">=</span> <span class="number">3</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Label</span> <span class="op">=</span> <span class="number">4</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Expose</span> <span class="op">=</span> <span class="number">5</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Env</span> <span class="op">=</span> <span class="number">6</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Add</span> <span class="op">=</span> <span class="number">7</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Copy</span> <span class="op">=</span> <span class="number">8</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Entrypoint</span> <span class="op">=</span> <span class="number">9</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Volume</span> <span class="op">=</span> <span class="number">10</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">User</span> <span class="op">=</span> <span class="number">11</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Workdir</span> <span class="op">=</span> <span class="number">12</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Arg</span> <span class="op">=</span> <span class="number">13</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Onbuild</span> <span class="op">=</span> <span class="number">14</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Stopsignal</span> <span class="op">=</span> <span class="number">15</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Healthcheck</span> <span class="op">=</span> <span class="number">16</span>,
+        <span class="doccomment">/// https://docs.docker.com/engine/reference/builder/</span>
+        <span class="ident">Shell</span> <span class="op">=</span> <span class="number">17</span>,
+    }
+}
+<span class="doccomment">/// A set of properties that uniquely identify a given Docker image.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Fingerprint</span> {
+    <span class="doccomment">/// Required. The layer ID of the final layer in the Docker image&#39;s v1</span>
+    <span class="doccomment">/// representation.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">v1_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. The ordered list of v2 blobs that represent a given image.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">v2_blob</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. The name of the image&#39;s v2 blobs computed via:</span>
+    <span class="doccomment">///   [bottom] := v2_blob[bottom]</span>
+    <span class="doccomment">///   [N] := sha256(v2_blob[N] + &quot; &quot; + v2_name[N+1])</span>
+    <span class="doccomment">/// Only the name of the final blob is kept.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">v2_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Basis describes the base image portion (Note) of the DockerImage</span>
+<span class="doccomment">/// relationship. Linked occurrences are derived from this or an</span>
+<span class="doccomment">/// equivalent image via:</span>
+<span class="doccomment">///   FROM &lt;Basis.resource_url&gt;</span>
+<span class="doccomment">/// Or an equivalent reference, e.g. a tag of the resource_url.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Basis</span> {
+    <span class="doccomment">/// Required. Immutable. The resource_url for the resource representing the</span>
+    <span class="doccomment">/// basis of associated occurrence images.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">resource_url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required. Immutable. The fingerprint of the base image.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">fingerprint</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Fingerprint</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Details of an image occurrence.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Details</span> {
+    <span class="doccomment">/// Required. Immutable. The child image derived from the base image.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">derived_image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Derived</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Derived describes the derived image portion (Occurrence) of the DockerImage</span>
+<span class="doccomment">/// relationship. This image would be produced from a Dockerfile with FROM</span>
+<span class="doccomment">/// &lt;DockerImage.Basis in attached Note&gt;.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Derived</span> {
+    <span class="doccomment">/// Required. The fingerprint of the derived image.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">fingerprint</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Fingerprint</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. The number of layers by which this image differs from the</span>
+    <span class="doccomment">/// associated image basis.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">distance</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// This contains layer-specific metadata, if populated it has length</span>
+    <span class="doccomment">/// &quot;distance&quot; and is ordered with [distance] being the layer immediately</span>
+    <span class="doccomment">/// following the base image and [1] being the final layer.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">layer_info</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Layer</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. This contains the base image URL for the derived image</span>
+    <span class="doccomment">/// occurrence.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">base_resource_url</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

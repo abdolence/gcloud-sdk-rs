@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OneValue","One of metric value"]]});

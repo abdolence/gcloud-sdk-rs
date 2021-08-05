@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PerimeterType","Specifies the type of the Perimeter. There are two types: regular and bridge. Regular Service Perimeter contains resources, access levels, and restricted services. Every resource can be in at most ONE regular Service Perimeter."]]});

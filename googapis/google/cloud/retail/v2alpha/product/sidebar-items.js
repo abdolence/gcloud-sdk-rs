@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Availability","Product availability. If this field is unspecified, the product is assumed to be in stock."],["Expiration",""],["Type","The type of this product."]]});

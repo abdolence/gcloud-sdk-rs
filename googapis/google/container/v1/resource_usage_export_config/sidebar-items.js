@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BigQueryDestination","Parameters for using BigQuery as the destination of resource usage export."],["ConsumptionMeteringConfig","Parameters for controlling consumption metering."]]});

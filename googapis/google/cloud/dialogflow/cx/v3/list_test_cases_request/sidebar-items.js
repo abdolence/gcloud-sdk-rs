@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TestCaseView","Specifies how much test case information to include in the response."]]});

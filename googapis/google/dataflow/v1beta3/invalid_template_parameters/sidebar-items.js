@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ParameterViolation","A specific template-parameter violation."]]});

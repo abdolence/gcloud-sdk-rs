@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ApiVersion","API version for the agent."],["MatchMode","Match mode determines how intents are detected from user queries."],["Tier","Represents the agent tier."]]});

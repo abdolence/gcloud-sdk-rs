@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SourcedPackage","A guest policy package including its source."],["SourcedPackageRepository","A guest policy package repository including its source."],["SourcedSoftwareRecipe","A guest policy recipe including its source."]]});

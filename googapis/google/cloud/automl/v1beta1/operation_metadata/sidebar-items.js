@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Details","Ouptut only. Details of specific operation. Even if this field is empty, the presence allows to distinguish different types of operations."]]});

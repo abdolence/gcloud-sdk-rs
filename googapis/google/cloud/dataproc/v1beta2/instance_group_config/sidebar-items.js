@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Preemptibility","Controls the use of [preemptible instances] (https://cloud.google.com/compute/docs/instances/preemptible) within the group."]]});

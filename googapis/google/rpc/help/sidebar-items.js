@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Link","Describes a URL link."]]});

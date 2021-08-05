@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Method","Detailed information about methods that require it. Does not include simple Get, List or Delete methods because all significant information (resource name, number of returned elements for List operations) is already included in parent audit log message."]]});

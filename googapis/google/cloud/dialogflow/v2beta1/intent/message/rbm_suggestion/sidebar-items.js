@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Suggestion","Predefined suggested response or action for user to choose"]]});

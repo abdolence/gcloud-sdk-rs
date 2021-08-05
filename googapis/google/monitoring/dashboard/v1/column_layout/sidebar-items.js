@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Column","Defines the layout properties and content for a column."]]});

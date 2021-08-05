@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PredefinedBucketAcl","Predefined or “canned” aliases for sets of specific bucket ACL entries."],["PredefinedObjectAcl","Predefined or “canned” aliases for sets of specific object ACL entries."],["Projection","A set of properties to return in a response."]]});

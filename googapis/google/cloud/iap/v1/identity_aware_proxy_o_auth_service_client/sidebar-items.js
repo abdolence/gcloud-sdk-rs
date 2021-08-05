@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IdentityAwareProxyOAuthServiceClient","API to programmatically create, list and retrieve Identity Aware Proxy (IAP) OAuth brands; and create, retrieve, delete and reset-secret of IAP OAuth clients."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SecurityCenterClient","V1p1Beta1 APIs for Security Center service."]]});

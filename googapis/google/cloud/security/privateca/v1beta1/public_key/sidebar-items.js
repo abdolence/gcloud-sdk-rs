@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["KeyType","Types of public keys that are supported. At a minimum, we support RSA and ECDSA, for the key sizes or curves listed: https://cloud.google.com/kms/docs/algorithms#asymmetric_signing_algorithms"]]});

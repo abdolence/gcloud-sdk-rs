@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","The state of an index. During index creation, an index will be in the `CREATING` state. If the index is created successfully, it will transition to the `READY` state. If the index is not able to be created, it will transition to the `ERROR` state."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CustomerUserAccessInvitationServiceClient","This service manages the access invitation extended to users for a given customer."]]});

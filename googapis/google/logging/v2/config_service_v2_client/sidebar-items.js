@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ConfigServiceV2Client","Service for configuring sinks used to route log entries."]]});

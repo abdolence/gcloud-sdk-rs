@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ErrorCode","A general error code describing the type of error that occurred."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Filter","An optional filter consisting of a single group name.  The filters limit the groups returned based on their parent-child relationship with the specified group. If no filter is specified, all groups are returned."]]});

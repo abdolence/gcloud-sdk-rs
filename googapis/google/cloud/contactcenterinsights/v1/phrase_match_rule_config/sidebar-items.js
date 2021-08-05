@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Config","The configuration of the phrase match rule."]]});

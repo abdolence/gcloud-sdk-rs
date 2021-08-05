@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AdMobApiClient","The AdMob API allows AdMob publishers programmatically get information about their AdMob account."]]});

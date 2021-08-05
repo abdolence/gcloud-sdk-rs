@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BatchJobStatus","The batch job statuses."]]});

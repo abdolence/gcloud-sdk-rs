@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","The current state of the pool."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Membership","Whether the binding includes the member."],["RolePermission","Whether a role includes a specific permission."]],"struct":[["AnnotatedMembership","Details about whether the binding includes the member."]]});

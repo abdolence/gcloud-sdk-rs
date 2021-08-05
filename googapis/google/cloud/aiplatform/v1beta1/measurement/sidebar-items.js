@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Metric","A message representing a metric in the measurement."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EventServiceClient","A service handles client event report."]]});

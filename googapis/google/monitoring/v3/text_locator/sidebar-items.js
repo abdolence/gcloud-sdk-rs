@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Position","The position of a byte within the text."]]});

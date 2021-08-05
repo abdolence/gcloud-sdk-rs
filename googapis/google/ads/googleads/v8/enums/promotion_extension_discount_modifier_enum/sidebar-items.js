@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PromotionExtensionDiscountModifier","A promotion extension discount modifier."]]});

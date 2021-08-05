@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Enum indicating the states that a Version can take. This enum is not yet frozen and values maybe added later."]]});

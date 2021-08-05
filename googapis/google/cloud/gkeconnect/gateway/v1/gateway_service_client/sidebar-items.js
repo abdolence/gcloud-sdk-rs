@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GatewayServiceClient","Gateway service is a public API which works as a Kubernetes resource model proxy between end users and registered Kubernetes clusters. Each RPC in this service matches with an HTTP verb. End user will initiate kubectl commands against the Gateway service, and Gateway service will forward user requests to clusters."]]});

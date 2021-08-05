@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Debugger2Client","The Debugger service provides the API that allows users to collect run-time information from a running application, without stopping or slowing it down and without modifying its state.  An application may include one or more replicated processes performing the same work."]]});

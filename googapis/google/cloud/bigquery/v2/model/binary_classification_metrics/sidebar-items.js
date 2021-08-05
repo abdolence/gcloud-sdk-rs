@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BinaryConfusionMatrix","Confusion matrix for binary classification models."]]});

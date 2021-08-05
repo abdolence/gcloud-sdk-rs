@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BudgetType","Possible Budget types."]]});

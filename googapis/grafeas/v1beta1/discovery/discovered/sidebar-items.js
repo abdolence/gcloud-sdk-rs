@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AnalysisStatus","Analysis status for a resource. Currently for initial analysis only (not updated in continuous analysis)."],["ContinuousAnalysis","Whether the resource is continuously analyzed."]]});

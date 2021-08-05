@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Result","The operation result, which can be either an `error` or a valid `response`. If `done` == `false`, neither `error` nor `response` is set. If `done` == `true`, exactly one of `error` or `response` is set."]]});

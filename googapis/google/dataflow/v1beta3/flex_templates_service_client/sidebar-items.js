@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FlexTemplatesServiceClient","Provides a service for Flex templates. This feature is not ready yet."]]});

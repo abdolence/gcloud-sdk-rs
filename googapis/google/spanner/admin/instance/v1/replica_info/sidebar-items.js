@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ReplicaType","Indicates the type of replica.  See the replica types documentation for more details."]]});

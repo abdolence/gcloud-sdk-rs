@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Transaction","Required. The transaction in which to commit."]]});

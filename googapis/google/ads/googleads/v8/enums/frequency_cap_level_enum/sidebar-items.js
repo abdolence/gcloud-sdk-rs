@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FrequencyCapLevel","The level on which the cap is to be applied (e.g ad group ad, ad group). Cap is applied to all the resources of this level."]]});

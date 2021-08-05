@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","A type of trigger."]]});

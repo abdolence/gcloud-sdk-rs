@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["KnownCertificateExtension","Describes well-known X.509 extensions that can appear in a [Certificate][google.cloud.security.privateca.v1.Certificate], not including the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] extension."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GroupServiceClient","The Group API lets you inspect and manage your groups."]]});

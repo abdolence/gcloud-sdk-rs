@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["HotelDateSelectionType","Enum describing possible hotel date selection types."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TranslationServiceClient","Provides natural language translation operations."]]});

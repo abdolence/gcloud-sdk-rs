@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Webhook","Required. The webhook configuration."]],"struct":[["GenericWebService","Represents configuration for a generic web service."],["ServiceDirectoryConfig","Represents configuration for a Service Directory service."]]});

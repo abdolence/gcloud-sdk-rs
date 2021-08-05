@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FulfillmentsClient","Service for managing [Fulfillments][google.cloud.dialogflow.v2beta1.Fulfillment]."]]});

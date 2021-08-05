@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Severity","The severity level of a vulnerability."]]});

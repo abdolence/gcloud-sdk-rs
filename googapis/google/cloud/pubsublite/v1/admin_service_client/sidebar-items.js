@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AdminServiceClient","The service that a client application uses to manage topics and subscriptions, such creating, listing, and deleting topics and subscriptions."]]});

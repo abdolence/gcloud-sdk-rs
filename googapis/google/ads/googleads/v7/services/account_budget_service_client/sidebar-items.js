@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AccountBudgetServiceClient","A service for fetching an account-level budget."]]});

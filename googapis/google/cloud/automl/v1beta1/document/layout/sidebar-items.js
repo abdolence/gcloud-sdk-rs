@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TextSegmentType","The type of TextSegment in the context of the original document."]]});

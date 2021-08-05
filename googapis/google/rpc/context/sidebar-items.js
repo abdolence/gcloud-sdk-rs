@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"mod":[["attribute_context","Nested message and enum types in `AttributeContext`."]],"struct":[["AttributeContext","This message defines the standard attribute vocabulary for Google APIs."]]});

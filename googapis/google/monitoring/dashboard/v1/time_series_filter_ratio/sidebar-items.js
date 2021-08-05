@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OutputFilter","Selects an optional filter that is applied to the time series after computing the ratio."]],"struct":[["RatioPart","Describes a query to build the numerator or denominator of a TimeSeriesFilterRatio."]]});

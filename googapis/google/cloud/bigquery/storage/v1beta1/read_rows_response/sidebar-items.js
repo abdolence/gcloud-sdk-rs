@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Rows","Row data is returned in format specified during session creation."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["StateChange","The change in state of the finding."]],"struct":[["Resource","Information related to the Google Cloud resource that is associated with this finding."]]});
