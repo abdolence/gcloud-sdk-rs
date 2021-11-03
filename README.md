@@ -58,6 +58,7 @@ The list of available features can be found [here](./googapis/Cargo.toml#L22-L31
 | 0.3.x    | 0.3.x | 0.3.x       |
 | 0.4.x    | 0.4.x | 0.4.x       |
 | 0.5.x    | 0.5.x | 0.5.x       |
+| 0.6.x    | 0.6.x | 0.6.x       |
 
 ## Example
 The complete code can be found [here](./examples/spanner-admin).
@@ -67,9 +68,9 @@ Cargo.toml:
 [dependencies]
 googapis = { version = "0.5", features = ["google-spanner-admin-database-v1"] }
 gouth = { version = "0.2" }
-tonic = { version = "0.5", features = ["tls"] }
-prost = "0.8"
-prost-types = "0.8"
+tonic = { version = "0.6", features = ["tls"] }
+prost = "0.9"
+prost-types = "0.9"
 tokio = { version = "1.9", features = ["rt-multi-thread", "time", "fs", "macros"] }
 ```
 
