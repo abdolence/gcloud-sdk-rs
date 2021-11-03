@@ -66,7 +66,7 @@ The complete code can be found [here](./examples/spanner-admin).
 Cargo.toml:
 ```toml
 [dependencies]
-googapis = { version = "0.5", features = ["google-spanner-admin-database-v1"] }
+googapis = { version = "0.6", features = ["google-spanner-admin-database-v1"] }
 gouth = { version = "0.2" }
 tonic = { version = "0.6", features = ["tls"] }
 prost = "0.9"
