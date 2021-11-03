@@ -71,7 +71,7 @@ gouth = { version = "0.2" }
 tonic = { version = "0.6", features = ["tls"] }
 prost = "0.9"
 prost-types = "0.9"
-tokio = { version = "1.9", features = ["rt-multi-thread", "time", "fs", "macros"] }
+tokio = { version = "1.13", features = ["rt-multi-thread", "time", "fs", "macros"] }
 ```
 
 main.rs:
