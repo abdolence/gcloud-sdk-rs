@@ -1,6 +1,6 @@
 [package]
 name = "googapis"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["mechiru <u9053u6d41@gmail.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
@@ -365,6 +365,6 @@ maps-fleetengine-v1 = []
 storage-clouddms-logging-v1 = []
 
 [dependencies]
-tonic = "0.5.0"
-prost = "0.8.0"
-prost-types = "0.8.0"
+tonic = "0.6.1"
+prost = "0.9.0"
+prost-types = "0.9.0"
